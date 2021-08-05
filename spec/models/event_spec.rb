@@ -5,9 +5,21 @@ RSpec.describe Event, type: :model do
     expect(FactoryBot.build(:event)).to be_valid
   end
 
-  context 'Validations' do
+  context 'validations' do
     it 'requires a title' do
       expect(FactoryBot.build(:event, title: nil)).not_to be_valid
+    end
+
+    it 'requires a unit' do
+      expect(FactoryBot.build(:event, unit: nil)).not_to be_valid
+    end
+  end
+
+  context 'methods' do
+    it 'is past when end date is before now' do
+    end
+
+    it 'is not past when end date after now' do
     end
   end
 end
