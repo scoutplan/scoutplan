@@ -1,0 +1,10 @@
+tr(onclick="window.location = '#{ unit_event_path(@unit, event) }';")
+  - if @current_month.nil? || @current_month != event.starts_at.month
+    - @current_month = event.starts_at.month
+    td = event.starts_at.strftime('%B')
+  - else
+    td
+  td.start_day = event.starts_at.strftime('%d')
+  td.day       = event.starts_at.strftime('%a')
+  td.name      = event.title
+  td.location  = event.location

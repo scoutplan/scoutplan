@@ -1,0 +1,28 @@
+h1 Events
+
+- @current_year = nil
+- @current_month = nil
+
+- if policy(:event).create?
+  = link_to 'Add an Event', new_unit_event_path, class: 'btn btn-primary'
+
+- unless @events.empty?
+  table.table-clickable
+    thead
+      tr
+        th
+        th
+        th
+        th Title
+        th Location
+    tbody
+      = render @events
+
+// javascript:
+//   clickableRows = document.querySelectorAll('table.table-clickable tbody tr');
+//   for(i = 0; i < clickableRows.length;i++) {
+//     clickableRows[i].addEventListener('click', function() {
+//       href = this.dataset.href;
+//       window.location = href;
+//     });
+//   }

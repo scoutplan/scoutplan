@@ -1,0 +1,14 @@
+@import "~bootstrap/scss/bootstrap";
+
+// pay the mortgage
+table {
+  @extend .table;
+
+  &.table-clickable {
+    @extend .table-hover;
+
+    td {
+      cursor: pointer;
+    }
+  }
+}
