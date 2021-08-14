@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include Pundit
 
-  def current_user
+  def new_session_path(scope)
+    new_user_session_path
   end
 end

@@ -1,28 +1,75 @@
+= @unit.name
+
 h1 Events
 
 - @current_year = nil
 - @current_month = nil
 
 - if policy(:event).create?
-  = link_to 'Add an Event', new_unit_event_path, class: 'btn btn-primary'
+  = link_to 'Add an Event', '#newEventModal', id: 'new-event-button', class: 'btn btn-primary', data: { 'bs-toggle' => 'modal' }
 
 - unless @events.empty?
   table.table-clickable
     thead
       tr
         th
-        th
+        th Date
+        th Day
         th
         th Title
         th Location
+        th
     tbody
       = render @events
 
-// javascript:
-//   clickableRows = document.querySelectorAll('table.table-clickable tbody tr');
-//   for(i = 0; i < clickableRows.length;i++) {
-//     clickableRows[i].addEventListener('click', function() {
-//       href = this.dataset.href;
-//       window.location = href;
-//     });
-//   }
+.modal.fade#newEventModal
+  .modal-dialog
+    .modal-content
+      .modal-body
+        = render 'form'
+
+scss:
+  tr.event {
+    td:first-child {
+      border-left: 6px solid transparent;
+    }
+
+    td.month {
+      font-weight: bold;
+    }
+
+    td.glyph {
+      text-align: center;
+    }
+  }
+
+
+  tr.camping-event {
+    td:first-child {
+      border-left-color: green;
+    }
+
+    svg {
+      color: green;
+    }
+  }
+
+  tr.court_of_honor-event {
+    td:first-child {
+      border-left-color: GoldenRod;
+    }
+
+    svg {
+      color: GoldenRod;
+    }
+  }
+
+  tr.troop_meeting-event {
+    td:first-child {
+      border-left-color: FireBrick;
+    }
+
+    svg {
+      color: FireBrick;
+    }
+  }

@@ -1,4 +1,4 @@
-@import "~bootstrap/scss/bootstrap";
+@import "bootstrap";
 
 // pay the mortgage
 table {
@@ -9,6 +9,15 @@ table {
 
     td {
       cursor: pointer;
+    }
+  }
+}
+
+tr.event {
+  td.action {
+    a {
+      @extend .btn, .btn-outline-secondary, .btn-sm;
+      font-size: 0.75rem;
     }
   }
 }

@@ -1,10 +1,20 @@
-tr(onclick="window.location = '#{ unit_event_path(@unit, event) }';")
-  - if @current_month.nil? || @current_month != event.starts_at.month
-    - @current_month = event.starts_at.month
-    td = event.starts_at.strftime('%B')
-  - else
-    td
-  td.start_day = event.starts_at.strftime('%d')
-  td.day       = event.starts_at.strftime('%a')
-  td.name      = event.title
-  td.location  = event.location
+tr.event(class="#{event.category}-event" onclick="window.location = '#{ unit_event_path(@unit, event) }';")
+  td.month
+    - if @current_month.nil? || @current_month != event.starts_at.month
+      - @current_month = event.starts_at.month
+      = event.starts_at.strftime('%B')
+    - if @current_year.nil? || @current_year != event.starts_at.year
+      - @current_year = event.starts_at.year
+      = event.starts_at.strftime(' %Y')
+
+  td.start_day  = event.starts_at.strftime('%d')
+  td.day        = event.starts_at.strftime('%a')
+  td.glyph
+    i(class = "#{EventPresenter.category_to_fa_glyph(event.category)}")
+  td.name       = event.title
+  td.location   = event.location
+  td.action
+    - if event.has_rsvp_for?(current_user)
+      = link_to 'Change RSVP', ''
+    - elsif event.rsvp_open?
+      = link_to 'RSVP', '', class: 'btn btn-outline-secondary btn-sm btn-outline'
