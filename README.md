@@ -1,24 +1,15 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Assumptions & pre-reqs
 
-Things you may want to cover:
+* You have a FontAwesome kit defined
 
-* Ruby version
+* You have an Adobe Fonts kit defined
 
-* System dependencies
+## ENV vars
 
-* Configuration
+* FONT_AWESOME_KIT_ID
+* ADOBE_KIT_ID
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
 
 * ...

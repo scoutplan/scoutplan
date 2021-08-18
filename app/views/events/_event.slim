@@ -1,4 +1,7 @@
-tr.event(class="#{event.category}-event" onclick="window.location = '#{ unit_event_path(@unit, event) }';")
+- presenter = EventPresenter.new(event)
+- rsvp = event.event_rsvps.find_by(user: current_user)
+
+tr.event(class="#{event.category.name.parameterize}-event" onclick="window.location = '#{ unit_event_path(@unit, event) }';")
   td.month
     - if @current_month.nil? || @current_month != event.starts_at.month
       - @current_month = event.starts_at.month
@@ -7,14 +10,27 @@ tr.event(class="#{event.category}-event" onclick="window.location = '#{ unit_eve
       - @current_year = event.starts_at.year
       = event.starts_at.strftime(' %Y')
 
-  td.start_day  = event.starts_at.strftime('%d')
-  td.day        = event.starts_at.strftime('%a')
-  td.glyph
-    i(class = "#{EventPresenter.category_to_fa_glyph(event.category)}")
-  td.name       = event.title
-  td.location   = event.location
-  td.action
-    - if event.has_rsvp_for?(current_user)
-      = link_to 'Change RSVP', ''
-    - elsif event.rsvp_open?
+  td.start_day
+    = raw(presenter.dates_to_s)
+    |&nbsp;
+    span.daynames.d-block.d-md-inline
+      = raw(presenter.days_to_s)
+  td.glyph.desktop
+    i(class = "fas fa-#{event.event_category.glyph}")
+  td.title  = event.title
+  td.location.tablet  = event.location
+  td.action.desktop
+    - if rsvp.nil?
       = link_to 'RSVP', '', class: 'btn btn-outline-secondary btn-sm btn-outline'
+    - else
+      - if rsvp.accepted?
+        span.rsvp-response.rsvp-accepted
+          i.fas.fa-check
+          | &nbsp;Accepted
+      - else # rsvp.declined?
+        span.rsvp-response.rsvp-declined
+          i.fas.fa-times
+          | &nbsp;Declined
+      - if event.rsvp_open?
+        | &nbsp;
+        = link_to '(Change)', ''

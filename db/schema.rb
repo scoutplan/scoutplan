@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_13_003047) do
+ActiveRecord::Schema.define(version: 2021_08_17_122153) do
+
+  create_table "event_categories", force: :cascade do |t|
+    t.integer "unit_id"
+    t.string "name"
+    t.string "glyph"
+    t.string "color"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "event_rsvps", force: :cascade do |t|
     t.integer "event_id"
@@ -27,13 +36,22 @@ ActiveRecord::Schema.define(version: 2021_08_13_003047) do
     t.datetime "starts_at"
     t.datetime "ends_at"
     t.string "location"
-    t.string "category"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "requires_rsvp", default: false
     t.string "rsvp_closes_at"
     t.integer "max_total_attendees"
     t.string "rsvp_opens_at"
+    t.integer "event_category_id"
+    t.integer "series_parent_id"
+  end
+
+  create_table "unit_memberships", force: :cascade do |t|
+    t.integer "unit_id"
+    t.integer "user_id"
+    t.integer "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "units", force: :cascade do |t|

@@ -1,39 +1,46 @@
 = @unit.name
 
+style
+  - @unit.event_categories.each do |category|
+    / = "tr.event.#{ category.name.parameterize }-event td:first-child { border-left-color: #{ category.color } }\n"
+    = "tr.event.#{ category.name.parameterize }-event .glyph svg { color: #{ category.color } }\n"
+    / = ".glyph svg.#{ category.name.parameterize } { color: #{ category.color } }\n"
+
 h1 Events
 
-- @current_year = nil
-- @current_month = nil
+/ - @current_year = nil
+/ - @current_month = nil
 
 - if policy(:event).create?
-  = link_to 'Add an Event', '#newEventModal', id: 'new-event-button', class: 'btn btn-primary', data: { 'bs-toggle' => 'modal' }
+  = link_to t(:event_add), '#newEventModal', id: 'new-event-button', class: 'btn btn-primary', data: { 'bs-toggle' => 'modal' }
 
 - unless @events.empty?
+
+  p = link_to t(:event_subscribe), ''
+
   table.table-clickable
     thead
       tr
         th
-        th Date
-        th Day
-        th
-        th Title
-        th Location
-        th
+        th.date = t(:event_date)
+        th.glyph.desktop
+        th.title =t(:event_title)
+        th.location.tablet =t(:event_location)
+        th.action.desktop
     tbody
       = render @events
 
-.modal.fade#newEventModal
-  .modal-dialog
-    .modal-content
-      .modal-body
-        = render 'form'
+= render 'form'
 
 scss:
-  tr.event {
-    td:first-child {
-      border-left: 6px solid transparent;
-    }
+  .daynames {
+    font-size: 0.75rem;
+    // margin-left: 1rem;
+    text-transform: uppercase;
+    color: #888;
+  }
 
+  tr.event {
     td.month {
       font-weight: bold;
     }
@@ -49,7 +56,7 @@ scss:
       border-left-color: green;
     }
 
-    svg {
+    .glyph svg {
       color: green;
     }
   }
@@ -59,7 +66,7 @@ scss:
       border-left-color: GoldenRod;
     }
 
-    svg {
+    .glyph svg {
       color: GoldenRod;
     }
   }
@@ -69,7 +76,15 @@ scss:
       border-left-color: FireBrick;
     }
 
-    svg {
+    .glyph svg {
       color: FireBrick;
     }
+  }
+
+  .rsvp-accepted svg {
+    color: green;
+  }
+
+  .rsvp-declined svg {
+    color: red;
   }

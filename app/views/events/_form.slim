@@ -1,4 +1,256 @@
-= form_for [@unit, @new_event] do |f|
-  .form-group
-    = f.label :title
-    = f.text_field :title, class: 'form-control'
+.modal.fade#newEventModal
+  .modal-dialog
+    .modal-content
+      = form_for [@unit, @new_event] do |f|
+        .modal-header
+          h5.modal-title = t(:event_add)
+          button.btn-close(type="button" data-bs-dismiss="modal")
+        .modal-body
+          .mb-3
+            = f.label :category, class: 'col-form-label'
+            = f.select :category, @unit.event_categories.collect { |c| [ c.name, c.id] }, {prompt: t('event_category_prompt')}, {class: 'form-select'}
+
+          .mb-3
+            = f.label :title
+            = f.text_field :title, class: 'form-control'
+
+          // from date
+          .mb-3
+            .row.mb-3
+              .col-sm-2
+                = f.label :from
+              .col-sm-5
+                .input-group
+                  = text_field_tag :starts_at_d, @new_event.starts_at.strftime('%m/%d/%Y'), class: 'form-control'
+                  button.btn.btn-outline-secondary(type="button")
+                    i.fas.fa-calendar
+              .col-sm-5
+                .input-group
+                  = text_field_tag :starts_at_t, @new_event.starts_at.strftime('%l:%M %p'), class: 'form-control'
+                  button.btn.btn-outline-secondary(type="button")
+                    i.fas.fa-clock
+
+          // to date
+          .mb-3
+            .row.mb-3
+              .col-sm-2
+                = f.label :to
+              .col-sm-5
+                .input-group
+                  = text_field_tag :starts_at_d, @new_event.starts_at.strftime('%m/%d/%Y'), class: 'form-control'
+                  button.btn.btn-outline-secondary(type="button" data-bs-toggle="popover" title="Select" data-bs-content="xxx" data-bs-container="body")
+                    i.fas.fa-calendar
+              .col-sm-5
+                .input-group
+                  = text_field_tag :starts_at_t, @new_event.starts_at.strftime('%l:%M %p'), class: 'form-control'
+                  button.btn.btn-outline-secondary(type="button")
+                    i.fas.fa-clock
+
+          // repeats
+          .row.mb-3(style="height:3rem;")
+            .col-md-6
+              .form-check.form-check-inline(style="padding-top:6px;")
+                = check_box_tag 'event_repeats', '', false, class: 'form-check-input', data: { 'bs-toggle' => 'collapse', 'bs-target' => '#repeat-fields'}, onclick: 'updateRepeatLabel(this);'
+                = f.label :repeats, class: 'form-check-label', id: 'repeat-label'
+
+            .col-md-5
+              .collapse#repeat-fields.input-group
+                = text_field_tag :repeats_until, (@new_event.starts_at + 6.months).strftime('%m/%d/%Y'), class: 'form-control'
+                button.btn.btn-outline-secondary(type="button")
+                  i.fas.fa-calendar
+
+          // location
+          .mb-3
+            = f.label :location
+            = f.text_field :location, class: 'form-control'
+
+          // description
+          .mb-3
+            = f.label :description
+            = f.text_field :description, class: 'form-control'
+
+          // RSVP
+          .form-check.mb-3
+            = f.check_box :requires_rsvp, class: 'form-check-input', data: { 'bs-toggle' => 'collapse', 'bs-target' => '#rsvp-fields'}
+            = f.label :requires_rsvp, class: 'form-check-label'
+
+          // RSVP fields
+          .mb-3.collapse#rsvp-fields(style="padding-left: 24px;")
+            .mb-3
+              label
+                | RSVP opens&nbsp;
+                a(href="#") immediately
+                | &nbsp;and closes&nbsp;
+                a(href="#") 2 weeks before start
+
+            .form-check.mb-3
+              = check_box_tag 'rsvp_notify', '', false, class: 'form-check-input'
+              = label_tag :rvsp_notify, t('helpers.label.event.rsvp_notify'), class: 'form-check-label'
+
+        // form buttons
+        .modal-footer
+          / button.btn.btn-primary(type="button") = t('helpers.label.event.accept_button')
+          = f.submit t('helpers.label.event.accept_button'), class: 'btn btn-primary'
+          button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_button')
+
+javascript:
+  setupDialog();
+  // buildPicker();
+
+  // var pickers = document.getElementsByClassName('sp-date-picker');
+  // for(const picker of pickers) {
+  //   buildPicker(picker);
+  // }
+  function setupDialog() {
+    const catDropDown = document.getElementById('event_category');
+    catDropDown.addEventListener('change', function() {
+      const catId = this.value;
+      const catName = this.options[this.selectedIndex].text;
+      const eventTitle = document.getElementById('event_title');
+      eventTitle.value = catName;
+    });
+
+    // var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    // var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    //   new bootstrap.Popover(popoverTriggerEl)
+    // });
+  }
+
+  function buildPicker() {
+    const form = document.getElementById('new_event');
+    const calendarWrapper = document.createElement('div');
+    calendarWrapper.classList.add('date-picker');
+    form.appendChild(calendarWrapper);
+    buildPickerTable(calendarWrapper);
+  }
+
+  function updateRepeatLabel(elem) {
+    const label = document.getElementById('repeat-label');
+    const checkBox = document.getElementById('event_repeats');
+    const caption = checkBox.checked ? 'Repeats weekly until' : 'Repeats weekly';
+    label.innerText = caption;
+  }
+
+  // function old_buildPicker(elem) {
+  //   var startDate = new Date();
+  //   var nextMonth = new Date();
+  //   nextMonth.setMonth(nextMonth.getMonth() + 1);
+
+  //   buildPickerTable(elem, document.createElement('table'), startDate);
+  //   buildPickerTable(elem, document.createElement('table'), nextMonth);
+  // }
+
+  function buildPickerTable(wrapper) {
+    var dateVal = new Date(Date.now());
+    var firstDayOfMonth = new Date(dateVal.getFullYear(), dateVal.getMonth(), 1); // first day of month
+    var firstDayOffset = firstDayOfMonth.getDay();
+    var dayNum = 1;
+    var endDay = daysInMonth(dateVal.getMonth(), dateVal.getYear());
+    const monthName = dateVal.toLocaleString('default', { month: 'long' });
+
+    const table = document.createElement('table');
+    wrapper.appendChild(table);
+
+    // header row
+    table.innerHTML += '<tr class="sp-cal-header-month"><td colspan="7">' + monthName + '</td></tr>';
+    table.innerHTML += '<tr class="sp-cal-header-days"><td>S</td><td>M</td><td>T</td><td>W</td><td>T</td><td>F</td><td>S</td>';
+
+    // create first row
+    var row = document.createElement('tr');
+    table.appendChild(row);
+
+    // advance to the correct day of the week
+    var colNum = 0;
+
+    for(i = 0; i < firstDayOffset; i++) {
+      var cell = document.createElement('td');
+      row.appendChild(cell);
+      colNum++;
+    }
+
+    // now populate the actual numbered cells
+    while(dayNum <= endDay) {
+      var cell = document.createElement('td');
+      cell.classList.add('sp-cal-day');
+      row.appendChild(cell);
+
+      var link = document.createElement('a');
+      cell.appendChild(link);
+      link.innerText = dayNum;
+      link.href = '#';
+      dayNum++;
+      colNum++;
+
+      if(colNum > 6) {
+        var row = document.createElement('tr');
+        table.appendChild(row);
+        colNum = 0;
+      }
+    }
+  }
+
+  function isLeapYear(year) {
+    return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
+  }
+
+  function daysInMonth(month, year = new Date().year) {
+    return [31, (isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+  }
+
+  function setCategory(elem) {
+    window.event.preventDefault();
+  }
+
+scss:
+  .date-picker {
+    background: #eee;
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 80%;
+  }
+
+  .date-picker table {
+    display: block;
+    margin: 15px;
+  }
+
+  .sp-date-picker {
+    .sp-cal-wrapper {
+      display: inline-block;
+      width: 50%;
+    }
+
+    .sp-cal-wrapper:first-child {
+      padding-right: 12px;
+    }
+
+    .sp-cal-wrapper:last-child {
+      padding-left: 12px;
+    }
+
+    th, td {
+      text-align: center;
+      padding: 0;
+    }
+
+    td {
+      pointer: hand;
+    }
+  }
+
+  .sp-cal-day {
+    a {
+      display: inline-block;
+      padding: 4px;
+      border-radius: 50%;
+      pointer: default;
+      width: 100%;
+      text-decoration: none;
+      color: #333;
+
+      &:hover {
+        background-color: #ddd;
+      }
+    }
+  }

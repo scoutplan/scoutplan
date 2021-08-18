@@ -31,3 +31,31 @@
 
 en:
   hello: "Hello world"
+  event_add: "Add a Calendar Event"
+  event_edit: "Edit This Event"
+  event_date: "Date"
+  event_title: "Title"
+  event_location: "Location"
+  event_subscribe: 'Add this Schedule to your Google Calendar, Outlook, or iCal...'
+  event_category_prompt: '- select -'
+
+  event_categories:
+    camping:          'Camping'
+    hiking:           'Hiking'
+    service_project:  'Service Project'
+    court_of_honor:   'Court of Honor'
+
+  helpers:
+    label:
+      event:
+        category: 'Category'
+        title: 'Title'
+        from: 'From'
+        to: 'To'
+        repeats: 'Repeats Weekly'
+        location: 'Location'
+        description: 'Notes'
+        requires_rsvp: 'Requires RSVP'
+        rsvp_notify: 'Notify everyone when RSVP opens'
+        accept_button: 'Add Event'
+        cancel_button: 'Cancel'

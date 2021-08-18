@@ -1,0 +1,31 @@
+= link_to 'Back to Event List', unit_events_path(@unit)
+
+h1 = @event.title
+
+- if policy(:event).edit?
+  = link_to t(:event_edit), '#newEventModal', id: 'new-event-button', class: 'btn btn-primary', data: { 'bs-toggle' => 'modal' }
+
+.card-group
+  .card.date-card
+    .card-body
+      .month-name = @presenter.month_name
+      .dates = @presenter.dates_to_s
+      .days = @presenter.days_to_s
+  .card.location
+    .card-body
+      = @presenter.location
+  .card.rsvp
+    .card-body
+      ul
+        - @rsvsp.try(:each) do |rsvp|
+          li = rsvp.user.first_name
+
+scss:
+  .dates {
+    font-size: 300%;
+    color: DarkRed;
+  }
+
+  .month-name {
+    font-weight: 700;
+  }
