@@ -1,5 +1,5 @@
 {
-  "name": "scoutaround",
+  "name": "scoutplan",
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.9.3",

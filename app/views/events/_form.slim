@@ -8,7 +8,7 @@
         .modal-body
           .mb-3
             = f.label :category, class: 'col-form-label'
-            = f.select :category, @unit.event_categories.collect { |c| [ c.name, c.id] }, {prompt: t('event_category_prompt')}, {class: 'form-select'}
+            = f.select :event_category_id, @unit.event_categories.collect { |c| [ c.name, c.id] }, {prompt: t('event_category_prompt')}, {class: 'form-select'}
 
           .mb-3
             = f.label :title
@@ -21,12 +21,13 @@
                 = f.label :from
               .col-sm-5
                 .input-group
-                  = text_field_tag :starts_at_d, @new_event.starts_at.strftime('%m/%d/%Y'), class: 'form-control'
-                  button.btn.btn-outline-secondary(type="button")
-                    i.fas.fa-calendar
+                  = date_field :starts_at_d, '', class: 'form-control'
+              /     = text_field_tag :starts_at_d, @new_event.starts_at.strftime('%m/%d/%Y'), class: 'form-control validated-date'
+              /     button.btn.btn-outline-secondary.date-picker(type="button" data-calendar-field='starts_at_d')
+              /       i.fas.fa-calendar
               .col-sm-5
                 .input-group
-                  = text_field_tag :starts_at_t, @new_event.starts_at.strftime('%l:%M %p'), class: 'form-control'
+                  = text_field_tag :starts_at_t, @new_event.starts_at.strftime('%l:%M %p'), class: 'form-control validated-time'
                   button.btn.btn-outline-secondary(type="button")
                     i.fas.fa-clock
 
@@ -37,12 +38,12 @@
                 = f.label :to
               .col-sm-5
                 .input-group
-                  = text_field_tag :starts_at_d, @new_event.starts_at.strftime('%m/%d/%Y'), class: 'form-control'
-                  button.btn.btn-outline-secondary(type="button" data-bs-toggle="popover" title="Select" data-bs-content="xxx" data-bs-container="body")
+                  = text_field_tag :ends_at_d, @new_event.starts_at.strftime('%m/%d/%Y'), class: 'form-control validated-date'
+                  button.btn.btn-outline-secondary.date-picker(type="button" data-bs-toggle="popover" title="Select" data-bs-content="xxx" data-bs-container="body")
                     i.fas.fa-calendar
               .col-sm-5
                 .input-group
-                  = text_field_tag :starts_at_t, @new_event.starts_at.strftime('%l:%M %p'), class: 'form-control'
+                  = text_field_tag :ends_at_t, @new_event.starts_at.strftime('%l:%M %p'), class: 'form-control validated-time'
                   button.btn.btn-outline-secondary(type="button")
                     i.fas.fa-clock
 
@@ -90,38 +91,141 @@
         // form buttons
         .modal-footer
           / button.btn.btn-primary(type="button") = t('helpers.label.event.accept_button')
-          = f.submit t('helpers.label.event.accept_button'), class: 'btn btn-primary'
+          = f.submit t('helpers.label.event.accept_button'), class: 'btn btn-primary', id: 'event_submit'
           button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_button')
 
 javascript:
   setupDialog();
-  // buildPicker();
 
-  // var pickers = document.getElementsByClassName('sp-date-picker');
-  // for(const picker of pickers) {
-  //   buildPicker(picker);
-  // }
   function setupDialog() {
-    const catDropDown = document.getElementById('event_category');
+    const catDropDown = document.getElementById('event_event_category_id');
     catDropDown.addEventListener('change', function() {
-      const catId = this.value;
-      const catName = this.options[this.selectedIndex].text;
-      const eventTitle = document.getElementById('event_title');
-      eventTitle.value = catName;
+      handleCategoryChange(this);
     });
 
-    // var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-    // var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-    //   new bootstrap.Popover(popoverTriggerEl)
-    // });
+    setupDateValidations();
+    setupTimeValidations();
+
+    validateDialog();
   }
 
-  function buildPicker() {
-    const form = document.getElementById('new_event');
-    const calendarWrapper = document.createElement('div');
-    calendarWrapper.classList.add('date-picker');
-    form.appendChild(calendarWrapper);
-    buildPickerTable(calendarWrapper);
+  function setupDateValidations() {
+    const dateFields = document.getElementsByClassName('validated-date');
+    for(const dateField of dateFields) {
+      dateField.addEventListener('focusin', function() {
+        this.setAttribute('data-val', this.value);
+      });
+      dateField.addEventListener('change', function() {
+        if(!validateDate(this)) {
+          this.value = this.getAttribute('data-val'); // restore original value
+        }
+      });
+    }
+  }
+
+  function validateDate(elem) {
+    var val = elem.value;
+
+    // first, replace dots, dashes, and spaces with slashes
+    val = val.replace(/,/g, '');
+    val = val.replace(/ /g, '/');
+    val = val.replace(/-/g, '/');
+    val = val.replace(/\./g, '/');
+
+    alert(val);
+
+    var parts = val.split('/');
+    if(parts.length != 3) {
+      return false;
+    }
+
+    var month = parts[0];
+    var day   = parts[1];
+    var year  = parts[2];
+
+    // if user plugged in month name (e.g. "Jun" or "June")
+    month = getMonthFromString(month).toString();
+
+    // now ensure all three values are numeric
+    var monthInt = parseInt(month);
+    var dayInt   = parseInt(day);
+    var yearInt  = parseInt(year);
+
+    if(monthInt !== monthInt || dayInt !== dayInt || yearInt !== yearInt) {
+      return false;
+    }
+
+    // pad months, day, and year to 2, 2, and 4 length, respectively
+    if(year.length == 2) {
+      year = '20' + year;
+    }
+
+    if(day.length == 1) {
+      day = '0' + day;
+    }
+
+    if(month.length == 1) {
+      month = '0' + month;
+    }
+
+    if(year.length != 4 || month.length != 2 || day.length != 2) {
+      return false;
+    }
+
+    if(parseInt(day) < 1 || parseInt(day) > 31) {
+      return false;
+    }
+
+    if(parseInt(month) < 1 || parseInt(month) > 12) {
+      return false;
+    }
+
+    val = month + '/' + day + '/' + year
+
+    // now if we have the correct format, let's use it
+    var reg = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}/;
+    if(val.match(reg)) {
+      elem.value = val;
+      return true;
+    }
+
+    return false;
+  }
+
+  function getMonthFromString(mon){
+   return new Date(Date.parse(mon +" 1, 2012")).getMonth()+1
+  }
+
+  function setupTimeValidations() {
+    const dateFields = document.getElementsByClassName('validated-time');
+    for(const dateField of dateFields) {
+      dateField.addEventListener('focusin', function() {
+
+      });
+      dateField.addEventListener('change', function() {
+
+      });
+    }
+  }
+
+  function handleCategoryChange(dropdown) {
+    const catId = dropdown.value;
+    const catName = dropdown.options[dropdown.selectedIndex].text;
+    const eventTitle = document.getElementById('event_title');
+    eventTitle.value = catName;
+
+    validateDialog();
+  }
+
+  function validateDialog() {
+    var valid = false;
+    const categoryId = document.getElementById('event_event_category_id').value;
+    if(!!categoryId) {
+      valid = true;
+    }
+
+    const commitButton = document.getElementById('event_submit');
+    commitButton.disabled = !valid;
   }
 
   function updateRepeatLabel(elem) {
@@ -131,16 +235,26 @@ javascript:
     label.innerText = caption;
   }
 
-  // function old_buildPicker(elem) {
-  //   var startDate = new Date();
-  //   var nextMonth = new Date();
-  //   nextMonth.setMonth(nextMonth.getMonth() + 1);
+  function buildDatePicker() {
+    const form = document.getElementById('new_event');
+    const calendar = document.createElement('div');
+    // calendarWrapper.classList.add('date-picker-wrapper');
+    calendar.id = 'calendar';
+    // calendar.style.visibility = 'hidden';
+    form.appendChild(calendar);
+    buildDatePickerTable(calendar);
+    calendar.style.display = 'none';
 
-  //   buildPickerTable(elem, document.createElement('table'), startDate);
-  //   buildPickerTable(elem, document.createElement('table'), nextMonth);
-  // }
+    // wire up events
+    datePickerButtons = document.getElementsByClassName('date-picker');
+    for(const button of datePickerButtons) {
+      button.addEventListener('click', function() {
+        displayDatePicker(this);
+      })
+    }
+  }
 
-  function buildPickerTable(wrapper) {
+  function buildDatePickerTable(wrapper) {
     var dateVal = new Date(Date.now());
     var firstDayOfMonth = new Date(dateVal.getFullYear(), dateVal.getMonth(), 1); // first day of month
     var firstDayOffset = firstDayOfMonth.getDay();
@@ -202,20 +316,21 @@ javascript:
   }
 
 scss:
-  .date-picker {
+  #calendar {
     background: #eee;
     position: absolute;
+    display: 'block';
     left: 0;
     top: 0;
     font-size: 80%;
   }
 
-  .date-picker table {
+  #calendar table {
     display: block;
     margin: 15px;
   }
 
-  .sp-date-picker {
+  #calendar {
     .sp-cal-wrapper {
       display: inline-block;
       width: 50%;

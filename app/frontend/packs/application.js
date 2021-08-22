@@ -9,13 +9,6 @@ import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
-// import * as bootstrap from "bootstrap"
-
-// https://stackoverflow.com/questions/64113404/bootstrap-5-referenceerror-bootstrap-is-not-defined
-// window.bootstrap = require('bootstrap')
-
-
-// https://stackoverflow.com/questions/66613941/cant-toggle-bootstrap-5-js-not-initialized-properly
 
 window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js')
 
