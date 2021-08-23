@@ -38,6 +38,12 @@ en:
   event_location: "Location"
   event_subscribe: 'Add this Schedule to your Google Calendar, Outlook, or iCal...'
   event_category_prompt: '- select -'
+  event_rsvp: 'RSVP'
+
+  members:
+    name:             'Name'
+    type:             'Type'
+    parent_guardian:  'Guardian(s)'
 
   event_categories:
     camping:          'Camping'

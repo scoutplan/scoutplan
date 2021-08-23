@@ -17,19 +17,6 @@ table {
   }
 }
 
-tr.event {
-  td.action {
-    a.btn {
-      @extend .btn, .btn-outline-secondary, .btn-sm;
-      font-size: 0.75rem;
-    }
-
-    a {
-      font-size: 0.75rem;
-    }
-  }
-}
-
 th.desktop, td.desktop {
   @extend .d-none, .d-lg-table-cell;
 }

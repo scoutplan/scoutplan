@@ -1,0 +1,2 @@
+class Youth < User
+end

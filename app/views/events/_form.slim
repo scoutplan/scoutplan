@@ -20,16 +20,10 @@
               .col-sm-2
                 = f.label :from
               .col-sm-5
-                .input-group
-                  = date_field :starts_at_d, '', class: 'form-control'
-              /     = text_field_tag :starts_at_d, @new_event.starts_at.strftime('%m/%d/%Y'), class: 'form-control validated-date'
-              /     button.btn.btn-outline-secondary.date-picker(type="button" data-calendar-field='starts_at_d')
-              /       i.fas.fa-calendar
+                = date_field '', :starts_at_d, value: @new_event.starts_at.strftime('%Y-%m-%d'), class: 'form-control'
+
               .col-sm-5
-                .input-group
-                  = text_field_tag :starts_at_t, @new_event.starts_at.strftime('%l:%M %p'), class: 'form-control validated-time'
-                  button.btn.btn-outline-secondary(type="button")
-                    i.fas.fa-clock
+                = time_field '', :starts_at_t, value: @new_event.starts_at.strftime('%H:%M:%S'), class: 'form-control', step: '900'
 
           // to date
           .mb-3
@@ -37,26 +31,20 @@
               .col-sm-2
                 = f.label :to
               .col-sm-5
-                .input-group
-                  = text_field_tag :ends_at_d, @new_event.starts_at.strftime('%m/%d/%Y'), class: 'form-control validated-date'
-                  button.btn.btn-outline-secondary.date-picker(type="button" data-bs-toggle="popover" title="Select" data-bs-content="xxx" data-bs-container="body")
-                    i.fas.fa-calendar
+                 = date_field '', :ends_at_d, value: @new_event.starts_at.strftime('%Y-%m-%d'), class: 'form-control'
               .col-sm-5
-                .input-group
-                  = text_field_tag :ends_at_t, @new_event.starts_at.strftime('%l:%M %p'), class: 'form-control validated-time'
-                  button.btn.btn-outline-secondary(type="button")
-                    i.fas.fa-clock
+                 = time_field '', :ends_at_t, value: @new_event.ends_at.strftime('%H:%M:%S'), class: 'form-control', step: '900'
 
           // repeats
           .row.mb-3(style="height:3rem;")
             .col-md-6
               .form-check.form-check-inline(style="padding-top:6px;")
-                = check_box_tag 'event_repeats', '', false, class: 'form-check-input', data: { 'bs-toggle' => 'collapse', 'bs-target' => '#repeat-fields'}, onclick: 'updateRepeatLabel(this);'
+                = check_box_tag 'event_repeats', nil, false, class: 'form-check-input', data: { 'bs-toggle' => 'collapse', 'bs-target' => '#repeat-fields'}, onclick: 'updateRepeatLabel(this);'
                 = f.label :repeats, class: 'form-check-label', id: 'repeat-label'
 
             .col-md-5
               .collapse#repeat-fields.input-group
-                = text_field_tag :repeats_until, (@new_event.starts_at + 6.months).strftime('%m/%d/%Y'), class: 'form-control'
+                = date_field '', :repeats_until, value: (@new_event.starts_at + 6.months).strftime('%m/%d/%Y'), class: 'form-control'
                 button.btn.btn-outline-secondary(type="button")
                   i.fas.fa-calendar
 
@@ -90,7 +78,6 @@
 
         // form buttons
         .modal-footer
-          / button.btn.btn-primary(type="button") = t('helpers.label.event.accept_button')
           = f.submit t('helpers.label.event.accept_button'), class: 'btn btn-primary', id: 'event_submit'
           button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_button')
 
@@ -103,111 +90,42 @@ javascript:
       handleCategoryChange(this);
     });
 
-    setupDateValidations();
-    setupTimeValidations();
+    // setupDateValidations();
+    // setupTimeValidations();
 
     validateDialog();
   }
 
-  function setupDateValidations() {
-    const dateFields = document.getElementsByClassName('validated-date');
-    for(const dateField of dateFields) {
-      dateField.addEventListener('focusin', function() {
-        this.setAttribute('data-val', this.value);
-      });
-      dateField.addEventListener('change', function() {
-        if(!validateDate(this)) {
-          this.value = this.getAttribute('data-val'); // restore original value
-        }
-      });
-    }
-  }
 
-  function validateDate(elem) {
-    var val = elem.value;
+  // function setupDateValidations() {
+  //   const dateFields = document.getElementsByClassName('validated-date');
+  //   for(const dateField of dateFields) {
+  //     dateField.addEventListener('focusin', function() {
+  //       this.setAttribute('data-val', this.value);
+  //     });
+  //     dateField.addEventListener('change', function() {
+  //       if(!validateDate(this)) {
+  //         this.value = this.getAttribute('data-val'); // restore original value
+  //       }
+  //     });
+  //   }
+  // }
 
-    // first, replace dots, dashes, and spaces with slashes
-    val = val.replace(/,/g, '');
-    val = val.replace(/ /g, '/');
-    val = val.replace(/-/g, '/');
-    val = val.replace(/\./g, '/');
+  // function setupTimeValidations() {
+  //   const dateFields = document.getElementsByClassName('validated-time');
+  //   for(const dateField of dateFields) {
+  //     dateField.addEventListener('focusin', function() {
 
-    alert(val);
+  //     });
+  //     dateField.addEventListener('change', function() {
 
-    var parts = val.split('/');
-    if(parts.length != 3) {
-      return false;
-    }
+  //     });
+  //   }
+  // }
 
-    var month = parts[0];
-    var day   = parts[1];
-    var year  = parts[2];
-
-    // if user plugged in month name (e.g. "Jun" or "June")
-    month = getMonthFromString(month).toString();
-
-    // now ensure all three values are numeric
-    var monthInt = parseInt(month);
-    var dayInt   = parseInt(day);
-    var yearInt  = parseInt(year);
-
-    if(monthInt !== monthInt || dayInt !== dayInt || yearInt !== yearInt) {
-      return false;
-    }
-
-    // pad months, day, and year to 2, 2, and 4 length, respectively
-    if(year.length == 2) {
-      year = '20' + year;
-    }
-
-    if(day.length == 1) {
-      day = '0' + day;
-    }
-
-    if(month.length == 1) {
-      month = '0' + month;
-    }
-
-    if(year.length != 4 || month.length != 2 || day.length != 2) {
-      return false;
-    }
-
-    if(parseInt(day) < 1 || parseInt(day) > 31) {
-      return false;
-    }
-
-    if(parseInt(month) < 1 || parseInt(month) > 12) {
-      return false;
-    }
-
-    val = month + '/' + day + '/' + year
-
-    // now if we have the correct format, let's use it
-    var reg = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}/;
-    if(val.match(reg)) {
-      elem.value = val;
-      return true;
-    }
-
-    return false;
-  }
-
-  function getMonthFromString(mon){
-   return new Date(Date.parse(mon +" 1, 2012")).getMonth()+1
-  }
-
-  function setupTimeValidations() {
-    const dateFields = document.getElementsByClassName('validated-time');
-    for(const dateField of dateFields) {
-      dateField.addEventListener('focusin', function() {
-
-      });
-      dateField.addEventListener('change', function() {
-
-      });
-    }
-  }
-
+  // when the category is changed, change the Event Title to default to the
+  // new category name
+  // TODO: suppress if user has already explicitly set Event Title prior
   function handleCategoryChange(dropdown) {
     const catId = dropdown.value;
     const catName = dropdown.options[dropdown.selectedIndex].text;
@@ -217,6 +135,7 @@ javascript:
     validateDialog();
   }
 
+  // enable / disable Accept button depending on validation status
   function validateDialog() {
     var valid = false;
     const categoryId = document.getElementById('event_event_category_id').value;
@@ -228,91 +147,12 @@ javascript:
     commitButton.disabled = !valid;
   }
 
+  // when the Repeat box is checked, the caption should update
   function updateRepeatLabel(elem) {
     const label = document.getElementById('repeat-label');
     const checkBox = document.getElementById('event_repeats');
     const caption = checkBox.checked ? 'Repeats weekly until' : 'Repeats weekly';
     label.innerText = caption;
-  }
-
-  function buildDatePicker() {
-    const form = document.getElementById('new_event');
-    const calendar = document.createElement('div');
-    // calendarWrapper.classList.add('date-picker-wrapper');
-    calendar.id = 'calendar';
-    // calendar.style.visibility = 'hidden';
-    form.appendChild(calendar);
-    buildDatePickerTable(calendar);
-    calendar.style.display = 'none';
-
-    // wire up events
-    datePickerButtons = document.getElementsByClassName('date-picker');
-    for(const button of datePickerButtons) {
-      button.addEventListener('click', function() {
-        displayDatePicker(this);
-      })
-    }
-  }
-
-  function buildDatePickerTable(wrapper) {
-    var dateVal = new Date(Date.now());
-    var firstDayOfMonth = new Date(dateVal.getFullYear(), dateVal.getMonth(), 1); // first day of month
-    var firstDayOffset = firstDayOfMonth.getDay();
-    var dayNum = 1;
-    var endDay = daysInMonth(dateVal.getMonth(), dateVal.getYear());
-    const monthName = dateVal.toLocaleString('default', { month: 'long' });
-
-    const table = document.createElement('table');
-    wrapper.appendChild(table);
-
-    // header row
-    table.innerHTML += '<tr class="sp-cal-header-month"><td colspan="7">' + monthName + '</td></tr>';
-    table.innerHTML += '<tr class="sp-cal-header-days"><td>S</td><td>M</td><td>T</td><td>W</td><td>T</td><td>F</td><td>S</td>';
-
-    // create first row
-    var row = document.createElement('tr');
-    table.appendChild(row);
-
-    // advance to the correct day of the week
-    var colNum = 0;
-
-    for(i = 0; i < firstDayOffset; i++) {
-      var cell = document.createElement('td');
-      row.appendChild(cell);
-      colNum++;
-    }
-
-    // now populate the actual numbered cells
-    while(dayNum <= endDay) {
-      var cell = document.createElement('td');
-      cell.classList.add('sp-cal-day');
-      row.appendChild(cell);
-
-      var link = document.createElement('a');
-      cell.appendChild(link);
-      link.innerText = dayNum;
-      link.href = '#';
-      dayNum++;
-      colNum++;
-
-      if(colNum > 6) {
-        var row = document.createElement('tr');
-        table.appendChild(row);
-        colNum = 0;
-      }
-    }
-  }
-
-  function isLeapYear(year) {
-    return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
-  }
-
-  function daysInMonth(month, year = new Date().year) {
-    return [31, (isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
-  }
-
-  function setCategory(elem) {
-    window.event.preventDefault();
   }
 
 scss:

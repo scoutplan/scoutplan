@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_17_122153) do
+ActiveRecord::Schema.define(version: 2021_08_22_232123) do
 
   create_table "event_categories", force: :cascade do |t|
     t.integer "unit_id"
@@ -52,11 +52,19 @@ ActiveRecord::Schema.define(version: 2021_08_17_122153) do
     t.integer "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "role"
   end
 
   create_table "units", force: :cascade do |t|
     t.string "name"
     t.string "location"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "user_relationships", force: :cascade do |t|
+    t.integer "parent_id"
+    t.integer "child_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -71,6 +79,11 @@ ActiveRecord::Schema.define(version: 2021_08_17_122153) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "provider"
     t.string "uid"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "phone"
+    t.date "date_of_birth"
+    t.string "type"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

@@ -1,0 +1,2 @@
+class Adult < User
+end

@@ -1,0 +1,10 @@
+h1 = @unit.name
+
+table
+  thead
+    tr
+      th = t('members.name')
+      th = t('members.type')
+      th = t('members.parent_guardian')
+  tbody
+    = render @unit_memberships

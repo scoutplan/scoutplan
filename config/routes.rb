@@ -12,5 +12,6 @@ Rails.application.routes.draw do
 
   resources :units do
     resources :events
+    resources :unit_memberships, path: 'members', as: 'members'
   end
 end

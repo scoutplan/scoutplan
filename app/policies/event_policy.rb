@@ -1,6 +1,6 @@
-class EventPolicy < ApplicationPolicy
+class EventPolicy < UnitContextPolicy
   def create?
-    true
+    is_admin?
   end
 
   def edit?

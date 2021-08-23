@@ -1,7 +1,7 @@
 - presenter = EventPresenter.new(event)
-- rsvp = event.event_rsvps.find_by(user: current_user)
 
-tr.event(class="#{event.category.name.parameterize}-event" onclick="window.location = '#{ unit_event_path(@unit, event) }';")
+/ tr.event(class="event-row #{event.category.name.parameterize}-event" data-href="#{ unit_event_path(@unit, event) }")
+tr.event(class="event-row #{event.category.name.parameterize}-event" data-href="#{ unit_event_path(@unit, event) }" onclick="window.location='#{ unit_event_path(@unit, event) }';")
   td.month
     - if @current_month.nil? || @current_month != event.starts_at.month
       - @current_month = event.starts_at.month
@@ -20,17 +20,24 @@ tr.event(class="#{event.category.name.parameterize}-event" onclick="window.locat
   td.title  = event.title
   td.location.tablet  = event.location
   td.action.desktop
-    - if rsvp.nil?
-      = link_to 'RSVP', '', class: 'btn btn-outline-secondary btn-sm btn-outline'
-    - else
-      - if rsvp.accepted?
-        span.rsvp-response.rsvp-accepted
-          i.fas.fa-check
-          | &nbsp;Accepted
-      - else # rsvp.declined?
-        span.rsvp-response.rsvp-declined
-          i.fas.fa-times
-          | &nbsp;Declined
-      - if event.rsvp_open?
-        | &nbsp;
-        = link_to '(Change)', ''
+    - if event.rsvp_open?
+      ul
+        - @user.family.each do |user|
+          - rsvp = event.rsvps.find_by(user: user)
+
+          li
+            - if rsvp.nil?
+              span.rsvp-response.rsvp-accepted
+                i.fas.fa-question
+            - elsif rsvp.accepted?
+              span.rsvp-response.rsvp-accepted
+                i.fas.fa-check
+            - elsif rsvp.declined?
+              span.rsvp-response.rsvp-declined
+                i.fas.fa-times
+
+            = user.first_name
+            = " (you)" if user == current_user
+
+        li
+          = link_to 'Respond', unit_event_path(@unit, event, anchor: 'rsvp'), class: 'btn btn-outline-info event-rsvp-link'

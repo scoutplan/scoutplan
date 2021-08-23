@@ -3,6 +3,7 @@ class Event < ApplicationRecord
   belongs_to :series_parent, class_name: 'Event', optional: true
   belongs_to :event_category
   has_many   :event_rsvps
+  alias_attribute :rsvps, :event_rsvps
   has_many   :series_children, class_name: 'Event'
   validates_presence_of :title, :starts_at, :ends_at
   default_scope { order(starts_at: :asc) }

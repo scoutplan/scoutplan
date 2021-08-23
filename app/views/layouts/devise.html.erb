@@ -17,10 +17,13 @@
     <p class="alert"><%= alert %></p>
 
     <div class='container'>
-      <%= link_to 'Sign Out', destroy_user_session_path, method: :delete %>
-      <%= link_to 'Events', unit_events_path(@unit) %>
-      <%= link_to 'Members', unit_members_path(@unit) if policy(:unit_memberships).index? %>
-      <%= yield %>
+      <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+          <%= yield %>
+        </div>
+      </div>
     </div>
   </body>
 </html>
