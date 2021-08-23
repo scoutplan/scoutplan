@@ -1,6 +1,7 @@
 class Event < ApplicationRecord
   belongs_to :unit
   belongs_to :series_parent, class_name: 'Event', optional: true
+  # has_many   :series_children, class_name: 'Event', foreign_key: :series_parent_id
   belongs_to :event_category
   has_many   :event_rsvps
   alias_attribute :rsvps, :event_rsvps
@@ -19,5 +20,17 @@ class Event < ApplicationRecord
 
   def has_rsvp_for?(user)
     event_rsvps.count > 0
+  end
+
+  def series?
+    series_children.count > 0 || series_siblings.count > 0
+  end
+
+  def series_children
+    Event.where(series_parent_id: id)
+  end
+
+  def series_siblings
+    Event.where(series_parent_id: series_parent_id)
   end
 end

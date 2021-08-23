@@ -65,3 +65,6 @@ en:
         rsvp_notify: 'Notify everyone when RSVP opens'
         accept_button: 'Add Event'
         cancel_button: 'Cancel'
+        update_button: 'Update Event'
+        cancel_event:  'Cancel This Event...'
+        cancel_update: "Don't Update"

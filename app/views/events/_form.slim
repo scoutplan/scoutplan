@@ -1,7 +1,7 @@
 .modal.fade#newEventModal
   .modal-dialog
     .modal-content
-      = form_for [@unit, @new_event] do |f|
+      = form_for [@unit, @event] do |f|
         .modal-header
           h5.modal-title = t(:event_add)
           button.btn-close(type="button" data-bs-dismiss="modal")
@@ -20,10 +20,10 @@
               .col-sm-2
                 = f.label :from
               .col-sm-5
-                = date_field '', :starts_at_d, value: @new_event.starts_at.strftime('%Y-%m-%d'), class: 'form-control'
+                = date_field '', :starts_at_d, value: @event.starts_at.strftime('%Y-%m-%d'), class: 'form-control'
 
               .col-sm-5
-                = time_field '', :starts_at_t, value: @new_event.starts_at.strftime('%H:%M:%S'), class: 'form-control', step: '900'
+                = time_field '', :starts_at_t, value: @event.starts_at.strftime('%H:%M:%S'), class: 'form-control', step: '900'
 
           // to date
           .mb-3
@@ -31,9 +31,9 @@
               .col-sm-2
                 = f.label :to
               .col-sm-5
-                 = date_field '', :ends_at_d, value: @new_event.starts_at.strftime('%Y-%m-%d'), class: 'form-control'
+                 = date_field '', :ends_at_d, value: @event.starts_at.strftime('%Y-%m-%d'), class: 'form-control'
               .col-sm-5
-                 = time_field '', :ends_at_t, value: @new_event.ends_at.strftime('%H:%M:%S'), class: 'form-control', step: '900'
+                 = time_field '', :ends_at_t, value: @event.ends_at.strftime('%H:%M:%S'), class: 'form-control', step: '900'
 
           // repeats
           .row.mb-3(style="height:3rem;")
@@ -44,7 +44,7 @@
 
             .col-md-5
               .collapse#repeat-fields.input-group
-                = date_field '', :repeats_until, value: (@new_event.starts_at + 6.months).strftime('%m/%d/%Y'), class: 'form-control'
+                = date_field '', :repeats_until, value: (@event.starts_at + 6.months).strftime('%m/%d/%Y'), class: 'form-control'
                 button.btn.btn-outline-secondary(type="button")
                   i.fas.fa-calendar
 
@@ -77,9 +77,22 @@
               = label_tag :rvsp_notify, t('helpers.label.event.rsvp_notify'), class: 'form-check-label'
 
         // form buttons
-        .modal-footer
-          = f.submit t('helpers.label.event.accept_button'), class: 'btn btn-primary', id: 'event_submit'
-          button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_button')
+        .modal-footer.justify-content-between
+          - if @event.new_record?
+            = f.submit t('helpers.label.event.accept_button'), class: 'btn btn-primary', id: 'event_submit'
+            button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_button')
+
+          - else # updating an existing record
+            // cancel event
+            - if @event.starts_at.future?
+              button(type="button" class="btn btn-outline-danger") =t ('helpers.label.event.cancel_event')
+
+            span
+              // update
+              = f.submit t('helpers.label.event.update_button'), class: 'btn btn-primary', id: 'event_submit', style: 'margin-right: 10px;'
+
+              // don't update
+              button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_update')
 
 javascript:
   setupDialog();

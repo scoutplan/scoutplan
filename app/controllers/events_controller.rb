@@ -4,20 +4,22 @@ class EventsController < UnitContextController
 
   def index
     @events = UnitEventQuery.new(@unit).execute
-    @new_event = @unit.events.new(
+    @event = @unit.events.new(
       starts_at: 28.days.from_now,
       ends_at: 28.days.from_now
     )
-    @new_event.starts_at = @new_event.starts_at.change({ hour: 10 })
-    @new_event.ends_at   = @new_event.ends_at.change({ hour: 16 })
+    @event.starts_at = @event.starts_at.change({ hour: 10 }) # default starts at 10 AM
+    @event.ends_at   = @event.ends_at.change({ hour: 16 }) # default ends at 4 PM
     @user_rsvps = current_user.event_rsvps
   end
 
   def show
     @rsvps = @event.event_rsvps.where(user: current_user)
+    @can_edit = policy(@event).edit?
   end
 
   def create
+    authorize(Event).create?
     @event = @unit.events.new(event_params)
 
     @event.starts_at = compose_date_time(params[:starts_at_d], params[:starts_at_t])
@@ -28,6 +30,10 @@ class EventsController < UnitContextController
     create_series(params[:repeats_until]) if params[:event_repeats] == 'on'
 
     redirect_to [@unit, @event]
+  end
+
+  def edit
+    authorize(@event).edit?
   end
 
 private

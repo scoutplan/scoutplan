@@ -1,6 +1,6 @@
 h1 = @event.title
 
-- if policy(:event).edit?
+- if @can_edit
   = link_to t(:event_edit), '#newEventModal', id: 'new-event-button', class: 'btn btn-primary', data: { 'bs-toggle' => 'modal' }
 
 .card-group
@@ -9,6 +9,8 @@ h1 = @event.title
       .month-name = @presenter.month_name
       .dates = @presenter.dates_to_s
       .days = @presenter.days_to_s
+      - if @event.series?
+        .series-info = "#{ @event.series_children.count + @event.series_siblings.count + 1 } events in this series"
   .card.location
     .card-body
       = @presenter.location
@@ -17,6 +19,8 @@ h1 = @event.title
       ul
         - @rsvsp.try(:each) do |rsvp|
           li = rsvp.user.first_name
+
+= render 'form'
 
 scss:
   .dates {
