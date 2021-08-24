@@ -6,6 +6,8 @@
 
 * You have an Adobe Fonts kit defined
 
+* docker-compose
+
 ## ENV vars
 
 * FONT_AWESOME_KIT_ID

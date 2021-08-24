@@ -144,6 +144,8 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.12.2-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.12.2-x86_64-linux)
+      racc (~> 1.4)
     oauth2 (1.4.7)
       faraday (>= 0.8, < 2.0)
       jwt (>= 1.0, < 3.0)
@@ -164,6 +166,7 @@ GEM
       actionpack (>= 4.2)
       omniauth (~> 2.0)
     orm_adapter (0.5.0)
+    pg (1.2.3)
     public_suffix (4.0.6)
     puma (5.4.0)
       nio4r (~> 2.0)
@@ -260,7 +263,6 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sqlite3 (1.4.2)
     temple (0.8.2)
     thor (1.1.0)
     tilt (2.0.10)
@@ -294,6 +296,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   awesome_print
@@ -308,6 +311,7 @@ DEPENDENCIES
   listen (~> 3.3)
   omniauth-cognito-idp
   omniauth-rails_csrf_protection
+  pg
   puma (~> 5.0)
   pundit
   rack-mini-profiler (~> 2.0)
@@ -319,7 +323,6 @@ DEPENDENCIES
   selenium-webdriver
   slim
   spring
-  sqlite3 (~> 1.4)
   turbolinks (~> 5)
   tzinfo-data
   web-console (>= 4.1.0)

@@ -19,7 +19,7 @@ class EventsController < UnitContextController
   end
 
   def create
-    authorize(Event).create?
+    authorize :event, :create?
     @event = @unit.events.new(event_params)
 
     @event.starts_at = compose_date_time(params[:starts_at_d], params[:starts_at_t])

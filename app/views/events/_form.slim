@@ -1,3 +1,6 @@
+- @format_date = '%Y-%m-%d'
+- @format_time = '%H:%M:%S'
+
 .modal.fade#newEventModal
   .modal-dialog
     .modal-content
@@ -20,10 +23,10 @@
               .col-sm-2
                 = f.label :from
               .col-sm-5
-                = date_field '', :starts_at_d, value: @event.starts_at.strftime('%Y-%m-%d'), class: 'form-control'
+                = date_field '', :starts_at_d, value: @event.starts_at.strftime("#{ @format_date }"), class: 'form-control'
 
               .col-sm-5
-                = time_field '', :starts_at_t, value: @event.starts_at.strftime('%H:%M:%S'), class: 'form-control', step: '900'
+                = time_field '', :starts_at_t, value: @event.starts_at.strftime("#{ @format_time }"), class: 'form-control', step: '900'
 
           // to date
           .mb-3
@@ -31,9 +34,9 @@
               .col-sm-2
                 = f.label :to
               .col-sm-5
-                 = date_field '', :ends_at_d, value: @event.starts_at.strftime('%Y-%m-%d'), class: 'form-control'
+                 = date_field '', :ends_at_d, value: @event.starts_at.strftime("#{ @format_date }"), class: 'form-control'
               .col-sm-5
-                 = time_field '', :ends_at_t, value: @event.ends_at.strftime('%H:%M:%S'), class: 'form-control', step: '900'
+                 = time_field '', :ends_at_t, value: @event.ends_at.strftime("#{ @format_time }"), class: 'form-control', step: '900'
 
           // repeats
           .row.mb-3(style="height:3rem;")
@@ -42,16 +45,15 @@
                 = check_box_tag 'event_repeats', nil, false, class: 'form-check-input', data: { 'bs-toggle' => 'collapse', 'bs-target' => '#repeat-fields'}, onclick: 'updateRepeatLabel(this);'
                 = f.label :repeats, class: 'form-check-label', id: 'repeat-label'
 
+            // repeat end date
             .col-md-5
               .collapse#repeat-fields.input-group
-                = date_field '', :repeats_until, value: (@event.starts_at + 6.months).strftime('%m/%d/%Y'), class: 'form-control'
-                button.btn.btn-outline-secondary(type="button")
-                  i.fas.fa-calendar
+                = date_field '', :repeats_until, value: (@event.starts_at + 6.months).strftime("#{ @format_date }"), class: 'form-control'
 
           // location
           .mb-3
             = f.label :location
-            = f.text_field :location, class: 'form-control'
+            = f.text_field :location, class: 'form-control', autocomplete: 'off'
 
           // description
           .mb-3
@@ -95,57 +97,90 @@
               button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_update')
 
 javascript:
+
+  var isTitleDirty = false;
+
   setupDialog();
 
   function setupDialog() {
-    const catDropDown = document.getElementById('event_event_category_id');
-    catDropDown.addEventListener('change', function() {
-      handleCategoryChange(this);
-    });
-
-    // setupDateValidations();
-    // setupTimeValidations();
-
+    setupCategoryDropdownHandler();
+    setupDateHandlers();
     validateDialog();
   }
 
+  function setupCategoryDropdownHandler() {
+    document.getElementById('event_event_category_id').addEventListener('change', function() {
+      if (isTitleDirty) { return; }
 
-  // function setupDateValidations() {
-  //   const dateFields = document.getElementsByClassName('validated-date');
-  //   for(const dateField of dateFields) {
-  //     dateField.addEventListener('focusin', function() {
-  //       this.setAttribute('data-val', this.value);
-  //     });
-  //     dateField.addEventListener('change', function() {
-  //       if(!validateDate(this)) {
-  //         this.value = this.getAttribute('data-val'); // restore original value
-  //       }
-  //     });
-  //   }
-  // }
+      const catId = this.value;
+      const catName = this.options[this.selectedIndex].text;
+      const eventTitle = document.getElementById('event_title');
+      eventTitle.value = catName;
 
-  // function setupTimeValidations() {
-  //   const dateFields = document.getElementsByClassName('validated-time');
-  //   for(const dateField of dateFields) {
-  //     dateField.addEventListener('focusin', function() {
+      validateDialog();
+    });
 
-  //     });
-  //     dateField.addEventListener('change', function() {
+    document.getElementById('event_title').addEventListener('change', function() {
+      isTitleDirty = true;
+    });
+  }
 
-  //     });
-  //   }
-  // }
+  // TODO: DRY this out
+  function setupDateHandlers() {
+    // if start date is later than end date, then update end date to match
+    document.getElementById('starts_at_d').addEventListener('change', function() {
+      const startsAtDateField = document.getElementById('starts_at_d');
+      const endsAtDateField = document.getElementById('ends_at_d');
+      const startsAtDate = Date.parse(startsAtDateField.value);
+      const endsAtDate = Date.parse(endsAtDateField.value);
 
-  // when the category is changed, change the Event Title to default to the
-  // new category name
-  // TODO: suppress if user has already explicitly set Event Title prior
-  function handleCategoryChange(dropdown) {
-    const catId = dropdown.value;
-    const catName = dropdown.options[dropdown.selectedIndex].text;
-    const eventTitle = document.getElementById('event_title');
-    eventTitle.value = catName;
+      if (startsAtDate > endsAtDate) {
+        endsAtDateField.value = startsAtDateField.value;
+      }
+    });
 
-    validateDialog();
+    document.getElementById('repeats_until').addEventListener('focus', function() {
+      this.dataset.originalValue = this.value;
+    });
+
+    document.getElementById('repeats_until').addEventListener('change', function() {
+      const startsAtDateField = document.getElementById('starts_at_d');
+      const repeatsUntilDateField = document.getElementById('repeats_until');
+      const startsAtDate = Date.parse(startsAtDateField.value);
+      const repeatsUntilDate = Date.parse(repeatsUntilDateField.value);
+
+      console.log('checking repeat date');
+
+      if (repeatsUntilDate < startsAtDate) {
+        console.log('repeat date cannot be before start date');
+        this.value = this.dataset.originalValue;
+        flagValidationError(this);
+      }
+    });
+
+    document.getElementById('ends_at_d').addEventListener('focus', function() {
+      this.dataset.originalValue = this.value;
+    });
+
+    // if start date is set earlier than start date, mark as error
+    document.getElementById('ends_at_d').addEventListener('change', function() {
+      const startsAtDateField = document.getElementById('starts_at_d');
+      const endsAtDateField = document.getElementById('ends_at_d');
+      const startsAtDate = Date.parse(startsAtDateField.value);
+      const endsAtDate = Date.parse(endsAtDateField.value);
+
+      if (endsAtDate < startsAtDate) {
+        this.value = this.dataset.originalValue;
+        flagValidationError(this);
+      }
+    });
+  }
+
+  function flagValidationError(elem) {
+    elem.classList.add('error');
+    setTimeout(function(elem) {
+      document.getElementById('ends_at_d').classList.remove('error');
+    }, 2000);
   }
 
   // enable / disable Accept button depending on validation status

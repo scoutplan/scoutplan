@@ -27,7 +27,7 @@ tr.event(class="event-row #{event.category.name.parameterize}-event" data-href="
 
           li
             - if rsvp.nil?
-              span.rsvp-response.rsvp-accepted
+              span.rsvp-response.rsvp-unknown
                 i.fas.fa-question
             - elsif rsvp.accepted?
               span.rsvp-response.rsvp-accepted
