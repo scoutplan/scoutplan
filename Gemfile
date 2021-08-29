@@ -8,8 +8,6 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'devise'
 gem 'faraday'
 gem 'jbuilder', '~> 2.7'
-gem 'omniauth-cognito-idp'
-gem 'omniauth-rails_csrf_protection'
 gem 'pg'
 gem 'puma', '~> 5.0'
 gem 'pundit'

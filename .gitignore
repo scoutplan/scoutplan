@@ -40,3 +40,5 @@ yarn-debug.log*
 .yarn-integrity
 
 .env*
+
+docker-compose.override.yml

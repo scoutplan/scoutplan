@@ -11,11 +11,10 @@ RUN apk add --no-cache --update build-base \
 # copy Gemfile & then bundle install dependencies
 RUN mkdir /app
 WORKDIR /app
-COPY Gemfile Gemfile.lock /app/
+COPY Gemfile /app/Gemfile
+COPY Gemfile.lock /app/Gemfile.lock
 RUN bundle install
 COPY . /app
-RUN rake assets:precompile
-RUN rails webpacker:compile
 
 EXPOSE 3000
 

@@ -272,18 +272,6 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
 
-  # Omniauth Cognto
-  # see https://github.com/Sage/omniauth-cognito-idp/blob/master/README.md
-  config.omniauth :cognito_idp,
-    ENV['CLIENT_ID'],
-    ENV['CLIENT SECRET'],
-    client_options: {
-      site: ENV['COGNITO_USER_POOL_SITE']
-    },
-    scope: 'email openid aws.cognito.signin.user.admin profile',
-    user_pool_id: ENV['COGNITO_USER_POOL_ID'],
-    aws_region: ENV['AWS_REGION']
-
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

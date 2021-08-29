@@ -15,4 +15,3 @@ window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js')
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
-

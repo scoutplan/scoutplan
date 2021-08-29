@@ -1,0 +1,11 @@
+.card.date-card
+  .card-body
+    .month-name = @presenter.month_name
+    .dates = @presenter.dates_to_s
+    .days = @presenter.days_to_s
+    - if @event.series?
+      .series-info
+        i.fas.fa-repeat
+        |&nbsp;
+        = "#{ @event.series_children.count + @event.series_siblings.count + 1 } events in this series"
+

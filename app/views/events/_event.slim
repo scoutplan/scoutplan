@@ -12,7 +12,7 @@ tr.event(class="event-row #{event.category.name.parameterize}-event" data-href="
 
   td.start_day
     = raw(presenter.dates_to_s)
-    |&nbsp;
+  td.days
     span.daynames.d-block.d-md-inline
       = raw(presenter.days_to_s)
   td.glyph.desktop

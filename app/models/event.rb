@@ -23,7 +23,7 @@ class Event < ApplicationRecord
   end
 
   def series?
-    series_children.count > 0 || series_siblings.count > 0
+    !new_record? && (series_children.count > 0 || series_siblings.count > 0)
   end
 
   def series_children
@@ -31,6 +31,7 @@ class Event < ApplicationRecord
   end
 
   def series_siblings
+    return [] unless series_parent_id.present?
     Event.where(series_parent_id: series_parent_id)
   end
 end

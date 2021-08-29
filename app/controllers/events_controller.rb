@@ -22,8 +22,8 @@ class EventsController < UnitContextController
     authorize :event, :create?
     @event = @unit.events.new(event_params)
 
-    @event.starts_at = compose_date_time(params[:starts_at_d], params[:starts_at_t])
-    @event.ends_at   = compose_date_time(params[:ends_at_d], params[:ends_at_t])
+    @event.starts_at = ScoutplanUtilities.compose_datetime(params[:starts_at_d], params[:starts_at_t])
+    @event.ends_at   = ScoutplanUtilities.compose_datetime(params[:ends_at_d], params[:ends_at_t])
 
     @event.save!
 
@@ -41,13 +41,6 @@ private
   def find_event
     @event = @unit.events.find(params[:id])
     @presenter = EventPresenter.new(@event)
-  end
-
-  # make a DateTime from the individual date and time strings posted from the form
-  def compose_date_time(date_str, time_str)
-    str = "#{date_str} #{time_str}"
-    fmt = "%Y-%m-%d %H:%M:%S"
-    DateTime.strptime(str, fmt)
   end
 
   # permitted parameters
