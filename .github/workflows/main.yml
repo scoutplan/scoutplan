@@ -27,7 +27,7 @@ jobs:
         uses: matootie/dokube@v1.3.4
         with:
           personalAccessToken: ${{ secrets.DIGITALOCEAN_TOKEN }}
-          clusterName: my-fabulous-cluster
+          clusterName: primary
 
       - name: Get nodes
         run: kubectl get nodes
