@@ -22,7 +22,7 @@ jobs:
     steps:
 
       - name: Check out master
-        uses: actions/checked@master
+        uses: actions/checkout@master
 
       - name: Update SHA
         run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/github_sha
