@@ -20,14 +20,37 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
 
-      - name: Set up kubectl
-        uses: matootie/dokube@v1.3.4
+      - name: Check out master
+        uses: actions/checked@master
+
+      - name: Update SHA
+        run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/github_sha
+
+      - name: Build container image
+        run: docker build . -t registry.digitalocean.com/scoutplan/app -t app
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
         with:
-          personalAccessToken: ${{ secrets.DIGITALOCEAN_TOKEN }}
-          clusterName: primary
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
 
-      - name: Get nodes
-        run: kubectl get nodes
+      - name: Log into DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Push image to DigitalOcean Container Registry
+        run: docker push registry.digitalocean.com/scoutplan/app
+
+      - name: Update deployment file
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|registry.digitalocean.com/scoutplan/app|registry.digitalocean.com/scoutplan/app:'${TAG}'|' $GITHUB_WORKSPACE/config/kube/deployment.yml
+
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 primary
+
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f $GITHUB_WORKSPACE/config/kube/deployment.yml
+
+      - name: Verify deployment
+        run: kubectl rollout status deployment/app
+
+
