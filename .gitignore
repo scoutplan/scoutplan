@@ -44,3 +44,5 @@ yarn-debug.log*
 docker-compose.override.yml
 
 *.pem
+
+.DS_Store
