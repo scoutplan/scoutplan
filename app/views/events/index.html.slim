@@ -16,10 +16,10 @@ h1 Events
   table.table-clickable
     thead
       tr
-        th
+        th.month.tablet
         th.date = t(:event_date)
         th.days
-        th.glyph.desktop
+        th.glyph
         th.title =t(:event_title)
         th.location.tablet =t(:event_location)
         th.action.desktop =t(:event_rsvp)
@@ -52,11 +52,11 @@ scss:
     color: #888;
   }
 
-  tr.event {
-    td.month {
-      font-weight: bold;
-    }
+  td.month {
+    font-weight: bold;
+  }
 
+  tr.event {
     td.glyph {
       text-align: center;
     }
@@ -137,6 +137,10 @@ scss:
 
   .rsvp-declined svg {
     color: red;
+  }
+
+  th.action {
+    text-align: center;
   }
 
   td.action {

@@ -1,0 +1,26 @@
+header
+  h1 = @event.title
+
+  .row
+    .col-md-3
+      h2 Going
+
+      - @event.rsvps.accepted.each do |rsvp|
+        = rsvp.user.full_name
+
+    .col-md-3
+      h2 Going, pending permission
+
+    .col-md-3
+      h2 Not Going (#{ @event.rsvps.declined.count })
+
+      ul
+        - @event.rsvps.declined.each do |rsvp|
+          li = rsvp.user.full_name
+
+    .col-md-3
+      h2 No response
+
+      ul
+        - (@unit.members - @event.rsvps.collect(&:user)).each do |user|
+          li = user.full_name

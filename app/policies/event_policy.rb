@@ -4,6 +4,10 @@ class EventPolicy < UnitContextPolicy
   end
 
   def edit?
-    true
+    is_admin?
+  end
+
+  def organize?
+    is_admin?
   end
 end

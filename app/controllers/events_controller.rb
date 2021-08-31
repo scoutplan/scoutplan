@@ -16,6 +16,7 @@ class EventsController < UnitContextController
   def show
     @rsvps = @event.event_rsvps.where(user: current_user)
     @can_edit = policy(@event).edit?
+    @can_organize = policy(@event).organize?
   end
 
   def create
@@ -34,6 +35,9 @@ class EventsController < UnitContextController
 
   def edit
     authorize(@event).edit?
+  end
+
+  def organize
   end
 
 private

@@ -24,3 +24,7 @@ th.desktop, td.desktop {
 th.tablet, td.tablet {
   @extend .d-none, .d-md-table-cell;
 }
+
+th.mobile, td.mobile {
+  @extend .d-table-cell, .d-md-none, .d-lg-none, .d-xl-none;
+}
