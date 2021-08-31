@@ -1,21 +1,29 @@
 - presenter = EventPresenter.new(event)
 
-/ tr.event(class="event-row #{event.category.name.parameterize}-event" data-href="#{ unit_event_path(@unit, event) }")
+
+- if @current_month.nil? || @current_month != event.starts_at.month
+  tr.mobile
+    td.month.mobile(colspan="10")
+      = event.starts_at.strftime('%B')
+      - if @current_year.nil? || @current_year != event.starts_at.year
+        = event.starts_at.strftime(' %Y')
+
 tr.event(class="event-row #{event.category.name.parameterize}-event" data-href="#{ unit_event_path(@unit, event) }" onclick="window.location='#{ unit_event_path(@unit, event) }';")
-  td.month
+  td.month.tablet
     - if @current_month.nil? || @current_month != event.starts_at.month
-      - @current_month = event.starts_at.month
       = event.starts_at.strftime('%B')
     - if @current_year.nil? || @current_year != event.starts_at.year
-      - @current_year = event.starts_at.year
       = event.starts_at.strftime(' %Y')
+
+    - @current_month = event.starts_at.month
+    - @current_year = event.starts_at.year
 
   td.start_day
     = raw(presenter.dates_to_s)
   td.days
     span.daynames.d-block.d-md-inline
       = raw(presenter.days_to_s)
-  td.glyph.desktop
+  td.glyph
     i(class = "fas fa-#{event.event_category.glyph}")
   td.title  = event.title
   td.location.tablet  = event.location

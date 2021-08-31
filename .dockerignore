@@ -48,3 +48,5 @@ spec/*
 # Ignore Docker files
 .dockerignore
 Dockerfile
+
+*.pem

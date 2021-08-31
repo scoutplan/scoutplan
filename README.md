@@ -8,6 +8,18 @@
 
 * Docker & docker-compose installed
 
+
+## Set up local HTTPS
+
+See https://codewithhugo.com/docker-compose-local-https/ for inspiration
+
+* `brew install mkcert`
+
+* `mkcert -install`
+
+* add to /etc/hosts: `127.0.0.1 local.scoutplan.org`
+
+
 ## ENV vars (.env)
 
 * FONT_AWESOME_KIT_ID

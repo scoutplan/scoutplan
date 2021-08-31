@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   resources :units do
-    resources :events
+    resources :events do
+      member do
+        get 'organize'
+      end
+    end
     resources :unit_memberships, path: 'members', as: 'members'
   end
 end

@@ -9,4 +9,27 @@ services:
       - .:/app
     ports:
       - "3000:3000"
+    depends_on:
+      - db
 
+  db:
+    image: postgres:13-alpine
+    command: ["postgres", "-c", "fsync=false", "-c", "full_page_writes=off"]
+    environment:
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # caddy:
+  #   image: "caddy:latest"
+  #   volumes:
+  #     - ./certs:/root/certs # to sync mkcert certificates to Caddy
+  #     - ./Caddyfile:/etc/Caddyfile  # to mount custom Caddyfile
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #     - "2019:2019"
+  #   depends_on:
+  #    - app

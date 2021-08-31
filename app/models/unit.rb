@@ -3,7 +3,7 @@ class Unit < ApplicationRecord
   has_many :event_categories
   has_many :unit_memberships
   alias_attribute :memberships, :unit_memberships
-  has_many :members, through: :unit_memberships
+  has_many :members, through: :unit_memberships, source: :user
   validates_presence_of :name
 
   after_create :populate_categories

@@ -1,7 +1,18 @@
-h1 = @event.title
+header
+  h1(style="display: inline;") = @event.title
 
-- if @can_edit
-  = link_to t(:event_edit), '#newEventModal', id: 'new-event-button', class: 'btn btn-primary', data: { 'bs-toggle' => 'modal' }
+  .float-end
+    - if @can_edit || @can_organize
+      .dropdown
+        = link_to '#', data: { 'bs-toggle' => 'dropdown' } do
+          i.fas.fa-ellipsis-h
+
+        ul.dropdown-menu
+          - if @can_edit
+            li = link_to t(:event_edit), '#newEventModal', id: 'new-event-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' }
+
+          - if @can_organize
+            li = link_to t(:event_organize), organize_unit_event_path(@unit, @event), class: 'dropdown-item'
 
 .card-group
   = render partial: 'events/partials/date_time_card'
@@ -17,6 +28,7 @@ h1 = @event.title
           li = rsvp.user.first_name
 
 = render 'form'
+= render 'events/partials/rsvp_form'
 
 scss:
   .dates {
@@ -26,4 +38,15 @@ scss:
 
   .month-name {
     font-weight: 700;
+  }
+
+  .container {
+    max-width: 768px;
+  }
+
+javascript:
+  var anchor = window.location.hash.substr(1);
+
+  if (anchor === 'rsvp') {
+    $('#eventRsvpModal').modal('show');
   }
