@@ -28,7 +28,7 @@ jobs:
         run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/github_sha
 
       - name: Build container image
-        run: docker build . -t registry.digitalocean.com/scoutplan/app:$(echo $GITHUB_SHA | head -c7)
+        run: docker build -t registry.digitalocean.com/scoutplan/app:$(echo $GITHUB_SHA | head -c7) .
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
