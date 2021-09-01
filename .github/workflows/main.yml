@@ -1,4 +1,5 @@
 # This is a basic workflow to help you get started with Actions
+# see https://docs.digitalocean.com/products/kubernetes/how-to/deploy-using-github-actions/
 
 name: CI
 
@@ -6,7 +7,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master ]
+    branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -27,13 +28,16 @@ jobs:
       - name: Update SHA
         run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/github_sha
 
-      - name: Build container image
-        run: docker build -t registry.digitalocean.com/scoutplan/app:$(echo $GITHUB_SHA | head -c7) .
-
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v1
+
+      - name: Build container image
+        run: docker build -t registry.digitalocean.com/scoutplan/app:$(echo $GITHUB_SHA | head -c7) .
 
       - name: Log into DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 600
@@ -42,7 +46,7 @@ jobs:
         run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|registry.digitalocean.com/scoutplan/app|registry.digitalocean.com/scoutplan/app:'${TAG}'|' $GITHUB_WORKSPACE/config/kube/deployment.yml
 
       - name: Push image to DigitalOcean Container Registry
-        run: docker push registry.digitalocean.com/scoutplan/app:$(TAG)
+        run: docker push registry.digitalocean.com/scoutplan/app:$(echo $GITHUB_SHA | head -c7)
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 primary
