@@ -13,8 +13,26 @@
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <% if flash[:notice] || flash[:alert] %>
+      <div class="position-fixed top-0 end-0 p-3">
+        <div class='toast' id='flashToast'>
+          <div class='toast-header'>
+            <strong class="me-auto"><%= t(:app_name) %></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class='toast-body'>
+            <%= notice %>
+            <%= alert %>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        var toastDiv = document.getElementById('flashToast');
+        var toast = new bootstrap.Toast(toastDiv);
+        toast.show();
+      </script>
+    <% end %>
 
     <div class='container'>
       <%= link_to 'Sign Out', destroy_user_session_path, method: :delete %>

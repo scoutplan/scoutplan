@@ -21,15 +21,18 @@ class EventsController < UnitContextController
 
   def create
     authorize :event, :create?
-    @event = @unit.events.new(event_params)
 
+    @event = @unit.events.new(event_params)
     @event.starts_at = ScoutplanUtilities.compose_datetime(params[:starts_at_d], params[:starts_at_t])
     @event.ends_at   = ScoutplanUtilities.compose_datetime(params[:ends_at_d], params[:ends_at_t])
-
     @event.save!
 
-    create_series(params[:repeats_until]) if params[:event_repeats] == 'on'
+    EventNotifier.new_event(@event)
 
+    create_series(params[:repeats_until]) if params[:event_repeats] == 'on'
+    create_magic_links if @event.requires_rsvp?
+
+    flash[:notice] = t('helpers.label.event.create_confirmation', event_name: @event.name)
     redirect_to [@unit, @event]
   end
 
@@ -38,6 +41,11 @@ class EventsController < UnitContextController
   end
 
   def organize
+  end
+
+  def rsvp
+    flash[:notice] = t(:rsvp_posted)
+    redirect_to [@unit, @event]
   end
 
 private
@@ -68,13 +76,16 @@ private
     new_event = @event.dup
     new_event.series_parent = @event
 
-    ap new_event
-
     while new_event.starts_at < end_date
       new_event.starts_at += 7.days
       new_event.ends_at += 7.days
       new_event.save!
       new_event = new_event.dup
     end
+  end
+
+  # if RSVPs are needed, spin up a token for each active user
+  def create_magic_links
+    @unit.members.active.each { |user| RsvpToken.create(user: user, event: event) }
   end
 end

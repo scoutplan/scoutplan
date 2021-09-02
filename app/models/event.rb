@@ -1,11 +1,10 @@
 class Event < ApplicationRecord
   belongs_to :unit
   belongs_to :series_parent, class_name: 'Event', optional: true
-  # has_many   :series_children, class_name: 'Event', foreign_key: :series_parent_id
   belongs_to :event_category
+  has_many   :series_children, class_name: 'Event'
   has_many   :event_rsvps
   alias_attribute :rsvps, :event_rsvps
-  has_many   :series_children, class_name: 'Event'
   validates_presence_of :title, :starts_at, :ends_at
   default_scope { order(starts_at: :asc) }
   alias_attribute :category, :event_category
@@ -15,7 +14,7 @@ class Event < ApplicationRecord
   end
 
   def rsvp_open?
-    requires_rsvp
+    requires_rsvp && starts_at > DateTime.now
   end
 
   def has_rsvp_for?(user)

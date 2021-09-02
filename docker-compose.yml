@@ -22,14 +22,26 @@ services:
     ports:
       - "5432:5432"
 
-  # caddy:
-  #   image: "caddy:latest"
-  #   volumes:
-  #     - ./certs:/root/certs # to sync mkcert certificates to Caddy
-  #     - ./Caddyfile:/etc/Caddyfile  # to mount custom Caddyfile
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #     - "2019:2019"
-  #   depends_on:
-  #    - app
+  caddy:
+    image: "caddy:2-alpine"
+    restart: unless-stopped
+    volumes:
+      - ./certs:/root/certs # to sync mkcert certificates to Caddy
+      - ./Caddyfile:/etc/caddy/Caddyfile  # to mount custom Caddyfile
+    ports:
+      - "80:80"
+      - "443:443"
+      - "2019:2019"
+    depends_on:
+     - app
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  mailcatcher:
+    image: sj26/mailcatcher
+    ports:
+      - "1025:1025"
+      - "1080:1080"

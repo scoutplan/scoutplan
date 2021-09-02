@@ -89,11 +89,11 @@
 
               .form-check.form-check-inline
                 = radio_button_tag :update_scope, :single, true, class: 'form-check-input'
-                = label_tag :update_scope_single, t('helpers.label.event.update_scope_single'), class: 'form-check-label'
+                = label_tag :update_single, t('helpers.label.event.update_scope_single'), class: 'form-check-label'
 
               .form-check.form-check-inline
                 = radio_button_tag :update_scope, :series, false, class: 'form-check-input'
-                = label_tag :update_scope_series, t('helpers.label.event.update_scope_series'), class: 'form-check-label'
+                = label_tag :update_series, t('helpers.label.event.update_scope_series'), class: 'form-check-label'
 
         // form buttons
         .modal-footer
