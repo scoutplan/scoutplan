@@ -8,6 +8,8 @@ class Event < ApplicationRecord
   validates_presence_of :title, :starts_at, :ends_at
   default_scope { order(starts_at: :asc) }
   alias_attribute :category, :event_category
+  after_create :create_series, if: Proc.new { self.respond_to? :repeats_until }
+  after_create :create_magic_links, if: :requires_rsvp
 
   def past?
     starts_at.compare_with_coercion(Date.today) == -1
@@ -32,5 +34,27 @@ class Event < ApplicationRecord
   def series_siblings
     return [] unless series_parent_id.present?
     Event.where(series_parent_id: series_parent_id)
+  end
+
+private
+
+  # create a weekly series based on @event
+  def create_series
+    puts 'Creating series'
+    new_event = self.dup
+    new_event.series_parent = self
+
+    while new_event.starts_at < self.repeats_until
+      new_event.starts_at += 7.days
+      new_event.ends_at += 7.days
+      new_event.save!
+      new_event = new_event.dup
+    end
+  end
+
+  # for events where RSVP is wanted, generate an RSVP token for each active member
+  def create_magic_links
+    puts 'Creating magic links'
+    self.unit.memberships.active.each { |membership| RsvpToken.create(user: membership.user, event: self) }
   end
 end

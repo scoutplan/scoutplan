@@ -102,16 +102,8 @@
             button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_button')
 
           - else # updating an existing record
-            // cancel event
-            - if @event.starts_at.future?
-              button(type="button" class="btn btn-outline-danger") =t ('helpers.label.event.cancel_event')
-
-            span
-              // update
-              = f.submit t('helpers.label.event.update_button'), class: 'btn btn-primary', id: 'event_submit', style: 'margin-right: 10px;'
-
-              // don't update
-              button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_update')
+            = f.submit t('helpers.label.event.update_button'), class: 'btn btn-primary', id: 'event_submit', style: 'margin-right: 10px;'
+            button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_update')
 
 javascript:
 

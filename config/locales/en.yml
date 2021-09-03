@@ -74,11 +74,11 @@ en:
         rsvp_notify: 'Notify everyone when RSVP opens'
         accept_button: 'Add Event'
         cancel_button: 'Cancel'
-        update_button: 'Update Event'
-        cancel_event:  'Cancel This Event...'
-        cancel_update: "Don't Update"
+        update_button: 'Save These Changes'
+        cancel_event:  'Cancel This Event'
+        cancel_update: "Don't Save"
         update_scope: 'Change: '
         update_single: 'just this event'
         update_series: 'all events in the series'
         rsvp_save: 'Send These RSVPs'
-        create_confirmation: '#{event_name} was added to the calendar'
+        create_confirmation: '%{event_name} was added to the calendar'

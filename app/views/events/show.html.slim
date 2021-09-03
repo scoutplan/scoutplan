@@ -14,6 +14,9 @@ header
           - if @can_organize
             li = link_to t(:event_organize), organize_unit_event_path(@unit, @event), class: 'dropdown-item'
 
+          - if @can_edit
+            li = link_to t('helpers.label.event.cancel_event'), '', class: 'dropdown-item'
+
 .card-group
   = render partial: 'events/partials/date_time_card'
 

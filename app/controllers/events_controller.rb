@@ -25,15 +25,20 @@ class EventsController < UnitContextController
     @event = @unit.events.new(event_params)
     @event.starts_at = ScoutplanUtilities.compose_datetime(params[:starts_at_d], params[:starts_at_t])
     @event.ends_at   = ScoutplanUtilities.compose_datetime(params[:ends_at_d], params[:ends_at_t])
-    @event.save!
 
-    EventNotifier.new_event(@event)
+    # dynamically add a new attribute to signal this is a series parent
+    # the object hooks will take care of generating the series
+    if params[:event_repeats] == 'on' && end_date = Date.strptime(params[:repeats_until], '%Y-%m-%d')
+      class << @event
+        attr_accessor :repeats_until
+      end
+      @event.repeats_until = end_date
+    end
 
-    create_series(params[:repeats_until]) if params[:event_repeats] == 'on'
-    create_magic_links if @event.requires_rsvp?
-
-    flash[:notice] = t('helpers.label.event.create_confirmation', event_name: @event.name)
-    redirect_to [@unit, @event]
+    if @event.save!
+      flash[:notice] = t('helpers.label.event.create_confirmation', event_name: @event.title)
+      redirect_to [@unit, @event]
+    end
   end
 
   def edit
