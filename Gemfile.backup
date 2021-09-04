@@ -12,7 +12,7 @@ gem 'pg', "~> 1.2"
 gem 'puma', '~> 5.4'
 gem 'pundit', "~> 2.1"
 gem 'rails', '~> 6.1'
-gem 'rails-observers', "~> 0.1"
+gem 'rails-observers'
 gem 'rexml', "~> 3.2"
 gem 'sass-rails', '~> 6.0'
 gem 'sidekiq', '~> 6.1'

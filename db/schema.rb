@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_22_232123) do
+ActiveRecord::Schema.define(version: 2021_09_02_164525) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "event_categories", force: :cascade do |t|
     t.integer "unit_id"
@@ -44,6 +47,15 @@ ActiveRecord::Schema.define(version: 2021_08_22_232123) do
     t.string "rsvp_opens_at"
     t.integer "event_category_id"
     t.integer "series_parent_id"
+  end
+
+  create_table "rsvp_tokens", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "event_id"
+    t.string "value"
+    t.datetime "expires_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "unit_memberships", force: :cascade do |t|

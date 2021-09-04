@@ -21,16 +21,24 @@ class EventsController < UnitContextController
 
   def create
     authorize :event, :create?
-    @event = @unit.events.new(event_params)
 
+    @event = @unit.events.new(event_params)
     @event.starts_at = ScoutplanUtilities.compose_datetime(params[:starts_at_d], params[:starts_at_t])
     @event.ends_at   = ScoutplanUtilities.compose_datetime(params[:ends_at_d], params[:ends_at_t])
 
-    @event.save!
+    # dynamically add a new attribute to signal this is a series parent
+    # the object hooks will take care of generating the series
+    if params[:event_repeats] == 'on' && end_date = Date.strptime(params[:repeats_until], '%Y-%m-%d')
+      class << @event
+        attr_accessor :repeats_until
+      end
+      @event.repeats_until = end_date
+    end
 
-    create_series(params[:repeats_until]) if params[:event_repeats] == 'on'
-
-    redirect_to [@unit, @event]
+    if @event.save!
+      flash[:notice] = t('helpers.label.event.create_confirmation', event_name: @event.title)
+      redirect_to [@unit, @event]
+    end
   end
 
   def edit
@@ -38,6 +46,11 @@ class EventsController < UnitContextController
   end
 
   def organize
+  end
+
+  def rsvp
+    flash[:toast] = t(:rsvp_posted)
+    redirect_to [@unit, @event]
   end
 
 private
@@ -68,13 +81,16 @@ private
     new_event = @event.dup
     new_event.series_parent = @event
 
-    ap new_event
-
     while new_event.starts_at < end_date
       new_event.starts_at += 7.days
       new_event.ends_at += 7.days
       new_event.save!
       new_event = new_event.dup
     end
+  end
+
+  # if RSVPs are needed, spin up a token for each active user
+  def create_magic_links
+    @unit.members.active.each { |user| RsvpToken.create(user: user, event: event) }
   end
 end

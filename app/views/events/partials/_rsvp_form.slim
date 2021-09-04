@@ -4,31 +4,29 @@
 .modal.fade#eventRsvpModal
   .modal-dialog
     .modal-content
-      = form_for [@unit, @event] do |f|
+      = form_tag rsvp_unit_event_path(@unit, @event) do
         .modal-header
-          - if @event.new_record?
-            h5.modal-title = t(:event_add)
-          - else
-            h5.modal-title = t(:event_update)
+          h5.modal-title = t(:rsvp_dialog_title)
           button.btn-close(type="button" data-bs-dismiss="modal")
-        .modal-body
 
+        .modal-body
+          table.table
+            tbody
+              - @user.family.each do |user|
+                - rsvp = @event.rsvps.find_by(user: user)
+                tr
+                  td = user.first_name
+                  td
+                    .float-end
+                      .form-check.form-check-inline
+                        = radio_button_tag "users[#{user.id}]_response", 'accepted', rsvp&.accepted?, class: 'form-check-input'
+                        = label_tag "users[#{user.id}_response_accepted", t(:rsvp_accept), { class: 'form-check-label' }
+
+                      .form-check.form-check-inline
+                        = radio_button_tag "users[#{user.id}]_response", 'declined', rsvp&.declined?, class: 'form-check-input'
+                        = label_tag "users[#{user.id}_response_declined", t(:rsvp_decline), { class: 'form-check-label' }
 
         // form buttons
         .modal-footer
-          - if @event.new_record?
-            = f.submit t('helpers.label.event.accept_button'), class: 'btn btn-primary', id: 'event_submit'
-            button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_button')
-
-          - else # updating an existing record
-            // cancel event
-            - if @event.starts_at.future?
-              button(type="button" class="btn btn-outline-danger") =t ('helpers.label.event.cancel_event')
-
-            span
-              // update
-              = f.submit t('helpers.label.event.update_button'), class: 'btn btn-primary', id: 'event_submit', style: 'margin-right: 10px;'
-
-              // don't update
-              button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_update')
-
+          = submit_tag t('helpers.label.event.rsvp_save'), class: 'btn btn-primary', id: 'event_submit'
+          button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_button')

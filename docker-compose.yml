@@ -1,16 +1,25 @@
-version: "3.9"
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    command: "bundle exec puma -C config/puma.rb"
+    command: sh -c "bundle install && bundle exec puma -C config/puma.rb"
+    # command: "rails server"
     volumes:
       - .:/app
     ports:
       - "3000:3000"
     depends_on:
       - db
+      - sidekiq
+
+  sidekiq:
+    build: .
+    command: "bundle exec sidekiq"
+    depends_on:
+      - redis
+    volumes:
+      - .:/app
 
   db:
     image: postgres:13-alpine
@@ -22,14 +31,26 @@ services:
     ports:
       - "5432:5432"
 
-  # caddy:
-  #   image: "caddy:latest"
-  #   volumes:
-  #     - ./certs:/root/certs # to sync mkcert certificates to Caddy
-  #     - ./Caddyfile:/etc/Caddyfile  # to mount custom Caddyfile
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #     - "2019:2019"
-  #   depends_on:
-  #    - app
+  caddy:
+    image: "caddy:2-alpine"
+    restart: unless-stopped
+    volumes:
+      - ./certs:/root/certs # to sync mkcert certificates to Caddy
+      - ./Caddyfile:/etc/caddy/Caddyfile  # to mount custom Caddyfile
+    ports:
+      - "80:80"
+      - "443:443"
+      - "2019:2019"
+    depends_on:
+      - app
+
+  redis:
+    image: redis:6.2.5-alpine
+    ports:
+      - "6379:6379"
+
+  mailcatcher:
+    image: sj26/mailcatcher
+    ports:
+      - "1025:1025"
+      - "1080:1080"

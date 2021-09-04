@@ -30,6 +30,7 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  app_name: 'Scoutplan'
   hello: "Hello world"
   event_add: "Add a Calendar Event"
   event_update: "Change a Calendar Event"
@@ -41,11 +42,18 @@ en:
   event_subscribe: 'Add this Schedule to your Google Calendar, Outlook, or iCal...'
   event_category_prompt: '- select -'
   event_rsvp: 'RSVP'
+  rsvp_dialog_title: 'My RSVPs'
+  change_rsvp: 'Change RSVPs'
+  rsvp_accept: 'Going'
+  rsvp_decline: 'Not going'
+  rsvp_posted: 'Your RSVP has been received'
+  passwordless_warning: "You're logged in using a password-less \"magic link.\"  This link is valid until x/x/xx."
 
   members:
     name:             'Name'
     type:             'Type'
     parent_guardian:  'Guardian(s)'
+    status:           'Status'
 
   event_categories:
     camping:          'Camping'
@@ -67,9 +75,11 @@ en:
         rsvp_notify: 'Notify everyone when RSVP opens'
         accept_button: 'Add Event'
         cancel_button: 'Cancel'
-        update_button: 'Update Event'
-        cancel_event:  'Cancel This Event...'
-        cancel_update: "Don't Update"
+        update_button: 'Save These Changes'
+        cancel_event:  'Cancel This Event'
+        cancel_update: "Don't Save"
         update_scope: 'Change: '
-        update_scope_single: 'just this event'
-        update_scope_series: 'all events in the series'
+        update_single: 'just this event'
+        update_series: 'all events in the series'
+        rsvp_save: 'Send These RSVPs'
+        create_confirmation: '%{event_name} was added to the calendar'

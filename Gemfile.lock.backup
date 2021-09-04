@@ -297,7 +297,7 @@ DEPENDENCIES
   pundit (~> 2.1)
   rack-mini-profiler (~> 2.3)
   rails (~> 6.1)
-  rails-observers (~> 0.1)
+  rails-observers
   rexml (~> 3.2)
   rspec-rails (~> 5.0)
   sass-rails (~> 6.0)

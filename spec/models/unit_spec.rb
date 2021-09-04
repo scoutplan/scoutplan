@@ -23,4 +23,13 @@ RSpec.describe Unit, type: :model do
       expect(FactoryBot.build(:unit, name: nil)).not_to be_valid
     end
   end
+
+  context 'methods' do
+    it 'finds a membership for a user' do
+      membership = FactoryBot.create(:unit_membership)
+      unit = membership.unit
+      user = membership.user
+      expect(unit.membership_for(user)).to eq(membership)
+    end
+  end
 end

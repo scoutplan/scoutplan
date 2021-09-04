@@ -5,11 +5,14 @@ class Unit < ApplicationRecord
   alias_attribute :memberships, :unit_memberships
   has_many :members, through: :unit_memberships, source: :user
   validates_presence_of :name
-
   after_create :populate_categories
 
   def membership_for(user)
     memberships.find_by(user_id: user.id)
+  end
+
+  def from_email
+    'events@troop2scarsdale.org'
   end
 
 private
