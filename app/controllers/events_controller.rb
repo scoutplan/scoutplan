@@ -49,7 +49,7 @@ class EventsController < UnitContextController
   end
 
   def rsvp
-    flash[:notice] = t(:rsvp_posted)
+    flash[:toast] = t(:rsvp_posted)
     redirect_to [@unit, @event]
   end
 

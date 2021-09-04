@@ -1,26 +1,51 @@
 header
   h1 = @event.title
 
-  .row
-    .col-md-3
-      h2 Going
+.row
+  .col-md-3
+    h5 <i class="fas fa-check" style="color: green;"></i> Going <span class="headcount">(#{ @event.rsvps.declined.count })</span>
 
-      - @event.rsvps.accepted.each do |rsvp|
-        = rsvp.user.full_name
+    - @event.rsvps.accepted.each do |rsvp|
+      = rsvp.user.full_name
 
-    .col-md-3
-      h2 Going, pending permission
+  .col-md-3
+    h5 <i class="fas fa-user-check" style="color: orange;"></i> Pending <span class="headcount">(#{ @event.rsvps.accepted_pending.count })</span>
 
-    .col-md-3
-      h2 Not Going (#{ @event.rsvps.declined.count })
+  .col-md-3
+    h5 <i class="fas fa-times" style="color: red;"></i> Not Going <span class="headcount">(#{ @event.rsvps.declined.count })</span>
 
-      ul
-        - @event.rsvps.declined.each do |rsvp|
-          li = rsvp.user.full_name
+    ul
+      - @event.rsvps.declined.each do |rsvp|
+        li = rsvp.user.full_name
 
-    .col-md-3
-      h2 No response
+  .col-md-3
+    - non_respondents = @unit.members - @event.rsvps.collect(&:user)
+    h5 <i class="fas fa-question" style="color: gray;"></i> No response <span class="headcount">(#{ non_respondents.count })</a>
 
-      ul
-        - (@unit.members - @event.rsvps.collect(&:user)).each do |user|
-          li = user.full_name
+    ul
+      - non_respondents.each do |user|
+        li
+          = user.full_name
+          span.actions
+            = link_to 'Copy Invite Link', '#'
+            = link_to 'Re-Send Invitation', '#', class: 'resend', data: { }
+
+scss:
+  .actions {
+    display: none;
+    margin-left: 1rem;
+  }
+
+  ul li {
+    cursor: pointer;
+
+    &:hover {
+      .actions {
+        display: inline-block;
+      }
+    }
+  }
+
+  .headcount {
+    color: #aaa;
+  }

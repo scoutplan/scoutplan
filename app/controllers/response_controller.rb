@@ -6,9 +6,16 @@ class ResponseController < ApplicationController
 
   def handle
     # resolve the token to an invitation
+    @rsvp_token = RsvpToken.find_by(value: params[:id])
+
     # resolve invitation to event and user
-    # sign_in_and_redirect_to user, unit_event_path(unit, event, anchor: 'rsvp')
+    @event = @rsvp_token.event
+    @unit  = @event.unit
+    @user  = @rsvp_token.user
+
+    # sign the user in and redirect to the event page
     flash[:notice] = t('passwordless_warning')
-    redirect_to root_path
+    sign_in @user
+    redirect_to unit_event_path(@unit, @event, anchor: 'rsvp')
   end
 end

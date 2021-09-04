@@ -53,6 +53,7 @@ en:
     name:             'Name'
     type:             'Type'
     parent_guardian:  'Guardian(s)'
+    status:           'Status'
 
   event_categories:
     camping:          'Camping'

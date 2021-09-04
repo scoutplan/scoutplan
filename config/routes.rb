@@ -14,5 +14,11 @@ Rails.application.routes.draw do
     resources :unit_memberships, path: 'members', as: 'members'
   end
 
-  get 'r(/:id)', to: 'response#handle'
+  # resources :rsvp_tokens do
+  #   member do
+  #     post 'resend', to: 'rsvp_tokens#resend'
+  #   end
+  # end
+
+  get 'r(/:id)', to: 'response#handle', as: 'rsvp_response'
 end
