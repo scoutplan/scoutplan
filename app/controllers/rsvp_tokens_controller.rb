@@ -1,10 +1,10 @@
 # this non-restful controller intercepts "passwordless" RSVPs,
 # typically from email links
 
-class ResponseController < ApplicationController
+class RsvpTokensController < ApplicationController
   skip_before_action :authenticate_user!
 
-  def handle
+  def login
     # resolve the token to an invitation
     @rsvp_token = RsvpToken.find_by(value: params[:id])
 
