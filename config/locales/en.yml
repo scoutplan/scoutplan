@@ -32,7 +32,7 @@
 en:
   administration: 'Administration'
   rsvps: "Your Family's RSVPs"
-  dates_and_times: 'Date & Time'
+  dates_times_locations: 'Date, Time & Location'
   app_name: 'Scoutplan'
   hello: "Hello world"
   event_add: "Add a Calendar Event"
@@ -56,6 +56,10 @@ en:
   events:
     draft-warning: "This event is a draft and isn't visible to others. When you're ready, %{href} to make it visible."
     publish: 'Publish'
+
+    show:
+      description_empty: "There's no description for this event yet."
+      description_cta: 'Write one now.'
 
   members:
     name:             'Name'

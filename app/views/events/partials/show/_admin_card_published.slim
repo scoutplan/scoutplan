@@ -5,6 +5,8 @@
       i.far.fa-user-crown
       |&nbsp;&nbsp;
       =t('administration')
+      .form-text
+        | Visible to you because you're a #{ @event.unit.name } administrator
 
     .card-body
       ul.list-group.list-group-flush
@@ -22,7 +24,7 @@
                 i.far.fa-file-lines(style="color: darkblue;")
               = t(:description_edit)
 
-        - if @can_organize
+        - if @can_organize && @event.requires_rsvp
           li.list-group-item
             = link_to organize_event_path(@event), class: 'dropdown-item' do
               .glyph

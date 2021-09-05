@@ -1,7 +1,4 @@
 .col-md-3
-  - non_respondents = @event.unit.members - @event.rsvps.collect(&:user)
-  - puts '####'
-  - puts non_respondents.count
   h5 <i class="fas fa-question" style="color: gray;"></i> No response <span class="headcount">(#{ non_respondents.count })</a>
 
   table

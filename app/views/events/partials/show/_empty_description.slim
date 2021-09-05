@@ -1,0 +1,7 @@
+p
+  = t('events.show.description_empty')
+
+  - if @can_edit
+    | &nbsp;
+    = link_to t('events.show.description_cta'), '#'
+

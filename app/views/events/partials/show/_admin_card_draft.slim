@@ -24,7 +24,7 @@
                 i.far.fa-file-lines(style="color: darkblue;")
               = t(:description_edit)
 
-        - if @can_organize
+        - if @can_organize && @event.requires_rsvp
           li.list-group-item
             = link_to organize_event_path(@event), class: 'dropdown-item' do
               .glyph
