@@ -7,7 +7,7 @@ style
 h1 Events
 
 - if policy(:event).create?
-  = link_to t(:event_add), '#newEventModal', id: 'new-event-button', class: 'btn btn-success', data: { 'bs-toggle' => 'modal' }
+  = link_to t(:event_add), '#eventModal', id: 'new-event-button', class: 'btn btn-success', data: { 'bs-toggle' => 'modal' }
 
 - unless @events.count == 0
 

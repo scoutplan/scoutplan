@@ -51,8 +51,8 @@
       <header class="primary">
         Hello, <%= current_user.first_name %>!
         <%= link_to 'Sign Out', destroy_user_session_path, method: :delete %>
-        <%= link_to 'Events', unit_events_path(@unit) %>
-        <%= link_to 'Members', unit_members_path(@unit) if policy(:unit_memberships).index? %>
+        <%= link_to 'Events', unit_events_path(@display_unit) %>
+        <%= link_to 'Members', unit_members_path(@display_unit) if policy(:unit_memberships).index? %>
       </header>
 
       <%= yield %>

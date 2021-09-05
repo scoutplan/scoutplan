@@ -81,7 +81,7 @@ en:
         description: 'Notes'
         requires_rsvp: 'Requires RSVP'
         rsvp_notify: 'Notify everyone when RSVP opens'
-        accept_button: 'Add Event'
+        accept_button: 'Save As Draft Event'
         cancel_button: 'Cancel'
         update_button: 'Save These Changes'
         cancel_event:  'Cancel This Event'

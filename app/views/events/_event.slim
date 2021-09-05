@@ -8,7 +8,7 @@
       - if @current_year.nil? || @current_year != event.starts_at.year
         = event.starts_at.strftime(' %Y')
 
-tr.event(class="event-row #{event.category.name.parameterize}-event" data-href="#{ unit_event_path(@unit, event) }" onclick="window.location='#{ unit_event_path(@unit, event) }';")
+tr.event(class="event-row #{event.category.name.parameterize}-event" data-href="#{ event_path(event) }" onclick="window.location='#{ event_path(event) }';")
   td.month.tablet
     - if @current_month.nil? || @current_month != event.starts_at.month
       = event.starts_at.strftime('%B')
@@ -35,7 +35,7 @@ tr.event(class="event-row #{event.category.name.parameterize}-event" data-href="
   td.action.desktop
     - if event.rsvp_open?
       ul
-        - @user.family.each do |user|
+        - current_user.family.each do |user|
           - rsvp = event.rsvps.find_by(user: user)
 
           li
@@ -53,4 +53,4 @@ tr.event(class="event-row #{event.category.name.parameterize}-event" data-href="
             = " (you)" if user == current_user
 
         li
-          = link_to 'Respond', unit_event_path(@unit, event, anchor: 'rsvp'), class: 'btn btn-outline-info event-rsvp-link'
+          = link_to 'Respond', event_path(event, anchor: 'rsvp'), class: 'btn btn-outline-info event-rsvp-link'

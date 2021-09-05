@@ -10,28 +10,28 @@
       ul.list-group.list-group-flush
         - if @can_edit
           li.list-group-item
-            = link_to '#newEventModal', id: 'new-event-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
+            = link_to '#eventModal', id: 'new-event-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
               .glyph
                 i.far.fa-pencil(style="color: darkgray;")
               = t(:event_edit)
 
         - if @can_edit
           li.list-group-item
-            = link_to '#newEventModal', id: 'new-event-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
+            = link_to '#eventModal', id: 'new-event-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
               .glyph
                 i.far.fa-file-lines(style="color: darkblue;")
               = t(:description_edit)
 
         - if @can_organize
           li.list-group-item
-            = link_to organize_unit_event_path(@unit, @event), class: 'dropdown-item' do
+            = link_to organize_event_path(@event), class: 'dropdown-item' do
               .glyph
                 i.far.fa-clipboard-check(style="color: darkcyan;")
               = t(:event_organize)
 
         - if @can_edit
           li.list-group-item
-            = link_to cancel_unit_event_path, class: 'dropdown-item' do
+            = link_to cancel_event_path, class: 'dropdown-item' do
               .glyph
                 i.fas.fa-xmark(style="color: red;")
               = t("helpers.label.event.cancel_event")
