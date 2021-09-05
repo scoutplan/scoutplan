@@ -1,7 +1,7 @@
 - @format_date = '%Y-%m-%d'
 - @format_time = '%H:%M:%S'
 
-.modal.fade#newEventModal
+.modal.fade#eventModal
   .modal-dialog
     .modal-content
       = form_for [@unit, @event] do |f|
@@ -14,7 +14,7 @@
         .modal-body
           .mb-3
             = f.label :category, class: 'col-form-label'
-            = f.select :event_category_id, @unit.event_categories.collect { |c| [ c.name, c.id] }, {prompt: t('event_category_prompt')}, {class: 'form-select'}
+            = f.select :event_category_id, @event.unit.event_categories.collect { |c| [ c.name, c.id] }, {prompt: t('event_category_prompt')}, {class: 'form-select'}
 
           .mb-3
             = f.label :title

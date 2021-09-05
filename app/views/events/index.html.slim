@@ -7,7 +7,7 @@ style
 h1 Events
 
 - if policy(:event).create?
-  = link_to t(:event_add), '#newEventModal', id: 'new-event-button', class: 'btn btn-success', data: { 'bs-toggle' => 'modal' }
+  = link_to t(:event_add), '#eventModal', id: 'new-event-button', class: 'btn btn-success', data: { 'bs-toggle' => 'modal' }
 
 - unless @events.count == 0
 
@@ -21,6 +21,7 @@ h1 Events
         th.days
         th.glyph
         th.title =t(:event_title)
+        th.status
         th.location.tablet =t(:event_location)
         th.action.desktop =t(:event_rsvp)
     tbody

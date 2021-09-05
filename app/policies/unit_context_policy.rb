@@ -9,7 +9,7 @@ class UnitContextPolicy < ApplicationPolicy
 
   def initialize(*args)
     super(*args)
-    @membership = @user
+    @membership = user
   end
 
 protected

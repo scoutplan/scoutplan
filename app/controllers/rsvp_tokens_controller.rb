@@ -10,12 +10,11 @@ class RsvpTokensController < ApplicationController
 
     # resolve invitation to event and user
     @event = @rsvp_token.event
-    @unit  = @event.unit
     @user  = @rsvp_token.user
 
     # sign the user in and redirect to the event page
     flash[:notice] = t('passwordless_warning')
     sign_in @user
-    redirect_to unit_event_path(@unit, @event, anchor: 'rsvp')
+    redirect_to event_path(@event, anchor: 'rsvp')
   end
 end

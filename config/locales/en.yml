@@ -30,11 +30,15 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  administration: 'Administration'
+  rsvps: "Your Family's RSVPs"
+  dates_and_times: 'Date & Time'
   app_name: 'Scoutplan'
   hello: "Hello world"
   event_add: "Add a Calendar Event"
   event_update: "Change a Calendar Event"
   event_edit: "Change Event Details"
+  description_edit: "Edit Event Description"
   event_organize: "Manage RSVPs & Attendance"
   event_date: "Date"
   event_title: "Title"
@@ -48,6 +52,10 @@ en:
   rsvp_decline: 'Not going'
   rsvp_posted: 'Your RSVP has been received'
   passwordless_warning: "You're logged in using a password-less \"magic link.\"  This link is valid until x/x/xx."
+
+  events:
+    draft-warning: "This event is a draft and isn't visible to others. When you're ready, %{href} to make it visible."
+    publish: 'Publish'
 
   members:
     name:             'Name'
@@ -73,10 +81,11 @@ en:
         description: 'Notes'
         requires_rsvp: 'Requires RSVP'
         rsvp_notify: 'Notify everyone when RSVP opens'
-        accept_button: 'Add Event'
+        accept_button: 'Save As Draft Event'
         cancel_button: 'Cancel'
         update_button: 'Save These Changes'
         cancel_event:  'Cancel This Event'
+        delete_event: 'Delete This Draft'
         cancel_update: "Don't Save"
         update_scope: 'Change: '
         update_single: 'just this event'

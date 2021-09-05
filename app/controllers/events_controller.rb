@@ -1,6 +1,7 @@
-class EventsController < UnitContextController
+class EventsController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_event, except: [:index, :create]
+  before_action :find_unit, only: [ :index, :create, :new ]
+  before_action :find_event, except: [ :index, :create, :new ]
 
   def index
     @events = UnitEventQuery.new(@unit).execute
@@ -14,6 +15,7 @@ class EventsController < UnitContextController
   end
 
   def show
+    authorize @event
     @rsvps = @event.event_rsvps.where(user: current_user)
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).organize?
@@ -53,10 +55,31 @@ class EventsController < UnitContextController
     redirect_to [@unit, @event]
   end
 
+  # this override is needed to pass the membership instead of the user
+  # as the object to be evaluated in Pundit policies
+  def pundit_user
+    @membership
+  end
+
 private
-  # before_action hook
+
+  # we don't guarantee that @unit is populated, hence...
+  # @display_unit is used for global nav and other common
+  # elements where unit is needed
+
+  # for index, new, and create
+  def find_unit
+    @unit = Unit.find(params[:unit_id])
+    @display_unit = @unit
+    @membership = @display_unit.membership_for(current_user)
+  end
+
+  # for show, edit, update, destroy...important that @unit
+  # is *not* set for those actions
   def find_event
-    @event = @unit.events.find(params[:id])
+    @event = Event.find(params[:id])
+    @display_unit = @event.unit
+    @membership = @display_unit.membership_for(current_user)
     @presenter = EventPresenter.new(@event)
   end
 

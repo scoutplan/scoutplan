@@ -2,15 +2,16 @@ Rails.application.routes.draw do
   devise_for :users
   root to: 'home#index'
 
-  resources :units do
-    resources :events do
-      member do
-        post 'rsvp', to: 'events#rsvp'
-      end
-      member do
-        get 'organize'
-      end
+  resources :events, only: [:show, :edit, :update, :destroy] do
+    member do
+      post 'rsvp'
+      get 'cancel'
+      get 'organize'
     end
+  end
+
+  resources :units do
+    resources :events, only: [:index, :new, :create]
     resources :unit_memberships, path: 'members', as: 'members'
   end
 

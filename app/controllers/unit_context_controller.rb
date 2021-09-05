@@ -1,5 +1,5 @@
 class UnitContextController < ApplicationController
-  before_action :find_user, :find_unit, :find_membership
+  before_action :find_unit_info, only: [:index, :new, :create]
 
   def current_unit
     Unit.first
@@ -11,17 +11,9 @@ class UnitContextController < ApplicationController
 
 private
 
-  # override this in subclasses as needed
-  def find_user
-    @user = current_user
-  end
-
-  def find_unit
+  def find_unit_info
     # TODO: scope this to the current user's memberships
-    @unit = Unit.includes(:unit_memberships).find(params[:unit_id])
-  end
-
-  def find_membership
+    @current_unit = Unit.includes(:unit_memberships).find(params[:unit_id])
     @membership = @unit.membership_for(current_user)
   end
 end

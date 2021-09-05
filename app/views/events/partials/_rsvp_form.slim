@@ -4,7 +4,7 @@
 .modal.fade#eventRsvpModal
   .modal-dialog
     .modal-content
-      = form_tag rsvp_unit_event_path(@unit, @event) do
+      = form_tag rsvp_event_path(@event) do
         .modal-header
           h5.modal-title = t(:rsvp_dialog_title)
           button.btn-close(type="button" data-bs-dismiss="modal")
@@ -12,7 +12,7 @@
         .modal-body
           table.table
             tbody
-              - @user.family.each do |user|
+              - current_user.family.each do |user|
                 - rsvp = @event.rsvps.find_by(user: user)
                 tr
                   td = user.first_name

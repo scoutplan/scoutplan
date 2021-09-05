@@ -11,6 +11,7 @@ class Event < ApplicationRecord
   alias_attribute :category, :event_category
   after_create :create_series, if: Proc.new { self.respond_to? :repeats_until }
   after_create :create_magic_links, if: :requires_rsvp
+  enum status: { draft: 0, published: 1 }
 
   def past?
     starts_at.compare_with_coercion(Date.today) == -1

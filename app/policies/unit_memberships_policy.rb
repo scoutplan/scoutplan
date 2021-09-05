@@ -1,4 +1,9 @@
 class UnitMembershipsPolicy < UnitContextPolicy
+  def initialize(membership, event)
+    super(membership, event)
+    @event = event
+  end
+
   def index?
     is_member? && is_admin?
   end
