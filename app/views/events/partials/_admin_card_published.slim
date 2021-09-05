@@ -15,6 +15,13 @@
                 i.far.fa-pencil(style="color: darkgray;")
               = t(:event_edit)
 
+        - if @can_edit
+          li.list-group-item
+            = link_to '#newEventModal', id: 'new-event-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
+              .glyph
+                i.far.fa-file-lines(style="color: darkblue;")
+              = t(:description_edit)
+
         - if @can_organize
           li.list-group-item
             = link_to organize_unit_event_path(@unit, @event), class: 'dropdown-item' do

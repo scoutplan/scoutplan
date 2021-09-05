@@ -25,7 +25,12 @@ tr.event(class="event-row #{event.category.name.parameterize}-event" data-href="
       = raw(presenter.days_to_s)
   td.glyph
     i(class = "fas fa-#{event.event_category.glyph}")
-  td.title  = event.title
+  td.title
+    = event.title
+  td.status
+    - if @event.draft?
+      |&nbsp;
+      span.badge.bg-secondary Draft
   td.location.tablet  = event.location
   td.action.desktop
     - if event.rsvp_open?

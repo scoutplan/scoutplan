@@ -31,13 +31,14 @@
 
 en:
   administration: 'Administration'
-  rsvps: 'RSVPs'
+  rsvps: "Your Family's RSVPs"
   dates_and_times: 'Date & Time'
   app_name: 'Scoutplan'
   hello: "Hello world"
   event_add: "Add a Calendar Event"
   event_update: "Change a Calendar Event"
   event_edit: "Change Event Details"
+  description_edit: "Edit Event Description"
   event_organize: "Manage RSVPs & Attendance"
   event_date: "Date"
   event_title: "Title"
@@ -53,7 +54,7 @@ en:
   passwordless_warning: "You're logged in using a password-less \"magic link.\"  This link is valid until x/x/xx."
 
   events:
-    draft-warning: "This event is a draft and isn't visible to others. When you're ready, publish the event to make it visible."
+    draft-warning: "This event is a draft and isn't visible to others. When you're ready, %{href} to make it visible."
     publish: 'Publish'
 
   members:

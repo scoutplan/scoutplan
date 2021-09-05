@@ -2,4 +2,4 @@
   .alert.alert-warning.mb-4
     i.far.fa-triangle-exclamation
     |&nbsp;
-    = t('events.draft-warning')
+    = t('events.draft-warning', href: link_to('publish the event', '')).html_safe
