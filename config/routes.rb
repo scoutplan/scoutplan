@@ -8,6 +8,9 @@ Rails.application.routes.draw do
         post 'rsvp', to: 'events#rsvp'
       end
       member do
+        get 'cancel', as: 'cancel'
+      end
+      member do
         get 'organize'
       end
     end

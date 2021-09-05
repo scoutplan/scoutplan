@@ -14,8 +14,10 @@ services:
       - sidekiq
 
   sidekiq:
-    build: .
-    command: "bundle exec sidekiq"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "bundle install && bundle exec sidekiq"
     depends_on:
       - redis
     volumes:

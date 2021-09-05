@@ -15,6 +15,8 @@ gem 'rails', '~> 6.1'
 gem 'rails-observers', "~> 0.1"
 gem 'rexml', "~> 3.2"
 gem 'sass-rails', '~> 6.0'
+gem "sentry-ruby"
+gem "sentry-rails"
 gem 'sidekiq', '~> 6.1'
 gem 'seedbank', "~> 0.5"
 gem 'slim', "~> 4.1"

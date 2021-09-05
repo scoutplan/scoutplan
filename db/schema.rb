@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_02_164525) do
+ActiveRecord::Schema.define(version: 2021_09_05_003200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 2021_09_02_164525) do
     t.string "rsvp_opens_at"
     t.integer "event_category_id"
     t.integer "series_parent_id"
+    t.integer "status", default: 0
   end
 
   create_table "rsvp_tokens", force: :cascade do |t|

@@ -1,38 +1,20 @@
-header
-  h1(style="display: inline;") = @event.title
+header.rsvps.mb-4
 
-  .float-end
-    - if @can_edit || @can_organize
-      .dropdown
-        = link_to '#', data: { 'bs-toggle' => 'dropdown' } do
-          i.fas.fa-ellipsis-h
+= render partial: 'events/partials/draft_card'
 
-        ul.dropdown-menu.dropdown-menu-end
-          - if @can_edit
-            li = link_to t(:event_edit), '#newEventModal', id: 'new-event-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' }
+main
+  h1.mb-4 = @event.title
+  p I'm baby migas health goth next level, vice fam mixtape truffaut edison bulb lumbersexual. 90's beard pickled selfies schlitz 3 wolf moon shaman enamel pin crucifix tilde. Austin wolf pinterest taiyaki 3 wolf moon vaporware. Fixie next level gluten-free shaman craft beer irony shabby chic venmo brooklyn cold-pressed enamel pin coloring book meggings umami dreamcatcher. Cliche hell of enamel pin forage live-edge selvage. PBR&B readymade keffiyeh edison bulb. Chambray readymade hashtag, fashion axe narwhal DIY man bun chartreuse semiotics bushwick.
 
-          - if @can_organize
-            li = link_to t(:event_organize), organize_unit_event_path(@unit, @event), class: 'dropdown-item'
+  p Dreamcatcher pitchfork farm-to-table, la croix blue bottle aesthetic austin mustache retro health goth prism ramps gochujang yuccie deep v. Direct trade you probably haven't heard of them kale chips sartorial. Listicle keffiyeh chillwave, seitan pour-over marfa drinking vinegar intelligentsia bicycle rights. Disrupt la croix tofu, four loko sustainable succulents post-ironic wayfarers paleo street art.
 
-          - if @can_edit
-            li = link_to t('helpers.label.event.cancel_event'), '', class: 'dropdown-item'
+  p Chartreuse organic hot chicken banh mi lyft twee. Roof party man bun flexitarian asymmetrical forage edison bulb. Typewriter fam vape, portland yuccie austin fashion axe art party heirloom polaroid coloring book tumeric. Banjo letterpress raclette taiyaki pinterest crucifix distillery kitsch chambray biodiesel hot chicken tumblr 3 wolf moon.
 
-.card-group
+aside
+  = render partial: @event.published? ? 'events/partials/admin_card_published' : 'events/partials/admin_card_draft'
+  = render partial: 'events/partials/rsvp_card'
   = render partial: 'events/partials/date_time_card'
-
-  .card.location
-    .card-body
-      = @presenter.location
-
-  .card.rsvp
-    .card-body
-      ul
-        - @rsvsp.try(:each) do |rsvp|
-          td = rsvp.user.first_name
-          td = @event.rsvps.find_by(user: user)&.response
-
-      button(class="btn btn-outline-info" data-bs-target="#eventRsvpModal" data-bs-toggle="modal")
-        = t(:change_rsvp)
+  = render partial: 'events/partials/location_card'
 
 = render 'events/partials/event_form'
 = render 'events/partials/rsvp_form'
@@ -48,12 +30,42 @@ scss:
   }
 
   .container {
-    max-width: 768px;
+    max-width: 960px;
   }
 
   .toast {
     background: CadetBlue;
     color: #fff;
+  }
+
+  main {
+    width: 66%;
+    float: left;
+    padding-right: 45px;
+  }
+
+  main p {
+    font-size: 110%;
+  }
+
+  aside {
+    width: 33%;
+    float: right;
+    font-size: 90%;
+  }
+
+  aside .card {
+    margin-bottom: 1rem;
+  }
+
+  li .glyph {
+    display: inline-block;
+    width: 1.4rem;
+  }
+
+  li.list-group-item {
+    padding-left: 0;
+    padding-right: 0;
   }
 
 javascript:

@@ -1,0 +1,32 @@
+- if @can_edit || @can_organize
+
+  .card.admin-card.border-warning
+    .card-header
+      i.far.fa-user-crown
+      |&nbsp;&nbsp;
+      =t('administration')
+
+    .card-body
+      ul.list-group.list-group-flush
+        - if @can_edit
+          li.list-group-item
+            = link_to '#newEventModal', id: 'new-event-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
+              .glyph
+                i.far.fa-pencil(style="color: darkgray;")
+              = t(:event_edit)
+
+        - if @can_organize
+          li.list-group-item
+            = link_to organize_unit_event_path(@unit, @event), class: 'dropdown-item' do
+              .glyph
+                i.far.fa-clipboard-check(style="color: darkcyan;")
+              = t(:event_organize)
+
+        - if @can_edit
+          li.list-group-item
+            = link_to cancel_unit_event_path, class: 'dropdown-item' do
+              .glyph
+                i.far.fa-trash(style="color: red;")
+              = t("helpers.label.event.delete_event")
+
+      = button_to t('events.publish'), '', class: 'btn btn-success w-100 mt-4'
