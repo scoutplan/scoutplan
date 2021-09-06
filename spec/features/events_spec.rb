@@ -1,4 +1,8 @@
 describe 'events', type: :feature do
+  it 'has a valid factory' do
+    expect(FactoryBot.build(:event)).to be_valid
+  end
+
   before :each do
     User.where(email: 'test_admin@scoutplan.org').destroy_all
     User.where(email: 'test_normal@scoutplan.org').destroy_all
@@ -47,10 +51,9 @@ describe 'events', type: :feature do
       login_as(@normal_user, scope: :user)
     end
 
-    it 'visits the Event page' do
+    it 'fails to access a draft Event page' do
       path = event_path(@event)
-      visit path
-      expect(page).to have_current_path(path)
+      expect { visit path }.to raise_error(Pundit::NotAuthorizedError)
     end
 
     it 'hides the New Event button' do

@@ -3,6 +3,7 @@ FactoryBot.define do
     unit
     user
     status { 'active' }
+    role   { 'member' }
 
     trait :admin do
       role { 'admin' }

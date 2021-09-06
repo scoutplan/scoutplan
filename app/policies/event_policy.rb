@@ -5,7 +5,7 @@ class EventPolicy < UnitContextPolicy
   end
 
   def show?
-    is_admin? || @event.published?
+    @event.published? || is_admin?
   end
 
   def create?
