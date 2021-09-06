@@ -1,9 +1,9 @@
 .col-md-3
-  h5 <i class="fas fa-question" style="color: gray;"></i> No response <span class="headcount">(#{ non_respondents.count })</a>
+  h5 <i class="fas fa-question" style="color: gray;"></i> No response <span class="headcount">(#{ @non_respondents.count })</a>
 
   table
     tbody
-      - non_respondents.each do |user|
+      - @non_respondents.each do |user|
         - token = @event.rsvp_token_for(user)
         tr
           td

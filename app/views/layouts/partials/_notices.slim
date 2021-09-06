@@ -1,0 +1,12 @@
+- if flash[:notice]
+
+- if flash[:toast]
+  .position-fixed.top-0.end-0.p-3
+    #flashToast.toast
+      .toast-header
+        strong.me-auto
+          = t(:app_name)
+        button.btn-close[type="button" data-bs-dismiss="toast" aria-label="Close"]
+      .toast-body
+        = flash[:toast]
+  <script>var toastDiv = document.getElementById('flashToast'); var toast = new bootstrap.Toast(toastDiv); toast.show();</script>

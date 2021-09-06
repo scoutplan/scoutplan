@@ -1,0 +1,10 @@
+header.primary
+  = @unit&.name || @display_unit&.name
+  = link_to 'Events', unit_events_path(@display_unit)
+  = link_to 'Members', unit_members_path(@display_unit) if policy(:unit_memberships).index?
+
+  .float-end
+    .dropdown
+      = link_to "Hello, #{ current_user.first_name }!", '#', class: 'dropdown-toggle', data: { 'bs-toggle' => 'dropdown' }
+      ul.dropdown-menu.dropdown-menu-end
+        li.dropdown-item = link_to 'Sign Out', destroy_user_session_path, method: :delete

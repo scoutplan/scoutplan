@@ -1,0 +1,29 @@
+doctype html
+html
+  head
+    title =t('app_name')
+    meta[name="viewport" content="width=device-width,initial-scale=1"]
+    = csrf_meta_tags
+    = csp_meta_tag
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    = stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    <script src="https://kit.fontawesome.com/#{ENV['FONT_AWESOME_KIT_ID']}.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.typekit.net/#{ENV['ADOBE_FONT_KIT_ID']}.css">
+
+  body
+    = render partial: 'layouts/partials/notices'
+
+    .container
+      - if flash[:alert]
+        .alert.alert-warning
+          = alert
+      - if flash[:notice]
+        .alert.alert-info
+          i.far.fa-circle-info
+          = notice
+
+      = render 'layouts/partials/header'
+      = yield
+
+scss:
+  header.primary { margin-bottom: 30px; padding-bottom: 30px; border-bottom: 1px solid #ccc; }

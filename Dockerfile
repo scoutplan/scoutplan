@@ -12,7 +12,6 @@ RUN apk add --no-cache --update build-base \
 RUN mkdir /app
 WORKDIR /app
 COPY Gemfile Gemfile.lock /app/
-# COPY Gemfile /app/
 RUN gem update bundler && bundle install
 COPY . /app
 RUN rake assets:precompile
