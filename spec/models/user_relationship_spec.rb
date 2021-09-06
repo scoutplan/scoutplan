@@ -11,6 +11,14 @@ RSpec.describe UserRelationship, type: :model do
       dupe = FactoryBot.build(:user_relationship, parent: example.parent, child: example.child)
       expect(dupe).not_to be_valid
     end
+
+    it 'requires a parent' do
+      expect(FactoryBot.build(:user_relationship, parent: nil)).not_to be_valid
+    end
+
+    it 'requires a child' do
+      expect(FactoryBot.build(:user_relationship, child: nil)).not_to be_valid
+    end
   end
 
   describe 'relationships' do

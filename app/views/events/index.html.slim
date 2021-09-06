@@ -1,10 +1,8 @@
-= @unit.name
-
 style
   - @unit.event_categories.each do |category|
     = "tr.event.#{ category.name.parameterize }-event .glyph svg { color: #{ category.color } }\n"
 
-h1 Events
+h1 #{@unit.name} Events
 
 - if policy(:event).create?
   = link_to t(:event_add), '#eventModal', id: 'new-event-button', class: 'btn btn-success', data: { 'bs-toggle' => 'modal' }
@@ -26,6 +24,9 @@ h1 Events
         th.action.desktop =t(:event_rsvp)
     tbody
       = render @events
+      tr#show_everything_row
+        td(colspan="100" align="center") =t('events.index.showing_some', link: link_to(t('events.index.show_all'), '#', id: 'show_all_link')).html_safe
+
 
 = render 'events/partials/event_form'
 
@@ -41,7 +42,25 @@ javascript:
     });
   }
 
+  var showEverythingLink = document.getElementById('show_all_link');
+  showEverythingLink.addEventListener('click', function(event) {
+    var futureRows = document.getElementsByClassName('distant-future');
+    for (const elem of futureRows) {
+      elem.classList.remove('distant-future');
+    }
+
+    document.getElementById('show_everything_row').style.display = 'none';
+
+    event.stopPropagation();
+    event.preventDefault();
+    return false;
+  });
+
 scss:
+  .distant-future {
+    display: none;
+  }
+
   .event-rsvp-link {
     z-index: 1000;
   }

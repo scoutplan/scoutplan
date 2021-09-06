@@ -30,9 +30,10 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  app_name: 'Scoutplan'
   administration: 'Administration'
   rsvps: "Your Family's RSVPs"
-  dates_and_times: 'Date & Time'
+  dates_times_locations: 'Date, Time & Location'
   app_name: 'Scoutplan'
   hello: "Hello world"
   event_add: "Add a Calendar Event"
@@ -54,8 +55,16 @@ en:
   passwordless_warning: "You're logged in using a password-less \"magic link.\"  This link is valid until x/x/xx."
 
   events:
-    draft-warning: "This event is a draft and isn't visible to others. When you're ready, %{href} to make it visible."
+    draft-warning: "This event is a draft, only visible to Unit Administrators & Event Organizers. When you're ready, %{href} to make it visible to everyone in %{unit_name}."
     publish: 'Publish'
+
+    index:
+      showing_some: 'Showing next 3 months. %{link}'
+      show_all: 'Show everything'
+
+    show:
+      description_empty: "There's no description for this event yet."
+      description_cta: 'Write one now.'
 
   members:
     name:             'Name'

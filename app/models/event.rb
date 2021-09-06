@@ -1,20 +1,24 @@
 class Event < ApplicationRecord
+  default_scope { order(starts_at: :asc) }
+
   belongs_to :unit
   belongs_to :series_parent, class_name: 'Event', optional: true
   belongs_to :event_category
   has_many   :series_children, class_name: 'Event'
   has_many   :event_rsvps
   has_many   :rsvp_tokens
+
   alias_attribute :rsvps, :event_rsvps
-  validates_presence_of :title, :starts_at, :ends_at
-  default_scope { order(starts_at: :asc) }
   alias_attribute :category, :event_category
+
+  validates_presence_of :title, :starts_at, :ends_at
+
   after_create :create_series, if: Proc.new { self.respond_to? :repeats_until }
-  after_create :create_magic_links, if: :requires_rsvp
+
   enum status: { draft: 0, published: 1 }
 
   def past?
-    starts_at.compare_with_coercion(Date.today) == -1
+    starts_at.past?
   end
 
   def rsvp_open?
@@ -56,10 +60,5 @@ private
       new_event.save!
       new_event = new_event.dup
     end
-  end
-
-  # for events where RSVP is wanted, generate an RSVP token for each active member
-  def create_magic_links
-    self.unit.memberships.active.each { |membership| RsvpToken.create(user: membership.user, event: self) }
   end
 end

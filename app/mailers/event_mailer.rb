@@ -1,5 +1,5 @@
 class EventMailer < ApplicationMailer
-  def invitation_email
+  def token_invitation_email
     @token = params[:token]
     @event = @token.event
     @user  = @token.user

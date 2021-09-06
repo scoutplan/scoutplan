@@ -1,8 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Unit, type: :model do
-  it "has a valid factory" do
+  it "has a valid base factory" do
     expect(FactoryBot.build(:unit)).to be_valid
+  end
+
+  it 'has a valid factory with members' do
+    expect(FactoryBot.build(:unit_with_members)).to be_valid
   end
 
   context 'callbacks' do

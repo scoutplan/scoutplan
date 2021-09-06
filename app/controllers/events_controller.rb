@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_unit, only: [ :index, :create, :new ]
-  before_action :find_event, except: [ :index, :create, :new ]
+  before_action :find_event, except: [ :index, :edit, :create, :new ]
 
   def index
     @events = UnitEventQuery.new(@unit).execute
@@ -44,10 +44,11 @@ class EventsController < ApplicationController
   end
 
   def edit
-    authorize(@event).edit?
+    authorize @event
   end
 
   def organize
+    @non_respondents = @event.unit.members - @event.rsvps.collect(&:user)
   end
 
   def rsvp
@@ -79,7 +80,7 @@ private
   def find_event
     @event = Event.find(params[:id])
     @display_unit = @event.unit
-    @membership = @display_unit.membership_for(current_user)
+    @membership = @event.unit.membership_for(current_user)
     @presenter = EventPresenter.new(@event)
   end
 

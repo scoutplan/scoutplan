@@ -3,11 +3,11 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
 
-  has_many :event_rsvps
-  has_many :unit_memberships
-  has_many :parent_relationships, foreign_key: 'child_id', class_name: 'UserRelationship'
-  has_many :child_relationships, foreign_key: 'parent_id', class_name: 'UserRelationship'
-  has_many :rsvp_tokens
+  has_many :event_rsvps, dependent: :destroy
+  has_many :unit_memberships, dependent: :destroy
+  has_many :parent_relationships, foreign_key: 'child_id', class_name: 'UserRelationship', dependent: :destroy
+  has_many :child_relationships, foreign_key: 'parent_id', class_name: 'UserRelationship', dependent: :destroy
+  has_many :rsvp_tokens, dependent: :destroy
 
   def full_name
     "#{first_name} #{last_name}"
