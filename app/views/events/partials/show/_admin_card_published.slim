@@ -10,6 +10,12 @@
 
     .card-body
       ul.list-group.list-group-flush
+        li.list-group-item
+          .glyph
+            i.far.fa-eye
+            | &nbsp;
+          = t('events.show.published')
+
         - if @can_edit
           li.list-group-item
             = link_to '#eventModal', id: 'new-event-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do

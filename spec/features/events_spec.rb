@@ -15,77 +15,95 @@ describe 'events', type: :feature do
       login_as(@admin_user, scope: :user)
     end
 
-    it 'visits the Event page' do
-      path = event_path(@event)
-      visit path
-      expect(page).to have_current_path(path)
+    describe 'index' do
+      it 'displays the Add Event button on the Index page' do
+        login_as(@admin_user, scope: :user)
+        visit unit_events_path(@unit)
+        expect(page).to have_selector(:link_or_button, I18n.t('event_add'))
+        logout
+      end
+
+      it 'shows draft events on the Index page' do
+        visit unit_events_path(@unit)
+        expect(page).to have_content('Draft Event')
+      end
     end
 
-    it 'shows the add event button to admins' do
-      login_as(@admin_user, scope: :user)
-      visit unit_events_path(@unit)
-      expect(page).to have_selector(:link_or_button, I18n.t('event_add'))
-      logout
+    describe 'show' do
+      it 'accesses drafts' do
+        visit(path = event_path(@event))
+        expect(page).to have_current_path(path)
+      end
+
+      it 'displays a Publish button on drafts' do
+        visit event_path(@event)
+        expect(page).to have_selector(:link_or_button, 'Publish')
+      end
+
+      it 'does not display a Publish button on published events' do
+        event = FactoryBot.create(:event, :published, unit: @unit, title: 'Published event')
+        visit event_path(event)
+        expect(page).not_to have_selector(:link_or_button, 'Publish')
+      end
     end
 
-    it 'accesses the Organize page' do
-      path = organize_event_path(@event)
-      visit path
-      expect(page).to have_current_path(path)
+    describe 'organize' do
+      it 'accesses the page' do
+        path = organize_event_path(@event)
+        visit path
+        expect(page).to have_current_path(path)
+      end
     end
 
-    it 'shows draft events on the index page' do
-      visit unit_events_path(@unit)
-      expect(page).to have_content('Draft Event')
+    describe 'create' do
+      it 'redirects to Event page after Event draft creation' do
+        visit unit_events_path(@unit)
+        expect(page).to have_current_path(unit_events_path(@unit))
+
+        # now raise and fill the dialog
+        click_link_or_button I18n.t('event_add')
+        select('Troop Meeting')
+        fill_in 'Title', with: 'Troop Meeting'
+        click_button I18n.t('helpers.label.event.accept_button')
+
+        # we should be redirected
+        expect(page).to have_content('Troop Meeting was added to the calendar')
+      end
     end
 
-    it 'displays a Publish button' do
-      visit event_path(@event)
-      expect(page).to have_selector(:link_or_button, 'Publish')
+    describe 'publish' do
+      it 'publishes & displays confirmation message' do
+        visit event_path(@event)
+        click_button('Publish')
+        expect(page).to have_content("#{ @event.title } was published")
+      end
     end
-  end
+  end # admin user
 
   describe 'as a non-admin' do
     before :each do
       login_as(@normal_user, scope: :user)
     end
 
-    it 'fails to access a draft Event page' do
+    it 'prevents access a draft Event page' do
       path = event_path(@event)
       expect { visit path }.to raise_error(Pundit::NotAuthorizedError)
     end
 
-    it 'hides the add event button to non-admins' do
+    it 'prevents access to the Organize page' do
+      expect { visit organize_event_path(@event) }.to raise_error
+    end
+
+    it 'hides the add event button on the Index page' do
       login_as(@normal_user, scope: :user)
       visit unit_events_path(@unit)
       expect(page).not_to have_selector(:link_or_button, I18n.t('event_add'))
       logout
     end
 
-    it 'hides draft events' do
+    it 'hides draft events on the Index page' do
       visit unit_events_path(@unit)
       expect(page).not_to have_content('Draft Event')
-    end
-
-    it 'prevents access to the Organize page' do
-      expect { visit organize_event_path(@event) }.to raise_error
-    end
-  end
-
-  describe 'event creation' do
-    it 'redirects to Event page after Event draft creation' do
-      login_as(@admin_user, scope: :user)
-      visit unit_events_path(@unit)
-      expect(page).to have_current_path(unit_events_path(@unit))
-
-      # now raise and fill the dialog
-      click_link_or_button I18n.t('event_add')
-      select('Troop Meeting')
-      fill_in 'Title', with: 'Troop Meeting'
-      click_button I18n.t('helpers.label.event.accept_button')
-
-      # we should be redirected
-      expect(page).to have_content('Troop Meeting was added to the calendar')
     end
   end
 end

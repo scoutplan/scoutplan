@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   devise_for :users
   root to: 'home#index'
@@ -5,8 +7,9 @@ Rails.application.routes.draw do
   resources :events, only: [:show, :edit, :update, :destroy] do
     member do
       post 'rsvp'
-      get 'cancel'
-      get 'organize'
+      get  'cancel'
+      get  'organize'
+      post 'publish'
     end
   end
 
@@ -17,4 +20,6 @@ Rails.application.routes.draw do
 
   get 'r(/:id)', to: 'rsvp_tokens#login', as: 'rsvp_response'
   post 'rsvp_tokens/:id/resend', to: 'rsvp_tokens#resend', as: 'rsvp_token_resend'
+
+  mount Sidekiq::Web => "/sidekiq"
 end

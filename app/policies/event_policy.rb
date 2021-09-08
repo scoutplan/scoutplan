@@ -19,4 +19,8 @@ class EventPolicy < UnitContextPolicy
   def organize?
     is_admin?
   end
+
+  def publish?
+    is_admin?
+  end
 end

@@ -29,9 +29,8 @@ tr.event(class="#{ classes }" data-href="#{ event_path(event) }" onclick="window
   td.title
     = event.title
   td.status
-    - if @event.draft?
-      |&nbsp;
-      span.badge.bg-secondary Draft
+    - if event.draft?
+      span.badge.bg-secondary =t('events.index.draft')
   td.location.tablet  = event.location
   td.action.desktop
     - if event.rsvp_open?
