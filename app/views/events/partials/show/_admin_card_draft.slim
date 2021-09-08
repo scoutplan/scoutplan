@@ -12,14 +12,14 @@
       ul.list-group.list-group-flush
         - if @can_edit
           li.list-group-item
-            = link_to '#eventModal', id: 'new-event-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
+            = link_to '#eventModal', id: 'edit-details-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
               .glyph
                 i.far.fa-pencil(style="color: darkgray;")
               = t(:event_edit)
 
         - if @can_edit
           li.list-group-item
-            = link_to '#eventModal', id: 'new-event-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
+            = link_to '#eventModal', id: 'edit-description-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
               .glyph
                 i.far.fa-file-lines(style="color: darkblue;")
               = t(:description_edit)
@@ -38,4 +38,4 @@
                 i.far.fa-trash(style="color: red;")
               = t("helpers.label.event.delete_event")
 
-      = button_to t('events.publish'), '', class: 'btn btn-success w-100 mt-4'
+      = button_to t('events.publish'), '#', class: 'btn btn-success w-100 mt-4'

@@ -7,7 +7,9 @@ h1 #{@unit.name} Events
 - if policy(:event).create?
   = link_to t(:event_add), '#eventModal', id: 'new-event-button', class: 'btn btn-success', data: { 'bs-toggle' => 'modal' }
 
-- unless @events.count == 0
+= render partial: 'events/partials/index/no_events' if @events.count.zero?
+
+- unless @events.count.zero?
 
   p = link_to t(:event_subscribe), ''
 

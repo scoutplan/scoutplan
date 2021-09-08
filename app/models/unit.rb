@@ -16,6 +16,7 @@ class Unit < ApplicationRecord
   end
 
 private
+
   def populate_categories
     EventCategory.default.each do |category|
       self.event_categories.create(
