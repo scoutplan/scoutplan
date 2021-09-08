@@ -38,4 +38,7 @@
                 i.far.fa-trash(style="color: red;")
               = t("helpers.label.event.delete_event")
 
-      = button_to t('events.publish'), '#', class: 'btn btn-success w-100 mt-4'
+      - if ENV['RAILS_ENV'] == 'test'
+        = button_to t('events.publish'), publish_event_path(@event), class: 'btn btn-success w-100 mt-4', method: :post
+      - else
+        = button_to t('events.publish'), publish_event_path(@event), class: 'btn btn-success w-100 mt-4', method: :post, data: { confirm: t('events.show.confirm_publish') }

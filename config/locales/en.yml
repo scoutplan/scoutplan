@@ -57,15 +57,19 @@ en:
   events:
     draft-warning: "This event is a draft, only visible to Unit Administrators & Event Organizers. When you're ready, %{href} to make it visible to everyone in %{unit_name}."
     publish: 'Publish'
+    publish_message: "%{title} was published"
 
     index:
       showing_some: 'Showing next 3 months. %{link}'
-      show_all: 'Show everything'
-      no_events: 'No events are planned right now.'
+      show_all:     'Show everything'
+      no_events:    'No events are planned right now.'
+      draft:        'Draft'
 
     show:
-      description_empty: "There's no description for this event yet."
-      description_cta: 'Write one now.'
+      description_empty:  "There's no description for this event yet."
+      description_cta:    'Write one now.'
+      confirm_publish:    'Publishing will make this event visible to all members. Are you sure you want to publish it?'
+      published:          'This event is published'
 
   members:
     name:             'Name'

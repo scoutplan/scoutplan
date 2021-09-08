@@ -46,6 +46,14 @@ class EventsController < ApplicationController
     @non_respondents = @event.unit.members - @event.rsvps.collect(&:user)
   end
 
+  def publish
+    authorize @event
+    @event.update!(status: :published)
+    flash[:notice] = t('events.publish_message', title: @event.title)
+    redirect_to @event
+  end
+
+
   def rsvp
     flash[:toast] = t(:rsvp_posted)
     redirect_to [@unit, @event]

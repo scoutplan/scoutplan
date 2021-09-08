@@ -5,7 +5,6 @@ class EventMailer < ApplicationMailer
     @user  = @token.user
     @unit  = @event.unit
     @url   = rsvp_response_url(@token.value)
-
     mail(to: @user.email, from: @unit.from_email, subject: "#{@unit.name} event invitation: #{@event.title}")
   end
 end
