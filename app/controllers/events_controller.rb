@@ -4,14 +4,8 @@ class EventsController < ApplicationController
   before_action :find_event, except: [ :index, :edit, :create, :new ]
 
   def index
-    @events = UnitEventQuery.new(@unit).execute
-    @event = @unit.events.new(
-      starts_at: 28.days.from_now,
-      ends_at: 28.days.from_now
-    )
-    @event.starts_at = @event.starts_at.change({ hour: 10 }) # default starts at 10 AM
-    @event.ends_at   = @event.ends_at.change({ hour: 16 }) # default ends at 4 PM
-    @user_rsvps = current_user.event_rsvps
+    @events = UnitEventQuery.new(@unit, @membership).execute
+    build_prototype_event
   end
 
   def show
@@ -39,7 +33,7 @@ class EventsController < ApplicationController
 
     if @event.save!
       flash[:notice] = t('helpers.label.event.create_confirmation', event_name: @event.title)
-      redirect_to [@unit, @event]
+      redirect_to @event
     end
   end
 
@@ -48,6 +42,7 @@ class EventsController < ApplicationController
   end
 
   def organize
+    authorize @event
     @non_respondents = @event.unit.members - @event.rsvps.collect(&:user)
   end
 
@@ -63,6 +58,16 @@ class EventsController < ApplicationController
   end
 
 private
+
+  def build_prototype_event
+    @event = @unit.events.new(
+      starts_at: 28.days.from_now,
+      ends_at: 28.days.from_now
+    )
+    @event.starts_at = @event.starts_at.change({ hour: 10 }) # default starts at 10 AM
+    @event.ends_at   = @event.ends_at.change({ hour: 16 }) # default ends at 4 PM
+    @user_rsvps = current_user.event_rsvps
+  end
 
   # we don't guarantee that @unit is populated, hence...
   # @display_unit is used for global nav and other common

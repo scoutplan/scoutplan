@@ -1,7 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe "Events", type: :request do
-  describe "GET /index" do
-    pending "add some examples (or delete) #{__FILE__}"
-  end
+  # before do
+  #   @event = FactoryBot.create(:event, :draft)
+  #   ap @event
+  # end
+
+  # describe "GET /index" do
+  #   get "/unit/#{@event.unit.id}/events"
+  # end
+
+  # describe 'POST /create' do
+  # end
+
+  # describe 'POST /publish' do
+  #   get "/events/#{@event.id}"
+  # end
 end

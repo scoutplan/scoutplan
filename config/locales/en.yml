@@ -61,6 +61,7 @@ en:
     index:
       showing_some: 'Showing next 3 months. %{link}'
       show_all: 'Show everything'
+      no_events: 'No events are planned right now.'
 
     show:
       description_empty: "There's no description for this event yet."
