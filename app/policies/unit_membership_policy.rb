@@ -5,7 +5,7 @@ class UnitMembershipPolicy < UnitContextPolicy
   end
 
   def index?
-    is_member? && is_admin?
+    is_admin?
   end
 
   def show?
@@ -18,5 +18,9 @@ class UnitMembershipPolicy < UnitContextPolicy
 
   def edit?
     true
+  end
+
+  def new?
+    is_admin?
   end
 end
