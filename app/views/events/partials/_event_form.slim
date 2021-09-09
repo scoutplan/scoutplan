@@ -58,11 +58,6 @@
             = f.label :location
             = f.text_field :location, class: 'form-control', autocomplete: 'off'
 
-          // description
-          .mb-3
-            = f.label :description
-            = f.text_field :description, class: 'form-control'
-
           // RSVP
           .form-check.mb-3
             = f.check_box :requires_rsvp, class: 'form-check-input', data: { 'bs-toggle' => 'collapse', 'bs-target' => '#rsvp-fields'}
