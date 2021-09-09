@@ -14,13 +14,5 @@ html
     = render partial: 'layouts/partials/notices'
 
     .container
-      - if flash[:alert]
-        .alert.alert-warning
-          = alert
-      - if flash[:notice]
-        .alert.alert-info
-          i.far.fa-circle-info
-          = notice
-
       = render 'layouts/partials/header'
       = yield

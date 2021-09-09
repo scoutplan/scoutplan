@@ -58,6 +58,7 @@ en:
     draft-warning: "This event is a draft, only visible to Unit Administrators & Event Organizers. When you're ready, %{href} to make it visible to everyone in %{unit_name}."
     publish: 'Publish'
     publish_message: "%{title} was published"
+    update_confirmation: "%{title} was updated"
 
     index:
       showing_some: 'Showing next 3 months. %{link}'
@@ -66,10 +67,11 @@ en:
       draft:        'Draft'
 
     show:
-      description_empty:  "There's no description for this event yet."
-      description_cta:    'Write one now.'
-      confirm_publish:    'Publishing will make this event visible to all members. Are you sure you want to publish it?'
-      published:          'This event is published'
+      description_empty:      "There's no description for this event yet."
+      description_cta:        'Write one now.'
+      confirm_publish:        'Publishing will make this event visible to all members. Are you sure you want to publish it?'
+      published:              'This event is published'
+      edit_description_title: 'Edit Event Description'
 
   members:
     name:             'Name'
@@ -106,3 +108,4 @@ en:
         update_series: 'all events in the series'
         rsvp_save: 'Send These RSVPs'
         create_confirmation: '%{event_name} was added to the calendar'
+        description_save: 'Save This Description'

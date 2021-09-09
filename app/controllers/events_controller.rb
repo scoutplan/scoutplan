@@ -41,6 +41,13 @@ class EventsController < ApplicationController
     authorize @event
   end
 
+  def update
+    if @event.update!(event_params)
+      params[:notice] = t('events.update_confirmation', title: @event.title)
+      redirect_to @event
+    end
+  end
+
   def organize
     authorize @event
     @non_respondents = @event.unit.members - @event.rsvps.collect(&:user)
@@ -55,7 +62,7 @@ class EventsController < ApplicationController
 
 
   def rsvp
-    flash[:toast] = t(:rsvp_posted)
+    flash[:notice] = t(:rsvp_posted)
     redirect_to [@unit, @event]
   end
 

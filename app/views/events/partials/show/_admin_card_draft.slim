@@ -17,12 +17,7 @@
                 i.far.fa-pencil(style="color: darkgray;")
               = t(:event_edit)
 
-        - if @can_edit
-          li.list-group-item
-            = link_to '#eventModal', id: 'edit-description-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
-              .glyph
-                i.far.fa-file-lines(style="color: darkblue;")
-              = t(:description_edit)
+        = render 'events/partials/show/edit_description_link' if @can_edit
 
         - if @can_organize && @event.requires_rsvp
           li.list-group-item
