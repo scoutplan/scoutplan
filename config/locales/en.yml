@@ -78,6 +78,8 @@ en:
     type:             'Type'
     parent_guardian:  'Guardian(s)'
     status:           'Status'
+    index:
+      add_a_member: 'Add a Member'
 
   event_categories:
     camping:          'Camping'

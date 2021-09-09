@@ -1,5 +1,10 @@
-tr
+tr.member-row(data-href="#{member_path(unit_membership)}")
   td = unit_membership.member.full_name
-  td = unit_membership.member.type
+  td
+    div(class="badge bg-secondary #{ unit_membership.member.type.downcase }-member")
+      = unit_membership.member.type
+  td
+    div(class="badge bg-secondary #{ unit_membership.status }-member")
+      = unit_membership.status.titleize
+
   td = (unit_membership.member.parents.map(&:full_name)).join(', ')
-  td = unit_membership.status

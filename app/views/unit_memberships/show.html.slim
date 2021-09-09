@@ -1,0 +1,6 @@
+h1 = @target_membership.full_name
+
+- if @user.children.count.positive?
+  ul
+    - @user.children.each do |child|
+      li = link_to child.full_name, member_path(child)

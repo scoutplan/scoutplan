@@ -1,11 +1,27 @@
 h1 = @unit.name
 
-table
+= link_to t('members.index.add_a_member'), new_unit_member_path(@unit), class: 'btn btn-success'
+
+table.table-hover
   thead
     tr
       th = t('members.name')
-      th = t('members.type')
+      th
+      th
       th = t('members.parent_guardian')
-      th = t('members.status')
   tbody
     = render @unit_memberships
+
+javascript:
+  var rows = document.getElementsByClassName('member-row');
+  for(const row of rows) {
+    row.addEventListener('click', function(elem) {
+      var href = this.dataset.href;
+      window.location = href;
+    });
+  }
+
+scss:
+  .member-row td {
+    cursor: pointer;
+  }
