@@ -80,6 +80,8 @@ en:
     status:           'Status'
     index:
       add_a_member: 'Add a Member'
+    new:
+      title:        'Add a Member'
 
   event_categories:
     camping:          'Camping'

@@ -1,6 +1,6 @@
 class UnitMembershipsController < ApplicationController
-  before_action :find_unit, only: [:index]
-  before_action :find_membership, except: [:index]
+  before_action :find_unit, only: [:index, :new]
+  before_action :find_membership, except: [:index, :new, :create]
 
   def index
     authorize :unit_membership
@@ -14,6 +14,10 @@ class UnitMembershipsController < ApplicationController
 
   def pundit_user
     @membership
+  end
+
+  def new
+    authorize :unit_membership
   end
 
 private

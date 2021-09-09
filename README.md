@@ -28,6 +28,9 @@ See https://codewithhugo.com/docker-compose-local-https/ for inspiration
 * DATABASE_NAME
 * DATABASE_USERNAME
 * DATABASE_PASSWORD
+* REDIS_URL
+* SENTRY_DSN
+* SKYLIGHT_AUTHENTICATION
 
 ## Docker Compose
 

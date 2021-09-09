@@ -1,9 +1,9 @@
 tr.member-row(data-href="#{member_path(unit_membership)}")
   td = unit_membership.member.full_name
-  td
+  td(style="max-width: 0.5rem; padding-right: 0;")
     div(class="badge bg-secondary #{ unit_membership.member.type.downcase }-member")
       = unit_membership.member.type
-  td
+  td(style="max-width: 0.5rem; padding-left: 0;")
     div(class="badge bg-secondary #{ unit_membership.status }-member")
       = unit_membership.status.titleize
 
