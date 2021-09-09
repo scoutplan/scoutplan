@@ -19,6 +19,7 @@ gem "sentry-ruby"
 gem "sentry-rails"
 gem 'sidekiq', '~> 6.1'
 gem 'seedbank', "~> 0.5"
+gem 'skylight'
 gem 'slim', "~> 4.1"
 gem 'trix', "~> 0.10"
 gem 'turbolinks', '~> 5.2'

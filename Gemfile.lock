@@ -245,6 +245,8 @@ GEM
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
+    skylight (5.1.1)
+      activesupport (>= 5.2.0)
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
@@ -318,6 +320,7 @@ DEPENDENCIES
   sentry-rails
   sentry-ruby
   sidekiq (~> 6.1)
+  skylight
   slim (~> 4.1)
   spring (~> 2.1)
   trix (~> 0.10)

@@ -4,4 +4,5 @@ class UnitMembership < ApplicationRecord
   validates_uniqueness_of :user, scope: :unit
   alias_attribute :member, :user
   enum status: { inactive: 0, active: 1 }
+  delegate :full_name, to: :user
 end

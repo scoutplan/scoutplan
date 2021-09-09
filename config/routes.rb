@@ -15,7 +15,10 @@ Rails.application.routes.draw do
 
   resources :units do
     resources :events, only: [:index, :new, :create]
-    resources :unit_memberships, path: 'members', as: 'members'
+    resources :unit_memberships, path: 'members', as: 'members', only: [:index, :new, :create]
+  end
+
+  resources :unit_memberships, path: 'members', as: 'members', only: [:show, :edit, :update, :destroy] do
   end
 
   get 'r(/:id)', to: 'rsvp_tokens#login', as: 'rsvp_response'
