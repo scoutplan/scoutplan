@@ -20,6 +20,7 @@ gem "sentry-rails"
 gem 'sidekiq', '~> 6.1'
 gem 'seedbank', "~> 0.5"
 gem 'slim', "~> 4.1"
+gem 'trix', "~> 0.10"
 gem 'turbolinks', '~> 5.2'
 gem 'webpacker', '~> 5.4'
 

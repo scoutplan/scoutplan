@@ -8,6 +8,8 @@ class Event < ApplicationRecord
   has_many   :event_rsvps
   has_many   :rsvp_tokens
 
+  has_rich_text :description
+
   alias_attribute :rsvps, :event_rsvps
   alias_attribute :category, :event_category
 

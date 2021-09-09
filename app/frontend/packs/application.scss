@@ -1,4 +1,6 @@
 @import "bootstrap";
+@import "trix/dist/trix";
+@import "./actiontext.scss";
 
 body {
   font-family: proxima-nova;
@@ -32,4 +34,16 @@ th.tablet, td.tablet {
 
 th.mobile, td.mobile {
   @extend .d-table-cell, .d-md-none, .d-lg-none, .d-xl-none;
+}
+
+.row main {
+  @extend .col-md-6;
+  @extend .col-lg-7;
+  @extend .col-xl-8;
+}
+
+.row aside {
+  @extend .col-md-6;
+  @extend .col-lg-5;
+  @extend .col-xl-4;
 }

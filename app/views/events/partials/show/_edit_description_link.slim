@@ -1,0 +1,5 @@
+li.list-group-item
+  = link_to '#eventDescriptionModal', id: 'edit-description-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
+    .glyph
+      i.far.fa-file-lines(style="color: darkblue;")
+    = t(:description_edit)

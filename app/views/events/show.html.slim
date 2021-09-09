@@ -2,21 +2,21 @@ header.rsvps.mb-4
 
 = render partial: 'events/partials/show/draft_card'
 
-main
-  h1.mb-4 = @event.title
+.row
+  main
+    h1.mb-4 = @event.title
+    == @event.description
+    = render partial: 'events/partials/show/empty_description' unless @event.description.present?
 
-  .trix-content = @event.description
-
-  = render partial: 'events/partials/show/empty_description' unless @event.description.present?
-
-aside
-  = render partial: @event.published? ? 'events/partials/show/admin_card_published' : 'events/partials/show/admin_card_draft'
-  = render partial: 'events/partials/show/rsvp_card'
-  = render partial: 'events/partials/show/date_time_location_card'
+  aside
+    = render partial: @event.published? ? 'events/partials/show/admin_card_published' : 'events/partials/show/admin_card_draft'
+    = render partial: 'events/partials/show/rsvp_card'
+    = render partial: 'events/partials/show/date_time_location_card'
 
 #modal-forms
   = render 'events/partials/event_form'
   = render 'events/partials/rsvp_form'
+  = render 'events/partials/show/description_form'
 
 scss:
   .dates {
@@ -26,31 +26,6 @@ scss:
 
   .month-name {
     font-weight: 700;
-  }
-
-  .container {
-    max-width: 960px;
-  }
-
-  .toast {
-    background: CadetBlue;
-    color: #fff;
-  }
-
-  main {
-    width: 66%;
-    float: left;
-    padding-right: 45px;
-  }
-
-  main p {
-    font-size: 110%;
-  }
-
-  aside {
-    width: 33%;
-    float: right;
-    font-size: 90%;
   }
 
   aside .card {

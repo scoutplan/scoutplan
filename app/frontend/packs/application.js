@@ -10,6 +10,9 @@ import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 
+import "trix"
+import "@rails/actiontext"
+
 window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js')
 
 Rails.start()

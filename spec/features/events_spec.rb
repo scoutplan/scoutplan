@@ -78,6 +78,16 @@ describe 'events', type: :feature do
         expect(page).to have_content("#{ @event.title } was published")
       end
     end
+
+    describe 'edit description' do
+      it 'allows description edits' do
+        visit event_path(@event)
+        click_button('Edit Event Description')
+        fill_in '#event_description', with: "I can't believe it's not butter!"
+        click_link_or_button 'Save This Description'
+        expect(page).to have_content("Description was updated")
+      end
+    end
   end # admin user
 
   describe 'as a non-admin' do
