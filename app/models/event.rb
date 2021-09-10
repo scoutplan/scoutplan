@@ -17,7 +17,7 @@ class Event < ApplicationRecord
 
   after_create :create_series, if: Proc.new { self.respond_to? :repeats_until }
 
-  enum status: { draft: 0, published: 1 }
+  enum status: { draft: 0, published: 1, cancelled: 2 }
 
   def past?
     starts_at.past?

@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resources :events, only: [:show, :edit, :update, :destroy] do
     member do
       post 'rsvp'
-      get  'cancel'
+      post 'cancel'
       get  'organize'
       post 'publish'
     end

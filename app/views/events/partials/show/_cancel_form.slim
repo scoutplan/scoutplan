@@ -1,0 +1,29 @@
+.modal.fade#event_cancel_modal
+  .modal-dialog
+    .modal-content
+      = form_tag cancel_event_path(@event) do
+        .modal-header
+          h5.modal-title = t('events.show.cancel_title')
+          button.btn-close(type="button" data-bs-dismiss="modal")
+
+        .modal-body
+          = t('events.show.cancel.notify_title')
+          .form-check
+            = radio_button_tag :notify, :everyone, true, class: 'form-check-input'
+            = label_tag :notify_everyone,
+              t('events.show.cancel.everyone',
+              count: @event.unit.memberships.active.count,
+              unit_name: @event.unit.name),
+              class: 'form-check-label'
+          - if @event.rsvps.accepted.count.positive?
+            .form-check
+              = radio_button_tag :notify, :accepted, true, class: 'form-check-input'
+              = label_tag :notify_accepted, t('events.show.cancel.accepted', count: @event.rsvps.accepted.count), class: 'form-check-label'
+          .form-check
+            = radio_button_tag :notify, :none, false, class: 'form-check-input'
+            = label_tag :notify_none, t('events.show.cancel.none'), class: 'form-check-label'
+
+        // form buttons
+        .modal-footer
+          = submit_tag t('events.show.cancel_button'), class: 'btn btn-danger', id: 'rsvp_submit'
+          button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('events.show.cancel_cancel')

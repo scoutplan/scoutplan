@@ -60,10 +60,18 @@ class EventsController < ApplicationController
     redirect_to @event
   end
 
-
   def rsvp
     flash[:notice] = t(:rsvp_posted)
     redirect_to [@unit, @event]
+  end
+
+  # POST cancel
+  def cancel
+    @event.status = :cancelled
+    if @event.save!
+      flash[:notice] = t('events.show.cancel.confirmation', event_title: @event.title)
+      redirect_to unit_events_path(@event.unit)
+    end
   end
 
   # this override is needed to pass the membership instead of the user
