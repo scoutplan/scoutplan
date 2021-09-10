@@ -1,10 +1,6 @@
 class EventPolicy < UnitContextPolicy
   def initialize(membership, event)
     @membership = membership
-
-ap '^^^^^'
-ap @membership
-
     @event = event
   end
 
