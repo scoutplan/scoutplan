@@ -65,6 +65,7 @@ en:
       show_all:     'Show everything'
       no_events:    'No events are planned right now.'
       draft:        'Draft'
+      cancelled:    'Cancelled'
 
     show:
       description_empty:      "There's no description for this event yet."
@@ -72,6 +73,15 @@ en:
       confirm_publish:        'Publishing will make this event visible to all members. Are you sure you want to publish it?'
       published:              'This event is published'
       edit_description_title: 'Edit Event Description'
+      cancel_title:           'Cancel This Event'
+      cancel_button:          'Yes, Cancel This Event'
+      cancel_cancel:          "No, Don't Cancel"
+      cancel:
+        notify_title:         "Send a cancellation notice to:"
+        everyone:             "All active %{unit_name} members (%{count})"
+        accepted:             "'Going' RSVPS (%{count})"
+        none:                 "Don't send a notification"
+        confirmation:         "%{event_title} has been cancelled"
 
   members:
     name:             'Name'

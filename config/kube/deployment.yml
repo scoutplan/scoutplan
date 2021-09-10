@@ -33,6 +33,11 @@ spec:
                 secretKeyRef:
                   name: scoutplan-production
                   key: SECRET_KEY_BASE
+            - name: SKYLIGHT_AUTHENTICATION
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: SKYLIGHT_AUTHENTICATION
           envFrom:
           - configMapRef:
               name: scoutplan-production-config

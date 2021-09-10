@@ -31,6 +31,8 @@ tr.event(class="#{ classes }" data-href="#{ event_path(event) }" onclick="window
   td.status
     - if event.draft?
       span.badge.bg-secondary =t('events.index.draft')
+    - if event.cancelled?
+      span.badge.bg-warning =t('events.index.cancelled')
   td.location.tablet  = event.location
   td.action.desktop
     - if event.rsvp_open?

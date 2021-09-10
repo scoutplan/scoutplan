@@ -34,7 +34,7 @@
 
         - if @can_edit
           li.list-group-item
-            = link_to cancel_event_path, class: 'dropdown-item' do
+            = link_to '#event_cancel_modal', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
               .glyph
                 i.fas.fa-xmark(style="color: red;")
               = t("helpers.label.event.cancel_event")
