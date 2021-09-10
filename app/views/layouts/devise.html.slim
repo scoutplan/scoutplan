@@ -11,9 +11,20 @@ html
     = stylesheet_link_tag "https://use.typekit.net/#{ ENV['ADOBE_FONT_KIT_ID'] }.css"
 
   body
-    = render partial: 'layouts/partials/notices'
-
     .container
-      = render 'layouts/partials/header'
+      - if flash[:notice]
+        .alert.alert-info
+          = flash[:notice]
+
+      - if flash[:alert]
+        .alert.alert-warning
+          = flash[:alert]
+
       = yield
+
       = render 'layouts/partials/footer'
+
+scss:
+  .container {
+    max-width: 25rem;
+  }

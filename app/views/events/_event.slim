@@ -1,6 +1,10 @@
 - presenter = EventPresenter.new(event)
-- classes = "event-row #{event.category.name.parameterize}-event"
-- classes += " distant-future" if event.starts_at > 3.months.from_now
+- classes   = "event-row"
+- classes += " event-#{event.category.name.parameterize}"
+- classes += " event-#{event.status}"
+- classes += " event-future event-hidden" if event.starts_at > 3.months.from_now
+- classes += " event-past   event-hidden" if event.starts_at.past?
+- classes += " event-hidden" if event.cancelled?
 
 - if @current_month.nil? || @current_month != event.starts_at.month
   tr.mobile

@@ -1,6 +1,6 @@
 style
   - @unit.event_categories.each do |category|
-    = "tr.event.#{ category.name.parameterize }-event .glyph svg { color: #{ category.color } }\n"
+    = "tr.event.event-#{ category.name.parameterize } .glyph svg { color: #{ category.color } }\n"
 
 h1 #{@unit.name} Events
 
@@ -46,9 +46,9 @@ javascript:
 
   var showEverythingLink = document.getElementById('show_all_link');
   showEverythingLink.addEventListener('click', function(event) {
-    var futureRows = document.getElementsByClassName('distant-future');
+    var futureRows = document.getElementsByClassName('event-future');
     for (const elem of futureRows) {
-      elem.classList.remove('distant-future');
+      elem.classList.remove('event-hidden');
     }
 
     document.getElementById('show_everything_row').style.display = 'none';
@@ -59,7 +59,7 @@ javascript:
   });
 
 scss:
-  .distant-future {
+  .event-hidden {
     display: none;
   }
 
@@ -118,7 +118,7 @@ scss:
    20%, 40%, 60%, 80% {transform: translateX(5px);}
   }
 
-  tr.camping-event {
+  tr.event-camping {
     td:first-child {
       border-left-color: green;
     }
@@ -138,7 +138,7 @@ scss:
     }
   }
 
-  tr.troop_meeting-event {
+  tr.event-troop_meeting {
     td:first-child {
       border-left-color: FireBrick;
     }

@@ -92,6 +92,8 @@ en:
       add_a_member: 'Add a Member'
     new:
       title:        'Add a Member'
+    show:
+      children:       'Children'
 
   event_categories:
     camping:          'Camping'

@@ -1,9 +1,9 @@
 .modal.fade#membership_modal
   .modal-dialog
     .modal-content
-      = form_for [@unit, @membership] do |f|
+      = form_for unit_members_path([@unit, @membership]) do |f|
         .modal-header
-          - if @new_membership.new_record?
+          - if @membership.new_record?
             h5.modal-title = t(:event_add)
           - else
             h5.modal-title = t(:event_update)
@@ -13,7 +13,7 @@
 
         // form buttons
         .modal-footer
-          - if @event.new_record?
+          - if @membership.new_record?
             = f.submit t('helpers.label.event.accept_button'), class: 'btn btn-primary', id: 'event_submit'
             button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_button')
 
