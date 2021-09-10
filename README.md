@@ -31,6 +31,7 @@ See https://codewithhugo.com/docker-compose-local-https/ for inspiration
 * REDIS_URL
 * SENTRY_DSN
 * SKYLIGHT_AUTHENTICATION
+* SKYLIGHT_ENABLED (set to true)
 
 ## Docker Compose
 

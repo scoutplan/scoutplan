@@ -4,7 +4,7 @@ class EventsController < ApplicationController
   before_action :find_event, except: [ :index, :edit, :create, :new ]
 
   def index
-    @events = UnitEventQuery.new(@unit, @membership).execute
+    @events = UnitEventQuery.new(@unit, @current_membership).execute
     build_prototype_event
   end
 
@@ -69,7 +69,7 @@ class EventsController < ApplicationController
   # this override is needed to pass the membership instead of the user
   # as the object to be evaluated in Pundit policies
   def pundit_user
-    @membership
+    @current_membership
   end
 
 private
@@ -91,16 +91,16 @@ private
   # for index, new, and create
   def find_unit
     @unit = Unit.find(params[:unit_id])
-    @display_unit = @unit
-    @membership = @display_unit.membership_for(current_user)
+    @current_unit = @unit
+    @current_membership = @unit.membership_for(current_user)
   end
 
   # for show, edit, update, destroy...important that @unit
   # is *not* set for those actions
   def find_event
     @event = Event.find(params[:id])
-    @display_unit = @event.unit
-    @membership = @event.unit.membership_for(current_user)
+    @current_unit = @event.unit
+    @current_membership = @current_unit.membership_for(current_user)
     @presenter = EventPresenter.new(@event)
   end
 
