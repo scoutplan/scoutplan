@@ -1,0 +1,23 @@
+.modal.fade#membership_modal
+  .modal-dialog
+    .modal-content
+      = form_for [@unit, @membership] do |f|
+        .modal-header
+          - if @new_membership.new_record?
+            h5.modal-title = t(:event_add)
+          - else
+            h5.modal-title = t(:event_update)
+          button.btn-close(type="button" data-bs-dismiss="modal")
+        .modal-body
+
+
+        // form buttons
+        .modal-footer
+          - if @event.new_record?
+            = f.submit t('helpers.label.event.accept_button'), class: 'btn btn-primary', id: 'event_submit'
+            button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_button')
+
+          - else # updating an existing record
+            = f.submit t('helpers.label.event.update_button'), class: 'btn btn-primary', id: 'event_submit', style: 'margin-right: 10px;'
+            button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_update')
+

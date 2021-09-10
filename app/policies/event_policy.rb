@@ -1,10 +1,18 @@
 class EventPolicy < UnitContextPolicy
   def initialize(membership, event)
-    super(membership, event)
+    @membership = membership
+
+ap '^^^^^'
+ap @membership
+
     @event = event
   end
 
   def show?
+
+puts '$$$$$'
+ap @membership
+
     @event.published? || is_admin?
   end
 

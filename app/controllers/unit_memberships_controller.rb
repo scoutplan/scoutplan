@@ -1,5 +1,5 @@
 class UnitMembershipsController < ApplicationController
-  before_action :find_unit, only: [:index, :new]
+  before_action :find_unit, only: [:index, :new, :create]
   before_action :find_membership, except: [:index, :new, :create]
 
   def index
@@ -10,10 +10,11 @@ class UnitMembershipsController < ApplicationController
   def show
     authorize @target_membership
     @user = @target_membership.user
+    @new_membership = UnitMembership.new
   end
 
   def pundit_user
-    @membership
+    @current_membership
   end
 
   def new
@@ -25,12 +26,11 @@ private
   def find_membership
     @target_membership = UnitMembership.find(params[:id])
     @unit = @display_unit = @target_membership.unit
-    @membership = @unit.membership_for(current_user)
+    @current_membership = @unit.membership_for(current_user)
   end
 
   def find_unit
     @unit = Unit.find(params[:unit_id])
-    @display_unit = @unit
-    @membership = @unit.membership_for(current_user)
+    @current_membership = @unit.membership_for(current_user)
   end
 end

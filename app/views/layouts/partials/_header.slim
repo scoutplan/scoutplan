@@ -1,7 +1,7 @@
 header.primary
-  = @unit&.name || @display_unit&.name
-  = link_to 'Events', unit_events_path(@display_unit)
-  = link_to 'Members', unit_members_path(@display_unit) if policy(:unit_membership).index?
+  = @current_unit.name
+  = link_to 'Events',  unit_events_path(@current_unit)
+  = link_to 'Members', unit_members_path(@current_unit) if policy(:unit_membership).index?
 
   .float-end
     .dropdown
