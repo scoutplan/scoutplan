@@ -5,6 +5,9 @@ class EventsController < ApplicationController
 
   def index
     @events = UnitEventQuery.new(@unit, @current_membership).execute
+    @presenter = EventPresenter.new
+    @current_family = current_user.family
+    @current_year = @current_month = nil
     build_prototype_event
   end
 
@@ -13,6 +16,7 @@ class EventsController < ApplicationController
     @rsvps = @event.event_rsvps.where(user: current_user)
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).organize?
+    @current_family = current_user.family
   end
 
   def create
@@ -109,7 +113,7 @@ private
     @event = Event.find(params[:id])
     @current_unit = @event.unit
     @current_membership = @current_unit.membership_for(current_user)
-    @presenter = EventPresenter.new(@event)
+    @presenter = EventPresenter.new(event: @event)
   end
 
   # permitted parameters

@@ -1,39 +1,43 @@
+// TODO: move this to dynamic stylesheet
 style
   - @unit.event_categories.each do |category|
     = "tr.event.event-#{ category.name.parameterize } .glyph svg { color: #{ category.color } }\n"
 
-h1 #{@unit.name} Events
+= render 'events/partials/index/header'
 
-- if policy(:event).create?
-  = link_to t(:event_add), '#eventModal', id: 'new-event-button', class: 'btn btn-success', data: { 'bs-toggle' => 'modal' }
+main.pt-4
+  = render partial: 'events/partials/index/no_events' if @events.count.zero?
 
-= render partial: 'events/partials/index/no_events' if @events.count.zero?
+  - if @events.count.positive?
+    table.table-clickable
+      thead
+        tr
+          / th.month.tablet
+          th.date = t(:event_date)
+          th.days
+          th.glyph
+          th.title =t(:event_title)
+          th.status
+          th.location.tablet =t(:event_location)
+          th.action.desktop =t(:event_rsvp)
+      tbody
+        = render @events
 
-- unless @events.count.zero?
 
-  p = link_to t(:event_subscribe), ''
-
-  table.table-clickable
-    thead
-      tr
-        th.month.tablet
-        th.date = t(:event_date)
-        th.days
-        th.glyph
-        th.title =t(:event_title)
-        th.status
-        th.location.tablet =t(:event_location)
-        th.action.desktop =t(:event_rsvp)
-    tbody
-      = render @events
-      tr#show_everything_row
-        td(colspan="100" align="center") =t('events.index.showing_some', link: link_to(t('events.index.show_all'), '#', id: 'show_all_link')).html_safe
-
+  p.text-center#show-future-events-wrapper
+    = t('events.index.showing_some', link: link_to(t('events.index.show_all'), '#', class: 'toggle-body-class', data: { 'body-class' => 'showing-future-events' })).html_safe
 
 = render 'events/partials/event_form'
 
 
 javascript:
+  document.querySelectorAll('.toggle-body-class').forEach(function(elem) {
+    elem.addEventListener('click', function(event) {
+      const className = this.dataset.bodyClass;
+      document.body.classList.toggle(className);
+      event.preventDefault();
+    });
+  });
 
   // links inside clickable rows should take priority, so we stop
   // propagation on them
@@ -59,8 +63,76 @@ javascript:
   });
 
 scss:
-  .event-hidden {
+  .event-month-boundary {
+    background-color: #f3f3f3;
+  }
+
+  tr.no-hover:hover td {
+    background-color: inherit !important;
+  }
+
+  .menu-glyph {
+    display: inline-block;
+    width: 1.5rem;
+  }
+
+  .menu-glyph-wrapper {
     display: none;
+  }
+
+  .event-row {
+    display: table-row;
+    transition: height 2s ease;
+  }
+
+  .event-past, .event-cancelled, .event-future {
+    display: none;
+  }
+
+  body.showing-cancelled-events {
+    .event-cancelled {
+      display: table-row;
+    }
+
+    #show-cancelled-events-link {
+      .menu-glyph-wrapper {
+        display: inline-block;
+      }
+    }
+  }
+
+  body.showing-only-rsvp-events {
+    .event-row:not(.event-rsvp) {
+      display: none;
+    }
+
+    #show-only-rsvp-events-link {
+      .menu-glyph-wrapper {
+        display: inline-block;
+      }
+    }
+  }
+
+  body.showing-past-events {
+    .event-past {
+      display: table-row;
+    }
+
+    #show-past-events-link {
+      .menu-glyph-wrapper {
+        display: inline-block;
+      }
+    }
+  }
+
+  body.showing-future-events {
+    .event-future {
+      display: table-row;
+    }
+
+    #show-future-events-wrapper {
+      display: none;
+    }
   }
 
   .event-rsvp-link {
@@ -159,10 +231,6 @@ scss:
 
   .rsvp-declined svg {
     color: red;
-  }
-
-  th.action {
-    text-align: center;
   }
 
   td.action {

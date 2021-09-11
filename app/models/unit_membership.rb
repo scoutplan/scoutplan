@@ -5,4 +5,8 @@ class UnitMembership < ApplicationRecord
   alias_attribute :member, :user
   enum status: { inactive: 0, active: 1 }
   delegate :full_name, to: :user
+
+  def admin?
+    role == 'admin'
+  end
 end

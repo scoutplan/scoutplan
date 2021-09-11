@@ -44,7 +44,6 @@ en:
   event_date: "Date"
   event_title: "Title"
   event_location: "Location"
-  event_subscribe: 'Add this Schedule to your Google Calendar, Outlook, or iCal...'
   event_category_prompt: '- select -'
   event_rsvp: 'RSVP'
   rsvp_dialog_title: 'My RSVPs'
@@ -61,11 +60,17 @@ en:
     update_confirmation: "%{title} was updated"
 
     index:
-      showing_some: 'Showing next 3 months. %{link}'
+      showing_some: 'Showing events for the upcoming 3 months. %{link}'
       show_all:     'Show everything'
       no_events:    'No events are planned right now.'
       draft:        'Draft'
       cancelled:    'Cancelled'
+      view:
+        dropdown:   'Options'
+        cancelled:  'Show cancelled events'
+        rsvps:      'Show only RSVP events'
+        past:       'Show past events'
+        subscribe:  'Add this Schedule to your calendar'
 
     show:
       description_empty:      "There's no description for this event yet."
@@ -77,6 +82,7 @@ en:
       cancel_button:          'Yes, Cancel This Event'
       cancel_cancel:          "No, Don't Cancel"
       cancel:
+        notice:               "Cancelling a published event will remove it from the calendar. Are you sure you want to proceed?"
         notify_title:         "Send a cancellation notice to:"
         everyone:             "All active %{unit_name} members (%{count})"
         accepted:             "'Going' RSVPS (%{count})"
