@@ -5,10 +5,6 @@ class EventPolicy < UnitContextPolicy
   end
 
   def show?
-
-puts '$$$$$'
-ap @membership
-
     @event.published? || is_admin?
   end
 

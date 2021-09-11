@@ -1,6 +1,10 @@
 class EventPresenter
-  def initialize(event)
-    @event = event
+  attr_accessor :event
+
+  def initialize(**options)
+    options.each do |k,v|
+      instance_variable_set("@#{k}", v) unless v.nil?
+    end
   end
 
   def category_to_fa_glyph(category)
@@ -12,10 +16,6 @@ class EventPresenter
     when 'court_of_honor' then
       return 'fas fa-medal'
     end
-  end
-
-  def initialize(event)
-    @event = event
   end
 
   def dates_to_s
@@ -46,5 +46,16 @@ class EventPresenter
 
   def is_single_day?
     @event.starts_at.year == @event.ends_at.year && @event.starts_at.day == @event.ends_at.day
+  end
+
+  def row_classes
+    classes  = "event-row"
+    classes += " event-#{@event.category.name.parameterize}"
+    classes += " event-#{@event.status}"
+    classes += " event-future" if @event.starts_at > 3.months.from_now
+    classes += " event-past " if @event.starts_at.past?
+    classes += " event-rsvp" if @event.requires_rsvp?
+
+    classes
   end
 end

@@ -7,7 +7,8 @@
           button.btn-close(type="button" data-bs-dismiss="modal")
 
         .modal-body
-          = t('events.show.cancel.notify_title')
+          p = t('events.show.cancel.notice')
+          h6 = t('events.show.cancel.notify_title')
           .form-check
             = radio_button_tag :notify, :everyone, true, class: 'form-check-input'
             = label_tag :notify_everyone,

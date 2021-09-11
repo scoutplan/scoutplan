@@ -1,0 +1,37 @@
+header.mt-4.mb-4.clearfix
+  .float-start
+    h1 #{@unit.name} Events
+
+  .float-end
+    - if policy(:event).create?
+      = link_to t(:event_add), '#eventModal', id: 'new-event-button', class: 'btn btn-success me-3', data: { 'bs-toggle' => 'modal' }, style: "display: inline-block;"
+
+    .dropdown.ml-3(style="display: inline-block;")
+      = link_to t('events.index.view.dropdown'), '#', class: 'btn btn-outline-secondary dropdown-toggle', data: { 'bs-toggle' => 'dropdown' }, style: "display: inline-block;"
+      ul.dropdown-menu.dropdown-menu-end.dropdown-menu-dark
+        - if @current_membership.admin?
+          li = link_to '#', class: 'dropdown-item toggle-body-class', data: { 'body-class' => 'showing-cancelled-events' }, id: 'show-cancelled-events-link' do
+            .menu-glyph
+              .menu-glyph-wrapper
+                i.far.fa-check
+            = t('events.index.view.cancelled')
+
+        li = link_to '#', class: 'dropdown-item toggle-body-class', data: { 'body-class' => 'showing-only-rsvp-events' }, id: 'show-only-rsvp-events-link' do
+          .menu-glyph
+            .menu-glyph-wrapper
+              i.far.fa-check
+          = t('events.index.view.rsvps')
+
+        li = link_to '#', class: 'dropdown-item toggle-body-class', data: { 'body-class' => 'showing-past-events' }, id: 'show-past-events-link' do
+          .menu-glyph
+            .menu-glyph-wrapper
+              i.far.fa-check
+          = t('events.index.view.past')
+
+        li
+          hr.dropdown-divider
+
+        li = link_to '#', class: 'dropdown-item' do
+          .menu-glyph
+            i.far.fa-calendar
+          = t('events.index.view.subscribe')
