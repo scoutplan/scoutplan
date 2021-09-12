@@ -21,7 +21,7 @@
 
           .mb-3
             = f.label :title
-            = f.text_field :title, class: 'form-control'
+            = f.text_field :title, { class: 'form-control', autocomplete: 'off', style: 'text-transform: capitalize' }
 
           // from date
           .mb-3
@@ -59,7 +59,7 @@
           // location
           .mb-3
             = f.label :location
-            = f.text_field :location, class: 'form-control', autocomplete: 'off'
+            = f.text_field :location, { class: 'form-control', autocomplete: 'off', style: 'text-transform: capitalize' }
 
           // RSVP
           .form-check.mb-3
