@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventRsvp < ApplicationRecord
   belongs_to :event
   belongs_to :user

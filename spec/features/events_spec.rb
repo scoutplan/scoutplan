@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe 'events', type: :feature do
   before :each do
     User.where(email: 'test_admin@scoutplan.org').destroy_all
@@ -75,7 +77,7 @@ describe 'events', type: :feature do
       it 'publishes & displays confirmation message' do
         visit event_path(@event)
         click_button('Publish')
-        expect(page).to have_content("#{ @event.title } was published")
+        expect(page).to have_content("#{@event.title} was published")
       end
     end
 
@@ -88,7 +90,7 @@ describe 'events', type: :feature do
         # expect(page).to have_content("Description was updated")
       end
     end
-  end # admin user
+  end
 
   describe 'as a non-admin' do
     before :each do

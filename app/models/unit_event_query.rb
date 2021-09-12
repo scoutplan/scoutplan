@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 class UnitEventQuery
-  attr_accessor :search_term
-  attr_accessor :start_date
+  attr_accessor :search_term, :start_date
 
   def initialize(unit, membership)
     @unit = unit

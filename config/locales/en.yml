@@ -30,9 +30,10 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  you_parenths: '(you)'
   app_name: 'Scoutplan'
   administration: 'Administration'
-  rsvps: "Your Family's RSVPs"
+  rsvps: "Your RSVPs"
   dates_times_locations: 'Date, Time & Location'
   app_name: 'Scoutplan'
   hello: "Hello world"
@@ -71,6 +72,9 @@ en:
         rsvps:      'Show only RSVP events'
         past:       'Show past events'
         subscribe:  'Add this Schedule to your calendar'
+      event_row:
+        rsvp_respond: 'Respond'
+        rsvp_change:  'Change'
 
     show:
       description_empty:      "There's no description for this event yet."

@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class EventsController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_unit, only: [ :index, :create, :new ]
-  before_action :find_event, except: [ :index, :edit, :create, :new ]
+  before_action :find_unit, only: %i[index create new]
+  before_action :find_event, except: %i[index edit create new]
 
   def index
     @events = UnitEventQuery.new(@unit, @current_membership).execute
@@ -22,11 +24,9 @@ class EventsController < ApplicationController
   def create
     authorize :event, :create?
 
-    @event = @unit.events.new(
-        event_params,
-        starts_at: ScoutplanUtilities.compose_datetime(params[:starts_at_d], params[:starts_at_t]),
-        ends_at:   ScoutplanUtilities.compose_datetime(params[:ends_at_d], params[:ends_at_t]),
-    )
+    @event = @unit.events.new(event_params)
+    @event.starts_at = ScoutplanUtilities.compose_datetime(params[:starts_at_d], params[:starts_at_t])
+    @event.ends_at = ScoutplanUtilities.compose_datetime(params[:ends_at_d], params[:ends_at_t])
 
     # TODO: ditch this and add a repeats_until attribute on Event
     # dynamically add a new attribute to signal this is a series parent
@@ -70,13 +70,11 @@ class EventsController < ApplicationController
     redirect_to @event
   end
 
+  # this is somewhat hacky. Nested has_many through forms weren't working. This is the hackaround.
   def rsvp
     params[:event][:users].each do |user_id, values|
-ap values
-
       response = values[:event_rsvp][:response]
       @event.rsvps.create_with(response: response).find_or_create_by(user_id: user_id)
-      # @event.rsvps.upsert({user_id: user_id, response: response}, unique_by: :user_id)
     end
 
     flash[:notice] = t(:rsvp_posted)
@@ -98,7 +96,7 @@ ap values
     @current_membership
   end
 
-private
+  private
 
   def build_prototype_event
     @event = @unit.events.new(
@@ -127,13 +125,12 @@ private
     @event = Event.includes(:event_rsvps).find(params[:id])
     @current_unit = @event.unit
     @current_membership = @current_unit.membership_for(current_user)
-    @presenter = EventPresenter.new(event: @event)
+    @presenter = EventPresenter.new(event: @event, current_user: current_user)
   end
 
   # permitted parameters
   def event_params
-
-ap params
+    ap params
 
     params.require(:event).permit(
       :title,

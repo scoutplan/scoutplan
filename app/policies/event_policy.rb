@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventPolicy < UnitContextPolicy
   def initialize(membership, event)
     @membership = membership

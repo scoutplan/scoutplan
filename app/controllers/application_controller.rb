@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   include Pundit
   before_action :authenticate_user!
   # before_action :set_cors_headers
 
-  def new_session_path(scope)
+  def new_session_path(_scope)
     new_user_session_path
   end
 

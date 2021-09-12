@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Unit < ApplicationRecord
   has_many :events
   has_many :event_categories
@@ -15,14 +17,14 @@ class Unit < ApplicationRecord
     'events@troop2scarsdale.org'
   end
 
-private
+  private
 
   def populate_categories
     EventCategory.default.each do |category|
-      self.event_categories.create(
+      event_categories.create(
         name: category.name,
         glyph: category.glyph,
-        color: category.color,
+        color: category.color
       )
     end
   end

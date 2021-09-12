@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UnitContextPolicy < ApplicationPolicy
   # attr_reader :user, :unit
 
@@ -12,7 +14,8 @@ class UnitContextPolicy < ApplicationPolicy
     @membership = user
   end
 
-protected
+  protected
+
   def is_member?
     @membership.present?
   end

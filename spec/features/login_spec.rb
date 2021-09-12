@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe 'the sign-in process', type: :feature do
   before :each do
     User.destroy_all

@@ -7,7 +7,7 @@
         - current_user.family.each do |user|
           - rsvp = @event.rsvps.find_by(user: user)
           tr
-            td = user.first_name
+            td = @presenter.family_context_name(user)
             td = rsvp&.response&.titleize || 'No response'
 
       button(class="btn btn-outline-info w-100 mt-4" data-bs-target="#eventRsvpModal" data-bs-toggle="modal")

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # this non-restful controller intercepts "passwordless" RSVPs,
 # typically from email links
 
