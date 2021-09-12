@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :child_relationships, foreign_key: 'parent_id', class_name: 'UserRelationship', dependent: :destroy
   has_many :rsvp_tokens, dependent: :destroy
 
+  accepts_nested_attributes_for :event_rsvps
+
   def full_name
     "#{first_name} #{last_name}"
   end

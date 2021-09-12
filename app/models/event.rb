@@ -5,7 +5,8 @@ class Event < ApplicationRecord
   belongs_to :series_parent, class_name: 'Event', optional: true
   belongs_to :event_category
   has_many   :series_children, class_name: 'Event'
-  has_many   :event_rsvps
+  has_many   :event_rsvps, inverse_of: :event
+  has_many   :users, through: :event_rsvps
   has_many   :rsvp_tokens
 
   has_rich_text :description
@@ -13,8 +14,12 @@ class Event < ApplicationRecord
   alias_attribute :rsvps, :event_rsvps
   alias_attribute :category, :event_category
 
+  accepts_nested_attributes_for :users
+
   validates_presence_of :title, :starts_at, :ends_at
 
+  # TODO: change this. It's dumb. Let's just add a repeats_until attribute to
+  # the Event model & be done with it
   after_create :create_series, if: Proc.new { self.respond_to? :repeats_until }
 
   enum status: { draft: 0, published: 1, cancelled: 2 }

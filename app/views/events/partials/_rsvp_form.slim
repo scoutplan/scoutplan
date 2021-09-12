@@ -4,7 +4,7 @@
 .modal.fade#eventRsvpModal
   .modal-dialog
     .modal-content
-      = form_tag rsvp_event_path(@event) do
+      = form_for @event, url: { action: :rsvp } do |f|
         .modal-header
           h5.modal-title = t(:rsvp_dialog_title)
           button.btn-close(type="button" data-bs-dismiss="modal")
@@ -13,18 +13,23 @@
           table.table
             tbody
               - current_user.family.each do |user|
-                - rsvp = @event.rsvps.find_by(user: user)
+                - existing_rsvp = @event.rsvps.find_by(user: user)
+                - rsvp = @event.rsvps.build(user: user, response: existing_rsvp&.response)
                 tr
-                  td = user.first_name
-                  td
-                    .float-end
-                      .form-check.form-check-inline
-                        = radio_button_tag "users[#{user.id}]_response", 'accepted', rsvp&.accepted?, class: 'form-check-input'
-                        = label_tag "users[#{user.id}_response_accepted", t(:rsvp_accept), { class: 'form-check-label' }
+                  = f.fields_for 'users[]', user do |user_fields|
+                    = user_fields.fields_for 'event_rsvp', rsvp do |rsvp_fields|
+                      td = user.first_name
+                      td
+                        .float-end
+                          .form-check.form-check-inline
+                            = rsvp_fields.radio_button :response, :accepted, class: 'form-check-input'
+                            = rsvp_fields.label :response, :accepted, value: :accepted, class: 'form-check-label' do
+                              = t('rsvp_accept')
 
-                      .form-check.form-check-inline
-                        = radio_button_tag "users[#{user.id}]_response", 'declined', rsvp&.declined?, class: 'form-check-input'
-                        = label_tag "users[#{user.id}_response_declined", t(:rsvp_decline), { class: 'form-check-label' }
+                          .form-check.form-check-inline
+                            = rsvp_fields.radio_button :response, :declined, class: 'form-check-input'
+                            = rsvp_fields.label :response, :declined, value: :declined, class: 'form-check-label' do
+                              = t('rsvp_decline')
 
         // form buttons
         .modal-footer

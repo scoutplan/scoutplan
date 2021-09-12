@@ -8,7 +8,7 @@
           - rsvp = @event.rsvps.find_by(user: user)
           tr
             td = user.first_name
-            td = rsvp&.response || 'No response'
+            td = rsvp&.response&.titleize || 'No response'
 
       button(class="btn btn-outline-info w-100 mt-4" data-bs-target="#eventRsvpModal" data-bs-toggle="modal")
         = t(:change_rsvp)
