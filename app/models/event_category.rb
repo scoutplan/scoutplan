@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventCategory < ApplicationRecord
   belongs_to :unit, optional: true
   has_many :events

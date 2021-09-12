@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UnitMembershipPolicy < UnitContextPolicy
   def initialize(membership, target_membership)
     super(membership, target_membership)

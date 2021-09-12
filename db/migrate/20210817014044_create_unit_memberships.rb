@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateUnitMemberships < ActiveRecord::Migration[6.1]
   def change
     create_table :unit_memberships do |t|

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class UnitMembershipsController < ApplicationController
-  before_action :find_unit, only: [:index, :new, :create]
-  before_action :find_membership, except: [:index, :new, :create]
+  before_action :find_unit, only: %i[index new create]
+  before_action :find_membership, except: %i[index new create]
 
   def index
     authorize :unit_membership
@@ -22,7 +24,7 @@ class UnitMembershipsController < ApplicationController
     authorize :unit_membership
   end
 
-private
+  private
 
   def find_membership
     @target_membership = UnitMembership.find(params[:id])

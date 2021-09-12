@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RsvpToken < ApplicationRecord
   belongs_to :user
   belongs_to :event
@@ -11,7 +13,7 @@ class RsvpToken < ApplicationRecord
   #   event.unit.memberships.active.each { |membership| RsvpToken.create(user: membership.user, event: self) }
   # end
 
-private
+  private
 
   def generate_token
     self.value = SecureRandom.hex(6)

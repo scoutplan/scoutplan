@@ -1,19 +1,19 @@
+# frozen_string_literal: true
+
 class UnitContextController < ApplicationController
-  before_action :find_unit_info, only: [:index, :new, :create]
+  before_action :find_unit_info, only: %i[index new create]
 
   def current_unit
     Unit.first
   end
 
-  def current_membership
-    @current_membership
-  end
+  attr_reader :current_membership
 
   def pundit_user
     @membership
   end
 
-private
+  private
 
   def find_unit_info
     # TODO: scope this to the current user's memberships

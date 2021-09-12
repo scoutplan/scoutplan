@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 after 'development:units', 'development:users' do
   unit = Unit.first
   User.all.each do |user|

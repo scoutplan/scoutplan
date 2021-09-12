@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
   devise_for :users
   root to: 'home#index'
 
-  resources :events, only: [:show, :edit, :update, :destroy] do
+  resources :events, only: %i[show edit update destroy] do
     member do
       patch 'rsvp'
       post 'cancel'
@@ -14,15 +16,15 @@ Rails.application.routes.draw do
   end
 
   resources :units do
-    resources :events, only: [:index, :new, :create]
-    resources :unit_memberships, path: 'members', as: 'members', only: [:index, :new, :create]
+    resources :events, only: %i[index new create]
+    resources :unit_memberships, path: 'members', as: 'members', only: %i[index new create]
   end
 
-  resources :unit_memberships, path: 'members', as: 'members', only: [:show, :edit, :update, :destroy] do
+  resources :unit_memberships, path: 'members', as: 'members', only: %i[show edit update destroy] do
   end
 
   get 'r(/:id)', to: 'rsvp_tokens#login', as: 'rsvp_response'
   post 'rsvp_tokens/:id/resend', to: 'rsvp_tokens#resend', as: 'rsvp_token_resend'
 
-  mount Sidekiq::Web => "/sidekiq"
+  mount Sidekiq::Web => '/sidekiq'
 end

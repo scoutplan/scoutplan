@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Event < ApplicationRecord
   default_scope { order(starts_at: :asc) }
 
@@ -20,7 +22,7 @@ class Event < ApplicationRecord
 
   # TODO: change this. It's dumb. Let's just add a repeats_until attribute to
   # the Event model & be done with it
-  after_create :create_series, if: Proc.new { self.respond_to? :repeats_until }
+  after_create :create_series, if: proc { respond_to? :repeats_until }
 
   enum status: { draft: 0, published: 1, cancelled: 2 }
 
@@ -32,12 +34,12 @@ class Event < ApplicationRecord
     requires_rsvp && starts_at > DateTime.now
   end
 
-  def has_rsvp_for?(user)
-    event_rsvps.count > 0
+  def has_rsvp_for?(_user)
+    event_rsvps.count.positive?
   end
 
   def series?
-    !new_record? && (series_children.count > 0 || series_siblings.count > 0)
+    !new_record? && (series_children.count.positive? || series_siblings.count.positive?)
   end
 
   def series_children
@@ -46,22 +48,23 @@ class Event < ApplicationRecord
 
   def series_siblings
     return [] unless series_parent_id.present?
+
     Event.where(series_parent_id: series_parent_id)
   end
 
   def rsvp_token_for(user)
-    self.rsvp_tokens.find_by(user: user)
+    rsvp_tokens.find_by(user: user)
   end
 
-private
+  private
 
   # create a weekly series based on @event
   def create_series
-    new_event = self.dup
+    new_event = dup
     new_event.series_parent = self
 
     # TODO: this is hokey...let's just add a repeats_until attribute on the model
-    while new_event.starts_at < self.repeats_until
+    while new_event.starts_at < repeats_until
       new_event.starts_at += 7.days
       new_event.ends_at += 7.days
       new_event.save!

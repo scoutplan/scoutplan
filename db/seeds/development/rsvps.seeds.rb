@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 after 'development:events', 'development:users' do
   user  = User.first
   event = Event.last

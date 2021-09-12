@@ -18,7 +18,7 @@
                 tr
                   = f.fields_for 'users[]', user do |user_fields|
                     = user_fields.fields_for 'event_rsvp', rsvp do |rsvp_fields|
-                      td = user.first_name
+                      td = @presenter.family_context_name(user)
                       td
                         .float-end
                           .form-check.form-check-inline

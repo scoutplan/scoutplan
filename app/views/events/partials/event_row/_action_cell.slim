@@ -1,0 +1,28 @@
+- if event.rsvp_open?
+
+  - has_family_rsvps = false
+
+  ul
+    - @current_family.each do |user|
+      - rsvp = rsvps.find_by(user: user)
+      - has_family_rsvps = has_family_rsvps || rsvp.present?
+
+      li
+        - if rsvp.nil?
+          span.rsvp-response.rsvp-unknown(title="#{  }")
+            i.fas.fa-question
+        - elsif rsvp.accepted?
+          span.rsvp-response.rsvp-accepted
+            i.fas.fa-check
+        - elsif rsvp.declined?
+          span.rsvp-response.rsvp-declined
+            i.fas.fa-times
+
+        = user.first_name
+        = " (you)" if user == current_user
+
+    li
+      - if has_family_rsvps
+        = link_to t('events.index.event_row.rsvp_change'), event_path(event, anchor: 'rsvp'), class: 'btn btn-outline-warning event-rsvp-link'
+      - else
+        = link_to t('events.index.event_row.rsvp_respond'), event_path(event, anchor: 'rsvp'), class: 'btn btn-outline-info event-rsvp-link'

@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 class EventObserver < ActiveRecord::Observer
   def after_save(event)
     @event = event
-    send_invitations if true          &&
-      @event.requires_rsvp?           &&
-      @event.saved_change_to_status?  &&
-      @event.published?
+    send_invitations if true &&
+                        @event.requires_rsvp?           &&
+                        @event.saved_change_to_status?  &&
+                        @event.published?
   end
 
-private
+  private
 
   def send_invitations
     @event.unit.memberships.active.each do |membership|

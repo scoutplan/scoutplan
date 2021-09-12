@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe RsvpToken, type: :model do
@@ -15,8 +17,8 @@ RSpec.describe RsvpToken, type: :model do
     it 'prevents duplicates' do
       token = FactoryBot.create(:rsvp_token)
       expect(FactoryBot.build(
-        :rsvp_token, user: token.user, event: token.event)
-      ).not_to be_valid
+               :rsvp_token, user: token.user, event: token.event
+             )).not_to be_valid
     end
   end
 end

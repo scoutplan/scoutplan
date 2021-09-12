@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventMailer < ApplicationMailer
   def token_invitation_email
     @token = params[:token]

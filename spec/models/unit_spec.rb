@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Unit, type: :model do
-  it "has a valid base factory" do
+  it 'has a valid base factory' do
     expect(FactoryBot.build(:unit)).to be_valid
   end
 
