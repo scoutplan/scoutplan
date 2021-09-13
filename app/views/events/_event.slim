@@ -16,6 +16,8 @@ tr.event(class="#{ @presenter.row_classes }" data-href="#{ event_path(event) }" 
   - @current_month = event.starts_at.month
   - @current_year = event.starts_at.year
 
+  td.selection
+    = check_box_tag "events[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
   td.start_day
     = raw(@presenter.dates_to_s)
   td.days

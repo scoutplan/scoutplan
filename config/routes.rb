@@ -8,15 +8,20 @@ Rails.application.routes.draw do
 
   resources :events, only: %i[show edit update destroy] do
     member do
+      get   'organize'
       patch 'rsvp'
-      post 'cancel'
-      get  'organize'
-      post 'publish'
+      post  'cancel'
+      post  'publish'
     end
+
   end
 
   resources :units do
-    resources :events, only: %i[index new create]
+    resources :events, only: %i[index new create] do
+      collection do
+        post 'bulk_publish'
+      end
+    end
     resources :unit_memberships, path: 'members', as: 'members', only: %i[index new create]
   end
 
@@ -27,4 +32,5 @@ Rails.application.routes.draw do
   post 'rsvp_tokens/:id/resend', to: 'rsvp_tokens#resend', as: 'rsvp_token_resend'
 
   mount Sidekiq::Web => '/sidekiq'
+  mount Flipper::UI.app(Flipper) => '/flipper'
 end

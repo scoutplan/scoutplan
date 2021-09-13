@@ -26,6 +26,9 @@ class Event < ApplicationRecord
 
   enum status: { draft: 0, published: 1, cancelled: 2 }
 
+  scope :future, -> { where('starts_at > ?', Date.today) }
+  scope :rsvp_required, -> { where(requires_rsvp: true) }
+
   def past?
     starts_at.past?
   end
