@@ -32,5 +32,7 @@ Rails.application.routes.draw do
   post 'rsvp_tokens/:id/resend', to: 'rsvp_tokens#resend', as: 'rsvp_token_resend'
 
   mount Sidekiq::Web => '/sidekiq'
-  mount Flipper::UI.app(Flipper) => '/flipper'
+  constraints CanAccessFlipperUI do
+    mount Flipper::UI.app(Flipper) => '/flipper'
+  end
 end
