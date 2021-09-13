@@ -9,20 +9,22 @@ main.pt-4
   = render partial: 'events/partials/index/no_events' if @events.count.zero?
 
   - if @events.count.positive?
-    table.table-clickable
-      thead
-        tr
-          / th.month.tablet
-          th.date = t(:event_date)
-          th.days
-          th.glyph
-          th.title =t(:event_title)
-          th.status
-          th.location.tablet =t(:event_location)
-          th.action.desktop =t(:event_rsvp)
-      tbody
-        = render @events
+    = form_tag bulk_publish_unit_events_path(@unit), id: 'bulk_action_form'
+      table.table-clickable
+        thead
+          tr
+            th.selection
+              = check_box_tag 'all_visible_events', 'on', false, class: 'form-check-input', id: 'select-all-events-checkbox'
 
+            th.date = t(:event_date)
+            th.days
+            th.glyph
+            th.title =t(:event_title)
+            th.status
+            th.location.tablet =t(:event_location)
+            th.action.desktop =t(:event_rsvp)
+        tbody
+          = render @events
 
   p.text-center#show-future-events-wrapper
     = t('events.index.showing_some', link: link_to(t('events.index.show_all'), '#', class: 'toggle-body-class', data: { 'body-class' => 'showing-future-events' })).html_safe
@@ -31,10 +33,55 @@ main.pt-4
 
 
 javascript:
+
+  // wire up the bulk Publish button
+  document.querySelector('#bulk_publish_execute_button').addEventListener('click', function(event) {
+    document.querySelector('#bulk_action_form').submit();
+    event.preventDefault();
+  });
+
+  // wire up the check/uncheck all box
+  document.querySelector('#select-all-events-checkbox').addEventListener('click', function(event) {
+    const checked = this.checked;
+    document.querySelectorAll('.bulk-publish-checkbox').forEach(function (elem) {
+        elem.checked = checked && elem.offsetParent !== null;
+    });
+    validateBulkPublishState();
+  });
+
+  // wire up Cancel bulk publish button
+  document.querySelector('#cancel_bulk_publish').addEventListener('click', function(event) {
+    document.body.classList.toggle('showing-only-draft-events');
+    event.preventDefault();
+  });
+
+  const bulkPublishExecuteButton = document.querySelector('#bulk_publish_execute_button')
+  const originalBulkPublishExecuteButtonCaption = bulkPublishExecuteButton.value;
+
+  // wire up event row checkboxes
+  document.querySelectorAll('.bulk-publish-checkbox').forEach(function(elem) {
+    elem.addEventListener('click', function(event) {
+      validateBulkPublishState();
+    });
+  });
+
+  function validateBulkPublishState() {
+    // tally up checked count
+    const checkedCount = document.querySelectorAll('input:checked').length;
+
+    // enable execute button
+    bulkPublishExecuteButton.disabled = (checkedCount == 0);
+
+    // update execute button caption
+    bulkPublishExecuteButton.value = originalBulkPublishExecuteButtonCaption + (checkedCount == 0 ? '' : ' (' + checkedCount + ')');
+  }
+
   document.querySelectorAll('.toggle-body-class').forEach(function(elem) {
     elem.addEventListener('click', function(event) {
-      const className = this.dataset.bodyClass;
-      document.body.classList.toggle(className);
+      const classNames = this.dataset.bodyClass.split(' ');
+      for(const className of classNames) {
+        document.body.classList.toggle(className);
+      }
       event.preventDefault();
     });
   });
@@ -48,18 +95,11 @@ javascript:
     });
   }
 
-  var showEverythingLink = document.getElementById('show_all_link');
-  showEverythingLink.addEventListener('click', function(event) {
-    var futureRows = document.getElementsByClassName('event-future');
-    for (const elem of futureRows) {
-      elem.classList.remove('event-hidden');
-    }
-
-    document.getElementById('show_everything_row').style.display = 'none';
-
-    event.stopPropagation();
-    event.preventDefault();
-    return false;
+  // also prevent checkboxes from firing clickable rows
+  document.querySelectorAll('.selection input[type="checkbox"]').forEach(function (elem) {
+    elem.addEventListener('click', function(event) {
+      event.stopPropagation();
+    });
   });
 
 scss:
@@ -110,6 +150,40 @@ scss:
       .menu-glyph-wrapper {
         display: inline-block;
       }
+    }
+  }
+
+  // Draft events / bulk publish
+
+  th.selection, td.selection {
+    display: none;
+  }
+
+  #bulk_publish_button_wrapper {
+    display: none;
+  }
+
+  body.showing-only-draft-events {
+    .event-row:not(.event-draft) {
+      display: none;
+    }
+
+    #show-only-draft-events-link {
+      .menu-glyph-wrapper {
+        display: inline-block;
+      }
+    }
+
+    th.selection, td.selection {
+      display: table-cell;
+    }
+
+    #bulk_publish_button_wrapper {
+      display: inline-block;
+    }
+
+    #add_event_button_wrapper {
+      display: none;
     }
   }
 

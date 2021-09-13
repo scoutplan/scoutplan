@@ -1,9 +1,12 @@
 # frozen_string_literal: true
+require 'humanize'
 
+# controller for Events
 class EventsController < ApplicationController
+
   before_action :authenticate_user!
-  before_action :find_unit, only: %i[index create new]
-  before_action :find_event, except: %i[index edit create new]
+  before_action :find_unit, only: %i[index create new bulk_publish]
+  before_action :find_event, except: %i[index edit create new bulk_publish]
 
   def index
     @events = UnitEventQuery.new(@unit, @current_membership).execute
@@ -31,7 +34,7 @@ class EventsController < ApplicationController
     # TODO: ditch this and add a repeats_until attribute on Event
     # dynamically add a new attribute to signal this is a series parent
     # the object hooks will take care of generating the series
-    if params[:event_repeats] == 'on' && end_date = Date.strptime(params[:repeats_until], '%Y-%m-%d')
+    if params[:event_repeats] == 'on' && (end_date = Date.strptime(params[:repeats_until], '%Y-%m-%d'))
       class << @event
         attr_accessor :repeats_until
       end
@@ -41,10 +44,10 @@ class EventsController < ApplicationController
     # You won't find any code here to send notifications.
     # That's handled by the EventObserver class.
 
-    if @event.save!
-      flash[:notice] = t('helpers.label.event.create_confirmation', event_name: @event.title)
-      redirect_to @event
-    end
+    return unless @event.save!
+
+    flash[:notice] = t('helpers.label.event.create_confirmation', event_name: @event.title)
+    redirect_to @event
   end
 
   def edit
@@ -52,10 +55,10 @@ class EventsController < ApplicationController
   end
 
   def update
-    if @event.update!(event_params)
-      params[:notice] = t('events.update_confirmation', title: @event.title)
-      redirect_to @event
-    end
+    return unless @event.update!(event_params)
+
+    params[:notice] = t('events.update_confirmation', title: @event.title)
+    redirect_to @event
   end
 
   def organize
@@ -68,6 +71,25 @@ class EventsController < ApplicationController
     @event.update!(status: :published)
     flash[:notice] = t('events.publish_message', title: @event.title)
     redirect_to @event
+  end
+
+  # POST /events/bulk_publish
+  def bulk_publish
+    event_ids = params[:events]
+    event_ids.each do |event_id|
+      Event.find(event_id).update!(status: :published)
+    end
+    count = event_ids.count
+
+    flash[:notice] = format(
+      '%<count>s %<object>s %<be>s %<action>s',
+      count: count.humanize.capitalize,
+      object: t('events.object_name').pluralize(count),
+      be: t('be_verb.past_tense.third_person').pluralize(count),
+      action: t('events.index.bulk_publish.verb')
+    )
+
+    redirect_to unit_events_path(@unit)
   end
 
   # this is somewhat hacky. Nested has_many through forms weren't working. This is the hackaround.
@@ -84,10 +106,11 @@ class EventsController < ApplicationController
   # POST cancel
   def cancel
     @event.status = :cancelled
-    if @event.save!
-      flash[:notice] = t('events.show.cancel.confirmation', event_title: @event.title)
-      redirect_to unit_events_path(@event.unit)
-    end
+
+    return unless @event.save!
+
+    flash[:notice] = t('events.show.cancel.confirmation', event_title: @event.title)
+    redirect_to unit_events_path(@event.unit)
   end
 
   # this override is needed to pass the membership instead of the user
