@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>New Calendar Items for <%= @unit.name %></h1>
+    <ul>
+      <% @events.each do |event| %>
+        <li>
+          <%= event.title %>
+          <%= event.starts_at %>
+        </li>
+      <% end %>
+    </ul>
+
+    <p><%= link_to "View the full #{@unit.name} calendar", @url %></p>
+  </body>
+</html>
