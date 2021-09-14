@@ -10,47 +10,10 @@ header.mt-4.mb-4.clearfix
         .dropdown.ml-3(style="display: inline-block;")
           = link_to t('events.index.view.dropdown'), '#', class: 'btn btn-outline-secondary dropdown-toggle', data: { 'bs-toggle' => 'dropdown' }, style: "display: inline-block;"
           ul.dropdown-menu.dropdown-menu-end.dropdown-menu-dark
-            - if @current_membership.admin?
-
-              / Bulk Publish Drafts
-
-              - if Flipper.enabled? :bulk_publishing, current_user
-
-                li = link_to '#', class: 'dropdown-item toggle-body-class', data: { 'body-class' => 'showing-only-draft-events showing-future-events' }, id: 'show-only-draft-events-link' do
-                  .menu-glyph
-                    .menu-glyph-wrapper
-                      i.far.fa-check
-                  = t('events.index.view.drafts', count: @events.draft.count)
-
-              / Show Cancelled events
-              li = link_to '#', class: 'dropdown-item toggle-body-class', data: { 'body-class' => 'showing-cancelled-events' }, id: 'show-cancelled-events-link' do
-                .menu-glyph
-                  .menu-glyph-wrapper
-                    i.far.fa-check
-                = t('events.index.view.cancelled', count: @events.cancelled.count)
-
-            / Only RSVP events
-            li = link_to '#', class: 'dropdown-item toggle-body-class', data: { 'body-class' => 'showing-only-rsvp-events showing-future-events' }, id: 'show-only-rsvp-events-link' do
-              .menu-glyph
-                .menu-glyph-wrapper
-                  i.far.fa-check
-              = t('events.index.view.rsvps', count: @events.rsvp_required.future.count)
-
-
-            / Past events
-            li = link_to '#', class: 'dropdown-item toggle-body-class', data: { 'body-class' => 'showing-past-events' }, id: 'show-past-events-link' do
-              .menu-glyph
-                .menu-glyph-wrapper
-                  i.far.fa-check
-              = t('events.index.view.past')
-
-            li
-              hr.dropdown-divider
-
-            li = link_to '#', class: 'dropdown-item' do
-              .menu-glyph
-                i.far.fa-calendar
-              = t('events.index.view.subscribe')
+            = render partial: 'events/partials/index/dropdown_items/bulk_publish'   if @current_membership.admin?
+            = render partial: 'events/partials/index/dropdown_items/show_cancelled' if @current_membership.admin?
+            - %w[show_only_rsvps show_past_events divider calendar_subscribe].each do |p|
+              = render partial: "events/partials/index/dropdown_items/#{ p }"
 
       span#bulk_publish_button_wrapper
         = button_to t('events.index.bulk_publish.execute_caption'), '#', class: 'btn btn-warning ms-3', disabled: true, form: { style: 'display: inline-block;' }, id: 'bulk_publish_execute_button'

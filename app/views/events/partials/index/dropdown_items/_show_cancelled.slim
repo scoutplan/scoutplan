@@ -1,0 +1,5 @@
+li = link_to '#', class: 'dropdown-item toggle-body-class', data: { 'body-class' => 'showing-cancelled-events' }, id: 'show-cancelled-events-link' do
+  .menu-glyph
+    .menu-glyph-wrapper
+      i.far.fa-check
+  = t('events.index.view.cancelled', count: @events.cancelled.count)
