@@ -65,9 +65,7 @@ class EventsController < ApplicationController
 
   def publish
     authorize @event
-
-    return unless @event.requires_rsvp
-    return if @event.published?
+    return if @event.published? # don't publish it twice
 
     @event.update!(status: :published)
     EventNotifier.after_publish(@event)
