@@ -7,15 +7,13 @@ class UnitMembershipsImportController < ApplicationController
   end
 
   def create
-    @unit = Unit.find(params[:unit_id])
+    @current_unit = @unit = Unit.find(params[:unit_id])
     @current_membership = @unit.membership_for(current_user)
 
     return unless @current_membership.admin?
 
     perform_import
     count = @memberships.count
-    flash[:notice] = t('members.import.success_message',
-                       count_and_noun: "#{count} #{t('members.import.member').pluralize(count)}")
   end
 
   def pundit_user

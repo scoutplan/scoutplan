@@ -1,4 +1,6 @@
-p Invited the following new members:
+p Added the following new members and invited them to join via email:
 ul
   - @memberships.each do |membership|
     li = membership.user.email
+
+= button_to 'Done', unit_members_path(@unit), class: 'btn btn-primary'

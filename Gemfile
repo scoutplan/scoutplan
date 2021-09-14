@@ -8,11 +8,12 @@ ruby '3.0.2'
 gem 'awesome_print', '~> 1.9'
 gem 'bootsnap', '~> 1.8', require: false
 gem 'devise', '~> 4.8'
+gem 'devise_invitable', '~> 2.0'
 gem 'faraday', '~> 1.7'
-gem 'flipper', "~> 0.22"
-gem 'flipper-active_record', "~> 0.22"
-gem 'flipper-ui', "~> 0.22"
-gem 'humanize', "~> 2.5"
+gem 'flipper', '~> 0.22'
+gem 'flipper-active_record', '~> 0.22'
+gem 'flipper-ui', '~> 0.22'
+gem 'humanize', '~> 2.5'
 gem 'jbuilder', '~> 2.11'
 gem 'pg', '~> 1.2'
 gem 'puma', '~> 5.4'
@@ -20,13 +21,13 @@ gem 'pundit', '~> 2.1'
 gem 'rails', '~> 6.1'
 gem 'rails-observers', '~> 0.1'
 gem 'rexml', '~> 3.2'
-gem 'rubocop', "~> 1.20", require: false
+gem 'rubocop', '~> 1.20', require: false
 gem 'sass-rails', '~> 6.0'
 gem 'seedbank', '~> 0.5'
-gem 'sentry-rails', "~> 4.7"
-gem 'sentry-ruby', "~> 4.7"
+gem 'sentry-rails', '~> 4.7'
+gem 'sentry-ruby', '~> 4.7'
 gem 'sidekiq', '~> 6.1'
-gem 'skylight', "~> 5.1"
+gem 'skylight', '~> 5.1'
 gem 'slim', '~> 4.1'
 gem 'smarter_csv'
 gem 'trix', '~> 0.10'

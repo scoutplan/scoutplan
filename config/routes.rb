@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         post 'bulk_publish'
       end
     end
+
     resources :unit_memberships, path: 'members', as: 'members', only: %i[index new create] do
       collection do
         get  'import', to: 'unit_memberships_import#new'
