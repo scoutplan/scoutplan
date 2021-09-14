@@ -9,4 +9,7 @@ class EventMailer < ApplicationMailer
     @url   = rsvp_response_url(@token.value)
     mail(to: @user.email, from: @unit.from_email, subject: "#{@unit.name} event invitation: #{@event.title}")
   end
+
+  def bulk_publish_email
+  end
 end

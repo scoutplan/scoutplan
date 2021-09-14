@@ -29,7 +29,7 @@ class EventsController < ApplicationController
 
     @event = @unit.events.new(event_params)
     @event.starts_at = ScoutplanUtilities.compose_datetime(params[:starts_at_d], params[:starts_at_t])
-    @event.ends_at = ScoutplanUtilities.compose_datetime(params[:ends_at_d], params[:ends_at_t])
+    @event.ends_at   = ScoutplanUtilities.compose_datetime(params[:ends_at_d], params[:ends_at_t])
 
     # TODO: ditch this and add a repeats_until attribute on Event
     # dynamically add a new attribute to signal this is a series parent
@@ -40,9 +40,6 @@ class EventsController < ApplicationController
       end
       @event.repeats_until = end_date
     end
-
-    # You won't find any code here to send notifications.
-    # That's handled by the EventObserver class.
 
     return unless @event.save!
 
@@ -68,7 +65,13 @@ class EventsController < ApplicationController
 
   def publish
     authorize @event
+
+    return unless @event.requires_rsvp
+    return if @event.published?
+
     @event.update!(status: :published)
+ap @event
+    EventNotifier.after_publish(@event)
     flash[:notice] = t('events.publish_message', title: @event.title)
     redirect_to @event
   end
