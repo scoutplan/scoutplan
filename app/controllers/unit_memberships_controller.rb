@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# responsible for Unit <> User relationships
 class UnitMembershipsController < ApplicationController
   before_action :find_unit, only: %i[index new create]
   before_action :find_membership, except: %i[index new create]

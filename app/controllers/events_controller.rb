@@ -155,8 +155,6 @@ class EventsController < ApplicationController
 
   # permitted parameters
   def event_params
-    ap params
-
     params.require(:event).permit(
       :title,
       :event_category_id,

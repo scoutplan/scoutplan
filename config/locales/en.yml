@@ -113,9 +113,12 @@ en:
     index:
       add_a_member: 'Add a Member'
     new:
-      title:        'Add a Member'
+      title: 'Add a Member'
     show:
       children:       'Children'
+    import:
+      success_message: '%{count_and_noun} were successfully imported and invited via email'
+      member:          'member'
 
   event_categories:
     camping:          'Camping'
