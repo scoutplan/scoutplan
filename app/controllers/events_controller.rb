@@ -70,27 +70,28 @@ class EventsController < ApplicationController
     return if @event.published?
 
     @event.update!(status: :published)
-ap @event
     EventNotifier.after_publish(@event)
     flash[:notice] = t('events.publish_message', title: @event.title)
     redirect_to @event
   end
 
-  # POST /events/bulk_publish
+  # POST /units/:id/events/bulk_publish
   def bulk_publish
     event_ids = params[:events]
-    event_ids.each do |event_id|
-      Event.find(event_id).update!(status: :published)
-    end
-    count = event_ids.count
+    events    = Event.find(event_ids)
+    count     = events.count
 
-    flash[:notice] = format(
-      '%<count>s %<object>s %<be>s %<action>s',
-      count: count.humanize.capitalize,
-      object: t('events.object_name').pluralize(count),
-      be: t('be_verb.past_tense.third_person').pluralize(count),
-      action: t('events.index.bulk_publish.verb')
-    )
+    events.each do |event|
+      event.update!(status: :published)
+    end
+
+    EventNotifier.after_bulk_publish(@unit, events)
+
+    flash[:notice] = format('%<count>s %<object>s %<be>s %<action>s',
+                            count: count.humanize.capitalize,
+                            object: t('events.object_name').pluralize(count),
+                            be: t('be_verb.past_tense.third_person').pluralize(count),
+                            action: t('events.index.bulk_publish.verb'))
 
     redirect_to unit_events_path(@unit)
   end
