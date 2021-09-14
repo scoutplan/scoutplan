@@ -7,12 +7,12 @@
       = form_tag import_unit_members_path(@unit), multipart: true
         = hidden_field_tag :authenticity_token, form_authenticity_token
 
-        .form-group
+        .mb-3
           = label :roster_file, 'Roster File'
           = file_field_tag :roster_file, class: 'form-control'
 
-        .form-group
-          = submit_tag :next, class: 'btn btn-primary'
+        .mb-3.float-end
+          = submit_tag t('helpers.label.next'), class: 'btn btn-success'
 
     .col-md-1
     .col-md-4
