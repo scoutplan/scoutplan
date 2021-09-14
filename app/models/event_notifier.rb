@@ -5,6 +5,8 @@ class EventNotifier
   def rsvp_opening(user); end
 
   def self.after_publish(event)
+    return unless event.requires_rsvp
+
     event.unit.memberships.active.each do |membership|
       user = membership.user
       token = event.rsvp_tokens.find_or_create_by!(user: user)
