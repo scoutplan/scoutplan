@@ -83,7 +83,7 @@ en:
         rsvps:      'Show only RSVP events (%{count})'
         drafts:     'Bulk publish draft events (%{count})'
         past:       'Show past events'
-        subscribe:  'Add this Schedule to your calendar'
+        subscribe:  'Add this schedule to your calendar'
       event_row:
         rsvp_respond: 'Respond'
         rsvp_change:  'Change'

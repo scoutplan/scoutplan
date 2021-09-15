@@ -1,9 +1,9 @@
 # frozen_string_literal: true
+
 require 'humanize'
 
 # controller for Events
 class EventsController < ApplicationController
-
   before_action :authenticate_user!
   before_action :find_unit, only: %i[index create new bulk_publish]
   before_action :find_event, except: %i[index edit create new bulk_publish]
@@ -18,7 +18,6 @@ class EventsController < ApplicationController
 
   def show
     authorize @event
-    # @rsvps = @event.event_rsvps.where(user: current_user)
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).organize?
     @current_family = current_user.family
@@ -119,6 +118,12 @@ class EventsController < ApplicationController
   # as the object to be evaluated in Pundit policies
   def pundit_user
     @current_membership
+  end
+
+  def body_classes
+    content_for :body_classes do
+      'balh'
+    end
   end
 
   private

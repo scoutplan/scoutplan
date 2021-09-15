@@ -18,10 +18,21 @@ spec:
       labels:
         app: scoutplan-app
     spec:
+      initContainers:
+      - name: migrations
+        image: registry.digitalocean.com/scoutplan/app
+        command:
+        - rake
+        - db:abort_if_pending_migrations
       containers:
         - name: scoutplan-app
           image: registry.digitalocean.com/scoutplan/app
           imagePullPolicy: "Always"
+          readinessProbe:
+            httpGet:
+              path: /robots.txt
+              port: 3000
+              scheme: HTTP
           env:
             - name: DATABASE_PASSWORD
               valueFrom:
