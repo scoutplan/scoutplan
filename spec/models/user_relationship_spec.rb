@@ -25,8 +25,8 @@ RSpec.describe UserRelationship, type: :model do
 
   describe 'relationships' do
     before do
-      @parent = FactoryBot.create(:user)
-      @child = FactoryBot.create(:child)
+      @parent = FactoryBot.create(:adult)
+      @child  = FactoryBot.create(:youth)
       @parent.child_relationships.create(child: @child)
     end
 

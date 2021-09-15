@@ -16,8 +16,6 @@ class Event < ApplicationRecord
   alias_attribute :rsvps, :event_rsvps
   alias_attribute :category, :event_category
 
-  accepts_nested_attributes_for :users
-
   validates_presence_of :title, :starts_at, :ends_at
 
   # TODO: change this. It's dumb. Let's just add a repeats_until attribute to

@@ -16,4 +16,10 @@ RSpec.describe User, type: :model do
       expect(@user.family).to include(@user)
     end
   end
+
+  describe 'validations' do
+    it 'requires a type' do
+      expect(FactoryBot.build(:user, type: nil)).not_to be_valid
+    end
+  end
 end
