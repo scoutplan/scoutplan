@@ -10,7 +10,7 @@ html
     = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: 'anonymous'
     = stylesheet_link_tag "https://use.typekit.net/#{ ENV['ADOBE_FONT_KIT_ID'] }.css"
 
-  body
+  body(class="#{ yield(:body_classes) }")
     = render partial: 'layouts/partials/notices'
 
     .container
