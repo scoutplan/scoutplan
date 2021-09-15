@@ -26,4 +26,8 @@ FactoryBot.define do
     starts_at       { 15.days.ago }
     ends_at         { 14.days.ago }
   end
+
+  trait :series do
+    repeats_until   { 28.days.from_now }
+  end
 end

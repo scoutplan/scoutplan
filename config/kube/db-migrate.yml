@@ -1,13 +1,13 @@
-# apiVersion: batch/v1
-# kind: Job
-# metadata:
-#   generateName: db-migrate-
-# spec:
-#   template:
-#     spec:
-#       containers:
-#       - name: main
-#         command:
-#         - rails
-#         - db:migrate
-#         image: registry.digitalocean.com/scoutplan/app
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: db-migrate-
+spec:
+  template:
+    spec:
+      containers:
+      - name: main
+        command:
+        - rails
+        - db:migrate
+        image: registry.digitalocean.com/scoutplan/app

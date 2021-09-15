@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_15_014657) do
+ActiveRecord::Schema.define(version: 2021_09_15_213409) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 2021_09_15_014657) do
     t.integer "event_category_id"
     t.integer "series_parent_id"
     t.integer "status", default: 0
+    t.date "repeats_until"
   end
 
   create_table "flipper_features", force: :cascade do |t|

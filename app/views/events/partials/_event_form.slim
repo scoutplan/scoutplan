@@ -54,7 +54,7 @@
             // repeat end date
             .col-md-5
               .collapse#repeat-fields.input-group
-                = date_field '', :repeats_until, value: (@event.starts_at + 6.months).strftime("#{ @format_date }"), class: 'form-control'
+                = f.date_field :repeats_until, value: (@event.starts_at + 6.months).strftime("#{ @format_date }"), class: 'form-control'
 
           // location
           .mb-3

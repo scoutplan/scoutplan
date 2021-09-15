@@ -9,9 +9,6 @@ style
 
 = render 'events/partials/index/header'
 
-.filter-status
-  = 'Showing only some events'
-
 main.pt-4
   = render partial: 'events/partials/index/no_events' if @events.count.zero?
 
@@ -139,12 +136,7 @@ scss:
 
   .filter-status {
     display: none;
-  }
-
-  body.events-filtered {
-    .filter-status {
-      display: block;
-    }
+    margin-top: -12px;
   }
 
   body.showing-cancelled-events {
@@ -168,6 +160,10 @@ scss:
       .menu-glyph-wrapper {
         display: inline-block;
       }
+    }
+
+    .filter-status-only-rsvps {
+      display: block;
     }
   }
 

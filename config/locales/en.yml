@@ -73,6 +73,7 @@ en:
         confirm_message: '%{count} published'
         verb: 'published'
       showing_some: 'Showing events for the upcoming 3 months. %{link}'
+      showing_rsvps: 'Showing only events requiring an RSVP'
       show_all:     'Show everything'
       no_events:    'No events are planned right now.'
       draft:        'Draft'

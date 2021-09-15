@@ -2,6 +2,12 @@ header.mt-4.mb-4.clearfix
   .float-start
     h1 #{@unit.name} Events
 
+    .filter-status
+      = 'Showing only some events'
+
+    .filter-status.filter-status-only-rsvps.form-text
+      = t('events.index.showing_rsvps')
+
   .float-end
     - if policy(:event).create?
       span#add_event_button_wrapper

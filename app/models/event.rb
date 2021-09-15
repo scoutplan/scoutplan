@@ -18,9 +18,7 @@ class Event < ApplicationRecord
 
   validates_presence_of :title, :starts_at, :ends_at
 
-  # TODO: change this. It's dumb. Let's just add a repeats_until attribute to
-  # the Event model & be done with it
-  after_create :create_series, if: proc { respond_to? :repeats_until }
+  after_create :create_series, if: :repeats_until?
 
   enum status: { draft: 0, published: 1, cancelled: 2 }
 
