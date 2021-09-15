@@ -29,16 +29,7 @@ class EventsController < ApplicationController
     @event = @unit.events.new(event_params)
     @event.starts_at = ScoutplanUtilities.compose_datetime(params[:starts_at_d], params[:starts_at_t])
     @event.ends_at   = ScoutplanUtilities.compose_datetime(params[:ends_at_d], params[:ends_at_t])
-
-    # TODO: ditch this and add a repeats_until attribute on Event
-    # dynamically add a new attribute to signal this is a series parent
-    # the object hooks will take care of generating the series
-    if params[:event_repeats] == 'on' && (end_date = Date.strptime(params[:repeats_until], '%Y-%m-%d'))
-      class << @event
-        attr_accessor :repeats_until
-      end
-      @event.repeats_until = end_date
-    end
+    @event.repeats_until = nil unless params[:event_repeats] == 'on'
 
     return unless @event.save!
 
