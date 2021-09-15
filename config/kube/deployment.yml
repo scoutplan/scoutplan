@@ -38,7 +38,7 @@ spec:
                 secretKeyRef:
                   name: scoutplan-production
                   key: SKYLIGHT_AUTHENTICATION
-           - name: SMTP_PASSWORD
+            - name: SMTP_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: scoutplan-production
