@@ -1,6 +1,7 @@
-li = link_to '#', class: 'dropdown-item toggle-body-class',
-  data: { 'body-class' => 'showing-only-rsvp-events showing-future-events events-filtered', 'view-message' =>  "#{ t('events.index.showing_rsvps') }" },
-  id: 'show-only-rsvp-events-link' do
+li = link_to '#',
+     class: "dropdown-item toggle-body-class #{ @events.rsvp_required.future.count.zero? ? 'disabled' : '' }",
+     data: { 'body-class' => 'showing-only-rsvp-events showing-future-events events-filtered' },
+     id: 'show-only-rsvp-events-link' do
 
   .menu-glyph
     .menu-glyph-wrapper
