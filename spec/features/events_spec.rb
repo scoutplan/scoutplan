@@ -4,12 +4,15 @@ describe 'events', type: :feature do
   before :each do
     User.where(email: 'test_admin@scoutplan.org').destroy_all
     User.where(email: 'test_normal@scoutplan.org').destroy_all
-    @admin_user = FactoryBot.create(:user, email: 'test_admin@scoutplan.org')
+
+    @admin_user  = FactoryBot.create(:user, email: 'test_admin@scoutplan.org')
     @normal_user = FactoryBot.create(:user, email: 'test_normal@scoutplan.org')
-    @unit = FactoryBot.create(:unit)
-    @unit.memberships.create(user: @admin_user, role: 'admin')
-    @unit.memberships.create(user: @normal_user, role: 'member')
+
+    @unit  = FactoryBot.create(:unit)
     @event = FactoryBot.create(:event, :draft, unit: @unit, title: 'Draft Event')
+
+    @unit.memberships.create(user: @admin_user,  role: 'admin', status: :active)
+    @unit.memberships.create(user: @normal_user, role: 'member', status: :active)
   end
 
   describe 'as an admin...' do
@@ -19,7 +22,7 @@ describe 'events', type: :feature do
 
     describe 'index' do
       it 'displays the Add Event button on the Index page' do
-        login_as(@admin_user, scope: :user)
+        login_as(@admin_user)
         visit unit_events_path(@unit)
         expect(page).to have_selector(:link_or_button, I18n.t('event_add'))
         logout

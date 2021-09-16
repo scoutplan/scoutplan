@@ -5,7 +5,7 @@ describe 'the sign-in process', type: :feature do
     User.destroy_all
     @user = FactoryBot.create(:user, email: 'test@scoutplan.org')
     @unit = FactoryBot.create(:unit)
-    @membership = @unit.unit_memberships.create(user: @user)
+    @membership = @unit.unit_memberships.create(user: @user, status: :active, role: 'member')
   end
 
   it 'signs in and redirects' do
