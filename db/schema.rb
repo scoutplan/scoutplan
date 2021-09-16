@@ -117,7 +117,7 @@ ActiveRecord::Schema.define(version: 2021_09_16_113506) do
   create_table "unit_memberships", force: :cascade do |t|
     t.integer "unit_id"
     t.integer "user_id"
-    t.integer "status"
+    t.integer "status", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "role", null: false
