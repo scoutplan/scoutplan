@@ -1,0 +1,20 @@
+- if @events.count.positive?
+  = form_tag bulk_publish_unit_events_path(@unit), id: 'bulk_action_form'
+    table.table-clickable
+      thead
+        tr
+          th.selection
+            = check_box_tag 'all_visible_events', 'on', false, class: 'form-check-input', id: 'select_all_events_checkbox'
+
+          th.date = t(:event_date)
+          th.days
+          th.glyph
+          th.title =t(:event_title)
+          th.status
+          th.location.tablet =t(:event_location)
+          th.action.desktop =t(:event_rsvp)
+      tbody
+        = render @events
+
+  p.text-center#show-future-events-wrapper
+    = t('events.index.showing_some', link: link_to(t('events.index.show_all'), '#', class: 'toggle-body-class', data: { 'body-class' => 'showing-future-events' })).html_safe

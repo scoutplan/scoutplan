@@ -9,8 +9,9 @@ html
     = stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: 'anonymous'
     = stylesheet_link_tag "https://use.typekit.net/#{ ENV['ADOBE_FONT_KIT_ID'] }.css"
+    = yield :head
 
-  body(class="#{ yield(:body_classes) }")
+  body(class="#{ yield :body_classes }")
     = render partial: 'layouts/partials/notices'
 
     .container

@@ -69,8 +69,8 @@ jobs:
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 primary
 
-      - name: Run the migration task
-        run: kubectl apply -f $GITHUB_WORKSPACE/config/kube/db-migrate.yml
+      # - name: Run the migration task
+        # run: kubectl apply -f $GITHUB_WORKSPACE/config/kube/db-migrate.yml
 
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/config/kube/deployment.yml
