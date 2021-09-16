@@ -1,39 +1,15 @@
-// TODO: move this to dynamic stylesheet
-
-- content_for :body_classes do
-  = "events-filtered showing-only-rsvp-events" if session[:view] == 'rsvps'
-
-style
-  - @unit.event_categories.each do |category|
-    = "tr.event.event-#{ category.name.parameterize } .glyph svg { color: #{ category.color } }\n"
-
+= render 'events/partials/event_form'
 = render 'events/partials/index/header'
 
 main.pt-4
   = render partial: 'events/partials/index/no_events' if @events.count.zero?
+  = render partial: 'events/partials/index/table' if @events.count.positive?
 
-  - if @events.count.positive?
-    = form_tag bulk_publish_unit_events_path(@unit), id: 'bulk_action_form'
-      table.table-clickable
-        thead
-          tr
-            th.selection
-              = check_box_tag 'all_visible_events', 'on', false, class: 'form-check-input', id: 'select_all_events_checkbox'
+- content_for :body_classes do
+  = "events-filtered showing-only-rsvp-events" if session[:view] == 'rsvps'
 
-            th.date = t(:event_date)
-            th.days
-            th.glyph
-            th.title =t(:event_title)
-            th.status
-            th.location.tablet =t(:event_location)
-            th.action.desktop =t(:event_rsvp)
-        tbody
-          = render @events
-
-    p.text-center#show-future-events-wrapper
-      = t('events.index.showing_some', link: link_to(t('events.index.show_all'), '#', class: 'toggle-body-class', data: { 'body-class' => 'showing-future-events' })).html_safe
-
-= render 'events/partials/event_form'
+- content_for :head do
+  = stylesheet_link_tag unit_path(@unit, format: :css)
 
 
 javascript:

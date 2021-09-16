@@ -7,7 +7,7 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-      - name: main
+      - name: migrate
         command:
         - rails
         - db:migrate
