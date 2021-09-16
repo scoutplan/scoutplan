@@ -20,7 +20,6 @@ class ApplicationController < ActionController::Base
   # DANGER: this might interfere with other querystrings in the future
   def process_query_string
     session[:view] ||= params[:view]
-    ap session[:view]
     redirect_to request.path if params[:view]
   end
 

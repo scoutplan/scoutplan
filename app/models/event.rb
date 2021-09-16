@@ -7,7 +7,7 @@ class Event < ApplicationRecord
   belongs_to :series_parent, class_name: 'Event', optional: true
   belongs_to :event_category
   has_many   :series_children, class_name: 'Event'
-  has_many   :event_rsvps, inverse_of: :event
+  has_many   :event_rsvps, inverse_of: :event, dependent: :destroy
   has_many   :users, through: :event_rsvps
   has_many   :rsvp_tokens
 
@@ -33,7 +33,7 @@ class Event < ApplicationRecord
     requires_rsvp && starts_at > DateTime.now
   end
 
-  def has_rsvp_for?(_user)
+  def rsvp_for?
     event_rsvps.count.positive?
   end
 
@@ -61,8 +61,8 @@ class Event < ApplicationRecord
   def create_series
     new_event = dup
     new_event.series_parent = self
+    new_event.repeats_until = nil
 
-    # TODO: this is hokey...let's just add a repeats_until attribute on the model
     while new_event.starts_at < repeats_until
       new_event.starts_at += 7.days
       new_event.ends_at += 7.days

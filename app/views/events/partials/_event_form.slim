@@ -145,13 +145,13 @@ javascript:
       }
     });
 
-    document.getElementById('repeats_until').addEventListener('focus', function() {
+    document.getElementById('event_repeats_until').addEventListener('focus', function() {
       this.dataset.originalValue = this.value;
     });
 
-    document.getElementById('repeats_until').addEventListener('change', function() {
+    document.getElementById('event_repeats_until').addEventListener('change', function() {
       const startsAtDateField = document.getElementById('starts_at_d');
-      const repeatsUntilDateField = document.getElementById('repeats_until');
+      const repeatsUntilDateField = document.getElementById('event_repeats_until');
       const startsAtDate = Date.parse(startsAtDateField.value);
       const repeatsUntilDate = Date.parse(repeatsUntilDateField.value);
 

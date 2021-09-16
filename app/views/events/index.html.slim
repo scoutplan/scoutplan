@@ -30,8 +30,8 @@ main.pt-4
         tbody
           = render @events
 
-  p.text-center#show-future-events-wrapper
-    = t('events.index.showing_some', link: link_to(t('events.index.show_all'), '#', class: 'toggle-body-class', data: { 'body-class' => 'showing-future-events' })).html_safe
+    p.text-center#show-future-events-wrapper
+      = t('events.index.showing_some', link: link_to(t('events.index.show_all'), '#', class: 'toggle-body-class', data: { 'body-class' => 'showing-future-events' })).html_safe
 
 = render 'events/partials/event_form'
 
@@ -47,7 +47,7 @@ javascript:
   // wire up the check/uncheck all box
   document.querySelector('#select_all_events_checkbox').addEventListener('click', function(event) {
     const checked = this.checked;
-    document.querySelectorAll('.bulk-publish-checkbox events-filtered').forEach(function (elem) {
+    document.querySelectorAll('.bulk-publish-checkbox').forEach(function (elem) {
         elem.checked = checked && elem.offsetParent !== null;
     });
     validateBulkPublishState();

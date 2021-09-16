@@ -161,7 +161,7 @@ class EventsController < ApplicationController
       :starts_at_t,
       :ends_at_d,
       :ends_at_t,
-      users_attributes: [event_rsvps_attributes: [:response]]
+      :repeats_until
     )
   end
 

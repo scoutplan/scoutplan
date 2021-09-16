@@ -29,7 +29,7 @@ RSpec.describe Event, type: :model do
 
   context 'callbacks' do
     it 'creates a series' do
-      expect{FactoryBot.create(:event, :series)}.to change{ Event.count }.by(4)
+      expect{FactoryBot.create(:event, :series)}.to change{ Event.count }.by(3)
     end
   end
 end
