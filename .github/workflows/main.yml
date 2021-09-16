@@ -25,18 +25,15 @@ jobs:
       - name: Check out master
         uses: actions/checkout@main
 
+
       # begin test run
       # see https://www.pibit.nl/github/actions/rails/postgres/rspec/tutorial/example/2019/09/23/github-actions-with-rails-postgres-and-rspec/
 
-      # - name: Set up Ruby
-      #   uses: ruby/setup-ruby@v1
-      #   with:
-      #     ruby-version: 3.0.2
-
-      # - name: Install bundler
-      #   run: |
-      #     gem install bundler
-      #     bundle install --jobs 4 --retry 3
+      - name: Set up Ruby & dependencies
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: 3.0.2
 
       # - name: Execute test suite
       #   run: bundle exec rspec
