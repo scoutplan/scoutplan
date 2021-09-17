@@ -51,6 +51,7 @@ class EventsController < ApplicationController
   def organize
     authorize @event
     @non_respondents = @event.unit.members - @event.rsvps.collect(&:user)
+    @non_invitees = @event.unit.members - @event.rsvp_tokens.collect(&:user)
   end
 
   def publish
@@ -84,11 +85,12 @@ class EventsController < ApplicationController
     redirect_to unit_events_path(@unit)
   end
 
-  # this is somewhat hacky. Nested has_many through forms weren't working. This is the hackaround.
+  # PATCH /events/:id/rsvpp
   def rsvp
     params[:event][:users].each do |user_id, values|
       response = values[:event_rsvp][:response]
-      @event.rsvps.create_with(response: response).find_or_create_by(user_id: user_id)
+      rsvp = @event.rsvps.find_or_create_by!(user_id: user_id)
+      rsvp.update!(response: response)
     end
 
     flash[:notice] = t(:rsvp_posted)

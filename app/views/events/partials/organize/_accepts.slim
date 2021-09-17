@@ -1,12 +1,11 @@
-.col-md-3
-  h5 <i class="fas fa-check" style="color: green;"></i> Going <span class="headcount">(#{ @event.rsvps.declined.count })</span>
+h5 <i class="fas fa-check" style="color: green;"></i> Going <span class="headcount">(#{ @event.rsvps.accepted.count })</span>
 
-  table
-    tbody
-      - @event.rsvps.accepted.each do |rsvp|
-        tr
-          td = rsvp.user.full_name
-          td
-            .actions
-              = link_to '#' do
-                i.fas.fa-times
+table
+  tbody
+    - @event.rsvps.accepted.each do |rsvp|
+      tr
+        td = rsvp.user.full_name
+        td
+          .actions
+            = link_to '#' do
+              i.fas.fa-times
