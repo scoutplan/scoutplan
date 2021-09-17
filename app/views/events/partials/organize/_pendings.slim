@@ -1,15 +1,14 @@
-.col-md-3
-  h5 <i class="fas fa-user-check" style="color: orange;"></i> Pending <span class="headcount">(#{ @event.rsvps.accepted_pending.count })</span>
+h5 <i class="fas fa-user-check" style="color: orange;"></i> Pending <span class="headcount">(#{ @event.rsvps.accepted_pending.count })</span>
 
-  table
-    tbody
-      - @event.rsvps.accepted_pending.each do |rsvp|
-        tr
-          td = rsvp.user.full_name
-          td
-            .actions
-              = link_to '#', title: 'Mark as Attending' do
-                i.fas.fa-check
-              |&nbsp;&nbsp;
-              = link_to '#', title: 'Mark as Declined' do
-                i.fas.fa-times
+table
+  tbody
+    - @event.rsvps.accepted_pending.each do |rsvp|
+      tr
+        td = rsvp.user.full_name
+        td
+          .actions
+            = link_to '#', title: 'Mark as Attending' do
+              i.fas.fa-check
+            |&nbsp;&nbsp;
+            = link_to '#', title: 'Mark as Declined' do
+              i.fas.fa-times

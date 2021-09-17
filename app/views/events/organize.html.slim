@@ -2,11 +2,16 @@ header.mb-4
   h1 = @event.title
 
 .row
-  = render partial: 'events/partials/organize/non_respondents'
-  = render partial: 'events/partials/organize/accepts'
-  = render partial: 'events/partials/organize/pendings'
-  = render partial: 'events/partials/organize/declines'
-
+  .col-md-2
+    = render partial: 'events/partials/organize/non_invitees'
+  .col-md-2
+    = render partial: 'events/partials/organize/non_respondents'
+  .col-md-2
+    = render partial: 'events/partials/organize/accepts'
+  .col-md-2
+    = render partial: 'events/partials/organize/pendings'
+  .col-md-2
+    = render partial: 'events/partials/organize/declines'
 
 scss:
   .actions {

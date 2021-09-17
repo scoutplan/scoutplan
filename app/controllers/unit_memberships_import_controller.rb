@@ -13,7 +13,6 @@ class UnitMembershipsImportController < ApplicationController
     return unless @current_membership.admin?
 
     perform_import
-    count = @memberships.count
   end
 
   def pundit_user
@@ -27,7 +26,13 @@ class UnitMembershipsImportController < ApplicationController
     file = params[:roster_file]
     data = SmarterCSV.process(file.tempfile)
     data.each do |row|
-      user = User.invite!(email: row[:email], first_name: row[:first_name], last_name: row[:last_name])
+      generated_password = Devise.friendly_token.first(8)
+      user = User.create_with(
+        first_name: row[:first_name],
+        last_name: row[:last_name],
+        password: generated_password
+      ).find_or_create_by(email: row[:email])
+
       membership = @unit.memberships.create(user: user)
       @memberships << membership
     end
