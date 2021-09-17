@@ -23,10 +23,22 @@ tr.event(class="#{ @presenter.row_classes }" data-href="#{ event_path(event) }" 
   td.days
     span.daynames.d-block.d-md-inline
       = raw(@presenter.days_to_s)
+
   td.glyph
     i(class = "fas fa-#{event.event_category.glyph}")
   td.title
     = event.title
+
+    - if !@current_event && event.starts_at >= DateTime.now
+      - @current_event = event
+
+      |&nbsp;
+
+      - if event.starts_at.today?
+        .badge.bg-danger TODAY
+      - else
+        .badge.bg-warning NEXT
+
   td.status
     - if event.draft?
       span.badge.bg-secondary =t('events.index.draft')
