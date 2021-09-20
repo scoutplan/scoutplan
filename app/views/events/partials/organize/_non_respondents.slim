@@ -1,5 +1,3 @@
-h5 <i class="fas fa-ghost" style="color: gray;"></i> #{ t('events.organize.no_responses') } <span class="headcount">(#{ @non_respondents.count })</a>
-
 table
   tbody
     - @non_respondents.each do |user|
@@ -8,7 +6,7 @@ table
         td
           = user.full_name
         td
-          .actions
+          .actions.float-end
             - if token
               = link_to rsvp_token_resend_path(token.value), method: 'post', remote: true, class: 'resend', data: { }, title: 'Re-send invitation' do
                 i.fas.fa-envelope
@@ -20,8 +18,8 @@ table
                 i.fas.fa-envelope
 
             |&nbsp;&nbsp;
-            = link_to '#', title: 'Mark as Attending' do
+            = link_to event_rsvps_path(@event, user_id: user.id, response: 'accepted'), method: :post, remote: true do
               i.fas.fa-check
             |&nbsp;&nbsp;
-            = link_to '#', title: 'Mark as Declined' do
+            = link_to event_rsvps_path(@event, user_id: user.id, response: 'declined'), method: :post, remote: true do
               i.fas.fa-times

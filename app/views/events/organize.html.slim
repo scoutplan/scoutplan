@@ -1,17 +1,8 @@
 header.mb-4
   h1 = @event.title
 
-.row
-  .col-md-3(style="font-size: 130%;")
-    .card
-      .card-body
-        = render partial: 'events/partials/organize/accepts'
-  .col-md-3
-    = render partial: 'events/partials/organize/declines'
-  .col-md-3
-    = render partial: 'events/partials/organize/non_respondents'
-  .col-md-3
-    = render partial: 'events/partials/organize/non_invitees'
+#responses
+  = render 'events/partials/organize/responses'
 
 scss:
   .actions {

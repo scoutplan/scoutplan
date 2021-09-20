@@ -1,11 +1,9 @@
-h5 <i class="fas fa-couch" style="color: red;"></i> #{ t('events.organize.declines') } <span class="headcount">(#{ @event.rsvps.declined.count })</span>
-
 table
   tbody
     - @event.rsvps.declined.each do |rsvp|
       tr
         td = rsvp.user.full_name
         td
-          .actions
-            = link_to '#' do
+          .actions.float-end
+            = link_to event_rsvps_path(@event, user_id: rsvp.user.id, response: 'accepted'), method: :post, remote: true, title: 'Change response to Going' do
               i.fas.fa-check

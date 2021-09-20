@@ -1,0 +1,25 @@
+.row
+  .col-md-3
+    .card
+      .card-header
+        <i class="fas fa-person-hiking" style="color: green;"></i> #{ t('events.organize.accepts') } <span class="headcount">(#{ @event.rsvps.accepted.count })</span>
+      .card-body
+        = render partial: 'events/partials/organize/accepts'
+  .col-md-3
+    .card
+      .card-header
+        <i class="fas fa-couch" style="color: red;"></i> #{ t('events.organize.declines') } <span class="headcount">(#{ @event.rsvps.declined.count })</span>
+      .card-body
+        = render partial: 'events/partials/organize/declines'
+  .col-md-3
+    .card
+      .card-header
+        <i class="fas fa-ghost" style="color: orange;"></i> #{ t('events.organize.no_responses') } <span class="headcount">(#{ @non_respondents&.count })</a>
+      .card-body
+        = render partial: 'events/partials/organize/non_respondents'
+  .col-md-3
+    .card
+      .card-header
+        <i class="fas fa-cabinet-filing" style="color: gray;"></i> #{ t('events.organize.no_invites') } <span class="headcount">(#{ @non_invitees&.count })</a>
+      .card-body
+        = render partial: 'events/partials/organize/non_invitees'
