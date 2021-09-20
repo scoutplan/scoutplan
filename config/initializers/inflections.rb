@@ -14,6 +14,7 @@
 ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.irregular 'is', 'are'
   inflect.irregular 'was', 'were'
+  inflect.irregular 'this', 'these'
 end
 
 # These inflection rules are supported but not enabled by default:

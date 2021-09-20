@@ -33,5 +33,5 @@
 
         // form buttons
         .modal-footer
-          = submit_tag t('helpers.label.event.rsvp_save'), class: 'btn btn-primary', id: 'rsvp_submit'
+          = submit_tag t('helpers.label.event.rsvp_save', noun: pluralize(current_user.family.count, 'helpers.label.event.rsvp_noun')), class: 'btn btn-primary', id: 'rsvp_submit'
           button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_button')
