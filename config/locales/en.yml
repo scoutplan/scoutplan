@@ -106,6 +106,12 @@ en:
         none:                 "Don't send a notification"
         confirmation:         "%{event_title} has been cancelled"
 
+    organize:
+      accepts:      'Going'
+      declines:     'Not going'
+      no_responses: 'No response'
+      no_invites:   'No invitations'
+
   members:
     name:             'Name'
     type:             'Type'
@@ -150,6 +156,7 @@ en:
         update_scope: 'Change: '
         update_single: 'just this event'
         update_series: 'all events in the series'
-        rsvp_save: 'Send These RSVPs'
+        rsvp_noun: 'RSVP'
+        rsvp_save: 'Send These %{noun}'
         create_confirmation: '%{event_name} was added to the calendar'
         description_save: 'Save This Description'

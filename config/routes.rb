@@ -30,8 +30,8 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :unit_memberships, path: 'members', as: 'members', only: %i[show edit update destroy] do
-  end
+  resources :unit_memberships, path: 'members', as: 'members', only: %i[show edit update destroy]
+  resources :event_rsvps, only: %i[update]
 
   get 'r(/:id)', to: 'rsvp_tokens#login', as: 'rsvp_response'
   post 'rsvp_tokens/:id/resend', to: 'rsvp_tokens#resend', as: 'rsvp_token_resend'
