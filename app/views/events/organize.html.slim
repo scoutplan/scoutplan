@@ -1,5 +1,12 @@
-header.mb-4
-  h1 = @event.title
+header.mb-4.clearfix
+  .float-start
+    h1
+      = @event.title
+      .subtitle
+        = t('events.organize.subtitle')
+
+  .float-end
+    = link_to t('events.organize.back'), event_path(@event)
 
 #responses
   = render 'events/partials/organize/responses'
@@ -22,3 +29,38 @@ scss:
   .headcount {
     color: #aaa;
   }
+
+  .subtitle {
+    font-size: 75%;
+  }
+
+javascript:
+  var tooltipList = [];
+
+  function setupHoverLinks() {
+    tooltipList.map(function(elem) {
+      elem.hide();
+    });
+
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipList = popoverTriggerList.map(function (popoverTriggerEl) {
+      return new bootstrap.Tooltip(popoverTriggerEl);
+    });
+
+    var clipboardLinks = [].slice.call(document.querySelectorAll('a[data-href]:not([data-href=""])'));
+    clipboardLinks.map(function (clipboardLink) {
+      clipboardLink.addEventListener('click', function(event) {
+        var href = this.dataset.href;
+        navigator.clipboard.writeText(href);
+
+        var toastBody = document.querySelector('#toast_body');
+        toastBody.innerHTML = 'Invitation link has been copied to the clipboard.';
+        toast.show();
+
+        event.preventDefault();
+        return false;
+      });
+    });
+  }
+
+  setupHoverLinks();

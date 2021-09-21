@@ -5,5 +5,9 @@ table
         td = rsvp.user.full_name
         td
           .actions.float-end
-            = link_to event_rsvps_path(@event, user_id: rsvp.user.id, response: 'declined'), method: :post, remote: true do
-              i.fas.fa-times
+            = link_to(event_rsvps_path(@event, user_id: rsvp.user.id, response: 'declined'),
+                method: :post,
+                remote: true,
+                title: "Change #{rsvp.user.first_name}'s RSVP to \"Not Going\"",
+                data: { 'bs-toggle' => 'tooltip', 'bs-trigger' => 'hover', 'first-name' => '"#{rsvp.user.first_name}"' }) do
+              i.fas.fa-couch(style="color:red;")

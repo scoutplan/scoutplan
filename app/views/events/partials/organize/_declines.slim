@@ -5,5 +5,9 @@ table
         td = rsvp.user.full_name
         td
           .actions.float-end
-            = link_to event_rsvps_path(@event, user_id: rsvp.user.id, response: 'accepted'), method: :post, remote: true, title: 'Change response to Going' do
-              i.fas.fa-check
+            = link_to(event_rsvps_path(@event, user_id: rsvp.user.id, response: 'accepted'),
+                method: :post,
+                remote: true,
+                title: "Change #{ rsvp.user.first_name }'s RSVP to \"Going\"",
+                data: { 'bs-toggle' => 'tooltip' }) do
+              i.fas.fa-hiking(style="color: green;")

@@ -107,10 +107,13 @@ en:
         confirmation:         "%{event_title} has been cancelled"
 
     organize:
+      subtitle:     'Organizer View'
       accepts:      'Going'
       declines:     'Not going'
       no_responses: 'No response'
       no_invites:   'No invitations'
+      update_toast: "%{user_name}'s RSVP for %{event_title} has been updated."
+      back:         'Back to main event page'
 
   members:
     name:             'Name'
@@ -157,6 +160,6 @@ en:
         update_single: 'just this event'
         update_series: 'all events in the series'
         rsvp_noun: 'RSVP'
-        rsvp_save: 'Send These %{noun}'
+        rsvp_save: 'Send Response'
         create_confirmation: '%{event_name} was added to the calendar'
         description_save: 'Save This Description'

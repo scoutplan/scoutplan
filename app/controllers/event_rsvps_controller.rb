@@ -6,9 +6,6 @@ class EventRsvpsController < ApplicationController
   def create
     @event = Event.find(params[:event_id])
 
-    # these two lines are cribbed from Events#organize...DRY it out
-    @non_respondents = @event.rsvp_tokens.collect(&:user) - @event.rsvps.collect(&:user)
-    @non_invitees = @event.unit.members - @event.rsvp_tokens.collect(&:user) - @event.rsvps.collect(&:user)
 
     @user = User.find(params[:user_id])
     @response = params[:response]
@@ -16,6 +13,11 @@ class EventRsvpsController < ApplicationController
     @rsvp.response = @response
     @rsvp.save!
 
-    respond_to :html, :json, :js
+    @event.reload
+    # these two lines are cribbed from Events#organize...DRY it out
+    @non_respondents = @event.rsvp_tokens.collect(&:user) - @event.rsvps.collect(&:user)
+    @non_invitees = @event.unit.members - @event.rsvp_tokens.collect(&:user) - @event.rsvps.collect(&:user)
+
+    respond_to :js
   end
 end

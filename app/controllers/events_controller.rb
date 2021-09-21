@@ -21,6 +21,8 @@ class EventsController < ApplicationController
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).organize?
     @current_family = current_user.family
+
+    ap request.path_parameters
   end
 
   def create

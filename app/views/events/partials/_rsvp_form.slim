@@ -31,7 +31,11 @@
                             = rsvp_fields.label :response, :declined, value: :declined, class: 'form-check-label' do
                               = t('rsvp_decline')
 
-        // form buttons
-        .modal-footer
-          = submit_tag t('helpers.label.event.rsvp_save', noun: pluralize(current_user.family.count, 'helpers.label.event.rsvp_noun')), class: 'btn btn-primary', id: 'rsvp_submit'
-          button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_button')
+        .modal-footer(style="justify-content: space-between;")
+          - if session[:via_magic_link]
+            = link_to "I'm not #{current_user.full_name}", destroy_user_session_path, method: :delete, style: 'display: inline-block; color: #888; font-size: 90%;'
+
+          div
+            = submit_tag t('helpers.label.event.rsvp_save'), class: 'btn btn-primary', id: 'rsvp_submit', style: 'margin: 4px;'
+            button.btn.btn-secondary(type="button" data-bs-dismiss="modal" style="margin: 4px;")
+              = t('helpers.label.event.cancel_button')
