@@ -1,40 +1,60 @@
 - if @can_edit || @can_organize
 
   .card.admin-card.border-warning
-    .card-header
-      i.far.fa-user-crown
-      |&nbsp;&nbsp;
-      =t('administration')
-      .form-text
-        | Visible to you because you're a #{ @event.unit.name } administrator
+    .card-header(style="display: flex; justify-content: space-between;")
+      .float-start
+        i.far.fa-user-crown
+        |&nbsp;&nbsp;
+        =t('administration')
+        .form-text
+          | Visible to you because you're a #{ @event.unit.name } administrator
 
-    .card-body
-      ul.list-group.list-group-flush
-        li.list-group-item
-          .glyph
-            i.far.fa-eye
-            | &nbsp;
-          = t('events.show.published')
+      .float-end
+        button.btn.collapsed(data-bs-toggle="collapse" data-bs-target="#admin_card_body")
+          i.far.fa-chevron-up
 
-        - if @can_edit
+    #admin_card_body.collapse
+      .card-body
+        ul.list-group.list-group-flush
           li.list-group-item
-            = link_to '#eventModal', id: 'new-event-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
-              .glyph
-                i.far.fa-pencil(style="color: darkgray;")
-              = t(:event_edit)
+            .glyph
+              i.far.fa-eye
+              | &nbsp;
+            = t('events.show.published')
 
-        = render 'events/partials/show/edit_description_link' if @can_edit
+          - if @can_edit
+            li.list-group-item
+              = link_to '#eventModal', id: 'new-event-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
+                .glyph
+                  i.far.fa-pencil(style="color: darkgray;")
+                = t(:event_edit)
 
-        - if @can_organize && @event.requires_rsvp
-          li.list-group-item
-            = link_to organize_event_path(@event), class: 'dropdown-item' do
-              .glyph
-                i.far.fa-clipboard-check(style="color: darkcyan;")
-              = t(:event_organize)
+          = render 'events/partials/show/edit_description_link' if @can_edit
 
-        - if @can_edit
-          li.list-group-item
-            = link_to '#event_cancel_modal', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
-              .glyph
-                i.fas.fa-xmark(style="color: red;")
-              = t("helpers.label.event.cancel_event")
+          - if @can_organize && @event.requires_rsvp
+            li.list-group-item
+              = link_to organize_event_path(@event), class: 'dropdown-item' do
+                .glyph
+                  i.far.fa-clipboard-check(style="color: darkcyan;")
+                = t(:event_organize)
+
+          - if @can_edit
+            li.list-group-item
+              = link_to '#event_cancel_modal', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
+                .glyph
+                  i.fas.fa-xmark(style="color: red;")
+                = t("helpers.label.event.cancel_event")
+
+scss:
+  .card-header button.collapsed svg {
+    transform: rotate(180deg);
+  }
+
+  .card-header button svg {
+    transition: .3s transform ease-in-out;
+  }
+
+  .card-header button:focus {
+    outline: none;
+    box-shadow: none;
+  }

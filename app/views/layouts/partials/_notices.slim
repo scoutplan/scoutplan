@@ -6,12 +6,10 @@
       button.btn-close[type="button" data-bs-dismiss="toast" aria-label="Close"]
     #toast_body.toast-body
       - if flash[:notice]
-        .alert.alert-info
-          = flash[:notice]
+        = flash[:notice]
 
       - if flash[:alert]
-        .alert.alert-warning
-          = flash[:alert]
+        = flash[:alert]
 
   javascript:
     var toastDiv = document.querySelector('#flash_toast');
