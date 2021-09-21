@@ -91,7 +91,7 @@ class EventsController < ApplicationController
   def rsvp
     params[:event][:users].each do |user_id, values|
       response = values[:event_rsvp][:response]
-      rsvp = @event.rsvps.find_or_create_by!(user_id: user_id)
+      rsvp = @event.rsvps.create_with(response: response).find_or_create_by!(user_id: user_id)
       rsvp.update!(response: response)
     end
 

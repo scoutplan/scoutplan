@@ -9,14 +9,14 @@
 
       li
         - if rsvp.nil?
-          span.rsvp-response.rsvp-unknown(title="#{  }")
-            i.fas.fa-question
+          span.rsvp-response.rsvp-unknown(title="#{ t('rsvp_unknown') }")
+            i.fas.fa-ghost
         - elsif rsvp.accepted?
-          span.rsvp-response.rsvp-accepted
-            i.fas.fa-check
+          span.rsvp-response.rsvp-accepted(title="#{ t('rsvp_accept') }")
+            i.fas.fa-hiking
         - elsif rsvp.declined?
-          span.rsvp-response.rsvp-declined
-            i.fas.fa-times
+          span.rsvp-response.rsvp-declined(title="#{ t('rsvp_decline') }")
+            i.fas.fa-couch
 
         = user.first_name
         = " (you)" if user == current_user

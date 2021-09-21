@@ -51,6 +51,7 @@ en:
   change_rsvp: 'Change RSVPs'
   rsvp_accept: 'Going'
   rsvp_decline: 'Not going'
+  rsvp_unknown: 'No response'
   rsvp_posted: 'Your RSVP has been received'
   passwordless_warning: "You're logged in using a password-less \"magic link.\"  This link is valid until x/x/xx."
   be_verb:
