@@ -1,17 +1,22 @@
+.position-fixed.top-0.end-0.p-3(style="z-index:1000;")
+  #flash_toast.toast.bg-primary.text-white
+    .toast-header
+      strong.me-auto
+        = t(:app_name)
+      button.btn-close[type="button" data-bs-dismiss="toast" aria-label="Close"]
+    #toast_body.toast-body
+      - if flash[:notice]
+        .alert.alert-info
+          = flash[:notice]
+
+      - if flash[:alert]
+        .alert.alert-warning
+          = flash[:alert]
+
+  javascript:
+    var toastDiv = document.querySelector('#flash_toast');
+    var toast = new bootstrap.Toast(toastDiv);
+
 - if flash[:notice] || flash[:alert]
-  .position-fixed.top-0.end-0.p-3(style="z-index:1000;")
-    #flashToast.toast
-      .toast-header
-        strong.me-auto
-          = t(:app_name)
-        button.btn-close[type="button" data-bs-dismiss="toast" aria-label="Close"]
-      .toast-body
-        - if flash[:notice]
-          .alert.alert-info
-            = flash[:notice]
-
-        - if flash[:alert]
-          .alert.alert-warning
-            = flash[:alert]
-
-  <script>var toastDiv = document.getElementById('flashToast'); var toast = new bootstrap.Toast(toastDiv); toast.show();</script>
+  javascript:
+    toast.show();

@@ -9,6 +9,7 @@ class RsvpTokensController < ApplicationController
   def login
     # resolve the token to an invitation
     @rsvp_token = RsvpToken.find_by(value: params[:id])
+    session[:via_magic_link] = true
 
     # resolve invitation to event and user
     @event = @rsvp_token.event

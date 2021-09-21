@@ -1,5 +1,3 @@
-h5 <i class="fas fa-ghost" style="color: gray;"></i> #{ t('events.organize.no_responses') } <span class="headcount">(#{ @non_respondents.count })</a>
-
 table
   tbody
     - @non_respondents.each do |user|
@@ -8,20 +6,31 @@ table
         td
           = user.full_name
         td
-          .actions
+          .actions.float-end
             - if token
-              = link_to rsvp_token_resend_path(token.value), method: 'post', remote: true, class: 'resend', data: { }, title: 'Re-send invitation' do
+              = link_to rsvp_token_resend_path(token), method: 'post', remote: true, class: 'resend', data: { }, title: 'Re-send invitation' do
                 i.fas.fa-envelope
               |&nbsp;&nbsp;
-              = link_to '#', title: 'Copy invitation link' do
-                i.fas.fa-clipboard
+              = link_to('#',
+                  title: 'Copy invitation link',
+                  data: { 'bs-toggle' => 'tooltip', href: "#{rsvp_response_url(token.value)}" }) do
+                i.fas.fa-clipboard(style="color: purple;")
             - else
               = link_to '', method: 'post', remote: true, class: 'resend', data: { }, title: 'Send invitation' do
                 i.fas.fa-envelope
 
             |&nbsp;&nbsp;
-            = link_to '#', title: 'Mark as Attending' do
-              i.fas.fa-check
+            = link_to(event_rsvps_path(@event, user_id: user.id, response: 'accepted'),
+                method: :post,
+                remote: true,
+                title: 'Change RSVP to "Going"',
+                data: { 'bs-toggle' => 'tooltip' }) do
+              i.fas.fa-hiking(style="color: green;")
+
             |&nbsp;&nbsp;
-            = link_to '#', title: 'Mark as Declined' do
-              i.fas.fa-times
+            = link_to(event_rsvps_path(@event, user_id: user.id, response: 'declined'),
+                method: :post,
+                remote: true,
+                title: 'Change RSVP to "Not Going"',
+                data: { 'bs-toggle' => 'tooltip' }) do
+              i.fas.fa-couch(style="color:red;")

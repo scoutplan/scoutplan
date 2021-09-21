@@ -2,38 +2,43 @@
 
   .card.admin-card.border-warning
     .card-header
+      = link_to '#admin_card_body', data: { toggle: 'collapse' } do
+        i.far.fa-chevron-down
+
       i.far.fa-user-crown
       |&nbsp;&nbsp;
       =t('administration')
       .form-text
         | Visible to you because you're a #{ @event.unit.name } administrator
 
-    .card-body
-      ul.list-group.list-group-flush
-        - if @can_edit
-          li.list-group-item
-            = link_to '#eventModal', id: 'edit-details-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
-              .glyph
-                i.far.fa-pencil(style="color: darkgray;")
-              = t(:event_edit)
 
-        = render 'events/partials/show/edit_description_link' if @can_edit
+    #admin_card_body.collapse.show
+      .card-body
+        ul.list-group.list-group-flush
+          - if @can_edit
+            li.list-group-item
+              = link_to '#eventModal', id: 'edit-details-button', class: 'dropdown-item', data: { 'bs-toggle' => 'modal' } do
+                .glyph
+                  i.far.fa-pencil(style="color: darkgray;")
+                = t(:event_edit)
 
-        - if @can_organize && @event.requires_rsvp
-          li.list-group-item
-            = link_to organize_event_path(@event), class: 'dropdown-item' do
-              .glyph
-                i.far.fa-clipboard-check(style="color: darkcyan;")
-              = t(:event_organize)
+          = render 'events/partials/show/edit_description_link' if @can_edit
 
-        - if @can_edit
-          li.list-group-item
-            = link_to cancel_event_path, class: 'dropdown-item' do
-              .glyph
-                i.far.fa-trash(style="color: red;")
-              = t("helpers.label.event.delete_event")
+          - if @can_organize && @event.requires_rsvp
+            li.list-group-item
+              = link_to organize_event_path(@event), class: 'dropdown-item' do
+                .glyph
+                  i.far.fa-clipboard-check(style="color: darkcyan;")
+                = t(:event_organize)
 
-      - if ENV['RAILS_ENV'] == 'test'
-        = button_to t('events.publish'), publish_event_path(@event), class: 'btn btn-success w-100 mt-4', method: :post
-      - else
-        = button_to t('events.publish'), publish_event_path(@event), class: 'btn btn-success w-100 mt-4', method: :post, data: { confirm: t('events.show.confirm_publish') }
+          - if @can_edit
+            li.list-group-item
+              = link_to cancel_event_path, class: 'dropdown-item' do
+                .glyph
+                  i.far.fa-trash(style="color: red;")
+                = t("helpers.label.event.delete_event")
+
+        - if ENV['RAILS_ENV'] == 'test'
+          = button_to t('events.publish'), publish_event_path(@event), class: 'btn btn-success w-100 mt-4', method: :post
+        - else
+          = button_to t('events.publish'), publish_event_path(@event), class: 'btn btn-success w-100 mt-4', method: :post, data: { confirm: t('events.show.confirm_publish') }
