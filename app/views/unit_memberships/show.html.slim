@@ -1,13 +1,18 @@
 h1 = @target_membership.full_name
 
-- if @user.children.count.positive?
+- if @target_membership.user.children.count.positive?
   h3 =t('members.show.children')
   ul
-    - @user.children.each do |child|
+    - @target_membership.user.children.each do |child|
       li = link_to child.full_name, member_path(child)
 
-- if @user.parents.count.positive?
+- if @target_membership.user.parents.count.positive?
   h3 =t('members.show.parents')
   ul
-    - @user.parents.each do |parent|
+    - @target_membership.user.parents.each do |parent|
       li = link_to parent.full_name, member_path(parent)
+
+= link_to new_member_relationship_path(@target_membership), class: 'btn btn-success' do
+  i.far.fa-family
+  |&nbsp;
+  = t('members.show.add_relationship')

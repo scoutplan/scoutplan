@@ -129,7 +129,8 @@ en:
     new:
       title: 'Add a Member'
     show:
-      children:       'Children'
+      children:         'Children'
+      add_relationship: 'Add Relationship'
     import:
       success_message: '%{count_and_noun} were successfully imported and invited via email'
       member:          'member'

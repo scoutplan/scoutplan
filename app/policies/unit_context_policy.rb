@@ -23,4 +23,8 @@ class UnitContextPolicy < ApplicationPolicy
   def is_admin?
     is_member? && @membership.role == 'admin'
   end
+
+  def admin?
+    is_admin?
+  end
 end
