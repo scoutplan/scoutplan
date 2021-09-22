@@ -12,6 +12,7 @@ import "channels"
 import "trix"
 import "@rails/actiontext"
 
+// import '../js/bootstrap_custom.js'
 window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js')
 
 Rails.start()

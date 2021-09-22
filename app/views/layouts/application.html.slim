@@ -13,16 +13,57 @@ html
 
   body(class="#{ yield :body_classes }")
     = render partial: 'layouts/partials/notices'
+    = render 'layouts/partials/header'
 
     .container
-      = render 'layouts/partials/header'
       = yield
       = render 'layouts/partials/footer'
 
   scss:
+    nav.navbar {
+      margin-bottom: 30px;
+    }
+
+    .navbar-dark .navbar-nav .nav-link {
+      color: #fff;
+    }
+
+    @mixin active-nav-link {
+      font-weight: 800;
+      cursor: default;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+
     h1 .subtitle {
       text-transform: uppercase;
       font-size: 50%;
       font-weight: 400;
       letter-spacing: 2px;
+    }
+
+    body.events.index {
+      #nav_link_events {
+        @include active-nav-link;
+      }
+    }
+
+    body.members.index {
+      #nav_link_members {
+        @include active-nav-link;
+      }
+    }
+
+    nav.unit-id {
+      color: #888;
+      text-transform: uppercase;
+      font-size: 90%;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-weight: 400;
     }

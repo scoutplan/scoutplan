@@ -68,6 +68,7 @@ en:
     update_confirmation: "%{title} was updated"
 
     index:
+      title:        'Event Calendar'
       bulk_publish:
         execute_caption: 'Publish Selected Events'
         cancel_caption:  'Cancel'
@@ -91,6 +92,7 @@ en:
         rsvp_change:  'Change'
 
     show:
+      upcoming_events_title:  'Other upcoming events'
       description_empty:      "There's no description for this event yet."
       description_cta:        'Write one now.'
       confirm_publish:        'Publishing will make this event visible to all members. Are you sure you want to publish it?'
@@ -122,6 +124,7 @@ en:
     parent_guardian:  'Guardian(s)'
     status:           'Status'
     index:
+      title:          'Members'
       add_a_member: 'Add a Member'
     new:
       title: 'Add a Member'
