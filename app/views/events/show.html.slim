@@ -4,6 +4,7 @@ header.rsvps.mb-4
 
 .row.gx-5
   main
+    nav.unit-id = @current_unit.name
     h1.mb-4 = @event.title
     = render partial: 'events/partials/show/date_time_location_card'
     == @event.description
@@ -12,6 +13,7 @@ header.rsvps.mb-4
   aside
     = render partial: @event.published? ? 'events/partials/show/admin_card_published' : 'events/partials/show/admin_card_draft'
     = render partial: 'events/partials/show/rsvp_card' if @event.requires_rsvp
+    = render 'events/partials/show/upcoming_events_card' if !@current_membership.admin? && !@event.requires_rsvp
 
 #modal-forms
   = render 'events/partials/event_form'

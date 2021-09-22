@@ -1,0 +1,16 @@
+/ to be shown when nothing else is available for the right column
+/ on the Event#show page
+
+
+.card
+  .card-header
+    i.far.fa-calendar
+    |&nbsp;
+    =t('events.show.upcoming_events_title')
+
+  .card-body
+    table.table
+      - @event.unit.events.published.future.upcoming.each do |event|
+        tr
+          td = link_to event.title, event
+          td = event.starts_at.strftime('%b %e')

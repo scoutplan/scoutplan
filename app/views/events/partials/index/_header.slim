@@ -1,6 +1,7 @@
 header.mt-4.mb-4.clearfix
   .float-start
-    h1 #{@unit.name} Events
+    nav.unit-id = @current_unit.name
+    h1 = t('events.index.title')
 
     .filter-status
       = 'Showing only some events'
@@ -8,10 +9,13 @@ header.mt-4.mb-4.clearfix
     .filter-status.filter-status-only-rsvps.form-text
       = t('events.index.showing_rsvps')
 
-  .float-end
+  .float-end.pt-4
     - if policy(:event).create?
       span#add_event_button_wrapper
-        = link_to t(:event_add), '#eventModal', id: 'new-event-button', class: 'btn btn-success me-3', data: { 'bs-toggle' => 'modal' }, style: "display: inline-block;"
+        = link_to '#eventModal', id: 'new-event-button', class: 'btn btn-success me-3', data: { 'bs-toggle' => 'modal' }, style: "display: inline-block;" do
+          i.fas.fa-plus
+          |&nbsp;
+          = t(:event_add)
 
         .dropdown.ml-3(style="display: inline-block;")
           = link_to t('events.index.view.dropdown'), '#', class: 'btn btn-outline-secondary dropdown-toggle', data: { 'bs-toggle' => 'dropdown' }, style: "display: inline-block;"

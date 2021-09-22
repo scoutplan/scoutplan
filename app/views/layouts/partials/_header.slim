@@ -1,10 +1,30 @@
-header.primary
-  = @current_unit.name
-  = link_to 'Events',  unit_events_path(@current_unit)
-  = link_to 'Members', unit_members_path(@current_unit) if policy(:unit_membership).index?
+header.navbar.navbar-expand-md.bd-navbar
+  nav.container.flex-wrap.flex-md-nowrap.navbar-dark
+    = link_to '#', class: 'navbar-brand' do
+      i.fas.fa-tree-large
 
-  .float-end
-    .dropdown
-      = link_to "Hello, #{ current_user.first_name }!", '#', class: 'dropdown-toggle', data: { 'bs-toggle' => 'dropdown' }
-      ul.dropdown-menu.dropdown-menu-end
-        li.dropdown-item = link_to 'Sign Out', destroy_user_session_path, method: :delete
+    button.navbar-toggler(data-bs-toggle="collapse" data-bs-target="#main_navbar")
+      span.navbar-toggler-icon
+
+    #main_navbar.collapse.navbar-collapse
+      ul.navbar-nav.me-auto.mb-2.mb-lg-0
+        li.nav-item
+          = link_to 'Events',  unit_events_path(@current_unit), class: 'nav-link', id: 'nav_link_events'
+
+        li.nav-item
+          = link_to 'Members', unit_members_path(@current_unit), class: 'nav-link', id: 'nav_link_members' if policy(:unit_membership).index?
+
+      ul.navbar-nav.ml-auto
+        li.nav-item
+          .dropdown
+            = link_to '#', class: 'nav-link dropdown-toggle', data: { 'bs-toggle' => 'dropdown' } do
+              i.fas.fa-user-circle
+              |&nbsp;
+              = "Hello, #{ current_user.first_name }!"
+            ul.dropdown-menu.dropdown-menu-end
+              li = link_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'dropdown-item'
+
+scss:
+  .navbar {
+    background-color: #444;
+  }
