@@ -1,9 +1,12 @@
 - content_for :body_classes do
   = "members index"
 
-h1 = t('members.index.title')
+header.mt-4.mb-4.clearfix
+  .float-start
+    h1 = t('members.index.title')
 
-= link_to t('members.index.add_a_member'), '#membership_modal', class: 'btn btn-success', data: { 'bs-toggle' => 'modal'}
+  .float-end
+    = link_to t('members.index.add_a_member'), '#membership_modal', class: 'btn btn-success', data: { 'bs-toggle' => 'modal'}
 
 table.table-hover
   thead

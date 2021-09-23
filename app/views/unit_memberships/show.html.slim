@@ -4,15 +4,18 @@ h1 = @target_membership.full_name
   h3 =t('members.show.children')
   ul
     - @target_membership.user.children.each do |child|
-      li = link_to child.full_name, member_path(child)
+      li
+        = link_to child.full_name, member_path(child)
 
 - if @target_membership.user.parents.count.positive?
   h3 =t('members.show.parents')
   ul
-    - @target_membership.user.parents.each do |parent|
-      li = link_to parent.full_name, member_path(parent)
+    - @target_membership.user.parent_relationships.each do |relationship|
+      li
+        = link_to relationship.parent.full_name, member_path(relationship.parent)
+        |&nbsp;
+        = link_to 'X', member_relationship_path(@target_membership, relationship), class: 'btn btn-light', method: :delete
 
-= link_to new_member_relationship_path(@target_membership), class: 'btn btn-success' do
-  i.far.fa-family
-  |&nbsp;
-  = t('members.show.add_relationship')
+button(type="button" class="btn btn-success" data-bs-target="#new_relationship_modal" data-bs-toggle="modal") Add Relationship to Another Member
+
+= render partial: 'unit_memberships/partials/show/new_relationship_form'
