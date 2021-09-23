@@ -14,6 +14,12 @@ RSpec.describe UserRelationship, type: :model do
       expect(dupe).not_to be_valid
     end
 
+    it 'presents self reference' do
+      user = FactoryBot.build(:user)
+      example = FactoryBot.build(:user_relationship, parent: user, child: user)
+      expect(example).not_to be_valid
+    end
+
     it 'requires a parent' do
       expect(FactoryBot.build(:user_relationship, parent: nil)).not_to be_valid
     end
