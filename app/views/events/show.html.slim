@@ -13,7 +13,7 @@ header.rsvps.mb-4
   aside
     = render partial: @event.published? ? 'events/partials/show/admin_card_published' : 'events/partials/show/admin_card_draft'
     = render partial: 'events/partials/show/rsvp_card' if @event.requires_rsvp
-    = render 'events/partials/show/upcoming_events_card' if !@current_membership.admin? && !@event.requires_rsvp
+    = render 'events/partials/show/upcoming_events_card' if !@current_member.admin? && !@event.requires_rsvp
 
 #modal-forms
   = render 'events/partials/event_form'

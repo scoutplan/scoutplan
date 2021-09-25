@@ -1,20 +1,21 @@
-h1 = @target_membership.full_name
+header.mt-4.mb-4.clearfix
+  h1 = @target_membership.full_name
 
-- if @target_membership.user.children.count.positive?
+- if @target_membership.child_relationships.count.positive?
   h3 =t('members.show.children')
   ul
-    - @target_membership.user.children.each do |child|
+    - @target_membership.child_relationships.each do |relationship|
       li
-        = link_to child.full_name, member_path(child)
+        = link_to relationship.child_member.full_name, member_path(relationship.child_member)
 
-- if @target_membership.user.parents.count.positive?
+- if @target_membership.parent_relationships.count.positive?
   h3 =t('members.show.parents')
   ul
-    - @target_membership.user.parent_relationships.each do |relationship|
+    - @target_membership.parent_relationships.each do |relationship|
       li
-        = link_to relationship.parent.full_name, member_path(relationship.parent)
+        = link_to relationship.parent_member.full_name, member_path(relationship.parent_member)
         |&nbsp;
-        = link_to 'X', member_relationship_path(@target_membership, relationship), class: 'btn btn-light', method: :delete
+        = link_to 'X', relationship_path(relationship), class: 'btn btn-light', method: :delete
 
 button(type="button" class="btn btn-success" data-bs-target="#new_relationship_modal" data-bs-toggle="modal") Add Relationship to Another Member
 

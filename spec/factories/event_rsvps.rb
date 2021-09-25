@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :event_rsvp do
     event
-    user
+    member
     response { 'declined' }
 
     trait :accepted do

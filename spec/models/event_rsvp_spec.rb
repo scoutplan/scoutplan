@@ -10,7 +10,7 @@ RSpec.describe EventRsvp, type: :model do
   describe 'validations' do
     it 'prevents duplicates' do
       rsvp = FactoryBot.create(:event_rsvp)
-      dupe = FactoryBot.build(:event_rsvp, user_id: rsvp.user_id, event_id: rsvp.event_id)
+      dupe = FactoryBot.build(:event_rsvp, unit_membership_id: rsvp.unit_membership_id, event_id: rsvp.event_id)
       expect(dupe).not_to be_valid
     end
   end

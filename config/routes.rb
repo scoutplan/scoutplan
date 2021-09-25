@@ -34,8 +34,10 @@ Rails.application.routes.draw do
   end
 
   resources :unit_memberships, path: 'members', as: 'members', only: %i[show edit update destroy] do
-    resources :user_relationships, as: 'relationships', path: 'relationships', only: %i[new create destroy]
+    resources :member_relationships, as: 'relationships', path: 'relationships', only: %i[new create destroy]
   end
+
+  resources :member_relationships, as: 'relationships', path: 'relationships', only: %i[destroy]
 
   get 'r(/:id)', to: 'rsvp_tokens#login', as: 'rsvp_response'
   post 'rsvp_tokens/:id/resend', to: 'rsvp_tokens#resend', as: 'rsvp_token_resend'

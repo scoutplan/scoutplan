@@ -1,25 +1,16 @@
 table
   tbody
-    - @non_invitees.each do |user|
-      - token = @event.rsvp_token_for(user)
+    - @non_invitees.each do |member|
       tr
         td
-          = user.full_name
+          = member.full_name
         td
           .actions.float-end
-            - if token
-              = link_to rsvp_token_resend_path(token.value), method: 'post', remote: true, class: 'resend', data: { }, title: 'Re-send invitation' do
-                i.fas.fa-envelope
-              |&nbsp;&nbsp;
-              = link_to '#', title: 'Copy invitation link' do
-                i.fas.fa-clipboard
-            - else
-              = link_to '', method: 'post', remote: true, class: 'resend', data: { }, title: 'Send invitation' do
-                i.fas.fa-envelope
-
+            = link_to '', method: 'post', remote: true, class: 'resend', data: { }, title: 'Send invitation' do
+              i.fas.fa-envelope
             |&nbsp;&nbsp;
-            = link_to event_rsvps_path(@event, user_id: user.id, response: 'accepted'), method: :post, remote: true do
+            = link_to event_rsvps_path(@event, member_id: member.id, response: 'accepted'), method: :post, remote: true do
               i.fas.fa-check
             |&nbsp;&nbsp;
-            = link_to event_rsvps_path(@event, user_id: user.id, response: 'declined'), method: :post, remote: true do
+            = link_to event_rsvps_path(@event, member_id: member.id, response: 'declined'), method: :post, remote: true do
               i.fas.fa-times

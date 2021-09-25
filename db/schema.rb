@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_16_113506) do
+ActiveRecord::Schema.define(version: 2021_09_25_113511) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,10 +64,10 @@ ActiveRecord::Schema.define(version: 2021_09_16_113506) do
 
   create_table "event_rsvps", force: :cascade do |t|
     t.integer "event_id"
-    t.integer "user_id"
     t.integer "response"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "unit_membership_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -105,13 +105,20 @@ ActiveRecord::Schema.define(version: 2021_09_16_113506) do
     t.index ["feature_key", "key", "value"], name: "index_flipper_gates_on_feature_key_and_key_and_value", unique: true
   end
 
+  create_table "member_relationships", force: :cascade do |t|
+    t.integer "parent_unit_membership_id"
+    t.integer "child_unit_membership_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "rsvp_tokens", force: :cascade do |t|
-    t.integer "user_id"
     t.integer "event_id"
     t.string "value"
     t.datetime "expires_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "unit_membership_id", null: false
   end
 
   create_table "unit_memberships", force: :cascade do |t|
@@ -151,7 +158,6 @@ ActiveRecord::Schema.define(version: 2021_09_16_113506) do
     t.string "last_name"
     t.string "phone"
     t.date "date_of_birth"
-    t.string "type", null: false
     t.string "invitation_token"
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"

@@ -1,10 +1,10 @@
 table
   tbody
-    - @non_respondents.each do |user|
-      - token = @event.rsvp_token_for(user)
+    - @non_respondents.each do |member|
+      - token = @event.rsvp_token_for(member)
       tr
         td
-          = user.full_name
+          = member.full_name
         td
           .actions.float-end
             - if token
@@ -20,7 +20,7 @@ table
                 i.fas.fa-envelope
 
             |&nbsp;&nbsp;
-            = link_to(event_rsvps_path(@event, user_id: user.id, response: 'accepted'),
+            = link_to(event_rsvps_path(@event, member_id: member.id, response: 'accepted'),
                 method: :post,
                 remote: true,
                 title: 'Change RSVP to "Going"',
@@ -28,7 +28,7 @@ table
               i.fas.fa-hiking(style="color: green;")
 
             |&nbsp;&nbsp;
-            = link_to(event_rsvps_path(@event, user_id: user.id, response: 'declined'),
+            = link_to(event_rsvps_path(@event, member_id: member.id, response: 'declined'),
                 method: :post,
                 remote: true,
                 title: 'Change RSVP to "Not Going"',

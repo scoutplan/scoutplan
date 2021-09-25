@@ -2,17 +2,18 @@
   .row
     .col-md-1
     .col-md-6
-      h1 Import Member Spreadsheet
+      h1 = t('members.import.title')
 
       = form_tag import_unit_members_path(@unit), multipart: true
         = hidden_field_tag :authenticity_token, form_authenticity_token
 
         .mb-3
-          = label :roster_file, 'Roster File'
+          = label :roster_file, t('members.import.roster_file'), class: 'form-label'
           = file_field_tag :roster_file, class: 'form-control'
 
         .mb-3.float-end
-          = submit_tag t('helpers.label.next'), class: 'btn btn-success'
+          = submit_tag t('global.next'), class: 'btn btn-success'
+          = link_to t('global.cancel'), unit_members_path(@unit), class: 'ms-2 btn btn-secondary'
 
     .col-md-1
     .col-md-4

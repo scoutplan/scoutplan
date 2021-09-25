@@ -1,10 +1,7 @@
 tr.member-row(data-href="#{member_path(unit_membership)}")
-  td = unit_membership.member.full_name
-  td(style="max-width: 0.5rem; padding-right: 0;")
-    div(class="badge bg-secondary #{ unit_membership.member.type.downcase }-member")
-      = unit_membership.member.type
-  td(style="max-width: 0.5rem; padding-left: 0;")
-    div(class="badge bg-secondary #{ unit_membership.status }-member")
-      = unit_membership.status.titleize
+  / name column
+  td.name
+    = unit_membership.full_name
 
-  td = (unit_membership.member.parents.map(&:full_name)).join(', ')
+  / parents column
+  td = unit_membership.parent_relationships.map { |r| r.parent_member.full_name }.join(', ')

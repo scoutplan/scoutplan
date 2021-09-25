@@ -5,12 +5,12 @@ FactoryBot.define do
     "person#{n}@example.com"
   end
 
-  factory :user, class: 'Adult' do
+  factory :user do
     email
     password { 'password' }
+    type { 0 }
   end
 
-  factory :adult, class: 'Adult', parent: :user, aliases: [:parent]
-
-  factory :youth, class: 'Youth', parent: :user, aliases: [:child]
+  factory :adult, parent: :user, aliases: [:parent]
+  factory :youth, parent: :user, aliases: [:child]
 end

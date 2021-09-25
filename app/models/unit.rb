@@ -4,13 +4,17 @@ class Unit < ApplicationRecord
   has_many :events
   has_many :event_categories
   has_many :unit_memberships
-  alias_attribute :memberships, :unit_memberships
-  has_many :members, through: :unit_memberships, source: :user
+  has_many :users, through: :unit_memberships
+
   validates_presence_of :name
+
+  alias_attribute :memberships, :unit_memberships
+  alias_attribute :members, :unit_memberships
+
   after_create :populate_categories
 
   def membership_for(user)
-    memberships.find_by(user_id: user.id)
+    members.find_by(user: user)
   end
 
   def from_email

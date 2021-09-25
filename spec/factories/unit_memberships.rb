@@ -11,4 +11,13 @@ FactoryBot.define do
       role { 'admin' }
     end
   end
+
+  factory :member, parent: :unit_membership do
+  end
+
+  factory :parent_member, parent: :unit_membership do
+  end
+
+  factory :child_member, parent: :unit_membership do
+  end
 end
