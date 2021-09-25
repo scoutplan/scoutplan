@@ -5,3 +5,6 @@ tr.member-row(data-href="#{member_path(unit_membership)}")
 
   / parents column
   td = unit_membership.parent_relationships.map { |r| r.parent_member.full_name }.join(', ')
+
+  / children column
+  td = unit_membership.child_relationships.map { |r| r.child_member.full_name }.join(', ')

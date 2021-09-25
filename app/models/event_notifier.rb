@@ -20,4 +20,8 @@ class EventNotifier
       EventMailer.with(unit: unit, user: user, events: events).bulk_publish_email.deliver_later
     end
   end
+
+  def self.invite_member_to_event(member, event, token)
+    EventMailer.with(token: token).token_invitation_email.deliver_later
+  end
 end

@@ -30,7 +30,7 @@ class UnitMembershipsImportController < ApplicationController
     file = params[:roster_file]
     data = SmarterCSV.process(file.tempfile)
     data.each do |row|
-      email           = row[:email].downcase || "anonymous-member-#{SecureRandom.hex(6)}@scoutplan.org" unless email
+      email           = row[:email]&.downcase || "anonymous-member-#{SecureRandom.hex(6)}@scoutplan.org" unless email
       existing_user   = User.find_by(email: email)
       existing_member = @unit.membership_for(existing_user)
 
@@ -49,7 +49,6 @@ class UnitMembershipsImportController < ApplicationController
           email: email,
           type: :adult
         )
-        ap user
         user.save!
 
         membership = @unit.memberships.create!(user: user, status: :active, role: :member)
