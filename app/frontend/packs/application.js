@@ -5,13 +5,19 @@
 
 // BOOTSTRAP see https://bootrails.com/blog/rails-bootstrap-tutorial and https://whatapalaver.co.uk/bootstrap-5-rails-6
 
-import Rails from "@rails/ujs"
-import Turbolinks from "turbolinks"
-import * as ActiveStorage from "@rails/activestorage"
-import "channels"
-import "trix"
-import "@rails/actiontext"
+import Rails from '@rails/ujs'
+import Turbolinks from 'turbolinks'
+import * as ActiveStorage from '@rails/activestorage'
+import 'channels'
+import 'trix'
+import '@rails/actiontext'
 
+
+// TODO: import bootstrap modules
+// see https://stackoverflow.com/questions/66613941/cant-toggle-bootstrap-5-js-not-initialized-properly
+// and https://stackoverflow.com/questions/67348468/bootstrap-5-webpack-plugins-are-not-fully-functional
+
+// import * as bootstrap from 'bootstrap';
 // import '../js/bootstrap_custom.js'
 window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js')
 

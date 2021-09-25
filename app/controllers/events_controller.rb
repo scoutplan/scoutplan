@@ -9,9 +9,9 @@ class EventsController < ApplicationController
   before_action :find_event, except: %i[index edit create new bulk_publish]
 
   def index
-    @events = UnitEventQuery.new(@unit, @current_membership).execute
+    @events = UnitEventQuery.new(@unit, @current_member).execute
     @presenter = EventPresenter.new
-    @current_family = current_user.family
+    @current_family = @current_member.family
     @current_year = @current_month = nil
     build_prototype_event
   end
@@ -20,19 +20,15 @@ class EventsController < ApplicationController
     authorize @event
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).organize?
-    @current_family = current_user.family
-
-    ap request.path_parameters
+    @current_family = @current_member.family
   end
 
   def create
     authorize :event, :create?
-
     @event = @unit.events.new(event_params)
     @event.starts_at = ScoutplanUtilities.compose_datetime(params[:starts_at_d], params[:starts_at_t])
     @event.ends_at   = ScoutplanUtilities.compose_datetime(params[:ends_at_d], params[:ends_at_t])
     @event.repeats_until = nil unless params[:event_repeats] == 'on'
-
     return unless @event.save!
 
     flash[:notice] = t('helpers.label.event.create_confirmation', event_name: @event.title)
@@ -52,8 +48,11 @@ class EventsController < ApplicationController
 
   def organize
     authorize @event
-    @non_respondents = @event.rsvp_tokens.collect(&:user) - @event.rsvps.collect(&:user)
-    @non_invitees = @event.unit.members - @event.rsvp_tokens.collect(&:user) - @event.rsvps.collect(&:user)
+    @non_respondents = @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)
+    @non_invitees = @event.unit.members - @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)
+
+ap @event.unit.members.first
+
   end
 
   def publish
@@ -89,9 +88,9 @@ class EventsController < ApplicationController
 
   # PATCH /events/:id/rsvpp
   def rsvp
-    params[:event][:users].each do |user_id, values|
+    params[:event][:members].each do |member_id, values|
       response = values[:event_rsvp][:response]
-      rsvp = @event.rsvps.create_with(response: response).find_or_create_by!(user_id: user_id)
+      rsvp = @event.rsvps.create_with(response: response).find_or_create_by!(unit_membership_id: member_id)
       rsvp.update!(response: response)
     end
 
@@ -112,7 +111,7 @@ class EventsController < ApplicationController
   # this override is needed to pass the membership instead of the user
   # as the object to be evaluated in Pundit policies
   def pundit_user
-    @current_membership
+    @current_member
   end
 
   def body_classes
@@ -130,7 +129,7 @@ class EventsController < ApplicationController
     )
     @event.starts_at = @event.starts_at.change({ hour: 10 }) # default starts at 10 AM
     @event.ends_at   = @event.ends_at.change({ hour: 16 }) # default ends at 4 PM
-    @user_rsvps = current_user.event_rsvps
+    @member_rsvps    = @current_member.event_rsvps
   end
 
   # we don't guarantee that @unit is populated, hence...
@@ -139,9 +138,8 @@ class EventsController < ApplicationController
 
   # for index, new, and create
   def find_unit
-    @unit = Unit.find(params[:unit_id])
-    @current_unit = @unit
-    @current_membership = @unit.membership_for(current_user)
+    @current_unit = @unit = Unit.find(params[:unit_id])
+    @current_member = @unit.membership_for(current_user)
   end
 
   # for show, edit, update, destroy...important that @unit
@@ -149,7 +147,7 @@ class EventsController < ApplicationController
   def find_event
     @event = Event.includes(:event_rsvps).find(params[:id])
     @current_unit = @event.unit
-    @current_membership = @current_unit.membership_for(current_user)
+    @current_member = @current_unit.membership_for(current_user)
     @presenter = EventPresenter.new(event: @event, current_user: current_user)
   end
 

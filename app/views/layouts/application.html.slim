@@ -19,6 +19,12 @@ html
       = yield
       = render 'layouts/partials/footer'
 
+  javascript:
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipList = popoverTriggerList.map(function (popoverTriggerEl) {
+      return new bootstrap.Tooltip(popoverTriggerEl);
+    });
+
   scss:
     nav.navbar {
       margin-bottom: 30px;

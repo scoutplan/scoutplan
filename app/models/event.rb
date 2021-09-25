@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
+# a calendar event
 class Event < ApplicationRecord
   default_scope { order(starts_at: :asc) }
 
   belongs_to :unit
   belongs_to :series_parent, class_name: 'Event', optional: true
   belongs_to :event_category
-  has_many   :series_children, class_name: 'Event'
-  has_many   :event_rsvps, inverse_of: :event, dependent: :destroy
-  has_many   :users, through: :event_rsvps
-  has_many   :rsvp_tokens
+  has_many   :event_rsvps, dependent: :destroy
+  has_many   :members, through: :event_rsvps
+  has_many   :rsvp_tokens, dependent: :destroy
 
   has_rich_text :description
 
@@ -34,12 +34,16 @@ class Event < ApplicationRecord
     requires_rsvp && starts_at > DateTime.now
   end
 
-  def rsvp_for?
-    event_rsvps.count.positive?
-  end
-
   def series?
     !new_record? && (series_children.count.positive? || series_siblings.count.positive?)
+  end
+
+  def rsvp_for(member)
+    event_rsvps.find_by(unit_membership_id: member.id)
+  end
+
+  def rsvp_token_for(member)
+    rsvp_tokens.find_by(unit_membership: member)
   end
 
   def series_children
@@ -50,10 +54,6 @@ class Event < ApplicationRecord
     return [] unless series_parent_id.present?
 
     Event.where(series_parent_id: series_parent_id)
-  end
-
-  def rsvp_token_for(user)
-    rsvp_tokens.find_by(user: user)
   end
 
   private

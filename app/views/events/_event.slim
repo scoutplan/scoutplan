@@ -18,14 +18,17 @@ tr.event(class="#{ @presenter.row_classes }" data-href="#{ event_path(event) }" 
 
   td.selection
     = check_box_tag "events[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
+
   td.start_day
     = raw(@presenter.dates_to_s)
+
   td.days
     span.daynames.d-block.d-md-inline
       = raw(@presenter.days_to_s)
 
   td.glyph
     i(class = "fas fa-#{event.event_category.glyph}")
+
   td.title
     = event.title
 
@@ -44,6 +47,8 @@ tr.event(class="#{ @presenter.row_classes }" data-href="#{ event_path(event) }" 
       span.badge.bg-secondary =t('events.index.draft')
     - if event.cancelled?
       span.badge.bg-warning =t('events.index.cancelled')
+
   td.location.tablet = event.location
+
   td.action.desktop
     = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps }

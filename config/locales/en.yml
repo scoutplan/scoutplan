@@ -30,6 +30,9 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  global:
+    cancel: 'Cancel'
+    next:   'Next'
   you_parenths: '(you)'
   app_name: 'Scoutplan'
   administration: 'Administration'
@@ -121,19 +124,23 @@ en:
   members:
     name:             'Name'
     type:             'Type'
-    parent_guardian:  'Guardian(s)'
+    parent_guardian:  'Parents, Guardians, and Delegates'
     status:           'Status'
     index:
-      title:          'Members'
-      add_a_member: 'Add a Member'
+      title:          'Member Roster'
+      add_a_member:   'Add a Member'
     new:
       title: 'Add a Member'
     show:
-      children:         'Children'
+      children:         'Children, Guardees, and Delegatees'
       add_relationship: 'Add Relationship'
     import:
+      title:           'Import Member Spreadsheet'
       success_message: '%{count_and_noun} were successfully imported and invited via email'
       member:          'member'
+      roster_file:     'Roster file'
+    relationships:
+      success_message: '%{first_name} can now RSVP on behalf of %{second_name}'
 
   event_categories:
     camping:          'Camping'

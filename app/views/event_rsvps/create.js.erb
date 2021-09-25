@@ -4,7 +4,7 @@ responses.innerHTML = "<%= j render partial: 'events/partials/organize/responses
 
 // show a toast
 var toastBody = document.querySelector('#toast_body');
-toastBody.innerHTML = '<%= "#{ t('events.organize.update_toast', user_name: @user.first_name, event_title: @event.title)}" %>';
+toastBody.innerHTML = '<%= "#{ t('events.organize.update_toast', user_name: @member.first_name, event_title: @event.title)}" %>';
 toast.show();
 
 setupHoverLinks();

@@ -4,7 +4,7 @@ table
   tbody
     - @event.rsvps.accepted_pending.each do |rsvp|
       tr
-        td = rsvp.user.full_name
+        td = rsvp.member.full_name
         td
           .actions
             = link_to '#', title: 'Mark as Attending' do

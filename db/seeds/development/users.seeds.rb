@@ -9,7 +9,7 @@ bob = User.create!(
   first_name: 'Bob',
   last_name: 'Dobalina',
   phone: '555-1212',
-  type: 'Adult'
+  type: :adult
 )
 
 anne = User.create!(
@@ -19,7 +19,7 @@ anne = User.create!(
   first_name: 'Anne',
   last_name: 'Avery',
   phone: '555-1212',
-  type: 'Youth'
+  type: :youth
 )
 
 brian = User.create!(
@@ -29,7 +29,7 @@ brian = User.create!(
   first_name: 'Brian',
   last_name: 'Bosworth',
   phone: '555-1212',
-  type: 'Adult'
+  type: :adult
 )
 
 debbie = User.create!(
@@ -39,7 +39,7 @@ debbie = User.create!(
   first_name: 'Debbie',
   last_name: 'Doolittle',
   phone: '555-1212',
-  type: 'Youth'
+  type: :youth
 )
 
 eric = User.create!(
@@ -49,7 +49,7 @@ eric = User.create!(
   first_name: 'Eric',
   last_name: 'Einstein',
   phone: '555-1212',
-  type: 'Adult'
+  type: :adult
 )
 
 timmy = User.create!(
@@ -59,7 +59,7 @@ timmy = User.create!(
   first_name: 'Timmy',
   last_name: 'Dobalina',
   phone: '555-1212',
-  type: 'Youth'
+  type: :youth
 )
 
 bob.child_relationships.create!(child: timmy)

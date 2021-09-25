@@ -3,18 +3,29 @@
 
 header.mt-4.mb-4.clearfix
   .float-start
+    nav.unit-id = @current_unit.name
     h1 = t('members.index.title')
 
-  .float-end
-    = link_to t('members.index.add_a_member'), '#membership_modal', class: 'btn btn-success', data: { 'bs-toggle' => 'modal'}
+  .float-end.pt-4
+    = link_to '#membership_modal', class: 'btn btn-success me-3', data: { 'bs-toggle' => 'modal'} do
+      i.fas.fa-user-plus(class='me-3')
+      = t('members.index.add_a_member')
+
+    .dropdown.ml-3(style="display: inline-block;")
+      = link_to t('events.index.view.dropdown'), '#', class: 'btn btn-outline-secondary dropdown-toggle', data: { 'bs-toggle' => 'dropdown' }, style: "display: inline-block;"
+      ul.dropdown-menu.dropdown-menu-end.dropdown-menu-dark
+        li = link_to 'Import Members', import_unit_members_path(@unit), class: 'dropdown-item'
+
+/ .input-group.mb-3
+/  = text_field_tag :search, '', class: 'form-control search', placeholder: 'Search by name', autofocus: true, onkeyup: 'performNameSearch();'
+
 
 table.table-hover
   thead
     tr
       th = t('members.name')
-      th
-      th
       th = t('members.parent_guardian')
+
   tbody
     = render @unit_memberships
 
@@ -27,6 +38,25 @@ javascript:
       var href = this.dataset.href;
       window.location = href;
     });
+  }
+
+  // search functionality
+  // adapted from https://www.w3schools.com/howto/howto_js_filter_table.asp
+  function performNameSearch() {
+    // var input = $('#search');
+    // var filter = input.val().toUpperCase();
+    // var rows  = $('tr.user');
+
+    // rows.each(function() {
+    //   $this = $(this);
+    //   var td = $(this).find('td.name').first();
+    //   var value = td.html();
+    //   if (value.toUpperCase().indexOf(filter) > -1) {
+    //     $this.show();
+    //   } else {
+    //     $this.hide();
+    //   }
+    // });
   }
 
 scss:

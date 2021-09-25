@@ -16,9 +16,9 @@ RSpec.describe RsvpToken, type: :model do
   context 'validations' do
     it 'prevents duplicates' do
       token = FactoryBot.create(:rsvp_token)
-      expect(FactoryBot.build(
-               :rsvp_token, user: token.user, event: token.event
-             )).not_to be_valid
+      expect(FactoryBot.build(:rsvp_token,
+                              unit_membership: token.unit_membership,
+                              event: token.event)).not_to be_valid
     end
   end
 end

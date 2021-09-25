@@ -13,15 +13,14 @@ header.mt-4.mb-4.clearfix
     - if policy(:event).create?
       span#add_event_button_wrapper
         = link_to '#eventModal', id: 'new-event-button', class: 'btn btn-success me-3', data: { 'bs-toggle' => 'modal' }, style: "display: inline-block;" do
-          i.fas.fa-plus
-          |&nbsp;
+          i.fas.fa-calendar-plus(class='me-3')
           = t(:event_add)
 
         .dropdown.ml-3(style="display: inline-block;")
           = link_to t('events.index.view.dropdown'), '#', class: 'btn btn-outline-secondary dropdown-toggle', data: { 'bs-toggle' => 'dropdown' }, style: "display: inline-block;"
           ul.dropdown-menu.dropdown-menu-end.dropdown-menu-dark
-            = render partial: 'events/partials/index/dropdown_items/bulk_publish'   if @current_membership.admin?
-            = render partial: 'events/partials/index/dropdown_items/show_cancelled' if @current_membership.admin?
+            = render partial: 'events/partials/index/dropdown_items/bulk_publish'   if @current_member.admin?
+            = render partial: 'events/partials/index/dropdown_items/show_cancelled' if @current_member.admin?
             - %w[show_only_rsvps show_past_events divider calendar_subscribe].each do |p|
               = render partial: "events/partials/index/dropdown_items/#{ p }"
 

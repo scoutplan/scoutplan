@@ -18,7 +18,7 @@ class UnitMembershipsController < ApplicationController
   end
 
   def pundit_user
-    @current_membership
+    @current_member
   end
 
   def new
@@ -28,26 +28,26 @@ class UnitMembershipsController < ApplicationController
   private
 
   def build_new_relationship
-    @user_relationship = UserRelationship.new
-    case @target_user.type
-    when 'Adult'
-      @user_relationship.parent = @target_user
-    when 'Youth'
-      @user_relationship.child = @target_user
-    end
+    @member_relationship = MemberRelationship.new(parent_member: @target_membership)
+    ap @target_membership.child_relationships
 
-    @candidates = @current_unit.members - [@target_user] - @target_user.children
+    # possible relationships are any other unit members, minus onesself, minus existing child memberships
+    @candidates = @current_unit.memberships -
+                  [@target_membership] -
+                  @target_membership.child_relationships.collect(&:child_member)
+
+    ap @candidates
   end
 
   def find_membership
     @target_membership = UnitMembership.find(params[:id])
     @target_user = @target_membership.user
     @current_unit = @unit = @target_membership.unit
-    @current_membership = @unit.membership_for(current_user)
+    @current_member = @unit.membership_for(current_user)
   end
 
   def find_unit
     @current_unit = @unit = Unit.find(params[:unit_id])
-    @current_membership = @unit.membership_for(current_user)
+    @current_member = @unit.membership_for(current_user)
   end
 end

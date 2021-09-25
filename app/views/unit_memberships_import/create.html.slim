@@ -1,6 +1,19 @@
-p Added the following new members and invited them to join via email:
-ul
-  - @memberships.each do |membership|
-    li = membership.user.email
+header
+  h1 Member Import Results
 
-= button_to 'Done', unit_members_path(@unit), class: 'btn btn-primary'
+.row
+  .col-md-4
+    h3 Added Members (#{ @new_memberships.count })
+    ul
+      - @new_memberships.each do |member|
+        li = member.full_name
+
+  .col-md-4
+    h3 Already Members (#{ @existing_memberships.count })
+    ul
+      - @existing_memberships.each do |member|
+        li = member.full_name
+
+.row
+  .col-md-3
+    = link_to 'Done', unit_members_path(@unit), class: 'btn btn-primary'

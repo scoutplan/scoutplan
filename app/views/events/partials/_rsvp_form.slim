@@ -12,13 +12,13 @@
         .modal-body
           table.table
             tbody
-              - current_user.family.each do |user|
-                - existing_rsvp = @event.rsvps.find_by(user: user)
-                - rsvp = @event.rsvps.build(user: user, response: existing_rsvp&.response)
+              - @current_member.family.each do |family_member|
+                - existing_rsvp = @event.rsvps.find_by(unit_membership: family_member)
+                - rsvp = @event.rsvps.build(unit_membership: family_member, response: existing_rsvp&.response)
                 tr
-                  = f.fields_for 'users[]', user do |user_fields|
-                    = user_fields.fields_for 'event_rsvp', rsvp do |rsvp_fields|
-                      td = @presenter.family_context_name(user)
+                  = f.fields_for 'members[]', family_member do |member_fields|
+                    = member_fields.fields_for 'event_rsvp', rsvp do |rsvp_fields|
+                      td = @presenter.family_context_name(family_member)
                       td
                         .float-end
                           .form-check.form-check-inline

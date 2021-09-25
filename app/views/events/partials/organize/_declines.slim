@@ -2,12 +2,12 @@ table
   tbody
     - @event.rsvps.declined.each do |rsvp|
       tr
-        td = rsvp.user.full_name
+        td = rsvp.member.full_name
         td
           .actions.float-end
-            = link_to(event_rsvps_path(@event, user_id: rsvp.user.id, response: 'accepted'),
+            = link_to(event_rsvps_path(@event, unit_membership_id: rsvp.member.id, response: 'accepted'),
                 method: :post,
                 remote: true,
-                title: "Change #{ rsvp.user.first_name }'s RSVP to \"Going\"",
+                title: "Change #{ rsvp.member.first_name }'s RSVP to \"Going\"",
                 data: { 'bs-toggle' => 'tooltip' }) do
               i.fas.fa-hiking(style="color: green;")

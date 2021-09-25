@@ -17,4 +17,14 @@ RSpec.describe UnitMembership, type: :model do
       expect(FactoryBot.build(:unit_membership, status: nil)).not_to be_valid
     end
   end
+
+  describe 'methods' do
+    before do
+      @member = FactoryBot.create(:unit_membership)
+    end
+
+    it 'includes self in family' do
+      expect(@member.family).to include(@member)
+    end
+  end
 end
