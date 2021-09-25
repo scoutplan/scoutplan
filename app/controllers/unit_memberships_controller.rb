@@ -35,8 +35,6 @@ class UnitMembershipsController < ApplicationController
     @candidates = @current_unit.memberships -
                   [@target_membership] -
                   @target_membership.child_relationships.collect(&:child_member)
-
-    ap @candidates
   end
 
   def find_membership

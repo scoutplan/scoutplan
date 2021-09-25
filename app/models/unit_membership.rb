@@ -3,6 +3,8 @@
 # relates a User to a Unit; serves as
 # primary concept of a person in Scoutplan
 class UnitMembership < ApplicationRecord
+  default_scope { includes(:user).order('users.first_name ASC') }
+
   belongs_to :unit
   belongs_to :user, class_name: 'User'
 

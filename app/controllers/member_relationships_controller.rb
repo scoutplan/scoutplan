@@ -19,7 +19,7 @@ class MemberRelationshipsController < ApplicationController
     member = relationship.parent_member
     return unless relationship.destroy!
 
-    flash[:notice] = 'User relationship was removed'
+    flash[:notice] = 'Member relationship was removed'
     redirect_to member_path(member)
   end
 

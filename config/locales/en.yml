@@ -125,6 +125,7 @@ en:
     name:             'Name'
     type:             'Type'
     parent_guardian:  'Parents, Guardians, and Delegates'
+    children:         'Children, Guardees, and Delgatees'
     status:           'Status'
     index:
       title:          'Member Roster'
@@ -134,6 +135,7 @@ en:
     show:
       children:         'Children, Guardees, and Delegatees'
       add_relationship: 'Add Relationship'
+      return_link:      'Return to the %{unit_name} Member Roster'
     import:
       title:           'Import Member Spreadsheet'
       success_message: '%{count_and_noun} were successfully imported and invited via email'

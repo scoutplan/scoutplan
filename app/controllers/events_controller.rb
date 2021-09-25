@@ -50,9 +50,6 @@ class EventsController < ApplicationController
     authorize @event
     @non_respondents = @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)
     @non_invitees = @event.unit.members - @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)
-
-ap @event.unit.members.first
-
   end
 
   def publish
@@ -84,6 +81,13 @@ ap @event.unit.members.first
                             action: t('events.index.bulk_publish.verb'))
 
     redirect_to unit_events_path(@unit)
+  end
+
+  def invite
+    event  = Event.find(params[:id])
+    member = UnitMembership.find(params[:member_id])
+    token  = event.rsvp_tokens.create(unit_membership: member)
+    EventNotifier.invite_member_to_event(member, event, token)
   end
 
   # PATCH /events/:id/rsvpp
