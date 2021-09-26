@@ -119,6 +119,7 @@ en:
       no_responses: 'No response'
       no_invites:   'No invitations'
       update_toast: "%{user_name}'s RSVP for %{event_title} has been updated."
+      invite_toast: 'An invitation to %{event_title} was sent to %{recipient}'
       back:         'Back to main event page'
 
   members:

@@ -5,7 +5,7 @@
 class EventRsvpsController < ApplicationController
   def create
     @event    = Event.find(params[:event_id])
-    @member   = UnitMembership.find(params[:unit_membership_id])
+    @member   = UnitMembership.find(params[:member_id])
     @response = params[:response]
     @rsvp     = EventRsvp.find_or_create_by(event: @event, unit_membership: @member)
 
@@ -14,10 +14,24 @@ class EventRsvpsController < ApplicationController
 
     @event.reload
 
-    # these two lines are cribbed from Events#organize...DRY it out
+    find_event_responses
+    respond_to :js
+  end
+
+  # send or re-send an invitation
+  def invite
+    @event = Event.find(params[:id])
+    @member = UnitMembership.find(params[:member_id])
+    @token  = @event.rsvp_tokens.create!(unit_membership: @member)
+    EventNotifier.invite_member_to_event(@member, @event, @token)
+    find_event_responses
+    respond_to :js
+  end
+
+  private
+
+  def find_event_responses
     @non_respondents = @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)
     @non_invitees = @event.unit.members - @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)
-
-    respond_to :js
   end
 end
