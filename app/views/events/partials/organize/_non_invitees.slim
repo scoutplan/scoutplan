@@ -1,16 +1,18 @@
 table
   tbody
-    - @non_invitees.each do |member|
+    - @non_invitees&.each do |member|
       tr
         td
           = member.full_name
         td
           .actions.float-end
-            = link_to invite_event_path(@event, member_id: member.id), method: 'post', remote: true, class: 'resend', data: { }, title: 'Send invitation' do
-              i.fas.fa-envelope
+            - if member.contactable?
+              = link_to invite_event_path(@event, member_id: member.id), method: 'post', remote: true, class: 'resend', data: { }, title: 'Send invitation' do
+                i.fas.fa-envelope
+
             |&nbsp;&nbsp;
-            = link_to event_rsvps_path(@event, member_id: member.id, response: 'accepted'), method: :post, remote: true do
+            = link_to event_rsvps_path(@event, unit_membership_id: member.id, response: 'accepted'), method: :post, remote: true do
               i.fas.fa-check
             |&nbsp;&nbsp;
-            = link_to event_rsvps_path(@event, member_id: member.id, response: 'declined'), method: :post, remote: true do
+            = link_to event_rsvps_path(@event, unit_membership_id: member.id, response: 'declined'), method: :post, remote: true do
               i.fas.fa-times

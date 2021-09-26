@@ -1,6 +1,6 @@
 table
   tbody
-    - @non_respondents.each do |member|
+    - @non_respondents&.each do |member|
       - token = @event.rsvp_token_for(member)
       tr
         td

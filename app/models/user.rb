@@ -25,4 +25,12 @@ class User < ApplicationRecord
   def full_name
     "#{first_name} #{last_name}"
   end
+
+  def anonymous_email?
+    email.match?(/anonymous-member-\h+@scoutplan.org/)
+  end
+
+  def emailable?
+    !anonymous_email?
+  end
 end

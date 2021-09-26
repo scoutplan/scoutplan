@@ -1,5 +1,16 @@
 # frozen_string_literal: true
 
 # Preview all emails at http://localhost:3000/rails/mailers/event
+
+require 'factory_bot'
+
 class EventPreview < ActionMailer::Preview
+  def token_invitation_email
+    unit = Unit.new(name: 'Test Unit')
+    event = Event.new(title: 'Test Event', unit: unit, description: "I'm baby williamsburg pabst master cleanse, gentrify letterpress yr kogi. Taiyaki air plant austin four dollar toast post-ironic humblebrag keffiyeh tofu palo santo bushwick locavore everyday carry shoreditch tbh. Bicycle rights helvetica bitters cray sartorial ramps literally raclette. Kitsch YOLO normcore single-origin coffee artisan literally, offal umami VHS poutine direct trade vexillologist banh mi. Fanny pack food truck health goth actually jianbing mixtape, typewriter woke gastropub tbh beard ennui. Small batch chia authentic craft beer cred.")
+    user = User.new(first_name: 'Test', last_name: 'User')
+    member = unit.unit_memberships.build(user: user)
+    token = RsvpToken.new(event: event, member: member)
+    EventMailer.with(token: token).token_invitation_email
+  end
 end

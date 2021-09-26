@@ -1,13 +1,59 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <style>
-      /* Email styles need to be inline */
-    </style>
-  </head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <!-- If you delete this meta tag, Half Life 3 will never be released. -->
+  <meta name="viewport" content="width=device-width" />
 
-  <body>
-    <%= yield %>
-  </body>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Scoutaround</title>
+  <style>
+  @import url(<%= "https://use.typekit.net/#{ ENV['ADOBE_FONT_KIT_ID'] }.css" %>);
+
+  * {
+    margin: 0;
+    padding: 0;
+    line-height: 160%;
+    color: #666;
+  }
+
+  * { font-family: proxima-nova, arial, sans-serif; }
+
+  p {
+    margin-bottom: 2rem;
+  }
+
+  td.container {
+    max-width: 800px;
+  }
+
+  a.btn {
+    display: inline-block;
+    padding: 6px 15px;
+    background: #48b;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 5px;
+    font-weight: 500;
+  }
+
+  a.btn:hover {
+    background-color: #37a;
+  }
+
+  body {
+    padding-top: 2rem;
+  }
+</style>
+</head>
+
+<body bgcolor="#FFFFFF">
+  <table width="600" border="0" cellspacing="0" cellpadding="0" style="margin: auto;">
+    <tr>
+      <td width="600">
+        <%= yield %>
+      </td>
+    </tr>
+  </table>
+
+</body>
 </html>

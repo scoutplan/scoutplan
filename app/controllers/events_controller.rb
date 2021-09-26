@@ -83,13 +83,6 @@ class EventsController < ApplicationController
     redirect_to unit_events_path(@unit)
   end
 
-  def invite
-    event  = Event.find(params[:id])
-    member = UnitMembership.find(params[:member_id])
-    token  = event.rsvp_tokens.create(unit_membership: member)
-    EventNotifier.invite_member_to_event(member, event, token)
-  end
-
   # PATCH /events/:id/rsvpp
   def rsvp
     params[:event][:members].each do |member_id, values|

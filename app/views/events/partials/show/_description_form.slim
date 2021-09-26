@@ -7,7 +7,7 @@
           button.btn-close(type="button" data-bs-dismiss="modal")
 
         .modal-body
-          = f.rich_text_area :description, style: 'height: 24rem;'
+          = f.rich_text_area :description, style: 'height: 24rem; overflow: auto;'
 
         // form buttons
         .modal-footer

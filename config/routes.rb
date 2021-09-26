@@ -12,10 +12,10 @@ Rails.application.routes.draw do
       patch 'rsvp'
       post  'cancel'
       post  'publish'
-      post  'invite'
+      post  'invite', to: 'event_rsvps#invite'
     end
 
-    resources :event_rsvps, as: 'rsvps', only: %i[create]
+    resources :event_rsvps, as: 'rsvps', path: 'rsvps', only: %i[create]
   end
 
   resources :units do

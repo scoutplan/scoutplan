@@ -46,4 +46,8 @@ class UnitMembership < ApplicationRecord
   def family
     children.append(self).sort_by(&:first_name)
   end
+
+  def contactable?
+    user.emailable?
+  end
 end
