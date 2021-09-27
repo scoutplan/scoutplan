@@ -7,9 +7,10 @@ class EventNotifier
   def self.after_publish(event)
     return unless event.requires_rsvp
 
-    event.unit.memberships.active.each do |membership|
-      user = membership.user
-      token = event.rsvp_tokens.find_or_create_by!(user: user)
+    event.unit.members.active.each do |member|
+      next unless member.contactable?
+
+      token = event.rsvp_tokens.find_or_create_by!(unit_membership: member)
       EventMailer.with(token: token).token_invitation_email.deliver_later
     end
   end
@@ -21,7 +22,7 @@ class EventNotifier
     end
   end
 
-  def self.invite_member_to_event(member, event, token)
+  def self.invite_member_to_event(token)
     EventMailer.with(token: token).token_invitation_email.deliver_later
   end
 end

@@ -42,7 +42,7 @@
         - if ENV['RAILS_ENV'] == 'test'
           = button_to t('events.publish'), publish_event_path(@event), class: 'btn btn-success w-100 mt-4', method: :post
         - else
-          = button_to t('events.publish'), publish_event_path(@event), class: 'btn btn-success w-100 mt-4', method: :post, data: { confirm: t('events.show.confirm_publish') }
+          = button_to t('events.publish'), publish_event_path(@event), class: 'btn btn-success w-100 mt-4', method: :post
 
 scss:
   .card-header button.collapsed svg {

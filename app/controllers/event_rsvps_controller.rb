@@ -23,7 +23,7 @@ class EventRsvpsController < ApplicationController
     @event = Event.find(params[:id])
     @member = UnitMembership.find(params[:member_id])
     @token  = @event.rsvp_tokens.create!(unit_membership: @member)
-    EventNotifier.invite_member_to_event(@member, @event, @token)
+    EventNotifier.invite_member_to_event(@token)
     find_event_responses
     respond_to :js
   end
