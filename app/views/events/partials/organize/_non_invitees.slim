@@ -11,8 +11,8 @@ table
                 i.fas.fa-envelope
 
             |&nbsp;&nbsp;
-            = link_to event_rsvps_path(@event, unit_membership_id: member.id, response: 'accepted'), method: :post, remote: true do
-              i.fas.fa-check
+            = link_to event_rsvps_path(@event, member_id: member.id, response: 'accepted'), method: :post, remote: true do
+              i.fas.fa-hiking(style="color: green;")
             |&nbsp;&nbsp;
-            = link_to event_rsvps_path(@event, unit_membership_id: member.id, response: 'declined'), method: :post, remote: true do
-              i.fas.fa-times
+            = link_to event_rsvps_path(@event, member_id: member.id, response: 'declined'), method: :post, remote: true do
+              i.fas.fa-couch(style="color: red;")

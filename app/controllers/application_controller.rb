@@ -11,7 +11,8 @@ class ApplicationController < ActionController::Base
   end
 
   def set_cors_headers
-    headers['Access-Control-Allow-Origin'] = '*.fontawesome.com'
+    headers['Access-Control-Allow-Origin'] = '*'
+    headers['Access-Control-Request-Method'] = '*'
   end
 
   # if a ?view=NNNN querystring is present, stuff the value

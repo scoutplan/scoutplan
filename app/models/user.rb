@@ -33,4 +33,8 @@ class User < ApplicationRecord
   def emailable?
     !anonymous_email?
   end
+
+  def contactable?
+    emailable?
+  end
 end

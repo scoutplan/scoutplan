@@ -1,10 +1,68 @@
-div(style="border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; padding: 16px 0; margin-bottom: 30px;")
-  .month-name = @presenter.month_name
-  .dates = @presenter.dates_to_s
-  .days = @presenter.days_to_s
-  - if @event.series?
-    .series-info
-      i.fas.fa-repeat
-      |&nbsp;
-      = "#{ @event.series_children.count + @event.series_siblings.count + 1 } events in this series"
+div(style="margin-bottom: 30px;")
+  .card-group
+    .card
+      .card-body
+        .month-name = @presenter.month_name
+        .dates = @presenter.dates_to_s
+        .days = @presenter.days_to_s
+        - if @event.series?
+          .series-info
+            i.fas.fa-repeat
+            |&nbsp;
+            = "#{ @event.series_children.count + @event.series_siblings.count + 1 } events in this series"
+
+    .card
+      .card-body
+        div(style="position: relative;")
+          #map(style="height: 150px; width: 100%;")
+          a(id='map_wrap' href='#' style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 1000;" onclick="alert('click!!!');")
+
+    .card
+      .card-body
+        = @event.location
+
+- if true
+  javascript:
+    document.querySelector('#map_wrap')
+      .addEventListener('click', function(event) {
+        event.preventDefault();
+        return false;
+      });
+
+    mapboxgl.accessToken = '#{ENV['MAPBOX_TOKEN']}';
+    const mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+    mapboxClient.geocoding
+      .forwardGeocode({
+        query: '#{@event.location}',
+        autocomplete: false,
+        limit: 1
+      })
+      .send()
+      .then((response) => {
+        if (
+          !response ||
+          !response.body ||
+          !response.body.features ||
+          !response.body.features.length
+        ) {
+          console.error('Invalid response:');
+          console.error(response);
+          return;
+        }
+        const feature = response.body.features[0];
+
+        const map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/mapbox/streets-v11',
+          center: feature.center,
+          interactive: false,
+          zoom: 10
+        }).on('click', function(event) {
+          event.preventDefault();
+        });
+
+        new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
+      });
+
+
 

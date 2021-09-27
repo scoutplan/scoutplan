@@ -46,7 +46,7 @@ tr.event(class="#{ @presenter.row_classes }" data-href="#{ event_path(event) }" 
     - if event.draft?
       span.badge.bg-secondary =t('events.index.draft')
     - if event.cancelled?
-      span.badge.bg-warning =t('events.index.cancelled')
+      span.badge.bg-danger =t('events.index.cancelled')
 
   td.location.tablet = event.location
 

@@ -30,6 +30,7 @@ class UnitMembership < ApplicationRecord
 
   delegate :full_name, to: :user
   delegate :first_name, to: :user
+  delegate :contactable, to: :user
 
   def admin?
     role == 'admin'
