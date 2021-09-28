@@ -1,0 +1,14 @@
+.modal.fade#event_cancel_modal
+  .modal-dialog
+    .modal-content
+      = form_tag cancel_event_path(@event) do
+        .modal-header
+          h5.modal-title = Publish Event
+          button.btn-close(type="button" data-bs-dismiss="modal")
+
+        .modal-body
+
+        // form buttons
+        .modal-footer
+          = submit_tag t('events.show.cancel_button'), class: 'btn btn-danger', id: 'rsvp_submit'
+          button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('events.show.cancel_cancel')

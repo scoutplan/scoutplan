@@ -25,6 +25,10 @@ class UnitMembershipsController < ApplicationController
     authorize :unit_membership
   end
 
+  def invite
+    respond_to :js
+  end
+
   private
 
   def build_new_relationship

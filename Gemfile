@@ -8,7 +8,6 @@ ruby '3.0.2'
 gem 'awesome_print', '~> 1.9'
 gem 'bootsnap', '~> 1.8', require: false
 gem 'devise', '~> 4.8'
-gem 'devise_invitable', '~> 2.0'
 gem 'faraday', '~> 1.7'
 gem 'flipper', '~> 0.22'
 gem 'flipper-active_record', '~> 0.22'

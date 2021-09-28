@@ -54,6 +54,11 @@ spec:
                 secretKeyRef:
                   name: scoutplan-production
                   key: SMTP_PASSWORD
+            - name: MAPBOX_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: MAPBOX_TOKEN
           envFrom:
           - configMapRef:
               name: scoutplan-production-config
