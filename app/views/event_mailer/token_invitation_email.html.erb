@@ -5,6 +5,8 @@
   </head>
   <body>
     <h1>You're Invited!</h1>
+    <p><%= @event.title %></p>
+    <p><%= @event.location %></p>
     <p><%= @event.description %></p>
     <p><%= link_to "RSVP Now", @url, class: 'btn' %></p>
   </body>

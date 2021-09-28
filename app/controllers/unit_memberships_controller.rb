@@ -25,6 +25,12 @@ class UnitMembershipsController < ApplicationController
     authorize :unit_membership
   end
 
+  def invite
+    return unless @target_membership.user.invite!(current_user)
+
+    respond_to :js
+  end
+
   private
 
   def build_new_relationship
