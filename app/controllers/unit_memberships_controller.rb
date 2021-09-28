@@ -26,8 +26,6 @@ class UnitMembershipsController < ApplicationController
   end
 
   def invite
-    return unless @target_membership.user.invite!(current_user)
-
     respond_to :js
   end
 
