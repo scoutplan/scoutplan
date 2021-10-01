@@ -8,7 +8,7 @@ class UnitMembershipsController < ApplicationController
   def index
     authorize :unit_membership
     @unit_memberships = @unit.memberships.includes(:user)
-    @page_title = t('members.index.page_title', unit_name: @unit.name)
+    @page_title = @unit.name, t('members.index.page_title')
     @membership = @unit.memberships.new
   end
 
