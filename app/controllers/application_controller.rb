@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# base Controller class
 class ApplicationController < ActionController::Base
   include Pundit
   before_action :authenticate_user!
@@ -26,5 +27,19 @@ class ApplicationController < ActionController::Base
 
   def clear_session_view
     session[:view] = nil
+  end
+
+  def authenticate_user!
+    return if user_signed_in? # <- do we really want this?
+
+    if (magic_link = MagicLink.find_by(token: params[:r]))
+      sign_in magic_link.user
+      session[:via_magic_link] = true
+      flash[:notice] = t('magic_links.login_success', name: current_user.full_name)
+      # redirect_to request.base_url
+      return
+    end
+
+    super
   end
 end

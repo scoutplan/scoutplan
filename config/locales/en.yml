@@ -63,6 +63,9 @@ en:
     past_tense:
       third_person: 'was'
 
+  magic_links:
+    login_success: "You're signed in as %{name} via Magic Link."
+
   events:
     object_name:   'event'
     draft-warning: "This event is a draft, only visible to Unit Administrators & Event Organizers. When you're ready, %{href} to make it visible to everyone in %{unit_name}."
@@ -150,6 +153,11 @@ en:
     hiking:           'Hiking'
     service_project:  'Service Project'
     court_of_honor:   'Court of Honor'
+
+  mailers:
+    member_mailer:
+      digest_email:
+        title: 'Coming Up At %{unit_name}'
 
   helpers:
     label:

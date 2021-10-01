@@ -6,6 +6,9 @@
 
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>Scoutaround</title>
+
+  <script src="https://kit.fontawesome.com/4988667110.js" crossorigin="anonymous"></script>
+
   <style>
   @import url(<%= "https://use.typekit.net/#{ ENV['ADOBE_FONT_KIT_ID'] }.css" %>);
 
@@ -40,6 +43,14 @@
     background-color: #37a;
   }
 
+  td {
+    padding: 6px 12px;
+  }
+
+  td:first-child {
+    padding-left: 0;
+  }
+
   body {
     padding-top: 2rem;
   }
@@ -47,9 +58,9 @@
 </head>
 
 <body bgcolor="#FFFFFF">
-  <table width="600" border="0" cellspacing="0" cellpadding="0" style="margin: auto;">
+  <table width="800" border="0" cellspacing="0" cellpadding="0" style="margin: auto;">
     <tr>
-      <td width="600">
+      <td width="800">
         <%= yield %>
       </td>
     </tr>

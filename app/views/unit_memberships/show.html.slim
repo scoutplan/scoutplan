@@ -25,5 +25,8 @@ br
 br
 = link_to 'Send Invitation', invite_member_path(@target_membership), method: :post, remote: true, class: 'btn btn-warning'
 
+br
+br
+= link_to 'Send Digest', send_member_path(@target_membership, item: :digest), method: :post, remote: true
 
 = render partial: 'unit_memberships/partials/show/new_relationship_form'

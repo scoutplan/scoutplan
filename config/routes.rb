@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   resources :unit_memberships, path: 'members', as: 'members', only: %i[show edit update destroy] do
     member do
       post 'invite'
+      post 'send/:item', as: :send, to: 'unit_memberships#send_message'
     end
     resources :member_relationships, as: 'relationships', path: 'relationships', only: %i[new create destroy]
   end
