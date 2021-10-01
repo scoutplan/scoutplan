@@ -74,7 +74,8 @@ en:
     update_confirmation: "%{title} was updated"
 
     index:
-      title:        'Event Calendar'
+      title:      'Event Calendar'
+      page_title: 'Event Calendar'
       bulk_publish:
         execute_caption: 'Publish Selected Events'
         cancel_caption:  'Cancel'
@@ -132,6 +133,7 @@ en:
     children:         'Children, Guardees, and Delgatees'
     status:           'Status'
     index:
+      page_title:     '%{unit_name} Member Roster'
       title:          'Member Roster'
       add_a_member:   'Add a Member'
     new:

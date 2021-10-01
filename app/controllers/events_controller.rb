@@ -13,6 +13,7 @@ class EventsController < ApplicationController
     @presenter = EventPresenter.new
     @current_family = @current_member.family
     @current_year = @current_month = nil
+    page_title [@unit.name, t('events.index.title')]
     build_prototype_event
   end
 
@@ -21,6 +22,7 @@ class EventsController < ApplicationController
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).organize?
     @current_family = @current_member.family
+    page_title [@event.unit.name, @event.title]
   end
 
   def create

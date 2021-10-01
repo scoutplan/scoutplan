@@ -37,4 +37,8 @@ class User < ApplicationRecord
   def contactable?
     emailable?
   end
+
+  def display_first_name
+    nickname || first_name
+  end
 end

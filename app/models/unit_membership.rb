@@ -33,6 +33,7 @@ class UnitMembership < ApplicationRecord
 
   delegate :full_name, to: :user
   delegate :first_name, to: :user
+  delegate :display_first_name, to: :user
   delegate :contactable, to: :user
 
   has_settings do |s|
