@@ -29,11 +29,19 @@ class UnitMembershipsController < ApplicationController
     respond_to :js
   end
 
+  def send_message
+    return unless (item = params[:item])
+
+    case item
+    when 'digest'
+      MemberNotifier.send_digest(@target_membership)
+    end
+  end
+
   private
 
   def build_new_relationship
     @member_relationship = MemberRelationship.new(parent_member: @target_membership)
-    ap @target_membership.child_relationships
 
     # possible relationships are any other unit members, minus onesself, minus existing child memberships
     @candidates = @current_unit.memberships -

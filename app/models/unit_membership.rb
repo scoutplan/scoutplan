@@ -3,6 +3,7 @@
 # relates a User to a Unit; serves as
 # primary concept of a person in Scoutplan
 class UnitMembership < ApplicationRecord
+  include Flipper::Identifier
   default_scope { includes(:user).order('users.first_name ASC') }
 
   belongs_to :unit
@@ -23,14 +24,20 @@ class UnitMembership < ApplicationRecord
 
   has_many :rsvp_tokens, dependent: :destroy
   has_many :event_rsvps, dependent: :destroy
+  has_many :magic_links, dependent: :destroy
 
   alias_attribute :member, :user
+  alias_attribute :rsvps, :event_rsvps
 
   enum status: { inactive: 0, active: 1 }
 
   delegate :full_name, to: :user
   delegate :first_name, to: :user
   delegate :contactable, to: :user
+
+  has_settings do |s|
+    s.key :security, defaults: { enable_magic_links: true }
+  end
 
   def admin?
     role == 'admin'
@@ -49,6 +56,13 @@ class UnitMembership < ApplicationRecord
   end
 
   def contactable?
-    user.emailable?
+    user.contactable?
+  end
+
+  def magic_link
+    return unless unit.settings(:security).enable_magic_links
+    return unless settings(:security).enable_magic_links
+
+    magic_links.first || magic_links.create!
   end
 end

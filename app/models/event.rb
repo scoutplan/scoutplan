@@ -23,7 +23,7 @@ class Event < ApplicationRecord
   enum status: { draft: 0, published: 1, cancelled: 2 }
 
   scope :future,        -> { where('starts_at > ?', Date.today) }
-  scope :upcoming,      -> { where('starts_at < ?', 4.weeks.from_now) }
+  scope :upcoming,      ->(weeks_ahead = 4) { where('starts_at < ?', weeks_ahead.weeks.from_now) }
   scope :rsvp_required, -> { where(requires_rsvp: true) }
 
   def past?

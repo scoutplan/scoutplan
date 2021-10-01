@@ -13,6 +13,10 @@ class Unit < ApplicationRecord
 
   after_create :populate_categories
 
+  has_settings do |s|
+    s.key :security, defaults: { enable_magic_links: true }
+  end
+
   def membership_for(user)
     members.find_by(user: user)
   end
