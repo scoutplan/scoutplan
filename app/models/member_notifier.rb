@@ -11,7 +11,7 @@ class MemberNotifier
   end
 
   def self.send_digest(member)
-    return unless Flipper.enabled?(:weekly_digest, member) && member.contactable?
+    return unless member.contactable?
 
     MemberMailer.with(member: member).digest_email.deliver_later
   end

@@ -29,6 +29,11 @@ class ApplicationController < ActionController::Base
     session[:view] = nil
   end
 
+  def page_title(args)
+    @page_title = [args] if args.is_a?(String)
+    @page_title = args   if args.is_a?(Array)
+  end
+
   def authenticate_user!
     return if user_signed_in? # <- do we really want this?
 

@@ -8,12 +8,15 @@ class UnitMembershipsController < ApplicationController
   def index
     authorize :unit_membership
     @unit_memberships = @unit.memberships.includes(:user)
+    @page_title = t('members.index.page_title', unit_name: @unit.name)
     @membership = @unit.memberships.new
   end
 
   def show
     authorize @target_membership
     @user = @target_membership.user
+    @page_title = @user.full_name
+    page_title [@unit.name, @user.full_name]
     build_new_relationship
   end
 
