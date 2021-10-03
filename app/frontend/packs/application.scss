@@ -46,3 +46,7 @@ th.mobile, td.mobile {
   @extend .col-lg-5;
   @extend .col-xl-4;
 }
+
+tr.clickable {
+  cursor: pointer;
+}
