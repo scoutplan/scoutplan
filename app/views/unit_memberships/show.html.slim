@@ -1,5 +1,5 @@
 header.mt-4.mb-4.clearfix
-  h1 = @target_membership.full_name
+  h1 = @target_membership.user.display_legal_and_nicknames
 
 - if @target_membership.child_relationships.count.positive?
   h3 =t('members.show.children')

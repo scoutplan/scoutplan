@@ -20,7 +20,7 @@ header.navbar.navbar-expand-md.bd-navbar
             = link_to '#', class: 'nav-link dropdown-toggle', data: { 'bs-toggle' => 'dropdown' } do
               i.fas.fa-user-circle
               |&nbsp;
-              = "Hello, #{ current_user.first_name }!"
+              = "Hello, #{ current_user.display_first_name }!"
             ul.dropdown-menu.dropdown-menu-end
               li = link_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'dropdown-item'
 

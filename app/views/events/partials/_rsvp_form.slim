@@ -34,7 +34,7 @@
         .modal-footer(style="justify-content: space-between;")
           div
             - if session[:via_magic_link]
-              = link_to "I'm not #{current_user.full_name}", destroy_user_session_path, method: :delete, style: 'display: inline-block; color: #888; font-size: 90%;'
+              = link_to "I'm not #{current_user.display_first_name}", destroy_user_session_path, method: :delete, style: 'display: inline-block; color: #888; font-size: 90%;'
 
           div
             = submit_tag t('helpers.label.event.rsvp_save'), class: 'btn btn-primary', id: 'rsvp_submit', style: 'margin: 4px;'

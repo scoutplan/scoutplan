@@ -33,8 +33,11 @@ class UnitMembership < ApplicationRecord
 
   delegate :full_name, to: :user
   delegate :first_name, to: :user
+  delegate :last_name, to: :user
   delegate :display_first_name, to: :user
+  delegate :display_full_name, to: :user
   delegate :contactable, to: :user
+  delegate :nickname, to: :user
 
   has_settings do |s|
     s.key :security, defaults: { enable_magic_links: true }
@@ -65,5 +68,9 @@ class UnitMembership < ApplicationRecord
     return unless settings(:security).enable_magic_links
 
     magic_links.first || magic_links.create!
+  end
+
+  def time_zone
+    user.settings(:locale).time_zone || unit.settings(:locale).time_zone || 'Eastern Time (US & Canada)'
   end
 end

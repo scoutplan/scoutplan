@@ -22,6 +22,10 @@ class User < ApplicationRecord
   self.inheritance_column = nil
   enum type: { unknown: 0, youth: 1, adult: 2 }
 
+  has_settings do |s|
+    s.key :locale, defaults: { time_zone: 'Eastern Time (US & Canada)' }
+  end
+
   def full_name
     "#{first_name} #{last_name}"
   end
@@ -40,5 +44,16 @@ class User < ApplicationRecord
 
   def display_first_name
     nickname || first_name
+  end
+
+  def display_full_name
+    "#{ display_first_name } #{ last_name }"
+  end
+
+  def display_legal_and_nicknames
+    res = [first_name]
+    res << "(#{ nickname })" if nickname
+    res << last_name
+    res.join(' ')
   end
 end

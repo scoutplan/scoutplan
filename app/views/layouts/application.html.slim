@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title = ([t('app_name')] + (@page_title || []).reverse).reverse.join(' · ')
+    title = ((@page_title || []).reverse + [t('app_name')]).join(' · ')
     meta name="viewport" content="width=device-width,initial-scale=1"
     = csrf_meta_tags
     = csp_meta_tag
