@@ -1,7 +1,7 @@
 class MemberMailer < ApplicationMailer
   def invitation_email
     @member = params[:member]
-    mail(to: @user.email, from: @unit.from_email, subject: "#{@unit.name} Event Invitation: #{@event.title}")
+    mail(to: @user.email, from: @unit.settings(:communication).from_email, subject: "#{@unit.name} Event Invitation: #{@event.title}")
   end
 
   def digest_email
@@ -11,6 +11,6 @@ class MemberMailer < ApplicationMailer
     @unit       = @member.unit
     @events     = @unit.events.published.future.upcoming
     @presenter  = EventPresenter.new
-    mail(to: @user.email, from: @unit.from_email, subject: "#{@unit.name} Digest")
+    mail(to: @user.email, from: @unit.settings(:communication).from_email, subject: "#{@unit.name} Digest")
   end
 end

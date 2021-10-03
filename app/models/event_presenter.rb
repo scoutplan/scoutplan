@@ -21,7 +21,7 @@ class EventPresenter
   end
 
   def family_context_name(member)
-    res = member&.first_name || ''
+    res = member&.display_first_name || ''
     res += " #{I18n.t('you_parenths')}" if @current_member == member
     res
   end

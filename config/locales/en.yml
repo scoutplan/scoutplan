@@ -133,7 +133,7 @@ en:
     children:         'Children, Guardees, and Delgatees'
     status:           'Status'
     index:
-      page_title:     '%{unit_name} Member Roster'
+      page_title:     'Member Roster'
       title:          'Member Roster'
       add_a_member:   'Add a Member'
     new:

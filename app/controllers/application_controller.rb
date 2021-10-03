@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
     elsif args[0].is_a?(String)
       @page_title = [args[0]]
     else
-      # @page_title = []
+      @page_title = []
     end
   end
 

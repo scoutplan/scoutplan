@@ -15,14 +15,12 @@ class Unit < ApplicationRecord
 
   has_settings do |s|
     s.key :security, defaults: { enable_magic_links: true }
+    s.key :communication, defaults: { from_email: 'events@scoutplan.org' }
+    s.key :locale, defaults: { time_zone: 'Easter Time (US & Canada)' }
   end
 
   def membership_for(user)
     members.find_by(user: user)
-  end
-
-  def from_email
-    'events@troop2scarsdale.org'
   end
 
   private

@@ -28,7 +28,7 @@ table(style="width: 100%;")
                 i.fas.fa-ghost(style="color: grey;" title="No response")
 
             |&nbsp;
-            = member == @member ? 'You' : member.first_name
+            = member == @member ? 'You' : member.display_first_name
             |&nbsp;&nbsp;&nbsp;&nbsp;
 
           - if event.rsvp_open?
