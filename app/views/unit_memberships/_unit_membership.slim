@@ -1,7 +1,10 @@
-tr.member.member-row(data-href="#{member_path(unit_membership)}")
+tr.member.member-row.clickable(data-href="#{member_path(unit_membership)}" data-feature-id="#{unit_membership.flipper_id}")
   / name column
   td.name
     = unit_membership.full_name
+
+    - if unit_membership.admin?
+      .badge.badge-info Admin
 
   / parents column
   td = unit_membership.parent_relationships.map { |r| r.parent_member.full_name }.join(', ')

@@ -1,0 +1,16 @@
+header.mt-4.mb-4.clearfix
+  .float-start
+    nav.unit-id = @current_unit.name
+    h1 = t('members.index.title')
+
+  .float-end.pt-4
+    = search_field_tag :search, '', class: 'form-control search me-3', style: 'width: 18rem; display: inline; transform: translate(0, 1px);', autofocus: true, placeholder: 'Search by name', onkeyup: 'performNameSearch();'
+
+    = link_to '#membership_modal', class: 'btn btn-success me-3', data: { 'bs-toggle' => 'modal'} do
+      i.fas.fa-user-plus(class='me-3')
+      = t('members.index.add_a_member')
+
+    .dropdown.ml-3(style="display: inline-block;")
+      = link_to t('events.index.view.dropdown'), '#', class: 'btn btn-outline-secondary dropdown-toggle', data: { 'bs-toggle' => 'dropdown' }, style: "display: inline-block;"
+      ul.dropdown-menu.dropdown-menu-end.dropdown-menu-dark
+        li = link_to 'Import Members', import_unit_members_path(@unit), class: 'dropdown-item'
