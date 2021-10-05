@@ -23,7 +23,7 @@ tr.member.member-row.clickable(class="#{ row_classes }" data-href="#{member_path
   td.member-type.fit-width
     - if !unit_membership.unknown?
       .badge(class="member-type-#{ unit_membership.member_type }")
-        = unit_membership&.member_type&.capitalize
+        = unit_membership.member_type.capitalize
 
   / parents column
   td = unit_membership.parent_relationships.map { |r| r.parent_member.full_name }.join(', ')

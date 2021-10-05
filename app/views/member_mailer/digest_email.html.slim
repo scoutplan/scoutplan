@@ -4,7 +4,6 @@ p Good #{ Time.zone.now.time_of_day }, #{@member.display_first_name}. Here's wha
 
 table(style="width: 100%;")
   - @events.each do |event|
-    - @presenter.event = event
     tr
       td = event.starts_at.strftime('%b')
       td(style="text-align: right;") = event.starts_at.strftime('%-d')
@@ -13,7 +12,7 @@ table(style="width: 100%;")
       - family_rsvp_count = 0
       - if event.requires_rsvp
         td
-          - @family.each do |member|
+          - @member.family.each do |member|
             - rsvp = member.rsvps.find_by(event: event)
             - if rsvp&.accepted?
               - family_rsvp_count += 1

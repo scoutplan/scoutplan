@@ -37,6 +37,7 @@ class UnitMembershipsController < ApplicationController
 
     case item
     when 'digest'
+      @message_name = 'Digest'
       MemberNotifier.send_digest(@target_membership)
     end
   end
