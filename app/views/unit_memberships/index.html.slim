@@ -1,19 +1,79 @@
 - content_for :body_classes do
   = "members index"
 
-= render partial: 'unit_memberships/partials/index/header'
+= form_tag bulk_update_unit_members_path(@unit), id: 'bulk_edit_form'
+  = render partial: 'unit_memberships/partials/index/header'
 
-table.table.table-clickable.table-hover
-  thead
-    tr
-      th = t('members.name')
-      th = t('members.parent_guardian')
-      th = t('members.children')
+  table.table.table-clickable.table-hover
+    thead
+      tr
+        th.selection
+          = check_box_tag 'all_visible_events', 'on', false, class: 'form-check-input', id: 'select_all_members_checkbox'
+        th = t('members.name')
+        th.role
+        th.status
+        th.member-type
+        th = t('members.parent_guardian')
+        th = t('members.children')
 
-  tbody
-    = render @unit_memberships
+    tbody
+      = render @unit_memberships
 
 = render partial: 'unit_memberships/partials/index/member_form'
+
+scss:
+  th.selection, td.selection {
+    display: none;
+  }
+
+  #bulk_edit_options {
+    display: none;
+  }
+
+  body.bulk-edit {
+    th.selection, td.selection {
+      display: table-cell;
+    }
+
+    #regular_options {
+      display: none;
+    }
+
+    #bulk_edit_options {
+      display: inline-block;
+    }
+  }
+
+  .badge.member-type-youth {
+    background: red;
+  }
+
+  .badge.member-type-adult {
+    background: green;
+  }
+
+  td.fit-width {
+    width: 1%;
+    white-space: nowrap;
+  }
+
+  tr.member-inactive {
+    display: none;
+  }
+
+  th.status, td.status {
+    display: none;
+  }
+
+  body.showing-inactive-members {
+    tr.member-inactive {
+      display: table-row;
+    }
+
+    th.status, td.status {
+      display: table-cell;
+    }
+  }
 
 javascript:
   var rows = document.getElementsByClassName('member-row');
@@ -40,4 +100,59 @@ javascript:
         row.style.display = 'none';
       }
     });
+  }
+
+  document.querySelector('#select_all_members_checkbox').addEventListener('click', function(event) {
+    const checked = this.checked;
+    document.querySelectorAll('.bulk-publish-checkbox').forEach(function (elem) {
+        elem.checked = checked && elem.offsetParent !== null;
+    });
+    validateBulkEditState();
+  });
+
+  document.querySelector('#bulk_edit_link').addEventListener('click', function(event) {
+    document.body.classList.toggle('bulk-edit');
+    event.preventDefault();
+  });
+
+  document.querySelector('#cancel_bulk_edit').addEventListener('click', function(event) {
+    document.body.classList.remove('bulk-edit');
+    event.preventDefault();
+  });
+
+  document.querySelectorAll('.bulk-edit-checkbox').forEach(function(elem) {
+    elem.addEventListener('click', function(event) {
+      validateBulkEditState();
+      event.stopPropagation();
+    })
+  });
+
+  // wire up the bulk Publish button
+  document.querySelector('#execute_bulk_edit_button').addEventListener('click', function(event) {
+    document.querySelector('#bulk_edit_form').submit();
+    event.preventDefault();
+  });
+
+  document.querySelector('#show_inactive_members_link').addEventListener('click', function(event) {
+    document.body.classList.toggle('showing-inactive-members');
+    event.preventDefault();
+  });
+
+  var bulkEditExecuteButton;
+  var originalBulkEditExecuteButtonCaption;
+
+  document.addEventListener("DOMContentLoaded", function() {
+    bulkEditExecuteButton = document.querySelector('#execute_bulk_edit_button');
+    originalBulkEditExecuteButtonCaption = bulkEditExecuteButton.innerText;
+  });
+
+  function validateBulkEditState() {
+    // tally up checked count
+    const checkedCount = document.querySelectorAll('td.selection input:checked').length;
+
+    // enable execute button
+    bulkEditExecuteButton.disabled = (checkedCount == 0);
+
+    // update execute button caption
+    bulkEditExecuteButton.innerText = originalBulkEditExecuteButtonCaption + (checkedCount == 0 ? '' : ' (' + checkedCount + ')');
   }

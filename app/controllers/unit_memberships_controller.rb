@@ -2,8 +2,8 @@
 
 # responsible for Unit <> User relationships
 class UnitMembershipsController < ApplicationController
-  before_action :find_unit, only: %i[index new create]
-  before_action :find_membership, except: %i[index new create]
+  before_action :find_unit, only: %i[index new create bulk_update]
+  before_action :find_membership, except: %i[index new create bulk_update]
 
   def index
     authorize :unit_membership
@@ -39,6 +39,18 @@ class UnitMembershipsController < ApplicationController
     when 'digest'
       MemberNotifier.send_digest(@target_membership)
     end
+  end
+
+  def bulk_update
+    member_params = params.require(:member).permit(:status, :member_type)
+    params[:members].each do |member_id|
+      member = UnitMembership.find(member_id)
+      member.assign_attributes(member_params)
+      member.save!
+    end
+
+    flash[:notice] = t('members.bulk_update.success_message')
+    redirect_to unit_members_path(@unit)
   end
 
   private

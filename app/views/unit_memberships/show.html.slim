@@ -1,34 +1,34 @@
 header.mt-4.mb-4.clearfix
+  = link_to t('members.show.return_link', unit_name: @unit.name), unit_members_path(@unit)
+
   h1 = @target_membership.user.display_legal_and_nicknames
 
-- if @target_membership.child_relationships.count.positive?
-  h3 =t('members.show.children')
-  ul
-    - @target_membership.child_relationships.each do |relationship|
-      li
-        = link_to relationship.child_member.full_name, member_path(relationship.child_member)
+.row.gx-5
+  main
+    - if @target_membership.child_relationships.count.positive?
+      h3 =t('members.show.children')
+      ul
+        - @target_membership.child_relationships.each do |relationship|
+          li
+            = link_to relationship.child_member.full_name, member_path(relationship.child_member)
 
-- if @target_membership.parent_relationships.count.positive?
-  h3 =t('members.show.parents')
-  ul
-    - @target_membership.parent_relationships.each do |relationship|
-      li
-        = link_to relationship.parent_member.full_name, member_path(relationship.parent_member)
-        |&nbsp;
-        = link_to 'X', relationship_path(relationship), class: 'btn btn-light', method: :delete
+    - if @target_membership.parent_relationships.count.positive?
+      h3 =t('members.show.parent_guardian')
+      ul
+        - @target_membership.parent_relationships.each do |relationship|
+          li
+            = link_to relationship.parent_member.full_name, member_path(relationship.parent_member)
+            |&nbsp;
+            = link_to 'X', relationship_path(relationship), class: 'btn btn-light', method: :delete
 
-button(type="button" class="btn btn-success" data-bs-target="#new_relationship_modal" data-bs-toggle="modal") Add Relationship to Another Member
-.submit-conjunction or
-= link_to t('members.show.return_link', unit_name: @unit.name), unit_members_path(@unit)
+    button(type="button" class="btn btn-success" data-bs-target="#new_relationship_modal" data-bs-toggle="modal") Add Relationship to Another Member
+    .submit-conjunction
 
-- if false
-  br
-  br
-  = link_to 'Send Invitation', invite_member_path(@target_membership), method: :post, remote: true, class: 'btn btn-warning'
 
-- if @target_membership.contactable?
-  br
-  br
-  = link_to 'Send Digest', send_member_path(@target_membership, item: :digest), method: :post, remote: true
+  aside
+    .card
+      .card-body
+        - if @target_membership.contactable?
+          = link_to 'Send Digest', send_member_path(@target_membership, item: :digest), method: :post, remote: true
 
 = render partial: 'unit_memberships/partials/show/new_relationship_form'

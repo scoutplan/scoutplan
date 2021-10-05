@@ -30,6 +30,7 @@ class UnitMembership < ApplicationRecord
   alias_attribute :rsvps, :event_rsvps
 
   enum status: { inactive: 0, active: 1 }
+  enum member_type: { unknown: 0, youth: 1, adult: 2 }
 
   delegate :full_name, to: :user
   delegate :first_name, to: :user
