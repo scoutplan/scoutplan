@@ -42,7 +42,10 @@ class EventsController < ApplicationController
   end
 
   def update
-    return unless @event.update!(event_params)
+    @event.assign_attributes(event_params)
+    @event.starts_at = ScoutplanUtilities.compose_datetime(params[:starts_at_d], params[:starts_at_t])
+    @event.ends_at   = ScoutplanUtilities.compose_datetime(params[:ends_at_d], params[:ends_at_t])
+    return unless @event.save!
 
     params[:notice] = t('events.update_confirmation', title: @event.title)
     redirect_to @event
@@ -59,7 +62,8 @@ class EventsController < ApplicationController
     return if @event.published? # don't publish it twice
 
     @event.update!(status: :published)
-    EventNotifier.after_publish(@event)
+
+    # TODO: EventNotifier.after_publish(@event)
     flash[:notice] = t('events.publish_message', title: @event.title)
     redirect_to @event
   end
@@ -68,19 +72,13 @@ class EventsController < ApplicationController
   def bulk_publish
     event_ids = params[:events]
     events    = Event.find(event_ids)
-    count     = events.count
 
     events.each do |event|
       event.update!(status: :published)
     end
 
-    EventNotifier.after_bulk_publish(@unit, events)
-
-    flash[:notice] = format('%<count>s %<object>s %<be>s %<action>s',
-                            count: count.humanize.capitalize,
-                            object: t('events.object_name').pluralize(count),
-                            be: t('be_verb.past_tense.third_person').pluralize(count),
-                            action: t('events.index.bulk_publish.verb'))
+    # TODO: EventNotifier.after_bulk_publish(@unit, events)
+    flash[:notice] = t('events.index.bulk_publish.success_message')
 
     redirect_to unit_events_path(@unit)
   end
