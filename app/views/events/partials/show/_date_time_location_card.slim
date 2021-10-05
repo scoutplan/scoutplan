@@ -50,7 +50,7 @@ div(style="margin-bottom: 30px;")
 
     .card
       .card-body
-        = @event.location
+        = @event.location.empty? ? 'No location information' : @event.location
 
     .card
       .card-body
