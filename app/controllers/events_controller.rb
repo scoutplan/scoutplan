@@ -43,8 +43,8 @@ class EventsController < ApplicationController
 
   def update
     @event.assign_attributes(event_params)
-    @event.starts_at = ScoutplanUtilities.compose_datetime(params[:starts_at_d], params[:starts_at_t])
-    @event.ends_at   = ScoutplanUtilities.compose_datetime(params[:ends_at_d], params[:ends_at_t])
+    event_set_datetimes
+
     return unless @event.save!
 
     params[:notice] = t('events.update_confirmation', title: @event.title)
@@ -149,6 +149,7 @@ class EventsController < ApplicationController
   end
 
   # permitted parameters
+  # rubocop:disable Metrics/MethodLength
   def event_params
     params.require(:event).permit(
       :title,
@@ -163,6 +164,7 @@ class EventsController < ApplicationController
       :repeats_until
     )
   end
+  # rubocop:enable Metrics/MethodLength
 
   # create a weekly series based on @event
   def create_series(end_date_str)
@@ -178,8 +180,26 @@ class EventsController < ApplicationController
     end
   end
 
-  # if RSVPs are needed, spin up a token for each active user
-  def create_magic_links
-    @unit.members.active.each { |user| RsvpToken.create(user: user, event: event) }
+  def event_set_datetimes
+    event_set_start
+    event_set_end
+  end
+
+  def event_set_start
+    return unless params[:starts_at_d] && params[:starts_at_t]
+
+    @event.starts_at = ScoutplanUtilities.compose_datetime(
+      params[:starts_at_d],
+      params[:starts_at_t]
+    )
+  end
+
+  def event_set_end
+    return unless params[:ends_at_d] && params[:ends_at_t]
+
+    @event.ends_at = ScoutplanUtilities.compose_datetime(
+      params[:ends_at_d],
+      params[:ends_at_t]
+    )
   end
 end
