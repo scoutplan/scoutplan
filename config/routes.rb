@@ -2,6 +2,7 @@
 
 require 'sidekiq/web'
 
+# rubocop disable Metrics/BlockLength
 Rails.application.routes.draw do
   devise_for :users
   root to: 'home#index'
@@ -27,8 +28,9 @@ Rails.application.routes.draw do
 
     resources :unit_memberships, path: 'members', as: 'members', only: %i[index new create] do
       collection do
-        get  'import', to: 'unit_memberships_import#new'
-        post 'import', to: 'unit_memberships_import#create'
+        post 'bulk_update', to: 'unit_memberships#bulk_update'
+        get  'import',      to: 'unit_memberships_import#new'
+        post 'import',      to: 'unit_memberships_import#create'
       end
     end
   end
@@ -51,3 +53,4 @@ Rails.application.routes.draw do
     mount Flipper::UI.app(Flipper) => '/flipper'
   end
 end
+# rubocop enable Metrics/BlockLength

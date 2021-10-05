@@ -6,11 +6,48 @@ header.mt-4.mb-4.clearfix
   .float-end.pt-4
     = search_field_tag :search, '', class: 'form-control search me-3', style: 'width: 18rem; display: inline; transform: translate(0, 1px);', autofocus: true, placeholder: 'Search by name', onkeyup: 'performNameSearch();'
 
-    = link_to '#membership_modal', class: 'btn btn-success me-3', data: { 'bs-toggle' => 'modal'} do
-      i.fas.fa-user-plus(class='me-3')
-      = t('members.index.add_a_member')
 
-    .dropdown.ml-3(style="display: inline-block;")
-      = link_to t('events.index.view.dropdown'), '#', class: 'btn btn-outline-secondary dropdown-toggle', data: { 'bs-toggle' => 'dropdown' }, style: "display: inline-block;"
-      ul.dropdown-menu.dropdown-menu-end.dropdown-menu-dark
-        li = link_to 'Import Members', import_unit_members_path(@unit), class: 'dropdown-item'
+    span#regular_options
+      = link_to '#membership_modal', class: 'btn btn-success me-3', data: { 'bs-toggle' => 'modal'} do
+        i.fas.fa-user-plus(class='me-3')
+        = t('members.index.add_a_member')
+
+      - if @current_member.admin?
+        .dropdown.ml-3(style="display: inline-block;")
+          = link_to t('events.index.view.dropdown'), '#', class: 'btn btn-outline-secondary dropdown-toggle', data: { 'bs-toggle' => 'dropdown' }, style: "display: inline-block;"
+          ul.dropdown-menu.dropdown-menu-end.dropdown-menu-dark
+            li = link_to 'Bulk Edit Members', '#', class: 'dropdown-item', id: 'bulk_edit_link'
+            li
+              = link_to '#', class: 'dropdown-item', id: 'show_inactive_members_link' do
+                .menu-glyph
+                  .menu-glyph-wrapper
+                    i.far.fa-check
+                |Show Inactive Members
+
+            li = link_to 'Import Members', import_unit_members_path(@unit), class: 'dropdown-item'
+
+    span.mb-3.me-3#bulk_edit_options(style="font-size: 80%;")
+      span(style="display: inline-block; vertical-align: middle;")
+        span(style="display: inline-block;")
+          h6 Status
+          .form-check.me-3(style="display: inline-block;")
+            input.form-check-input(type="radio" name="member[status]" id="status_active" value="active")
+            label.form-check-label(for="status_active") Active
+
+          .form-check.me-3(style="display: inline-block;")
+            input.form-check-input(type="radio" name="member[status]" id="status_inactive" value="inactive")
+            label.form-check-label(for="status_inactive") Inactive
+
+        span.me-3(style="display: inline-block;")
+          h6 Member Type
+          .form-check.me-3(style="display: inline-block;")
+            input.form-check-input(type="radio" name="member[member_type]" id="member_type_youth" value="youth")
+            label.form-check-label(for="member_type_youth") Youth
+
+          .form-check.me-3(style="display: inline-block;")
+            input.form-check-input(type="radio" name="member[member_type]" id="member_type_adult" value="adult")
+            label.form-check-label(for="member_type_adult") Adult
+
+      button.btn.btn-warning#execute_bulk_edit_button(disabled="disabled") Update Selected Members
+      |&nbsp;
+      button.btn.btn-secondary#cancel_bulk_edit Cancel

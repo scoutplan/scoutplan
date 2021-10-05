@@ -36,7 +36,7 @@ javascript:
     event.preventDefault();
   });
 
-  const bulkPublishExecuteButton = document.querySelector('#bulk_publish_execute_button')
+  const bulkPublishExecuteButton = document.querySelector('#bulk_publish_execute_button');
   const originalBulkPublishExecuteButtonCaption = bulkPublishExecuteButton.value;
 
   // wire up event row checkboxes
@@ -48,7 +48,7 @@ javascript:
 
   function validateBulkPublishState() {
     // tally up checked count
-    const checkedCount = document.querySelectorAll('input:checked').length;
+    const checkedCount = document.querySelectorAll('td.selection input:checked').length;
 
     // enable execute button
     bulkPublishExecuteButton.disabled = (checkedCount == 0);

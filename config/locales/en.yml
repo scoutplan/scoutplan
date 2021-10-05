@@ -133,6 +133,7 @@ en:
     parent_guardian:  'Parents, Guardians, and Delegates'
     children:         'Children, Guardees, and Delgatees'
     status:           'Status'
+    member_type:      'Youth/Adult'
     index:
       page_title:     'Member Roster'
       title:          'Member Roster'
@@ -141,6 +142,7 @@ en:
       title: 'Add a Member'
     show:
       children:         'Children, Guardees, and Delegatees'
+      parent_guardian:  'Parents, Guardians, and Delegates'
       add_relationship: 'Add Relationship'
       return_link:      'Return to the %{unit_name} Member Roster'
     import:
@@ -150,6 +152,8 @@ en:
       roster_file:     'Roster file'
     relationships:
       success_message: '%{first_name} can now RSVP on behalf of %{second_name}'
+    bulk_update:
+      success_message: 'Members were updated successfully'
 
   event_categories:
     camping:          'Camping'
