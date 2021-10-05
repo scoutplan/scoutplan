@@ -2,24 +2,61 @@ div(style="margin-bottom: 30px;")
   .card-group
     .card
       .card-body
-        .month-name = @presenter.month_name
-        .dates = @presenter.dates_to_s
-        .days = @presenter.days_to_s
-        - if @event.series?
-          .series-info
-            i.fas.fa-repeat
-            |&nbsp;
-            = "#{ @event.series_children.count + @event.series_siblings.count + 1 } events in this series"
+        table(style="width: 100%; text-align: center;")
+          tbody
+
+            - if @event.starts_at.to_date === @event.ends_at.to_date
+              tr
+                td.month-name(colspan="3") = @presenter.month_name
+
+              tr
+                td.daynames = @event.starts_at.strftime('%a')
+
+              tr
+                td.dates = @event.starts_at.day
+
+              tr
+                td
+                  = @event.starts_at.strftime('%-I:%S %p')
+                  |&hairsp;&mdash;&hairsp;
+                  = @event.ends_at.strftime('%-I:%S %p')
+
+            - else
+              tr
+                td.month-name(colspan="3") = @presenter.month_name
+
+              tr
+                td.daynames = @event.starts_at.strftime('%a')
+                td
+                td.daynames = @event.ends_at.strftime('%a')
+
+              tr
+                td.dates = @event.starts_at.day
+                td.dates
+                  i.far.fa-arrow-right(style="color: #aaa;")
+                td.dates = @event.ends_at.day
+
+              tr
+                td = @event.starts_at.strftime('%-I:%S %p')
+                td
+                td = @event.ends_at.strftime('%-I:%S %p')
+
+            - if @event.series?
+              tr
+                td.series-info
+                  i.fas.fa-repeat
+                  |&nbsp;
+                  = "#{ @event.series_children.count + @event.series_siblings.count + 1 } events in this series"
+
+    .card
+      .card-body
+        = @event.location
 
     .card
       .card-body
         div(style="position: relative;")
           #map(style="height: 150px; width: 100%;")
           a(id='map_wrap' href='#' style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 1000;" onclick="alert('click!!!');")
-
-    .card
-      .card-body
-        = @event.location
 
 - if true
   javascript:

@@ -19,7 +19,7 @@ class Unit < ApplicationRecord
       from_email: 'events@scoutplan.org',
       weekly_digest: 'every Sunday at 6:00 AM'
     }
-    s.key :locale, defaults: { time_zone: 'Easter Time (US & Canada)' }
+    s.key :locale, defaults: { time_zone: 'Eastern Time (US & Canada)' }
   end
 
   def membership_for(user)
