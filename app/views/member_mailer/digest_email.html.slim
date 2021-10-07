@@ -3,39 +3,44 @@ h1 = t('mailers.member_mailer.digest_email.title', unit_name: @unit.name)
 p Good #{ Time.zone.now.time_of_day }, #{@member.display_first_name}. Here's what's going on this week:
 
 table(style="width: 100%;")
-  - @events.each do |event|
-    tr
-      td = event.starts_at.strftime('%b')
-      td(style="text-align: right;") = event.starts_at.strftime('%-d')
-      td = event.starts_at.strftime('%a')
-      td = link_to event.title, event_url(event, r: @member.magic_link.token)
-      - family_rsvp_count = 0
-      - if event.requires_rsvp
-        td
-          - @member.family.each do |member|
-            - rsvp = member.rsvps.find_by(event: event)
-            - if rsvp&.accepted?
-              - family_rsvp_count += 1
-              span.accepted
-                i.fas.fa-hiking(title="Going")
-            - elsif rsvp&.declined?
-              - family_rsvp_count += 1
-              span.declined(title="Not going")
-                i.fas.fa-couch(style="color: red;" title="Not going")
-            - else
-              span.unknown(title="No response")
-                i.fas.fa-ghost(style="color: grey;" title="No response")
+  tr
+    td
+      table
+        - @events.each do |event|
+          tr
+            td(style="width: 1%; white-space: nowrap; padding: 3px 3px 3px 0;") = event.starts_at.strftime('%a')[0, 2]
+            td(style="width: 1%; white-space: nowrap; padding: 3px;") = event.starts_at.strftime('%b')
+            td(style="padding: 3px; text-align: right;") = event.starts_at.strftime('%-d')
+            td = link_to event.title, event_url(event, r: @member.magic_link.token)
+            - family_rsvp_count = 0
+            - if event.requires_rsvp
+              td
+                - @member.family.each do |member|
+                  - rsvp = member.rsvps.find_by(event: event)
+                  - if rsvp&.accepted?
+                    - family_rsvp_count += 1
+                    span.accepted
+                      i.fas.fa-hiking(title="Going")
+                  - elsif rsvp&.declined?
+                    - family_rsvp_count += 1
+                    span.declined(title="Not going")
+                      i.fas.fa-couch(style="color: red;" title="Not going")
+                  - else
+                    span.unknown(title="No response")
+                      i.fas.fa-ghost(style="color: grey;" title="No response")
 
-            |&nbsp;
-            = member == @member ? 'You' : member.display_first_name
-            |&nbsp;&nbsp;&nbsp;&nbsp;
+                  |&nbsp;
+                  = member == @member ? 'You' : member.display_first_name
+                  |&nbsp;&nbsp;&nbsp;&nbsp;
 
-          - if event.rsvp_open?
-            span(style="font-size: 80%;")
-              - if family_rsvp_count > 0
-                = link_to 'Change RSVPs', event_url(event, anchor: 'rsvp', r: @member.magic_link.token)
-              - else
-                = link_to 'RSVP Now', event_url(event, anchor: 'rsvp', r: @member.magic_link.token)
+                - if event.rsvp_open?
+                  span(style="font-size: 80%;")
+                    - if family_rsvp_count > 0
+                      = link_to 'Change RSVPs', event_url(event, anchor: 'rsvp', r: @member.magic_link.token)
+                    - else
+                      = link_to 'RSVP Now', event_url(event, anchor: 'rsvp', r: @member.magic_link.token)
+
+
 
 scss:
   .accepted > svg > path {

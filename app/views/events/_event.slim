@@ -37,7 +37,7 @@ tr.event(class="#{ @presenter.row_classes }" data-href="#{ event_path(event) }" 
 
       |&nbsp;
 
-      - if event.starts_at.today?
+      - if event.starts_at.in_time_zone.today?
         .badge.bg-danger TODAY
       - else
         .badge.bg-warning NEXT
