@@ -26,19 +26,10 @@ class UnitMembershipsController < ApplicationController
     @member = @unit.memberships.new(member_params)
     @member.status = :active
     @member.user.password = @member.user.password_confirmation = generated_password
-
-    ap @member.user.email.length
-
     return unless @member.save!
 
     flash[:notice] = 'Member Added'
     redirect_to unit_members_path(@unit)
-  end
-
-  def member_params
-    params.require(:unit_membership).permit(:status, :role, :member_type,
-      user_attributes: [:first_name, :last_name, :email, :phone]
-    )
   end
 
   def pundit_user
@@ -96,5 +87,11 @@ class UnitMembershipsController < ApplicationController
   def find_unit
     @current_unit = @unit = Unit.find(params[:unit_id])
     @current_member = @unit.membership_for(current_user)
+  end
+
+  def member_params
+    params.require(:unit_membership).permit(:status, :role, :member_type,
+      user_attributes: [:first_name, :nickname, :last_name, :email, :phone]
+    )
   end
 end

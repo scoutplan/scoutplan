@@ -13,8 +13,9 @@
             .mb-3
               = u.label :name, class: 'form-label'
               div
-                = u.text_field :first_name, class: 'form-control', autocomplete: 'off', autofocus: true, style: 'text-transform: capitalize', placeholder: 'First', style: 'width:48%; display: inline-block;'
-                = u.text_field :last_name, { class: 'form-control', autocomplete: 'off', style: 'text-transform: capitalize', placeholder: 'Last', style: 'width:48%; display: inline-block; float: right;' }
+                = u.text_field :first_name, class: 'form-control', autocomplete: 'off', autofocus: true, style: 'text-transform: capitalize', placeholder: 'First', style: 'width:32%; display: inline-block;'
+                = u.text_field :nickname, class: 'form-control', autocomplete: 'off', autofocus: true, style: 'text-transform: capitalize', placeholder: 'Nickname', style: 'width:32%; display: inline-block; margin-left: 0.5rem;'
+                = u.text_field :last_name, { class: 'form-control', autocomplete: 'off', style: 'text-transform: capitalize', placeholder: 'Last', style: 'width: 32%; display: inline-block; float: right;' }
 
             .mb-3
               = u.label :email, class: 'form-label'
