@@ -2,6 +2,7 @@ header.mt-4.mb-4.clearfix
   = link_to t('members.show.return_link', unit_name: @unit.name), unit_members_path(@unit)
 
   h1 = @target_membership.user.display_legal_and_nicknames
+  p = @target_membership.user.anonymous_email? ? '' : @target_membership.user.email
 
 .row.gx-5
   main

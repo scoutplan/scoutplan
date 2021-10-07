@@ -9,7 +9,8 @@ class UnitMembershipsController < ApplicationController
     authorize :unit_membership
     @unit_memberships = @unit.memberships.includes(:user)
     @page_title = @unit.name, t('members.index.page_title')
-    @membership = @unit.memberships.new
+    @membership = @unit.memberships.build
+    @membership.build_user
   end
 
   def show
@@ -18,6 +19,26 @@ class UnitMembershipsController < ApplicationController
     @page_title = @user.full_name
     page_title [@unit.name, @user.display_full_name]
     build_new_relationship
+  end
+
+  def create
+    generated_password = Devise.friendly_token.first(8)
+    @member = @unit.memberships.new(member_params)
+    @member.status = :active
+    @member.user.password = @member.user.password_confirmation = generated_password
+
+    ap @member.user.email.length
+
+    return unless @member.save!
+
+    flash[:notice] = 'Member Added'
+    redirect_to unit_members_path(@unit)
+  end
+
+  def member_params
+    params.require(:unit_membership).permit(:status, :role, :member_type,
+      user_attributes: [:first_name, :last_name, :email, :phone]
+    )
   end
 
   def pundit_user

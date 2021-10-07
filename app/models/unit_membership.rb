@@ -40,6 +40,8 @@ class UnitMembership < ApplicationRecord
   delegate :contactable, to: :user
   delegate :nickname, to: :user
 
+  accepts_nested_attributes_for :user
+
   has_settings do |s|
     s.key :security, defaults: { enable_magic_links: true }
   end
