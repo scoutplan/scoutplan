@@ -137,6 +137,7 @@ class EventsController < ApplicationController
   def find_unit
     @current_unit = @unit = Unit.find(params[:unit_id])
     @current_member = @unit.membership_for(current_user)
+    Time.zone = @current_unit.settings(:locale).time_zone
   end
 
   # for show, edit, update, destroy...important that @unit
