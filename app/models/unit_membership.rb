@@ -4,7 +4,7 @@
 # primary concept of a person in Scoutplan
 class UnitMembership < ApplicationRecord
   include Flipper::Identifier
-  default_scope { includes(:user).order('users.first_name ASC') }
+  default_scope { includes(:user).order('users.first_name, users.last_name ASC') }
 
   belongs_to :unit
   belongs_to :user, class_name: 'User'
