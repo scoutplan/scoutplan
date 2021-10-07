@@ -6,41 +6,10 @@ table(style="width: 100%;")
   tr
     td
       table
-        - @events.each do |event|
-          tr
-            td(style="width: 1%; white-space: nowrap; padding: 3px 3px 3px 0;") = event.starts_at.strftime('%a')[0, 2]
-            td(style="width: 1%; white-space: nowrap; padding: 3px;") = event.starts_at.strftime('%b')
-            td(style="padding: 3px; text-align: right;") = event.starts_at.strftime('%-d')
-            td = link_to event.title, event_url(event, r: @member.magic_link.token)
-            - family_rsvp_count = 0
-            - if event.requires_rsvp
-              td
-                - @member.family.each do |member|
-                  - rsvp = member.rsvps.find_by(event: event)
-                  - if rsvp&.accepted?
-                    - family_rsvp_count += 1
-                    span.accepted
-                      i.fas.fa-hiking(title="Going")
-                  - elsif rsvp&.declined?
-                    - family_rsvp_count += 1
-                    span.declined(title="Not going")
-                      i.fas.fa-couch(style="color: red;" title="Not going")
-                  - else
-                    span.unknown(title="No response")
-                      i.fas.fa-ghost(style="color: grey;" title="No response")
-
-                  |&nbsp;
-                  = member == @member ? 'You' : member.display_first_name
-                  |&nbsp;&nbsp;&nbsp;&nbsp;
-
-                - if event.rsvp_open?
-                  span(style="font-size: 80%;")
-                    - if family_rsvp_count > 0
-                      = link_to 'Change RSVPs', event_url(event, anchor: 'rsvp', r: @member.magic_link.token)
-                    - else
-                      = link_to 'RSVP Now', event_url(event, anchor: 'rsvp', r: @member.magic_link.token)
-
-
+        = render partial: 'member_mailer/partials/event_rows'
+        tr
+          td(align="center" colspan="100")
+            = link_to "View a list of all #{ @unit.name} events", unit_events_url(@unit, r: @member.magic_link.token), style: 'font-weight: bold;'
 
 scss:
   .accepted > svg > path {
