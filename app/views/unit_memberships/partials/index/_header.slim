@@ -16,15 +16,25 @@ header.mt-4.mb-4.clearfix
         .dropdown.ml-3(style="display: inline-block;")
           = link_to t('events.index.view.dropdown'), '#', class: 'btn btn-outline-secondary dropdown-toggle', data: { 'bs-toggle' => 'dropdown' }, style: "display: inline-block;"
           ul.dropdown-menu.dropdown-menu-end.dropdown-menu-dark
-            li = link_to 'Bulk Edit Members', '#', class: 'dropdown-item', id: 'bulk_edit_link'
+            li
+              = link_to '#', class: 'dropdown-item', id: 'bulk_edit_link' do
+                .menu-glyph
+                  .menu-glyph-wrapper
+                    i.far.fa-check
+                |Bulk Edit Members
             li
               = link_to '#', class: 'dropdown-item', id: 'show_inactive_members_link' do
                 .menu-glyph
                   .menu-glyph-wrapper
                     i.far.fa-check
-                |Show Inactive Members
+                |Show Inactive Members (#{ @current_unit.members.inactive.count })
 
-            li = link_to 'Import Members', import_unit_members_path(@unit), class: 'dropdown-item'
+            li
+              = link_to import_unit_members_path(@unit), class: 'dropdown-item' do
+                .menu-glyph
+                  .menu-glyph-wrapper
+                    i.far.fa-check
+                |Import Members
 
     span.mb-3.me-3#bulk_edit_options(style="font-size: 80%;")
       span(style="display: inline-block; vertical-align: middle;")

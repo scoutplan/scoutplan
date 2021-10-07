@@ -19,6 +19,8 @@ class User < ApplicationRecord
             class_name: 'MemberRelationship',
             dependent: :destroy
 
+  before_validation :check_email
+
   self.inheritance_column = nil
   enum type: { unknown: 0, youth: 1, adult: 2 }
 
@@ -55,5 +57,15 @@ class User < ApplicationRecord
     res << "(#{ nickname })" if nickname
     res << last_name
     res.join(' ')
+  end
+
+  def check_email
+    return if email.present?
+
+    self.email = User.generate_anonymous_email
+  end
+
+  def self.generate_anonymous_email
+    "anonymous-member-#{SecureRandom.hex(6)}@scoutplan.org"
   end
 end
