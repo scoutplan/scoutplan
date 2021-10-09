@@ -25,4 +25,8 @@ class EventNotifier
   def self.invite_member_to_event(token)
     EventMailer.with(token: token).token_invitation_email.deliver_later
   end
+
+  def self.send_rsvp_confirmation(rsvp)
+    EventMailer.with(rsvp: rsvp).rsvp_confirmation_email.deliver_later
+  end
 end

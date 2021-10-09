@@ -84,12 +84,14 @@ class EventsController < ApplicationController
   end
 
   # PATCH /events/:id/rsvpp
-  def rsvp
+  def create_or_update_rsvp
     params[:event][:members].each do |member_id, values|
       response = values[:event_rsvp][:response]
       rsvp = @event.rsvps.create_with(response: response).find_or_create_by!(unit_membership_id: member_id)
       rsvp.update!(response: response)
+      EventNotifier.send_rsvp_confirmation(rsvp)
     end
+
 
     flash[:notice] = t(:rsvp_posted)
     redirect_to [@unit, @event]

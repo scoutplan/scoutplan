@@ -46,6 +46,10 @@ class Event < ApplicationRecord
     rsvp_tokens.find_by(unit_membership: member)
   end
 
+  def rsvp_closes_at
+    @rsvp_closes_at || starts_at
+  end
+
   def series_children
     Event.where(series_parent_id: id)
   end

@@ -56,13 +56,24 @@
   body {
     padding-top: 2rem;
   }
+
+  .btn {
+    padding: 6px 12px;
+    background:  #666;
+    color: #fff;
+    border-radius: 5px;
+  }
+
+  h1 {
+    margin-bottom: 1rem;
+  }
 </style>
 </head>
 
 <body bgcolor="#FFFFFF">
-  <table border="0" cellspacing="0" cellpadding="0" style="max-width: 800px; margin: auto; background-color: #eee;">
+  <table border="0" cellspacing="0" cellpadding="0" style="width: 800px; margin: auto; background-color: #eee; border-radius: 10px;">
     <tr>
-      <td style="max-width: 800px; padding: 15px 30px;">
+      <td style="padding: 30px 60px;">
         <%= yield %>
       </td>
     </tr>

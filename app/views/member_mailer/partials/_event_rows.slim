@@ -1,6 +1,6 @@
 - @events.each do |event|
   tr
-    td(style="width: 1%; white-space: nowrap; padding: 3px 3px 3px 0;") = event.starts_at.strftime('%a')[0, 2]
+    td(style="width: 1%; white-space: nowrap; padding: 3px 3px 3px 0;") = event.starts_at.strftime('%a')
     td(style="width: 1%; white-space: nowrap; padding: 3px;") = event.starts_at.strftime('%b')
     td(style="padding: 3px; text-align: right;") = event.starts_at.strftime('%-d')
     td = link_to event.title, event_url(event, r: @member.magic_link.token)

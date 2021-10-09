@@ -1,0 +1,11 @@
+h1 #{ @rsvp.unit.name } RSVP Confirmation
+
+p
+  | Hi, #{ @rsvp.user.first_name }. This is to confirm that you're <strong>#{ @rsvp.accepted? ? 'going' : 'not going' }</strong> to the #{ @rsvp.event.title }&nbsp;
+  | on #{ @rsvp.event.starts_at }.
+
+p
+  | Please let us know if your plans change:&nbsp;
+  = link_to 'Change Your Response', event_url(@rsvp.event, anchor: 'rsvp'), class: 'btn'
+
+p = link_to "View the #{ @rsvp.unit.name } event calendar", unit_events_url(@rsvp.unit)

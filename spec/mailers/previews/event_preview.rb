@@ -13,4 +13,9 @@ class EventPreview < ActionMailer::Preview
     token = RsvpToken.new(event: event, member: member)
     EventMailer.with(token: token).token_invitation_email
   end
+
+  def rsvp_confirmation_email
+    rsvp = EventRsvp.first
+    EventMailer.with(rsvp: rsvp).rsvp_confirmation_email
+  end
 end
