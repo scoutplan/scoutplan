@@ -4,7 +4,7 @@
 .modal.fade#eventRsvpModal
   .modal-dialog
     .modal-content
-      = form_for @event, url: { action: :rsvp } do |f|
+      = form_for @event, url: { action: :create_or_update_rsvp } do |f|
         .modal-header
           h5.modal-title = t(:rsvp_dialog_title)
           button.btn-close(type="button" data-bs-dismiss="modal")

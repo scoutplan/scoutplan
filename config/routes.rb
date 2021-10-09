@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :events, only: %i[show edit update destroy] do
     member do
       get   'organize'
-      patch 'rsvp'
+      patch 'create_or_update_rsvp'
       post  'cancel'
       post  'publish'
       post  'invite', to: 'event_rsvps#invite'

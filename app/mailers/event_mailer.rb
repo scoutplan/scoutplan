@@ -17,4 +17,11 @@ class EventMailer < ApplicationMailer
     @url    = unit_events_url(@unit)
     mail(to: @user.email, from: @unit.settings(:communication).from_email, subject: "#{@unit.name}: New Events Have Been Added to the Calendar")
   end
+
+  def rsvp_confirmation_email
+    @rsvp = params[:rsvp]
+    mail( to: email_address_with_name(@rsvp.user.email, @rsvp.user.display_full_name),
+          from: email_address_with_name(@rsvp.unit.settings(:communication).from_email, @rsvp.unit.name),
+          subject: "#{ @rsvp.unit.name }: Your RSVP for #{ @rsvp.event.title } has been received")
+  end
 end

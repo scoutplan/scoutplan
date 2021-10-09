@@ -14,6 +14,8 @@ class EventRsvpsController < ApplicationController
 
     @event.reload
 
+    EventNotifier.send_rsvp_confirmation(@rsvp)
+
     find_event_responses
     respond_to :js
   end
