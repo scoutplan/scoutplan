@@ -4,6 +4,8 @@
 # primary concept of a person in Scoutplan
 class UnitMembership < ApplicationRecord
   include Flipper::Identifier
+  include Contactable
+
   default_scope { includes(:user).order('users.first_name, users.last_name ASC') }
 
   belongs_to :unit
@@ -37,7 +39,6 @@ class UnitMembership < ApplicationRecord
   delegate :last_name, to: :user
   delegate :display_first_name, to: :user
   delegate :display_full_name, to: :user
-  delegate :contactable, to: :user
   delegate :nickname, to: :user
 
   accepts_nested_attributes_for :user
@@ -62,8 +63,8 @@ class UnitMembership < ApplicationRecord
     children.append(self).sort_by(&:first_name)
   end
 
-  def contactable?
-    user.contactable?
+  def contactable_object
+    user
   end
 
   def magic_link
