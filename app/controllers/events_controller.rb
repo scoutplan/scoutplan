@@ -7,6 +7,7 @@ class EventsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_unit, only: %i[index create new bulk_publish]
   before_action :find_event, except: %i[index edit create new bulk_publish]
+  around_action :set_time_zone
 
   def index
     @events = UnitEventQuery.new(@unit, @current_member).execute
@@ -28,8 +29,9 @@ class EventsController < ApplicationController
   def create
     authorize :event, :create?
     @event = @unit.events.new(event_params)
-    @event.starts_at = ScoutplanUtilities.compose_datetime(params[:starts_at_d], params[:starts_at_t])
-    @event.ends_at   = ScoutplanUtilities.compose_datetime(params[:ends_at_d], params[:ends_at_t])
+    # @event.starts_at = ScoutplanUtilities.compose_datetime(params[:starts_at_d], params[:starts_at_t])
+    # @event.ends_at   = ScoutplanUtilities.compose_datetime(params[:ends_at_d], params[:ends_at_t])
+    event_set_datetimes
     @event.repeats_until = nil unless params[:event_repeats] == 'on'
     return unless @event.save!
 
@@ -44,7 +46,6 @@ class EventsController < ApplicationController
   def update
     @event.assign_attributes(event_params)
     event_set_datetimes
-
     return unless @event.save!
 
     params[:notice] = t('events.update_confirmation', title: @event.title)
@@ -92,7 +93,6 @@ class EventsController < ApplicationController
       EventNotifier.send_rsvp_confirmation(rsvp)
     end
 
-
     flash[:notice] = t(:rsvp_posted)
     redirect_to [@unit, @event]
   end
@@ -139,7 +139,6 @@ class EventsController < ApplicationController
   def find_unit
     @current_unit = @unit = Unit.find(params[:unit_id])
     @current_member = @unit.membership_for(current_user)
-    Time.zone = @current_unit.settings(:locale).time_zone
   end
 
   # for show, edit, update, destroy...important that @unit
@@ -158,6 +157,7 @@ class EventsController < ApplicationController
       :title,
       :event_category_id,
       :location,
+      :address,
       :description,
       :requires_rsvp,
       :starts_at_d,
@@ -194,7 +194,7 @@ class EventsController < ApplicationController
     @event.starts_at = ScoutplanUtilities.compose_datetime(
       params[:starts_at_d],
       params[:starts_at_t]
-    )
+    ).utc
   end
 
   def event_set_end
@@ -203,6 +203,10 @@ class EventsController < ApplicationController
     @event.ends_at = ScoutplanUtilities.compose_datetime(
       params[:ends_at_d],
       params[:ends_at_t]
-    )
+    ).utc
+  end
+
+  def set_time_zone(&block)
+    Time.use_zone(@current_unit.settings(:locale).time_zone, &block)
   end
 end

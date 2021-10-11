@@ -19,6 +19,5 @@ class UnitContextController < ApplicationController
     # TODO: scope this to the current user's memberships
     @current_unit = Unit.includes(:unit_memberships).find(params[:unit_id])
     @current_member = @unit.membership_for(current_user)
-    Time.zone ||= @current_unit.time_zone
   end
 end
