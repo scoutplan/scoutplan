@@ -51,7 +51,7 @@ div(style="margin-bottom: 30px;")
     .card
       .card-body
         .month-name Location
-        - @event.location.split(',').each do |address_line|
+        - @event.location&.split(',')&.each do |address_line|
           div = address_line
 
     .card
