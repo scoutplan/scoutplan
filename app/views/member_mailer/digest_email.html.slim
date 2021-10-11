@@ -1,6 +1,6 @@
 h1 = t('mailers.member_mailer.digest_email.title', unit_name: @unit.name)
 
-p Good #{ Time.zone.current.time_of_day }, #{@member.display_first_name}. Here's what's going on this week:
+p Good #{ Time.zone.now.time_of_day }, #{@member.display_first_name}. Here's what's going on this week:
 
 table(style="width: 100%;")
   tbody

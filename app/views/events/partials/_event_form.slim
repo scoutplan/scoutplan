@@ -28,8 +28,11 @@
 
           // from date
           .mb-3
+            .form-text Dates and times are #{ @current_unit.settings(:locale).time_zone }
+
+          .mb-3
             .row.mb-3
-              .col-sm-2
+              .col-sm-2.pt-2
                 = f.label :from
               .col-sm-5
                 = date_field_tag :starts_at_d, @event.starts_at.localtime.strftime("#{ @format_date }"), class: 'form-control'
@@ -40,7 +43,7 @@
           // to date
           .mb-3
             .row.mb-3
-              .col-sm-2
+              .col-sm-2.pt-2
                 = f.label :to
               .col-sm-5
                  = date_field_tag :ends_at_d, @event.ends_at.localtime.strftime("#{ @format_date }"), class: 'form-control'

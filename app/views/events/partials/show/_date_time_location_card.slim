@@ -50,16 +50,23 @@ div(style="margin-bottom: 30px;")
 
     .card
       .card-body
-        = @event.location
+        .month-name Location
+        - @event.location.split(',').each do |address_line|
+          div = address_line
 
     .card
       .card-body
         div(style="position: relative;")
           #map(style="height: 150px; width: 100%;")
-          a(id='map_wrap' href='#' style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 1000;" onclick="alert('click!!!');")
+          a(id='map_wrap' href='#' style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 1000;" onclick="launchMap();")
 
 - if true
   javascript:
+    function launchMap() {
+      const url = 'https://maps.google.com/maps/search/?api=1&query=' + encodeURIComponent('#{ @event.map_address }');
+      window.open(url);
+    }
+
     document.querySelector('#map_wrap')
       .addEventListener('click', function(event) {
         event.preventDefault();
@@ -70,7 +77,7 @@ div(style="margin-bottom: 30px;")
     const mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
     mapboxClient.geocoding
       .forwardGeocode({
-        query: '#{ @event.address || @event.location }',
+        query: '#{ @event.address.blank? ? @event.location : @event.address }',
         autocomplete: false,
         limit: 1
       })

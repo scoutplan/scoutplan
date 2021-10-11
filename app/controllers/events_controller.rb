@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'humanize'
+require 'cgi'
 
 # controller for Events
 class EventsController < ApplicationController
@@ -126,6 +127,7 @@ class EventsController < ApplicationController
       starts_at: 28.days.from_now,
       ends_at: 28.days.from_now
     )
+
     @event.starts_at = @event.starts_at.change({ hour: 10 }) # default starts at 10 AM
     @event.ends_at   = @event.ends_at.change({ hour: 16 }) # default ends at 4 PM
     @member_rsvps    = @current_member.event_rsvps
