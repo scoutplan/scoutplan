@@ -28,7 +28,7 @@ class WeeklyDigestSender
   # hardwired for 10 AM on Sunday
   def time_to_run(unit)
     Time.zone = unit.settings(:locale).time_zone
-    right_now = Time.zone.current
+    right_now = Time.zone.now
     right_now.sunday? && right_now.hour == 10 && right_now.minute = 0
   end
 end

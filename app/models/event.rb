@@ -60,6 +60,10 @@ class Event < ApplicationRecord
     Event.where(series_parent_id: series_parent_id)
   end
 
+  def map_address
+    address.blank? ? location : address
+  end
+
   private
 
   # create a weekly series based on @event

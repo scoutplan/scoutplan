@@ -8,6 +8,8 @@
 
 * Docker & docker-compose installed
 
+* Mapbox account
+
 
 ## Set up local HTTPS
 
@@ -32,6 +34,7 @@ See https://codewithhugo.com/docker-compose-local-https/ for inspiration
 * SENTRY_DSN
 * SKYLIGHT_AUTHENTICATION
 * SKYLIGHT_ENABLED (set to true)
+* MAPBOX_TOKEN
 
 ## Docker Compose
 

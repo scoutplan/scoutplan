@@ -14,6 +14,8 @@ module Scoutplan
     config.load_defaults 6.1
     config.hosts << 'go.scoutplan.org'
     config.hosts << 'www.example.com'
+    config.hosts << /\A10\.\d+\.\d+\.\d+\z/ # internal IP addresses
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
