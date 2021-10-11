@@ -13,6 +13,7 @@
           button.btn-close(type="button" data-bs-dismiss="modal")
 
         .modal-body
+          / EVENT CATEGORY
           .mb-3
             = f.label :category, class: 'col-form-label'
             = f.select :event_category_id,
@@ -20,6 +21,7 @@
               { prompt: t('event_category_prompt') },
               { class: 'form-select' }
 
+          / TITLE
           .mb-3
             = f.label :title
             = f.text_field :title, { class: 'form-control', autocomplete: 'off', style: 'text-transform: capitalize' }
@@ -30,10 +32,10 @@
               .col-sm-2
                 = f.label :from
               .col-sm-5
-                = date_field_tag :starts_at_d, @event.starts_at.strftime("#{ @format_date }"), class: 'form-control'
+                = date_field_tag :starts_at_d, @event.starts_at.localtime.strftime("#{ @format_date }"), class: 'form-control'
 
               .col-sm-5
-                = time_field_tag :starts_at_t, @event.starts_at.strftime("#{ @format_time }"), class: 'form-control', step: '900'
+                = time_field_tag :starts_at_t, @event.starts_at.localtime.strftime("#{ @format_time }"), class: 'form-control', step: '900'
 
           // to date
           .mb-3
@@ -41,9 +43,9 @@
               .col-sm-2
                 = f.label :to
               .col-sm-5
-                 = date_field_tag :ends_at_d, @event.ends_at.strftime("#{ @format_date }"), class: 'form-control'
+                 = date_field_tag :ends_at_d, @event.ends_at.localtime.strftime("#{ @format_date }"), class: 'form-control'
               .col-sm-5
-                 = time_field_tag :ends_at_t, @event.ends_at.strftime("#{ @format_time }"), class: 'form-control', step: '900'
+                 = time_field_tag :ends_at_t, @event.ends_at.localtime.strftime("#{ @format_time }"), class: 'form-control', step: '900'
 
           // repeats
           .row.mb-3(style="height:3rem;")
@@ -61,6 +63,10 @@
           .mb-3
             = f.label :location
             = f.text_field :location, { class: 'form-control', autocomplete: 'off', style: 'text-transform: capitalize' }
+
+          .mb-3
+            = f.label :address
+            = f.text_field :address, { class: 'form-control', autocomplete: 'off', style: 'text-transform: capitalize' }
 
           // RSVP
           .form-check.mb-3

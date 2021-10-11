@@ -27,6 +27,8 @@ class EventNotifier
   end
 
   def self.send_rsvp_confirmation(rsvp)
+    return if rsvp.user.anonymous_email?
+
     EventMailer.with(rsvp: rsvp).rsvp_confirmation_email.deliver_later
   end
 end

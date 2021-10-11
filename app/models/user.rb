@@ -4,6 +4,7 @@
 # is handled in the UnitMembership class
 class User < ApplicationRecord
   include Flipper::Identifier
+  include Contactable
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -28,20 +29,12 @@ class User < ApplicationRecord
     s.key :locale, defaults: { time_zone: 'Eastern Time (US & Canada)' }
   end
 
+  def contactable_object
+    self
+  end
+
   def full_name
     "#{first_name} #{last_name}"
-  end
-
-  def anonymous_email?
-    email.match?(/anonymous-member-\h+@scoutplan.org/)
-  end
-
-  def emailable?
-    !anonymous_email?
-  end
-
-  def contactable?
-    emailable?
   end
 
   def display_first_name

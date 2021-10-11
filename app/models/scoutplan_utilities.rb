@@ -5,6 +5,7 @@ class ScoutplanUtilities
     str = "#{date_str} #{time_str}"
     # fmt = "%Y-%m-%d %H:%M:%S"
     # DateTime.strptime(str, fmt)
-    DateTime.parse(str)
+    res = DateTime.parse(str)
+    res
   end
 end

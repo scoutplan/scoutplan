@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
   include Pundit
   before_action :authenticate_user!
   before_action :process_query_string
-  before_action :set_time_zone
   after_action  :clear_session_view
 
   def new_session_path(_scope)
@@ -52,12 +51,5 @@ class ApplicationController < ActionController::Base
     end
 
     super
-  end
-
-  ##########################################
-  protected
-
-  def set_time_zone
-    Time.zone = 'Eastern Time (US & Canada)'
   end
 end

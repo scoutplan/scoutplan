@@ -17,9 +17,9 @@ div(style="margin-bottom: 30px;")
 
               tr
                 td
-                  = @event.starts_at.strftime('%-I:%S %p')
+                  = @event.starts_at.localtime.strftime('%-I:%S %p')
                   |&hairsp;&mdash;&hairsp;
-                  = @event.ends_at.strftime('%-I:%S %p')
+                  = @event.ends_at.localtime.strftime('%-I:%S %p')
 
             - else
               tr
@@ -70,7 +70,7 @@ div(style="margin-bottom: 30px;")
     const mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
     mapboxClient.geocoding
       .forwardGeocode({
-        query: '#{@event.location}',
+        query: '#{ @event.address || @event.location }',
         autocomplete: false,
         limit: 1
       })
