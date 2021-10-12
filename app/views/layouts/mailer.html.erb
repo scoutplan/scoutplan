@@ -75,6 +75,13 @@
   <table border="0" cellspacing="0" cellpadding="0" style="width: 800px; margin: auto; background-color: #fff; border-radius: 10px;">
     <tr>
       <td style="padding: 30px 60px;">
+        <% if attachments.inline['logo'] %>
+          <div align="center" style="margin-bottom: 30px;">
+            <%= image_tag attachments.inline['logo'].url %>
+          </div>
+          <hr style="margin-bottom: 30px; border: 1px solid #eee;" />
+        <% end %>
+
         <%= yield %>
       </td>
     </tr>

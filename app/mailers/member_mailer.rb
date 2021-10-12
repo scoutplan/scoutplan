@@ -5,31 +5,38 @@ class MemberMailer < ApplicationMailer
   before_action :find_member
   before_action :find_user
   before_action :find_unit
+  before_action :set_to_and_from_addresses
 
   def invitation_email
-    mail(to: email_address_with_name(@user.email, @user.display_full_name),
-         from: email_address_with_name(@unit.settings(:communication).from_email, @unit.name),
+    mail(to: @to_address,
+         from: @from_address,
          subject: "#{@unit.name} Event Invitation: #{@event.title}")
   end
 
   def digest_email
-    @events  = @unit.events.published.future.upcoming
-    mail(to: email_address_with_name(@user.email, @user.display_full_name),
-         from: email_address_with_name(@unit.settings(:communication).from_email, @unit.name),
+    @events = @unit.events.published.future.upcoming
+    attachments.inline['logo'] = @unit.logo.blob.download
+    mail(to: @to_address,
+         from: @from_address,
          subject: "#{@unit.name} Digest")
   end
 
   def daily_reminder_email
     @events = @unit.events.published.today
-    mail(to: email_address_with_name(@user.email, @user.display_full_name),
-         from: email_address_with_name(@unit.settings(:communication).from_email, @unit.name),
+    mail(to: @to_address,
+         from: @from_address,
          subject: daily_reminder_subject)
   end
 
   private
 
+  def set_to_and_from_addresses
+    @to_address = email_address_with_name(@user.email, @user.display_full_name)
+    @from_address = email_address_with_name(@unit.settings(:communication).from_email, @unit.name)
+  end
+
   def daily_reminder_subject
-    "#{@unit.name} — " + ((@events.count == 1) ? @events.first.title : "Today's Events")
+    "#{@unit.name} — " + (@events.count == 1 ? @events.first.title : "Today's Events")
   end
 
   def find_member

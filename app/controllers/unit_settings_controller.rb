@@ -8,7 +8,9 @@ class UnitSettingsController < UnitContextController
   end
 
   def update
-    redirect_to unit_settings_path(@unit)
+    @unit.logo.attach(params[:unit][:logo])
+    @unit.save!
+    redirect_to edit_unit_settings_path(@unit)
   end
 
   def pundit_user

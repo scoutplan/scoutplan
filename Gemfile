@@ -6,6 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.0.2'
 
 gem 'awesome_print', '~> 1.9'
+gem 'aws-sdk-s3', require: false
 gem 'bootsnap', '~> 1.8', require: false
 gem 'devise', '~> 4.8'
 gem 'faraday', '~> 1.7'
