@@ -15,4 +15,11 @@ class MemberNotifier
 
     MemberMailer.with(member: member).digest_email.deliver_later
   end
+
+  def self.send_daily_reminder(member)
+    @magic_link_token = member.magic_link.token if
+      @unit.settings(:security).enable_magic_links &&
+      @user.settings(:security).enable_magic_links
+    MemberMailer.with(member: member).daily_reminder_email.deliver_later
+  end
 end

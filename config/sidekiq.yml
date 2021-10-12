@@ -3,3 +3,7 @@
     # cron: '0 0 * * * *' # every hour
     cron: '0 * * * * *' # every minute
     class: WeeklyDigestSender
+
+  send_today_reminders:
+    cron: '0 * * * * *' # check every minute
+    class: DailyReminderSender
