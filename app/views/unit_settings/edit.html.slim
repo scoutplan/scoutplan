@@ -1,0 +1,14 @@
+header.mt-5
+  h1 Settings
+
+h3 Event Categories
+table
+  - @unit.event_categories.each do |category|
+    tr
+      td(style="padding-right: 0.5rem;")
+        i.fas(class="fa-#{ category.glyph }" style="color: #{ category.color }")
+      td = category.name
+
+br
+
+= link_to 'Add an Event Category', new_unit_event_category_path(@unit), class: 'btn btn-secondary'
