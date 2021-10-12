@@ -19,12 +19,17 @@ Rails.application.routes.draw do
     resources :event_rsvps, as: 'rsvps', path: 'rsvps', only: %i[create]
   end
 
+  get  'units/:id/settings', as: 'edit_unit_settings', to: 'unit_settings#edit'
+  post 'units/:id/settings', as: 'update_unit_settings', to: 'unit_settings#update'
+
   resources :units do
     resources :events, only: %i[index new create] do
       collection do
         post 'bulk_publish'
       end
     end
+
+    resources :event_categories
 
     resources :unit_memberships, path: 'members', as: 'members', only: %i[index new create] do
       collection do

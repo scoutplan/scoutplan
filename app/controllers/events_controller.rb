@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'humanize'
-require 'cgi'
 
 # controller for Events
 class EventsController < ApplicationController

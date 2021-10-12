@@ -26,9 +26,9 @@ div(style="margin-bottom: 30px;")
                 td.month-name(colspan="3") = @presenter.month_name
 
               tr
-                td.daynames = @event.starts_at.strftime('%a')
+                td.daynames = @event.starts_at.localtime.strftime('%a')
                 td
-                td.daynames = @event.ends_at.strftime('%a')
+                td.daynames = @event.ends_at.localtime.strftime('%a')
 
               tr
                 td.dates = @event.starts_at.day
@@ -37,9 +37,9 @@ div(style="margin-bottom: 30px;")
                 td.dates = @event.ends_at.day
 
               tr
-                td = @event.starts_at.strftime('%-I:%S %p')
+                td = @event.starts_at.localtime.strftime('%-I:%S %p')
                 td
-                td = @event.ends_at.strftime('%-I:%S %p')
+                td = @event.ends_at.localtime.strftime('%-I:%S %p')
 
             - if @event.series?
               tr

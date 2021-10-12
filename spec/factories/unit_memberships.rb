@@ -10,6 +10,10 @@ FactoryBot.define do
     trait :admin do
       role { 'admin' }
     end
+
+    trait :non_admin do
+      role { '' }
+    end
   end
 
   factory :member, parent: :unit_membership do
