@@ -24,6 +24,8 @@ See https://codewithhugo.com/docker-compose-local-https/ for inspiration
 
 ## ENV vars (.env)
 
+### Secrets
+
 * FONT_AWESOME_KIT_ID
 * ADOBE_KIT_ID
 * DATABASE_HOST
@@ -35,6 +37,14 @@ See https://codewithhugo.com/docker-compose-local-https/ for inspiration
 * SKYLIGHT_AUTHENTICATION
 * SKYLIGHT_ENABLED (set to true)
 * MAPBOX_TOKEN
+* DO_STORAGE_SECRET
+
+### Config vars
+
+* DO_STORAGE_KEY_ID
+* DO_STORAGE_REGION
+* DO_BUCKET
+* DO_STORAGE_ENDPOINT
 
 ## Docker Compose
 

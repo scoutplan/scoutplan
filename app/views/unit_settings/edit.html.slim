@@ -1,14 +1,26 @@
 header.mt-5
   h1 Settings
 
-h3 Event Categories
-table
-  - @unit.event_categories.each do |category|
-    tr
-      td(style="padding-right: 0.5rem;")
-        i.fas(class="fa-#{ category.glyph }" style="color: #{ category.color }")
-      td = category.name
 
-br
+.row
+  .col-md-3
+    h3 Logo
 
-= link_to 'Add an Event Category', new_unit_event_category_path(@unit), class: 'btn btn-secondary'
+    - if @unit.logo.attached?
+      = image_tag @unit.logo
+
+    = form_for @unit, url: update_unit_settings_path(@unit) do |f|
+      = f.label :logo
+      = f.file_field :logo
+      = f.submit 'Save'
+
+  .col-md-3
+    h3 Event Categories
+    table
+      - @unit.event_categories.each do |category|
+        tr
+          td(style="padding-right: 0.5rem;")
+            i.fas(class="fa-#{ category.glyph }" style="color: #{ category.color }")
+          td = category.name
+    br
+    = link_to 'Add an Event Category', new_unit_event_category_path(@unit), class: 'btn btn-secondary'

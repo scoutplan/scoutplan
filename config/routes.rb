@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   end
 
   get  'units/:id/settings', as: 'edit_unit_settings', to: 'unit_settings#edit'
-  post 'units/:id/settings', as: 'update_unit_settings', to: 'unit_settings#update'
+  patch 'units/:id/settings', as: 'update_unit_settings', to: 'unit_settings#update'
 
   resources :units do
     resources :events, only: %i[index new create] do
