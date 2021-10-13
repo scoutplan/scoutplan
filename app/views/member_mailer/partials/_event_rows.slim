@@ -1,32 +1,6 @@
 - events.each do |event|
-  tr
-    td(style="width: 1%; white-space: nowrap; padding: 3px 3px 3px 0;") = event.starts_at.strftime('%a %b %-d')
-    td = link_to event.title, event_url(event, r: @member.magic_link.token)
-    - next
-    - family_rsvp_count = 0
-    - if event.requires_rsvp
-      td
-        - @member.family.each do |member|
-          - rsvp = member.rsvps.find_by(event: event)
-          - if rsvp&.accepted?
-            - family_rsvp_count += 1
-            span.accepted
-              i.fas.fa-hiking(title="Going")
-          - elsif rsvp&.declined?
-            - family_rsvp_count += 1
-            span.declined(title="Not going")
-              i.fas.fa-couch(style="color: red;" title="Not going")
-          - else
-            span.unknown(title="No response")
-              i.fas.fa-ghost(style="color: grey;" title="No response")
-
-          |&nbsp;
-          = member == @member ? 'You' : member.display_first_name
-          |&nbsp;&nbsp;&nbsp;&nbsp;
-
-        - if event.rsvp_open?
-          span(style="font-size: 80%;")
-            - if family_rsvp_count > 0
-              = link_to 'Change RSVPs', event_url(event, anchor: 'rsvp', r: @member.magic_link.token)
-            - else
-              = link_to 'RSVP Now', event_url(event, anchor: 'rsvp', r: @member.magic_link.token)
+  dt(style="margin-top:15px;")
+    span(style="display:inline-block;width:1rem;margin-right:1rem;" title="#{event.category.name}")
+      i(class="fas fa-#{event.category.glyph}" style="color:#{event.category.color}")
+    = link_to event.title, event_url(event, r: @member.magic_link.token)
+  dd(style="margin-left:2rem;") = event.starts_at.strftime('%a %b %-d')
