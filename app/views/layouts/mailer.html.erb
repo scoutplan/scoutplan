@@ -1,91 +1,101 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<!-- https://webdesign.tutsplus.com/articles/creating-a-simple-responsive-html-email--webdesign-12978 -->
+<html lang="en" xmlns="https://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
-  <!-- If you delete this meta tag, Half Life 3 will never be released. -->
-  <meta name="viewport" content="width=device-width" />
-
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Scoutaround</title>
-
-  <script src="https://kit.fontawesome.com/4988667110.js" crossorigin="anonymous"></script>
-
-  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-rqn26AG5Pj86AF4SO72RK5fyefcQ/x32DNQfChxWvbXIyXFePlEktwD18fEz+kQU" crossorigin="anonymous">
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="x-apple-disable-message-reformatting">
+  <title></title>
+  <!--[if mso]>
   <style>
-  @import url(<%= "https://use.typekit.net/#{ ENV['ADOBE_FONT_KIT_ID'] }.css" %>);
-
-  * {
-    margin: 0;
-    padding: 0;
-    line-height: 160%;
-    color: #333;
-  }
-
-  * { font-family: proxima-nova, arial, sans-serif; }
-
-  p {
-    margin-bottom: 2rem;
-  }
-
-  td.container {
-    max-width: 800px;
-  }
-
-  a.btn {
-    display: inline-block;
-    padding: 6px 15px;
-    background: #48b;
-    text-decoration: none;
-    color: #fff;
-    border-radius: 5px;
-    font-weight: 500;
-  }
-
-  a.btn:hover {
-    background-color: #37a;
-  }
-
-  td {
-    padding: 6px 12px;
-  }
-
-  td:first-child {
-    padding-left: 0;
-  }
-
-  body {
-    padding-top: 2rem;
-    background: #eee;
-  }
-
-  .btn {
-    padding: 6px 12px;
-    background:  #666;
-    color: #fff;
-    border-radius: 5px;
-  }
-
-  h1 {
-    margin-bottom: 1rem;
-  }
-</style>
+      table {border-collapse:collapse;border-spacing:0;border:none;margin:0;}
+      div, td {padding:0;}
+      div {margin:0 !important;}
+  </style>
+  <noscript>
+      <xml>
+          <o:OfficeDocumentSettings>
+          <o:PixelsPerInch>96</o:PixelsPerInch>
+          </o:OfficeDocumentSettings>
+      </xml>
+  </noscript>
+  <![endif]-->
+  <style>
+    table, td, div, h1, p {
+      font-family: Arial, sans-serif;
+    }
+  </style>
 </head>
+<body style="margin:0;padding:0;word-spacing:normal;background-color:#003F87;">
+  <div role="article" aria-roledescription="email" lang="en" style="text-size-adjust:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#003F87;">
+    <table role="presentation" style="width:100%;border:none;border-spacing:0;">
+      <tr>
+        <td align="center" style="padding:0;">
+          <!--[if mso]>
+          <table role="presentation" align="center" style="width:600px;">
+          <tr>
+          <td>
+          <![endif]-->
+          <table role="presentation" style="width:94%;max-width:800px;border:none;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636; margin-bottom:30px;">
 
-<body bgcolor="#eeeeee">
-  <table border="0" cellspacing="0" cellpadding="0" style="width: 800px; margin: auto; background-color: #fff; border-radius: 10px;">
-    <tr>
-      <td style="padding: 30px 60px;">
-        <% if attachments.inline['logo'] %>
-          <div align="center" style="margin-bottom: 30px;">
-            <%= image_tag attachments.inline['logo'].url %>
-          </div>
-          <hr style="margin-bottom: 30px; border: 1px solid #eee;" />
-        <% end %>
+            <% if attachments.inline['logo'] %>
+              <tr>
+                  <td style="padding:40px 30px 30px 30px;text-align:center;font-size:24px;font-weight:bold;">
+                      <a href="https://go.scoutplan.org">
+                        <%= image_tag attachments.inline['logo'].url, style: "width:80%;max-width:165px;height:auto;border:none;text-decoration:none;color:#ffffff;"%>
+                      </a>
+                  </td>
+              </tr>
+            <% end %>
 
-        <%= yield %>
-      </td>
-    </tr>
-  </table>
+            <tr>
+                <td style="padding:30px 30px 0 30px;background-color:#ffffff;border-top-left-radius:10px;border-top-right-radius:10px;">
+                    <h1 style="margin-top:0;margin-bottom:16px;font-size:26px;line-height:32px;font-weight:bold;letter-spacing:-0.02em;"><%= yield :title %></h1>
+                    <p style="margin:0;"><%= yield :blurb %></p>
+                </td>
+            </tr>
 
+            <tr>
+                <td style="padding:5px 30px 11px 30px;font-size:0;background-color:#ffffff;border-bottom:1px solid #f0f0f5;border-color:rgba(201,201,207,.35);">
+
+                  <!--[if mso]>
+                  <table role="presentation" width="100%">
+                  <tr>
+                  <td style="width:395px;padding-bottom:20px;" valign="top">
+                  <![endif]-->
+                      <div class="col-lge" style="font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;display:inline-block;width:100%;max-width:455px;vertical-align:top;padding-bottom:20px;padding-right:40px;">
+                          <%= yield :left_column %>
+                      </div>
+                  <!--[if mso]>
+                  </td>
+                  <td style="width:145px;" align="left" valign="top">
+                  <![endif]-->
+                      <div class="col-sml" style="font-family:Arial,sans-serif;font-size:14px;color:#363636;display:inline-block;width:100%;max-width:245px;vertical-align:top;text-align:left;">
+                          <%= yield :right_column %>
+                      </div>
+                  <!--[if mso]>
+                  </td>
+                  </tr>
+                  </table>
+                  <![endif]-->
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding:30px;text-align:center;font-size:12px;background-color:rgba(0,0,0,0.5);color:#cccccc;border-bottom-left-radius:10px;border-bottom-right-radius:10px;">
+                    Sent from Scoutplan
+                </td>
+            </tr>
+          </table>
+          <!--[if mso]>
+          </td>
+          </tr>
+          </table>
+          <![endif]-->
+        </td>
+      </tr>
+    </table>
+  </div>
 </body>
 </html>

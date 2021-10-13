@@ -22,10 +22,11 @@ class Event < ApplicationRecord
 
   enum status: { draft: 0, published: 1, cancelled: 2 }
 
-  scope :future, -> { where('starts_at > ?', Date.today) }
-  scope :upcoming, ->(weeks_ahead = 4) { where('starts_at < ?', weeks_ahead.weeks.from_now) }
+  scope :future,        -> { where('starts_at > ?', Date.today) }
+  scope :this_week,     -> { where('starts_at BETWEEN ? AND ?', Time.now, 7.days.from_now) }
+  scope :upcoming,      -> { where('starts_at BETWEEN ? AND ?', 7.days.from_now, 28.days.from_now) }
   scope :rsvp_required, -> { where(requires_rsvp: true) }
-  scope :today, -> { where('starts_at BETWEEN ? AND ?', Time.zone.now.beginning_of_day, Time.zone.now.at_end_of_day) }
+  scope :today,         -> { where('starts_at BETWEEN ? AND ?', Time.zone.now.beginning_of_day, Time.zone.now.at_end_of_day) }
 
   def past?
     starts_at.past?

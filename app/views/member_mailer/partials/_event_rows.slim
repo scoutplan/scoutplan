@@ -1,9 +1,8 @@
-- @events.each do |event|
+- events.each do |event|
   tr
-    td(style="width: 1%; white-space: nowrap; padding: 3px 3px 3px 0;") = event.starts_at.strftime('%a')
-    td(style="width: 1%; white-space: nowrap; padding: 3px;") = event.starts_at.strftime('%b')
-    td(style="padding: 3px; text-align: right;") = event.starts_at.strftime('%-d')
+    td(style="width: 1%; white-space: nowrap; padding: 3px 3px 3px 0;") = event.starts_at.strftime('%a %b %-d')
     td = link_to event.title, event_url(event, r: @member.magic_link.token)
+    - next
     - family_rsvp_count = 0
     - if event.requires_rsvp
       td

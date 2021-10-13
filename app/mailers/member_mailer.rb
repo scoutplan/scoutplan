@@ -6,6 +6,7 @@ class MemberMailer < ApplicationMailer
   before_action :find_user
   before_action :find_unit
   before_action :set_to_and_from_addresses
+  before_action :time_zone
 
   def invitation_email
     mail(to: @to_address,
@@ -14,8 +15,9 @@ class MemberMailer < ApplicationMailer
   end
 
   def digest_email
-    @events = @unit.events.published.future.upcoming
-    attachments.inline['logo'] = @unit.logo.blob.download
+    @this_week_events = @unit.events.published.this_week
+    @upcoming_events = @unit.events.published.upcoming
+    attachments.inline['logo'] = @unit.logo.blob.download if @unit.logo.attached?
     mail(to: @to_address,
          from: @from_address,
          subject: "#{@unit.name} Digest")
@@ -49,5 +51,10 @@ class MemberMailer < ApplicationMailer
 
   def find_unit
     @unit = @member.unit
+  end
+
+  def time_zone(&block)
+    # Time.use_zone(@unit.settings(:locale).time_zone, &block)
+    Time.zone = @unit.settings(:locale).time_zone
   end
 end

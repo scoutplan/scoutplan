@@ -1,22 +1,41 @@
-h1 = t('mailers.member_mailer.digest_email.title', unit_name: @unit.name)
+- content_for :title do
+  = t('mailers.member_mailer.digest_email.title', unit_name: @unit.name)
 
-p Good #{ Time.zone.now.time_of_day }, #{@member.display_first_name}. Here's what's going on this week:
+- content_for :blurb do
+  p Good #{ Time.zone.now.time_of_day }, #{@member.display_first_name}. Here's what's going on:
 
-table(style="width: 100%;")
-  tbody
-    tr
-      td
-        table
-          thead
-            tr
-              th(colspan="3") Date
-              th Event
-              th RSVP
-          tbody
-            = render partial: 'member_mailer/partials/event_rows'
-            tr
-              td(align="center" colspan="100")
-                = link_to "View a list of all #{ @unit.name} events", unit_events_url(@unit, r: @member.magic_link.token), style: 'font-weight: bold;'
+- content_for :left_column do
+  h2 This week
+
+  - @this_week_events.each do |event|
+    h3(style="margin-bottom: 0;")
+      = link_to event.title, event_url(event, r: @member.magic_link.token)
+
+    p(style="margin-top:0; color:#888;")
+      = event.starts_at.localtime.strftime('%A')
+      |,&nbsp;
+      = event.starts_at.localtime.strftime('%-I:%M %p')
+      |&thinsp;&ndash;&thinsp;
+      = event.ends_at.localtime.strftime('%-I:%M %p')
+
+    p == event.description
+
+    hr(style="border:1px solid #eee;")
+
+- content_for :right_column do
+  h2 Further out
+  table
+    thead
+      tr
+        th(style="padding-left: 0;") Date
+        th Event
+    tbody
+      = render partial: 'member_mailer/partials/event_rows', locals: { events: @upcoming_events }
+
+      tr
+        td(colspan="2") = link_to "View the full list of #{ @unit.name} events", unit_events_url(@unit, r: @member.magic_link.token), style: 'font-weight: bold;'
+
+
 
 scss:
   .accepted > svg > path {

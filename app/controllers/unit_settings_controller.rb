@@ -4,6 +4,7 @@ class UnitSettingsController < UnitContextController
   before_action :find_unit
 
   def edit
+    @page_title = [@unit.name, 'Settings']
     authorize @unit, policy_class: UnitSettingsPolicy
   end
 
