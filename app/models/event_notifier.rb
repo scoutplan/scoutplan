@@ -9,6 +9,7 @@ class EventNotifier
 
     event.unit.members.active.each do |member|
       next unless member.contactable?
+      next unless Flipper.enabled? :receive_event_publish_notice, member
 
       token = event.rsvp_tokens.find_or_create_by!(unit_membership: member)
       EventMailer.with(token: token).token_invitation_email.deliver_later
@@ -16,8 +17,10 @@ class EventNotifier
   end
 
   def self.after_bulk_publish(unit, events)
-    unit.memberships.active.each do |membership|
-      user = membership.user
+    unit.memberships.active.each do |member|
+      next unless Flipper.enabled? :receive_bulk_publish_notice, member
+
+      user = member.user
       EventMailer.with(unit: unit, user: user, events: events).bulk_publish_email.deliver_later
     end
   end

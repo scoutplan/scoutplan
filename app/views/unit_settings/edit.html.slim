@@ -7,12 +7,12 @@ header.mt-5
     h3 Logo
 
     - if @unit.logo.attached?
-      = image_tag @unit.logo
+      div(style="background: #{@unit.settings(:appearance).main_color}; padding: 10px;")
+        = image_tag @unit.logo
 
     = form_for @unit, url: update_unit_settings_path(@unit) do |f|
-      = f.label :logo
-      = f.file_field :logo
-      = f.submit 'Save'
+      = f.file_field :logo, class: 'form-control'
+      = f.submit 'Save', class: 'btn btn-secondary'
 
   .col-md-3
     h3 Event Categories

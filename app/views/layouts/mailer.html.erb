@@ -25,6 +25,7 @@
       font-family: Arial, sans-serif;
     }
   </style>
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-rqn26AG5Pj86AF4SO72RK5fyefcQ/x32DNQfChxWvbXIyXFePlEktwD18fEz+kQU" crossorigin="anonymous">
 </head>
 <body style="margin:0;padding:0;word-spacing:normal;background-color:#003F87;">
   <div role="article" aria-roledescription="email" lang="en" style="text-size-adjust:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#003F87;">
@@ -36,7 +37,7 @@
           <tr>
           <td>
           <![endif]-->
-          <table role="presentation" style="width:94%;max-width:800px;border:none;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636; margin-bottom:30px;">
+          <table role="presentation" style="width:94%;max-width:700px;border:none;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636; margin-bottom:30px;">
 
             <% if attachments.inline['logo'] %>
               <tr>
@@ -55,36 +56,43 @@
                 </td>
             </tr>
 
-            <tr>
-                <td style="padding:5px 30px 11px 30px;font-size:0;background-color:rgb(255,255,255,1.0);border-bottom:1px solid #f0f0f5;border-color:rgba(201,201,207,.35);">
+            <% if content_for? :left_column && content_for? :right_column %>
+              <tr>
+                  <td style="padding:5px 30px 11px 30px;font-size:0;background-color:rgb(255,255,255,1.0);border-bottom:1px solid #f0f0f5;border-color:rgba(201,201,207,.35);">
 
-                  <!--[if mso]>
-                  <table role="presentation" width="100%">
-                  <tr>
-                  <td style="width:395px;padding-bottom:20px;" valign="top">
-                  <![endif]-->
-                      <div class="col-lge" style="font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;display:inline-block;width:100%;max-width:455px;vertical-align:top;padding-bottom:20px;padding-right:40px;">
-                          <%= yield :left_column %>
-                      </div>
-                  <!--[if mso]>
-                  </td>
-                  <td style="width:145px;" align="left" valign="top">
-                  <![endif]-->
-                      <div class="col-sml" style="font-family:Arial,sans-serif;font-size:14px;color:#363636;display:inline-block;width:100%;max-width:245px;vertical-align:top;text-align:left;">
-                          <%= yield :right_column %>
-                      </div>
-                  <!--[if mso]>
-                  </td>
-                  </tr>
-                  </table>
-                  <![endif]-->
+                    <!--[if mso]>
+                    <table role="presentation" width="100%">
+                    <tr>
+                    <td style="width:395px;padding-bottom:20px;" valign="top">
+                    <![endif]-->
+                        <div class="col-lge" style="font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;display:inline-block;width:100%;max-width:405px;vertical-align:top;padding-bottom:20px;padding-right:40px;">
+                            <%= yield :left_column %>
+                        </div>
+                    <!--[if mso]>
+                    </td>
+                    <td style="width:145px;" align="left" valign="top">
+                    <![endif]-->
+                        <div class="col-sml" style="font-family:Arial,sans-serif;font-size:14px;color:#363636;display:inline-block;width:100%;max-width:195px;vertical-align:top;text-align:left;">
+                            <%= yield :right_column %>
+                        </div>
+                    <!--[if mso]>
+                    </td>
+                    </tr>
+                    </table>
+                    <![endif]-->
 
-                </td>
-            </tr>
+                  </td>
+              </tr>
+            <% else %>
+              <tr>
+                  <td>
+                  </td>
+              </tr>
+            <% end %>
 
             <tr>
                 <td style="padding:30px;text-align:center;font-size:12px;background-color:rgba(0,0,0,0.5);color:#cccccc;border-bottom-left-radius:10px;border-bottom-right-radius:10px;">
-                    Sent from Scoutplan
+                    Sent from <a href="https://go.scoutplan.org" style="color:#fff;" target="_blank">Scoutplan</a>
                 </td>
             </tr>
           </table>

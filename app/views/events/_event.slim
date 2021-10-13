@@ -27,7 +27,8 @@ tr.event(class="#{ @presenter.row_classes }" data-href="#{ event_path(event) }" 
       = raw(@presenter.days_to_s)
 
   td.glyph
-    i(class = "fas fa-#{event.event_category.glyph}")
+    span.event-category-glyph(title="#{event.event_category.name}", data-bs-toggle="tooltip")
+      i(class = "fas fa-#{event.event_category.glyph}")
 
   td.title
     = event.title

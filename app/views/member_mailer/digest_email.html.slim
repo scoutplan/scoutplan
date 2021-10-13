@@ -5,13 +5,15 @@
   p Good #{ Time.zone.now.time_of_day }, #{@member.display_first_name}. Here's what's going on:
 
 - content_for :left_column do
-  h2 This week
+  h2(style="color:#888; text-transform:uppercase;") This week
 
   - @this_week_events.each do |event|
+    hr(style="border:1px solid #eee;")
+
     h3(style="margin-bottom: 0;")
       = link_to event.title, event_url(event, r: @member.magic_link.token)
 
-    p(style="margin-top:0; color:#888;")
+    p(style="margin-top:0;")
       = event.starts_at.localtime.strftime('%A')
       |,&nbsp;
       = event.starts_at.localtime.strftime('%-I:%M %p')
@@ -20,22 +22,42 @@
 
     p == event.description
 
-    hr(style="border:1px solid #eee;")
+    - next unless event.requires_rsvp
+
+    p
+      - family_rsvp_count = 0
+      - @member.family.each do |member|
+        - rsvp = member.rsvps.find_by(event: event)
+        - if rsvp&.accepted?
+          - family_rsvp_count += 1
+          span.accepted
+            i.fas.fa-hiking(title="Going")
+        - elsif rsvp&.declined?
+          - family_rsvp_count += 1
+          span.declined(title="Not going")
+            i.fas.fa-couch(style="color: red;" title="Not going")
+        - else
+          span.unknown(title="No response")
+            i.fas.fa-ghost(style="color: grey;" title="No response")
+
+        |&nbsp;
+        = member == @member ? 'You' : member.display_first_name
+        |&nbsp;&nbsp;&nbsp;&nbsp;
+
+      - if event.rsvp_open?
+        span(style="font-size: 80%;")
+          - if family_rsvp_count > 0
+            = link_to 'Change RSVPs', event_url(event, anchor: 'rsvp', r: @member.magic_link.token)
+          - else
+            = link_to 'RSVP Now', event_url(event, anchor: 'rsvp', r: @member.magic_link.token)
 
 - content_for :right_column do
-  h2 Further out
-  table
-    thead
-      tr
-        th(style="padding-left: 0;") Date
-        th Event
-    tbody
-      = render partial: 'member_mailer/partials/event_rows', locals: { events: @upcoming_events }
+  h2(style="color:#888; text-transform:uppercase;font-size:100%;") Further out
 
-      tr
-        td(colspan="2")
-          br
-          = link_to "View all #{ @unit.name} events", unit_events_url(@unit, r: @member.magic_link.token), style: 'font-weight: bold;'
+  dl
+    = render partial: 'member_mailer/partials/event_rows', locals: { events: @upcoming_events }
+
+  p = link_to "View all #{ @unit.name} events", unit_events_url(@unit, r: @member.magic_link.token), style: 'font-weight: bold;'
 
 scss:
   .accepted > svg > path {
