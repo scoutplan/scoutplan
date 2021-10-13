@@ -12,11 +12,15 @@ class MemberNotifier
 
   def self.send_digest(member)
     return unless member.contactable?
+    return unless Flipper.enabled? :receive_digest, member
 
     MemberMailer.with(member: member).digest_email.deliver_later
   end
 
   def self.send_daily_reminder(member)
+    return unless member.contactable?
+    return unless Flipper.enabled? :receive_daily_reminder, member
+
     @magic_link_token = member.magic_link.token if
       @unit.settings(:security).enable_magic_links &&
       @user.settings(:security).enable_magic_links

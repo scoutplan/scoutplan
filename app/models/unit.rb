@@ -16,6 +16,7 @@ class Unit < ApplicationRecord
 
   has_settings do |s|
     s.key :security, defaults: { enable_magic_links: true }
+    s.key :appearance, defaults: { main_color: '#003F87' }
     s.key :communication, defaults: {
       from_email: 'events@scoutplan.org',
       weekly_digest: 'every Sunday at 6:00 AM'
