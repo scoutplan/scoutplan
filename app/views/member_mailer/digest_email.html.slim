@@ -33,9 +33,9 @@
       = render partial: 'member_mailer/partials/event_rows', locals: { events: @upcoming_events }
 
       tr
-        td(colspan="2") = link_to "View the full list of #{ @unit.name} events", unit_events_url(@unit, r: @member.magic_link.token), style: 'font-weight: bold;'
-
-
+        td(colspan="2")
+          br
+          = link_to "View all #{ @unit.name} events", unit_events_url(@unit, r: @member.magic_link.token), style: 'font-weight: bold;'
 
 scss:
   .accepted > svg > path {

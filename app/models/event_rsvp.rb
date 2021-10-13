@@ -16,4 +16,5 @@ class EventRsvp < ApplicationRecord
   delegate :display_first_name, to: :unit_membership
   delegate :user, to: :unit_membership
   delegate :unit, to: :unit_membership
+  delegate :contactable?, to: :unit_membership
 end

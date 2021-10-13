@@ -27,7 +27,8 @@ class EventNotifier
   end
 
   def self.send_rsvp_confirmation(rsvp)
-    return if rsvp.user.anonymous_email?
+    return unless rsvp.contactable?
+    return unless Flipper.enabled? :receive_rsvp_confirmation, rsvp.member
 
     EventMailer.with(rsvp: rsvp).rsvp_confirmation_email.deliver_later
   end

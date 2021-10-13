@@ -5,7 +5,7 @@ class MemberMailer < ApplicationMailer
   before_action :find_member
   before_action :find_user
   before_action :find_unit
-  before_action :set_to_and_from_addresses
+  before_action :set_addresses
   before_action :time_zone
 
   def invitation_email
@@ -32,7 +32,7 @@ class MemberMailer < ApplicationMailer
 
   private
 
-  def set_to_and_from_addresses
+  def set_addresses
     @to_address = email_address_with_name(@user.email, @user.display_full_name)
     @from_address = email_address_with_name(@unit.settings(:communication).from_email, @unit.name)
   end
@@ -53,8 +53,7 @@ class MemberMailer < ApplicationMailer
     @unit = @member.unit
   end
 
-  def time_zone(&block)
-    # Time.use_zone(@unit.settings(:locale).time_zone, &block)
+  def time_zone
     Time.zone = @unit.settings(:locale).time_zone
   end
 end
