@@ -27,6 +27,7 @@ class User < ApplicationRecord
 
   has_settings do |s|
     s.key :locale, defaults: { time_zone: 'Eastern Time (US & Canada)' }
+    s.key :security, defaults: { enable_magic_links: true }
   end
 
   def contactable_object

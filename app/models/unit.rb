@@ -23,6 +23,7 @@ class Unit < ApplicationRecord
       weekly_digest: 'every Sunday at 6:00 AM'
     }
     s.key :locale, defaults: { time_zone: 'Eastern Time (US & Canada)' }
+    s.key :security, defaults: { enable_magic_links: true }
   end
 
   def membership_for(user)

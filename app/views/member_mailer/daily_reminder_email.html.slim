@@ -1,6 +1,20 @@
-h1 Today's Events
+h1 = Date.current.strftime('%A, %B %d')
 
-table
-  - @events.each do |event|
-    tr
-      td = event.title
+- @events.each do |event|
+  hr(style="border: 1px solid #ddd;")
+
+  = link_to event_url(event, r: @member.magic_link.token) do
+    h2 = event.title
+
+  p
+    = event.starts_at.localtime.strftime('%-I:%M %p')
+    |&thinsp;&ndash;&thinsp;
+    = event.ends_at.localtime.strftime('%-I:%M %p')
+
+  p = event.location
+
+  p = event.address
+
+  == event.description
+
+p = link_to "View the entire #{@unit.name} calendar", unit_events_url(@unit, r: @member.magic_link.token)
