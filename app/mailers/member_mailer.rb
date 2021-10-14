@@ -20,11 +20,10 @@ class MemberMailer < ScoutplanMailer
   end
 
   def daily_reminder_email
-    @events = @unit.events.published.today
+    @events = @unit.events.published.imminent
     mail(to: @to_address,
          from: @from_address,
          subject: daily_reminder_subject)
-    ap 'done'
   end
 
   private
@@ -36,14 +35,10 @@ class MemberMailer < ScoutplanMailer
 
   def daily_reminder_subject
     Time.zone = @unit.settings(:locale).time_zone
-    ap @events.first.starts_at.localtime
 
-    if @events.count == 1
-      res = "#{@events.first.title} This #{@events.first.starts_at.localtime.time_of_day.capitalize}"
-    else
-      res = "Today's Events"
-    end
-    "#{@unit.name} — #{res}"
+    res = "#{@unit.name} — Event Reminder"
+    res += ": #{@events.first.title}" if @events.count == 1
+    res
   end
 
   def find_member

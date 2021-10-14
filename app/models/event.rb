@@ -27,6 +27,7 @@ class Event < ApplicationRecord
   scope :upcoming,      -> { where('starts_at BETWEEN ? AND ?', 7.days.from_now, 28.days.from_now) }
   scope :rsvp_required, -> { where(requires_rsvp: true) }
   scope :today,         -> { where('starts_at BETWEEN ? AND ?', Time.zone.now.beginning_of_day, Time.zone.now.at_end_of_day) }
+  scope :imminent,      -> { where('starts_at BETWEEN ? AND ?', Time.zone.now.beginning_of_day + 12.hours, Time.zone.now.at_end_of_day + 12.hours) }
 
   def past?
     starts_at.past?

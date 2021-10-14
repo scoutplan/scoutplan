@@ -13,6 +13,7 @@ class DailyReminderSender
     Unit.all.each do |unit|
       next unless unit.settings(:communication).daily_reminder.present?
       next unless time_to_run?(unit)
+      next unless unit.events.published.imminent.count.positive?
 
       unit.members.each do |member|
         next unless Flipper.enabled? :daily_reminder, member

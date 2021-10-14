@@ -165,6 +165,9 @@ en:
     member_mailer:
       digest_email:
         title: 'Coming Up At %{unit_name}'
+      daily_reminder:
+        this: 'This'
+        multiple_events: "Today's Events"
 
   helpers:
     label:

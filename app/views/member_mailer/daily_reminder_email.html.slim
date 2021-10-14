@@ -1,7 +1,16 @@
-h1 = Date.current.strftime('%A, %B %d')
+- current_heading = :none
 
 - @events.each do |event|
-  hr(style="border: 1px solid #ddd;")
+
+  - if event.starts_at.localtime.today? && current_heading != :today
+    - current_heading = :today
+    h1 Today
+    p = event.starts_at.localtime.strftime('%A, %B %d')
+
+  - elsif event.starts_at.localtime.tomorrow? && current_heading != :tomorrow
+    - current_heading = :tomorrow
+    h1 Tomorrow
+    p = event.starts_at.localtime.strftime('%A, %B %d')
 
   = link_to event_url(event, r: @member.magic_link.token) do
     h2 = event.title
