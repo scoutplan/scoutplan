@@ -63,6 +63,9 @@ jobs:
       - name: Update deployment file
         run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|registry.digitalocean.com/scoutplan/app|registry.digitalocean.com/scoutplan/app:'${TAG}'|' $GITHUB_WORKSPACE/config/kube/deployment.yml
 
+      - name: Update sidekiq file
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|registry.digitalocean.com/scoutplan/app|registry.digitalocean.com/scoutplan/app:'${TAG}'|' $GITHUB_WORKSPACE/config/kube/sidekiq.yml
+
       - name: Push image to DigitalOcean Container Registry
         run: docker push registry.digitalocean.com/scoutplan/app:$(echo $GITHUB_SHA | head -c7)
 
@@ -75,13 +78,11 @@ jobs:
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/config/kube/deployment.yml
 
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f $GITHUB_WORKSPACE/config/kube/sidekiq.yml
+
       - name: Verify deployment
         run: kubectl rollout status deployment/scoutplan-app
 
       - name: Warm it up
         run: curl https://go.scoutplan.org
-
-
-
-
-

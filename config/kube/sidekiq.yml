@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scoutplan-sidekiq
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: scoutplan-sidekiq
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 5
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: scoutplan-sidekiq
+    spec:
+      # initContainers:
+      # - name: migrations
+      #   image: registry.digitalocean.com/scoutplan/app
+      #   command:
+      #   - rake
+      #   - db:abort_if_pending_migrations
+      containers:
+        - name: scoutplan-sidekiq
+          image: registry.digitalocean.com/scoutplan/app
+          command: ["sidekiq"]
+          imagePullPolicy: "Always"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 60
+          env:
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: DATABASE_PASSWORD
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: SECRET_KEY_BASE
+            - name: SKYLIGHT_AUTHENTICATION
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: SKYLIGHT_AUTHENTICATION
+            - name: SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: SMTP_PASSWORD
+            - name: MAPBOX_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: MAPBOX_TOKEN
+            - name: DO_STORAGE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: DO_STORAGE_SECRET
+          envFrom:
+          - configMapRef:
+              name: scoutplan-production-config
+          ports:
+            - containerPort: 3000
