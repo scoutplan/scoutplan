@@ -11,11 +11,11 @@ class EventPreview < ActionMailer::Preview
     user = User.new(first_name: 'Test', last_name: 'User')
     member = unit.unit_memberships.build(user: user)
     token = RsvpToken.new(event: event, member: member)
-    EventMailer.with(token: token).token_invitation_email
+    EventMailer.with(token: token, member: member).token_invitation_email
   end
 
   def rsvp_confirmation_email
     rsvp = EventRsvp.first
-    EventMailer.with(rsvp: rsvp).rsvp_confirmation_email
+    EventMailer.with(rsvp: rsvp, member: rsvp.member).rsvp_confirmation_email
   end
 end
