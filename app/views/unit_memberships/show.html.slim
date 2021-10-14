@@ -30,5 +30,7 @@ header.mt-4.mb-4.clearfix
       .card-body
         - if @target_membership.contactable?
           = link_to 'Send Digest', send_member_path(@target_membership, item: :digest), method: :post, remote: true
+          br
+          = link_to 'Send Daily Reminder', send_member_path(@target_membership, item: :daily_reminder), method: :post, remote: true
 
 = render partial: 'unit_memberships/partials/show/new_relationship_form'

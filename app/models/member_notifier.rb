@@ -21,14 +21,10 @@ class MemberNotifier
     return unless member.contactable?
     return unless Flipper.enabled? :receive_daily_reminder, member
 
-    # events needing reminding
-    # things happening today
-    events = member.units.events.published.today
-    # things happening tomorrow?
-
     @magic_link_token = member.magic_link.token if
-      @unit.settings(:security).enable_magic_links &&
-      @user.settings(:security).enable_magic_links
-    MemberMailer.with(member: member, events: events).daily_reminder_email.deliver_later
+      member.unit.settings(:security).enable_magic_links &&
+      member.user.settings(:security).enable_magic_links
+
+    MemberMailer.with(member: member).daily_reminder_email.deliver_later
   end
 end

@@ -2,7 +2,6 @@
 
 # mailer for sending Member communications
 class MemberMailer < ScoutplanMailer
-  before_action :find_user
   before_action :set_addresses
   before_action :time_zone
 
@@ -25,25 +24,30 @@ class MemberMailer < ScoutplanMailer
     mail(to: @to_address,
          from: @from_address,
          subject: daily_reminder_subject)
+    ap 'done'
   end
 
   private
 
   def set_addresses
-    @to_address = email_address_with_name(@user.email, @user.display_full_name)
+    @to_address = email_address_with_name(@member.user.email, @member.user.display_full_name)
     @from_address = email_address_with_name(@unit.settings(:communication).from_email, @unit.name)
   end
 
   def daily_reminder_subject
-    "#{@unit.name} — " + (@events.count == 1 ? @events.first.title : "Today's Events")
+    Time.zone = @unit.settings(:locale).time_zone
+    ap @events.first.starts_at.localtime
+
+    if @events.count == 1
+      res = "#{@events.first.title} This #{@events.first.starts_at.localtime.time_of_day.capitalize}"
+    else
+      res = "Today's Events"
+    end
+    "#{@unit.name} — #{res}"
   end
 
   def find_member
     @member = params[:member]
-  end
-
-  def find_user
-    @user = @member.user
   end
 
   def time_zone

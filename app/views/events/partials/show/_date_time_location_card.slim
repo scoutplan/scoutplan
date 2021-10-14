@@ -6,20 +6,21 @@ div(style="margin-bottom: 30px;")
           tbody
 
             - if @event.starts_at.to_date === @event.ends_at.to_date
+              / all on one day
               tr
                 td.month-name(colspan="3") = @presenter.month_name
 
               tr
-                td.daynames = @event.starts_at.strftime('%a')
+                td.daynames = @event.starts_at.localtime.strftime('%a')
 
               tr
-                td.dates = @event.starts_at.day
+                td.dates = @event.starts_at.localtime.day
 
               tr
                 td
-                  = @event.starts_at.localtime.strftime('%-I:%S %p')
+                  = @event.starts_at.localtime.strftime('%-I:%M %p')
                   |&hairsp;&mdash;&hairsp;
-                  = @event.ends_at.localtime.strftime('%-I:%S %p')
+                  = @event.ends_at.localtime.strftime('%-I:%M %p')
 
             - else
               tr
