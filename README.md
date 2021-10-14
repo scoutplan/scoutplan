@@ -76,3 +76,16 @@ docker push registry.digitalocean.com/scoutplan/scoutplan_app
 ## Email in development
 
 The Docker Compose stack includes mailcatcher. Once the stack's up, visit http://localhost:1080 to see your mail
+
+
+## Flipper
+
+Some features are gated by Flipper and need to be enabled:
+
+* :daily_reminder
+* :receive_event_publish_notice
+* :receive_bulk_publish_notice
+* :receive_rsvp_confirmation
+* :receive_digest
+* :receive_daily_reminder
+* :weekly_digest

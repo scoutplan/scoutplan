@@ -56,7 +56,7 @@
                 </td>
             </tr>
 
-            <% if content_for? :left_column && content_for? :right_column %>
+            <% if content_for?(:left_column) && content_for?(:right_column) %>
               <tr>
                   <td style="padding:5px 30px 11px 30px;font-size:0;background-color:rgb(255,255,255,1.0);border-bottom:1px solid #f0f0f5;border-color:rgba(201,201,207,.35);">
 
@@ -85,7 +85,10 @@
               </tr>
             <% else %>
               <tr>
-                  <td>
+                  <td style="padding:5px 30px 11px 30px;font-size:0;background-color:rgb(255,255,255,1.0);border-bottom:1px solid #f0f0f5;border-color:rgba(201,201,207,.35);">
+                      <div class="col-lge" style="font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;display:inline-block;width:100%;vertical-align:top;padding-bottom:20px;padding-right:40px;">
+                        <%= yield %>
+                      </div>
                   </td>
               </tr>
             <% end %>

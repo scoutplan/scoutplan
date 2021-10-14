@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
-class EventMailer < ApplicationMailer
+class EventMailer < ScoutplanMailer
   def token_invitation_email
     @token = params[:token]
     @event = @token.event
     @user  = @token.user
-    @unit  = @event.unit
     @url   = rsvp_response_url(@token.value)
     mail(to: @user.email, from: @unit.settings(:communication).from_email, subject: "#{@unit.name} Event Invitation: #{@event.title}")
   end
 
   def bulk_publish_email
-    @unit   = params[:unit]
     @user   = params[:user]
     @events = params[:events]
     @url    = unit_events_url(@unit)
@@ -20,8 +18,8 @@ class EventMailer < ApplicationMailer
 
   def rsvp_confirmation_email
     @rsvp = params[:rsvp]
-    mail( to: email_address_with_name(@rsvp.user.email, @rsvp.user.display_full_name),
-          from: email_address_with_name(@rsvp.unit.settings(:communication).from_email, @rsvp.unit.name),
-          subject: "#{ @rsvp.unit.name }: Your RSVP for #{ @rsvp.event.title } has been received")
+    mail(to: email_address_with_name(@rsvp.user.email, @rsvp.user.display_full_name),
+         from: email_address_with_name(@rsvp.unit.settings(:communication).from_email, @rsvp.unit.name),
+         subject: "#{ @rsvp.unit.name }: Your RSVP for #{ @rsvp.event.title } has been received")
   end
 end

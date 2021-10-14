@@ -12,7 +12,7 @@ class EventNotifier
       next unless Flipper.enabled? :receive_event_publish_notice, member
 
       token = event.rsvp_tokens.find_or_create_by!(unit_membership: member)
-      EventMailer.with(token: token).token_invitation_email.deliver_later
+      EventMailer.with(token: token, member: token.member).token_invitation_email.deliver_later
     end
   end
 
@@ -21,18 +21,18 @@ class EventNotifier
       next unless Flipper.enabled? :receive_bulk_publish_notice, member
 
       user = member.user
-      EventMailer.with(unit: unit, user: user, events: events).bulk_publish_email.deliver_later
+      EventMailer.with(unit: unit, user: user, events: events, member: member).bulk_publish_email.deliver_later
     end
   end
 
   def self.invite_member_to_event(token)
-    EventMailer.with(token: token).token_invitation_email.deliver_later
+    EventMailer.with(token: token, member: token.member).token_invitation_email.deliver_later
   end
 
   def self.send_rsvp_confirmation(rsvp)
     return unless rsvp.contactable?
     return unless Flipper.enabled? :receive_rsvp_confirmation, rsvp.member
 
-    EventMailer.with(rsvp: rsvp).rsvp_confirmation_email.deliver_later
+    EventMailer.with(rsvp: rsvp, member: rsvp.member).rsvp_confirmation_email.deliver_later
   end
 end

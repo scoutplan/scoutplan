@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
 # mailer for sending Member communications
-class MemberMailer < ApplicationMailer
-  before_action :find_member
+class MemberMailer < ScoutplanMailer
   before_action :find_user
-  before_action :find_unit
   before_action :set_addresses
   before_action :time_zone
 
@@ -17,7 +15,6 @@ class MemberMailer < ApplicationMailer
   def digest_email
     @this_week_events = @unit.events.published.this_week
     @upcoming_events = @unit.events.published.upcoming
-    attachments.inline['logo'] = @unit.logo.blob.download if @unit.logo.attached?
     mail(to: @to_address,
          from: @from_address,
          subject: "#{@unit.name} Digest")
@@ -47,10 +44,6 @@ class MemberMailer < ApplicationMailer
 
   def find_user
     @user = @member.user
-  end
-
-  def find_unit
-    @unit = @member.unit
   end
 
   def time_zone
