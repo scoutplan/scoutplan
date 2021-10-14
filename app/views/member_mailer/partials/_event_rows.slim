@@ -1,6 +1,6 @@
 - events.each do |event|
   dt(style="margin-top:15px;")
-    span(style="display:inline-block;width:1rem;margin-right:1rem;" title="#{event.category.name}")
-      i(class="fas fa-#{event.category.glyph}" style="color:#{event.category.color}")
     = link_to event.title, event_url(event, r: @member.magic_link.token)
-  dd(style="margin-left:2rem;") = event.starts_at.strftime('%a %b %-d')
+
+  dd(style="margin-left:0;")
+    = event.starts_at.strftime('%a %b %-d')

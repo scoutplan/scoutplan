@@ -20,6 +20,7 @@ class MemberNotifier
   def self.send_daily_reminder(member)
     return unless member.contactable?
     return unless Flipper.enabled? :receive_daily_reminder, member
+    return unless member.unit.events.published.imminent.count.positive?
 
     @magic_link_token = member.magic_link.token if
       member.unit.settings(:security).enable_magic_links &&
