@@ -29,14 +29,14 @@ spec:
           image: registry.digitalocean.com/scoutplan/app
           command: ["sidekiq"]
           imagePullPolicy: "Always"
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 3000
-              scheme: HTTP
-            initialDelaySeconds: 60
-            periodSeconds: 30
-            timeoutSeconds: 60
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 3000
+          #     scheme: HTTP
+          #   initialDelaySeconds: 60
+          #   periodSeconds: 30
+          #   timeoutSeconds: 60
           env:
             - name: DATABASE_PASSWORD
               valueFrom:
