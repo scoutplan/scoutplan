@@ -66,7 +66,7 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "scoutplan_production"
 
   config.active_job.queue_adapter   = :sidekiq
-  config.active_job.queue_name_prefix = "scoutplan_production"
+  # config.active_job.queue_name_prefix = "scoutplan_production"
 
   config.action_mailer.raise_delivery_errors  = true
   config.action_mailer.delivery_method        = :smtp
