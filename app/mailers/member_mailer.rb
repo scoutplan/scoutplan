@@ -20,6 +20,7 @@ class MemberMailer < ScoutplanMailer
   end
 
   def daily_reminder_email
+    logger.info "Eamiling Daily Reminder to #{@member.flipper_id}..."
     @events = @unit.events.published.imminent
     mail(to: @to_address,
          from: @from_address,

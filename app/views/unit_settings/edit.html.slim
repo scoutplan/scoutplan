@@ -1,7 +1,6 @@
 header.mt-5
   h1 Settings
 
-
 .row
   .col-md-3
     h3 Logo
@@ -24,3 +23,16 @@ header.mt-5
           td = category.name
     br
     = link_to 'Add an Event Category', new_unit_event_category_path(@unit), class: 'btn btn-secondary'
+
+  .col-md-3
+    h3 Utilities
+    = form_for @unit, url: update_unit_settings_path(@unit) do |f|
+      .mb-3
+        = f.label :name
+        = f.text_field :name
+      .mb-3
+        = check_box_tag 'settings[utilities][fire_scheduled_tasks]'
+        = label_tag 'Fire scheduled tasks'
+
+      .mb-3
+        = f.submit 'Save'

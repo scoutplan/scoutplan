@@ -51,8 +51,12 @@
 
             <tr>
                 <td style="padding:30px 30px 0 30px;background-color:rgb(255,255,255,1.0);border-top-left-radius:10px;border-top-right-radius:10px;">
-                    <h1 style="margin-top:0;margin-bottom:16px;font-size:26px;line-height:32px;font-weight:bold;letter-spacing:-0.02em;"><%= yield :title %></h1>
-                    <p style="margin:0;"><%= yield :blurb %></p>
+                    <% if content_for?(:title) %>
+                      <h1 style="margin-top:0;margin-bottom:16px;font-size:26px;line-height:32px;font-weight:bold;letter-spacing:-0.02em;"><%= yield :title %></h1>
+                    <% end %>
+                    <% if content_for?(:blurb) %>
+                      <p style="margin:0;"><%= yield :blurb %></p>
+                    <% end %>
                 </td>
             </tr>
 
