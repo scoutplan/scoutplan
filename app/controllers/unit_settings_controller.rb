@@ -9,7 +9,10 @@ class UnitSettingsController < UnitContextController
   end
 
   def update
-    @unit.logo.attach(params[:unit][:logo])
+    @unit.update(unit_params)
+    if params.dig(:settings, :utilities, :fire_scheduled_tasks)
+      @unit.settings(:utilities).fire_scheduled_tasks = true
+    end
     @unit.save!
     redirect_to edit_unit_settings_path(@unit)
   end
@@ -23,5 +26,9 @@ class UnitSettingsController < UnitContextController
   def find_unit
     @current_unit = @unit = Unit.find(params[:id])
     @current_member = @unit.membership_for(current_user)
+  end
+
+  def unit_params
+    params.require(:unit).permit(:logo)
   end
 end

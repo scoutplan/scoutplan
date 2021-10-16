@@ -4,26 +4,43 @@
 
   - if event.starts_at.localtime.today? && current_heading != :today
     - current_heading = :today
-    h1 Today
-    p = event.starts_at.localtime.strftime('%A, %B %d')
+    h1(style="margin-bottom: 4px;") Today
+    p(style="margin-top: 4px;") = event.starts_at.localtime.strftime('%A, %B %d')
 
   - elsif event.starts_at.localtime.tomorrow? && current_heading != :tomorrow
     - current_heading = :tomorrow
-    h1 Tomorrow
-    p = event.starts_at.localtime.strftime('%A, %B %d')
+    h1(style="margin-bottom: 4px;") Tomorrow
+    p(style="margin-top: 4px; color: #888; text-transform: uppercase;") = event.starts_at.localtime.strftime('%A, %B %d')
 
   = link_to event_url(event, r: @member.magic_link.token) do
-    h2 = event.title
+    h3(style="margin-bottom: 4px;") = event.title
 
-  p
+  p(style="margin-top: 4px; margin-bottom: 0; font-weight: 600;")
     = event.starts_at.localtime.strftime('%-I:%M %p')
     |&thinsp;&ndash;&thinsp;
     = event.ends_at.localtime.strftime('%-I:%M %p')
 
-  p = event.location
-
-  p = event.address
+  p(style="margin-top: 0;text-transform: uppercase;") = event.location
 
   == event.description
 
-p = link_to "View the entire #{@unit.name} calendar", unit_events_url(@unit, r: @member.magic_link.token)
+p(style="text-align: center; padding-top: 30px;")
+  = link_to "View the entire #{@unit.name} calendar", unit_events_url(@unit, r: @member.magic_link.token), class: 'btn', style: "background-color: #{@unit.settings(:appearance).main_color}"
+
+
+scss:
+  .trix-content div {
+    font-family: Georgia, serif;
+  }
+
+  h1:first-child {
+    margin-top: 0;
+  }
+
+  a.btn {
+    border: 1px solid #888;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    color: #fff;
+  }
