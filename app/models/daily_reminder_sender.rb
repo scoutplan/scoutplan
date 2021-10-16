@@ -20,9 +20,7 @@ class DailyReminderSender
   # is it time for this unit to run its weekly digest?
   # hardwired for 8 AM daily
   def time_to_run?(unit)
-    if unit.settings(:utilities).fire_scheduled_tasks
-      return true
-    end
+    return true if unit.settings(:utilities).fire_scheduled_tasks
 
     Time.zone = unit.settings(:locale).time_zone
     right_now = Time.zone.now
