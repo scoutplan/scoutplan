@@ -8,10 +8,6 @@ class UnitContextPolicy < ApplicationPolicy
 
   protected
 
-  def member?
-    @membership.present?
-  end
-
   def admin?
     @membership&.role == 'admin'
   end

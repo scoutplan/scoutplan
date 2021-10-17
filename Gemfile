@@ -60,6 +60,7 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
+  gem 'apparition'
   gem 'capybara', '~> 3.35'
   gem 'selenium-webdriver', '~> 3.142'
   # Easy installation and use of web drivers to run system tests with browsers
