@@ -27,7 +27,7 @@ class WeeklyDigestSender
 
     Time.zone = unit.settings(:locale).time_zone
     right_now = Time.zone.now
-    right_now.hour == 6 && right_now.minute.zero?
+    right_now.minute.zero?
   end
 
   private
