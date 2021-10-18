@@ -31,6 +31,10 @@ RSpec.describe EventMailer, type: :mailer do
     it 'renders the headers' do
       expect(@mail.subject).to eq("#{@member.unit.name}: New Events Have Been Added to the Calendar")
     end
+
+    it 'renders the body' do
+      expect(@mail.body.encoded).to match('New Calendar Items')
+    end
   end
 
   describe 'rsvp_confirmation_email' do
