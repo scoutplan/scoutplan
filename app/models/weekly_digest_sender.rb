@@ -33,8 +33,8 @@ class WeeklyDigestSender
   private
 
   def perform_for_unit(unit)
-    next unless unit.settings(:communication).weekly_digest.present?
-    next unless time_to_run?(unit)
+    return unless unit.settings(:communication).weekly_digest.present?
+    return unless time_to_run?(unit)
 
     unit.members.each do |member|
       perform_for_member(member)
@@ -44,7 +44,7 @@ class WeeklyDigestSender
   end
 
   def perform_for_member(member)
-    next unless Flipper.enabled? :weekly_digest, member
+    return unless Flipper.enabled? :weekly_digest, member
 
     logger.info "Sending digest to #{member.flipper_id}"
     MemberNotifier.send_digest(member)
