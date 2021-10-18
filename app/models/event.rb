@@ -70,11 +70,14 @@ class Event < ApplicationRecord
   private
 
   # create a weekly series based on @event
+  # TODO: this is super-naive: it's not idempotent, it doesn't
+  # handle things like updates, etc etc
   def create_series
     new_event = dup
     new_event.series_parent = self
     new_event.repeats_until = nil
 
+ap 'here'
     while new_event.starts_at < repeats_until
       new_event.starts_at += 7.days
       new_event.ends_at += 7.days

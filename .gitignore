@@ -48,3 +48,5 @@ docker-compose.override.yml
 .DS_Store
 
 act.sh
+
+/coverage

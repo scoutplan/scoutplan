@@ -14,11 +14,11 @@ class MemberRelationship < ApplicationRecord
     errors.add(:parent, "can't reference itself") if parent_member == child_member
   end
 
-  def parent
-    parent_member.user
-  end
+  # def parent
+  #   parent_member.user
+  # end
 
-  def child
-    child_member.user
-  end
+  # def child
+  #   child_member.user
+  # end
 end

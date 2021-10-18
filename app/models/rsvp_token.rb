@@ -15,6 +15,7 @@ class RsvpToken < ApplicationRecord
   # end
 
   delegate :user, to: :unit_membership
+  delegate :unit, to: :event
 
   private
 
