@@ -26,5 +26,16 @@ RSpec.describe UnitMembership, type: :model do
     it 'includes self in family' do
       expect(@member.family).to include(@member)
     end
+
+    it 'returns a time zone' do
+      expect(@member.time_zone).to eq('Eastern Time (US & Canada)')
+    end
+  end
+
+  describe 'magic links' do
+    it 'generates a magic link' do
+      member = FactoryBot.create(:member)
+      expect(member.magic_link).to be_present
+    end
   end
 end
