@@ -13,6 +13,12 @@ RSpec.describe EventNotifier, type: :model do
 
   describe 'after_bulk_publish' do
     it 'executes' do
+      unit = FactoryBot.create(:unit)
+      5.times do
+        FactoryBot.create(:event, unit: unit, status: :published)
+      end
+      Flipper.enable :receive_bulk_publish_notice
+      expect { EventNotifier.after_bulk_publish(unit, unit.events) }.to change { ActionMailer::Base.deliveries.count }.by(unit.members.count)
     end
   end
 
