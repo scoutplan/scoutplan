@@ -71,7 +71,7 @@ class EventsController < ApplicationController
 
   # POST /units/:id/events/bulk_publish
   def bulk_publish
-    event_ids = params[:events]
+    event_ids = params[:event_ids]
     events    = Event.find(event_ids)
 
     events.each do |event|

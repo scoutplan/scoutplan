@@ -17,14 +17,11 @@ class EventNotifier
   end
 
   def self.after_bulk_publish(unit, events)
-    unit.memberships.active.each do |member|
+    unit.members.active.each do |member|
       next unless Flipper.enabled? :receive_bulk_publish_notice, member
 
-      ap '$$$$$'
-      ap member
-
       user = member.user
-      EventMailer.with(unit: unit, user: user, events: events, member: member).bulk_publish_email.deliver_later
+      EventMailer.with(unit: unit, user: user, event_ids: events.map(&:id), member: member).bulk_publish_email.deliver_later
     end
   end
 
