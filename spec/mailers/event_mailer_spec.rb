@@ -23,7 +23,7 @@ RSpec.describe EventMailer, type: :mailer do
       @mail = EventMailer.with(
         unit: @member.unit,
         user: @member.user,
-        events: @member.unit.events,
+        event_ids: @member.unit.events.map(&:id),
         member: @member
       ).bulk_publish_email
     end

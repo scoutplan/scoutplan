@@ -11,9 +11,11 @@ class EventMailer < ScoutplanMailer
 
   def bulk_publish_email
     @user   = params[:user]
-    @events = params[:events]
+    @events = Event.find(params[:event_ids])
     @url    = unit_events_url(@unit)
-    mail(to: @user.email, from: @unit.settings(:communication).from_email, subject: "#{@unit.name}: New Events Have Been Added to the Calendar")
+    mail(to: @user.email,
+         from: @unit.settings(:communication).from_email,
+         subject: "#{@unit.name}: New Events Have Been Added to the Calendar")
   end
 
   def rsvp_confirmation_email

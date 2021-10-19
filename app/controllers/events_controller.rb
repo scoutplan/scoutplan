@@ -71,7 +71,7 @@ class EventsController < ApplicationController
 
   # POST /units/:id/events/bulk_publish
   def bulk_publish
-    event_ids = params[:events]
+    event_ids = params[:event_ids]
     events    = Event.find(event_ids)
 
     events.each do |event|
@@ -111,12 +111,6 @@ class EventsController < ApplicationController
   # as the object to be evaluated in Pundit policies
   def pundit_user
     @current_member
-  end
-
-  def body_classes
-    content_for :body_classes do
-      'balh'
-    end
   end
 
   private
@@ -169,20 +163,6 @@ class EventsController < ApplicationController
     )
   end
   # rubocop:enable Metrics/MethodLength
-
-  # create a weekly series based on @event
-  def create_series(end_date_str)
-    end_date = Date.strptime(end_date_str, '%Y-%m-%d')
-    new_event = @event.dup
-    new_event.series_parent = @event
-
-    while new_event.starts_at < end_date
-      new_event.starts_at += 7.days
-      new_event.ends_at += 7.days
-      new_event.save!
-      new_event = new_event.dup
-    end
-  end
 
   def event_set_datetimes
     event_set_start

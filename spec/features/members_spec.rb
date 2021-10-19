@@ -7,4 +7,9 @@ describe 'events', type: :feature do
   it 'visits the members page' do
     visit unit_members_path(@admin.unit)
   end
+
+  it 'visits a member' do
+    member = FactoryBot.create(:unit_membership, unit: @admin.unit)
+    visit member_path(member)
+  end
 end
