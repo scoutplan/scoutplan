@@ -14,6 +14,7 @@ RSpec.describe EventNotifier, type: :model do
   describe 'after_bulk_publish' do
     it 'executes' do
       unit = FactoryBot.create(:unit)
+      unit.members.each { |m| Flipper.enable_actor :receive_bulk_publish_notice, m.flipper_id }
       5.times do
         FactoryBot.create(:event, unit: unit, status: :published)
       end
