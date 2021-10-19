@@ -113,12 +113,6 @@ class EventsController < ApplicationController
     @current_member
   end
 
-  def body_classes
-    content_for :body_classes do
-      'balh'
-    end
-  end
-
   private
 
   def build_prototype_event
@@ -169,20 +163,6 @@ class EventsController < ApplicationController
     )
   end
   # rubocop:enable Metrics/MethodLength
-
-  # create a weekly series based on @event
-  def create_series(end_date_str)
-    end_date = Date.strptime(end_date_str, '%Y-%m-%d')
-    new_event = @event.dup
-    new_event.series_parent = @event
-
-    while new_event.starts_at < end_date
-      new_event.starts_at += 7.days
-      new_event.ends_at += 7.days
-      new_event.save!
-      new_event = new_event.dup
-    end
-  end
 
   def event_set_datetimes
     event_set_start
