@@ -8,7 +8,7 @@ class MemberMailer < ScoutplanMailer
   def invitation_email
     mail(to: @to_address,
          from: @from_address,
-         subject: "#{@unit.name} Event Invitation: #{@event.title}")
+         subject: "Welcome to #{@unit.name}")
   end
 
   def digest_email

@@ -85,7 +85,8 @@ javascript:
 
 scss:
   .event-month-boundary {
-    background-color: #f3f3f3;
+    background-color: #666;
+    color: #fff;
   }
 
   tr.no-hover:hover td {
@@ -99,6 +100,15 @@ scss:
 
   .event-past, .event-cancelled, .event-future {
     display: none;
+  }
+
+  table.table row.event-past td {
+    color: #aaa;
+  }
+
+  .event-past td {
+    background: #f4f4f4;
+    color: #888;
   }
 
   .filter-status {
