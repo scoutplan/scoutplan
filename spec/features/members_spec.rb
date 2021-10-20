@@ -1,11 +1,13 @@
 describe 'events', type: :feature do
-  before :each do
+  before do
     @admin = FactoryBot.create(:unit_membership, :admin)
     login_as(@admin.user, scope: :user)
   end
 
   it 'visits the members page' do
-    visit unit_members_path(@admin.unit)
+    path = unit_members_path(@admin.unit)
+    visit path
+    expect(page).to have_current_path(path)
   end
 
   it 'visits a member' do

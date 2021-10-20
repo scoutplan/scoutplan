@@ -13,6 +13,6 @@ describe 'the sign-in process', type: :feature do
     fill_in 'user_email', with: @user.email
     fill_in 'user_password', with: 'password'
     click_button 'Log in'
-    expect(page).to have_current_path(unit_events_path(@unit))
+    expect(page).to have_current_path(unit_home_path(@unit.id, @unit.slug))
   end
 end

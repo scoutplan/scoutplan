@@ -32,6 +32,10 @@ class Unit < ApplicationRecord
     members.find_by(user: user)
   end
 
+  def slug
+    [name, location].join(' ').parameterize
+  end
+
   private
 
   def populate_categories

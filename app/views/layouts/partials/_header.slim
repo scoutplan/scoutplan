@@ -9,7 +9,8 @@ header.navbar.navbar-expand-md.bd-navbar
     #main_navbar.collapse.navbar-collapse
       ul.navbar-nav.me-auto.mb-2.mb-lg-0
         li.nav-item
-          = link_to 'Events',  unit_events_path(@current_unit), class: 'nav-link', id: 'nav_link_events'
+          / = link_to 'Events',  unit_events_path(@current_unit), class: 'nav-link', id: 'nav_link_events'
+          = link_to 'Events',  unit_home_path(unit_id: @current_unit.id, slug: @current_unit.slug), class: 'nav-link', id: 'nav_link_events'
 
         li.nav-item
           = link_to 'Members', unit_members_path(@current_unit), class: 'nav-link', id: 'nav_link_members' if policy(:unit_membership).index?

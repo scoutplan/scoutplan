@@ -20,6 +20,7 @@ class WeeklyDigestSender
   # hardwired for 10 AM on Sunday
   def time_to_run?(unit, current_time)
     return true if force_run
+
     if unit.settings(:utilities).fire_scheduled_tasks
       unit.settings(:utilities).update!(fire_scheduled_tasks: false)
       return true
