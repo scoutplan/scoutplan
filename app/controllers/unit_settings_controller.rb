@@ -29,6 +29,6 @@ class UnitSettingsController < UnitContextController
   end
 
   def unit_params
-    params.require(:unit).permit(:logo)
+    params.require(:unit).permit(:name, :location, :logo)
   end
 end

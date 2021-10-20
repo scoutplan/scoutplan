@@ -28,11 +28,16 @@ header.mt-5
     h3 Utilities
     = form_for @unit, url: update_unit_settings_path(@unit) do |f|
       .mb-3
-        = f.label :name
-        = f.text_field :name
+        = f.label :name, class: 'form-label'
+        = f.text_field :name, class: 'form-control'
+
       .mb-3
-        = check_box_tag 'settings[utilities][fire_scheduled_tasks]'
-        = label_tag 'Fire scheduled tasks'
+        = f.label :location, class: 'form-label'
+        = f.text_field :location, placeholder: 'e.g. City Name', class: 'form-control'
+
+      .mb-3
+        = check_box_tag 'settings[utilities][fire_scheduled_tasks]', class: 'form-check-input'
+        = label_tag nil, 'Run scheduled tasks now', class: 'form-check-label'
 
       .mb-3
         = f.submit 'Save'
