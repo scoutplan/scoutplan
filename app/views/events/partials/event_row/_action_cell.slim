@@ -13,10 +13,10 @@
             i.fas.fa-ghost
         - elsif rsvp.accepted?
           span.rsvp-response.rsvp-accepted(title="#{ t('rsvp_accept') }" data-bs-toggle="tooltip")
-            i.fas.fa-hiking
+            i.fad.fa-hiking
         - elsif rsvp.declined?
           span.rsvp-response.rsvp-declined(title="#{ t('rsvp_decline') }" data-bs-toggle="tooltip")
-            i.fas.fa-couch
+            i.fad.fa-couch
 
         = member.display_first_name
         = " (you)" if member == @current_member

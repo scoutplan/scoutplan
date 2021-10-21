@@ -2,8 +2,10 @@
 @import "trix/dist/trix";
 @import "./actiontext.scss";
 
-body {
+body, .table {
   font-family: proxima-nova;
+  font-weight: 400;
+  color: rgb(96, 96, 96);
 }
 
 h1 {
