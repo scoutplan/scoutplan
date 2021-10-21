@@ -4,13 +4,20 @@
 
   - if event.starts_at.localtime.today? && current_heading != :today
     - current_heading = :today
-    h1(style="margin-bottom: 4px;") Today
-    p(style="margin-top: 4px;") = event.starts_at.localtime.strftime('%A, %B %d')
+    h1(style="margin-bottom: 10px;") Today
+    p(style="margin-top: 4px;")
+      = event.starts_at.localtime.strftime('%A, %B %d')
+      br
+      = event.location
 
   - elsif event.starts_at.localtime.tomorrow? && current_heading != :tomorrow
     - current_heading = :tomorrow
     h1(style="margin-bottom: 4px;") Tomorrow
-    p(style="margin-top: 4px; color: #888; text-transform: uppercase;") = event.starts_at.localtime.strftime('%A, %B %d')
+    p(style="margin-top: 4px; color: #888; text-transform: uppercase;")
+      = event.starts_at.localtime.strftime('%A, %B %d')
+      br
+      = event.location
+
 
   = link_to event_url(event, r: @member.magic_link.token) do
     h3(style="margin-bottom: 4px;") = event.title
@@ -25,7 +32,9 @@
   == event.description
 
 p(style="text-align: center; padding-top: 30px;")
-  = link_to "View the entire #{@unit.name} calendar", unit_events_url(@unit, r: @member.magic_link.token), class: 'btn', style: "background-color: #{@unit.settings(:appearance).main_color}"
+  = link_to "View the entire #{@unit.name} calendar",
+            unit_events_url(@unit, r: @member.magic_link.token),
+            style: "background-color: #{@unit.settings(:appearance).main_color}; text-decoration: none; padding: 12px 24px; border-radius: 5px; color: #fff;"
 
 
 scss:
@@ -35,12 +44,4 @@ scss:
 
   h1:first-child {
     margin-top: 0;
-  }
-
-  a.btn {
-    border: 1px solid #888;
-    text-decoration: none;
-    padding: 12px 24px;
-    border-radius: 5px;
-    color: #fff;
   }

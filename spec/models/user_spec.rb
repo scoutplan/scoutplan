@@ -13,5 +13,12 @@ RSpec.describe User, type: :model do
       user = FactoryBot.build(:user, email: email)
       expect(user.anonymous_email?).to be_truthy
     end
+
+    it 'generates an anonymous email if needed' do
+      user = FactoryBot.build(:user, email: nil)
+      user.save!
+      expect(user.email).to be_present
+      expect(user.anonymous_email?).to be_truthy
+    end
   end
 end

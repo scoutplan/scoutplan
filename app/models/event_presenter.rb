@@ -9,17 +9,6 @@ class EventPresenter
     end
   end
 
-  def category_to_fa_glyph(category)
-    case category
-    when 'camping'
-      'fas fa-campground'
-    when 'troop_meeting'
-      'fas fa-users'
-    when 'court_of_honor'
-      'fas fa-medal'
-    end
-  end
-
   def family_context_name(member)
     res = member&.display_first_name || ''
     res += " #{I18n.t('you_parenths')}" if @current_member == member
