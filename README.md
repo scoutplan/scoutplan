@@ -1,5 +1,12 @@
 # README
 
+## Application Performance
+
+[![View performance data on Skylight](https://badges.skylight.io/problem/R3sADLfgeNb2.svg)](https://oss.skylight.io/app/applications/R3sADLfgeNb2)
+[![View performance data on Skylight](https://badges.skylight.io/typical/R3sADLfgeNb2.svg)](https://oss.skylight.io/app/applications/R3sADLfgeNb2)
+[![View performance data on Skylight](https://badges.skylight.io/rpm/R3sADLfgeNb2.svg)](https://oss.skylight.io/app/applications/R3sADLfgeNb2)
+[![View performance data on Skylight](https://badges.skylight.io/status/R3sADLfgeNb2.svg)](https://oss.skylight.io/app/applications/R3sADLfgeNb2)
+
 ## Assumptions & pre-reqs
 
 * You have a FontAwesome kit defined

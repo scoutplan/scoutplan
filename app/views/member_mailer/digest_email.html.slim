@@ -5,7 +5,7 @@
   p Good #{ Time.zone.now.time_of_day }, #{@member.display_first_name}. Here's what's going on:
 
 - content_for :left_column do
-  h2(style="color:#888; text-transform:uppercase;") This week
+  h2(style="color:#888; text-transform:uppercase;") Next Seven Days
 
   - @this_week_events.each do |event|
     hr(style="border:1px solid #eee;")

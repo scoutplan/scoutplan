@@ -26,7 +26,7 @@ class WeeklyDigestSender
       return true
     end
 
-    current_time.min.zero?
+    current_time.min.zero? && current_time.hour == 7 && current_time.sunday?
   end
 
   private
