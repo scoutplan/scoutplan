@@ -3,7 +3,7 @@
 @import "./actiontext.scss";
 
 body, .table {
-  font-family: proxima-nova;
+  font-family: proxima-nova, sans-serif;
   font-weight: 400;
   color: rgb(96, 96, 96);
 }
@@ -15,8 +15,6 @@ h1 {
 // pay the mortgage
 table {
   &.table-clickable {
-    @extend .table-hover;
-
     td {
       cursor: pointer;
     }
