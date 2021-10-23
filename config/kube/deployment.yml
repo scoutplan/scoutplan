@@ -67,6 +67,13 @@ spec:
                 secretKeyRef:
                   name: scoutplan-production
                   key: DO_STORAGE_SECRET
+            - name: TWILIO_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: TWILIO_TOKEN
+
+
           envFrom:
           - configMapRef:
               name: scoutplan-production-config

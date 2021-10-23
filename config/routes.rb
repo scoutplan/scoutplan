@@ -20,7 +20,6 @@ Rails.application.routes.draw do
   end
 
   get 'units/:id/settings', as: 'edit_unit_settings', to: 'unit_settings#edit'
-  get 'units/:unit_id/:slug', as: 'unit_home', to: 'events#index'
   get 'units/:unit_id', to: 'events#index'
   get 'u/:unit_id', to: redirect('units/%{unit_id}'), status: 302
   get 'e/:id', to: redirect('/events/%{id}'), status: 302
@@ -62,5 +61,7 @@ Rails.application.routes.draw do
     mount Flipper::UI.app(Flipper) => '/flipper'
     get 'a', to: 'admin#index'
   end
+
+  get 'units/:unit_id/:slug', as: 'unit_home', to: 'events#index'
 end
 # rubocop enable Metrics/BlockLength

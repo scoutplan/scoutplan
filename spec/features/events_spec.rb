@@ -63,7 +63,7 @@ describe 'events', type: :feature do
     describe 'create' do
       it 'redirects to Event page after Event draft creation' do
         visit unit_events_path(@unit)
-        expect(page).to have_current_path(unit_events_path(@unit))
+        expect(page).to have_current_path(unit_home_path(@unit.id, @unit.slug))
 
         # now raise and fill the dialog
         click_link_or_button I18n.t('event_add')

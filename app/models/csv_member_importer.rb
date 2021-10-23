@@ -1,7 +1,7 @@
 class CsvMemberImporter
-  def perform_import(file, unit)
-    @new_memberships = []
-    @existing_memberships = []
+  def self.perform_import(file, unit)
+    new_memberships = []
+    existing_memberships = []
 
     data = SmarterCSV.process(file.tempfile)
     data.each do |row|
@@ -26,10 +26,10 @@ class CsvMemberImporter
         )
         user.save!
 
-        membership = @unit.memberships.create!(user: user, status: :active, role: :member)
+        membership = unit.memberships.create!(user: user, status: :active, role: :member)
         new_memberships << membership
       end
     end
-    [new_memberships: new_memberships, existing_memberships: existing_memberships]
+    { new_memberships: new_memberships, existing_memberships: existing_memberships }
   end
 end

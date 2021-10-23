@@ -7,12 +7,6 @@ RSpec.describe WeeklyDigestSender, type: :model do
     @member = FactoryBot.create(:member)
   end
 
-  it 'performs' do
-    sender = WeeklyDigestSender.new
-    sender.force_run = true
-    sender.perform
-  end
-
   describe 'time_to_run' do
     before do
       @sender = WeeklyDigestSender.new

@@ -8,7 +8,6 @@ describe 'unit_memberships', type: :feature do
     path = unit_members_path(@admin.unit)
     visit path
     expect(page).to have_current_path(path)
-    print page.body
   end
 
   it 'visits a member' do

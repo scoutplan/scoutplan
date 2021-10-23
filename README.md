@@ -45,6 +45,8 @@ See https://codewithhugo.com/docker-compose-local-https/ for inspiration
 * SKYLIGHT_ENABLED (set to true)
 * MAPBOX_TOKEN
 * DO_STORAGE_SECRET
+* TWILIO_SID
+* TWILIO_TOKEN
 
 ### Config vars
 

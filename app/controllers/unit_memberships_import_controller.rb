@@ -14,7 +14,8 @@ class UnitMembershipsImportController < ApplicationController
     @current_member = @unit.membership_for(current_user)
     return unless @current_member.admin?
 
-    results = CsvMemberImporter.perform_import(params[:roster_file], @unit)
+    file = params[:roster_file]
+    results = CsvMemberImporter.perform_import(file, @unit)
     @new_memberships = results[:new_memberships]
     @existing_memberships = results[:existing_memberships]
   end

@@ -3,12 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe DailyReminderSender, type: :model do
-  it 'performs' do
-    sender = DailyReminderSender.new
-    sender.force_run = true
-    sender.perform
-  end
-
   describe 'time_to_run' do
     before do
       @sender = DailyReminderSender.new

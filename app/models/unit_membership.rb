@@ -45,6 +45,10 @@ class UnitMembership < ApplicationRecord
 
   has_settings do |s|
     s.key :security, defaults: { enable_magic_links: true }
+    s.key :communication, defaults: {
+      via_email: true,
+      via_sms: false
+    }
   end
 
   def admin?
