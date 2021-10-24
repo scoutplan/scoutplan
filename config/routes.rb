@@ -63,5 +63,6 @@ Rails.application.routes.draw do
   end
 
   get 'units/:unit_id/:slug', as: 'unit_home', to: 'events#index'
+  get 'events/:id/:slug', as: 'event_home', to: 'events#show'
 end
 # rubocop enable Metrics/BlockLength

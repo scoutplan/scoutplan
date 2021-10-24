@@ -77,13 +77,25 @@ javascript:
   }
 
   // also prevent checkboxes from firing clickable rows
-  document.querySelectorAll('.selection input[type="checkbox"]').forEach(function (elem) {
+  document.querySelectorAll('.selection input[type="checkbox"]').forEach(function(elem) {
     elem.addEventListener('click', function(event) {
       event.stopPropagation();
     });
   });
 
+  // click on an event row
+  document.querySelectorAll('tr.event').forEach(function(elem) {
+    elem.addEventListener('click', function(event) {
+      href = this.dataset.href;
+      window.location = href;
+    });
+  });
+
 scss:
+  tr.event {
+    cursor: pointer;
+  }
+
   body {
     font-size: 95%;
   }

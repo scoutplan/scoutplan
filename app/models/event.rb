@@ -67,6 +67,10 @@ class Event < ApplicationRecord
     address.blank? ? location : address
   end
 
+  def slug
+    title.parameterize
+  end
+
   private
 
   # create a weekly series based on @event
