@@ -40,6 +40,7 @@ class UnitMembership < ApplicationRecord
   delegate :display_first_name, to: :user
   delegate :display_full_name, to: :user
   delegate :nickname, to: :user
+  delegate :phone, to: :user
 
   accepts_nested_attributes_for :user
 

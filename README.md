@@ -47,6 +47,7 @@ See https://codewithhugo.com/docker-compose-local-https/ for inspiration
 * DO_STORAGE_SECRET
 * TWILIO_SID
 * TWILIO_TOKEN
+* TWILIO_NUMBER
 
 ### Config vars
 

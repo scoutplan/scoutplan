@@ -1,0 +1,7 @@
+Hello, <%= @unit.name %>. Here's what's happening this week:
+
+<% @this_week_events.each do |event| %>
+  * <%= event.title %> on <%= event.starts_at.strftime('%A') %>
+<% end %>
+
+See the full calendar at https://go.scoutplan.org
