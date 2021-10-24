@@ -1,0 +1,6 @@
+Hello, <%= @unit.name %>. Here's what's happening this week:
+
+- @this_week_events.each do |event|
+  * <%= event.name %> on <%= event.starts_at.strftime('%A') %>
+
+See the full calendar at <%= unit_events_url(@unit, r: @member.magic_link.token) %>

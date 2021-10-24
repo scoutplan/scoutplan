@@ -6,7 +6,7 @@ class UnitMembershipsController < ApplicationController
   before_action :find_membership, except: %i[index new create bulk_update]
 
   def index
-    authorize :unit_membership
+    authorize UnitMembership
     @unit_memberships = @unit.memberships.includes(:user)
     @page_title = @unit.name, t('members.index.page_title')
     @membership = @unit.memberships.build
@@ -34,14 +34,6 @@ class UnitMembershipsController < ApplicationController
 
   def pundit_user
     @current_member
-  end
-
-  def new
-    authorize :unit_membership
-  end
-
-  def invite
-    respond_to :js
   end
 
   def send_message

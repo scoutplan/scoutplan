@@ -47,6 +47,6 @@ class DailyReminderSender
     return unless Flipper.enabled? :daily_reminder, member
 
     logger.info "Sending Daily Reminder to #{member.flipper_id}"
-    MemberNotifier.send_daily_reminder(member)
+    MemberNotifier.send_daily_reminder(member, force_run)
   end
 end

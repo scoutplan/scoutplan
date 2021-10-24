@@ -17,6 +17,7 @@ Sentry.init do |config|
 end
 
 Rails.application.configure do
+  config.textris_delivery_method = :twilio
   config.logger = RemoteSyslogLogger.new('logs6.papertrailapp.com', 46920)
   # Settings specified here will take precedence over those in config/application.rb.
 

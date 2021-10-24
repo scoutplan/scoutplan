@@ -40,11 +40,16 @@ class UnitMembership < ApplicationRecord
   delegate :display_first_name, to: :user
   delegate :display_full_name, to: :user
   delegate :nickname, to: :user
+  delegate :phone, to: :user
 
   accepts_nested_attributes_for :user
 
   has_settings do |s|
     s.key :security, defaults: { enable_magic_links: true }
+    s.key :communication, defaults: {
+      via_email: true,
+      via_sms: false
+    }
   end
 
   def admin?
