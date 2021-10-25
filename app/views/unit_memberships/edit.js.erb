@@ -2,3 +2,6 @@
 
 var targetElem = document.getElementById('edit_dialog_content');
 targetElem.innerHTML = "<%= render 'form', locals: { member_id: @member_id} %>";
+
+var modal = new bootstrap.Modal(document.getElementById('membership_view_modal'));
+modal.show();

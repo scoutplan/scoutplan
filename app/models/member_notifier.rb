@@ -41,7 +41,7 @@ class MemberNotifier
     from = ENV['TWILIO_NUMBER']
     to = member.user.phone
     events = member.unit.events.published.this_week
-    message = "Hi, #{member.display_first_name}. Here's what's going on this week:"
+    message = "Hi, #{member.display_first_name}. Here's what's going on this week:\n"
     events.each do |event|
       message += "\n* #{event.title} on #{event.starts_at.strftime('%A')}"
     end
