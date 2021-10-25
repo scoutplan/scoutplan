@@ -1,0 +1,4 @@
+<% @member_id = params[:id] %>
+
+var targetElem = document.getElementById('edit_dialog_content');
+targetElem.innerHTML = "<%= render 'form', locals: { member_id: @member_id} %>";
