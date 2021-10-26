@@ -28,8 +28,8 @@ javascript:
   var rows = document.getElementsByClassName('member-row');
   for(const row of rows) {
     row.addEventListener('click', function(elem) {
-      var link = this.querySelector('a');
-      link.click();
+      var link = this.dataset.url;
+      window.location = link;
     });
   }
 

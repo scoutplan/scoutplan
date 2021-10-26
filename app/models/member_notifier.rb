@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-# notify members
+# notify members about various events
 class MemberNotifier
-
   # invite a user to a unit through a UnitMembership (aka member)
   def self.invite_member_to_unit(member)
     @magic_link_token = member.magic_link.token if
@@ -41,7 +40,7 @@ class MemberNotifier
     from = ENV['TWILIO_NUMBER']
     to = member.user.phone
     events = member.unit.events.published.this_week
-    message = "Hi, #{member.display_first_name}. Here's what's going on this week:\n"
+    message = "Hi, #{member.display_first_name}. Here's what's going on this week at #{member.unit.name}:"
     events.each do |event|
       message += "\n* #{event.title} on #{event.starts_at.strftime('%A')}"
     end
@@ -55,6 +54,7 @@ class MemberNotifier
     client.messages.create(from: from, to: to, body: message)
   end
 
+  # TODO: move this to a Textris texter
   def self.send_daily_reminder_sms(member)
     @magic_link_token = member.magic_link.token if
       member.unit.settings(:security).enable_magic_links &&
