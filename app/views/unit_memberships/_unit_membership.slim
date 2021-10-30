@@ -4,12 +4,11 @@
 
 tr.member.member-row.clickable(class="#{ row_classes }" data-url="#{member_path(unit_membership)}" data-remote="true" data-method="get")
   td.selection
+    = link_to unit_membership.display_full_name, edit_member_path(unit_membership), remote: true, style: 'display: none;'
     = check_box_tag "members[]", unit_membership.id, false, class: 'form-check-input bulk-edit-checkbox'
 
   td.name
-    = unit_membership.full_name
-
-    = link_to unit_membership.display_full_name, edit_member_path(unit_membership), remote: true, style: "display: none;"
+    = unit_membership.display_full_name
 
   td.role.fit-width
     - if unit_membership.admin?

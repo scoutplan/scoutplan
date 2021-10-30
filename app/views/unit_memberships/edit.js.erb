@@ -1,7 +1,13 @@
-<% @member_id = params[:id] %>
+// alert('hi');
 
-var targetElem = document.getElementById('edit_dialog_content');
-targetElem.innerHTML = "<%= render 'form', locals: { member_id: @member_id} %>";
+var elem = document.querySelector('#member_modal');
+elem.innerHTML = '<%= escape_javascript(render "member_modal") %>';
+var myModal = new bootstrap.Modal(elem);
 
-var modal = new bootstrap.Modal(document.getElementById('membership_view_modal'));
-modal.show();
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+});
+
+
+myModal.show();

@@ -1,0 +1,41 @@
+= label_tag :related_members, nil, class: 'form-label'
+
+.collapse.collapse-anim-off.show.mb-3.relationship-section
+    - @target_membership.child_relationships.each do |relationship|
+      = link_to member_path(relationship.child_member), class: 'btn btn-outline-secondary btn-sm', style: 'margin-right: 0.5rem;', title: "#{relationship.parent_member.display_first_name} can RSVP on behalf of #{relationship.child_member.display_first_name}", data: { 'bs-toggle' => 'tooltip' } do
+          i.fas.fa-user
+          |&nbsp;&nbsp;
+          = relationship.child_member.display_full_name
+
+    - @target_membership.parent_relationships.each do |relationship|
+      = link_to member_path(relationship.parent_member), class: 'btn btn-outline-secondary btn-sm', style: 'margin-right: 0.5rem;', title: "#{relationship.parent_member.display_first_name} can RSVP on behalf of #{relationship.child_member.display_first_name}", data: { 'bs-toggle' => 'tooltip' } do
+          i.far.fa-user
+          |&nbsp;&nbsp;
+          = relationship.parent_member.display_full_name
+
+    = link_to '#', class: 'btn btn-sm btn-outline-danger', data: { 'bs-toggle' => 'collapse', 'bs-target' => '.relationship-section' } do
+      |Add &amp; Remove
+
+.collapse.collapse-anim-off.mb-3.relationship-section
+  .mb-2
+    - @target_membership.child_relationships.each do |relationship|
+      = link_to member_path(relationship.child_member), class: 'btn btn-outline-danger btn-sm', style: 'margin-right: 0.5rem;', title: "Remove relationship to #{relationship.child_member.display_first_name}", data: { 'bs-toggle' => 'tooltip' } do
+          i.fas.fa-times
+          |&nbsp;&nbsp;
+          = relationship.child_member.display_full_name
+
+    - @target_membership.parent_relationships.each do |relationship|
+      = link_to member_path(relationship.parent_member), class: 'btn btn-outline-danger btn-sm', style: 'margin-right: 0.5rem;', title: "Remove relationship to #{relationship.parent_member.display_first_name}", data: { 'bs-toggle' => 'tooltip' } do
+          i.far.fa-times
+          |&nbsp;&nbsp;
+          = relationship.parent_member.display_full_name
+
+  .mb-2
+    = form_for @target_membership, url: member_relationships_path(@target_membership), method: :post do |f|
+      .mb-2
+        = select_tag 'child_id', options_from_collection_for_select(@candidates, 'id', 'full_name'), prompt: 'Select a member', class: 'form-select form-select-sm', style: 'display:inline;width:50%;margin-right:0.5rem;'
+        = f.submit 'Add As Delegatee', class: 'btn btn-danger btn-sm', style: 'margin-right:0.5rem;'
+
+      .mb-0
+        = link_to 'Done', '#', class: 'btn btn-sm btn-outline-secondary', data: { 'bs-toggle' => 'collapse', 'bs-target' => '.relationship-section' }
+

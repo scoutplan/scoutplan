@@ -9,7 +9,7 @@ class UnitMembership < ApplicationRecord
   default_scope { includes(:user).order('users.first_name, users.last_name ASC') }
 
   belongs_to :unit
-  belongs_to :user, class_name: 'User'
+  belongs_to :user
 
   validates_uniqueness_of :user, scope: :unit
   validates_presence_of :user, :status

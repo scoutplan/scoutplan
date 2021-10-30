@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
   get 'units/:id/settings', as: 'edit_unit_settings', to: 'unit_settings#edit'
   get 'units/:unit_id', to: 'events#index'
-  get 'u/:unit_id', to: redirect('units/%{unit_id}'), status: 302
+  get 'u/:id', to: redirect('units/%{id}'), status: 302
   get 'e/:id', to: redirect('/events/%{id}'), status: 302
   patch 'units/:id/settings', as: 'update_unit_settings', to: 'unit_settings#update'
 
