@@ -15,7 +15,6 @@ class MemberNotifier
     return unless Flipper.enabled? :receive_digest, member
 
     MemberMailer.with(member: member).digest_email.deliver_later if member.settings(:communication).via_email
-    # MemberTexter.digest(member: member).deliver_now
     send_digest_sms(member) if member.settings(:communication).via_sms
   end
 
@@ -50,7 +49,7 @@ class MemberNotifier
     sid = ENV['TWILIO_SID']
     token = ENV['TWILIO_TOKEN']
 
-    logger.info "Sending digest SMS to #{to}"
+    Rails.logger.info "Sending digest SMS to #{to}"
     client = Twilio::REST::Client.new(sid, token)
     client.messages.create(from: from, to: to, body: message)
   end
