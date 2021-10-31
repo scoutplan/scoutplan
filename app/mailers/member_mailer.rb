@@ -12,7 +12,7 @@ class MemberMailer < ScoutplanMailer
   end
 
   def digest_email
-    logger.info "Sending digest to #{@to_address}"
+    Rails.logger.info "Emailing digest to #{@to_address}"
     @this_week_events = @unit.events.published.this_week
     @upcoming_events = @unit.events.published.upcoming
     mail(to: @to_address,
@@ -21,7 +21,7 @@ class MemberMailer < ScoutplanMailer
   end
 
   def daily_reminder_email
-    logger.info "Eamiling Daily Reminder to #{@member.flipper_id}..."
+    Rails.logger.info "Emailing Daily Reminder to #{@member.flipper_id}..."
     @events = @unit.events.published.imminent
     mail(to: @to_address,
          from: @from_address,
