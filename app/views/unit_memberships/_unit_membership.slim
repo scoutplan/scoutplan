@@ -2,12 +2,13 @@
 - row_classes += " member-#{ unit_membership.member_type }"
 - row_classes += " member-admin" if unit_membership.admin?
 
-tr.member.member-row.clickable(class="#{ row_classes }" data-href="#{member_path(unit_membership)}" data-feature-id="#{unit_membership.flipper_id}")
+tr.member.member-row.clickable(class="#{ row_classes }" data-url="#{member_path(unit_membership)}" data-remote="true" data-method="get" id="member_#{unit_membership.id}_row")
   td.selection
+    = link_to unit_membership.display_full_name, edit_member_path(unit_membership), remote: true, style: 'display: none;'
     = check_box_tag "members[]", unit_membership.id, false, class: 'form-check-input bulk-edit-checkbox'
 
   td.name
-    = unit_membership.full_name
+    = unit_membership.display_full_name
 
   td.role.fit-width
     - if unit_membership.admin?

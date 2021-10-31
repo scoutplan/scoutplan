@@ -1,0 +1,16 @@
+var elem = document.querySelector('#member_modal');
+elem.innerHTML = '<%= escape_javascript(render "member_modal") %>';
+var myModal = new bootstrap.Modal(elem);
+
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+});
+
+window.history.pushState({}, 'hello', "<%= url_for(unit_member_path(@current_unit, @target_membership))%>");
+myModal.show();
+
+document.addEventListener('hide.bs.modal', function(event) {
+  window.history.pushState({}, 'hello', "<%= url_for(unit_members_path(@current_unit))%>");
+  document.removeEventListener('hide.bs.modal');
+})

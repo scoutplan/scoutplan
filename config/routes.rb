@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
   get 'units/:id/settings', as: 'edit_unit_settings', to: 'unit_settings#edit'
   get 'units/:unit_id', to: 'events#index'
-  get 'u/:unit_id', to: redirect('units/%{unit_id}'), status: 302
+  get 'u/:id', to: redirect('units/%{id}'), status: 302
   get 'e/:id', to: redirect('/events/%{id}'), status: 302
   patch 'units/:id/settings', as: 'update_unit_settings', to: 'unit_settings#update'
 
@@ -34,8 +34,9 @@ Rails.application.routes.draw do
 
     resources :event_categories
 
-    resources :unit_memberships, path: 'members', as: 'members', only: %i[index new create] do
+    resources :unit_memberships, path: 'members', as: 'members', except: [:show] do
       collection do
+        get  ':member_id',   to: 'unit_memberships#index'
         post 'bulk_update', to: 'unit_memberships#bulk_update'
         get  'import',      to: 'unit_memberships_import#new'
         post 'import',      to: 'unit_memberships_import#create'
@@ -63,5 +64,6 @@ Rails.application.routes.draw do
   end
 
   get 'units/:unit_id/:slug', as: 'unit_home', to: 'events#index'
+  get 'events/:id/:slug', as: 'event_home', to: 'events#show'
 end
 # rubocop enable Metrics/BlockLength

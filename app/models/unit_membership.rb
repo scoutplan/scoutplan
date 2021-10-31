@@ -9,7 +9,7 @@ class UnitMembership < ApplicationRecord
   default_scope { includes(:user).order('users.first_name, users.last_name ASC') }
 
   belongs_to :unit
-  belongs_to :user, class_name: 'User'
+  belongs_to :user
 
   validates_uniqueness_of :user, scope: :unit
   validates_presence_of :user, :status
@@ -43,6 +43,10 @@ class UnitMembership < ApplicationRecord
   delegate :phone, to: :user
 
   accepts_nested_attributes_for :user
+  accepts_nested_attributes_for :child_relationships,
+                                allow_destroy: true,
+                                reject_if: ->(attributes) { attributes['child_unit_membership_id'].blank? }
+  accepts_nested_attributes_for :parent_relationships, allow_destroy: true
 
   has_settings do |s|
     s.key :security, defaults: { enable_magic_links: true }

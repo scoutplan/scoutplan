@@ -1,7 +1,7 @@
 header.navbar.navbar-expand-md.bd-navbar
   nav.container.flex-wrap.flex-md-nowrap.navbar-dark
-    = link_to '#', class: 'navbar-brand' do
-      i.fas.fa-campfire
+    = link_to unit_home_path(@current_unit, @current_unit.slug), class: 'navbar-brand' do
+      i.fal.fa-home
 
     button.navbar-toggler(data-bs-toggle="collapse" data-bs-target="#main_navbar")
       span.navbar-toggler-icon

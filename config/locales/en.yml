@@ -188,7 +188,7 @@ en:
         update_button: 'Save These Changes'
         cancel_event:  'Cancel This Event'
         delete_event: 'Delete This Draft'
-        cancel_update: "Don't Save"
+        cancel_update: 'Cancel'
         update_scope: 'Change: '
         update_single: 'just this event'
         update_series: 'all events in the series'

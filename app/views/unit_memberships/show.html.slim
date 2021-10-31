@@ -34,3 +34,8 @@ header.mt-4.mb-4.clearfix
           = link_to 'Send Daily Reminder', send_member_path(@target_membership, item: :daily_reminder), method: :post, remote: true
 
 = render partial: 'unit_memberships/partials/show/new_relationship_form'
+
+
+.form-check
+  = check_box_tag :member_role, "admin", false, class: 'form-check-input'
+  = label_tag :member_role, 'Admin', class: 'form-check-label'

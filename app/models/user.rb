@@ -43,12 +43,12 @@ class User < ApplicationRecord
   end
 
   def display_full_name
-    "#{ display_first_name } #{ last_name }"
+    "#{display_first_name} #{last_name}"
   end
 
   def display_legal_and_nicknames
     res = [first_name]
-    res << "(#{ nickname })" unless nickname.blank?
+    res << "(#{ nickname})" unless nickname.blank?
     res << last_name
     res.join(' ')
   end

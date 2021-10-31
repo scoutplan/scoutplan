@@ -1,0 +1,9 @@
+label.me-3 Type
+
+.form-check.form-check-inline
+  = f.radio_button :member_type, :youth, class: 'form-check-input'
+  = f.label :member_type, 'Youth', value: 'youth', class: 'form-check-label'
+
+.form-check.form-check-inline
+  = f.radio_button :member_type, :adult, class: 'form-check-input'
+  = f.label :member_type, 'Adult', value: 'adult', class: 'form-check-label'

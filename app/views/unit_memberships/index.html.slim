@@ -21,6 +21,8 @@
 
 = render partial: 'unit_memberships/partials/index/member_form'
 
+.modal.fade#member_modal
+
 scss:
   th.selection, td.selection {
     display: none;
@@ -79,14 +81,29 @@ scss:
     }
   }
 
-javascript:
-  var rows = document.getElementsByClassName('member-row');
-  for(const row of rows) {
-    row.addEventListener('click', function(elem) {
-      var href = this.dataset.href;
-      window.location = href;
-    });
+ .collapse-anim-off {
+    -webkit-transition: none;
+    transition: none;
   }
+
+javascript:
+  // type the S key to search
+  document.addEventListener('keypress', function(event) {
+    if(event.keyCode == 102 || event.keyCode == 170) {
+      var input = document.querySelector('#search');
+      input.focus();
+      input.select();
+    }
+  });
+
+  // kludge alert!
+  // upon clicking a row, "click" the link hidden inside
+  document.querySelectorAll('tr.member').forEach(function(elem) {
+    elem.addEventListener('click', function(event) {
+      var link = this.querySelector('a');
+      link.click();
+    });
+  });
 
   // search functionality
   // adapted from https://www.w3schools.com/howto/howto_js_filter_table.asp
@@ -160,3 +177,7 @@ javascript:
     // update execute button caption
     bulkEditExecuteButton.innerText = originalBulkEditExecuteButtonCaption + (checkedCount == 0 ? '' : ' (' + checkedCount + ')');
   }
+
+- if params[:member_id]
+  javascript:
+    document.querySelector('#member_#{params[:member_id]}_row').querySelector('a').click();

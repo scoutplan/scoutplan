@@ -14,8 +14,8 @@
       = link_to event.title, event_url(event, r: @member.magic_link.token)
 
     p(style="margin-top:0;")
-      = event.starts_at.localtime.strftime('%A')
-      |,&nbsp;
+      = event.starts_at.localtime.strftime('%A, %b %d')
+      |&nbsp;&nbsp;
       = event.starts_at.localtime.strftime('%-I:%M %p')
       |&thinsp;&ndash;&thinsp;
       = event.ends_at.localtime.strftime('%-I:%M %p')
@@ -49,7 +49,7 @@
             = link_to 'RSVP Now', event_url(event, anchor: 'rsvp', r: @member.magic_link.token)
 
 - content_for :right_column do
-  h2(style="color:#888; text-transform:uppercase;font-size:120%;") Next week & beyond
+  h2(style="color:#888; text-transform:uppercase;font-size:120%;") Beyond this week
 
   dl
     = render partial: 'member_mailer/partials/event_rows', locals: { events: @upcoming_events }

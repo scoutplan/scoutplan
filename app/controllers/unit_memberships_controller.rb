@@ -7,10 +7,19 @@ class UnitMembershipsController < ApplicationController
 
   def index
     authorize UnitMembership
-    @unit_memberships = @unit.memberships.includes(:user)
+    @unit_memberships = @unit.memberships.includes(
+      :user,
+      { parent_relationships: { parent_unit_membership: :user } },
+      { child_relationships: { child_unit_membership: :user } }
+    )
     @page_title = @unit.name, t('members.index.page_title')
     @membership = @unit.memberships.build
     @membership.build_user
+  end
+
+  def edit
+    build_new_relationship
+    respond_to :js
   end
 
   def show
@@ -30,6 +39,28 @@ class UnitMembershipsController < ApplicationController
 
     flash[:notice] = 'Member Added'
     redirect_to unit_members_path(@unit)
+  end
+
+  def update
+    @target_membership.assign_attributes(member_params)
+    update_settings_params
+    return unless @target_membership.save!
+
+    flash[:notice] = 'Member information updated'
+    redirect_to unit_members_path(@current_unit)
+  end
+
+  def update_settings_params
+    ap settings_params
+    return unless settings_params
+
+    settings_params.each do |setting_key, values|
+      values.each do |subsetting_key, subsetting_value|
+        @target_membership.settings(setting_key.to_sym).assign_attributes subsetting_key.to_sym => subsetting_value
+      end
+    end
+
+    ap @target_membership.settings(:communication)
   end
 
   def pundit_user
@@ -64,6 +95,7 @@ class UnitMembershipsController < ApplicationController
   private
 
   def build_new_relationship
+    # @target_membership.child_relationships.build
     @member_relationship = MemberRelationship.new(parent_member: @target_membership)
 
     # possible relationships are any other unit members, minus onesself, minus existing child memberships
@@ -73,7 +105,7 @@ class UnitMembershipsController < ApplicationController
   end
 
   def find_membership
-    @target_membership = UnitMembership.find(params[:id])
+    @target_membership = UnitMembership.includes(:parent_relationships, :child_relationships).find(params[:id])
     @target_user = @target_membership.user
     @current_unit = @unit = @target_membership.unit
     @current_member = @unit.membership_for(current_user)
@@ -84,9 +116,20 @@ class UnitMembershipsController < ApplicationController
     @current_member = @unit.membership_for(current_user)
   end
 
+  # rubocop:disable Style/SymbolArray
   def member_params
-    params.require(:unit_membership).permit(:status, :role, :member_type,
-      user_attributes: [:first_name, :nickname, :last_name, :email, :phone]
+    params.require(:unit_membership).permit(
+      :status, :role, :member_type,
+      user_attributes: [:id, :first_name, :nickname, :last_name, :email, :phone],
+      child_relationships_attributes: [:id, :child_unit_membership_id, :_destroy],
+      parent_relationships_attributes: [:id, :_destroy]
     )
   end
+
+  def settings_params
+    params.require(:settings).permit(
+      communication: [:via_email, :via_sms]
+    )
+  end
+  # rubocop:enable Style/SymbolArray
 end
