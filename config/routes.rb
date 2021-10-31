@@ -34,8 +34,9 @@ Rails.application.routes.draw do
 
     resources :event_categories
 
-    resources :unit_memberships, path: 'members', as: 'members', only: %i[index new create] do
+    resources :unit_memberships, path: 'members', as: 'members', except: [:show] do
       collection do
+        get  ':member_id',   to: 'unit_memberships#index'
         post 'bulk_update', to: 'unit_memberships#bulk_update'
         get  'import',      to: 'unit_memberships_import#new'
         post 'import',      to: 'unit_memberships_import#create'

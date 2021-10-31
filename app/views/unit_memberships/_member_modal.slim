@@ -1,43 +1,20 @@
-= form_for @target_membership, url: member_path(@target_membership) do |f|
-  .modal-dialog
+= form_with model: @target_membership, local: true, url: member_path(@target_membership), id: 'member_info_form' do |f|
+  .modal-dialog#member_modal
     .modal-content
       .modal-header
+        h5.modal-title
           - if @target_membership.new_record?
-            h5.modal-title New Member
+            | New Member
           - else
-            h5.modal-title Update Member Details
-          button.btn-close(type="button" data-bs-dismiss="modal")
+            | Update Member Details
+
+        button.btn-close(type="button" data-bs-dismiss="modal")
 
       .modal-body
-        - if true
-          = f.fields_for :user do |u|
-            .mb-3
-              = u.hidden_field :id
-              = u.label :name, class: 'form-label'
-              div
-                = u.text_field :first_name, class: 'form-control', autocomplete: 'off', autofocus: true, style: 'text-transform: capitalize', placeholder: 'First', style: 'width:30%;display:inline-block;margin-right:1%;'
-                = u.text_field :last_name, { class: 'form-control', autocomplete: 'off', style: 'text-transform: capitalize', placeholder: 'Last', style: 'width: 30%;display: inline-block;' }
-
-                = u.text_field :nickname, class: 'form-control', autocomplete: 'off', autofocus: true, style: 'text-transform: capitalize', placeholder: 'Nickname', style: 'width:30%;display:inline-block;float:right;'
-
-            .mb-3
-              = u.label :email, class: 'form-label'
-              = u.email_field :email, class: 'form-control', autocomplete: 'off'
-
-            .mb-3
-              = u.label :phone, class: 'form-label'
-              = u.phone_field :phone, { class: 'form-control', autocomplete: 'off' }
+        = render partial: 'unit_memberships/partials/modal/user_fields', locals: { f: f }
 
         .mb-3
-          label.me-3 Type
-
-          .form-check.form-check-inline
-            = f.radio_button :member_type, :youth, class: 'form-check-input'
-            = f.label :member_type, 'Youth', value: 'youth', class: 'form-check-label'
-
-          .form-check.form-check-inline
-            = f.radio_button :member_type, :adult, class: 'form-check-input'
-            = f.label :member_type, 'Adult', value: 'adult', class: 'form-check-label'
+          = render partial: 'unit_memberships/partials/modal/member_type_fields', locals: { f: f }
 
         .mb-3
           .form-check
@@ -49,7 +26,10 @@
             = f.check_box :role, { class: 'form-check-input' }, 'admin', 'member'
             = f.label :role, "#{ @unit.name } Administrator", class: 'form-check-label'
 
-        - if true
+        .mb-3
+          = render partial: 'unit_memberships/partials/modal/communication_settings_fields', locals: { f: f }
+
+        - if false
           = f.fields_for 'settings[communication]', @target_membership.settings(:communication) do |c|
             .mb-3
               label.me-3 Communication
@@ -60,6 +40,9 @@
               .form-check.form-check-inline
                 = c.check_box :via_sms, class: 'form-check-input'
                 label(for="unit_membership_settings_communication_via_sms" class="form-check-label") Via SMS
+
+        .mb-3
+          = render partial: 'unit_memberships/partials/modal/relationships', locals: { f: f }
 
         .mb-3
           label.mb-3 Send
@@ -75,12 +58,23 @@
               |&nbsp;
               |Daily Reminder
 
+
       // form buttons
       .modal-footer
         - if @target_membership.new_record?
-          = f.submit 'Add Member', class: 'btn btn-primary', id: 'event_submit'
+          / = f.submit 'Add Member', class: 'btn btn-primary', id: 'event_submit'
+          button.btn.btn-primary(type="button" onclick="document.querySelector('#member_info_form').submit();") Save Changes
           button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_button')
 
         - else # updating an existing record
           = f.submit t('helpers.label.event.update_button'), class: 'btn btn-primary', id: 'event_submit', style: 'margin-right: 10px;'
           button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('helpers.label.event.cancel_update')
+
+scss:
+  input.destroy_relationship_input:checked {
+    display: none;
+  }
+
+  input.destroy_relationship_input:checked + label.destroy_relationship_label {
+    display: none;
+  }

@@ -51,13 +51,16 @@ class UnitMembershipsController < ApplicationController
   end
 
   def update_settings_params
-    return unless (settings_params = params[:unit_membership][:settings])
+    ap settings_params
+    return unless settings_params
 
     settings_params.each do |setting_key, values|
       values.each do |subsetting_key, subsetting_value|
         @target_membership.settings(setting_key.to_sym).assign_attributes subsetting_key.to_sym => subsetting_value
       end
     end
+
+    ap @target_membership.settings(:communication)
   end
 
   def pundit_user
@@ -92,6 +95,7 @@ class UnitMembershipsController < ApplicationController
   private
 
   def build_new_relationship
+    # @target_membership.child_relationships.build
     @member_relationship = MemberRelationship.new(parent_member: @target_membership)
 
     # possible relationships are any other unit members, minus onesself, minus existing child memberships
@@ -112,10 +116,20 @@ class UnitMembershipsController < ApplicationController
     @current_member = @unit.membership_for(current_user)
   end
 
+  # rubocop:disable Style/SymbolArray
   def member_params
-    params.require(:unit_membership).permit(:status, :role, :member_type,
+    params.require(:unit_membership).permit(
+      :status, :role, :member_type,
       user_attributes: [:id, :first_name, :nickname, :last_name, :email, :phone],
-      rails_settings_setting_object: [:via_email, :via_sms]
+      child_relationships_attributes: [:id, :child_unit_membership_id, :_destroy],
+      parent_relationships_attributes: [:id, :_destroy]
     )
   end
+
+  def settings_params
+    params.require(:settings).permit(
+      communication: [:via_email, :via_sms]
+    )
+  end
+  # rubocop:enable Style/SymbolArray
 end

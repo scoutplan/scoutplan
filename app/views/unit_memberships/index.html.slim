@@ -87,6 +87,7 @@ scss:
   }
 
 javascript:
+  // type the S key to search
   document.addEventListener('keypress', function(event) {
     if(event.keyCode == 102 || event.keyCode == 170) {
       var input = document.querySelector('#search');
@@ -176,3 +177,7 @@ javascript:
     // update execute button caption
     bulkEditExecuteButton.innerText = originalBulkEditExecuteButtonCaption + (checkedCount == 0 ? '' : ' (' + checkedCount + ')');
   }
+
+- if params[:member_id]
+  javascript:
+    document.querySelector('#member_#{params[:member_id]}_row').querySelector('a').click();

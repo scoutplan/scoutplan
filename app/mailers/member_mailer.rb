@@ -12,6 +12,7 @@ class MemberMailer < ScoutplanMailer
   end
 
   def digest_email
+    logger.info "Sending digest to #{@to_address}"
     @this_week_events = @unit.events.published.this_week
     @upcoming_events = @unit.events.published.upcoming
     mail(to: @to_address,

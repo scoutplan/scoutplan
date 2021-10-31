@@ -50,3 +50,5 @@ docker-compose.override.yml
 act.sh
 
 /coverage
+
+.vscode

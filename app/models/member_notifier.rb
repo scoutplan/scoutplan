@@ -50,6 +50,7 @@ class MemberNotifier
     sid = ENV['TWILIO_SID']
     token = ENV['TWILIO_TOKEN']
 
+    logger.info "Sending digest SMS to #{to}"
     client = Twilio::REST::Client.new(sid, token)
     client.messages.create(from: from, to: to, body: message)
   end
