@@ -77,6 +77,9 @@ class UnitMembershipsController < ApplicationController
     when 'daily_reminder'
       @message_name = 'Daily Reminder'
       MemberNotifier.send_daily_reminder(@target_membership)
+    when 'test_message'
+      @message_name = 'Test'
+      MemberNotifier.send_test_message(@target_membership)
     end
   end
 
