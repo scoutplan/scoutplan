@@ -69,7 +69,7 @@ class UnitMembership < ApplicationRecord
   end
 
   def family
-    children.append(self).sort_by(&:first_name)
+    (children | parents).append(self).sort_by(&:first_name)
   end
 
   def contactable_object

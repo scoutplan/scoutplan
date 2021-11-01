@@ -10,6 +10,11 @@ class MemberNotifier
     MemberMailer.with(member: member).invitation_email.deliver_later
   end
 
+  def self.send_test_message(member)
+    return unless member.contactable?
+    self.send_test_sms(member)
+  end
+
   def self.send_digest(member)
     return unless member.contactable?
     return unless Flipper.enabled? :receive_digest, member
@@ -31,6 +36,16 @@ class MemberNotifier
     send_daily_reminder_sms(member) if member.settings(:communication).via_sms
   end
 
+  def self.send_test_sms(member)
+    from = ENV['TWILIO_NUMBER']
+    to = member.user.phone
+    Rails.logger.info "Sending test SMS to #{to}"
+    sid    = ENV['TWILIO_SID']
+    token  = ENV['TWILIO_TOKEN']
+    client = Twilio::REST::Client.new(sid, token)
+    client.messages.create(from: from, to: to, body: 'This is a test message from Scoutplan. Log in at https://go.scoutplan.org.')
+  end
+
   def self.send_digest_sms(member)
     @magic_link_token = member.magic_link.token if
       member.unit.settings(:security).enable_magic_links &&
@@ -39,17 +54,18 @@ class MemberNotifier
     from = ENV['TWILIO_NUMBER']
     to = member.user.phone
     events = member.unit.events.published.this_week
-    message = "Hi, #{member.display_first_name}. Here's what's going on this week at #{member.unit.name}:"
+    message = "Hi, #{member.display_first_name}. Here's what's going on this week at #{member.unit.name}:\n"
     events.each do |event|
       message += "\n* #{event.title} on #{event.starts_at.strftime('%A')}"
     end
 
     message += "\n\nSee the full calendar at https://go.scoutplan.org/units/#{member.unit.id}/events"
     message += "?r=#{@magic_link_token}" if @magic_link_token
-    sid = ENV['TWILIO_SID']
-    token = ENV['TWILIO_TOKEN']
+    message += '.'
 
     Rails.logger.info "Sending digest SMS to #{to}"
+    sid    = ENV['TWILIO_SID']
+    token  = ENV['TWILIO_TOKEN']
     client = Twilio::REST::Client.new(sid, token)
     client.messages.create(from: from, to: to, body: message)
   end

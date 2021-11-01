@@ -155,6 +155,7 @@ class EventsController < ApplicationController
       :location,
       :address,
       :description,
+      :short_description,
       :requires_rsvp,
       :starts_at_d,
       :starts_at_t,

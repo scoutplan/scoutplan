@@ -7,6 +7,12 @@
           button.btn-close(type="button" data-bs-dismiss="modal")
 
         .modal-body
+          / SHORT DESCRIPTION
+          .mb-3
+            = f.label :short_description
+            = f.text_field :short_description, class: 'form-control', autocomplete: 'off'
+            .form-text Appears in email notifications
+
           = f.rich_text_area :description, style: 'height: 24rem; overflow: auto;'
 
         // form buttons

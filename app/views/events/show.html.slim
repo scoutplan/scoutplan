@@ -1,9 +1,10 @@
 header.rsvps.mb-4
-
 = render partial: 'events/partials/show/draft_card'
 
 nav.unit-id = @current_unit.name
-h1.mb-4 = @event.title
+h1.mb-1 = @event.title
+- if @event.short_description.present?
+  p = @event.short_description
 
 .row.gx-5
   main

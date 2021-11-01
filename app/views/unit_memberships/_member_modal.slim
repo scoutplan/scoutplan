@@ -57,7 +57,11 @@
               i.far.fa-envelope
               |&nbsp;
               |Daily Reminder
-
+            |&nbsp;
+            = link_to send_member_path(@target_membership, item: :test_message), method: :post, remote: true, class: 'btn btn-outline-secondary btn-sm', disabled: !@target_membership.contactable? do
+              i.far.fa-envelope
+              |&nbsp;
+              |Test Message
 
       // form buttons
       .modal-footer
