@@ -31,12 +31,12 @@
         - rsvp = member.rsvps.find_by(event: event)
         - if rsvp&.accepted?
           - family_rsvp_count += 1
-          span.accepted(title="Going" style="color:green;cursor:pointer;") &#11044;;
+          span.accepted(title="Going" style="color:green;cursor:default;") &#10003;
         - elsif rsvp&.declined?
           - family_rsvp_count += 1
-          span.declined(title="Not going" style="color:red;cursor:pointer;") &#11044;
+          span.declined(title="Not going" style="color:red;cursor:default;") &times;
         - else
-          span.unknown(title="No response" style="color:#bbb;cursor:pointer;") &#11044;
+          span.unknown(title="No response" style="color:#666;font-weight:bold;cursor:default;") ?
 
         |&nbsp;
         = member == @member ? 'You' : member.display_first_name
