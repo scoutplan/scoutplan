@@ -116,7 +116,7 @@ javascript:
       var nameCell = row.querySelector('td.name');
       var name = nameCell.innerText;
       if (filter.length < 0 || name.toUpperCase().indexOf(filter) > -1) {
-        row.style.display = 'table-row';
+        row.style.display = '';
       } else {
         row.style.display = 'none';
       }
