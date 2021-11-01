@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   patch 'units/:id/settings', as: 'update_unit_settings', to: 'unit_settings#update'
 
   resources :units do
+    resources :plans
     resources :events, only: %i[index new create] do
       collection do
         post 'bulk_publish'

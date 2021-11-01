@@ -21,7 +21,7 @@ header.mt-4.mb-4.clearfix
           ul.dropdown-menu.dropdown-menu-end.dropdown-menu-dark
             = render partial: 'events/partials/index/dropdown_items/bulk_publish'   if @current_member.admin?
             = render partial: 'events/partials/index/dropdown_items/show_cancelled' if @current_member.admin?
-            - %w[show_only_rsvps show_past_events divider calendar_subscribe].each do |p|
+            - %w[show_only_rsvps show_past_events].each do |p|
               = render partial: "events/partials/index/dropdown_items/#{ p }"
 
       span#bulk_publish_button_wrapper
