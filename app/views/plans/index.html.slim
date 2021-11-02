@@ -4,7 +4,7 @@
 h1 Planner
 
 .scroller.py-2
-  .d-flex.flex-row.flex-nowrap
+  .d-flex.flex-row.flex-nowrap(style="margin: 30px;")
     - @events.each do |event|
       .card.card-body(class="event-#{event.category.name.parameterize}")
         h1.card-title
@@ -12,15 +12,26 @@ h1 Planner
           = event.starts_at.strftime('%-d')
         h3 = event.title
 
-
+        - if event.category.name == 'Troop Meeting'
+          div.event-activity = "Opening Ceremony"
+          div.event-activity = "Camp Planning"
+          div.event-activity = "Game"
+          div.event-activity = "Closing Ceremony"
 
 scss:
+  .event-activity {
+    border: 1px solid #ddd;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: move;
+  }
+  
   .scroller {
     position: absolute;
     left: 0;
     right: 0;
     overflow-x: auto;
-    padding: 30px 90px;
 
     .card {
       min-width: 18rem;
@@ -40,11 +51,17 @@ scss:
       min-width: 9rem;
       background-color: darkolivegreen;
       color: white;
-      margin-left: -1rem;
+      margin-left: -1.25rem;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
 
       h3 {
         font-size: 1rem;
       }
+    }
+
+    .card.event-no-meeting {
+      color: #aaa;
     }
   }
 
