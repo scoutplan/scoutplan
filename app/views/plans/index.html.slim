@@ -1,1 +1,49 @@
-h1 Plans
+- content_for :body_classes do
+  = "plans index"
+
+h1 Planner
+
+.scroller.py-2
+  .d-flex.flex-row.flex-nowrap
+    - @events.each do |event|
+      .card.card-body(class="event-#{event.category.name.parameterize}")
+        h1.card-title
+          .month = event.starts_at.strftime('%b')
+          = event.starts_at.strftime('%-d')
+        h3 = event.title
+
+
+
+scss:
+  .scroller {
+    position: absolute;
+    left: 0;
+    right: 0;
+    overflow-x: auto;
+    padding: 30px 90px;
+
+    .card {
+      min-width: 18rem;
+      min-height: 25rem;
+      margin-right: 1rem;
+    }
+
+    .card-title .month {
+      font-size: 1rem;
+    }
+
+    h1.card-title {
+      font-size: 5rem;
+    }
+
+    .card.event-camping-trip {
+      min-width: 9rem;
+      background-color: darkolivegreen;
+      color: white;
+      margin-left: -1rem;
+
+      h3 {
+        font-size: 1rem;
+      }
+    }
+  }

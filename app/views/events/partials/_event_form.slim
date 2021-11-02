@@ -71,6 +71,10 @@
             = f.label :address
             = f.text_field :address, { class: 'form-control', autocomplete: 'off', style: 'text-transform: capitalize' }
 
+          .mb-3
+            = f.label :departs_from
+            = f.text_field :departs_from, { class: 'form-control', autocomplete: 'off', style: 'text-transform: capitalize' }
+
           // RSVP
           .form-check.mb-3
             = f.check_box :requires_rsvp, class: 'form-check-input', data: { 'bs-toggle' => 'collapse', 'bs-target' => '#rsvp-fields'}
@@ -218,6 +222,13 @@ javascript:
     const caption = checkBox.checked ? 'Repeats weekly until' : 'Repeats weekly';
     label.innerText = caption;
   }
+
+  function setupGeocoding() {
+    const baseClient = mbxClient({ accessToken: '#{ ENV['MAPBOX_TOKEN'] }' });
+    const geocodingClient = mbxGeocoding(baseClient);
+  }
+
+  // setupGeocoding();
 
 scss:
   #calendar {

@@ -55,6 +55,11 @@ div(style="margin-bottom: 30px;")
         - @event.location&.split(',')&.each do |address_line|
           div = address_line
 
+        - if @event.departs_from.present?
+          br
+          .month-name Depart From
+          div = @event.departs_from
+
     .card
       .card-body
         div(style="position: relative;")
