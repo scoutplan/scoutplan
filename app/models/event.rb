@@ -10,11 +10,13 @@ class Event < ApplicationRecord
   has_many   :event_rsvps, dependent: :destroy
   has_many   :members, through: :event_rsvps
   has_many   :rsvp_tokens, dependent: :destroy
+  has_many   :event_activities, dependent: :destroy
 
   has_rich_text :description
 
   alias_attribute :rsvps, :event_rsvps
   alias_attribute :category, :event_category
+  alias_attribute :activities, :event_activities
 
   validates_presence_of :title, :starts_at, :ends_at
 

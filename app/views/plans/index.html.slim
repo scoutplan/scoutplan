@@ -47,3 +47,8 @@ scss:
       }
     }
   }
+
+css:
+  .card.event-troop-meeting h1 {
+    color: #{ @unit.planner.event_category_for(:camping_trip)&.color || '#333' };
+  }

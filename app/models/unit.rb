@@ -36,6 +36,10 @@ class Unit < ApplicationRecord
     [name, location].join(' ').parameterize
   end
 
+  def planner
+    Planner.new(self)
+  end
+
   private
 
   def populate_categories
