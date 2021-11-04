@@ -11,6 +11,7 @@ import * as ActiveStorage from '@rails/activestorage'
 import 'channels'
 import 'trix'
 import '@rails/actiontext'
+import '@hotwired/stimulus'
 // const mbxClient = require('@mapbox/mapbox-sdk');
 // const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 
