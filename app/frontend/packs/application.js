@@ -11,7 +11,8 @@ import * as ActiveStorage from '@rails/activestorage'
 import 'channels'
 import 'trix'
 import '@rails/actiontext'
-
+// const mbxClient = require('@mapbox/mapbox-sdk');
+// const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 
 // TODO: import bootstrap modules
 // see https://stackoverflow.com/questions/66613941/cant-toggle-bootstrap-5-js-not-initialized-properly

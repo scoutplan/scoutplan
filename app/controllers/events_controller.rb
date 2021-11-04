@@ -161,7 +161,8 @@ class EventsController < ApplicationController
       :starts_at_t,
       :ends_at_d,
       :ends_at_t,
-      :repeats_until
+      :repeats_until,
+      :departs_from
     )
   end
   # rubocop:enable Metrics/MethodLength
