@@ -11,7 +11,9 @@ import * as ActiveStorage from '@rails/activestorage'
 import 'channels'
 import 'trix'
 import '@rails/actiontext'
-import '@hotwired/stimulus'
+import { Application } from "@hotwired/stimulus"
+import Sortable from "stimulus-sortable"
+
 // const mbxClient = require('@mapbox/mapbox-sdk');
 // const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 
@@ -26,3 +28,5 @@ window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js')
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+window.Stimulus = Application.start()
+window.Stimulus.register("sortable", Sortable)

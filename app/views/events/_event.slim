@@ -52,5 +52,7 @@ tr.event(class="#{ @presenter.row_classes }" data-href="#{ event_home_path(event
 
   td.location.tablet = event.location
 
+  td.short-description.tablet = event.short_description
+
   td.action.desktop
     = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps }
