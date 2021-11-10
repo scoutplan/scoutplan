@@ -5,6 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.2'
 
+gem 'acts_as_list'
 gem 'awesome_print', '~> 1.9'
 gem 'aws-sdk-s3', require: false
 gem 'bootsnap', '~> 1.8', require: false
