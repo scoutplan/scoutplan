@@ -84,7 +84,7 @@ class MemberNotifier
       message += "\n* #{event.title} on #{event.starts_at.strftime('%A')}"
     end
 
-    message += "\n\nSee the full calendar at https://go.scoutplan.org/units/#{member.unit.id}/events"
+    message += "\n\nSee the full calendar at https://go.scoutplan.org/units/#{member.unit.id}/events."
     message += "?r=#{@magic_link_token}" if @magic_link_token
     sid = ENV['TWILIO_SID']
     token = ENV['TWILIO_TOKEN']

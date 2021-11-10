@@ -5,6 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.2'
 
+gem 'acts_as_list'
 gem 'awesome_print', '~> 1.9'
 gem 'aws-sdk-s3', require: false
 gem 'bootsnap', '~> 1.8', require: false
@@ -36,6 +37,7 @@ gem 'sidekiq-scheduler'
 gem 'skylight', '~> 5.1'
 gem 'slim', '~> 4.1'
 gem 'smarter_csv'
+gem 'stimulus-rails'
 gem 'textris', git: 'https://github.com/danielpuglisi/textris.git', branch: 'rails6'
 gem 'twilio-ruby'
 gem 'trix', '~> 0.10'
