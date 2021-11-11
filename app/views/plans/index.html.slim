@@ -14,13 +14,22 @@ h1 Planner
         p = event.short_description
 
         - if event.category.name == 'Troop Meeting'
-          ul.event-activities(data-controller="sortable" data-sortable-animation-value="150")
-            li.event-activity = "Opening Ceremony"
-            li.event-activity = "Camp Planning"
-            li.event-activity = "Game"
-            li.event-activity = "Closing Ceremony"
+          ul.event-activities(data-controller="sortable" data-sortable-animation-value="150" data-sortable-group-value="meetings" data-sortable-to-id="#{event.id}")
+            li.event-activity(data-sortable-update-url="#{event_activity_path(1)}") = "Opening Ceremony"
+            li.event-activity(data-sortable-update-url="#{event_activity_path(1)}") = "Camp Planning"
+            li.event-activity(data-sortable-update-url="#{event_activity_path(1)}") = "Game"
+            li.event-activity(data-sortable-update-url="#{event_activity_path(1)}") = "Closing Ceremony"
+          = link_to '#', class: 'add-activity-link' do
+            i.fa-plus.far
+            |&nbsp;
+            |Add an Activity
 
 scss:
+  .add-activity-link {
+    text-decoration: none;
+    color: #888;
+  }
+
   .card.event-card {
     background: #f3f3f3;
   }
