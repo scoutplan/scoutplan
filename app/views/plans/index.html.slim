@@ -15,19 +15,21 @@ h1 Planner
 
         - if event.category.name == 'Troop Meeting'
           ul.event-activities(data-controller="sortable" data-sortable-animation-value="150" data-sortable-group-value="meetings" data-sortable-to-id="#{event.id}")
-            li.event-activity(data-sortable-update-url="#{event_activity_path(1)}") = "Opening Ceremony"
-            li.event-activity(data-sortable-update-url="#{event_activity_path(1)}") = "Camp Planning"
-            li.event-activity(data-sortable-update-url="#{event_activity_path(1)}") = "Game"
-            li.event-activity(data-sortable-update-url="#{event_activity_path(1)}") = "Closing Ceremony"
-          = link_to '#', class: 'add-activity-link' do
+            li.event-activity(data-sortable-update-url="#{activity_path(1)}") = "Opening Ceremony"
+            li.event-activity(data-sortable-update-url="#{activity_path(1)}") = "Camp Planning"
+            li.event-activity(data-sortable-update-url="#{activity_path(1)}") = "Game"
+            li.event-activity(data-sortable-update-url="#{activity_path(1)}") = "Closing Ceremony"
+          = link_to new_event_activity_path(event), class: 'add-activity-link', remote: true do
             i.fa-plus.far
             |&nbsp;
             |Add an Activity
 
+.modal#activity_modal_wrapper
+
 scss:
   .add-activity-link {
     text-decoration: none;
-    color: #888;
+    color: #666;
   }
 
   .card.event-card {

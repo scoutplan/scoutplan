@@ -1,0 +1,4 @@
+var elem = document.querySelector('#activity_modal_wrapper');
+elem.innerHTML = '<%= escape_javascript(render "activity_modal") %>';
+var myModal = new bootstrap.Modal(elem);
+myModal.show();
