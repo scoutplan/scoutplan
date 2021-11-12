@@ -1,3 +1,3 @@
-var elem = document.querySelector('#activity_modal_wrapper');
-// myModal = new bootstrap.Modal(elem);
 myModal.hide();
+var elem = document.querySelector('<%= "#event_#{@event.id}_activities" %>');
+elem.innerHTML = '<%= escape_javascript(render partial: "plans/activities", locals: { event: @event }) %>';
