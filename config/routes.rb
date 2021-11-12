@@ -17,7 +17,10 @@ Rails.application.routes.draw do
     end
 
     resources :event_rsvps, as: 'rsvps', path: 'rsvps', only: %i[create]
+    resources :event_activities, as: 'activities', path: 'activities', only: %i[new create]
   end
+
+  resources :event_activities, as: 'activities'
 
   get 'units/:id/settings', as: 'edit_unit_settings', to: 'unit_settings#edit'
   get 'units/:unit_id', to: 'events#index'
