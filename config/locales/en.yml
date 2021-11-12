@@ -63,8 +63,26 @@ en:
     past_tense:
       third_person: 'was'
 
+  unit_settings:
+    title: 'Unit Settings'
+    logo:  'Logo'
+    event_categories: 'Event Categories'
+    utilities: 'Utilities'
+    placeholders:
+      location: 'e.g. city name'
+
   magic_links:
     login_success: "You're signed in as %{name} via Magic Link."
+
+  planner:
+    title:      'Planner'
+    activities:
+      add:      'Add an Activity'
+      add_modal:
+        title:  'Add an Event Activity'
+        event_title_caption:    'Add to'
+        activity_title_caption: 'Activity Name'
+        submit: 'Add This Activity'
 
   events:
     object_name:   'event'
