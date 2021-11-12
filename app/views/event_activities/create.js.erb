@@ -1,0 +1,3 @@
+myModal.hide();
+var elem = document.querySelector('<%= "#event_#{@event.id}_activities" %>');
+elem.innerHTML = '<%= escape_javascript(render partial: "plans/activities", locals: { event: @event }) %>';

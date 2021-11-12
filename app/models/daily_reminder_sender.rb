@@ -42,7 +42,7 @@ class DailyReminderSender
   end
   
   def perform_for_member(member)
-    Time.zone = unit.settings(:locale).time_zone
+    Time.zone = member.unit.settings(:locale).time_zone
     return unless Flipper.enabled? :daily_reminder, member
     return unless time_to_run?(member, Time.zone.now)
 

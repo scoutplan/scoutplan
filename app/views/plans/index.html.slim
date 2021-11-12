@@ -13,28 +13,59 @@ h1 Planner
         h3 = event.title
         p = event.short_description
 
-        - if event.category.name == 'Troop Meeting'
-          ul.event-activities(data-controller="sortable" data-sortable-animation-value="150")
-            li.event-activity = "Opening Ceremony"
-            li.event-activity = "Camp Planning"
-            li.event-activity = "Game"
-            li.event-activity = "Closing Ceremony"
+        div(id="event_#{event.id}_activities")
+          = render partial: 'activities', locals: { event: event }
+
+.modal#activity_modal_wrapper
 
 scss:
+  .add-activity-link {
+    text-decoration: none;
+    color: #666;
+    border: none;
+    background: none;
+  }
+
   .card.event-card {
-    background: #f3f3f3;
+    background: #f6f6f6;
   }
 
   li.event-activity {
-    border: 1px solid #ddd;
+    border: 1px solid #e4e4e4;
     margin-bottom: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem 0.5rem 0.5rem;
     border-radius: 5px;
-    cursor: move;
+    font-size: 0.9rem;
     background: #fff;
+    display: block;
+    cursor: default;
+    white-space: nowrap;
+
+    .sort-grip {
+      display: inline-block;
+      width: 1.2rem;
+      cursor: move;      
+    }
+
+    .activity-title {
+      display: inline;
+      overflow-x: hidden;
+      white-space: nowrap;
+    }
 
     h3 {
       margin-bottom: 1rem;      
+    }
+
+    .activity-action-link {
+      display: none;
+      color: #888;
+    }
+
+    &:hover {
+      .activity-action-link {
+        display: inline;
+      }
     }
   }
 
@@ -65,17 +96,7 @@ scss:
     }
 
     .card.event-camping-trip {
-      min-width: 9rem;
-      background-color: darkolivegreen;
-      color: white;
-      margin-left: -1.25rem;
-      margin-right: 2rem;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
 
-      h3 {
-        font-size: 1rem;
-      }
     }
 
     .card.event-no-meeting {

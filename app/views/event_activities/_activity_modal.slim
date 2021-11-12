@@ -1,0 +1,19 @@
+.modal-dialog#activity_modal
+  = form_with model: @activity, url: event_activities_path(@event), local: false do |f|
+    .modal-content
+      .modal-header
+        h5.modal-title Add an Event Activity
+        button.btn-close(type="button" data-bs-dismiss="modal")
+
+      .modal-body
+        .mb-3
+          label.form-label Add to
+          = text_field_tag :event_title, "#{@event.title} on #{@event.starts_at.strftime('%B %-d')}", disabled: true, class: 'form-control'
+
+        .mb-3
+          = f.label :title, class: 'form-label'
+          = f.text_field :title, class: 'form-control', autofocus: 'autofocus', autocomplete: 'off'
+
+      .modal-footer
+        = f.submit 'Add This Activity', class: 'btn btn-primary'
+        button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
