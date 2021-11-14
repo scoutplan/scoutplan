@@ -14,6 +14,19 @@
           = f.label :title, t('planner.activities.add_modal.activity_title_caption'), class: 'form-label'
           = f.text_field :title, class: 'form-control', autofocus: 'autofocus', autocomplete: 'off'
 
+        .mb-3
+          = f.label :equipment
+          - @activity.equipment.each do |item|
+            = f.text_field 'equipment[]', class: 'form-control'
+            br
+          
+          br
+          = link_to '#' do
+            i.fa-plus.far
+            |&nbsp;
+            |Add equipment
+
+
       .modal-footer
         = f.submit t('planner.activities.add_modal.submit'), class: 'btn btn-primary'
         button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('global.cancel')
