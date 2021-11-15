@@ -25,4 +25,7 @@ FactoryBot.define do
 
   factory :child_member, parent: :unit_membership do
   end
+
+  factory :respondent, parent: :unit_membership do
+  end
 end
