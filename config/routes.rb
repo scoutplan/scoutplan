@@ -4,6 +4,9 @@ require 'sidekiq/web'
 
 # rubocop disable Metrics/BlockLength
 Rails.application.routes.draw do
+  get 'news_items/index'
+  get 'news_items/new'
+  get 'news_items/create'
   devise_for :users
   root to: 'home#index'
 
@@ -38,6 +41,7 @@ Rails.application.routes.draw do
     end
 
     resources :event_categories
+    resources :news_items
 
     resources :unit_memberships, path: 'members', as: 'members', except: [:show] do
       collection do

@@ -1,0 +1,4 @@
+var elem = document.querySelector('#modal_wrapper');
+elem.innerHTML = '<%= escape_javascript(render "news_item_modal") %>';
+var myModal = new bootstrap.Modal(elem);
+myModal.show();

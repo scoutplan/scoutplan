@@ -1,0 +1,35 @@
+- content_for :body_classes do
+  = "messages index"
+
+
+.row
+  .col-md-6
+
+  .col-md-3
+    h3 = t('messaging.drafts')
+    = render @draft_news_items
+    = render partial: 'no_news_items' if @draft_news_items.empty?
+
+    = link_to new_unit_news_item_path(@unit), remote: true do
+      i.fa-plus.far
+      |&nbsp;
+      = t('messaging.new_news_item')
+
+
+  .col-md-3
+    h3 = t('messaging.queued')
+    = render @queued_news_items
+    = render partial: 'no_news_items' if @queued_news_items.empty?
+
+
+/ end of main
+
+.modal#modal_wrapper
+
+scss:
+  article.news-item {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+  }

@@ -65,6 +65,13 @@ en:
 
   messaging:
     title: 'Messaging'
+    new_item_description: "News items appear in the weekly digest once they're approved"
+    new_news_item: 'Write a News Item'
+    drafts: 'Drafts'
+    ready_to_send: 'Queued for next newsletter'
+    news_item_title: 'News Item'
+    news_item_modal:
+      submit: 'Add This News Item'
 
   unit_settings:
     title: 'Unit Settings'
