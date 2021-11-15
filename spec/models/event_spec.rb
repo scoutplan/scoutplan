@@ -37,7 +37,7 @@ RSpec.describe Event, type: :model do
       @member = FactoryBot.create(:member, :non_admin)
       @event = FactoryBot.create(:event, unit: @member.unit)
       @rsvp_token = @event.rsvp_tokens.create(member: @member)
-      @rsvp = @event.rsvps.create(member: @member, response: :declined)
+      @rsvp = @event.rsvps.create(member: @member, response: :declined, respondent: @member)
     end
 
     it 'finds the rsvp for a member' do

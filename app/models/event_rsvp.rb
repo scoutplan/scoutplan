@@ -3,6 +3,7 @@
 class EventRsvp < ApplicationRecord
   belongs_to :event
   belongs_to :unit_membership
+  belongs_to :respondent, class_name: 'UnitMembership'
 
   validates_uniqueness_of :event, scope: :unit_membership
   validates_presence_of :response
