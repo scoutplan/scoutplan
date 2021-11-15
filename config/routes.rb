@@ -30,6 +30,7 @@ Rails.application.routes.draw do
 
   resources :units do
     resources :plans, path: 'planner'
+    resources :messages, path: 'messaging'
     resources :events, only: %i[index new create] do
       collection do
         post 'bulk_publish'
@@ -40,7 +41,7 @@ Rails.application.routes.draw do
 
     resources :unit_memberships, path: 'members', as: 'members', except: [:show] do
       collection do
-        get  ':member_id',   to: 'unit_memberships#index'
+        get  ':member_id',  to: 'unit_memberships#index'
         post 'bulk_update', to: 'unit_memberships#bulk_update'
         get  'import',      to: 'unit_memberships_import#new'
         post 'import',      to: 'unit_memberships_import#create'

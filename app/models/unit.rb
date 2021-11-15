@@ -6,6 +6,7 @@ class Unit < ApplicationRecord
   has_many :event_categories
   has_many :unit_memberships
   has_many :users, through: :unit_memberships
+  has_many :news_items
   has_one_attached :logo
 
   validates_presence_of :name

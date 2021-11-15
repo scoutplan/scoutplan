@@ -1,11 +1,22 @@
 # frozen_string_literal: true
 
+require 'mixpanel-ruby'
+
 # base Controller class
 class ApplicationController < ActionController::Base
   include Pundit
   before_action :authenticate_user!
   before_action :process_query_string
+  before_action :track_activity
   after_action  :clear_session_view
+
+  def track_activity
+    return unless user_signed_in?
+    
+    tracker = Mixpanel::Tracker.new(ENV['MIXPANEL_TOKEN'])
+    event = "#{controller_name}##{action_name}"
+    tracker.track(@current_member.id, event)
+  end
 
   def new_session_path(_scope)
     new_user_session_path

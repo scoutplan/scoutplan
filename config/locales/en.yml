@@ -63,6 +63,9 @@ en:
     past_tense:
       third_person: 'was'
 
+  messaging:
+    title: 'Messaging'
+
   unit_settings:
     title: 'Unit Settings'
     logo:  'Logo'

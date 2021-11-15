@@ -195,6 +195,7 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.1)
     minitest (5.14.4)
+    mixpanel-ruby (2.2.2)
     msgpack (1.4.2)
     multipart-post (2.1.1)
     nio4r (2.5.8)
@@ -430,6 +431,7 @@ DEPENDENCIES
   ledermann-rails-settings
   listen (~> 3.7)
   lograge
+  mixpanel-ruby
   pg (~> 1.2)
   puma (~> 5.5.1)
   pundit (~> 2.1)
