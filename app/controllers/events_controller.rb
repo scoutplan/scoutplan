@@ -88,10 +88,17 @@ class EventsController < ApplicationController
 
   # PATCH /events/:id/rsvpp
   def create_or_update_rsvp
+    note = params[:note]
+
     params[:event][:members].each do |member_id, values|
       response = values[:event_rsvp][:response]
-      rsvp = @event.rsvps.create_with(response: response).find_or_create_by!(unit_membership_id: member_id)
-      rsvp.update!(response: response)
+      rsvp = @event.rsvps.create_with(
+        response: response,
+        note: note,
+        respondent: @current_member
+      ).find_or_create_by!(unit_membership_id: member_id)
+
+      rsvp.update!(response: response, respondent: @current_member, note: note)
       EventNotifier.send_rsvp_confirmation(rsvp)
     end
 

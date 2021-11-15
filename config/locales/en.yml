@@ -101,6 +101,10 @@ en:
     publish_message:    "%{title} was published"
     update_confirmation: "%{title} was updated"
 
+    rsvp:
+      note_placeholder: 'e.g. "Need a ride", or "Arriving late"'
+      no_response: 'No response'
+
     index:
       title:      'Event Calendar'
       page_title: 'Event Calendar'

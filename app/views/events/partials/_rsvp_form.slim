@@ -30,6 +30,9 @@
                             = rsvp_fields.radio_button :response, :declined, class: 'form-check-input'
                             = rsvp_fields.label :response, :declined, value: :declined, class: 'form-check-label' do
                               = t('rsvp_decline')
+          .mb-3
+            = f.label :note, class: 'form-label'
+            = text_field_tag :note, '', class: 'form-control', placeholder: t('events.rsvp.note_placeholder'), autocomplete: 'off'
 
         .modal-footer(style="justify-content: space-between;")
           div
