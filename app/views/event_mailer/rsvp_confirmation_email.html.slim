@@ -1,7 +1,7 @@
 h1 #{ @rsvp.unit.name } RSVP Confirmation
 
 p
-  | Hi, #{ @rsvp.user.first_name }. This is to confirm that you're <strong>#{ @rsvp.accepted? ? 'going' : 'not going' }</strong> to the #{ @rsvp.event.title }&nbsp;
+  | Hi, #{ @rsvp.user.display_first_name }. This is to confirm that you're <strong>#{ @rsvp.accepted? ? 'going' : 'not going' }</strong> to the #{ @rsvp.event.title }&nbsp;
   | on #{ @rsvp.event.starts_at }.
 
 p

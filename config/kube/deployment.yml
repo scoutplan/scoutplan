@@ -62,6 +62,11 @@ spec:
                 secretKeyRef:
                   name: scoutplan-production
                   key: MAPBOX_TOKEN
+            - name: MIXPANEL_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: MIXPANEL_TOKEN                  
             - name: DO_STORAGE_SECRET
               valueFrom:
                 secretKeyRef:

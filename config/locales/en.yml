@@ -63,8 +63,36 @@ en:
     past_tense:
       third_person: 'was'
 
+  messaging:
+    title: 'Messaging'
+    new_item_description: "News items appear in the weekly digest once they're approved"
+    new_news_item: 'Write a News Item'
+    drafts: 'Drafts'
+    ready_to_send: 'Queued for next newsletter'
+    news_item_title: 'News Item'
+    news_item_modal:
+      submit: 'Add This News Item'
+
+  unit_settings:
+    title: 'Unit Settings'
+    logo:  'Logo'
+    event_categories: 'Event Categories'
+    utilities: 'Utilities'
+    placeholders:
+      location: 'e.g. city name'
+
   magic_links:
     login_success: "You're signed in as %{name} via Magic Link."
+
+  planner:
+    title:      'Planner'
+    activities:
+      add:      'Add an Activity'
+      add_modal:
+        title:  'Add an Event Activity'
+        event_title_caption:    'Add to'
+        activity_title_caption: 'Activity Name'
+        submit: 'Add This Activity'
 
   events:
     object_name:   'event'
