@@ -6,11 +6,11 @@ html
     = csrf_meta_tags
     = csp_meta_tag
     / = stylesheet_link_tag "inter-font", "data-turbo-track": "reload"
-    = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
-    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    = stylesheet_link_tag 'tailwind', 'data-turbo-track': 'reload'
     = stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
-    = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: 'anonymous'
     = stylesheet_link_tag "https://use.typekit.net/#{ ENV['ADOBE_FONT_KIT_ID'] }.css"
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: 'anonymous'
     = yield :head
 
     = javascript_include_tag 'https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'
@@ -21,9 +21,8 @@ html
     = render partial: 'layouts/partials/notices'
     = render 'layouts/partials/header'
 
-    .container
+    .flex
       = yield
-      = render 'layouts/partials/footer'
 
   javascript:
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -79,9 +78,28 @@ html
       }
     }
 
-    body.messages.index {
+    body.messages.index.drafts {
       #nav_link_messaging {
         @include active-nav-link;
+      }
+
+      li#main_nav_item_messages_drafts a {
+        @apply bg-gray-200;
+        background: #ddd;
+      }
+    }
+
+    body.messages.index.queued {
+      li#main_nav_item_messages_queued a {
+        @apply bg-gray-200;
+        background: #ddd;
+      }
+    }
+
+    body.messages.index.sent {
+      li#main_nav_item_messages_sent a {
+        @apply bg-gray-200;
+        background: #ddd;
       }
     }
 

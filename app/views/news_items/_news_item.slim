@@ -1,4 +1,19 @@
-article.news-item
-  - if news_item.title.present?
-    h5 = news_item.title
-  == news_item.body
+article.news-item.py-3.border-gray-200.border-1.mb-3.rounded-md.pt-3.pr-3.pb-4(id="news_item_#{news_item.id}")
+  header.clear-both.overflow-auto.mb-2
+    h5.float-left.text-black.ml-5
+      span.w-5
+        i.fa-envelope.fad.mr-2.text-yellow-400
+      = news_item.title.presence || '(no title)'
+
+    .news-item-actions.float-right.hidden
+      = link_to '#', title: t('messaging.enqueue_draft'), class: 'mx-1.5 text-green-400', data: { 'bs-toggle' => 'tooltip' } do
+        i.fa-check-circle.far
+
+      = link_to '#', title: t('messaging.edit'), class: 'mx-1.5 text-indigo-400' do
+        i.fa-edit.far
+
+      = link_to '#', title: t('messaging.delete_draft'), class: 'mx-1.5 text-red-400' do
+        i.fa-trash.far
+
+  .ml-12
+    == news_item.body

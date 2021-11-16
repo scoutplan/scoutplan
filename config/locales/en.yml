@@ -63,15 +63,22 @@ en:
     past_tense:
       third_person: 'was'
 
+  newsletter:
+    title: 'Newsletter'
+
   messaging:
     title: 'Messaging'
     new_item_description: "News items appear in the weekly digest once they're approved"
-    new_news_item: 'Write a News Item'
+    new_news_item: 'Write a Newsletter Item'
     drafts: 'Drafts'
-    ready_to_send: 'Queued for next newsletter'
+    queued: 'Queued'
+    queued_long: 'Queued for next newsletter'
     news_item_title: 'News Item'
     news_item_modal:
       submit: 'Add This News Item'
+    enqueue_draft: 'Move this news item to the queue to be sent with the next newsletter'
+    delete_draft: 'Delete this draft'
+    edit_draft: 'Edit'
 
   unit_settings:
     title: 'Unit Settings'
@@ -160,6 +167,7 @@ en:
       back:         'Back to main event page'
 
   members:
+    title:            'Members'
     name:             'Name'
     type:             'Type'
     parent_guardian:  'Parents, Guardians, and Delegates'

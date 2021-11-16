@@ -31,17 +31,21 @@ Rails.application.routes.draw do
   get 'e/:id', to: redirect('/events/%{id}'), status: 302
   patch 'units/:id/settings', as: 'update_unit_settings', to: 'unit_settings#update'
 
+  get 'units/:unit_id/messaging/drafts', to: 'messages#index', as: 'unit_newsletter_drafts', defaults: { mode: 'drafts' }
+  get 'units/:unit_id/messaging/queued', to: 'messages#index', as: 'unit_newsletter_queued', defaults: { mode: 'queued' }
+  get 'units/:unit_id/messaging/sent',   to: 'messages#index', as: 'unit_newsletter_sent',   defaults: { mode: 'sent'}
+
   resources :units do
     resources :plans, path: 'planner'
     resources :messages, path: 'messaging'
+    resources :event_categories
+    resources :news_items
+
     resources :events, only: %i[index new create] do
       collection do
         post 'bulk_publish'
       end
     end
-
-    resources :event_categories
-    resources :news_items
 
     resources :unit_memberships, path: 'members', as: 'members', except: [:show] do
       collection do
