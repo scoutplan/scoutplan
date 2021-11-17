@@ -39,6 +39,7 @@ gem 'skylight', '~> 5.1'
 gem 'slim', '~> 4.1'
 gem 'smarter_csv'
 gem 'stimulus-rails'
+gem "tailwindcss-rails", github: "dorianmariefr/tailwindcss-rails", branch: "minimal"
 gem 'textris', git: 'https://github.com/danielpuglisi/textris.git', branch: 'rails6'
 gem 'twilio-ruby'
 gem 'trix', '~> 0.10'
@@ -76,5 +77,3 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
-
-gem "tailwindcss-rails", "~> 0.5.1"
