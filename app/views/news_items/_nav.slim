@@ -23,7 +23,7 @@ ul.p-0.list-none
       span.text-black
         = t('planner.title')
 
-  li#main_nav_item_messages
+  li#main_nav_item_newsletter
     = link_to unit_newsletter_drafts_path(@unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-gray-200 rounded-md' do
       span.w-8.inline-block.text-center.text-purple-500
         i.fa-newspaper.fad
@@ -31,7 +31,7 @@ ul.p-0.list-none
       span.text-black
         = t('newsletter.title')
 
-  li#main_nav_item_messages_drafts
+  li#main_nav_item_newsletter_drafts
     = link_to unit_newsletter_drafts_path(@unit), class: 'no-underline whitespace-nowrap pt-2 pb-2 pr-2 pl-8 block hover:bg-gray-200 rounded-md' do
       span.w-8.inline-block.text-center.text-purple-400
         i.fa-edit.fad
@@ -42,7 +42,7 @@ ul.p-0.list-none
         span.text-xs.px-2.font-medium.bg-white.text-gray-800.rounded.py-0.5.ml-3.float-right.mt-1.border.border-red-500
           = @current_unit.news_items.draft.count          
 
-  li#main_nav_item_messages_queued
+  li#main_nav_item_newsletter_queued
     = link_to unit_newsletter_queued_path(@unit), class: 'no-underline whitespace-nowrap pt-2 pb-2 pr-2 pl-8 block hover:bg-gray-200 rounded-md' do
       span.w-8.inline-block.text-center.text-purple-400
         i.fa-file-export.fad
@@ -53,7 +53,7 @@ ul.p-0.list-none
         span.text-xs.px-2.font-medium.bg-gray-500.bg-opacity-10.text-gray-800.rounded.py-0.5.ml-3.float-right.mt-1
           = @current_unit.news_items.queued.count
 
-  li#main_nav_item_messages_sent
+  li#main_nav_item_newsletter_sent
     = link_to unit_newsletter_sent_path(@unit), class: 'no-underline whitespace-nowrap pt-2 pb-2 pr-2 pl-8 block hover:bg-gray-200 rounded-md' do
       span.w-8.inline-block.text-center.text-purple-400
         i.fa-file-check.fad
