@@ -77,8 +77,8 @@ en:
     news_item_modal:
       submit: 'Add This News Item'
     enqueue_draft: 'Move this news item to the queue to be sent with the next newsletter'
-    delete_draft: 'Delete this draft'
-    edit_draft: 'Edit'
+    delete_draft: 'Delete this item'
+    edit: 'Edit this item'
 
   unit_settings:
     title: 'Unit Settings'

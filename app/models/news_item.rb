@@ -8,4 +8,16 @@ class NewsItem < ApplicationRecord
   enum status: ALL_STATES.zip(ALL_STATES).to_h
 
   has_rich_text :body
+
+  def promotable?
+    draft?
+  end
+
+  def editable?
+    !sent?
+  end
+
+  def deletable?
+    !sent?
+  end
 end

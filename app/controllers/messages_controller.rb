@@ -4,7 +4,6 @@ class MessagesController < UnitContextController
   def index
     authorize :message, :index?
     @view = params[:mode] || 'drafts'
-
     @news_items = case @view
                   when 'queued'
                     @current_unit.news_items.queued
