@@ -1,7 +1,16 @@
 class MessagesController < UnitContextController
+  layout 'application_new'
+
   def index
     authorize :message, :index?
-    @draft_news_items = @current_unit.news_items.draft
-    @queued_news_items = @current_unit.news_items.queued
+    @view = params[:mode] || 'drafts'
+    @news_items = case @view
+                  when 'queued'
+                    @current_unit.news_items.queued
+                  when 'sent'
+                    @current_unit.news_items.sent
+                  else
+                    @current_unit.news_items.draft
+                  end
   end
 end

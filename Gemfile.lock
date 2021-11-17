@@ -9,6 +9,14 @@ GIT
       activesupport (>= 4.2)
       phony (~> 2.8)
 
+GIT
+  remote: https://github.com/dorianmariefr/tailwindcss-rails.git
+  revision: 609e9a65a0b00b9d600a20103cb8f34f05e7ed10
+  branch: minimal
+  specs:
+    tailwindcss-rails (0.4.2)
+      rails (>= 6.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -457,6 +465,7 @@ DEPENDENCIES
   smarter_csv
   spring (~> 2.1)
   stimulus-rails
+  tailwindcss-rails!
   textris!
   trix (~> 0.10)
   turbolinks (~> 5.2)

@@ -1,0 +1,65 @@
+ul.p-0.list-none
+  li#main_nav_item_events
+    = link_to unit_events_path(@unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-gray-200 rounded-md' do
+      span.w-8.inline-block.text-center.text-yellow-500
+        i.fa-calendar.fad
+        |&nbsp;&nbsp;
+      span.text-black
+        = t('events.index.title')
+
+  li#main_nav_item_member
+    = link_to unit_events_path(@unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-gray-200 rounded-md' do
+      span.w-8.inline-block.text-center.text-indigo-500
+        i.fa-users.fad
+        |&nbsp;&nbsp;
+      span.text-black
+        = t('members.title')
+
+  li#main_nav_item_planner
+    = link_to unit_plans_path(@current_unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-gray-200 rounded-md' do
+      span.w-8.inline-block.text-center.text-green-500
+        i.fa-map.fad
+        |&nbsp;&nbsp;
+      span.text-black
+        = t('planner.title')
+
+  li#main_nav_item_messages
+    = link_to unit_newsletter_drafts_path(@unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-gray-200 rounded-md' do
+      span.w-8.inline-block.text-center.text-purple-500
+        i.fa-newspaper.fad
+        |&nbsp;&nbsp;
+      span.text-black
+        = t('newsletter.title')
+
+  li#main_nav_item_messages_drafts
+    = link_to unit_newsletter_drafts_path(@unit), class: 'no-underline whitespace-nowrap pt-2 pb-2 pr-2 pl-8 block hover:bg-gray-200 rounded-md' do
+      span.w-8.inline-block.text-center.text-purple-400
+        i.fa-edit.fad
+        |&nbsp;&nbsp;
+      span.text-black
+        = t('messaging.drafts')
+      - if @current_unit.news_items.draft.count.positive?
+        span.text-xs.px-2.font-medium.bg-white.text-gray-800.rounded.py-0.5.ml-3.float-right.mt-1.border.border-red-500
+          = @current_unit.news_items.draft.count          
+
+  li#main_nav_item_messages_queued
+    = link_to unit_newsletter_queued_path(@unit), class: 'no-underline whitespace-nowrap pt-2 pb-2 pr-2 pl-8 block hover:bg-gray-200 rounded-md' do
+      span.w-8.inline-block.text-center.text-purple-400
+        i.fa-file-export.fad
+        |&nbsp;&nbsp;
+      span.text-black
+        = t('messaging.queued')
+      - if @current_unit.news_items.queued.count.positive?
+        span.text-xs.px-2.font-medium.bg-gray-500.bg-opacity-10.text-gray-800.rounded.py-0.5.ml-3.float-right.mt-1
+          = @current_unit.news_items.queued.count
+
+  li#main_nav_item_messages_sent
+    = link_to unit_newsletter_sent_path(@unit), class: 'no-underline whitespace-nowrap pt-2 pb-2 pr-2 pl-8 block hover:bg-gray-200 rounded-md' do
+      span.w-8.inline-block.text-center.text-purple-400
+        i.fa-file-check.fad
+        |&nbsp;&nbsp;
+      span.text-black
+        = t('messaging.sent')
+      - if @current_unit.news_items.sent.count.positive?
+        span.text-xs.px-2.font-medium.bg-gray-500.bg-opacity-10.text-gray-800.rounded.py-0.5.ml-3.float-right.mt-1
+          = @current_unit.news_items.sent.count  
