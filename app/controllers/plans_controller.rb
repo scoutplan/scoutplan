@@ -2,6 +2,8 @@
 
 # manage Unit Plans
 class PlansController < UnitContextController
+  layout 'application_new'
+
   def index
     @category_names = ['Troop Meeting', 'No Meeting', 'Camping Trip']
     @event_categories = @current_unit.event_categories.where('name IN (?)', @category_names)

@@ -1,0 +1,11 @@
+- @events.each do |event|
+  .inline-block.w-72.h-128.p-6.rounded.bg-gray-100.m-2(class="event-#{event.category.name.parameterize}")
+      h1.card-title
+        .text-sm.font-bold.uppercase(style="color:#{event.category.color}") = event.starts_at.strftime('%b')
+        .text-7xl(style="color:#{event.category.color}") = event.starts_at.strftime('%-d')
+        .text-sm.font-bold.uppercase = event.starts_at.strftime('%a')
+      h3 = event.title
+      p = event.short_description
+
+      div(id="event_#{event.id}_activities")
+        = render partial: 'activities', locals: { event: event } 
