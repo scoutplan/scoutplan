@@ -72,24 +72,30 @@ class MemberNotifier
 
   # TODO: move this to a Textris texter
   def self.send_daily_reminder_sms(member)
-    @magic_link_token = member.magic_link.token if
-      member.unit.settings(:security).enable_magic_links &&
-      member.user.settings(:security).enable_magic_links
-
-    from = ENV['TWILIO_NUMBER']
-    to = member.user.phone
-    events = member.unit.events.published.imminent
-    message = "Hi, #{member.display_first_name}. Today at #{member.unit.name}:"
-    events.each do |event|
-      message += "\n* #{event.title} on #{event.starts_at.strftime('%A')}"
-    end
-
-    message += "\n\nSee the full calendar at https://go.scoutplan.org/units/#{member.unit.id}/events."
-    message += "?r=#{@magic_link_token}" if @magic_link_token
-    sid = ENV['TWILIO_SID']
-    token = ENV['TWILIO_TOKEN']
+    from    = ENV['TWILIO_NUMBER']
+    to      = member.user.phone
+    events  = member.unit.events.published.imminent
+    message = daily_reminder_message(member, events)
+    sid     = ENV['TWILIO_SID']
+    token   = ENV['TWILIO_TOKEN']
 
     client = Twilio::REST::Client.new(sid, token)
     client.messages.create(from: from, to: to, body: message)
+  end
+
+  def daily_reminder_message(member, events)
+    if member.unit.settings(:security).enable_magic_links && member.user.settings(:security).enable_magic_links
+      magic_link_token = member&.magic_link&.token
+    end
+    date_format       = '%I:%M %p'
+    message           = "Hi, #{member.display_first_name}. Today at #{member.unit.name}:\n\n"
+    events.each do |event|
+      message += "* #{event.title} at #{event.starts_at.strftime(date_format)}\n"
+    end
+    message += "\nSee the full calendar at https://go.scoutplan.org/units/#{member.unit.id}/events"
+    message += '.'
+    message += "?r=#{magic_link_token}" if magic_link_token
+
+    message
   end
 end

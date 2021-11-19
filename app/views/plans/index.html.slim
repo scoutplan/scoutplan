@@ -9,10 +9,13 @@ main.w-full.pl-80
   
   .flex.overflow-x-scroll
     .flex.flex-nowrap.p-6
-      = render partial: 'event_cards'
+      = render partial: 'event', collection: @events
 
-
-#activity_modal_wrapper
+javascript:
+  function dismissDialog(selector) {
+    var elem = document.querySelector(selector);
+    elem.parentNode.removeChild(elem);
+  }      
 
 scss:
   .scroller {

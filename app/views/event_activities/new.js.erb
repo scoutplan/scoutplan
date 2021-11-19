@@ -1,5 +1,4 @@
-var elem = document.querySelector('#activity_modal_wrapper');
-elem.innerHTML = '<%= escape_javascript(render "activity_modal") %>';
-var myModal = new bootstrap.Modal(elem);
-myModal.show();
+var div = document.createElement('div');
+div.innerHTML = '<%= escape_javascript(render "activity_modal") %>';
+document.body.append(div);
 document.querySelector('#event_activity_title').focus();

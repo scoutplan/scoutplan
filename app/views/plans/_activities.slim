@@ -5,7 +5,7 @@ ul.event-activities(
   data-sortable-to-id="#{event.id}"
   data-sortable-resource-name-value="event_activity")
   - event.activities.order(:position).each do |activity|
-    li.event-activity(data-sortable-update-url="#{activity_path(activity.id)}" id="activity_#{activity.id}")
+    li.event-activity(data-sortable-update-url="#{activity_path(activity.id)}" id="activity_#{activity.id}" data-position="#{activity.position}")
       .sort-grip
         .activity-action-link
           i.fa-grip-vertical.far

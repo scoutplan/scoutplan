@@ -12,7 +12,12 @@ article.news-item.py-3.border-gray-200.border-1.mb-3.rounded-md.pt-3.pr-3.pb-4(i
 
       .news-item-actions.float-right.hidden
         - if news_item.promotable?
-          = link_to '#', title: t('messaging.enqueue_draft'), class: 'mx-1.5 text-green-400', data: { 'bs-toggle' => 'tooltip' } do
+          = link_to news_item_enqueue_path(news_item),
+            method: :post,
+            remote: true,
+            title: t('messaging.enqueue_draft'),
+            class: 'mx-1.5 text-green-400',
+            data: { 'bs-toggle' => 'tooltip' } do
             i.fa-check-circle.far
 
         - if news_item.editable?
