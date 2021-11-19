@@ -11,7 +11,6 @@ class EventsController < ApplicationController
   around_action :set_time_zone
 
   def index
-    redirect_to unit_home_path(@unit.id, @unit.slug) if params[:slug].nil?
     @events = UnitEventQuery.new(@unit, @current_member).execute
     @presenter = EventPresenter.new
     @current_family = @current_member.family

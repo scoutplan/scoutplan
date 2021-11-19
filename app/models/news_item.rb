@@ -13,6 +13,10 @@ class NewsItem < ApplicationRecord
     draft?
   end
 
+  def demotable?
+    queued?
+  end
+
   def editable?
     !sent?
   end

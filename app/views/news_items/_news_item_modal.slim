@@ -13,9 +13,15 @@
           = f.rich_text_area :body, style: 'height: 12rem; overflow: auto;'
 
         .mb-3
-          .form-check
-            = f.check_box :status, :draft, class: 'form-check-input'
-            = f.label :status, :draft
+          = label_tag :status, t('newsletter.modal.status'), class: 'inline'
+
+          span.mx-3
+            = f.radio_button :status, :draft, class: 'mr-2'
+            = f.label :status_draft, t('newsletter.modal.draft')
+
+          span.mx-3
+            = f.radio_button :status, :queued, class: 'mr-2'
+            = f.label :status_queued, t('newsletter.modal.queued')   
 
       .modal-footer
         = f.submit t('messaging.news_item_modal.submit'), class: 'btn btn-primary'

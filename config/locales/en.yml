@@ -65,6 +65,11 @@ en:
 
   newsletter:
     title: 'Newsletter'
+    modal:
+      status: 'Status:'
+      draft:  'Draft'
+      queued: 'Queued'
+    next_sends_at: 'The next newsletter will be automatically sent on %{next_newsletter_datetime}'
 
   messaging:
     title: 'Messaging'
@@ -77,6 +82,7 @@ en:
     news_item_modal:
       submit: 'Add This News Item'
     enqueue_draft: 'Move this news item to the queue to be sent with the next newsletter'
+    dequeue: 'Remove this item from the newsletter queue and set to draft'
     delete_draft: 'Delete this item'
     edit: 'Edit this item'
 
@@ -174,6 +180,7 @@ en:
     children:         'Children, Guardees, and Delgatees'
     status:           'Status'
     member_type:      'Youth/Adult'
+    search_by_name:   'Search by name (&#8984;S)'
     index:
       page_title:     'Member Roster'
       title:          'Member Roster'

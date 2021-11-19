@@ -78,28 +78,47 @@ html
       }
     }
 
-    body.messages.index.drafts {
+    body.news_items.index.drafts {
       #nav_link_messaging {
         @include active-nav-link;
       }
 
-      li#main_nav_item_messages_drafts a {
+      li#main_nav_item_newsletter_drafts a {
         @apply bg-gray-200;
-        background: #ddd;
+        background: #e8e8e8;
+      }
+
+      li#main_nav_item_newsletter {
+        font-weight: 800;
       }
     }
 
-    body.messages.index.queued {
-      li#main_nav_item_messages_queued a {
+    body.news_items.index.queued {
+      li#main_nav_item_newsletter_queued a {
         @apply bg-gray-200;
-        background: #ddd;
+        background: #e8e8e8;
       }
+
+      li#main_nav_item_newsletter {
+        font-weight: 800;
+      }      
     }
 
-    body.messages.index.sent {
-      li#main_nav_item_messages_sent a {
+    body.news_items.index.sent {
+      li#main_nav_item_newsletter_sent a {
         @apply bg-gray-200;
-        background: #ddd;
+        background: #e8e8e8;
+      }
+
+      li#main_nav_item_newsletter {
+        font-weight: 800;
+      }      
+    }
+
+    body.plans.index {
+      li#main_nav_item_planner {
+        @apply bg-gray-200;
+        background: #e8e8e8;        
       }
     }
 

@@ -1,8 +1,10 @@
 class UnitsController < ApplicationController
+  def index
+    redirect_to root_path
+  end
+
   def show
     @unit = Unit.find(params[:id])
-    respond_to do |format|
-      format.css
-    end
+    redirect_to unit_events_path(@unit)
   end
 end

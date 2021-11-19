@@ -1,22 +1,16 @@
 - content_for :body_classes do
-  = "messages index #{@view}"
+  = "news_items index #{@view}"
 
 nav.bg-gray-100.h-screen.p-4.w-80#nav_side
-  = render partial: 'nav'        
+  = render partial: 'nav'
 
 main.flex-grow.p-8
   .max-w-3xl.mx-auto
-    h4.mb-12.text-black = @view.titleize
-    = render @news_items
-    = render partial: 'no_news_items' if @current_unit.news_items.draft.empty?
+    h4.mb-0.text-black = @view.titleize
+    .text-sm.text-gray-400 = t('newsletter.next_sends_at', next_newsletter_datetime: @unit.settings(:communication).weekly_digest)
 
-    div
-      = link_to new_unit_news_item_path(@unit), remote: true, class: 'no-underline text-gray-500 hover:text-red-900' do
-        i.fa-plus.far.text-red-900
-        |&nbsp;&nbsp;
-        = t('messaging.new_news_item')
-
-/ end of main
+    #news_items_container.mt-11
+      = render partial: 'news_items'
 
 .modal#modal_wrapper
 

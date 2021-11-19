@@ -17,7 +17,7 @@ class DailyReminderSender
   end
 
   # is it time for this unit to run its weekly digest?
-  # hardwired for 8 AM daily
+  # hardwired for 7 AM daily
   def time_to_run?(member, current_time)
     return true if force_run
     return true if member.unit.settings(:utilities).fire_scheduled_tasks
@@ -31,22 +31,22 @@ class DailyReminderSender
   def perform_for_unit(unit)
     return unless unit.settings(:communication).daily_reminder != 'none'
     return unless unit.events.published.imminent.count.positive?
-    
+
     logger.info "Sending Daily Reminders for #{unit.name}"
-    
+
     unit.members.each do |member|
       perform_for_member(member)
     end
-    
+
     unit.settings(:communication).update! last_daily_reminder_sent_at: DateTime.now
   end
-  
+
   def perform_for_member(member)
     Time.zone = member.unit.settings(:locale).time_zone
     return unless Flipper.enabled? :daily_reminder, member
     return unless time_to_run?(member, Time.zone.now)
 
     logger.info "Sending Daily Reminder to #{member.flipper_id}"
-    MemberNotifier.send_daily_reminder(member, force_run)
+    MemberNotifier.send_daily_reminder(member)
   end
 end

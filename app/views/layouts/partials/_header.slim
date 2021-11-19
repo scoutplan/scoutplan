@@ -1,6 +1,6 @@
 header.navbar.navbar-expand-md.bd-navbar
   nav.container.flex-wrap.flex-md-nowrap.navbar-dark
-    = link_to unit_home_path(@current_unit, @current_unit.slug), class: 'navbar-brand' do
+    = link_to unit_events_path(@current_unit), class: 'navbar-brand' do
       i.fal.fa-home
 
     button.navbar-toggler(data-bs-toggle="collapse" data-bs-target="#main_navbar")
@@ -10,7 +10,7 @@ header.navbar.navbar-expand-md.bd-navbar
       ul.navbar-nav.me-auto.mb-2.mb-lg-0
         li.nav-item
           / = link_to 'Events',  unit_events_path(@current_unit), class: 'nav-link', id: 'nav_link_events'
-          = link_to 'Events',  unit_home_path(unit_id: @current_unit.id, slug: @current_unit.slug), class: 'nav-link', id: 'nav_link_events'
+          = link_to 'Events',  unit_events_path(@current_unit), class: 'nav-link', id: 'nav_link_events'
 
         li.nav-item
           = link_to 'Members', unit_members_path(@current_unit), class: 'nav-link', id: 'nav_link_members' if policy(:unit_membership).index?
@@ -19,7 +19,7 @@ header.navbar.navbar-expand-md.bd-navbar
           = link_to 'Planner', unit_plans_path(@current_unit), class: 'nav-link', id: 'nav_link_plans' if policy(:event).plan?
 
         li.nav-item
-          = link_to t('messaging.title'), unit_messages_path(@current_unit), class: 'nav-link', id: 'nav_link_messaging' if policy(:message).index?
+          = link_to t('newsletter.title'), unit_newsletter_drafts_path(@current_unit), class: 'nav-link', id: 'nav_link_newsletter' if policy(:message).index?
 
       ul.navbar-nav.ml-auto
         li.nav-item

@@ -26,18 +26,14 @@ Rails.application.routes.draw do
   resources :event_activities, as: 'activities'
 
   get 'units/:id/settings', as: 'edit_unit_settings', to: 'unit_settings#edit'
-  get 'units/:unit_id', to: 'events#index'
-  get 'u/:id', to: redirect('units/%{id}'), status: 302
-  get 'e/:id', to: redirect('/events/%{id}'), status: 302
   patch 'units/:id/settings', as: 'update_unit_settings', to: 'unit_settings#update'
 
-  get 'units/:unit_id/messaging/drafts', to: 'messages#index', as: 'unit_newsletter_drafts', defaults: { mode: 'drafts' }
-  get 'units/:unit_id/messaging/queued', to: 'messages#index', as: 'unit_newsletter_queued', defaults: { mode: 'queued' }
-  get 'units/:unit_id/messaging/sent',   to: 'messages#index', as: 'unit_newsletter_sent',   defaults: { mode: 'sent'}
+  get 'units/:unit_id/newsletter/drafts', to: 'news_items#index', as: 'unit_newsletter_drafts', defaults: { mode: 'drafts' }
+  get 'units/:unit_id/newsletter/queued', to: 'news_items#index', as: 'unit_newsletter_queued', defaults: { mode: 'queued' }
+  get 'units/:unit_id/newsletter/sent',   to: 'news_items#index', as: 'unit_newsletter_sent',   defaults: { mode: 'sent'}
 
   resources :units do
     resources :plans, path: 'planner'
-    resources :messages, path: 'messaging'
     resources :event_categories
     resources :news_items
 
@@ -66,7 +62,10 @@ Rails.application.routes.draw do
   end
 
   resources :member_relationships, as: 'relationships', path: 'relationships', only: %i[destroy]
-  resources :news_items
+  resources :news_items do
+    post 'enqueue', to: 'news_items#enqueue', as: 'enqueue'
+    post 'dequeue', to: 'news_items#dequeue', as: 'dequeue'
+  end
 
   get 'r(/:id)', to: 'rsvp_tokens#login', as: 'rsvp_response'
   post 'rsvp_tokens/:id/resend', to: 'rsvp_tokens#resend', as: 'rsvp_token_resend'
@@ -76,8 +75,5 @@ Rails.application.routes.draw do
     mount Flipper::UI.app(Flipper) => '/flipper'
     get 'a', to: 'admin#index'
   end
-
-  get 'units/:unit_id/:slug', as: 'unit_home', to: 'events#index'
-  get 'events/:id/:slug', as: 'event_home', to: 'events#show'
 end
 # rubocop enable Metrics/BlockLength
