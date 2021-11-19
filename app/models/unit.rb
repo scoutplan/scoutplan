@@ -21,7 +21,7 @@ class Unit < ApplicationRecord
     s.key :appearance, defaults: { main_color: '#003F87' }
     s.key :communication, defaults: {
       from_email: 'events@scoutplan.org',
-      weekly_digest: 'every Sunday at 6:00 AM',
+      weekly_digest: 'Sunday at 6:00 AM',
       daily_reminder: 'daily at 6:00 AM'
     }
     s.key :locale, defaults: { time_zone: 'Eastern Time (US & Canada)' }
@@ -30,7 +30,7 @@ class Unit < ApplicationRecord
   end
 
   def to_param
-    "#{id}-#{name.gsub(/[^a-z0-9]+/i, '-')}"
+    "#{id}-#{slug.gsub(/[^a-z0-9]+/i, '-')}"
   end
 
   def membership_for(user)

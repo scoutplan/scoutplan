@@ -1,1 +1,9 @@
-p No draft news items
+p.text-center.mb-0
+  span.text-red-400(style="font-size: 4rem;")
+    i.fak.fa-tumbleweed-alt
+
+p.text-center
+  | No #{@view} news items.
+  |&nbsp;
+  = link_to new_unit_news_item_path(@unit), remote: true, class: 'no-underline text-red-500 hover:text-red-600' do
+    = 'Write one now'

@@ -3,7 +3,13 @@ article.news-item.py-3.border-gray-200.border-1.mb-3.rounded-md.pt-3.pr-3.pb-4(i
     header.clear-both.overflow-auto.mb-2
       h5.float-left.text-black.ml-5.display-mode
         span.w-5
-          i.fa-envelope.fad.mr-2.text-yellow-400
+          - case news_item.status
+          - when 'draft'
+            i.fa-envelope.fad.mr-2.text-yellow-400
+          - when 'queued'
+            i.fa-envelope.fad.mr-2.text-green-400
+          - when 'sent'
+            i.fa-envelope.fad.mr-2.text-indigo-400
         span
           = news_item.title.presence || '(no title)'
 
@@ -34,7 +40,7 @@ article.news-item.py-3.border-gray-200.border-1.mb-3.rounded-md.pt-3.pr-3.pb-4(i
             i.fa-edit.far
 
         - if news_item.deletable?
-          = link_to '#', title: t('messaging.delete_draft'), class: 'mx-1.5 text-red-400', data: { 'bs-toggle' => 'tooltip' } do
+          = link_to news_item, method: :delete, remote: true, title: t('messaging.delete_draft'), class: 'mx-1.5 text-red-400', data: { 'bs-toggle' => 'tooltip' } do
             i.fa-trash.far
 
     .ml-12.mb-3

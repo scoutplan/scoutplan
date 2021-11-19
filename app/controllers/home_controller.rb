@@ -6,7 +6,7 @@ class HomeController < ApplicationController
 
     # redirect_to unit_events_path(memberships.first.unit) if memberships.count == 1
     unit = memberships.first.unit
-    redirect_to unit_home_path(unit_id: unit.id, slug: unit.slug)
+    redirect_to unit_events_path(unit)
 
     # TODO: disambiguate unit
   end

@@ -26,9 +26,6 @@ Rails.application.routes.draw do
   resources :event_activities, as: 'activities'
 
   get 'units/:id/settings', as: 'edit_unit_settings', to: 'unit_settings#edit'
-  get 'units/:unit_id', to: 'events#index'
-  get 'u/:id', to: redirect('units/%{id}'), status: 302
-  get 'e/:id', to: redirect('/events/%{id}'), status: 302
   patch 'units/:id/settings', as: 'update_unit_settings', to: 'unit_settings#update'
 
   get 'units/:unit_id/newsletter/drafts', to: 'news_items#index', as: 'unit_newsletter_drafts', defaults: { mode: 'drafts' }
@@ -78,8 +75,5 @@ Rails.application.routes.draw do
     mount Flipper::UI.app(Flipper) => '/flipper'
     get 'a', to: 'admin#index'
   end
-
-  get 'units/:unit_id/:slug', as: 'unit_home', to: 'events#index'
-  get 'events/:id/:slug', as: 'event_home', to: 'events#show'
 end
 # rubocop enable Metrics/BlockLength

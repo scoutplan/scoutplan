@@ -65,6 +65,11 @@ en:
 
   newsletter:
     title: 'Newsletter'
+    modal:
+      status: 'Status:'
+      draft:  'Draft'
+      queued: 'Queued'
+    next_sends_at: 'The next newsletter will be automatically sent on %{next_newsletter_datetime}'
 
   messaging:
     title: 'Messaging'
