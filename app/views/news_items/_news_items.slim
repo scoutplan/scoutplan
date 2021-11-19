@@ -1,0 +1,2 @@
+= render @news_items
+= render partial: 'no_news_items' if @current_unit.news_items.draft.empty?

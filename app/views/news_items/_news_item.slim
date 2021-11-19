@@ -11,6 +11,15 @@ article.news-item.py-3.border-gray-200.border-1.mb-3.rounded-md.pt-3.pr-3.pb-4(i
         = f.text_field :title, autocomplete: 'off', placeholder: 'Title', class: 'border-0 p-1 font-bold focus:outline-none -ml-1'
 
       .news-item-actions.float-right.hidden
+        - if news_item.demotable?
+          = link_to news_item_dequeue_path(news_item),
+            method: :post,
+            remote: true,
+            title: t('messaging.dequeue'),
+            class: 'mx-1.5 text-yellow-500',
+            data: { 'bs-toggle' => 'tooltip' } do
+            i.fa-inbox-out.far
+
         - if news_item.promotable?
           = link_to news_item_enqueue_path(news_item),
             method: :post,

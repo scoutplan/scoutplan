@@ -67,6 +67,7 @@ Rails.application.routes.draw do
   resources :member_relationships, as: 'relationships', path: 'relationships', only: %i[destroy]
   resources :news_items do
     post 'enqueue', to: 'news_items#enqueue', as: 'enqueue'
+    post 'dequeue', to: 'news_items#dequeue', as: 'dequeue'
   end
 
   get 'r(/:id)', to: 'rsvp_tokens#login', as: 'rsvp_response'

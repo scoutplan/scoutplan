@@ -29,6 +29,10 @@ class Unit < ApplicationRecord
     s.key :utilities, defaults: { fire_scheduled_tasks: false }
   end
 
+  def to_param
+    "#{id}-#{name.gsub(/[^a-z0-9]+/i, '-')}"
+  end
+
   def membership_for(user)
     members.find_by(user: user)
   end

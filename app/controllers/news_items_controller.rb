@@ -3,19 +3,12 @@
 # News Items feed into weekly newsletters
 class NewsItemsController < UnitContextController
   layout 'application_new'
-  before_action :find_news_item, only: [ :enqueue ]
+  before_action :find_news_item, only: [ :enqueue , :dequeue]
 
   def index
     authorize :message, :index?
     @view = params[:mode] || 'drafts'
-    @news_items = case @view
-                  when 'queued'
-                    @current_unit.news_items.queued
-                  when 'sent'
-                    @current_unit.news_items.sent
-                  else
-                    @current_unit.news_items.draft
-                  end
+    set_news_items
   end
 
   def new
@@ -29,11 +22,35 @@ class NewsItemsController < UnitContextController
   end
 
   def enqueue
-    @news_item.status = :queued
-    @news_item.save!
+    update_item_status(:queued)
+  end
+
+  def dequeue
+    update_item_status(:draft)
   end
 
   private
+
+  def update_item_status(status)
+    @current_unit = @unit = @news_item.unit
+    set_news_items
+    @news_item.status = status
+    @news_item.save!
+    set_news_items
+    respond_to :js
+  end
+
+  def set_news_items
+    @view = params[:mode] || 'drafts'
+    @news_items = case @view
+                  when 'queued'
+                    @current_unit.news_items.queued
+                  when 'sent'
+                    @current_unit.news_items.sent
+                  else
+                    @current_unit.news_items.draft
+                  end
+  end
 
   def find_news_item
     @news_item = NewsItem.find(params[:news_item_id])
