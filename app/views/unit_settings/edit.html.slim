@@ -6,7 +6,7 @@ header.mt-5
     h3 = t('unit_settings.logo')
 
     - if @unit.logo.attached?
-      div(style="background: #{@unit.settings(:appearance).main_color}; padding: 10px;")
+      div(style="background: #f3f3f3; padding: 10px;")
         = image_tag @unit.logo
 
     = form_for @unit, url: update_unit_settings_path(@unit) do |f|

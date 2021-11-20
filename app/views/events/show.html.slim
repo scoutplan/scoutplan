@@ -1,27 +1,31 @@
-header.rsvps.mb-4
-= render partial: 'events/partials/show/draft_card'
+nav.bg-gray-100.h-screen.py-8.pl-8.pt-20.pr-2.w-80#nav_side
+  = render partial: 'news_items/nav'
 
-nav.unit-id = @current_unit.name
-h1.mb-1 = @event.title
-- if @event.short_description.present?
-  p = @event.short_description
+main.h-screen.flex-grow.px-8.pb-8.pt-20.overflow-y-scroll
+  .w-full.mx-auto
+    header.rsvps.mb-4
+    = render partial: 'events/partials/show/draft_card'
 
-.row.gx-5
-  main
-    = render partial: 'events/partials/show/date_time_location_card'
-    == @event.description
-    = render partial: 'events/partials/show/empty_description' unless @event.description.present?
+    h1.mb-1 = @event.title
+    - if @event.short_description.present?
+      p = @event.short_description
 
-  aside
-    = render partial: @event.published? ? 'events/partials/show/admin_card_published' : 'events/partials/show/admin_card_draft'
-    = render partial: 'events/partials/show/rsvp_card' if @event.requires_rsvp
-    = render 'events/partials/show/upcoming_events_card' if !@current_member.admin? && !@event.requires_rsvp
+    .row.gx-5
+      main
+        = render partial: 'events/partials/show/date_time_location_card'
+        == @event.description
+        = render partial: 'events/partials/show/empty_description' unless @event.description.present?
 
-#modal-forms
-  = render 'events/partials/event_form'
-  = render 'events/partials/rsvp_form' if @event.requires_rsvp
-  = render 'events/partials/show/description_form'
-  = render 'events/partials/show/cancel_form'
+      aside
+        = render partial: @event.published? ? 'events/partials/show/admin_card_published' : 'events/partials/show/admin_card_draft'
+        = render partial: 'events/partials/show/rsvp_card' if @event.requires_rsvp
+        = render 'events/partials/show/upcoming_events_card' if !@current_member.admin? && !@event.requires_rsvp
+
+    #modal-forms
+      = render 'events/partials/event_form'
+      = render 'events/partials/rsvp_form' if @event.requires_rsvp
+      = render 'events/partials/show/description_form'
+      = render 'events/partials/show/cancel_form'
 
 scss:
   .dates {
