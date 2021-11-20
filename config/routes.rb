@@ -4,9 +4,6 @@ require 'sidekiq/web'
 
 # rubocop disable Metrics/BlockLength
 Rails.application.routes.draw do
-  get 'news_items/index'
-  get 'news_items/new'
-  get 'news_items/create'
   devise_for :users
   root to: 'home#index'
 
@@ -62,6 +59,7 @@ Rails.application.routes.draw do
   end
 
   resources :member_relationships, as: 'relationships', path: 'relationships', only: %i[destroy]
+  
   resources :news_items do
     post 'enqueue', to: 'news_items#enqueue', as: 'enqueue'
     post 'dequeue', to: 'news_items#dequeue', as: 'dequeue'

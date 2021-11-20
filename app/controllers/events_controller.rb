@@ -4,6 +4,7 @@ require 'humanize'
 
 # controller for Events
 class EventsController < ApplicationController
+  layout 'application_new'
   before_action :authenticate_user!
   before_action :find_unit, only: %i[index create new bulk_publish]
   before_action :find_event, except: %i[index edit create new bulk_publish]

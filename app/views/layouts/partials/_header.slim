@@ -1,38 +1,26 @@
-header.navbar.navbar-expand-md.bd-navbar
-  nav.container.flex-wrap.flex-md-nowrap.navbar-dark
-    = link_to unit_events_path(@current_unit), class: 'navbar-brand' do
-      i.fal.fa-home
+header.w-full.bg-red-700.px-9.pb-2.pt-6.overflow-auto.fixed.z-40
+  .float-left
+    ul.list-none.m-0.p-0
+      li.inline-block.text-lg
+        = link_to '#', class: 'text-white px-2 py-1 hover:bg-white hover:bg-opacity-20' do
+          i.fa-bars.far
 
-    button.navbar-toggler(data-bs-toggle="collapse" data-bs-target="#main_navbar")
-      span.navbar-toggler-icon
+      li.inline-block.text-lg
+        = link_to unit_events_path(@current_unit), class: 'text-white px-2 py-1 hover:bg-white hover:bg-opacity-20' do
+          i.fa-house.far
 
-    #main_navbar.collapse.navbar-collapse
-      ul.navbar-nav.me-auto.mb-2.mb-lg-0
-        li.nav-item
-          / = link_to 'Events',  unit_events_path(@current_unit), class: 'nav-link', id: 'nav_link_events'
-          = link_to 'Events',  unit_events_path(@current_unit), class: 'nav-link', id: 'nav_link_events'
+      - if Flipper.enabled? :global_search, @current_member
+        li.inline-block
+          .px-2.py-1
+            = text_field_tag :search_term, '', class: 'rounded-sm'
 
-        li.nav-item
-          = link_to 'Members', unit_members_path(@current_unit), class: 'nav-link', id: 'nav_link_members' if policy(:unit_membership).index?
+  .float-right
+    ul.list-none.m-0.p-0
+      li.inline-block
+        = link_to destroy_user_session_path, method: :delete, class: 'text-white px-2' do
+          | Logout
 
-        li.nav-item
-          = link_to 'Planner', unit_plans_path(@current_unit), class: 'nav-link', id: 'nav_link_plans' if policy(:event).plan?
-
-        li.nav-item
-          = link_to t('newsletter.title'), unit_newsletter_drafts_path(@current_unit), class: 'nav-link', id: 'nav_link_newsletter' if policy(:message).index?
-
-      ul.navbar-nav.ml-auto
-        li.nav-item
-          .dropdown
-            = link_to '#', class: 'nav-link dropdown-toggle', data: { 'bs-toggle' => 'dropdown' } do
-              i.fas.fa-user-circle
-              |&nbsp;
-              = "Hello, #{ current_user.display_first_name }!"
-            ul.dropdown-menu.dropdown-menu-end
-              li = link_to "#{ @current_unit.name} Settings", edit_unit_settings_path(@current_unit), class: 'dropdown-item' if policy(:unit_settings).edit?
-              li = link_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'dropdown-item'
-
-scss:
-  .navbar {
-    background-color: #ac3a3e;
-  }
+      - if policy(:unit_settings).edit?
+        li.inline-block
+          = link_to edit_unit_settings_path(@current_unit), class: 'text-white px-2' do
+            = "#{@current_unit.name} Settings"
