@@ -13,11 +13,31 @@ class NewsItemsController < UnitContextController
 
   def new
     @news_item = @current_unit.news_items.new(status: 'draft')
+    @news_item_unit = @current_unit
     respond_to :js
   end
 
   def create
     @news_item = @current_unit.news_items.new(news_item_params)
+    @news_item.save!
+    set_news_items
+    respond_to :js
+  end
+
+  def edit
+    @news_item = NewsItem.find(params[:id])
+    @current_unit = @unit = @news_item.unit
+    @membership = @unit.membership_for(current_user)
+    authorize @news_item
+    respond_to :js
+  end
+
+  def update
+    @news_item = NewsItem.find(params[:id])
+    @current_unit = @unit = @news_item.unit
+    @membership = @unit.membership_for(current_user)
+    authorize @news_item
+    @news_item.assign_attributes(news_item_params)
     @news_item.save!
     set_news_items
     respond_to :js

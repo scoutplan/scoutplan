@@ -78,7 +78,8 @@ en:
     drafts: 'Drafts'
     queued: 'Queued'
     queued_long: 'Queued for next newsletter'
-    news_item_title: 'News Item'
+    news_item_create_title: 'Add a News Item'
+    news_item_edit_title:   'Update a News Item'
     news_item_modal:
       submit: 'Add This News Item'
     enqueue_draft: 'Move this news item to the queue to be sent with the next newsletter'
@@ -217,6 +218,10 @@ en:
         multiple_events: "Today's Events"
 
   helpers:
+    submit:
+      create: "Add This %{model}"
+      update: "Confirm Changes to This %{model}"
+
     label:
       next: 'Next'
 

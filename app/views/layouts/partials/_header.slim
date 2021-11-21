@@ -1,4 +1,4 @@
-header.w-full.bg-red-700.px-9.pb-2.pt-6.overflow-auto.fixed.z-40
+header.w-full.px-9.pb-2.pt-6.overflow-auto.fixed.z-40(style="background:#E66425")
   .float-left
     ul.list-none.m-0.p-0
       li.inline-block.text-lg
@@ -19,8 +19,3 @@ header.w-full.bg-red-700.px-9.pb-2.pt-6.overflow-auto.fixed.z-40
       li.inline-block
         = link_to destroy_user_session_path, method: :delete, class: 'text-white px-2' do
           | Logout
-
-      - if policy(:unit_settings).edit?
-        li.inline-block
-          = link_to edit_unit_settings_path(@current_unit), class: 'text-white px-2' do
-            = "#{@current_unit.name} Settings"

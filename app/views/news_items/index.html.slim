@@ -1,16 +1,12 @@
 - content_for :body_classes do
-  = "news_items index #{@view}"
+  = @view
 
-nav.bg-gray-100.h-screen.p-4.w-80#nav_side
-  = render partial: 'nav'
+.max-w-3xl.mx-auto
+  h4.mb-0.text-black = @view.titleize
+  .text-sm.text-gray-400 = t('newsletter.next_sends_at', next_newsletter_datetime: @unit.settings(:communication).weekly_digest)
 
-main.flex-grow.p-8
-  .max-w-3xl.mx-auto
-    h4.mb-0.text-black = @view.titleize
-    .text-sm.text-gray-400 = t('newsletter.next_sends_at', next_newsletter_datetime: @unit.settings(:communication).weekly_digest)
-
-    #news_items_container.mt-11
-      = render partial: 'news_items'
+  #news_items_container.mt-11
+    = render partial: 'news_items'
 
 .modal#modal_wrapper
 
@@ -38,11 +34,8 @@ scss:
   }
 
 javascript:
-  document.querySelectorAll('.news-item-edit-toggler').forEach(function(elem) {
-    elem.addEventListener('click', function(event) {
-      var newsItemId = this.dataset.newsItemId;
-      var elem = document.querySelector('#news_item_' + newsItemId);
-      elem.classList.toggle('editing');
-      event.preventDefault();
-    })
-  });
+  function clickItemEditLinkForId(id) {
+    selector = '#edit_item_' + id + '_link';
+    var elem = document.querySelector(selector);
+    elem.click();
+  }

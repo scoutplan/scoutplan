@@ -1,13 +1,7 @@
-nav.bg-gray-100.h-screen.pl-8.pr-2.py-8.w-80#nav_side
-  .h-16
-  = render partial: 'news_items/nav'
-
-main.h-screen.flex-grow.p-8.overflow-y-scroll
-  .h-16
-  .w-full.mx-auto
-    = render 'events/partials/index/header'
-    = render partial: 'events/partials/index/no_events' if @events.count.zero?
-    = render partial: 'events/partials/index/table' if @events.count.positive?
+.w-full.mx-auto
+  = render 'events/partials/index/header'
+  = render partial: 'events/partials/index/no_events' if @events.count.zero?
+  = render partial: 'events/partials/index/table' if @events.count.positive?
 
 - content_for :body_classes do
   = "events index"
@@ -99,10 +93,6 @@ javascript:
 scss:
   tr.event {
     cursor: pointer;
-  }
-
-  body {
-    font-size: 95%;
   }
 
   .start-day, .days, .title, .glyph {

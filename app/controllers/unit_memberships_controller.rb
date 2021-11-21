@@ -2,6 +2,7 @@
 
 # responsible for Unit <> User relationships
 class UnitMembershipsController < ApplicationController
+  layout 'application_new'
   before_action :find_unit, only: %i[index new create bulk_update]
   before_action :find_membership, except: %i[index new create bulk_update]
 

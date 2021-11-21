@@ -1,28 +1,44 @@
-.modal-dialog.modal-lg
-  = form_with model: @news_item, url: unit_news_items_path(@current_unit), local: false  do |f|
-    .modal-content
-      .modal-header
-        h5.modal-title = t('messaging.news_item_title')
+#event_activity_modal
+  .fixed.inset-0.z-40.bg-black.opacity-20
+  .fixed.inset-0.z-50.justify-center.items-center.flex
+    .relative.mx-auto.my-6.rounded.bg-white.z-50.w-full.max-w-3xl
+      .w-full
+        = form_with model: [@news_item_unit, @news_item], local: false do |f|
+          .modal-content
+            .modal-header
+              h5.modal-title
+                - if @news_item.new_record?
+                  = t('messaging.news_item_create_title')
+                - else
+                  = t('messaging.news_item_edit_title')
 
-      .modal-body
-        .mb-3
-          = f.label :title, class: 'form-label'
-          = f.text_field :title, class: 'form-control'
-        
-        .mb-3
-          = f.rich_text_area :body, style: 'height: 12rem; overflow: auto;'
+              button
+                .p-1.ml-auto.bg-transparent.border-0.text-gray-300.float-right.text-3xl.leading-none.font-semibold.outline-none.focus:outline-none(
+                  onclick="modalElem.parentNode.removeChild(modalElem);"
+                )
+                i.fas.fa-times
 
-        .mb-3
-          = label_tag :status, t('newsletter.modal.status'), class: 'inline'
+            .modal-body
+              .mb-3
+                = f.label :title, class: 'form-label'
+                = f.text_field :title, class: 'form-control', autocomplete: 'off'
+              
+              .mb-3
+                = f.rich_text_area :body, style: 'height: 12rem; overflow: auto;'
 
-          span.mx-3
-            = f.radio_button :status, :draft, class: 'mr-2'
-            = f.label :status_draft, t('newsletter.modal.draft')
+              .mb-3
+                = label_tag :status, t('newsletter.modal.status'), class: 'inline'
 
-          span.mx-3
-            = f.radio_button :status, :queued, class: 'mr-2'
-            = f.label :status_queued, t('newsletter.modal.queued')   
+                span.mx-3
+                  = f.radio_button :status, :draft, class: 'mr-2'
+                  = f.label :status_draft, t('newsletter.modal.draft')
 
-      .modal-footer
-        = f.submit t('messaging.news_item_modal.submit'), class: 'btn btn-primary'
-        button.btn.btn-secondary(type="button" data-bs-dismiss="modal") = t('global.cancel')        
+                span.mx-3
+                  = f.radio_button :status, :queued, class: 'mr-2'
+                  = f.label :status_queued, t('newsletter.modal.queued')   
+
+            .modal-footer
+              = f.submit class: 'btn btn-primary' do
+                = t('messaging.news_item_modal.submit')
+
+              button.btn.btn-secondary(type="button" onClick="modalElem.parentNode.removeChild(modalElem);") = t('global.cancel')
