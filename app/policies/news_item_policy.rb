@@ -11,4 +11,12 @@ class NewsItemPolicy < UnitContextPolicy
   def destroy?
     admin?
   end
+
+  def edit?
+    admin?
+  end
+
+  def update?
+    admin?
+  end
 end

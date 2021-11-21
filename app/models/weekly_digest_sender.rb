@@ -9,7 +9,7 @@ class WeeklyDigestSender
   attr_accessor :force_run
 
   def perform
-    logger.info { 'Weekly digest sender invoked' }
+    logger.warn { 'Weekly digest sender invoked' }
 
     Unit.all.each do |unit|
       perform_for_unit(unit)
@@ -34,28 +34,28 @@ class WeeklyDigestSender
   def perform_for_unit(unit)
     Time.zone = unit.settings(:locale).time_zone
     right_now = Time.zone.now
-    logger.info { "Processing digest for unit #{unit.name}" }
+    logger.warn { "Processing digest for unit #{unit.name}" }
 
     return unless unit.settings(:communication).weekly_digest.present?
 
-    logger.info { 'Weekly digest enabled for unit' }
+    logger.warn { 'Weekly digest enabled for unit' }
     return unless time_to_run?(unit, right_now)
 
-    logger.info { 'Time to run' }
+    logger.warn { 'Time to run' }
 
     unit.members.each do |member|
       perform_for_member(member)
     end
 
     unit.settings(:communication).last_digest_sent_at = DateTime.now
-    logger.info { "Weekly digest HWM set to #{unit.settings(:communication).last_digest_sent_at}" }
+    logger.warn { "Weekly digest HWM set to #{unit.settings(:communication).last_digest_sent_at}" }
   end
 
   def perform_for_member(member)
-    logger.info "Processing digest for #{member.flipper_id}"
+    logger.warn "Processing digest for #{member.flipper_id}"
     return unless Flipper.enabled? :weekly_digest, member
 
-    logger.info "Sending digest to #{member.flipper_id}"
+    logger.warn "Sending digest to #{member.flipper_id}"
     MemberNotifier.send_digest(member)
   end
 end

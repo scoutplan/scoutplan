@@ -1,23 +1,24 @@
 - content_for :body_classes do
   = "members index"
 
-= form_tag bulk_update_unit_members_path(@unit), id: 'bulk_edit_form'
-  = render partial: 'unit_memberships/partials/index/header'
+.w-full.mx-auto
+  = form_tag bulk_update_unit_members_path(@unit), id: 'bulk_edit_form'
+    = render partial: 'unit_memberships/partials/index/header'
 
-  table.table.table-clickable.table-hover
-    thead
-      tr
-        th.selection
-          = check_box_tag 'all_visible_events', 'on', false, class: 'form-check-input', id: 'select_all_members_checkbox'
-        th = t('members.name')
-        th.role
-        th.status
-        th.member-type
-        th = t('members.parent_guardian')
-        th = t('members.children')
+    table.table.table-clickable.table-hover
+      thead
+        tr
+          th.selection
+            = check_box_tag 'all_visible_events', 'on', false, class: 'form-check-input', id: 'select_all_members_checkbox'
+          th = t('members.name')
+          th.role
+          th.status
+          th.member-type
+          th = t('members.parent_guardian')
+          th = t('members.children')
 
-    tbody
-      = render @unit_memberships
+      tbody
+        = render @unit_memberships
 
 = render partial: 'unit_memberships/partials/index/member_form'
 

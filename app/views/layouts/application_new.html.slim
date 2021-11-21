@@ -17,12 +17,18 @@ html
     = stylesheet_link_tag 'https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css'
     = javascript_include_tag 'https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js'
 
-  body(class="#{ yield :body_classes }")
+  body(class="#{controller_name} #{action_name} #{ yield :body_classes }")
     = render partial: 'layouts/partials/notices'
     = render 'layouts/partials/header'
 
     .flex
-      = yield
+      nav.relative.flex-shrink-0.bg-gray-100.h-screen.pl-8.pr-2.pb-8.py-8.w-80#nav_side
+        .h-16
+        = render partial: 'news_items/nav'
+      
+      main.h-screen.flex-grow.py-8.px-12.overflow-y-scroll
+        .h-16
+        = yield
 
   javascript:
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));

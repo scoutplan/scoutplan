@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   resources :units do
     resources :plans, path: 'planner'
     resources :event_categories
-    resources :news_items
+    resources :news_items, only: [ :index, :new, :create ]
 
     resources :events, only: %i[index new create] do
       collection do
@@ -59,8 +59,8 @@ Rails.application.routes.draw do
   end
 
   resources :member_relationships, as: 'relationships', path: 'relationships', only: %i[destroy]
-  
-  resources :news_items do
+
+  resources :news_items, only: [ :show, :edit, :update, :destroy ] do
     post 'enqueue', to: 'news_items#enqueue', as: 'enqueue'
     post 'dequeue', to: 'news_items#dequeue', as: 'dequeue'
   end

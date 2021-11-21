@@ -1,15 +1,11 @@
 - content_for :body_classes do
   = "plans index"
 
-nav.fixed.bg-gray-100.h-screen.p-4.w-80#nav_side
-  = render partial: 'news_items/nav'  
-
-main.w-full.pl-80
-  h1.m-8 = t('planner.title')
+h1.mb-8.ml-8 = t('planner.title')
   
-  .flex.overflow-x-scroll
-    .flex.flex-nowrap.p-6
-      = render partial: 'event', collection: @events
+.flex.overflow-x-scroll
+  .flex.flex-nowrap.p-6
+    = render partial: 'event', collection: @events
 
 javascript:
   function dismissDialog(selector) {
@@ -18,6 +14,11 @@ javascript:
   }      
 
 scss:
+  main {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
   .scroller {
     overflow-x: scroll;
     max-width: 100%;
