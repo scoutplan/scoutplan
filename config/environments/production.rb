@@ -55,7 +55,7 @@ Rails.application.configure do
 
   # Include generic and useful information about system operation, but avoid logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII).
-  config.log_level = :info
+  config.log_level = :debug
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
@@ -131,11 +131,11 @@ Rails.application.configure do
 end
 
 ActionMailer::Base.smtp_settings = {
-  user_name:            ENV['SMTP_USERNAME'],
-  password:             ENV['SMTP_PASSWORD'],
-  domain:               ENV['SMTP_DOMAIN'],
-  address:              ENV['SMTP_ADDRESS'],
-  port:                 ENV['SMTP_PORT'],
-  authentication:       :plain,
+  user_name: ENV['SMTP_USERNAME'],
+  password: ENV['SMTP_PASSWORD'],
+  domain: ENV['SMTP_DOMAIN'],
+  address: ENV['SMTP_ADDRESS'],
+  port: ENV['SMTP_PORT'],
+  authentication: :plain,
   enable_starttls_auto: true
 }
