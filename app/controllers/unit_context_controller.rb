@@ -2,7 +2,6 @@
 
 class UnitContextController < ApplicationController
   before_action :find_unit_info, only: %i[index new create]
-  before_action :track_activity
 
   def current_unit
     Unit.first

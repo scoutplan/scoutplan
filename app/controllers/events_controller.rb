@@ -8,7 +8,6 @@ class EventsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_unit, only: %i[index create new bulk_publish]
   before_action :find_event, except: %i[index edit create new bulk_publish]
-  before_action :track_activity
   around_action :set_time_zone
 
   def index
