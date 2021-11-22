@@ -4,7 +4,7 @@ require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
   config.textris_delivery_method = :twilio
-  config.logger = RemoteSyslogLogger.new('logs6.papertrailapp.com', 46920)
+  config.logger = RemoteSyslogLogger.new(ENV['LOGGER_HOST'], ENV['LOGGER_PORT'])
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -55,7 +55,7 @@ Rails.application.configure do
 
   # Include generic and useful information about system operation, but avoid logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII).
-  config.log_level = :debug
+  config.log_level = :info
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]

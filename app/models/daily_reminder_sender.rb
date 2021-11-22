@@ -9,7 +9,7 @@ class DailyReminderSender
   attr_accessor :force_run
 
   def perform
-    logger.info 'Running Daily Reminder job'
+    Rails.logger.info 'Running Daily Reminder job'
 
     Unit.all.each do |unit|
       perform_for_unit(unit)
@@ -32,7 +32,7 @@ class DailyReminderSender
     return unless unit.settings(:communication).daily_reminder != 'none'
     return unless unit.events.published.imminent.count.positive?
 
-    logger.info "Sending Daily Reminders for #{unit.name}"
+    Rails.logger.info "Sending Daily Reminders for #{unit.name}"
 
     unit.members.each do |member|
       perform_for_member(member)
@@ -46,7 +46,7 @@ class DailyReminderSender
     return unless Flipper.enabled? :daily_reminder, member
     return unless time_to_run?(member, Time.zone.now)
 
-    logger.info "Sending Daily Reminder to #{member.flipper_id}"
+    Rails.logger.info "Sending Daily Reminder to #{member.flipper_id}"
     MemberNotifier.send_daily_reminder(member)
   end
 end

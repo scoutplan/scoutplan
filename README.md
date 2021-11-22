@@ -1,5 +1,9 @@
 # README
 
+![Scoutplan logo](scoutplan_logo.png)
+
+S C O U T P L A N
+
 ## Application Performance
 
 [![View performance data on Skylight](https://badges.skylight.io/problem/R3sADLfgeNb2.svg)](https://oss.skylight.io/app/applications/R3sADLfgeNb2)
