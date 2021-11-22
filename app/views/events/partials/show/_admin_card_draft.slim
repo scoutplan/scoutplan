@@ -9,11 +9,7 @@
         .form-text
           | Visible to you because you're a #{ @event.unit.name } administrator
 
-      .float-end
-        button.btn(data-bs-toggle="collapse" data-bs-target="#admin_card_body")
-          i.far.fa-chevron-up
-
-    #admin_card_body.collapse.show
+    #admin_card_body
       .card-body
         ul.list-group.list-group-flush
           - if @can_edit

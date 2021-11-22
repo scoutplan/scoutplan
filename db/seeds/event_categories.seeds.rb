@@ -1,8 +1,16 @@
 # frozen_string_literal: true
 
 EventCategory.find_or_create_by(name: 'Troop Meeting',      glyph: 'user-friends',    color: 'FireBrick')
-EventCategory.find_or_create_by(name: 'Camping Trip',       glyph: 'campground',      color: 'Sienna')
+EventCategory.find_or_create_by(name: 'Camping Trip',       glyph: 'campground',      color: 'ForestGreen')
 EventCategory.find_or_create_by(name: 'Hiking Trip',        glyph: 'hiking',          color: 'ForestGreen')
 EventCategory.find_or_create_by(name: 'Court of Honor',     glyph: 'medal',           color: 'Goldenrod')
 EventCategory.find_or_create_by(name: 'Service Project',    glyph: 'hand-receiving',  color: 'SteelBlue')
-EventCategory.find_or_create_by(name: 'Committee Meeting',  glyph: 'hand-receiving',  color: 'SteelBlue')
+EventCategory.find_or_create_by(name: 'Committee Meeting',  glyph: 'users-class',     color: 'DarkOrchid')
+EventCategory.find_or_create_by(name: 'Fundraiser',         glyph: 'money-bill-wave', color: 'DarkSeaGreen')
+EventCategory.find_or_create_by(name: 'Aquatic Event',      glyph: 'water',           color: 'SkyBlue')
+EventCategory.find_or_create_by(name: 'Cycling',            glyph: 'biking',          color: 'DodgerBlue')
+EventCategory.find_or_create_by(name: 'No Meeting',         glyph: 'ban',             color: 'OrangeRed')
+EventCategory.find_or_create_by(name: 'Other',              glyph: 'calendar-day',    color: 'PaleTurqoise')
+EventCategory.find_or_create_by(name: 'Historical',         glyph: 'monument',        color: 'maroon')
+EventCategory.find_or_create_by(name: 'High Adventure',     glyph: 'compass',         color: 'MediumTurqoise')
+EventCategory.find_or_create_by(name: 'Cycling',            glyph: 'biking',          color: 'DodgerBlue')
