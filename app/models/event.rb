@@ -31,6 +31,10 @@ class Event < ApplicationRecord
   scope :today,         -> { where('starts_at BETWEEN ? AND ?', Time.zone.now.beginning_of_day, Time.zone.now.at_end_of_day) }
   scope :imminent,      -> { where('starts_at BETWEEN ? AND ?', Time.zone.now.beginning_of_day + 12.hours, Time.zone.now.at_end_of_day + 12.hours) }
 
+  def to_param
+    [id, title].join(' ').parameterize
+  end
+  
   def past?
     starts_at.past?
   end

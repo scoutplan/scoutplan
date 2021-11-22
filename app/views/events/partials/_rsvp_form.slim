@@ -1,5 +1,8 @@
 - @format_date = '%Y-%m-%d'
 - @format_time = '%H:%M:%S'
+- family_member_ids = @current_member.family.map(&:id)
+- rsvps = @event.rsvps.where(unit_membership_id: family_member_ids)
+- notes = rsvps.map(&:note).uniq.join(', ')
 
 .modal.fade#eventRsvpModal
   .modal-dialog
@@ -32,7 +35,7 @@
                               = t('rsvp_decline')
           .mb-3
             = f.label :note, class: 'form-label'
-            = text_field_tag :note, '', class: 'form-control', placeholder: t('events.rsvp.note_placeholder'), autocomplete: 'off'
+            = text_field_tag :note, notes, class: 'form-control', placeholder: t('events.rsvp.note_placeholder'), autocomplete: 'off'
 
         .modal-footer(style="justify-content: space-between;")
           div

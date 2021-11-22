@@ -1,15 +1,15 @@
 # README
 
-![Scoutplan logo](scoutplan_logo.png)
+<img src="./scoutplan_logo.png" width="150"/>
 
-S C O U T P L A N
+
 
 ## Application Performance
 
-[![View performance data on Skylight](https://badges.skylight.io/problem/R3sADLfgeNb2.svg)](https://oss.skylight.io/app/applications/R3sADLfgeNb2)
-[![View performance data on Skylight](https://badges.skylight.io/typical/R3sADLfgeNb2.svg)](https://oss.skylight.io/app/applications/R3sADLfgeNb2)
-[![View performance data on Skylight](https://badges.skylight.io/rpm/R3sADLfgeNb2.svg)](https://oss.skylight.io/app/applications/R3sADLfgeNb2)
-[![View performance data on Skylight](https://badges.skylight.io/status/R3sADLfgeNb2.svg)](https://oss.skylight.io/app/applications/R3sADLfgeNb2)
+[![View performance data on Skylight](https://badges.skylight.io/problem/O56zZFqqFZWO.svg)](https://oss.skylight.io/app/applications/O56zZFqqFZWO)
+[![View performance data on Skylight](https://badges.skylight.io/typical/O56zZFqqFZWO.svg)](https://oss.skylight.io/app/applications/O56zZFqqFZWO)
+[![View performance data on Skylight](https://badges.skylight.io/rpm/O56zZFqqFZWO.svg)](https://oss.skylight.io/app/applications/O56zZFqqFZWO)
+[![View performance data on Skylight](https://badges.skylight.io/status/O56zZFqqFZWO.svg)](https://oss.skylight.io/app/applications/O56zZFqqFZWO)
 
 ## Assumptions & pre-reqs
 
