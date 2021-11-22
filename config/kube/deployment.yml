@@ -77,8 +77,6 @@ spec:
                 secretKeyRef:
                   name: scoutplan-production
                   key: TWILIO_TOKEN
-
-
           envFrom:
           - configMapRef:
               name: scoutplan-production-config
