@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
   include Pundit
   before_action :authenticate_user!
   before_action :process_query_string
-  before_action :track_activity
   after_action  :clear_session_view
 
   def track_activity
@@ -15,8 +14,7 @@ class ApplicationController < ActionController::Base
     return unless @current_member
 
     tracker = Mixpanel::Tracker.new(ENV['MIXPANEL_TOKEN'])
-    track_member(tracker)
-    event = "#{controller_name}##{action_name}"
+    event = [controller_name, action_name].join('#')
     tracker.track(@current_member.id, event)
   end
 
