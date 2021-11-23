@@ -16,10 +16,11 @@
               = f.label :title, class: 'mb-2 text-black' do
               = f.text_field :title, autocomplete: 'off', class: 'w-full border rounded p-2 focus:outline-none focus:ring'
 
-            .mb-3
-              = f.label :equipment
-              - @activity.equipment.each do |item|
-                = f.text_field 'equipment[]', class: 'form-control'
+            - if false
+              .mb-3
+                = f.label :equipment
+                - @activity.equipment.each do |item|
+                  = f.text_field 'equipment[]', class: 'form-control'
 
           footer.border-top.px-6.py-3.justify-end.flex
             = f.submit class: 'px-6 py-2 rounded bg-red-700 hover:bg-red-800 text-white mr-2' do

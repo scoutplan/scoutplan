@@ -4,10 +4,13 @@
 # for this controller
 class EventRsvpsController < ApplicationController
   def create
-    @event    = Event.find(params[:event_id])
-    @member   = UnitMembership.find(params[:member_id])
+    @event = Event.find(params[:event_id])
+    @member = UnitMembership.find(params[:member_id])
     @response = params[:response]
-    @rsvp     = EventRsvp.find_or_create_by(event: @event, unit_membership: @member)
+    @rsvp = EventRsvp.find_or_create_by(event: @event, unit_membership: @member)
+    @unit = @event.unit
+    @current_member = @unit.membership_for(current_user)
+    @rsvp.respondent = @current_member
 
     @rsvp.response = @response
     @rsvp.save!
