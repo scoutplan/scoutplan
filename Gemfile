@@ -5,6 +5,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.2'
 
+gem 'scout_apm' # needs to be first
+
 gem 'acts_as_list'
 gem 'awesome_print', '~> 1.9'
 gem 'aws-sdk-s3', require: false
@@ -29,7 +31,6 @@ gem 'remote_syslog_logger'
 gem 'rexml', '~> 3.2'
 gem 'rubocop', '~> 1.20', require: false
 gem 'sass-rails', '~> 6.0'
-gem 'scout_apm'
 gem 'seedbank', '~> 0.5'
 gem 'sentry-rails', '~> 4.8'
 gem 'sentry-ruby', '~> 4.8'
