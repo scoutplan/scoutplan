@@ -9,13 +9,12 @@ html
     = stylesheet_link_tag 'tailwind', 'data-turbo-track': 'reload'
     = stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = stylesheet_link_tag "https://use.typekit.net/#{ ENV['ADOBE_FONT_KIT_ID'] }.css"
+    = stylesheet_link_tag 'https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
     = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: 'anonymous'
-    = yield :head
-
     = javascript_include_tag 'https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'
-    = stylesheet_link_tag 'https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css'
     = javascript_include_tag 'https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js'
+    = yield :head
 
   body(class="#{controller_name} #{action_name} #{ yield :body_classes }")
     = render partial: 'layouts/partials/notices'

@@ -61,6 +61,5 @@
         div(style="display:inline-block;margin:0 0.5rem 0.5rem 0;overflow:auto;")
           = crf.select  :child_unit_membership_id,
                         options_from_collection_for_select(@candidates, :id, :full_name),
-                        include_blank: 'Select a child member',
-                        prompt: 'Add a child relationship',
-                        class: 'form-select form-select-sm'
+                        { include_blank: 'Select a child member' },
+                        { class: 'form-select form-select-sm bg-gray-300' }

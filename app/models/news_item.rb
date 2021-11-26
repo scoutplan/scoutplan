@@ -24,4 +24,9 @@ class NewsItem < ApplicationRecord
   def deletable?
     !sent?
   end
+
+  def self.mark_all_queued_as_sent_by(unit: nil)
+    return unless unit
+    unit.news_items.queued.update(status: :sent)
+  end
 end

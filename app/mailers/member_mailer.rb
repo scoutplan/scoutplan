@@ -15,6 +15,7 @@ class MemberMailer < ScoutplanMailer
     Rails.logger.info "Emailing digest to #{@to_address}"
     @this_week_events = @unit.events.published.this_week
     @upcoming_events = @unit.events.published.upcoming
+    @news_items = @unit.news_items.queued
     mail(to: @to_address,
          from: @from_address,
          subject: "#{@unit.name} Digest")

@@ -4,7 +4,8 @@
 class MemberMailerPreview < ActionMailer::Preview
   def digest_email
     member = Unit.first.members.first
-    MemberMailer.with(member: member).digest_email
+    news_items = member.unit.news_items.queued
+    MemberMailer.with(member: member, news_items: news_items).digest_email
   end
 
   def daily_reminder_email

@@ -71,7 +71,7 @@ class UnitMembershipsController < ApplicationController
     case item
     when 'digest'
       @message_name = 'Digest'
-      MemberNotifier.send_digest(@target_membership)
+      MemberNotifier.send_digest(@target_membership, nil)
     when 'daily_reminder'
       @message_name = 'Daily Reminder'
       MemberNotifier.send_daily_reminder(@target_membership)
