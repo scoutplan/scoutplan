@@ -4,7 +4,10 @@
 .modal.fade#eventModal
   .modal-dialog
     .modal-content
-      = form_for [@unit, @event] do |f|
+      / = form_for [@unit, @event_view.event] do |f|
+      - url = @event_view.new_record? ? unit_events_path(@unit) : event_path(@event_view.event)
+      - method = @event_view.new_record? ? 'post' : 'patch'
+      = form_with model: @event_view, scope: 'event', url: url, method: method do |f|
         .modal-header
           - if @event.new_record?
             h5.modal-title = t(:event_add)
@@ -28,17 +31,17 @@
 
           // from date
           .mb-3
-            .form-text Dates and times are #{ @current_unit.settings(:locale).time_zone }
+            .form-text = t('events.form.timezone_prompt', timezone_name: @current_unit.settings(:locale).time_zone)
 
           .mb-3
             .row.mb-3
               .col-sm-2.pt-2
                 = f.label :from
               .col-sm-5
-                = date_field_tag :starts_at_d, @event.starts_at.localtime.strftime("#{ @format_date }"), class: 'form-control'
+                = f.date_field :starts_at_date, class: 'form-control'
 
               .col-sm-5
-                = time_field_tag :starts_at_t, @event.starts_at.localtime.strftime("#{ @format_time }"), class: 'form-control', step: '900'
+                = f.time_field :starts_at_time, class: 'form-control', step: '900', value: @event.starts_at.localtime.strftime("#{ @format_time }")
 
           // to date
           .mb-3
@@ -46,9 +49,9 @@
               .col-sm-2.pt-2
                 = f.label :to
               .col-sm-5
-                 = date_field_tag :ends_at_d, @event.ends_at.localtime.strftime("#{ @format_date }"), class: 'form-control'
+                 = f.date_field :ends_at_date, class: 'form-control'
               .col-sm-5
-                 = time_field_tag :ends_at_t, @event.ends_at.localtime.strftime("#{ @format_time }"), class: 'form-control', step: '900'
+                 = f.time_field :ends_at_time, class: 'form-control', step: '900', value: @event.ends_at.localtime.strftime("#{ @format_time }")
 
           // repeats
           .row.mb-3(style="height:3rem;")

@@ -8,8 +8,8 @@ RSpec.describe 'EventRsvps', type: :request do
 
   it 'updates a response' do
     @rsvp = FactoryBot.create(:event_rsvp)
-    post event_rsvps_path(@rsvp.event, member_id: @rsvp.member.id, response: 'accepted'), xhr: true
-
+    params = { member_id: @rsvp.member.id, response: 'accepted' }
+    post event_rsvps_path(@rsvp.event, params), xhr: true
     @rsvp.reload
     expect(@rsvp.response).to eq('accepted')
   end

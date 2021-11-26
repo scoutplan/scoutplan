@@ -11,7 +11,6 @@ class EventActivitiesController < ApplicationController
   end
 
   def update
-    ap activity_params
     @activity.assign_attributes(activity_params)
     @activity.save!
   end

@@ -2,8 +2,12 @@
 
 FactoryBot.define do
   factory :event_rsvp do
-    event
-    member
+    transient do
+      unit { create(:unit) }
+    end
+
+    event { association :event, unit: unit }
+    unit_membership { association :unit_membership, unit: unit }
     respondent
     response { 'declined' }
 
