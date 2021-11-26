@@ -52,7 +52,6 @@ class UnitMembershipsController < ApplicationController
   end
 
   def update_settings_params
-    ap settings_params
     return unless settings_params
 
     settings_params.each do |setting_key, values|
@@ -60,8 +59,6 @@ class UnitMembershipsController < ApplicationController
         @target_membership.settings(setting_key.to_sym).assign_attributes subsetting_key.to_sym => subsetting_value
       end
     end
-
-    ap @target_membership.settings(:communication)
   end
 
   def pundit_user

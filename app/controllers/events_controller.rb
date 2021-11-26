@@ -21,6 +21,8 @@ class EventsController < ApplicationController
 
   def show
     authorize @event
+
+    @event_view = EventView.new(@event)
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).organize?
     @current_family = @current_member.family
@@ -29,27 +31,29 @@ class EventsController < ApplicationController
 
   def create
     authorize :event, :create?
-    @event = @unit.events.new(event_params)
-    # @event.starts_at = ScoutplanUtilities.compose_datetime(params[:starts_at_d], params[:starts_at_t])
-    # @event.ends_at   = ScoutplanUtilities.compose_datetime(params[:ends_at_d], params[:ends_at_t])
-    event_set_datetimes
-    @event.repeats_until = nil unless params[:event_repeats] == 'on'
-    return unless @event.save!
 
-    flash[:notice] = t('helpers.label.event.create_confirmation', event_name: @event.title)
-    redirect_to @event
+    @event_view = EventView.new(@unit.events.new)
+    @event_view.assign_attributes(event_params)
+    return unless @event_view.save!
+
+    flash[:notice] = t('helpers.label.event.create_confirmation', event_name: @event_view.title)
+    redirect_to @event_view.event
   end
 
   def edit
     authorize @event
+
+    @event_form = EventView.new(@event)
   end
 
   def update
-    @event.assign_attributes(event_params)
-    event_set_datetimes
-    return unless @event.save!
+    authorize @event
 
-    params[:notice] = t('events.update_confirmation', title: @event.title)
+    @event_view = EventView.new(@event)
+    @event_view.assign_attributes(event_params)
+    return unless @event_view.save!
+
+    flash[:notice] = t('events.update_confirmation', title: @event.title)
     redirect_to @event
   end
 
@@ -131,6 +135,7 @@ class EventsController < ApplicationController
 
     @event.starts_at = @event.starts_at.change({ hour: 10 }) # default starts at 10 AM
     @event.ends_at   = @event.ends_at.change({ hour: 16 }) # default ends at 4 PM
+    @event_view = EventView.new(@event)
     @member_rsvps    = @current_member.event_rsvps
   end
 
@@ -164,10 +169,10 @@ class EventsController < ApplicationController
       :description,
       :short_description,
       :requires_rsvp,
-      :starts_at_d,
-      :starts_at_t,
-      :ends_at_d,
-      :ends_at_t,
+      :starts_at_date,
+      :starts_at_time,
+      :ends_at_date,
+      :ends_at_time,
       :repeats_until,
       :departs_from
     )

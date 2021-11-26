@@ -1,20 +1,17 @@
 # frozen_string_literal: true
 
-# only intended to be called via XHR...no view exist
-# for this controller
+# only intended to be called via XHR...no HTML view exists for this controller
 class EventRsvpsController < ApplicationController
   def create
     @event = Event.find(params[:event_id])
-    @member = UnitMembership.find(params[:member_id])
-    @response = params[:response]
-    @rsvp = EventRsvp.find_or_create_by(event: @event, unit_membership: @member)
     @unit = @event.unit
-    @current_member = @unit.membership_for(current_user)
-    @rsvp.respondent = @current_member
+    @member = @unit.memberships.find(params[:member_id])
+    @rsvp = @event.rsvps.find_or_create_by(unit_membership: @member)
+    @respondent = @unit.membership_for(current_user) || @member
+    @rsvp.respondent = @respondent
+    @rsvp.response = params[:response]
 
-    @rsvp.response = @response
     @rsvp.save!
-
     @event.reload
 
     EventNotifier.send_rsvp_confirmation(@rsvp)

@@ -144,6 +144,8 @@ en:
       event_row:
         rsvp_respond: 'Respond'
         rsvp_change:  'Change'
+    form:
+      timezone_prompt: "Dates and times are %{timezone_name}"
 
     show:
       upcoming_events_title:  'Other upcoming events'

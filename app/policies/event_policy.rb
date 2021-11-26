@@ -18,6 +18,10 @@ class EventPolicy < UnitContextPolicy
     admin?
   end
 
+  def update?
+    admin?
+  end
+
   def organize?
     admin?
   end
