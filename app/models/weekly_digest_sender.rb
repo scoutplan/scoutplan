@@ -44,18 +44,21 @@ class WeeklyDigestSender
     Rails.logger.warn { 'Time to run' }
 
     unit.members.each do |member|
-      perform_for_member(member)
+      perform_for_member(member, news_items)
     end
 
     unit.settings(:communication).last_digest_sent_at = DateTime.now
     Rails.logger.warn { "Weekly digest HWM set to #{unit.settings(:communication).last_digest_sent_at}" }
+
+    # there's a potential race condition here that we're going to ignore for now
+    NewsItem.mark_all_queued_as_sent_by(unit: unit)
   end
 
-  def perform_for_member(member)
+  def perform_for_member(member, news_items)
     Rails.logger.warn "Processing digest for #{member.flipper_id}"
     return unless Flipper.enabled? :weekly_digest, member
 
     Rails.logger.warn "Sending digest to #{member.flipper_id}"
-    MemberNotifier.send_digest(member)
+    MemberNotifier.send_digest(member, news_items)
   end
 end

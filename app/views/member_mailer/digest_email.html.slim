@@ -2,20 +2,26 @@
   = t('mailers.member_mailer.digest_email.title', unit_name: @unit.name)
 
 - content_for :blurb do
-  p Good #{ Time.zone.now.time_of_day }, #{@member.display_first_name}. Here's what's going on:
+  p(style="font-size: 125%; margin-bottom:2rem; color:#666;") Good #{ Time.zone.now.time_of_day }, #{@member.display_first_name}. Here's what's going on:
+  - @news_items.each_with_index do |news_item, counter|
+    - if counter > 0
+      div(style="text-align:center;color:#aaa;") &#9679;
+
+    article(style="margin-bottom:1rem; color: #666;")
+      h3(style="margin-bottom:0.25rem; color:#000;") = news_item.title
+      == news_item.body
+
+  hr(style="border:1px solid #eee;")
 
 - content_for :left_column do
   h2(style="color:#888; text-transform:uppercase;") Next Seven Days
-
   - @this_week_events.each do |event|
-    hr(style="border:1px solid #eee;")
-
     h3(style="margin-bottom: 0;")
       = link_to event.title, event_url(event, r: @member.magic_link.token)
 
     p(style="margin-top:0;")
-      = event.starts_at.localtime.strftime('%A, %b %d')
-      |&nbsp;&nbsp;
+      = event.starts_at.localtime.strftime('%A, %b %-d')
+      br
       = event.starts_at.localtime.strftime('%-I:%M %p')
       |&thinsp;&ndash;&thinsp;
       = event.ends_at.localtime.strftime('%-I:%M %p')
@@ -55,7 +61,9 @@
   dl
     = render partial: 'member_mailer/partials/event_rows', locals: { events: @upcoming_events }
 
-  p = link_to "View all #{ @unit.name} events", unit_events_url(@unit, r: @member.magic_link.token), style: 'font-weight: bold;'
+- content_for :pre_footer do
+  p(style="text-align:center;")
+    = link_to "View all #{ @unit.name} events", unit_events_url(@unit, r: @member.magic_link.token), style: 'font-weight: bold; background-color: #e66425; color: #fff; text-decoration: none; padding: 1rem 3rem; border-radius:0.25rem;'
 
 scss:
   .accepted {
