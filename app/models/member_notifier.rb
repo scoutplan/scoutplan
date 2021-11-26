@@ -89,7 +89,7 @@ class MemberNotifier
     client.messages.create(from: from, to: to, body: message)
   end
 
-  def daily_reminder_message(member, events)
+  def self.daily_reminder_message(member, events)
     if member.unit.settings(:security).enable_magic_links && member.user.settings(:security).enable_magic_links
       magic_link_token = member&.magic_link&.token
     end

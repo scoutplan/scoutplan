@@ -75,10 +75,10 @@ jobs:
       # - name: Run the migration task
         # run: kubectl apply -f $GITHUB_WORKSPACE/config/kube/db-migrate.yml
 
-      - name: Deploy to DigitalOcean Kubernetes
+      - name: Deploy app to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/config/kube/deployment.yml
 
-      - name: Deploy to DigitalOcean Kubernetes
+      - name: Deploy Sidekiq to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/config/kube/sidekiq.yml
 
       - name: Verify deployment
