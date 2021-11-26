@@ -12,6 +12,7 @@ class MemberNotifier
 
   def self.send_test_message(member)
     return unless member.contactable?
+
     self.send_test_sms(member)
   end
 
@@ -25,9 +26,14 @@ class MemberNotifier
 
   def self.send_daily_reminder(member)
     return unless member.contactable?
+
+    Rails.logger.warn { 'Member is contactable' }
     return unless Flipper.enabled? :receive_daily_reminder, member
+
+    Rails.logger.warn { 'Flipper enabled '}
     return unless member.unit.events.published.imminent.count.positive?
 
+    Rails.logger.warn { 'There are imminent events to send' }
     @magic_link_token = member.magic_link.token if
       member.unit.settings(:security).enable_magic_links &&
       member.user.settings(:security).enable_magic_links
