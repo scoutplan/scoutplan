@@ -34,7 +34,7 @@ class Event < ApplicationRecord
   def to_param
     [id, title].join(' ').parameterize
   end
-  
+
   def past?
     starts_at.past?
   end
