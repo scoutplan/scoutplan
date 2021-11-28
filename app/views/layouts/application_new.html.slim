@@ -16,16 +16,16 @@ html
     = javascript_include_tag 'https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js'
     = yield :head
 
-  body(class="#{controller_name} #{action_name} #{ yield :body_classes }")
+  body(class="#{controller_name} #{action_name}")
     = render partial: 'layouts/partials/notices'
     = render 'layouts/partials/header'
 
     .flex
-      nav.relative.flex-shrink-0.bg-gray-100.h-screen.pl-8.pr-2.pb-8.py-8.w-80#nav_side
+      nav.relative.flex-shrink-0.bg-gray-100.h-screen.pl-8.pr-2.pb-8.py-8.w-60.lg:w-80#nav_side
         .h-16
         = render partial: 'news_items/nav'
       
-      main.h-screen.flex-grow.py-8.px-12.overflow-y-scroll
+      main.h-screen.flex-grow.py-8.px-16.overflow-y-scroll
         .h-16
         = yield
 

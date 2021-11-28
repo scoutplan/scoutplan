@@ -1,6 +1,7 @@
 li = link_to '#',
+     remote: true,
      class: "dropdown-item toggle-body-class #{ @events.rsvp_required.future.count.zero? ? 'disabled' : '' }",
-     data: { 'body-class' => 'showing-only-rsvp-events showing-future-events events-filtered' },
+     data: { action: 'event#toggleRsvpEvents' },
      id: 'show-only-rsvp-events-link' do
 
   .menu-glyph

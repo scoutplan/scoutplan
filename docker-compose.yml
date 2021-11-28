@@ -61,4 +61,4 @@ services:
     image: alpeware/chrome-headless-stable
     ports:
       - "9222:9222"
-    command: "/usr/bin/google-chrome-unstable --disable-gpu --headless --no-sandbox --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --user-data-dir=/data"
+    # command: "/usr/bin/google-chrome-unstable --disable-gpu --headless --no-sandbox --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --user-data-dir=/data"

@@ -4,7 +4,6 @@
 .modal.fade#eventModal
   .modal-dialog
     .modal-content
-      / = form_for [@unit, @event_view.event] do |f|
       - url = @event_view.new_record? ? unit_events_path(@unit) : event_path(@event_view.event)
       - method = @event_view.new_record? ? 'post' : 'patch'
       = form_with model: @event_view, scope: 'event', url: url, method: method do |f|
@@ -19,9 +18,9 @@
           / EVENT CATEGORY
           .mb-3
             = f.label :category, class: 'col-form-label'
-            = f.select :event_category_id,
+            = f.select :category_id,
               @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
-              { prompt: t('event_category_prompt') },
+              { prompt: t('event_category_prompt'), selected: @event_view.event_category_id },
               { class: 'form-select' }
 
           / TITLE
@@ -132,18 +131,18 @@ javascript:
   }
 
   function setupCategoryDropdownHandler() {
-    document.getElementById('event_event_category_id').addEventListener('change', function() {
+    document.querySelector('#event_category_id').addEventListener('change', function() {
       if (isTitleDirty) { return; }
 
       const catId = this.value;
       const catName = this.options[this.selectedIndex].text;
-      const eventTitle = document.getElementById('event_title');
+      const eventTitle = document.querySelector('#event_title');
       eventTitle.value = catName;
 
       validateDialog();
     });
 
-    document.getElementById('event_title').addEventListener('change', function() {
+    document.querySelector('#event_title').addEventListener('change', function() {
       isTitleDirty = true;
     });
   }
@@ -151,9 +150,9 @@ javascript:
   // TODO: DRY this out
   function setupDateHandlers() {
     // if start date is later than end date, then update end date to match
-    document.getElementById('starts_at_d').addEventListener('change', function() {
-      const startsAtDateField = document.getElementById('starts_at_d');
-      const endsAtDateField = document.getElementById('ends_at_d');
+    document.querySelector('#event_starts_at_date').addEventListener('change', function() {
+      const startsAtDateField = document.querySelector('#event_starts_at_date');
+      const endsAtDateField = document.querySelector('#event_ends_at_date');
       const startsAtDate = Date.parse(startsAtDateField.value);
       const endsAtDate = Date.parse(endsAtDateField.value);
 
@@ -162,13 +161,13 @@ javascript:
       }
     });
 
-    document.getElementById('event_repeats_until').addEventListener('focus', function() {
+    document.querySelector('#event_repeats_until').addEventListener('focus', function() {
       this.dataset.originalValue = this.value;
     });
 
-    document.getElementById('event_repeats_until').addEventListener('change', function() {
-      const startsAtDateField = document.getElementById('starts_at_d');
-      const repeatsUntilDateField = document.getElementById('event_repeats_until');
+    document.querySelector('#event_repeats_until').addEventListener('change', function() {
+      const startsAtDateField = document.querySelector('#event_starts_at_date');
+      const repeatsUntilDateField = document.querySelector('#event_repeats_until');
       const startsAtDate = Date.parse(startsAtDateField.value);
       const repeatsUntilDate = Date.parse(repeatsUntilDateField.value);
 
@@ -181,14 +180,14 @@ javascript:
       }
     });
 
-    document.getElementById('ends_at_d').addEventListener('focus', function() {
+    document.querySelector('#event_ends_at_date').addEventListener('focus', function() {
       this.dataset.originalValue = this.value;
     });
 
     // if start date is set earlier than start date, mark as error
-    document.getElementById('ends_at_d').addEventListener('change', function() {
-      const startsAtDateField = document.getElementById('starts_at_d');
-      const endsAtDateField = document.getElementById('ends_at_d');
+    document.querySelector('#event_ends_at_date').addEventListener('change', function() {
+      const startsAtDateField = document.querySelector('#event_starts_at_date');
+      const endsAtDateField = document.querySelector('#event_ends_at_date');
       const startsAtDate = Date.parse(startsAtDateField.value);
       const endsAtDate = Date.parse(endsAtDateField.value);
 
@@ -202,26 +201,26 @@ javascript:
   function flagValidationError(elem) {
     elem.classList.add('error');
     setTimeout(function(elem) {
-      document.getElementById('ends_at_d').classList.remove('error');
+      document.querySelector('#event_ends_at_date').classList.remove('error');
     }, 2000);
   }
 
   // enable / disable Accept button depending on validation status
   function validateDialog() {
     var valid = false;
-    const categoryId = document.getElementById('event_event_category_id').value;
+    const categoryId = document.querySelector('#event_category_id').value;
     if(!!categoryId) {
       valid = true;
     }
 
-    const commitButton = document.getElementById('event_submit');
+    const commitButton = document.querySelector('#event_submit');
     commitButton.disabled = !valid;
   }
 
   // when the Repeat box is checked, the caption should update
   function updateRepeatLabel(elem) {
-    const label = document.getElementById('repeat-label');
-    const checkBox = document.getElementById('event_repeats');
+    const label = document.querySelector('#repeat-label');
+    const checkBox = document.querySelector('#event_repeats');
     const caption = checkBox.checked ? 'Repeats weekly until' : 'Repeats weekly';
     label.innerText = caption;
   }

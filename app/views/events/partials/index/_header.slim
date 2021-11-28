@@ -1,4 +1,4 @@
-div
+header.clear-both
   .float-left
     h1 = t('events.index.title')
 
@@ -20,8 +20,8 @@ div
           ul.dropdown-menu.dropdown-menu-end.dropdown-menu-dark
             = render partial: 'events/partials/index/dropdown_items/bulk_publish'   if @current_member.admin?
             = render partial: 'events/partials/index/dropdown_items/show_cancelled' if @current_member.admin?
-            - %w[show_only_rsvps show_past_events].each do |p|
-              = render partial: "events/partials/index/dropdown_items/#{ p }"
+            = render partial: 'events/partials/index/dropdown_items/show_only_rsvps'
+            = render partial: 'events/partials/index/dropdown_items/show_past_events'
 
       span#bulk_publish_button_wrapper
         = button_to t('events.index.bulk_publish.execute_caption'), '#', class: 'btn btn-warning ms-3', disabled: true, form: { style: 'display: inline-block;' }, id: 'bulk_publish_execute_button'

@@ -34,7 +34,7 @@ Rails.application.routes.draw do
     resources :event_categories
     resources :news_items, only: [ :index, :new, :create ]
 
-    resources :events, only: %i[index new create] do
+    resources :events do
       collection do
         post 'bulk_publish'
       end

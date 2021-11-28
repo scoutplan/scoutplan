@@ -45,7 +45,8 @@ gem "tailwindcss-rails", github: "dorianmariefr/tailwindcss-rails", branch: "min
 gem 'textris', git: 'https://github.com/danielpuglisi/textris.git', branch: 'rails6'
 gem 'twilio-ruby'
 gem 'trix', '~> 0.10'
-gem 'turbolinks', '~> 5.2'
+# gem 'turbolinks', '~> 5.2'
+gem 'turbo-rails'
 gem 'webpacker', '~> 5.4'
 
 group :development, :test do

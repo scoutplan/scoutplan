@@ -28,6 +28,9 @@ Turbolinks.start()
 ActiveStorage.start()
 
 import { Application } from "@hotwired/stimulus"
-import Sortable from "./sortable_controller"
 window.Stimulus = Application.start()
+import Sortable from "./sortable_controller"
 window.Stimulus.register("sortable", Sortable)
+
+import EventController from "./event_controller"
+window.Stimulus.register('event', EventController)

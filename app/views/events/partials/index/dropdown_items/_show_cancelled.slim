@@ -1,6 +1,6 @@
 li = link_to '#',
      class: "dropdown-item toggle-body-class #{@events.cancelled.count.zero? ? 'disabled' : ''}",
-     data: { 'body-class' => 'showing-cancelled-events' },
+     data: { action: 'event#toggleCancelledEvents' },
      id: 'show-cancelled-events-link' do
   .menu-glyph
     .menu-glyph-wrapper

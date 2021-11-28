@@ -1,14 +1,10 @@
-.w-full.mx-auto
+.w-full.mx-auto(data-controller="event")
   = render 'events/partials/index/header'
   = render partial: 'events/partials/index/no_events' if @events.count.zero?
   = render partial: 'events/partials/index/table' if @events.count.positive?
 
 - content_for :body_classes do
-  = "events index"
-  = " events-filtered showing-only-rsvp-events" if session[:view] == 'rsvps'
-
-- content_for :head do
-  = stylesheet_link_tag unit_path(@unit, format: :css)
+  = 'showing-only-rsvp-events' if session[:view] == 'rsvps'
 
 = render 'events/partials/event_form'
 
@@ -35,8 +31,8 @@ javascript:
     event.preventDefault();
   });
 
-  const bulkPublishExecuteButton = document.querySelector('#bulk_publish_execute_button');
-  const originalBulkPublishExecuteButtonCaption = bulkPublishExecuteButton.value;
+  var bulkPublishExecuteButton = document.querySelector('#bulk_publish_execute_button');
+  var originalBulkPublishExecuteButtonCaption = bulkPublishExecuteButton.value;
 
   // wire up event row checkboxes
   document.querySelectorAll('.bulk-publish-checkbox').forEach(function(elem) {
@@ -47,7 +43,7 @@ javascript:
 
   function validateBulkPublishState() {
     // tally up checked count
-    const checkedCount = document.querySelectorAll('td.selection input:checked').length;
+    const checkedCount = document.querySelectorAll('.selection input:checked').length;
 
     // enable execute button
     bulkPublishExecuteButton.disabled = (checkedCount == 0);
@@ -55,16 +51,6 @@ javascript:
     // update execute button caption
     bulkPublishExecuteButton.value = originalBulkPublishExecuteButtonCaption + (checkedCount == 0 ? '' : ' (' + checkedCount + ')');
   }
-
-  document.querySelectorAll('.toggle-body-class').forEach(function(elem) {
-    elem.addEventListener('click', function(event) {
-      const classNames = this.dataset.bodyClass.split(' ');
-      for(const className of classNames) {
-        document.body.classList.toggle(className);
-      }
-      event.preventDefault();
-    });
-  });
 
   // links inside clickable rows should take priority, so we stop
   // propagation on them
@@ -91,11 +77,16 @@ javascript:
   });
 
 scss:
-  tr.event {
-    cursor: pointer;
+  .selection {
+    display: none;
   }
 
-  .start-day, .days, .title, .glyph {
+  a.event-row {
+    text-decoration: none;
+    color: #333;
+  }
+
+  .start-day, .days, .title {
     width: 1%;
     white-space: nowrap;
   }
@@ -132,7 +123,7 @@ scss:
   }
 
   body.showing-cancelled-events {
-    .event-cancelled {
+    .event-cancelled:not(.event-past) {
       display: table-row;
     }
 
@@ -193,8 +184,14 @@ scss:
     }
   }
 
+  body.showing-past-events.showing-cancelled-events {
+    .event-past.event-cancelled {
+      display: table-row;
+    }
+  }
+
   body.showing-past-events {
-    .event-past {
+    .event-past:not(.event-cancelled) {
       display: table-row;
     }
 
@@ -227,14 +224,6 @@ scss:
     font-weight: 600;
     baseline-shift: 0.125rem;
     color: rgb(128,128,128);
-  }
-
-  .table .start-day {
-    padding-right: 2px;
-  }
-
-  .table .days {
-    padding-left: 2px;
   }
 
   .table tr td.month {

@@ -1,58 +1,18 @@
 - @presenter.event = event
 - rsvps = event.rsvps
+- row_class = event.starts_at < Date.today.beginning_of_month ? 'event-past' : ''
+- row_class += ' event-future' if event.starts_at > 3.months.from_now
 
-- if @current_month.nil? || @current_month != event.starts_at.month
+= render partial: 'month_header', locals: { event: event }
 
-  - row_class = event.starts_at < Date.today.beginning_of_month ? 'event-past' : ''
-  - row_class += ' event-future' if event.starts_at > 3.months.from_now
-
-  tr(class="#{ row_class } event-month-boundary event-rsvp no-hover")
-    td.month(colspan="10")
-      = event.starts_at.strftime('%B')
-      - if @current_year.nil? || @current_year != event.starts_at.year
-        = event.starts_at.strftime(' %Y')
-
-tr.event(class="#{ @presenter.row_classes }" data-href="#{ event_path(event) }")
-  - @current_month = event.starts_at.month
-  - @current_year = event.starts_at.year
-
-  td.selection
-    = check_box_tag "events[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
-
-  td.start-day
-    = raw(@presenter.dates_to_s)
-
-  td.days
-    span.daynames.d-block.d-md-inline
-      = raw(@presenter.days_to_s)
-
-  td.glyph
-    span.event-category-glyph(title="#{event.event_category.name}", data-bs-toggle="tooltip")
-      i(class = "fad fa-#{event.event_category.glyph}" style="color: #{event.event_category.color}")
-
-  td.title
-    = event.title
-
-    - if !@current_event && event.starts_at >= DateTime.now
-      - @current_event = event
-
-      |&nbsp;
-
-      - if event.starts_at.in_time_zone.today?
-        .badge.bg-danger Today
-      - else
-        .badge.bg-warning Next
-
-    - if event.draft?
-      |&nbsp;
-      span.badge.bg-secondary =t('events.index.draft')
-    - if event.cancelled?
-      |&nbsp;
-      span.badge.bg-danger =t('events.index.cancelled')
-
-  td.location.tablet = event.location
-
-  td.short-description.tablet = event.short_description
-
-  td.action.desktop
-    = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps }
+= link_to unit_event_path(@unit, event),
+  class: "hover:bg-gray-100 event-row table-row #{@presenter.row_classes} cursor-pointer",
+  data: { action: "click->event-modal#open", 'turbo-frame': 'event' }
+  .table-cell.selection                             = check_box_tag "events[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
+  .table-cell.start-day                             = raw(@presenter.dates_to_s)
+  .hidden.lg:table-cell.days.uppercase.text-sm.px-3 = raw(@presenter.days_to_s)
+  .table-cell.glyph.text-center.w-12                = glyph_tag(event)
+  .table-cell.title                                 = raw([event.title, event_badge(event)].join)
+  .hidden.lg:table-cell.location                    = event.location
+  .hidden.xl:table-cell.short-description           = event.short_description
+  .table-cell.actions.text-right                    = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps }
