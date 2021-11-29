@@ -6,7 +6,7 @@
 // BOOTSTRAP see https://bootrails.com/blog/rails-bootstrap-tutorial and https://whatapalaver.co.uk/bootstrap-5-rails-6
 
 import Rails from '@rails/ujs'
-import Turbolinks from 'turbolinks'
+// import Turbolinks from 'turbolinks'
 import * as ActiveStorage from '@rails/activestorage'
 import 'channels'
 import 'trix'
@@ -24,10 +24,11 @@ import '@rails/actiontext'
 window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js')
 
 Rails.start()
-Turbolinks.start()
+// Turbolinks.start()
 ActiveStorage.start()
 
 import { Application } from "@hotwired/stimulus"
+import Turbo from "@hotwired/turbo"
 window.Stimulus = Application.start()
 import Sortable from "./sortable_controller"
 window.Stimulus.register("sortable", Sortable)

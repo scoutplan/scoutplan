@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "@hotwired/stimulus": "^3.0.1",
+    "@hotwired/turbo": "^7.1.0",
     "@mapbox/mapbox-sdk": "^0.13.2",
     "@popperjs/core": "^2.9.3",
     "@rails/actioncable": "^6.0.0",

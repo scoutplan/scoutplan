@@ -1,5 +1,7 @@
+= turbo_frame_tag 'event'
+
 .w-full.mx-auto(data-controller="event")
-  = render 'events/partials/index/header'
+  = render partial: 'events/partials/index/header'
   = render partial: 'events/partials/index/no_events' if @events.count.zero?
   = render partial: 'events/partials/index/table' if @events.count.positive?
 

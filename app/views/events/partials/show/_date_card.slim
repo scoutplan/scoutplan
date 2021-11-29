@@ -1,0 +1,36 @@
+- multiday = !(@event.starts_at.to_date === @event.ends_at.to_date)
+
+.text-uppercase.text-sm.text-center.font-bold.text-black.tracking-widest.mb-3 = @presenter.month_name
+
+.table.mb-0
+  .table-row-group
+    .table-row
+      .table-cell.text-center.border-0
+        .text-uppercase.text-sm.font-bold.text-red-800 = @event.starts_at.localtime.strftime('%a')
+      - if multiday
+        .table-cell.text-center.border-0
+        .table-cell.text-center.border-0
+          .text-uppercase.text-sm.font-bold.text-red-800 = @event.ends_at.localtime.strftime('%a')
+
+    .table-row
+      .table-cell.text-center.border-0.py-0
+        .text-red-800.text-5xl = @event.starts_at.day
+      - if multiday          
+        .table-cell.text-center.border-0.py-0
+          i.far.fa-arrow-right.text-gray-500.text-4xl
+        .table-cell.text-center.border-0.py-0
+          .text-red-800.text-5xl = @event.ends_at.day
+
+    .table-row
+      .table-cell.text-center.border-0
+        .text-sm.font-bold.text-red-800 = @event.starts_at.localtime.strftime('%-I:%M %p')
+      - if multiday
+        .table-cell.border-0
+        .table-cell.text-center.border-0
+          .text-sm.font-bold.text-red-800 = @event.ends_at.localtime.strftime('%-I:%M %p')
+
+- if @event.series?
+  .text-sm.text-gray-500.text-center.mt-1
+    i.fas.fa-repeat
+    |&nbsp;
+    = "#{ @event.series_children.count + @event.series_siblings.count + 1 } events in this series"      

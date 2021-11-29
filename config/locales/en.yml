@@ -33,6 +33,7 @@ en:
   global:
     cancel: 'Cancel'
     next:   'Next'
+    done:   'Done'
   you_parenths: '(you)'
   app_name: 'Scoutplan'
   administration: 'Administration'
@@ -51,7 +52,7 @@ en:
   event_category_prompt: '- select -'
   event_rsvp: 'RSVP'
   rsvp_dialog_title: 'My RSVPs'
-  change_rsvp: 'Change RSVPs'
+  change_rsvp: 'Update Your RSVPs'
   rsvp_accept: 'Going'
   rsvp_decline: 'Not going'
   rsvp_unknown: 'No response'

@@ -1,21 +1,30 @@
-- if @event.published?
-  .card.rsvp
-    .card-header
-      =t('rsvps')
-    .card-body
-      table.table
-        - @current_member.family.each do |family_member|
-          - rsvp = @event.rsvp_for(family_member)
-          tr
-            td
-              = @presenter.family_context_name(family_member)
+.inline-block.flex-auto.pt-1
+  span.font-bold.inline-block
+    =t('rsvps')
 
-            td
-              = rsvp&.response&.titleize || t('events.rsvp.no_response')
-              - if rsvp.note.present?
-                |&nbsp;&nbsp;
-                span(title="#{rsvp&.respondent&.display_full_name}: '#{rsvp.note}'" data-bs-toggle="tooltip")
-                  i.fa-comment-alt-lines.fas
+  ul.inline-block.m-0
+    - @current_member.family.each do |family_member|
+      - rsvp = @event.rsvp_for(family_member)
+      li.inline-block.mr-6
+        - if rsvp.nil?
+          span.rsvp-response.rsvp-unknown.text-gray-400(title="#{ t('rsvp_unknown') }")
+            i.fas.fa-ghost
+        - elsif rsvp.accepted?
+          span.rsvp-response.rsvp-accepted.text-green-500(title="#{ t('rsvp_accept') }")
+            i.fad.fa-hiking
+        - elsif rsvp.declined?
+          span.rsvp-response.rsvp-declined.text-red-500(title="#{ t('rsvp_decline') }")
+            i.fad.fa-couch
+        
+        span.ml-2
+          = @presenter.family_context_name(family_member)
 
-      button(class="btn btn-outline-info w-100 mt-4" data-bs-target="#eventRsvpModal" data-bs-toggle="modal")
-        = t(:change_rsvp)
+        - if rsvp&.note.present?
+          |&nbsp;&nbsp;
+          span(title="#{rsvp&.respondent&.display_full_name}: '#{rsvp.note}'" data-bs-toggle="tooltip")
+            i.fa-comment-alt-lines.fas
+
+- if @event.rsvp_open?
+  .inline-block.text-right.flex-none
+    button.bg-gray-200.hover:bg-gray-300.px-3.py-2.text-sm.text-yellow-900.rounded.text-uppercase.tracking-wider
+      = t(:change_rsvp)

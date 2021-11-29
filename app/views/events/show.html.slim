@@ -1,71 +1,38 @@
-.w-full.mx-auto
-  header.rsvps.mb-4
-  = render partial: 'events/partials/show/draft_card'
+= turbo_frame_tag 'event'
+  - url = @event_view.new_record? ? unit_events_path(@unit) : event_path(@event_view.event)
+  - method = @event_view.new_record? ? 'post' : 'patch'
 
-  h1.mb-1 = @event.title
-  - if @event.short_description.present?
-    p = @event.short_description
+  .absolute.inset-0.bg-black.bg-opacity-25.z-40
+    .relative.w-auto.my-12.mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-md
+      = form_with model: @event_view, scope: 'event', url: url, method: method do |f|
+        header.pt-4.px-8.pb-3.overflow-auto
+          h3.m-0.font-bold.float-left
+            = @event.title
+            span.align-middle.ml-2.text-base = glyph_tag(@event)
+            = content_tag(:div, @event.short_description, class: 'font-normal text-base text-gray-500') if @event.short_description.present?
+          button.float-right.pl-4.pb-2
+            i.fa-times.far.hover:text-black
+        
+        section.py-0.px-8
+          - if @event.requires_rsvp
+            .bg-gray-100.rounded.mb-3.p-3.flex
+              = render partial: 'events/partials/show/rsvp_card'
 
-  .row.gx-5
-    main
-      = render partial: 'events/partials/show/date_time_location_card'
-      == @event.description
-      = render partial: 'events/partials/show/empty_description' unless @event.description.present?
+          .flex.mb-3
+            #date_time_card.bg-gray-100.rounded.p-3.mb-2.flex-auto
+              = render partial: 'events/partials/show/date_card'
 
-    aside
-      = render partial: @event.published? ? 'events/partials/show/admin_card_published' : 'events/partials/show/admin_card_draft'
-      = render partial: 'events/partials/show/rsvp_card' if @event.requires_rsvp
-      = render 'events/partials/show/upcoming_events_card' if !@current_member.admin? && !@event.requires_rsvp
+            - if @event.location.present? || @event.address.present? || @event.departs_from.present?
+              #location_card.bg-gray-100.rounded.p-3.mb-2.ml-4.flex-auto.relative
+                = render partial: 'events/partials/show/location_card'
 
-  #modal-forms
-    = render 'events/partials/event_form'
-    = render 'events/partials/rsvp_form' if @event.requires_rsvp
-    = render 'events/partials/show/description_form'
-    = render 'events/partials/show/cancel_form'
+          - if @event.description.present?
+            .flex.mb-3.overflow-y-scroll.max-h-60.border-b
+              .pb-3.overflow-auto
+                == @event.description
 
-scss:
-  .dates {
-    font-size: 300%;
-    color: DarkRed;
-    line-height: 3rem;
-  }
-
-  .month-name {
-    font-weight: 700;
-  }
-
-  aside .card {
-    margin-bottom: 1rem;
-  }
-
-  li .glyph {
-    display: inline-block;
-    width: 1.4rem;
-  }
-
-  li.list-group-item {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .daynames {
-    font-size: 0.75rem;
-    // margin-left: 1rem;
-    text-transform: uppercase;
-    color: #888;
-  }
-
-  .series-info {
-    font-size: 75%;
-    text-transform: uppercase;
-    color: #888;
-    padding-top: 12px;
-  }
-
-javascript:
-  var anchor = window.location.hash.substr(1);
-
-  if (anchor === 'rsvp') {
-    var rsvpModal = new bootstrap.Modal(document.getElementById('eventRsvpModal'));
-    rsvpModal.show();
-  }
+        footer.overflow-auto.pb-4.px-8.pt-1
+          .float-right
+            - if policy(@event).edit?
+              button.px-4.py-2.mr-2.border.bg-gray-200.hover:bg-gray-300.rounded.text-black.text-sm.font-bold.tracking-wider.text-uppercase = t('event_edit')
+            button.px-4.py-2.border.bg-red-500.hover:bg-red-600.rounded.text-white.text-sm.font-bold.tracking-wider.text-uppercase = t('global.done')
