@@ -6,7 +6,7 @@ require 'humanize'
 class EventsController < ApplicationController
   layout 'application_new'
   before_action :authenticate_user!
-  before_action :find_unit, only: %i[index create new bulk_publish]
+  before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish]
   before_action :find_event, except: %i[index edit create new bulk_publish]
   around_action :set_time_zone
 
@@ -44,6 +44,12 @@ class EventsController < ApplicationController
     authorize @event
 
     @event_form = EventView.new(@event)
+  end
+
+  def edit_rsvps
+    @unit = Unit.find(params[:unit_id])
+    @event = Event.find(params[:event_id])
+    @current_member = @unit.membership_for(current_user)
   end
 
   def update
@@ -152,7 +158,7 @@ class EventsController < ApplicationController
   # for show, edit, update, destroy...important that @unit
   # is *not* set for those actions
   def find_event
-    @event = Event.includes(:event_rsvps).find(params[:id])
+    @event = Event.includes(:event_rsvps).find(params[:id] || params[:event_id])
     @current_unit = @event.unit
     @current_member = @current_unit.membership_for(current_user)
     @presenter = EventPresenter.new(event: @event, current_user: current_user)

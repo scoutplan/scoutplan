@@ -26,6 +26,11 @@ export default class extends Controller {
     this.toggleBodyClass(event, 'showing-only-draft-events')
   }
 
+  close_modal(event) {
+    this.element.remove();
+    this.element.closest("turbo-frame").src = undefined;
+  }
+
   toggleBodyClass(event, className, force = null) {
     event.preventDefault();
     if (force === null) {

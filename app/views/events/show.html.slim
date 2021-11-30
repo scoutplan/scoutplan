@@ -10,13 +10,18 @@
             = @event.title
             span.align-middle.ml-2.text-base = glyph_tag(@event)
             = content_tag(:div, @event.short_description, class: 'font-normal text-base text-gray-500') if @event.short_description.present?
-          button.float-right.pl-4.pb-2
+
+          / button.float-right.pl-4.pb-2(data-action="event#close_modal")
+          = link_to unit_events_path(@event.unit),
+            class: 'inline-block float-right text-gray-500 hover:text-gray-500',
+            data: { 'turbo-action' => 'advance' } do
             i.fa-times.far.hover:text-black
         
         section.py-0.px-8
           - if @event.requires_rsvp
             .bg-gray-100.rounded.mb-3.p-3.flex
-              = render partial: 'events/partials/show/rsvp_card'
+              = turbo_frame_tag 'rsvp', class: 'flex w-full'
+                = render partial: 'events/partials/show/rsvp_card'
 
           .flex.mb-3
             #date_time_card.bg-gray-100.rounded.p-3.mb-2.flex-auto
@@ -34,5 +39,8 @@
         footer.overflow-auto.pb-4.px-8.pt-1
           .float-right
             - if policy(@event).edit?
-              button.px-4.py-2.mr-2.border.bg-gray-200.hover:bg-gray-300.rounded.text-black.text-sm.font-bold.tracking-wider.text-uppercase = t('event_edit')
-            button.px-4.py-2.border.bg-red-500.hover:bg-red-600.rounded.text-white.text-sm.font-bold.tracking-wider.text-uppercase = t('global.done')
+              button.px-4.py-2.mr-2.border.bg-gray-200.hover:bg-gray-300.rounded.text-black.text-sm.font-bold.tracking-wider.text-uppercase
+                = t('event_edit')
+
+            button.px-4.py-2.border.rounded.text-white.text-sm.font-bold.tracking-wider.text-uppercase(onclick="window.history.back();" style="background:#e66425;")
+              = t('global.done')

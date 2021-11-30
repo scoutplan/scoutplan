@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       post  'cancel'
       post  'publish'
       post  'invite', to: 'event_rsvps#invite'
+      get   'edit_rsvps'
     end
 
     resources :event_rsvps, as: 'rsvps', path: 'rsvps', only: %i[create]
@@ -38,6 +39,7 @@ Rails.application.routes.draw do
       collection do
         post 'bulk_publish'
       end
+      get 'rsvp', as: 'edit_rsvps', to: 'events#edit_rsvps'
     end
 
     resources :unit_memberships, path: 'members', as: 'members', except: [:show] do

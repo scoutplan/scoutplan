@@ -7,7 +7,7 @@
 
 = link_to unit_event_path(@unit, event),
   class: "hover:bg-gray-100 event-row table-row #{@presenter.row_classes} cursor-pointer",
-  data: { turbo_frame: 'event' }
+  data: { turbo_frame: 'event', turbo_action: 'advance' }
   .table-cell.selection                             = check_box_tag "events[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
   .table-cell.start-day                             = raw(@presenter.dates_to_s)
   .hidden.lg:table-cell.days.uppercase.text-sm.px-3 = raw(@presenter.days_to_s)

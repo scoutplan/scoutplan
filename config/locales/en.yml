@@ -248,6 +248,6 @@ en:
         update_single: 'just this event'
         update_series: 'all events in the series'
         rsvp_noun: 'RSVP'
-        rsvp_save: 'Send Response'
+        rsvp_save: 'Send RSVPs'
         create_confirmation: '%{event_name} was added to the calendar'
         description_save: 'Save This Description'

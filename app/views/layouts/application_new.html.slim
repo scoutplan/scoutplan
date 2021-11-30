@@ -18,7 +18,7 @@ html
 
   body(class="#{controller_name} #{action_name}")
     = render partial: 'layouts/partials/notices'
-    = render 'layouts/partials/header'
+    = render partial: 'layouts/partials/header'
 
     .flex
       nav.relative.flex-shrink-0.bg-gray-100.h-screen.pl-8.pr-2.pb-8.py-8.w-60.lg:w-80#nav_side
