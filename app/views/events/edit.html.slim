@@ -1,1 +1,73 @@
-= turbo_frame_tag 'rsvp'
+- url = @event_view.new_record? ? unit_events_path(@unit) : event_path(@event_view.event)
+- method = @event_view.new_record? ? 'post' : 'patch'
+- @format_date = '%Y-%m-%d'
+- @format_time = '%H:%M:%S'
+
+= turbo_frame_tag 'event'
+  .absolute.inset-0.bg-black.bg-opacity-25.z-40
+    .relative.w-auto.my-12.mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-xl.filter
+      = form_with model: @event_view, scope: 'event', url: url, method: method do |f|
+        header.h-3
+
+        section.py-0.px-8        
+          .mb-3
+            = f.select :category_id,
+                @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
+                { prompt: t('event_category_prompt'), selected: @event_view.event_category_id },
+                { class: 'mt-2 border rounded min-w-96 py-1 pl-2 pr-4 bg-white' }
+            = f.text_field :title, { class: 'mt-2 w-full border rounded p-2 text-3xl font-bold', autocomplete: 'off', style: 'text-transform: capitalize', placeholder: 'Title' }
+            = f.text_field :short_description, { class: 'mt-2 w-full border rounded p-2', autocomplete: 'off', placeholder: t('events.edit.short_description_placeholder') }
+
+          // RSVP
+          .form-check.mb-3
+            = f.check_box :requires_rsvp, class: 'form-check-input'
+            = f.label :requires_rsvp, class: 'form-check-label'
+
+          // tabbed interface
+          .tabs.mt-6
+            nav.flex
+              = link_to t('events.dates'),
+                '#',
+                class: 'inline-block tab-label selected flex-grow text-center py-1 text-gray-400 hover:text-gray-500 no-underline border-b',
+                data: { 'toggle-target' => 'tab_dates' }
+
+              = link_to t('events.location'),
+                '#',
+                class: 'inline-block tab-label flex-grow text-center py-1 text-gray-400 hover:text-gray-500 no-underline border-b',
+                data: { 'toggle-target' => 'tab_location' }
+
+              = link_to t('events.description'),
+                '#',
+                class: 'inline-block tab-label flex-grow text-center py-1 text-gray-400 hover:text-gray-500 no-underline border-b',
+                data: { 'toggle-target' => 'tab_description' }
+
+            section.flex.w-full.pt-6
+              .tab-content.w-full#tab_date
+                = render partial: 'events/partials/edit/dates', locals: { f: f }
+
+              .tab-content.w-full.hidden#tab_location
+                = render partial: 'events/partials/edit/location', locals: { f: f }
+
+              .tab-content.w-full.hidden#tab_description
+                = f.rich_text_area :description, style: 'height: 24rem; overflow: auto;'
+
+        // footer
+        footer.overflow-auto.pb-4.px-8.pt-1
+          .float-right
+            = f.submit 'Save Changes', 
+              style: "background:#e66425;",
+              class: "px-4 py-2 border rounded text-white text-sm font-bold tracking-wider text-uppercase mr-2"
+
+            button.px-4.py-2.border.bg-gray-200.text-black.text-sm.font-bold.tracking-wider.text-uppercase.rounded(onclick="window.history.back();")
+              = t('global.cancel')
+  scss:
+    .tab-label.selected {
+      border-color: black;
+      color: black;
+      font-weight: 600;
+
+      &:hover {
+        color: black;
+        cursor: default;
+      }
+    }

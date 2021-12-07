@@ -43,6 +43,10 @@ class Event < ApplicationRecord
     requires_rsvp && starts_at > DateTime.now
   end
 
+  def organizable?
+    requires_rsvp
+  end
+
   def series?
     !new_record? && (series_children.count.positive? || series_siblings.count.positive?)
   end

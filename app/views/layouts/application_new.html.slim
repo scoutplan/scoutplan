@@ -35,6 +35,11 @@ html
       return new bootstrap.Tooltip(popoverTriggerEl);
     });
 
+    function setElemDisplay(elem, show) {
+      var elem = document.querySelector(elem);
+      elem.style.display = show ? 'block' : 'none';
+    }
+
   scss:
     .submit-conjunction {
       display: inline;

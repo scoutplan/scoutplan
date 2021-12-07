@@ -45,7 +45,6 @@ en:
   event_update: "Change a Calendar Event"
   event_edit: "Change Event Details"
   description_edit: "Edit Event Description"
-  event_organize: "Manage RSVPs & Attendance"
   event_date: "Date"
   event_title: "Title"
   event_location: "Location"
@@ -53,8 +52,8 @@ en:
   event_rsvp: 'RSVP'
   rsvp_dialog_title: 'My RSVPs'
   change_rsvp: 'Update Your RSVPs'
-  rsvp_accept: 'Going'
-  rsvp_decline: 'Not going'
+  rsvp_accepted: 'Going'
+  rsvp_declined: 'Not going'
   rsvp_unknown: 'No response'
   rsvp_posted: 'Your RSVP has been received'
   passwordless_warning: "You're logged in using a password-less \"magic link.\"  This link is valid until x/x/xx."
@@ -110,15 +109,19 @@ en:
         submit: 'Add This Activity'
 
   events:
-    object_name:   'event'
+    object_name: 'event'
     draft-warning: "This event is a draft, only visible to Unit Administrators & Event Organizers. When you're ready, %{href} to make it visible to everyone in %{unit_name}."
-    publish:            'Publish'
-    publish_message:    "%{title} was published"
+    publish: 'Publish'
+    publish_message: "%{title} was published"
     update_confirmation: "%{title} was updated"
+    location: 'Location'
+    dates: 'Dates'
 
     rsvp:
       note_placeholder: 'e.g. "Need a ride", or "Arriving late"'
       no_response: 'No response'
+      closed: 'RSVPs are closed'
+      past: 'Event has already occurred'
 
     index:
       title:      'Event Calendar'
@@ -165,6 +168,12 @@ en:
         accepted:             "'Going' RSVPS (%{count})"
         none:                 "Don't send a notification"
         confirmation:         "%{event_title} has been cancelled"
+      organize_button_caption: 'Manage RSVPs'
+      edit_reason_admin:      "Not available to most, but available to you because you're a %{unit_name} administrator."
+      organize_reason_admin:  "Not available to most, but available to you because you're a %{unit_name} administrator."
+    
+    edit:
+      short_description_placeholder: 'Brief description (optional, appears in email & text)'
 
     organize:
       subtitle:     'Organizer View'

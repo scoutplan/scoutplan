@@ -1,18 +1,52 @@
 - @presenter.event = event
 - rsvps = event.rsvps
-- row_class = event.starts_at < Date.today.beginning_of_month ? 'event-past' : ''
+- row_class = 'event-row'
+- row_class += ' event-past' if event.starts_at < Date.today.beginning_of_month
 - row_class += ' event-future' if event.starts_at > 3.months.from_now
 
 = render partial: 'month_header', locals: { event: event }
 
-= link_to unit_event_path(@unit, event),
-  class: "hover:bg-gray-100 event-row table-row #{@presenter.row_classes} cursor-pointer",
-  data: { turbo_frame: 'event', turbo_action: 'advance' }
-  .table-cell.selection                             = check_box_tag "events[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
-  .table-cell.start-day                             = raw(@presenter.dates_to_s)
-  .hidden.lg:table-cell.days.uppercase.text-sm.px-3 = raw(@presenter.days_to_s)
-  .table-cell.glyph.text-center.w-12                = glyph_tag(event)
-  .table-cell.title                                 = raw([event.title, event_badge(event)].join)
-  .hidden.lg:table-cell.location                    = event.location
-  .hidden.xl:table-cell.short-description           = event.short_description
-  .table-cell.actions.text-right                    = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps }
+.table-row.hover:bg-gray-100.hover:text-black(class="#{row_class}")
+
+  // bulk selection checkbox
+  .table-cell.selection
+    = check_box_tag "events[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
+
+  // dates
+  = link_to unit_event_path(@unit, event),
+    class: "table-cell row-link cursor-pointer no-underline whitespace-nowrap start-day",
+    data: { turbo_frame: 'event', turbo_action: 'advance' } do
+    = raw(@presenter.dates_to_s)
+
+  // days
+  = link_to unit_event_path(@unit, event),
+    class: "hidden lg:table-cell row-link cursor-pointer no-underline whitespace-nowrap uppercase",
+    data: { turbo_frame: 'event', turbo_action: 'advance' } do
+    = raw(@presenter.days_to_s)
+
+  // glyph
+  = link_to unit_event_path(@unit, event),
+    class: "table-cell row-link cursor-pointer no-underline w12 text-center glyph",
+    data: { turbo_frame: 'event', turbo_action: 'advance' } do
+    = glyph_tag(event)
+    
+  // title
+  = link_to unit_event_path(@unit, event),
+    class: "table-cell row-link cursor-pointer no-underline whitespace-nowrap",
+    data: { turbo_frame: 'event', turbo_action: 'advance' } do
+    = raw([event.title, event_badge(event)].join)
+
+  // location
+  = link_to unit_event_path(@unit, event),
+    class: "hidden lg:table-cell row-link cursor-pointer no-underline whitespace-nowrap",
+    data: { turbo_frame: 'event', turbo_action: 'advance' } do
+    = event.location
+
+  // short description
+  = link_to unit_event_path(@unit, event),
+    class: "hidden xl:table-cell row-link cursor-pointer no-underline whitespace-nowrap",
+    data: { turbo_frame: 'event', turbo_action: 'advance' } do
+    = event.short_description
+
+  .table-cell.text-right
+    = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps }

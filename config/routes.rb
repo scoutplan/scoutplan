@@ -40,6 +40,7 @@ Rails.application.routes.draw do
         post 'bulk_publish'
       end
       get 'rsvp', as: 'edit_rsvps', to: 'events#edit_rsvps'
+      get 'organize', as: 'organize'
     end
 
     resources :unit_memberships, path: 'members', as: 'members', except: [:show] do

@@ -3,6 +3,8 @@
 # helpers for Event views
 module EventsHelper
   require 'cgi'
+  RSVP_GLYPH_CLASSES = { nil => 'ghost', 'accepted' => 'hiking', 'declined' => 'couch' }.freeze
+  RSVP_GLYPH_COLORS = { nil => 'text-gray-100', 'accepted' => 'text-green-500', 'declined' => 'text-red-500'}.freeze
 
   def glyph_tag(event)
     content_tag(:span, class: 'event-category-glyph') do
@@ -13,6 +15,18 @@ module EventsHelper
         style: "color: #{event.event_category.color}",
         title: event.event_category.name
       )
+    end
+  end
+
+  # given an EventRsvp object, return a fully-formed span tag containing the correct
+  # FontAwesome glphy
+  def rsvp_glyph_tag(rsvp)
+    glyph_class = RSVP_GLYPH_CLASSES[rsvp&.response]
+    text_color = RSVP_GLYPH_COLORS[rsvp&.response]
+    title_tag = rsvp.nil? ? 'unknown' : rsvp.response
+
+    content_tag(:span, class: "span.rsvp-response.rsvp-unknown.#{text_color}", title: t("rsvp_#{title_tag}")) do
+      content_tag(:i, nil, class: "fad fa-#{glyph_class}")
     end
   end
 

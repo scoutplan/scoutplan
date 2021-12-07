@@ -2,30 +2,21 @@
 
   - has_family_rsvps = false
 
+
   ul.whitespace-nowrap.w-full.mb-0
     - @current_family.each do |member|
       - rsvp = rsvps.find_by(unit_membership: member)
       - has_family_rsvps = has_family_rsvps || rsvp.present?
 
       li.inline-block.ml-3
-        - if rsvp.nil?
-          span.rsvp-response.rsvp-unknown.text-gray-500(title="#{ t('rsvp_unknown') }")
-            i.fas.fa-ghost
-        - elsif rsvp.accepted?
-          span.rsvp-response.rsvp-accepted.text-green-500(title="#{ t('rsvp_accept') }")
-            i.fad.fa-hiking
-        - elsif rsvp.declined?
-          span.rsvp-response.rsvp-declined.text-red-500(title="#{ t('rsvp_decline') }")
-            i.fad.fa-couch
+        = raw(rsvp_glyph_tag(rsvp))
 
         .inline-block.ml-1
           = member.display_first_name
           = " (you)" if member == @current_member
 
     li.inline-block.ml-3
-      - if has_family_rsvps
-        span.event-rsvp-link.text-sm.py-1.px-2.text-yellow-500.rounded.hover:bg-yellow-500.hover:text-white.border.border-yellow-500
-          = t('events.index.event_row.rsvp_change')
-      - else
-        span.event-rsvp-link.text-sm.py-1.px-2.text-blue-500.rounded.hover:bg-blue-500.hover:text-white.border.border-blue-500
-          = t('events.index.event_row.rsvp_respond')
+      = link_to unit_event_edit_rsvps_path(@unit, event),
+        class: 'event-rsvp-link text-sm py-1 px-4 font-bold rounded text-yellow-800 bg-yellow-400 hover:bg-yellow-500 hover:text-yellow-900 no-underline',
+        data: { turbo_frame: 'event', turbo_action: 'advance' } do
+        = has_family_rsvps ? t('events index event_row.rsvp_change') : t('events.index.event_row.rsvp_respond')

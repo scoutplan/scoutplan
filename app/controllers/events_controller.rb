@@ -7,7 +7,7 @@ class EventsController < ApplicationController
   layout 'application_new'
   before_action :authenticate_user!
   before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish]
-  before_action :find_event, except: %i[index edit create new bulk_publish]
+  before_action :find_event, except: %i[index create new bulk_publish]
   around_action :set_time_zone
 
   def index
@@ -42,14 +42,27 @@ class EventsController < ApplicationController
 
   def edit
     authorize @event
-
-    @event_form = EventView.new(@event)
+    @event_view = EventView.new(@event)
   end
 
   def edit_rsvps
     @unit = Unit.find(params[:unit_id])
     @event = Event.find(params[:event_id])
+    @event_view = EventView.new(@event)
     @current_member = @unit.membership_for(current_user)
+
+    # if we're arriving here because the user clicked the "Update RSVP" button
+    # on the Show dialog, then we're just rendering the Edit RSVP partial. If we're
+    # arriving here from a deep link, then we're going to render a modified Show view
+    # that swaps in the Edit RSVP partial at render time
+
+    if turbo_frame_request?
+      # only render the edit_rsvps partial
+    else
+      render 'show'
+      # render the show template with edit_rsvp partial in lieu of rsvp_card
+      # (can delete edit_rsvps.html.slim)
+    end
   end
 
   def update
