@@ -7,26 +7,24 @@ html
     = csp_meta_tag
     / = stylesheet_link_tag "inter-font", "data-turbo-track": "reload"
     = stylesheet_link_tag 'tailwind', 'data-turbo-track': 'reload'
-    = stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = stylesheet_pack_tag 'application', media: 'all', 'data-turbo-track': 'reload'
     = stylesheet_link_tag "https://use.typekit.net/#{ ENV['ADOBE_FONT_KIT_ID'] }.css"
     = stylesheet_link_tag 'https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css'
-    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application', 'data-turbo-track': 'reload'
     = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: 'anonymous'
     = javascript_include_tag 'https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'
     = javascript_include_tag 'https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js'
     = yield :head
 
-  body(class="#{controller_name} #{action_name} #{ yield :body_classes }")
+  body(class="#{controller_name} #{action_name}")
     = render partial: 'layouts/partials/notices'
-    = render 'layouts/partials/header'
+    = render partial: 'layouts/partials/header'
 
     .flex
-      nav.relative.flex-shrink-0.bg-gray-100.h-screen.pl-8.pr-2.pb-8.py-8.w-80#nav_side
-        .h-16
+      nav.relative.flex-shrink-0.bg-gray-100.h-screen.pl-8.pr-2.pt-32.pb-8.w-60.lg:w-80#nav_side
         = render partial: 'news_items/nav'
       
-      main.h-screen.flex-grow.py-8.px-12.overflow-y-scroll
-        .h-16
+      main.h-screen.flex-grow.py-8.px-16.pt-32.overflow-y-scroll
         = yield
 
   javascript:
@@ -34,6 +32,11 @@ html
     tooltipList = popoverTriggerList.map(function (popoverTriggerEl) {
       return new bootstrap.Tooltip(popoverTriggerEl);
     });
+
+    function setElemDisplay(elem, show) {
+      var elem = document.querySelector(elem);
+      elem.style.display = show ? 'block' : 'none';
+    }
 
   scss:
     .submit-conjunction {

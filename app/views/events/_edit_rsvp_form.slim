@@ -1,0 +1,58 @@
+- family_member_ids = @current_member.family.map(&:id)
+- rsvps = @event.rsvps.where(unit_membership_id: family_member_ids)
+- notes = rsvps.map(&:note).uniq.join(', ')
+
+= form_with model: @event, url: unit_event_send_rsvps_path(@unit, @event), class: 'flex w-full' do |f|
+  .flex-1
+    // left collumn
+    .table.flush-top.flush-left
+      .table-row-group
+        - @current_member.family.each do |family_member|
+          .table-row
+            - existing_rsvp = @event.rsvps.find_by(unit_membership: family_member)
+            - rsvp = @event.rsvps.build(unit_membership: family_member, response: existing_rsvp&.response)
+            = f.fields_for 'members[]', family_member do |member_fields|
+              = member_fields.fields_for 'event_rsvp', rsvp do |rsvp_fields|
+
+                // family member name
+                .table-cell.border-0.font-bold
+                  i.fa-user.fad.text-yellow-500
+                  |&nbsp;&nbsp;
+                  = @presenter.family_context_name(family_member)
+
+                // two radio buttons (going/not going)
+                .table-cell.border-0
+                  .form-check.form-check-inline
+                    = rsvp_fields.radio_button :response, :accepted, class: 'form-check-input'
+                    = rsvp_fields.label :response, :accepted, value: :accepted, class: 'form-check-label' do
+                      = t('rsvp_accepted')
+
+                  .form-check.form-check-inline
+                    = rsvp_fields.radio_button :response, :declined, class: 'form-check-input'
+                    = rsvp_fields.label :response, :declined, value: :declined, class: 'form-check-label' do
+                      = t('rsvp_declined')                       
+
+  // right column
+  .flex-1
+
+    // note field
+    .mb-3
+      = f.label :note, class: 'form-label font-bold'
+      = text_field_tag :note,
+        notes,
+        class: 'rounded p-2 block border w-full',
+        placeholder: t('events.rsvp.note_placeholder'),
+        autocomplete: 'off'
+    
+    // buttons
+    .text-right
+
+      // Send RSVPs button
+      = f.submit t('helpers.label.event.rsvp_save'),
+        class: ' px-4 py-2 mr-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-800 hover:text-yellow-900 text-xs font-bold tracking-wider text-uppercase rounded'
+
+      // Cancel button
+      = link_to t('global.cancel'),
+        unit_event_path(@event.unit, @event),
+        data: { turbo_action: 'advance' },
+        class: 'px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded text-gray-500 hover:text-gray-600 text-xs font-bold tracking-wider text-uppercase no-underline'

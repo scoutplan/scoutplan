@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       post  'cancel'
       post  'publish'
       post  'invite', to: 'event_rsvps#invite'
+      get   'edit_rsvps'
     end
 
     resources :event_rsvps, as: 'rsvps', path: 'rsvps', only: %i[create]
@@ -34,10 +35,15 @@ Rails.application.routes.draw do
     resources :event_categories
     resources :news_items, only: [ :index, :new, :create ]
 
-    resources :events, only: %i[index new create] do
+    resources :events do
       collection do
         post 'bulk_publish'
       end
+      get   'rsvp', as: 'edit_rsvps', to: 'events#edit_rsvps'
+      patch 'rsvp', as: 'send_rsvps', to: 'events#create_or_update_rsvps'
+      get   'organize', as: 'organize'
+      get   'cancel'
+      post  'cancel', to: 'events#perform_cancellation'
     end
 
     resources :unit_memberships, path: 'members', as: 'members', except: [:show] do

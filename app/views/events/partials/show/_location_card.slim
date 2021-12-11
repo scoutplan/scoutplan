@@ -1,0 +1,20 @@
+= link_to event_map_url(@event),
+  target: '_new',
+  class: 'no-underline text-gray-800 hover:text-gray-900',
+  title: 'View Map' do
+
+  .absolute.right-0.top-0.p-3.text-purple-500
+    i.fa-map.fad
+
+  dl.mb-0
+    - if @event.location.present?
+      dt Location
+      dd = @event.location
+
+    - if @event.address.present?
+      dt Address
+      dd = @event.address
+
+    - if @event.departs_from.present?
+      dt Depart From
+      dd = @event.departs_from

@@ -8,16 +8,16 @@ class EventView
   include ActiveModel::Model
   extend Forwardable
 
-  attr_accessor :event,
-                :starts_at_date,
+  attr_accessor :event, :update_scope
+  attr_writer   :starts_at_date,
                 :starts_at_time,
                 :ends_at_date,
-                :ends_at_time,
-                :update_scope
+                :ends_at_time
 
   def_delegators :@event,
                  :title,
                  :short_description,
+                 :description,
                  :event_category_id,
                  :repeats_until,
                  :location,
@@ -26,7 +26,8 @@ class EventView
                  :requires_rsvp,
                  :new_record?,
                  :save,
-                 :save!
+                 :save!,
+                 :status
 
   def initialize(event)
     @event = event || new_record

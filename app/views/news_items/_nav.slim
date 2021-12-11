@@ -7,7 +7,7 @@ ul.p-0.m-o.list-none
       span.text-black
         = t('events.index.title')
 
-  li#main_nav_item_member
+  li#main_nav_item_members
     = link_to unit_members_path(@current_unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-gray-200 rounded-md' do
       span.w-8.inline-block.text-center.text-indigo-500
         i.fa-users.fad
@@ -91,6 +91,14 @@ scss:
 
   body.events {
     li#main_nav_item_events {
+      a {
+        background-color: #e8e8ea;
+      }
+    }
+  }
+
+  body.unit_memberships {
+    li#main_nav_item_members {
       a {
         background-color: #e8e8ea;
       }

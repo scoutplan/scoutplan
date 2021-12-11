@@ -1,0 +1,99 @@
+- url = @event_view.new_record? ? unit_events_path(@unit) : event_path(@event_view.event)
+- method = @event_view.new_record? ? 'post' : 'patch'
+- @format_date = '%Y-%m-%d'
+- @format_time = '%H:%M:%S'
+
+.absolute.inset-0.bg-black.bg-opacity-25.z-40
+  .relative.w-auto.my-12.mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-xl.filter
+    = form_with model: @event_view, scope: 'event', url: url, method: method do |f|
+      header.h-3
+
+      section.py-0.px-8
+        // EVENT CATEGORY
+        .mb-3
+          = f.select :event_category_id,
+              @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
+              { prompt: t('event_category_prompt'), selected: @event_view.event_category_id },
+              { class: 'mt-2 border rounded w-96 py-1 pl-2 pr-4 bg-white' }
+
+          // TITLE & SHORT DESCRIPTION
+          = f.text_field :title, { class: 'mt-2 w-full border rounded p-2 text-3xl font-bold', autocomplete: 'off', style: 'text-transform: capitalize', placeholder: 'Title' }
+          = f.text_field :short_description, { class: 'mt-2 w-full border rounded p-2', autocomplete: 'off', placeholder: t('events.edit.short_description_placeholder') }
+
+        // RSVP
+        .form-check.mb-3
+          = f.check_box :requires_rsvp, class: 'form-check-input'
+          = f.label :requires_rsvp, class: 'form-check-label'
+
+        // tabbed interface
+        .tabs.mt-6
+          nav.flex(data-turbo="false")
+            = link_to t('events.dates'),
+              '#',
+              class: 'inline-block tab-label flex-grow text-center py-1 text-gray-400 hover:text-black no-underline border-b uppercase text-sm tracking-wider selected',
+              data: { 'toggle-target' => '#tab_dates' }
+
+            = link_to t('events.location'),
+              '#',
+              class: 'inline-block tab-label flex-grow text-center py-1 text-gray-400 hover:text-black no-underline border-b uppercase text-sm tracking-wider',
+              data: { 'toggle-target' => '#tab_location' }
+
+            = link_to t('events.description'),
+              '#',
+              class: 'inline-block tab-label flex-grow text-center py-1 text-gray-400 hover:text-black no-underline border-b uppercase text-sm tracking-wider',
+              data: { 'toggle-target' => '#tab_description' }
+
+          section.flex.w-full.pt-3
+            .tab-content.w-full#tab_dates
+              = render partial: 'events/partials/edit/dates', locals: { f: f }
+
+            .tab-content.w-full.hidden#tab_location
+              = render partial: 'events/partials/edit/location', locals: { f: f }
+
+            .tab-content.w-full.hidden#tab_description
+              = f.rich_text_area :description, style: 'height: 24rem; overflow: auto; margin-bottom: 1rem; border-color: #888;'
+
+      // footer
+      footer.overflow-auto.pb-4.px-8.pt-1
+        .float-left
+          span.inline-block.align-middle.mt-1
+            = f.check_box :status, { class: 'form-check-input mr-2' }, 'published', 'draft'
+            = f.label :status, 'Published'
+
+        .float-right
+          - if !@event.new_record? && policy(@event).cancel?
+            = link_to 'Cancel This Event',
+              unit_event_cancel_path(@unit, @event),
+              data: { turbo_frame: 'event', turbo_action: 'advance' },
+              class: "bg-red-800 text-red-100 hover:bg-red-900 hover:text-red-200 px-4 py-2 border rounded text-sm font-bold tracking-wider text-uppercase no-underline mr-2"            
+
+
+          = f.submit "#{@event_view.new_record? ? 'Add This Event' : 'Save Changes'}", 
+            style: "background:#e66425;",
+            class: "px-4 py-2 border rounded text-white text-sm font-bold tracking-wider text-uppercase mr-2"
+          
+          = link_to t('global.cancel'),
+            @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event),
+            data: { turbo_action: 'advance' },
+            class: 'px-4 py-2 border bg-gray-200 text-black text-sm font-bold tracking-wider text-uppercase rounded no-underline'
+
+javascript:
+  // tab interfaces
+  document.querySelectorAll('.tab-label[data-toggle-target]').forEach(function(elem) {
+    elem.addEventListener('click', function(event) {
+      event.stopPropagation();
+      event.preventDefault();
+
+      // toggle tab link selected
+      document.querySelectorAll('.tab-label').forEach(function(elem) {
+        elem.classList.remove('selected');
+      });
+      this.classList.add('selected');
+
+      // toggle tab content visibility
+      document.querySelectorAll('.tab-content').forEach(function(elem) {
+        elem.style.display = 'none';
+      });
+      document.querySelector(elem.dataset.toggleTarget).style.display = 'block';
+    });
+  });

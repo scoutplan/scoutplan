@@ -1,0 +1,39 @@
+.inline-block.flex-auto.pt-1
+  span.font-bold.inline-block
+    =t('rsvps')
+
+  ul.inline-block.m-0
+    / iterate over family members
+    - @current_member.family.each do |family_member|
+      / find the RSVP for the family member for the event (may or may not exist)
+      - rsvp = @event.rsvp_for(family_member)
+      li.inline-block.mr-6
+        / show one of three glyphs depending on status
+        - if rsvp.nil?
+          span.rsvp-response.rsvp-unknown.text-gray-400(title="#{ t('rsvp_unknown') }")
+            i.fas.fa-ghost
+        - elsif rsvp.accepted?
+          span.rsvp-response.rsvp-accepted.text-green-500(title="#{ t('rsvp_accepted') }")
+            i.fad.fa-hiking
+        - elsif rsvp.declined?
+          span.rsvp-response.rsvp-declined.text-red-500(title="#{ t('rsvp_declined') }")
+            i.fad.fa-couch
+        
+        / now show the family member's first name
+        span.ml-2
+          = @presenter.family_context_name(family_member)
+
+        - if rsvp&.note.present?
+          |&nbsp;&nbsp;
+          span(title="#{rsvp&.respondent&.display_full_name}: '#{rsvp.note}'" data-bs-toggle="tooltip")
+            i.fa-comment-alt-lines.fas
+
+.inline-block.text-right.align-middle.flex-auto.leading-none
+  - if policy(@event).rsvp? && @event.rsvp_open?
+    = link_to t(:change_rsvp),
+      unit_event_edit_rsvps_path(@event.unit, @event),
+      data: { turbo_action: 'advance' },
+      class: 'inline-block px-3 py-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-800 hover:text-yellow-900 text-xs font-bold text-uppercase tracking-wider no-underline rounded'
+  - else
+    .inline-block.font-bold.text-gray-400.text-sm.mt-1
+      = t('events.rsvp.closed')

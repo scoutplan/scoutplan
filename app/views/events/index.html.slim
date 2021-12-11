@@ -1,18 +1,18 @@
-.w-full.mx-auto
-  = render 'events/partials/index/header'
-  = render partial: 'events/partials/index/no_events' if @events.count.zero?
-  = render partial: 'events/partials/index/table' if @events.count.positive?
+/ empty turbo frame to be populated by an Event modal as needed
+= turbo_frame_tag 'event'
+
+.w-full.mx-auto(data-controller="event")
+  = turbo_frame_tag('event_list')
+    = render partial: 'events/partials/index/header'
+    = render partial: 'events/partials/index/no_events' if @events.count.zero?
+    = render partial: 'events/partials/index/table' if @events.count.positive?
 
 - content_for :body_classes do
-  = "events index"
-  = " events-filtered showing-only-rsvp-events" if session[:view] == 'rsvps'
-
-- content_for :head do
-  = stylesheet_link_tag unit_path(@unit, format: :css)
-
-= render 'events/partials/event_form'
+  = 'showing-only-rsvp-events' if session[:view] == 'rsvps'
 
 javascript:
+  /* BULK PUBLISH */
+
   // wire up the bulk Publish button
   document.querySelector('#bulk_publish_execute_button').addEventListener('click', function(event) {
     document.querySelector('#bulk_action_form').submit();
@@ -28,15 +28,15 @@ javascript:
     validateBulkPublishState();
   });
 
+  var bulkPublishExecuteButton = document.querySelector('#bulk_publish_execute_button');
+  var originalBulkPublishExecuteButtonCaption = bulkPublishExecuteButton.value;
+
   // wire up Cancel bulk publish button
   document.querySelector('#cancel_bulk_publish').addEventListener('click', function(event) {
     document.body.classList.toggle('showing-only-draft-events');
     document.body.classList.toggle('events-filtered');
     event.preventDefault();
   });
-
-  const bulkPublishExecuteButton = document.querySelector('#bulk_publish_execute_button');
-  const originalBulkPublishExecuteButtonCaption = bulkPublishExecuteButton.value;
 
   // wire up event row checkboxes
   document.querySelectorAll('.bulk-publish-checkbox').forEach(function(elem) {
@@ -47,7 +47,7 @@ javascript:
 
   function validateBulkPublishState() {
     // tally up checked count
-    const checkedCount = document.querySelectorAll('td.selection input:checked').length;
+    const checkedCount = document.querySelectorAll('.event-row .bulk-selection input:checked').length;
 
     // enable execute button
     bulkPublishExecuteButton.disabled = (checkedCount == 0);
@@ -56,304 +56,71 @@ javascript:
     bulkPublishExecuteButton.value = originalBulkPublishExecuteButtonCaption + (checkedCount == 0 ? '' : ' (' + checkedCount + ')');
   }
 
-  document.querySelectorAll('.toggle-body-class').forEach(function(elem) {
-    elem.addEventListener('click', function(event) {
-      const classNames = this.dataset.bodyClass.split(' ');
-      for(const className of classNames) {
-        document.body.classList.toggle(className);
+  /* SHOW/HIDE MONTH HEADERS */
+
+  // find the first prior sibling matching a given selector
+  function queryPreviousSiblingSelector(elem, selector) {
+    var currentElem = elem;
+    var done = false;
+    while(!done) {
+      currentElem = currentElem.previousSibling;
+      if (currentElem === null) {
+        return null;
       }
-      event.preventDefault();
+      done = currentElem.matches(selector);
+    }
+
+    return currentElem;
+  }
+
+  function hideEmptyMonthHeaders() {
+    // iterate over all month rows and hide them
+    document.querySelectorAll('.event-month-boundary').forEach(function(elem) {
+      elem.style.display = 'none';
     });
+
+    // iterate over all visible event rows, back up to its month header, and reveal it
+    document.querySelectorAll('.event-row').forEach(function(elem) {
+      var compStyles = window.getComputedStyle(elem);
+      var compDisplay = compStyles.getPropertyValue('display');
+      if(compDisplay == 'none') {
+        return; // nothing to see here...move on
+      }
+
+      const selector = '.event-month-boundary';
+      var monthHeader = queryPreviousSiblingSelector(elem, selector);
+      monthHeader.style.display = 'table-row';
+    });    
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    hideEmptyMonthHeaders();
   });
 
-  // links inside clickable rows should take priority, so we stop
-  // propagation on them
-  var links = document.getElementsByClassName('event-rsvp-link');
-  for (const link of links) {
-    link.addEventListener('click', function(event) {
-      event.stopPropagation();
+- if false
+  javascript:
+    // links inside clickable rows should take priority, so we stop
+    // propagation on them
+    var links = document.getElementsByClassName('event-rsvp-link');
+    for (const link of links) {
+      link.addEventListener('click', function(event) {
+        event.stopPropagation();
+      });
+    }
+
+    // also prevent checkboxes from firing clickable rows
+    document.querySelectorAll('.bulk-selection input[type="checkbox"]').forEach(function(elem) {
+      elem.addEventListener('click', function(event) {
+        event.stopPropagation();
+      });
     });
-  }
 
-  // also prevent checkboxes from firing clickable rows
-  document.querySelectorAll('.selection input[type="checkbox"]').forEach(function(elem) {
-    elem.addEventListener('click', function(event) {
-      event.stopPropagation();
+    // click on an event row
+    document.querySelectorAll('tr.event').forEach(function(elem) {
+      elem.addEventListener('click', function(event) {
+        href = this.dataset.href;
+        window.location = href;
+      });
     });
-  });
 
-  // click on an event row
-  document.querySelectorAll('tr.event').forEach(function(elem) {
-    elem.addEventListener('click', function(event) {
-      href = this.dataset.href;
-      window.location = href;
-    });
-  });
-
-scss:
-  tr.event {
-    cursor: pointer;
-  }
-
-  .start-day, .days, .title, .glyph {
-    width: 1%;
-    white-space: nowrap;
-  }
-
-  .event-month-boundary {
-    font-weight: 700;
-  }
-
-  tr.no-hover:hover td {
-    background-color: inherit !important;
-  }
-
-  .event-row {
-    display: table-row;
-    transition: height 2s ease;
-  }
-
-  .event-past, .event-cancelled, .event-future {
-    display: none;
-  }
-
-  table.table row.event-past td {
-    color: #aaa;
-  }
-
-  .event-past td {
-    background: #f4f4f4;
-    color: #888;
-  }
-
-  .filter-status {
-    display: none;
-    margin-top: -12px;
-  }
-
-  body.showing-cancelled-events {
-    .event-cancelled {
-      display: table-row;
-    }
-
-    #show-cancelled-events-link {
-      .menu-glyph-wrapper {
-        display: inline-block;
-      }
-    }
-  }
-
-  body.showing-only-rsvp-events {
-    .event-row:not(.event-rsvp) {
-      display: none;
-    }
-
-    #show-only-rsvp-events-link {
-      .menu-glyph-wrapper {
-        display: inline-block;
-      }
-    }
-
-    .filter-status-only-rsvps {
-      display: block;
-    }
-  }
-
-  // Draft events / bulk publish
-
-  th.selection, td.selection {
-    display: none;
-  }
-
-  #bulk_publish_button_wrapper {
-    display: none;
-  }
-
-  body.showing-only-draft-events {
-    .event-row:not(.event-draft) {
-      display: none;
-    }
-
-    #show-only-draft-events-link {
-      .menu-glyph-wrapper {
-        display: inline-block;
-      }
-    }
-
-    th.selection, td.selection {
-      display: table-cell;
-    }
-
-    #bulk_publish_button_wrapper {
-      display: inline-block;
-    }
-
-    #add_event_button_wrapper {
-      display: none;
-    }
-  }
-
-  body.showing-past-events {
-    .event-past {
-      display: table-row;
-    }
-
-    #show-past-events-link {
-      .menu-glyph-wrapper {
-        display: inline-block;
-      }
-    }
-  }
-
-  body.showing-future-events {
-    .event-future {
-      display: table-row;
-    }
-
-    #show-future-events-wrapper {
-      display: none;
-    }
-  }
-
-  .event-rsvp-link {
-    z-index: 1000;
-  }
-
-  .daynames {
-    font-size: 0.75rem;
-    padding-left: 2px;
-    text-transform: uppercase;
-    color: #888;
-    font-weight: 600;
-    baseline-shift: 0.125rem;
-    color: rgb(128,128,128);
-  }
-
-  .table .start-day {
-    padding-right: 2px;
-  }
-
-  .table .days {
-    padding-left: 2px;
-  }
-
-  .table tr td.month {
-    padding-top: 2rem;
-    font-weight: bold;
-  }
-
-  tr.event {
-    td.glyph {
-      text-align: center;
-    }
-  }
-
-  .action {
-    text-align: right;
-  }
-
-  input[type="date"].error {
-    background-color: #ffffcc;
-    animation: shake 0.6s 0s;
-  }
-
-  @keyframes pulse-animation {
-    0% {
-      box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
-    }
-    100% {
-      box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-    }
-  }
-
-  @keyframes wiggle {
-     0% { transform: skewX(9deg); }
-     10% { transform: skewX(-8deg); }
-     20% { transform: skewX(7deg); }
-     30% { transform: skewX(-6deg); }
-     40% { transform: skewX(5deg); }
-     50% { transform: skewX(-4deg); }
-     60% { transform: skewX(3deg); }
-     70% { transform: skewX(-2deg); }
-     80% { transform: skewX(1deg); }
-     90% { transform: skewX(0deg); }
-     100% { transform: skewX(0deg); }
-  }
-
-  @keyframes shake {
-   0%, 100% {transform: translateX(0);}
-   10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
-   20%, 40%, 60%, 80% {transform: translateX(5px);}
-  }
-
-  tr.event-camping {
-    td:first-child {
-      border-left-color: green;
-    }
-
-    .glyph svg {
-      color: green;
-    }
-  }
-
-  tr.court_of_honor-event {
-    td:first-child {
-      border-left-color: GoldenRod;
-    }
-
-    .glyph svg {
-      color: GoldenRod;
-    }
-  }
-
-  tr.event-troop_meeting {
-    td:first-child {
-      border-left-color: FireBrick;
-    }
-
-    .glyph svg {
-      color: FireBrick;
-    }
-  }
-
-  .rsvp-response svg {
-    margin-right: 0.2rem;
-    color: rgb(128, 128, 128);
-  }
-
-  .rsvp-accepted svg {
-    color: green;
-  }
-
-  .rsvp-declined svg {
-    color: red;
-  }
-
-  td.action {
-    ul {
-      list-style: none;
-      margin: 0;
-      padding: 1px 0 0 0;
-
-      li {
-        display: inline-block;
-        padding: 0 1rem 0 0;
-      }
-    }
-
-    a.btn {
-      padding-top: 1px !important;
-      padding-bottom: 1px !important;
-      font-size: 90%;
-    }
-  }
-
-  .table tr {
-    border-color: rgb(240, 240, 240);
-
-    td {
-      padding-top: 10px;
-      padding-bottom: 10px;
-    }
-  }
-
+= render partial: 'events/partials/styles'
