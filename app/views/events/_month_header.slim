@@ -1,9 +1,9 @@
 - if @current_month.nil? || @current_month != event.starts_at.month
-
+  - @month_counter = 0
   - row_class = event.starts_at < Date.today.beginning_of_month ? 'event-past' : ''
   - row_class += ' event-future' if event.starts_at > 3.months.from_now
 
-  .table-row(class="#{ row_class } event-month-boundary event-rsvp no-hover h-12 relative overflow-auto")
+  .table-row(class="#{ row_class } event-month-boundary event-rsvp no-hover h-10 relative overflow-auto" id="month_header_#{event.starts_at.strftime('%Y')}_#{event.starts_at.strftime('%m')}")
     .table-cell.absolute.inset-0.pt-3
       h3.event-month-header.leading-none.base.font-bold.text-black.text-base.mb-0
         = event.starts_at.strftime('%B')

@@ -1,16 +1,16 @@
 - multiday = !(@event.starts_at.to_date === @event.ends_at.to_date)
 
-.text-uppercase.text-sm.text-center.font-bold.text-black.tracking-widest.mb-3 = @presenter.month_name
+.text-center.font-bold.text-black.mb-3 = @presenter.month_name
 
 .table.mb-0
   .table-row-group
     .table-row
       .table-cell.text-center.border-0
-        .text-uppercase.text-sm.font-bold.text-red-800 = @event.starts_at.localtime.strftime('%a')
+        .text-uppercase.text-sm.font-bold.text-red-800.tracking-wider = @event.starts_at.localtime.strftime('%a')
       - if multiday
         .table-cell.text-center.border-0
         .table-cell.text-center.border-0
-          .text-uppercase.text-sm.font-bold.text-red-800 = @event.ends_at.localtime.strftime('%a')
+          .text-uppercase.text-sm.font-bold.text-red-800.tracking-wider = @event.ends_at.localtime.strftime('%a')
 
     .table-row
       .table-cell.text-center.border-0.py-0

@@ -21,12 +21,10 @@ html
     = render partial: 'layouts/partials/header'
 
     .flex
-      nav.relative.flex-shrink-0.bg-gray-100.h-screen.pl-8.pr-2.pb-8.py-8.w-60.lg:w-80#nav_side
-        .h-16
+      nav.relative.flex-shrink-0.bg-gray-100.h-screen.pl-8.pr-2.pt-32.pb-8.w-60.lg:w-80#nav_side
         = render partial: 'news_items/nav'
       
-      main.h-screen.flex-grow.py-8.px-16.overflow-y-scroll
-        .h-16
+      main.h-screen.flex-grow.py-8.px-16.pt-32.overflow-y-scroll
         = yield
 
   javascript:

@@ -15,7 +15,7 @@ export default class extends Controller {
 
   toggleCancelledEvents(event) {
     this.toggleBodyClass(event, 'showing-cancelled-events');
-    this.toggleBodyClass(event, 'showing-past-events', true)
+    this.toggleBodyClass(event, 'showing-past-events', true);
   }
 
   toggleRsvpEvents(event) {
@@ -23,7 +23,7 @@ export default class extends Controller {
   }
 
   toggleBulkPublish(event) {
-    this.toggleBodyClass(event, 'showing-only-draft-events')
+    this.toggleBodyClass(event, 'showing-only-draft-events', true);
   }
 
   close_modal(event) {
@@ -40,5 +40,7 @@ export default class extends Controller {
     } else {
       document.body.classList.remove(className);
     }
+
+    hideEmptyMonthHeaders();
   }
 }

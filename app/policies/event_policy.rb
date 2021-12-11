@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+# Policy class governing Events and what members can do with them
 class EventPolicy < UnitContextPolicy
   def initialize(membership, event)
+    super
     @membership = membership
     @event = event
   end
@@ -35,6 +37,10 @@ class EventPolicy < UnitContextPolicy
   end
 
   def plan?
+    admin?
+  end
+
+  def cancel?
     admin?
   end
 end

@@ -1,0 +1,76 @@
+= turbo_frame_tag 'event_list', src: unit_events_path(@event.unit)
+= turbo_frame_tag 'event'
+  .absolute.inset-0.bg-black.bg-opacity-25.z-40
+    .relative.w-auto.my-12.mx-auto.max-w-xl.bg-white.rounded.z-50.drop-shadow-xl.filter
+      = form_with url: unit_event_cancel_path(@unit, @event), method: :post do |f|
+        header.px-6.py-4.overflow-auto
+          h3.mb-0.float-left.text-red-800
+            i.far.fa-exclamation-circle
+            | &nbsp;&nbsp;
+            | Cancel Event
+
+          // close "X" button
+          = link_to edit_unit_event_path(@unit, @event),
+            class: 'inline-block float-right text-gray-500 hover:text-gray-500',
+            data: { 'turbo-action' => 'advance' } do
+            i.fa-times.far.hover:text-black          
+
+        section.px-6.clear-both
+          p.mb-3
+            = raw("You are cancelling the <strong>#{@event.title}</strong> on #{@event.starts_at.strftime('%B %-d')}.")
+            - if @event.rsvps.accepted.count.positive?
+              = raw("<br>#{@event.rsvps.accepted.count} members are planning to attend.")
+            - else
+              = raw("<br>No one is planning to attend.")
+            = raw(" Send a cancellation message?")
+          
+          .mb-1
+            = f.radio_button :message_audience, :none, checked: true, class: 'mr-2'
+            = f.label :message_audience_none, "No, don't send a message"
+
+          - if @event.requires_rsvp && @event.rsvps.accepted.count.positive?
+            .mb-1
+              = f.radio_button :message_audience, :acceptors, class: 'mr-2'
+              = f.label :message_audience_acceptors, "Yes, to the #{@event.rsvps.accepted.count} who plan on attending"
+
+          .mb-1
+            = f.radio_button :message_audience, :active_members, class: 'mr-2'
+            = f.label :message_audience_active_members, "Yes, to all #{@unit.members.active.count} active members"
+
+          .mb-3
+            = f.radio_button :message_audience, :all_members, class: 'mr-2'
+            = f.label :message_audience_all_members, "Yes, to all #{@unit.members.count} active and inactive members"
+
+          = f.text_area :note,
+            class: 'border rounded w-full h-24 p-2 hidden',
+            placeholder: 'Type your cancellation message here'
+
+        // footer, containing right-justified buttons
+        footer.overflow-auto.py-4.px-6
+          .float-right.overflow-auto
+            = f.submit 'Cancel Event',
+              class: 'inline-block px-4 py-2 mr-2 no-underline bg-red-800 hover:bg-red-900 text-red-100 hover:text-red-200 rounded text-sm font-bold tracking-wider text-uppercase',
+              data: { confirm: 'Are you sure you want to cancel?' }
+
+            // Don't Cancel button
+            = link_to "Don't Cancel",
+              unit_event_path(@unit, @event),
+              class: 'inline-block px-4 py-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider text-uppercase',
+              data: { 'turbo-action' => 'advance' }            
+
+= render partial: 'events/partials/styles'
+
+javascript:
+  function setupNoteField() {
+    var messageAudience = document.querySelector('input[name="message_audience"]:checked').value;
+    var noteField = document.querySelector('#note');
+    noteField.style.display = (messageAudience == 'none') ? 'none' : 'block';
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('input[type="radio"]').forEach(function(elem) {
+      elem.addEventListener('click', function(elem) {
+        setupNoteField();
+      });
+    });
+  })

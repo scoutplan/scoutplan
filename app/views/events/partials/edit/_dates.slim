@@ -1,6 +1,10 @@
+// timezone message
+.mb-3
+  .text-sm.text-gray-400 = t('events.form.timezone_prompt', timezone_name: @current_unit.settings(:locale).time_zone)
+
 // dates
 .mb-1
-  .table(style="margin-bottom: 0;")
+  .table.flush-table
     .table-row-group
       .table-row
         .table-cell.border-0(style="padding-left:0;") = f.label :from
@@ -13,7 +17,7 @@
         .table-cell.border-0(style="padding-left:0;") = f.time_field :ends_at_time, class: 'w-full border rounded p-2', step: '900', value: @event.ends_at.localtime.strftime("#{ @format_time }")
 
 // repeats
-.flex.mb-3
+.flex.mb-3.h-10
   .flex.whitespace-nowrap
     .form-check.form-check-inline(style="padding-top:6px;")
       = check_box_tag 'event_repeats', nil, false, class: 'form-check-input',
@@ -23,7 +27,3 @@
 
   #repeat_fields.hidden
     = f.date_field :repeats_until, value: (@event.starts_at + 6.months).strftime("#{ @format_date }"), class: 'w-72 border rounded p-2 inline-block'
-
-// timezone message
-.mb-0
-  .text-sm.text-gray-400 = t('events.form.timezone_prompt', timezone_name: @current_unit.settings(:locale).time_zone)    

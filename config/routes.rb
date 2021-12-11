@@ -39,8 +39,11 @@ Rails.application.routes.draw do
       collection do
         post 'bulk_publish'
       end
-      get 'rsvp', as: 'edit_rsvps', to: 'events#edit_rsvps'
-      get 'organize', as: 'organize'
+      get   'rsvp', as: 'edit_rsvps', to: 'events#edit_rsvps'
+      patch 'rsvp', as: 'send_rsvps', to: 'events#create_or_update_rsvps'
+      get   'organize', as: 'organize'
+      get   'cancel'
+      post  'cancel', to: 'events#perform_cancellation'
     end
 
     resources :unit_memberships, path: 'members', as: 'members', except: [:show] do

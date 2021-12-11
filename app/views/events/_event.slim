@@ -1,16 +1,21 @@
 - @presenter.event = event
 - rsvps = event.rsvps
 - row_class = 'event-row'
-- row_class += ' event-past' if event.starts_at < Date.today.beginning_of_month
+- row_class += ' event-past'   if event.starts_at < Time.zone.now
 - row_class += ' event-future' if event.starts_at > 3.months.from_now
+- row_class += ' event-rsvp'   if event.requires_rsvp
+- row_class += ' event-draft'  if event.draft?
+- row_class += ' event-cancelled' if event.cancelled?
 
 = render partial: 'month_header', locals: { event: event }
 
-.table-row.hover:bg-gray-100.hover:text-black(class="#{row_class}")
+.table-row.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{row_class} month-event-#{@month_counter}")
+
+  - @month_counter += 1
 
   // bulk selection checkbox
-  .table-cell.selection
-    = check_box_tag "events[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
+  .table-cell.bulk-selection
+    = check_box_tag "event_ids[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
 
   // dates
   = link_to unit_event_path(@unit, event),
@@ -38,13 +43,13 @@
 
   // location
   = link_to unit_event_path(@unit, event),
-    class: "hidden lg:table-cell row-link cursor-pointer no-underline whitespace-nowrap",
+    class: "hidden xl:table-cell row-link cursor-pointer no-underline whitespace-nowrap",
     data: { turbo_frame: 'event', turbo_action: 'advance' } do
     = event.location
 
   // short description
   = link_to unit_event_path(@unit, event),
-    class: "hidden xl:table-cell row-link cursor-pointer no-underline whitespace-nowrap",
+    class: "hidden 2xl:table-cell row-link cursor-pointer no-underline whitespace-nowrap",
     data: { turbo_frame: 'event', turbo_action: 'advance' } do
     = event.short_description
 

@@ -45,10 +45,14 @@ class Unit < ApplicationRecord
     Planner.new(self)
   end
 
+  def default_event_category
+    categories.first
+  end
+
   private
 
   def populate_categories
-    EventCategory.default.each do |category|
+    EventCategory.seeds.each do |category|
       event_categories.create(
         name: category.name,
         glyph: category.glyph,

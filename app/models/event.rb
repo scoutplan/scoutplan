@@ -21,6 +21,7 @@ class Event < ApplicationRecord
   validates_presence_of :title, :starts_at, :ends_at
 
   after_create :create_series, if: :repeats_until?
+  after_initialize :set_defaults, if: :new_record?
 
   enum status: { draft: 0, published: 1, cancelled: 2 }
 
@@ -45,6 +46,10 @@ class Event < ApplicationRecord
 
   def organizable?
     requires_rsvp
+  end
+
+  def editable?
+    starts_at.future?
   end
 
   def series?
@@ -97,5 +102,11 @@ class Event < ApplicationRecord
       new_event.save!
       new_event = new_event.dup
     end
+  end
+
+  def set_defaults
+    self.event_category = unit.event_categories.first
+    self.starts_at = 4.weeks.from_now
+    self.ends_at = self.starts_at + 4.hours
   end
 end

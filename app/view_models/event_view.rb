@@ -17,6 +17,7 @@ class EventView
   def_delegators :@event,
                  :title,
                  :short_description,
+                 :description,
                  :event_category_id,
                  :repeats_until,
                  :location,
@@ -25,7 +26,8 @@ class EventView
                  :requires_rsvp,
                  :new_record?,
                  :save,
-                 :save!
+                 :save!,
+                 :status
 
   def initialize(event)
     @event = event || new_record

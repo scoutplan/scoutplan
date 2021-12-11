@@ -1,1 +1,4 @@
-= render 'form'
+= turbo_frame_tag 'event_list', src: unit_events_path(@event.unit)
+= turbo_frame_tag 'event'
+  = render 'form'
+= render partial: 'events/partials/styles'

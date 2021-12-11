@@ -11,8 +11,8 @@ GIT
 
 GIT
   remote: https://github.com/dorianmariefr/tailwindcss-rails.git
-  revision: 609e9a65a0b00b9d600a20103cb8f34f05e7ed10
-  branch: minimal
+  revision: 171523c8b9217dcae5d2249bea0e7ff7df9b26fd
+  branch: main
   specs:
     tailwindcss-rails (0.4.2)
       rails (>= 6.0.0)

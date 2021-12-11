@@ -13,10 +13,10 @@
           span.rsvp-response.rsvp-unknown.text-gray-400(title="#{ t('rsvp_unknown') }")
             i.fas.fa-ghost
         - elsif rsvp.accepted?
-          span.rsvp-response.rsvp-accepted.text-green-500(title="#{ t('rsvp_accept') }")
+          span.rsvp-response.rsvp-accepted.text-green-500(title="#{ t('rsvp_accepted') }")
             i.fad.fa-hiking
         - elsif rsvp.declined?
-          span.rsvp-response.rsvp-declined.text-red-500(title="#{ t('rsvp_decline') }")
+          span.rsvp-response.rsvp-declined.text-red-500(title="#{ t('rsvp_declined') }")
             i.fad.fa-couch
         
         / now show the family member's first name
@@ -29,12 +29,11 @@
             i.fa-comment-alt-lines.fas
 
 .inline-block.text-right.align-middle.flex-auto.leading-none
-  - if @event.rsvp_open?
+  - if policy(@event).rsvp? && @event.rsvp_open?
     = link_to t(:change_rsvp),
       unit_event_edit_rsvps_path(@event.unit, @event),
       data: { turbo_action: 'advance' },
       class: 'inline-block px-3 py-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-800 hover:text-yellow-900 text-xs font-bold text-uppercase tracking-wider no-underline rounded'
-  - elsif @event.past?
-    = t('events.rsvp.past')
   - else
-    = t('events.rsvp.closed')
+    .inline-block.font-bold.text-gray-400.text-sm.mt-1
+      = t('events.rsvp.closed')

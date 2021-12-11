@@ -1,4 +1,3 @@
 = turbo_frame_tag('event_list', src: unit_events_path(@event.unit))
-= turbo_frame_tag('event', src: unit_event_path(@event.unit, @event))
-= turbo_frame_tag('rsvp')
-  = render partial: 'edit_rsvp_form'
+= turbo_frame_tag('event')
+  = render partial: 'event_view', locals: { mode: 'rsvp' }

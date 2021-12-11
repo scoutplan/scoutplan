@@ -2,7 +2,7 @@
 // we want quick reloads
 
 scss:
-  .selection {
+  .bulk-selection {
     display: none;
   }
 
@@ -77,7 +77,7 @@ scss:
 
   // Draft events / bulk publish
 
-  th.selection, td.selection {
+  table-cell.bulk-selection {
     display: none;
   }
 
@@ -86,8 +86,12 @@ scss:
   }
 
   body.showing-only-draft-events {
-    .event-row:not(.event-draft) {
+    .event-row {
       display: none;
+    }
+
+    .event-row.event-draft {
+      display: table-row !important;
     }
 
     #show-only-draft-events-link {
@@ -96,8 +100,12 @@ scss:
       }
     }
 
-    th.selection, td.selection {
+    .table-cell.bulk-selection {
       display: table-cell;
+    }
+
+    .table.bulk-selection {
+      display: table;
     }
 
     #bulk_publish_button_wrapper {
@@ -169,8 +177,38 @@ scss:
     }
   }
 
+  .table.flush-left {
+    .table-cell:first-child {
+      padding-left: 0 !important;
+    }
+  }
+
+  .table.flush-right {
+    .table-cell:last-child {
+      padding-right: 0 !important;
+    }
+  }
+
+  .table.flush-table {
+    .table-row-group {
+      .table-row:first-child {
+        .table-cell {
+          padding-top: 0 !important;
+        }
+      }
+
+      .table-cell:first-child {
+        padding-left: 0 !important;
+      }
+
+      .table-cell:last-child {
+        padding-right: 0 !important;
+      }    
+    }
+  }
+
   a.row-link {
-    color: #888;
+    color: #666;
   }
 
   .table {
@@ -189,12 +227,6 @@ scss:
     }
   }
 
-  .table.flush-left {
-    .table-cell:first-child {
-      padding-left: 0 !important;
-    }
-  }
-
   .attention {
     animation: pulsate 2s ease-out 3;    
   }
@@ -203,4 +235,21 @@ scss:
     0%   { box-shadow: 0 0 0 rgb(251, 191, 36); }
     50%  { box-shadow: 0 0 17px rgb(251, 191, 36); }
     100% { box-shadow: 0 0 0 rgb(251, 191, 36); }
+  }
+
+  .tab-label.selected {
+    border-color: black;
+    color: black;
+    font-weight: 600;
+
+    &:hover {
+      color: black;
+      cursor: default;
+    }
+  }
+
+  .event-past {
+    a.row-link {
+      color: #aaa;
+    }
   }

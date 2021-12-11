@@ -29,6 +29,12 @@ class EventsController < ApplicationController
     page_title @event.unit.name, @event.title
   end
 
+  def new
+    build_prototype_event
+    @event_view = EventView.new(@event)
+    @presenter = EventPresenter.new(event: @event, current_user: current_user)
+  end
+
   def create
     authorize :event, :create?
 
@@ -43,26 +49,6 @@ class EventsController < ApplicationController
   def edit
     authorize @event
     @event_view = EventView.new(@event)
-  end
-
-  def edit_rsvps
-    @unit = Unit.find(params[:unit_id])
-    @event = Event.find(params[:event_id])
-    @event_view = EventView.new(@event)
-    @current_member = @unit.membership_for(current_user)
-
-    # if we're arriving here because the user clicked the "Update RSVP" button
-    # on the Show dialog, then we're just rendering the Edit RSVP partial. If we're
-    # arriving here from a deep link, then we're going to render a modified Show view
-    # that swaps in the Edit RSVP partial at render time
-
-    if turbo_frame_request?
-      # only render the edit_rsvps partial
-    else
-      render 'show'
-      # render the show template with edit_rsvp partial in lieu of rsvp_card
-      # (can delete edit_rsvps.html.slim)
-    end
   end
 
   def update
@@ -108,9 +94,33 @@ class EventsController < ApplicationController
     redirect_to unit_events_path(@unit)
   end
 
-  # PATCH /events/:id/rsvpp
-  def create_or_update_rsvp
+  # GET /units/:unit_id/events/:id/rsvp
+  def edit_rsvps
+    @unit = Unit.find(params[:unit_id])
+    @event = Event.find(params[:event_id])
+    @event_view = EventView.new(@event)
+    @current_member = @unit.membership_for(current_user)
+
+    # if we're arriving here because the user clicked the "Update RSVP" button
+    # on the Show dialog, then we're just rendering the Edit RSVP partial. If we're
+    # arriving here from a deep link, then we're going to render a modified Show view
+    # that swaps in the Edit RSVP partial at render time
+
+    if turbo_frame_request?
+      # only render the edit_rsvps partial
+    else
+      render 'show'
+      # render the show template with edit_rsvp partial in lieu of rsvp_card
+      # (can delete edit_rsvps.html.slim)
+    end
+  end
+
+  # POST /units/:unit_id/events/:id/rsvp
+  def create_or_update_rsvps
+    ap 'here'
     note = params[:note]
+
+    ap params
 
     params[:event][:members].each do |member_id, values|
       response = values[:event_rsvp][:response]
@@ -128,14 +138,22 @@ class EventsController < ApplicationController
     redirect_to [@unit, @event]
   end
 
-  # POST cancel
+  # GET cancel
   def cancel
-    @event.status = :cancelled
+    find_unit
+    find_event
+  end
 
+  # POST cancel
+  def perform_cancellation
+    find_unit
+    find_event
+    ap @event
+    @event.status = :cancelled
     return unless @event.save!
 
     flash[:notice] = t('events.show.cancel.confirmation', event_title: @event.title)
-    redirect_to unit_events_path(@event.unit)
+    redirect_to unit_events_path(@unit)
   end
 
   # this override is needed to pass the membership instead of the user
@@ -193,7 +211,8 @@ class EventsController < ApplicationController
       :ends_at_date,
       :ends_at_time,
       :repeats_until,
-      :departs_from
+      :departs_from,
+      :status
     )
   end
   # rubocop:enable Metrics/MethodLength

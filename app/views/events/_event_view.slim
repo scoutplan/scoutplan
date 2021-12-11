@@ -1,0 +1,87 @@
+- url = @event_view.new_record? ? unit_events_path(@unit) : event_path(@event_view.event)
+- method = @event_view.new_record? ? 'post' : 'patch'
+- mode = 'rsvp' if action_name == 'edit_rsvps'
+
+.absolute.inset-0.bg-black.bg-opacity-25.z-40(class="event-#{@event.status}-modal")
+  .relative.w-auto.my-12.mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-xl.filter
+    - if @event.cancelled?
+      .absolute.transform.-rotate-45.text-7xl.font-bold.text-red-500.uppercase.text-opacity-20.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/2(style="left:50%;top:50%;font-family:courier,serif;")
+        |Cancelled
+
+    // modal header
+    header.pt-4.px-8.pb-3.overflow-auto
+      h3.m-0.font-bold.float-left
+        = @event.title
+        span.align-middle.ml-2.text-base = glyph_tag(@event)
+        = content_tag(:div, @event.short_description, class: 'font-normal text-base text-gray-500') if @event.short_description.present?
+
+      - if @event.cancelled?
+        span.inline-block.ml-3.rounded.text-xs.bg-red-500.text-white.font-bold.px-2.py-1.tracking-wide.mt-1
+          | Cancelled
+
+      - if @event.past?
+        .inline-block.text-sm.mt-2.ml-4.text-gray-400.font-bold This event has already occurred.
+
+      // close "X" button
+      = link_to unit_events_path(@event.unit),
+        class: 'inline-block float-right text-gray-500 hover:text-gray-500',
+        data: { 'turbo-action' => 'advance' } do
+        i.fa-times.far.hover:text-black
+
+    // guts of the modal        
+    section.py-0.px-8
+
+      // first row: RSVP panel
+      - if @event.requires_rsvp
+        .bg-gray-100.rounded.mb-3.flex
+          = turbo_frame_tag 'rsvp', class: 'flex w-full'
+            .p-3.flex.w-full(class="#{ mode == 'rsvp' ? 'attention' : '' }")
+              - if mode == 'rsvp'
+                = render partial: 'edit_rsvp_form'
+              - else
+                = render partial: 'rsvp_card'
+
+      // second row: date and location (conditionally) panels
+      .flex.flex-col.sm:flex-row.mb-3
+
+        / date panel
+        #date_time_card.bg-gray-100.rounded.p-3.mb-2.sm:flex-auto
+          = render partial: 'events/partials/show/date_card'
+
+        / location panel (if location values are set)
+        - if @event.location.present? || @event.address.present? || @event.departs_from.present?
+          #location_card.bg-gray-100.rounded.p-3.mb-2.sm:ml-4.relative.sm:flex-auto
+            = render partial: 'events/partials/show/location_card'
+
+      // third row: longform description, if present
+      - if @event.description.present?
+        .flex.mb-3.overflow-y-scroll.max-h-60.border-b
+          .pb-3.overflow-auto
+            == @event.description
+
+    // footer, containing right-justified buttons
+    footer.overflow-auto.pb-4.px-6
+      .float-right.overflow-auto
+
+        // Organize button (if authorized)
+        - if @event.organizable? && policy(@event).organize?
+          = link_to t('events.show.organize_button_caption'),
+            unit_event_organize_path(@event.unit, @event),
+            class: 'inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider text-uppercase',
+            data: { 'turbo-action' => 'advance', 'turbo-frame' => '_top' },
+            title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)
+
+        // Edit button (if authorized)
+        - if policy(@event).edit? && @event.editable?
+          = link_to t('event_edit'),
+            edit_unit_event_path(@event.unit, @event),
+            class: 'inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider text-uppercase',
+            data: { 'turbo-action' => 'advance' },
+            title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)
+
+        // Done button
+        = link_to t('global.done'),
+          unit_events_path(@event.unit),
+          class: 'inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-white text-sm font-bold tracking-wider text-uppercase',
+          style: 'background:#e66425;',
+          data: { 'turbo-action' => 'advance' }
