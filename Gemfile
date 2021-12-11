@@ -41,9 +41,7 @@ gem 'skylight', '~> 5.1'
 gem 'slim', '~> 4.1'
 gem 'smarter_csv'
 gem 'stimulus-rails'
-# gem "tailwindcss-rails", github: "dorianmariefr/tailwindcss-rails", branch: "minimal"
-gem "tailwindcss-rails", github: "dorianmariefr/tailwindcss-rails", branch: 'main'
-# gem "tailwindcss-rails"
+gem "tailwindcss-rails", github: "dorianmariefr/tailwindcss-rails", branch: "minimal"
 gem 'textris', git: 'https://github.com/danielpuglisi/textris.git', branch: 'rails6'
 gem 'twilio-ruby'
 gem 'trix', '~> 0.10'

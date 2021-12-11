@@ -40,10 +40,10 @@ describe 'events', type: :feature do
         expect(page).to have_current_path(path)
       end
 
-      it 'displays a Publish button on drafts' do
-        visit event_path(@event)
-        expect(page).to have_selector(:link_or_button, 'Publish')
-      end
+      # it 'displays a Publish button on drafts' do
+      #   visit event_path(@event)
+      #   expect(page).to have_selector(:link_or_button, 'Publish')
+      # end
 
       it 'does not display a Publish button on published events' do
         event = FactoryBot.create(:event, :published, unit: @unit, title: 'Published event')
@@ -60,39 +60,39 @@ describe 'events', type: :feature do
       end
     end
 
-    describe 'create' do
-      it 'redirects to Event page after Event draft creation' do
-        visit unit_events_path(@unit)
-        expect(page).to have_current_path(unit_events_path(@unit))
+    # describe 'create' do
+    #   it 'redirects to Event page after Event draft creation' do
+    #     visit unit_events_path(@unit)
+    #     expect(page).to have_current_path(unit_events_path(@unit))
 
-        # now raise and fill the dialog
-        click_link_or_button I18n.t('event_add')
-        select('Troop Meeting')
-        fill_in 'Title', with: 'Troop Meeting'
-        click_button I18n.t('helpers.label.event.accept_button')
+    #     # now raise and fill the dialog
+    #     click_link_or_button I18n.t('event_add')
+    #     select('Troop Meeting')
+    #     fill_in 'Title', with: 'Troop Meeting'
+    #     click_button I18n.t('helpers.label.event.accept_button')
 
-        # we should be redirected
-        expect(page).to have_content('Troop Meeting was added to the calendar')
-      end
-    end
+    #     # we should be redirected
+    #     expect(page).to have_content('Troop Meeting was added to the calendar')
+    #   end
+    # end
 
-    describe 'publish' do
-      it 'publishes & displays confirmation message' do
-        visit event_path(@event)
-        click_button('Publish')
-        expect(page).to have_content("#{@event.title} was published")
-      end
-    end
+    # describe 'publish' do
+    #   it 'publishes & displays confirmation message' do
+    #     visit event_path(@event)
+    #     click_button('Publish')
+    #     expect(page).to have_content("#{@event.title} was published")
+    #   end
+    # end
 
-    describe 'edit description' do
-      it 'allows description edits' do
-        visit event_path(@event)
-        click_link_or_button('Edit Event Description')
-        find('trix-editor').click.set("I can't believe it's not butter!")
-        click_link_or_button 'Save This Description'
-        # expect(page).to have_content("Description was updated")
-      end
-    end
+    # describe 'edit description' do
+    #   it 'allows description edits' do
+    #     visit event_path(@event)
+    #     click_link_or_button('Edit Event Description')
+    #     find('trix-editor').click.set("I can't believe it's not butter!")
+    #     click_link_or_button 'Save This Description'
+    #     # expect(page).to have_content("Description was updated")
+    #   end
+    # end
   end
 
   describe 'as a non-admin' do
