@@ -5,6 +5,9 @@ class UnitSettingsController < UnitContextController
 
   def edit
     @page_title = [@unit.name, 'Settings']
+    if @unit.settings(:communication).weekly_digest
+      @schedule = IceCube::Schedule.from_yaml(@unit.settings(:communication).weekly_digest)
+    end
     authorize @unit, policy_class: UnitSettingsPolicy
   end
 

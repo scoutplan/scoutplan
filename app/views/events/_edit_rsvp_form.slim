@@ -49,7 +49,8 @@
 
       // Send RSVPs button
       = f.submit t('helpers.label.event.rsvp_save'),
-        class: ' px-4 py-2 mr-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-800 hover:text-yellow-900 text-xs font-bold tracking-wider text-uppercase rounded'
+        class: 'px-4 py-2 mr-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-800 hover:text-yellow-900 text-xs font-bold tracking-wider text-uppercase rounded',
+        data: { turbo_action: 'advance' }
 
       // Cancel button
       = link_to t('global.cancel'),
