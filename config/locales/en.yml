@@ -138,6 +138,7 @@ en:
       no_events:    'No events are planned right now.'
       draft:        'Draft'
       cancelled:    'Cancelled'
+      description_present: 'This event has notes to read'
       view:
         dropdown:   'Options'
         cancelled:  'Show cancelled events (%{count})'

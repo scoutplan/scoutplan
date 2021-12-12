@@ -16,7 +16,6 @@ class EventsController < ApplicationController
     @current_family = @current_member.family
     @current_year = @current_month = nil
     page_title @unit.name, t('events.index.title')
-    build_prototype_event
   end
 
   def show
@@ -58,8 +57,10 @@ class EventsController < ApplicationController
     @event_view.assign_attributes(event_params)
     return unless @event_view.save!
 
+    # render turbo_stream: turbo_stream.replace(@event, partial: 'events/event', locals: { event: @event })
+
     flash[:notice] = t('events.update_confirmation', title: @event.title)
-    redirect_to @event
+    redirect_to [@unit, @event]
   end
 
   def organize
@@ -117,11 +118,7 @@ class EventsController < ApplicationController
 
   # POST /units/:unit_id/events/:id/rsvp
   def create_or_update_rsvps
-    ap 'here'
     note = params[:note]
-
-    ap params
-
     params[:event][:members].each do |member_id, values|
       response = values[:event_rsvp][:response]
       rsvp = @event.rsvps.create_with(
@@ -131,20 +128,24 @@ class EventsController < ApplicationController
       ).find_or_create_by!(unit_membership_id: member_id)
 
       rsvp.update!(response: response, respondent: @current_member, note: note)
-      EventNotifier.send_rsvp_confirmation(rsvp)
+      # EventNotifier.send_rsvp_confirmation(rsvp)
     end
 
-    flash[:notice] = t(:rsvp_posted)
-    redirect_to [@unit, @event]
+    @unit = @event.unit
+    @current_member = @unit.membership_for(current_user)
+    @current_family = @current_member.family
   end
 
   # GET cancel
+  # display cancel dialog where user confirms cancellation and where
+  # notification options are chosen
   def cancel
     find_unit
     find_event
   end
 
   # POST cancel
+  # actually cancel the event and send out notifications
   def perform_cancellation
     find_unit
     find_event

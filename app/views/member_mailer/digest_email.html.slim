@@ -17,7 +17,7 @@
   h2(style="color:#888; text-transform:uppercase;") Next Seven Days
   - @this_week_events.each do |event|
     h3(style="margin-bottom: 0;")
-      = link_to event.title, event_url(event, r: @member.magic_link.token)
+      = link_to event.title, unit_event_url(event.unit, event, r: @member.magic_link.token)
 
     p(style="margin-top:0;")
       = event.starts_at.localtime.strftime('%A, %b %-d')
@@ -50,10 +50,8 @@
 
       - if event.rsvp_open? && @member.adult?
         span(style="font-size: 80%;")
-          - if family_rsvp_count > 0
-            = link_to 'Change RSVPs', event_url(event, anchor: 'rsvp', r: @member.magic_link.token)
-          - else
-            = link_to 'RSVP Now', event_url(event, anchor: 'rsvp', r: @member.magic_link.token)
+          - button_caption = family_rsvp_count.positive? ? 'Change RSVPs' : 'RSVP Now'
+          = link_to button_caption, unit_event_edit_rsvps_url(event.unit, event, r: @member.magic_link.token)
 
 - content_for :right_column do
   h2(style="color:#888; text-transform:uppercase;font-size:120%;") Beyond this week
