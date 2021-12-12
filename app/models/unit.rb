@@ -21,8 +21,10 @@ class Unit < ApplicationRecord
     s.key :appearance, defaults: { main_color: '#003F87' }
     s.key :communication, defaults: {
       from_email: 'events@scoutplan.org',
-      weekly_digest: 'Sunday at 6:00 AM',
-      daily_reminder: 'daily at 6:00 AM'
+      weekly_digest: false,
+      daily_reminder: 'daily at 6:00 AM',
+      weekly_digest_last_sent_at: false,
+      daily_reminder_last_sent_at: false
     }
     s.key :locale, defaults: { time_zone: 'Eastern Time (US & Canada)' }
     s.key :security, defaults: { enable_magic_links: true }

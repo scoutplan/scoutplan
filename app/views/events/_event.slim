@@ -6,13 +6,12 @@
 - row_class += ' event-rsvp'   if event.requires_rsvp
 - row_class += ' event-draft'  if event.draft?
 - row_class += ' event-cancelled' if event.cancelled?
+- mode ||= 'append'
 
-= render partial: 'month_header', locals: { event: event }
+- if mode == 'append'
+  = render partial: 'month_header', locals: { event: event }
 
-.table-row.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{row_class} month-event-#{@month_counter}")
-
-  - @month_counter += 1
-
+.table-row.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{row_class}")
   // bulk selection checkbox
   .table-cell.bulk-selection
     = check_box_tag "event_ids[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
@@ -41,15 +40,23 @@
     data: { turbo_frame: 'event', turbo_action: 'advance' } do
     = raw([event.title, event_badge(event)].join)
 
+  // description glyph
+  - if false
+    = link_to unit_event_path(@unit, event),
+      class: "table-cell row-link cursor-pointer no-underline whitespace-nowrap",
+      data: { turbo_frame: 'event', turbo_action: 'advance' } do
+      - if event.description.present?
+        i.fad.fa-comment-alt.text-indigo-500.mr-2(title="#{t('events.index.description_present')}")
+
   // location
   = link_to unit_event_path(@unit, event),
-    class: "hidden xl:table-cell row-link cursor-pointer no-underline whitespace-nowrap",
+    class: "hidden xl:table-cell row-link cursor-pointer no-underline overflow-hidden",
     data: { turbo_frame: 'event', turbo_action: 'advance' } do
     = event.location
 
   // short description
   = link_to unit_event_path(@unit, event),
-    class: "hidden 2xl:table-cell row-link cursor-pointer no-underline whitespace-nowrap",
+    class: "hidden 2xl:table-cell row-link cursor-pointer no-underline overflow-hidden",
     data: { turbo_frame: 'event', turbo_action: 'advance' } do
     = event.short_description
 

@@ -93,8 +93,19 @@ javascript:
     });    
   }
 
+  function bodyMutated(mutationsList, observer) {
+    mutationsList.forEach(function(mutation) {
+      console.log(mutation.attributeName);
+      if (mutation.attributeName === 'class') {
+        hideEmptyMonthHeaders();
+      }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
     hideEmptyMonthHeaders();
+    const mutationObserver = new MutationObserver(bodyMutated);
+    mutationObserver.observe(document.body, { attributes: true });
   });
 
 - if false

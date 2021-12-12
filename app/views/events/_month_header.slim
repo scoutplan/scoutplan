@@ -1,5 +1,4 @@
 - if @current_month.nil? || @current_month != event.starts_at.month
-  - @month_counter = 0
   - row_class = event.starts_at < Date.today.beginning_of_month ? 'event-past' : ''
   - row_class += ' event-future' if event.starts_at > 3.months.from_now
 

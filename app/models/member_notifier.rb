@@ -16,14 +16,11 @@ class MemberNotifier
     send_test_sms(member)
   end
 
-  def self.send_digest(member, news_items)
+  def self.send_digest(member)
     return unless member.contactable?
     return unless Flipper.enabled? :receive_digest, member
 
-    news_items ||= member.unit.news_items.queued
-    if member.settings(:communication).via_email
-      MemberMailer.with(member: member).digest_email.deliver_later
-    end
+    MemberMailer.with(member: member).digest_email.deliver_later if member.settings(:communication).via_email
     send_digest_sms(member) if member.settings(:communication).via_sms
   end
 

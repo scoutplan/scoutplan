@@ -2,11 +2,16 @@
 - method = @event_view.new_record? ? 'post' : 'patch'
 - mode = 'rsvp' if action_name == 'edit_rsvps'
 
+// wall-to-wall opaque background
 .absolute.inset-0.bg-black.bg-opacity-25.z-40(class="event-#{@event.status}-modal")
-  .relative.w-auto.my-12.mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-xl.filter
+
+  // white dialog
+  .relative.w-auto.my-12.mx-auto.max-w-4xl.bg-white.rounded.z-50.drop-shadow-xl.filter
+
+    // CANCELLED watermark
     - if @event.cancelled?
       .absolute.transform.-rotate-45.text-7xl.font-bold.text-red-500.uppercase.text-opacity-20.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/2(style="left:50%;top:50%;font-family:courier,serif;")
-        |Cancelled
+        = t('index.events.cancelled')
 
     // modal header
     header.pt-4.px-8.pb-3.overflow-auto
@@ -35,7 +40,7 @@
       - if @event.requires_rsvp
         .bg-gray-100.rounded.mb-3.flex
           = turbo_frame_tag 'rsvp', class: 'flex w-full'
-            .p-3.flex.w-full(class="#{ mode == 'rsvp' ? 'attention' : '' }")
+            .p-3.flex.w-full(class="#{ mode == 'rsvp' ? 'attention' : '' }" id="rsvp_wrapper")
               - if mode == 'rsvp'
                 = render partial: 'edit_rsvp_form'
               - else

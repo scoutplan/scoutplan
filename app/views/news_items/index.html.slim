@@ -3,7 +3,8 @@
 
 .max-w-3xl.mx-auto
   h4.mb-0.text-black = @view.titleize
-  .text-sm.text-gray-400 = t('newsletter.next_sends_at', next_newsletter_datetime: @unit.settings(:communication).weekly_digest)
+  - if @unit.settings(:communication).weekly_digest
+    .text-sm.text-gray-400 = t('newsletter.next_sends_at', next_newsletter_datetime: @schedule.to_s)
 
   #news_items_container.mt-11
     = render partial: 'news_items'

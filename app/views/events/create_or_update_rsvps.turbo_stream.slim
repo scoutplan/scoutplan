@@ -1,0 +1,7 @@
+turbo-stream(action="replace", target="event_#{@event.id}")
+  template
+    = render partial: 'events/event', locals: { event: @event, mode: 'replace' }
+
+turbo-stream(action="update", target="rsvp_wrapper")
+  template
+    = render partial: 'events/rsvp_card'
