@@ -2,10 +2,13 @@
 
 describe 'news items', type: :feature do
   before do
-    @membership = FactoryBot.create(:unit_membership)
+    @member = FactoryBot.create(:member, :admin)
+    login_as @member.user
   end
 
   it 'navigates to the drafts page' do
-    visit unit_newsletter_drafts_path(@membership.unit)
+    path = unit_newsletter_drafts_path(@member.unit)
+    visit path
+    expect(page).to have_current_path(path)
   end
 end

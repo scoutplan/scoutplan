@@ -23,8 +23,8 @@ class Unit < ApplicationRecord
       from_email: 'events@scoutplan.org',
       weekly_digest: false,
       daily_reminder: 'daily at 6:00 AM',
-      weekly_digest_last_sent_at: false,
-      daily_reminder_last_sent_at: false
+      digest_last_sent_at: nil,
+      daily_reminder_last_sent_at: nil
     }
     s.key :locale, defaults: { time_zone: 'Eastern Time (US & Canada)' }
     s.key :security, defaults: { enable_magic_links: true }

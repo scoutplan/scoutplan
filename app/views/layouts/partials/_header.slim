@@ -17,5 +17,7 @@ header.w-full.px-9.pb-2.pt-6.overflow-auto.fixed.z-40.bg-gray-600
   .float-right
     ul.list-none.m-0.p-0
       li.inline-block
-        = link_to destroy_user_session_path, method: :delete, class: 'text-white px-2' do
+        = link_to destroy_user_session_path,
+          data: { turbo_method: 'delete' },
+          class: 'text-white px-2' do
           | Logout

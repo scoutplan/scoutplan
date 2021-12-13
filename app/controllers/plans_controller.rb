@@ -5,7 +5,7 @@ class PlansController < UnitContextController
   layout 'application_new'
 
   def index
-    @category_names = ['Troop Meeting', 'No Meeting', 'Camping Trip']
+    @category_names = ['Troop Meeting', 'No Meeting', 'Camping Trip', 'Court of Honor'].freeze
     @event_categories = @current_unit.event_categories.where('name IN (?)', @category_names)
     @events = @current_unit.events.includes(:event_category, :event_activities).published.future.where(event_category: @event_categories)
   end
