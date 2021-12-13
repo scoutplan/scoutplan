@@ -9,58 +9,52 @@ class WeeklyDigestSender
   attr_accessor :force_run
 
   def perform
-    Rails.logger.warn { '----------------------------' }
-    Rails.logger.warn { 'Weekly digest sender invoked' }
-
-    Unit.all.each_with_index do |unit|
-      Rails.logger.warn { "Processing digest for unit #{unit.name}" }
+    Unit.all.includes(:setting_objects).each do |unit|
       perform_for_unit(unit)
     end
   end
 
   # is it time for this unit to run its weekly digest?
-  # hardwired for 7 AM on Sunday
+  # this is probably naive. We may eventually need to track
+  # sends on a per-member basis. For now, thought, we set
+  # last-sent high watermarks per unit
   def time_to_run?(unit, current_time)
     return true if force_run
     return true if unit.settings(:utilities).fire_scheduled_tasks
     return false unless unit.settings(:communication).weekly_digest
 
     schedule = IceCube::Schedule.from_yaml(unit.settings(:communication).weekly_digest)
-    Rails.logger.warn { "Schedule is #{schedule.to_s}" }
-    Rails.logger.warn { "Next run is #{schedule.next_occurrence}" }
-    DateTime.now.after?(schedule.next_occurrence(unit.settings(:communication).weekly_digest_last_sent_at || 1.week.ago))
+    last_ran_at = unit.settings(:communication).digest_last_sent_at&.localtime
+    next_runs_at = schedule.next_occurrence(last_ran_at || 1.week.ago)
+
+    Rails.logger.warn { "Last ran at #{last_ran_at}"}
+    Rails.logger.warn { "Next run is #{next_runs_at}" }
+    DateTime.now.after?(next_runs_at)
   end
 
   private
 
+  # there's a potential race condition here that we're going to ignore for now:
+  # if someone authored a NewsItem *while this task is running*, it could get
+  # marked as sent. It's an edge case we'll come back to
   def perform_for_unit(unit)
-    Rails.logger.warn { "Performing digest for unit #{unit.name}" }
-    unit.settings(:utilities).update!(fire_scheduled_tasks: false)
-    Rails.logger.warn { "Lowered fire flag "}
+    unit.settings(:utilities).update!(fire_scheduled_tasks: false) # lower the force flag
     Time.zone = unit.settings(:locale).time_zone
     right_now = Time.zone.now
 
-    # Rails.logger.warn unit.settings(:communication).weekly_digest
-
     return unless unit.settings(:communication).weekly_digest.present?
-
-    Rails.logger.warn { "Weekly digest enabled for #{unit.name}" }
     return unless time_to_run?(unit, right_now)
 
-    Rails.logger.warn { "****" }
-    Rails.logger.warn { "Time to run for #{unit.name}" }
+    Rails.logger.warn { "*** Time to run for #{unit.name}" }
 
     unit.members.each do |member|
       perform_for_member(member)
     end
 
-    unit.settings(:communication).last_digest_sent_at = DateTime.now
+    unit.settings(:communication).digest_last_sent_at = DateTime.now
     unit.save!
-    Rails.logger.warn { "Weekly digest HWM set to #{unit.settings(:communication).last_digest_sent_at}" }
+    Rails.logger.warn { "Weekly digest HWM set to #{unit.settings(:communication).digest_last_sent_at}" }
 
-    # there's a potential race condition here that we're going to ignore for now:
-    # if someone authored a NewsItem *while this task is running*, it could get
-    # marked as sent. It's an edge case we'll come back to
     NewsItem.mark_all_queued_as_sent_by(unit: unit)
   end
 

@@ -11,7 +11,7 @@ class DailyReminderSender
   def perform
     Rails.logger.warn { 'Daily Reminder Sender invoked' }
 
-    Unit.all.each do |unit|
+    Unit.all.includes(:setting_objects).each do |unit|
       perform_for_unit(unit)
     end
   end
