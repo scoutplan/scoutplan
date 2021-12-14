@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# News Items feed into weekly newsletters
+# News Items feed into digest newsletters
 class NewsItemsController < UnitContextController
   layout 'application_new'
   before_action :find_news_item, only: [ :enqueue , :dequeue ]
@@ -8,8 +8,8 @@ class NewsItemsController < UnitContextController
   def index
     authorize :message, :index?
     @view = params[:mode] || 'drafts'
-    if @unit.settings(:communication).weekly_digest
-      @schedule = IceCube::Schedule.from_yaml(@unit.settings(:communication).weekly_digest)
+    if @unit.settings(:communication).digest
+      @schedule = IceCube::Schedule.from_yaml(@unit.settings(:communication).digest)
     end
     set_news_items
   end

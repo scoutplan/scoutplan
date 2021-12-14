@@ -15,7 +15,6 @@ export default class extends Controller {
 
   toggleCancelledEvents(event) {
     this.toggleBodyClass(event, 'showing-cancelled-events');
-    this.toggleBodyClass(event, 'showing-past-events', true);
   }
 
   toggleRsvpEvents(event) {
@@ -23,7 +22,7 @@ export default class extends Controller {
   }
 
   toggleBulkPublish(event) {
-    this.toggleBodyClass(event, 'showing-only-draft-events', true);
+    this.toggleBodyClass(event, 'showing-only-draft-events');
   }
 
   close_modal(event) {

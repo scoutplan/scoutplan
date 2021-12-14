@@ -2,8 +2,9 @@
 = turbo_frame_tag 'event'
   .absolute.inset-0.bg-black.bg-opacity-25.z-40
     .relative.w-auto.my-12.mx-auto.max-w-xl.bg-white.rounded.z-50.drop-shadow-xl.filter
-      = form_with url: unit_event_cancel_path(@unit, @event), method: :post do |f|
+      = form_with url: unit_event_cancel_path(@unit, @event), method: :post, data: { 'turbo-action', 'advance' } do |f|
         header.px-6.py-4.overflow-auto
+          // Dialog caption
           h3.mb-0.float-left.text-red-800
             i.far.fa-exclamation-circle
             | &nbsp;&nbsp;
@@ -18,10 +19,13 @@
         section.px-6.clear-both
           p.mb-3
             = raw("You are cancelling the <strong>#{@event.title}</strong> on #{@event.starts_at.strftime('%B %-d')}.")
-            - if @event.rsvps.accepted.count.positive?
-              = raw("<br>#{@event.rsvps.accepted.count} members are planning to attend.")
+            br
+            - if !@event.requires_rsvp
+              = 'No RSVP was required.'
+            - elsif @event.rsvps.accepted.count.positive?
+              = "#{@event.rsvps.accepted.count} members are planning to attend."
             - else
-              = raw("<br>No one is planning to attend.")
+              = 'No one is planning to attend.'
             = raw(" Send a cancellation message?")
           
           .mb-1

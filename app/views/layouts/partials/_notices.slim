@@ -1,20 +1,7 @@
-.position-fixed.top-0.end-0.p-3(style="z-index:1000;")
-  #flash_toast.toast
-    .toast-header
-      strong.me-auto
-        = t(:app_name)
-      button.btn-close[type="button" data-bs-dismiss="toast" aria-label="Close"]
-    #toast_body.toast-body
-      - if flash[:notice]
-        = flash[:notice]
+.fixed.bottom-0.text-center.z-50
+  .max-w-l.rounded.bg-white.p-3
+    - if flash[:notice]
+      = flash[:notice]
 
-      - if flash[:alert]
-        = flash[:alert]
-
-  javascript:
-    var toastDiv = document.querySelector('#flash_toast');
-    var toast = new bootstrap.Toast(toastDiv);
-
-- if flash[:notice] || flash[:alert]
-  javascript:
-    toast.show();
+    - if flash[:alert]
+      = flash[:alert]

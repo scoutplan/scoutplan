@@ -65,22 +65,20 @@ class UnitMembershipsController < ApplicationController
     @current_member
   end
 
+  # POST /units/[:unit_id]/members/[:id]/send
+  # required param :item
+  # send a particular message type on demand.
+  # Possible message types are :digest, :daily_reminder, :test
   def send_message
     return unless (item = params[:item])
 
-    case item
-    when 'digest'
-      @message_name = 'Digest'
-      MemberNotifier.send_digest(@target_membership, nil)
-    when 'daily_reminder'
-      @message_name = 'Daily Reminder'
-      MemberNotifier.send_daily_reminder(@target_membership)
-    when 'test_message'
-      @message_name = 'Test'
-      MemberNotifier.send_test_message(@target_membership)
-    end
+    method_name = "send_#{item}"
+    @message_name = item.humanize.titleize
+    MemberNotifier.send(method_name, @current_member)
   end
 
+  # POST /bulk_update
+  # when Events index was in bulk mode
   def bulk_update
     member_params = params.require(:member).permit(:status, :member_type)
     params[:members].each do |member_id|

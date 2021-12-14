@@ -69,11 +69,11 @@ en:
       status: 'Status:'
       draft:  'Draft'
       queued: 'Queued'
-    next_sends_at: 'The next newsletter will be automatically sent on %{next_newsletter_datetime}'
+    next_sends_at: 'Scoutplan will automatically send the next %{unit_name} email newsletter on %{next_newsletter_datetime}.'
 
   messaging:
     title: 'Messaging'
-    new_item_description: "News items appear in the weekly digest once they're approved"
+    new_item_description: "News items appear in the %{unit_name} weekly digest once they're approved"
     new_news_item: 'Write a Newsletter Item'
     drafts: 'Drafts'
     queued: 'Queued'

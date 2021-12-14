@@ -1,5 +1,5 @@
 li = link_to '#',
-     class: "dropdown-item toggle-body-class #{@events.cancelled.count.zero? ? 'disabled' : ''}",
+     class: "dropdown-item toggle-body-class #{@events.cancelled.length.zero? ? 'disabled' : ''}",
      data: { action: 'event#toggleCancelledEvents' },
      id: 'show-cancelled-events-link' do
   .menu-glyph

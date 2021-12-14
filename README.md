@@ -113,4 +113,3 @@ Some features are gated by Flipper and need to be enabled:
 * :receive_rsvp_confirmation
 * :receive_digest
 * :receive_daily_reminder
-* :weekly_digest

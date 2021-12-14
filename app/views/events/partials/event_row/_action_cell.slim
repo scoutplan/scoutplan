@@ -2,7 +2,6 @@
 
   - has_family_rsvps = false
 
-
   ul.whitespace-nowrap.w-full.mb-0
     - @current_family.each do |member|
       - rsvp = rsvps.find_by(unit_membership: member)

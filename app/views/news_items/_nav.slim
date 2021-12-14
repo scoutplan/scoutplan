@@ -60,9 +60,6 @@ ul.p-0.m-o.list-none
         |&nbsp;&nbsp;
       span.text-black
         = t('messaging.sent')
-      - if @current_unit.news_items.sent.count.positive?
-        span.text-xs.px-2.font-medium.bg-white.text-gray-800.rounded.py-0.5.ml-3.float-right.mt-1.border.border-red-500
-          = @current_unit.news_items.sent.count
 
 .py-8
   ul.p-0.m-o.list-none

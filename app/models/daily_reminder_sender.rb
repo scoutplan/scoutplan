@@ -11,18 +11,17 @@ class DailyReminderSender
   def perform
     Rails.logger.warn { 'Daily Reminder Sender invoked' }
 
-    Unit.all.includes(:setting_objects).each do |unit|
+    Unit.all.includes(:setting_objects, :events).each do |unit|
       perform_for_unit(unit)
     end
   end
 
-  # is it time for this unit to run its weekly digest?
-  # hardwired for 7 AM daily
+  # is it time for this unit to run its reminder?
   def time_to_run?(member, current_time)
     return true if force_run
     return true if member.unit.settings(:utilities).fire_scheduled_tasks
 
-    # current_time.hour == 7 && current_time.min.zero?
+    # hardwired to 7:00 AM
     current_time.hour == 7 && current_time.min.zero?
   end
 

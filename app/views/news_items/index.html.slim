@@ -1,10 +1,15 @@
+- schedule_format = '%A, %d %b %Y at %l:%M %p'
+
 - content_for :body_classes do
   = @view
 
 .max-w-3xl.mx-auto
   h4.mb-0.text-black = @view.titleize
-  - if @unit.settings(:communication).weekly_digest
-    .text-sm.text-gray-400 = t('newsletter.next_sends_at', next_newsletter_datetime: @schedule.to_s)
+  - if @unit.settings(:communication).digest
+    .text-sm.text-gray-400
+      = t('newsletter.next_sends_at',
+        unit_name: @unit.name,
+        next_newsletter_datetime: @schedule.next_occurrence.strftime(schedule_format))
 
   #news_items_container.mt-11
     = render partial: 'news_items'
