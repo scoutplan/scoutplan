@@ -4,26 +4,26 @@ require 'sidekiq-scheduler'
 
 # job called via cron-like mechanism to send weekly digests
 # (in this case, sidekiq-scheduler)
-class WeeklyDigestSender
+class DigestSender
   include Sidekiq::Worker
   attr_accessor :force_run
 
   def perform
-    Unit.all.includes(:setting_objects).each do |unit|
+    Unit.includes(:setting_objects).find_each do |unit|
       perform_for_unit(unit)
     end
   end
 
-  # is it time for this unit to run its weekly digest?
-  # this is probably naive. We may eventually need to track
+  # is it time for this unit to run its digest?
+  # Current implementation is is probably naive. We may eventually need to track
   # sends on a per-member basis. For now, thought, we set
   # last-sent high watermarks per unit
   def time_to_run?(unit, current_time)
     return true if force_run
     return true if unit.settings(:utilities).fire_scheduled_tasks
-    return false unless unit.settings(:communication).weekly_digest
+    return false unless unit.settings(:communication).digest
 
-    schedule = IceCube::Schedule.from_yaml(unit.settings(:communication).weekly_digest)
+    schedule = IceCube::Schedule.from_yaml(unit.settings(:communication).digest)
     last_ran_at = unit.settings(:communication).digest_last_sent_at&.localtime
     next_runs_at = schedule.next_occurrence(last_ran_at || 1.week.ago)
 
@@ -42,25 +42,23 @@ class WeeklyDigestSender
     Time.zone = unit.settings(:locale).time_zone
     right_now = Time.zone.now
 
-    return unless unit.settings(:communication).weekly_digest.present?
+    return unless unit.settings(:communication).digest.present?
     return unless time_to_run?(unit, right_now)
 
     Rails.logger.warn { "*** Time to run for #{unit.name}" }
 
-    unit.members.each do |member|
+    unit.members.find_each do |member|
       perform_for_member(member)
     end
 
-    unit.settings(:communication).digest_last_sent_at = DateTime.now
-    unit.save!
-    Rails.logger.warn { "Weekly digest HWM set to #{unit.settings(:communication).digest_last_sent_at}" }
-
     NewsItem.mark_all_queued_as_sent_by(unit: unit)
+    unit.settings(:communication).update! digest_last_sent_at: DateTime.now
+    Rails.logger.warn { "#{unit.name} digest HWM set to #{unit.settings(:communication).digest_last_sent_at}" }
   end
 
   def perform_for_member(member)
     Rails.logger.warn { "Processing digest for #{member.flipper_id}" }
-    return unless Flipper.enabled? :weekly_digest, member
+    return unless Flipper.enabled? :digest, member
 
     Rails.logger.warn { "Sending digest to #{member.flipper_id}" }
     MemberNotifier.send_digest(member)

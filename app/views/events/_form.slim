@@ -5,7 +5,7 @@
 
 .absolute.inset-0.bg-black.bg-opacity-25.z-40
   .relative.w-auto.my-12.mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-xl.filter
-    = form_with model: @event_view, scope: 'event', url: url, method: method do |f|
+    = form_with model: @event_view, scope: 'event', url: url, method: method, data: { 'turbo-action' => 'advance' } do |f|
       header.h-3
 
       section.py-0.px-8

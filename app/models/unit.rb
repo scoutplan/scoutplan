@@ -21,7 +21,7 @@ class Unit < ApplicationRecord
     s.key :appearance, defaults: { main_color: '#003F87' }
     s.key :communication, defaults: {
       from_email: 'events@scoutplan.org',
-      weekly_digest: false,
+      digest: false,
       daily_reminder: 'daily at 6:00 AM',
       digest_last_sent_at: nil,
       daily_reminder_last_sent_at: nil
@@ -36,7 +36,7 @@ class Unit < ApplicationRecord
   end
 
   def membership_for(user)
-    members.find_by(user: user)
+    members.includes(:parent_relationships, :child_relationships).find_by(user: user)
   end
 
   def slug

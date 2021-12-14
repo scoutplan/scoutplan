@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe WeeklyDigestSender, type: :model do
+RSpec.describe DigestSender, type: :model do
   before do
     @member = FactoryBot.create(:member)
   end
 
   describe 'time_to_run' do
     before do
-      @sender = WeeklyDigestSender.new
+      @sender = DigestSender.new
       @unit = FactoryBot.create(:unit)
     end
 

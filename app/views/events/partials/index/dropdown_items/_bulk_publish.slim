@@ -1,8 +1,8 @@
 li = link_to '#',
-     class: "dropdown-item toggle-body-class #{@events.draft.count.zero? ? 'disabled' : ''}",
+     class: "dropdown-item toggle-body-class #{@event_drafts.length.zero? ? 'disabled' : ''}",
      data: { action: 'event#toggleBulkPublish' },
      id: 'show-only-draft-events-link' do
   .menu-glyph
     .menu-glyph-wrapper
       i.far.fa-check
-  = t('events.index.view.drafts', count: @events.draft.count)
+  = t('events.index.view.drafts', count: @event_drafts.length)

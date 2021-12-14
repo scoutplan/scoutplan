@@ -12,6 +12,7 @@ class EventsController < ApplicationController
 
   def index
     @events = UnitEventQuery.new(@unit, @current_member).execute
+    @event_drafts = @events.draft
     @presenter = EventPresenter.new
     @current_family = @current_member.family
     @current_year = @current_month = nil
@@ -42,7 +43,7 @@ class EventsController < ApplicationController
     return unless @event_view.save!
 
     flash[:notice] = t('helpers.label.event.create_confirmation', event_name: @event_view.title)
-    redirect_to @event_view.event
+    redirect_to [@unit, @event]
   end
 
   def edit
@@ -174,7 +175,7 @@ class EventsController < ApplicationController
     @event.starts_at = @event.starts_at.change({ hour: 10 }) # default starts at 10 AM
     @event.ends_at   = @event.ends_at.change({ hour: 16 }) # default ends at 4 PM
     @event_view = EventView.new(@event)
-    @member_rsvps    = @current_member.event_rsvps
+    @member_rsvps = @current_member.event_rsvps
   end
 
   # we don't guarantee that @unit is populated, hence...
@@ -183,7 +184,7 @@ class EventsController < ApplicationController
 
   # for index, new, and create
   def find_unit
-    @current_unit = @unit = Unit.find(params[:unit_id])
+    @current_unit = @unit = Unit.includes(:setting_objects).find(params[:unit_id])
     @current_member = @unit.membership_for(current_user)
   end
 

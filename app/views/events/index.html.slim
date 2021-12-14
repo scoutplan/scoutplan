@@ -1,6 +1,3 @@
-/ empty turbo frame to be populated by an Event modal as needed
-= turbo_frame_tag 'event'
-
 .w-full.mx-auto(data-controller="event")
   = turbo_frame_tag('event_list')
     = render partial: 'events/partials/index/header'
@@ -9,6 +6,9 @@
 
 - content_for :body_classes do
   = 'showing-only-rsvp-events' if session[:view] == 'rsvps'
+
+// empty turbo frame to be populated by an Event modal as needed
+= turbo_frame_tag 'event'
 
 javascript:
   /* BULK PUBLISH */

@@ -1,8 +1,8 @@
 :schedule:
-  send_weekly_digests:
+  send_digests:
     # cron: '0 0 * * * *' # every hour
     cron: '0 * * * * *' # every minute
-    class: WeeklyDigestSender
+    class: DigestSender
 
   send_today_reminders:
     cron: '0 * * * * *' # check every minute
