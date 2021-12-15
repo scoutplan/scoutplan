@@ -13,6 +13,11 @@
       .absolute.transform.-rotate-45.text-7xl.font-bold.text-red-500.uppercase.text-opacity-20.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/2(style="left:50%;top:50%;font-family:courier,serif;")
         = t('index.events.cancelled')
 
+    // DRAFT watermark
+    - if @event.draft?
+      .absolute.transform.-rotate-45.text-7xl.font-bold.text-blue-500.uppercase.text-opacity-20.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/2(style="left:50%;top:50%;font-family:courier,serif;")
+        = t('index.events.draft')
+
     // modal header
     header.pt-4.px-8.pb-3.overflow-auto
       h3.m-0.font-bold.float-left
@@ -50,12 +55,12 @@
       .flex.flex-col.sm:flex-row.mb-3
 
         / date panel
-        #date_time_card.bg-gray-100.rounded.p-3.mb-2.sm:flex-auto
+        #date_time_card.bg-gray-100.rounded.p-3.mb-2.sm:flex-auto.flex-1
           = render partial: 'events/partials/show/date_card'
 
         / location panel (if location values are set)
         - if @event.location.present? || @event.address.present? || @event.departs_from.present?
-          #location_card.bg-gray-100.rounded.p-3.mb-2.sm:ml-4.relative.sm:flex-auto
+          #location_card.bg-gray-100.rounded.p-3.mb-2.sm:ml-4.relative.sm:flex-auto.flex-shrink
             = render partial: 'events/partials/show/location_card'
 
       // third row: longform description, if present

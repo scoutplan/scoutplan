@@ -21,7 +21,7 @@ html
     = render partial: 'layouts/partials/header'
 
     .flex
-      nav.relative.flex-shrink-0.bg-gray-100.h-screen.pl-8.pr-2.pt-32.pb-8.w-60.lg:w-80#nav_side
+      nav.xl:block.flex-shrink-0.bg-gray-100.h-screen.pl-8.pr-2.pt-32.pb-8.w-60.w-0.lg:w-80.hidden#nav_side
         = render partial: 'news_items/nav'
       
       main.h-screen.flex-grow.py-8.px-16.pt-32.overflow-y-scroll

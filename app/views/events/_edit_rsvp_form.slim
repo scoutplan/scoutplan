@@ -3,7 +3,7 @@
 - notes = rsvps.map(&:note).uniq.join(', ')
 
 = form_with model: @event, url: unit_event_send_rsvps_path(@unit, @event), class: 'flex w-full' do |f|
-  .flex-1
+  .flex-grow
     // left collumn
     .table.flush-top.flush-left
       .table-row-group
@@ -33,7 +33,7 @@
                       = t('rsvp_declined')                       
 
   // right column
-  .flex-1
+  .flex-shrink
 
     // note field
     .mb-3
