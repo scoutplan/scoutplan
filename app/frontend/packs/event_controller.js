@@ -25,6 +25,12 @@ export default class extends Controller {
     this.toggleBodyClass(event, 'showing-only-draft-events');
   }
 
+  toggleSideNav(event) {
+    var navElem = document.querySelector('#nav_side');
+    navElem.classList.toggle('hidden');
+    // navElem.classList.toggle('xl:block');
+  }
+
   close_modal(event) {
     this.element.remove();
     this.element.closest("turbo-frame").src = undefined;

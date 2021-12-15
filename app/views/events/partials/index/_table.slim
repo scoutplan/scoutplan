@@ -1,4 +1,5 @@
 .clear-both.h-8
+
 = form_tag bulk_publish_unit_events_path(@unit), id: 'bulk_action_form'
   .table.bulk-selection
     .table-row-group
@@ -7,8 +8,8 @@
           = check_box_tag 'all_visible_events', 'on', false, class: 'form-check-input', id: 'select_all_events_checkbox'
           = label_tag :select_all_events_checkbox, 'Select all', class: 'ml-2'
 
-  .table.w-full
-    .table-row-group
+  table.w-full
+    tbody
       = render @events
 
 p.text-center#show-future-events-wrapper

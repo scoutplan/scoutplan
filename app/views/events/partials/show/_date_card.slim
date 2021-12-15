@@ -23,11 +23,11 @@
 
     .table-row
       .table-cell.text-center.border-0
-        .font-bold.text-red-800 = @event.starts_at.localtime.strftime('%-I:%M %p')
+        .font-bold.text-red-800.whitespace-nowrap = @event.starts_at.localtime.strftime('%-I:%M %p')
       - if multiday
         .table-cell.border-0
         .table-cell.text-center.border-0
-          .font-bold.text-red-800 = @event.ends_at.localtime.strftime('%-I:%M %p')
+          .font-bold.text-red-800.whitespace-nowrap = @event.ends_at.localtime.strftime('%-I:%M %p')
 
 - if @event.series?
   .text-sm.text-gray-500.text-center.mt-1

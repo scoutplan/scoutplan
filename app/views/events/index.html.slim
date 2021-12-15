@@ -74,12 +74,18 @@ javascript:
   }
 
   function hideEmptyMonthHeaders() {
-    // iterate over all month rows and hide them
+    // first, iterate over all month rows and hide them...
     document.querySelectorAll('.event-month-boundary').forEach(function(elem) {
       elem.style.display = 'none';
     });
 
-    // iterate over all visible event rows, back up to its month header, and reveal it
+    console.log('All month headers are now hidden');
+
+    // ...then, iterate over all visible event rows, traverse backward until we
+    // hit a month header, and reveal it. There's an inefficiency here in that
+    // we're iterating on every visible event row, meaning we'll repeatedly
+    // unhide the same month headers. TODO: traverse forward to next month header,
+    // then traverse from there to the next visible event row
     document.querySelectorAll('.event-row').forEach(function(elem) {
       var compStyles = window.getComputedStyle(elem);
       var compDisplay = compStyles.getPropertyValue('display');
@@ -89,10 +95,13 @@ javascript:
 
       const selector = '.event-month-boundary';
       var monthHeader = queryPreviousSiblingSelector(elem, selector);
+      console.log('Unhiding ' + monthHeader.innerText);
       monthHeader.style.display = 'table-row';
     });    
   }
 
+  // callback when <body> classes change so we can recalculate
+  // visible & hidden month headers
   function bodyMutated(mutationsList, observer) {
     mutationsList.forEach(function(mutation) {
       console.log(mutation.attributeName);
@@ -102,6 +111,8 @@ javascript:
     });
   }
 
+  // upon content load, perform a hide operation and stand up
+  // an observer on the <body> element to watch for changes
   document.addEventListener('DOMContentLoaded', function() {
     hideEmptyMonthHeaders();
     const mutationObserver = new MutationObserver(bodyMutated);

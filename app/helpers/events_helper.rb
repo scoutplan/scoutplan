@@ -34,7 +34,7 @@ module EventsHelper
     if event.cancelled?
       content_tag(:span, t('events.index.cancelled'), class: 'badge bg-danger ml-2')
     elsif event.draft?
-      content_tag(:span, t('events.index.draft'), class: 'badge bg-secondary ml-2')
+      content_tag(:span, t('events.index.draft'), class: 'badge ml-2 bg-blue-700')
     end
   end
 
