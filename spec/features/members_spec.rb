@@ -10,7 +10,7 @@ describe 'unit_memberships', type: :feature do
     expect(page).to have_current_path(path)
   end
 
-  it 'visits a member' do
+  it 'visits a member', js: true do
     member = FactoryBot.create(:unit_membership, unit: @admin.unit)
     visit member_path(member)
   end

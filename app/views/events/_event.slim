@@ -45,7 +45,7 @@ tr.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{row_class}"
       = event.title
       = event_badge(event)
       - if event.description.present?
-        i.fas.fa-comment-alt.mx-2.text-black(title="#{event.description.to_plain_text}")
+        i.far.fa-comment-alt.mx-2.text-gray-900(title="#{event.description.to_plain_text}")
 
   // location
   td.event-location.hidden.xl:table-cell

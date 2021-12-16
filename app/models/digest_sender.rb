@@ -27,8 +27,7 @@ class DigestSender
     last_ran_at = unit.settings(:communication).digest_last_sent_at&.localtime
     next_runs_at = schedule.next_occurrence(last_ran_at || 1.week.ago)
 
-    Rails.logger.warn { "Last ran at #{last_ran_at}"}
-    Rails.logger.warn { "Next run is #{next_runs_at}" }
+    Rails.logger.warn { "#{unit} digest last ran at #{last_ran_at}. Next run is at #{next_runs_at}"}
     DateTime.now.after?(next_runs_at)
   end
 

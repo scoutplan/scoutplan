@@ -7,7 +7,7 @@ require 'warden'
 require 'capybara/apparition'
 
 Capybara.register_driver :apparition do |app|
-  browser_options = { 'remote-debugging-address' => 'chrome', 'remote-debugging-port' => 9222 }
+  browser_options = { 'remote-debugging-address' => '172.20.0.3', 'remote-debugging-port' => 9222 }
   Capybara::Apparition::Driver.new(app, remote: true, browser_options: browser_options)
 end
 Capybara.javascript_driver = :apparition
