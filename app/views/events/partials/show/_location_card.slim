@@ -8,13 +8,13 @@
 
   dl.mb-0
     - if @event.location.present?
-      dt Location
-      dd = @event.location
+      dt.font-bold Location
+      dd.mb-3 = @event.location
 
     - if @event.address.present?
-      dt Address
-      dd = @event.address
+      dt.font-bold Address
+      dd.mb-3 = @event.address
 
     - if @event.departs_from.present?
-      dt Depart From
-      dd = @event.departs_from
+      dt.font-bold Depart From
+      dd.mb-3 = @event.departs_from

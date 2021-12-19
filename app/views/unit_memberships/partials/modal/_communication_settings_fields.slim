@@ -1,11 +1,15 @@
-label.me-3 Communication
+.flex
+  .flex-0
+    label(class="block text-black mr-3 font-semibold w-36")
+      = 'Communication'
 
-.form-check.form-check-inline
-  = hidden_field_tag 'settings[communication][via_email]', 'no', id: "settings_communication_via_email_hidden"
-  = check_box_tag 'settings[communication][via_email]', true, @target_membership.settings(:communication).via_email, class: 'form-check-input'
-  label.form-check-label(for="settings_communication_via_email") Via email
+  .flex-auto
+    span.mr-3
+      = hidden_field_tag 'settings[communication][via_email]', 'no', id: "settings_communication_via_email_hidden"
+      = check_box_tag 'settings[communication][via_email]', true, @target_membership.settings(:communication).via_email, class: 'mr-1'
+      label.form-check-label(for="settings_communication_via_email") Via email
 
-.form-check.form-check-inline
-  = hidden_field_tag 'settings[communication][via_sms]', 'no', id: "settings_communication_via_sms_hidden"
-  = check_box_tag 'settings[communication][via_sms]', true, @target_membership.settings(:communication).via_sms, class: 'form-check-input'
-  label.form-check-label(for="settings_communication_via_sms") Via SMS
+    span.mr-3
+      = hidden_field_tag 'settings[communication][via_sms]', 'no', id: "settings_communication_via_sms_hidden"
+      = check_box_tag 'settings[communication][via_sms]', true, @target_membership.settings(:communication).via_sms, class: 'mr-1'
+      label.form-check-label(for="settings_communication_via_sms") Via SMS

@@ -12,6 +12,6 @@
     tbody
       = render @events
 
-p.text-center#show-future-events-wrapper
+p.mt-3.text-center#show-future-events-wrapper
   = t('events.index.showing_some')
-  = link_to(t('events.index.show_all'), '#', data: { action: 'event#toggleFutureEvents' })
+  = link_to(t('events.index.show_all'), '#', data: { action: 'event#toggleFutureEvents' }, class: 'text-blue-500')

@@ -26,15 +26,13 @@
               = u.phone_field :phone, { class: 'form-control' }
 
           .mb-3
-            label.me-3 Type:
+            label.inline-block.w-36 Type:
 
-            .form-check.form-check-inline
-              = f.radio_button :member_type, :youth, class: 'form-check-input'
-              = f.label :member_type, 'Youth', value: 'youth', class: 'form-check-label'
+            = f.radio_button :member_type, :youth, class: 'form-check-input'
+            = f.label :member_type, 'Youth', value: 'youth', class: 'form-check-label'
 
-            .form-check.form-check-inline
-              = f.radio_button :member_type, :adult, class: 'form-check-input'
-              = f.label :member_type, 'Adult', value: 'adult', class: 'form-check-label'
+            = f.radio_button :member_type, :adult, class: 'form-check-input'
+            = f.label :member_type, 'Adult', value: 'adult', class: 'form-check-label'
 
           .mb-3
             .form-check.form-check-inline

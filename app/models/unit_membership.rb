@@ -31,15 +31,17 @@ class UnitMembership < ApplicationRecord
   alias_attribute :member, :user
   alias_attribute :rsvps, :event_rsvps
 
-  enum status: { inactive: 0, active: 1 }
+  enum status: { inactive: 0, active: 1 }, _prefix: true
   enum member_type: { unknown: 0, youth: 1, adult: 2 }
 
   delegate :full_name, to: :user
   delegate :first_name, to: :user
   delegate :last_name, to: :user
   delegate :display_first_name, to: :user
-  delegate :display_full_name, to: :user
+  delegate :full_display_name, to: :user
+  delegate :short_display_name, to: :user
   delegate :nickname, to: :user
+  delegate :email, to: :user
   delegate :phone, to: :user
 
   accepts_nested_attributes_for :user
@@ -54,6 +56,10 @@ class UnitMembership < ApplicationRecord
       via_email: true,
       via_sms: false
     }
+  end
+
+  def to_param
+    "#{id}-#{full_display_name.parameterize}"
   end
 
   def admin?

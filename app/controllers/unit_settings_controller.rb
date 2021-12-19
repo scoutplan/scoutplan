@@ -34,4 +34,24 @@ class UnitSettingsController < UnitContextController
   def unit_params
     params.require(:unit).permit(:name, :location, :logo)
   end
+
+  def set_digest_schedule
+    Sidekiq.set_schedule(
+      digest_schedule_key,
+      cron: '0 7 * * sun',
+      class: 'DigestSender',
+      args: @unit.id
+    )
+  end
+
+  def set daily_reminder_schedule_key
+  end
+
+  def digest_schedule_key
+    "send_digests_#{@unit.name.parameterize.underscore}"
+  end
+
+  def daily_reminder_schedule_key
+    "send_daily_reminders_#{@unit.name.parameterize.underscore}"
+  end
 end

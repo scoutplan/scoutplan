@@ -24,15 +24,10 @@ html
       nav.xl:block.flex-shrink-0.bg-gray-100.h-screen.pl-8.pr-2.pt-32.pb-8.w-60.w-0.lg:w-80.hidden#nav_side
         = render partial: 'news_items/nav'
       
-      main.h-screen.flex-grow.py-8.px-16.pt-32.overflow-y-scroll
+      main.h-screen.flex-grow.py-8.px-1.md:px-16.pt-32.overflow-y-scroll
         = yield
 
   javascript:
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipList = popoverTriggerList.map(function (popoverTriggerEl) {
-      return new bootstrap.Tooltip(popoverTriggerEl);
-    });
-
     function setElemDisplay(elem, show) {
       var elem = document.querySelector(elem);
       elem.style.display = show ? 'block' : 'none';

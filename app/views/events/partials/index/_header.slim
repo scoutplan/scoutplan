@@ -1,6 +1,6 @@
-header
+header.relative
   .float-left
-    h1.text-xl.text-black.font-bold.pl-3 = t('events.index.title')
+    h1.text-xl.text-black.font-bold.pl-2 = t('events.index.title')
 
     .filter-status
       = 'Showing only some events'
@@ -15,16 +15,20 @@ header
           class: 'inline-block rounded text-white text-sm font-bold no-underline px-4 py-2 uppercase tracking-wider',
           data: { turbo_frame: 'event', turbo_action: 'advance' },
           style: "background-color: rgb(230, 100, 37);" do
-          i.fas.fa-calendar-plus(class='me-3')
+          i.fas.fa-calendar-plus.mr-3
           = t(:event_add)
 
-    .dropdown.ml-3(style="display: inline-block;")
-      = link_to t('events.index.view.dropdown'), '#', class: 'text-sm uppercase tracking-wider font-bold rounded bg-gray-200 no-underline text-black px-4 py-2 dropdown-toggle', data: { 'bs-toggle' => 'dropdown' }, style: "display: inline-block;"
-      ul.dropdown-menu.dropdown-menu-end.dropdown-menu-dark
-        = render partial: 'events/partials/index/dropdown_items/bulk_publish'   if @current_member.admin?
-        = render partial: 'events/partials/index/dropdown_items/show_cancelled' if @current_member.admin?
-        = render partial: 'events/partials/index/dropdown_items/show_only_rsvps'
-        = render partial: 'events/partials/index/dropdown_items/show_past_events'
+    .relative.inline-block.text-left.ml-3.dropdown.z-50
+      button.text-sm.uppercase.tracking-wider.font-bold.rounded.bg-gray-200.no-underline.text-black.px-4.py-2(type="button" onclick="this.parentElement.classList.toggle('menu-open');")
+        = t('events.index.view.dropdown')
+        i.far.fa-chevron-down.ml-2
+
+      .dropdown-menu.origin-top-right.absolute.right-0.mt-2.w-72.rounded-md.shadow-lg.bg-white.ring-1.ring-black.ring-opacity-5.divide-y.divide-gray-100.focus:outline-none
+        ul
+          = render partial: 'events/partials/index/dropdown_items/bulk_publish'   if @current_member.admin?
+          = render partial: 'events/partials/index/dropdown_items/show_cancelled' if @current_member.admin?
+          = render partial: 'events/partials/index/dropdown_items/show_only_rsvps'
+          = render partial: 'events/partials/index/dropdown_items/show_past_events'
 
     span#bulk_publish_button_wrapper
       = button_to t('events.index.bulk_publish.execute_caption'),

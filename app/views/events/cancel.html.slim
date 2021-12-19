@@ -39,7 +39,7 @@
 
           .mb-1
             = f.radio_button :message_audience, :active_members, class: 'mr-2'
-            = f.label :message_audience_active_members, "Yes, to all #{@unit.members.active.count} active members"
+            = f.label :message_audience_active_members, "Yes, to all #{@unit.members.status_active.count} active members"
 
           .mb-3
             = f.radio_button :message_audience, :all_members, class: 'mr-2'

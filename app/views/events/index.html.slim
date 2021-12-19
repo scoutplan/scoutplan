@@ -119,30 +119,4 @@ javascript:
     mutationObserver.observe(document.body, { attributes: true });
   });
 
-- if false
-  javascript:
-    // links inside clickable rows should take priority, so we stop
-    // propagation on them
-    var links = document.getElementsByClassName('event-rsvp-link');
-    for (const link of links) {
-      link.addEventListener('click', function(event) {
-        event.stopPropagation();
-      });
-    }
-
-    // also prevent checkboxes from firing clickable rows
-    document.querySelectorAll('.bulk-selection input[type="checkbox"]').forEach(function(elem) {
-      elem.addEventListener('click', function(event) {
-        event.stopPropagation();
-      });
-    });
-
-    // click on an event row
-    document.querySelectorAll('tr.event').forEach(function(elem) {
-      elem.addEventListener('click', function(event) {
-        href = this.dataset.href;
-        window.location = href;
-      });
-    });
-
 = render partial: 'events/partials/styles'

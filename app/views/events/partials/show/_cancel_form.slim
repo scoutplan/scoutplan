@@ -13,7 +13,7 @@
             = radio_button_tag :notify, :everyone, true, class: 'form-check-input'
             = label_tag :notify_everyone,
               t('events.show.cancel.everyone',
-              count: @event.unit.memberships.active.count,
+              count: @event.unit.memberships.status_active.count,
               unit_name: @event.unit.name),
               class: 'form-check-label'
           - if @event.rsvps.accepted.count.positive?

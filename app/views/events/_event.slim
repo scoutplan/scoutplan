@@ -11,55 +11,55 @@
 - if mode == 'append'
   = render partial: 'month_header', locals: { event: event }
 
-tr.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{row_class}")
+tr.border-t.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{row_class}")
   // bulk selection checkbox
   td.bulk-selection
     = check_box_tag "event_ids[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
 
   // dates
-  td.event-dates
+  td.event-dates.w-px
     = link_to unit_event_path(@unit, event),
-      class: "row-link cursor-pointer no-underline whitespace-nowrap start-day",
+      class: "row-link cursor-pointer no-underline whitespace-nowrap start-day px-2 py-2",
       data: { turbo_frame: 'event', turbo_action: 'advance' } do
       = raw(@presenter.dates_to_s)
 
   // days
-  td.event-days
+  td.event-days.w-px
     = link_to unit_event_path(@unit, event),
-      class: "hidden lg:table-cell row-link cursor-pointer no-underline whitespace-nowrap uppercase",
+      class: "hidden lg:table-cell row-link cursor-pointer no-underline whitespace-nowrap uppercase px-1 py-2",
       data: { turbo_frame: 'event', turbo_action: 'advance' } do
       = raw(@presenter.days_to_s)
 
   // glyph
-  td.event-glyph
+  td.event-glyph.w-px.hidden.sm:table-cell
     = link_to unit_event_path(@unit, event),
-      class: "row-link cursor-pointer no-underline w12 text-center glyph",
+      class: "px-2 py-2 row-link cursor-pointer no-underline w12 text-center glyph",
       data: { turbo_frame: 'event', turbo_action: 'advance' } do
       = glyph_tag(event)
       
   // title
   td.event-title
     = link_to unit_event_path(@unit, event),
-      class: "row-link cursor-pointer no-underline whitespace-nowrap",
+      class: "row-link cursor-pointer no-underline whitespace-nowrap px-1 py-2",
       data: { turbo_frame: 'event', turbo_action: 'advance' } do
       = event.title
       = event_badge(event)
       - if event.description.present?
-        i.far.fa-comment-alt.mx-2.text-gray-900(title="#{event.description.to_plain_text}")
+        i.fas.fa-comment-alt-lines.mx-2.text-red-600(title="#{event.description.to_plain_text}")
 
   // location
   td.event-location.hidden.xl:table-cell
     = link_to unit_event_path(@unit, event),
-      class: "hidden xl:table-cell row-link cursor-pointer no-underline overflow-hidden",
+      class: "row-link cursor-pointer no-underline",
       data: { turbo_frame: 'event', turbo_action: 'advance' } do
       = event.location
 
   // short description
   td.event-short-description.hidden.2xl:table-cell
     = link_to unit_event_path(@unit, event),
-      class: "hidden 2xl:table-cell row-link cursor-pointer no-underline overflow-hidden",
+      class: "row-link cursor-pointer no-underline px-2 py-2",
       data: { turbo_frame: 'event', turbo_action: 'advance' } do
       = event.short_description
 
-  td.event-actions.hidden.lg:table-cell.text-right
+  td.event-actions.hidden.sm:table-cell.text-right
     = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps }

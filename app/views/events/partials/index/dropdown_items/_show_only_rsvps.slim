@@ -1,10 +1,10 @@
 li = link_to '#',
     remote: true,
-    class: "dropdown-item toggle-body-class #{ @events.rsvp_required.future.count.zero? ? 'disabled' : '' }",
+    class: "hover:bg-gray-100 inline-block px-4 py-2 w-full toggle-body-class #{ @events.rsvp_required.future.count.zero? ? 'disabled' : '' }",
     data: { action: 'event#toggleRsvpEvents' },
     id: 'show-only-rsvp-events-link' do
 
   .menu-glyph
-    .menu-glyph-wrapper
+    span.menu-glyph-wrapper
       i.far.fa-check
   = t('events.index.view.rsvps', count: @events.rsvp_required.future.count)

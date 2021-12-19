@@ -68,10 +68,6 @@ div(style="margin-bottom: 30px;")
 
 - if false
   javascript:
-    function launchMap() {
-      const url = 'https://maps.google.com/maps/search/?api=1&query=' + encodeURIComponent('#{ @event.map_address }');
-      window.open(url);
-    }
 
     document.querySelector('#map_wrap')
       .addEventListener('click', function(event) {

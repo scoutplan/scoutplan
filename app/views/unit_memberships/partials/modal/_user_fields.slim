@@ -1,16 +1,18 @@
 = f.fields_for :user do |u|
-  .mb-3
-    = u.hidden_field :id
-    = u.label :name, class: 'form-label'
+  // first, nickname, last
+  .mb-6
+    = u.label :name, class: 'block text-black mb-1 font-semibold'
+    .grid.grid-cols-3.gap-1
+      = u.text_field :first_name, class: 'block rounded border px-2 py-1 capitalize', autocomplete: 'off', placeholder: 'First'
+      = u.text_field :last_name,  class: 'block rounded border px-2 py-1 capitalize', autocomplete: 'off', placeholder: 'Last'
+      = u.text_field :nickname,   class: 'block rounded border px-2 py-1 capitalize', autocomplete: 'off', placeholder: 'Nickname (optional)'
+
+  // email & phone
+  .grid.grid-cols-2.gap-3
     div
-      = u.text_field :first_name, class: 'form-control', autocomplete: 'off', autofocus: true, style: 'text-transform: capitalize', placeholder: 'First', style: 'width:30%;display:inline-block;margin-right:1%;'
-      = u.text_field :last_name, { class: 'form-control', autocomplete: 'off', style: 'text-transform: capitalize', placeholder: 'Last', style: 'width: 30%;display: inline-block;' }
-      = u.text_field :nickname, class: 'form-control', autocomplete: 'off', autofocus: true, style: 'text-transform: capitalize', placeholder: 'Nickname', style: 'width:30%;display:inline-block;float:right;'
+      = u.label :email, class: 'block text-black mb-1 font-semibold'
+      = u.email_field :email, class: 'block rounded border px-2 py-1 w-full', autocomplete: 'off'
 
-  .mb-3
-    = u.label :email, class: 'form-label'
-    = u.email_field :email, class: 'form-control', autocomplete: 'off'
-
-  .mb-3
-    = u.label :phone, class: 'form-label'
-    = u.phone_field :phone, { class: 'form-control', autocomplete: 'off' }
+    div
+      = u.label :phone, class: 'block text-black mb-1 font-semibold'
+      = u.phone_field :phone, class: 'block rounded border px-2 py-1 w-full', autocomplete: 'off'

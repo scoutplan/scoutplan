@@ -46,15 +46,14 @@ Rails.application.routes.draw do
       post  'cancel', to: 'events#perform_cancellation'
     end
 
-    resources :unit_memberships, path: 'members', as: 'members', except: [:show] do
+    resources :unit_memberships, path: 'members', as: 'members' do
       collection do
-        get  ':member_id',  to: 'unit_memberships#index'
         post 'bulk_update', to: 'unit_memberships#bulk_update'
         get  'import',      to: 'unit_memberships_import#new'
         post 'import',      to: 'unit_memberships_import#create'
       end
     end
-  end
+  end # end units
 
   resources :unit_memberships, path: 'members', as: 'members', only: %i[show edit update destroy] do
     member do

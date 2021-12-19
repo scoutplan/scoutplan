@@ -20,12 +20,6 @@ scss:
     font-weight: 700;
   }
 
-  tr.event-month-boundary {
-    td {
-      padding: 8px 12px;
-    }
-  }
-
   tr.event-row {
     display: table-row;
     transition: height 2s ease;
@@ -34,16 +28,11 @@ scss:
       a {
         display: inline-block;
         width: 100%;
-        padding: 8px 12px;
       }
     }
   }
 
-  td.event-dates {
-    padding-left: 0;
-  }
-
-  .event-past, .event-cancelled, .event-future {
+  tr.event-past, tr.event-cancelled, tr.event-future {
     display: none;
   }
 
@@ -51,8 +40,12 @@ scss:
     color: #aaa;
   }
 
-  // initially, don't display past events
-  tr.event-past {
+  .menu-glyph {
+    display: inline-block;
+    width: 2rem;
+  }
+
+  .menu-glyph-wrapper {
     display: none;
   }
 
@@ -267,3 +260,48 @@ scss:
       color: #aaa;
     }
   }
+
+  .dropdown {
+    button i {
+      transform: rotate(0deg);
+      transition: transform 150ms ease;
+    }
+
+    .dropdown-menu {
+      display: none;
+    }
+  }
+
+  .dropdown.menu-open {
+    button i {
+      transform: rotate(180deg);
+      transition: transform 150ms ease;
+    }
+
+    .dropdown-menu {
+      display: block;
+    }
+  } 
+
+javascript:
+  document.addEventListener('click', function(event) {
+    var openMenus = document.querySelectorAll('.menu-open');
+    if (openMenus.length == 0) {
+      return;
+    }
+    openMenus.forEach(function(elem) {
+      if (elem.contains(event.target)) {
+        // clicked in the menu
+      } else {
+        elem.classList.remove('menu-open');
+      }
+    });
+  });
+
+  document.querySelectorAll('.dropdown a').forEach(function(linkElem) {
+    linkElem.addEventListener('click', function(event) {
+      document.querySelectorAll('.dropdown').forEach(function(elem) {
+        elem.classList.remove('menu-open');
+      })
+    });
+  });

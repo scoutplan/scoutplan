@@ -4,7 +4,7 @@ table
       tr
         td
           - if rsvp.note.present?
-            span(title="#{rsvp&.respondent&.display_full_name}: '#{rsvp.note}'" data-bs-toggle="tooltip")
+            span(title="#{rsvp&.respondent&.full_display_name}: '#{rsvp.note}'" data-bs-toggle="tooltip")
               i.fa-comment-alt-lines.fas
             |&nbsp;&nbsp;
 

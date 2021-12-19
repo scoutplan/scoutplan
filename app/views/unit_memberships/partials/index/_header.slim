@@ -1,45 +1,65 @@
-header.mb-4.clearfix
-  .float-start
-    h1 = t('members.index.title')
+header.mb-4.flex
+  .flex-auto
+    h1.px-2.py-2.font-bold.text-black.text-xl = t('members.index.title')
 
-  .float-end.pt-4
-    = search_field_tag(:search, 
-      '',
-      class: 'form-control search me-3',
-      style: 'width: 18rem; display: inline; transform: translate(0, 1px);',
-      autofocus: true,
-      autocomplete: 'off',
-      placeholder: raw(t('members.search_by_name')),
-      onkeyup: 'performNameSearch();')
+  // right side
+  .flex-auto.text-right
 
+    // search field
+    - if true
+      = search_field_tag(:search, 
+        '',
+        class: 'rounded px-2 py-2 border search mr-3',
+        style: 'width: 18rem; display: inline; transform: translate(0, 1px);',
+        autofocus: true,
+        autocomplete: 'off',
+        placeholder: raw(t('members.search_by_name')),
+        onkeyup: 'performNameSearch();')
+
+    // regularly-displayed controls (hidden under some circumstances)
     span#regular_options
-      = link_to '#membership_modal', class: 'btn btn-success me-3', data: { 'bs-toggle' => 'modal'} do
-        i.fas.fa-user-plus(class='me-3')
+
+      // add a member
+      = link_to new_unit_member_path(@unit),
+        class: 'rounded text-white font-bold text-sm tracking-wider uppercase px-4 py-2 mr-3',
+        style: 'background: rgb(230, 100, 37);' do
+        i.fas.fa-user-plus(class='mr-3')
         = t('members.index.add_a_member')
 
       - if @current_member.admin?
-        .dropdown.ml-3(style="display: inline-block;")
-          = link_to t('events.index.view.dropdown'), '#', class: 'btn btn-outline-secondary dropdown-toggle', data: { 'bs-toggle' => 'dropdown' }, style: "display: inline-block;"
-          ul.dropdown-menu.dropdown-menu-end.dropdown-menu-dark
-            li
-              = link_to '#', class: 'dropdown-item', id: 'bulk_edit_link' do
-                .menu-glyph
-                  .menu-glyph-wrapper
-                    i.far.fa-check
-                |Bulk Edit Members
-            li
-              = link_to '#', class: 'dropdown-item', id: 'show_inactive_members_link' do
-                .menu-glyph
-                  .menu-glyph-wrapper
-                    i.far.fa-check
-                |Show Inactive Members (#{ @current_unit.members.inactive.count })
+        .inline-block.relative.dropdown
+          button.text-sm.uppercase.tracking-wider.font-bold.rounded.bg-gray-200.no-underline.text-black.px-4.py-2(type="button" onclick="this.parentElement.classList.toggle('menu-open');")
+            = t('events.index.view.dropdown')
+            i.far.fa-chevron-down.ml-2
 
-            li
-              = link_to import_unit_members_path(@unit), class: 'dropdown-item' do
+          .dropdown-menu.text-left.origin-top-right.absolute.right-0.mt-2.w-72.rounded-md.shadow-lg.bg-white.ring-1.ring-black.ring-opacity-5.divide-y.divide-gray-100.focus:outline-none
+            ul
+              li = link_to '#',
+                  class: "hover:bg-gray-100 inline-block px-4 py-2 w-full toggle-body-class",
+                  data: { action: 'event#toggleCancelledEvents' },
+                  id: 'bulk_edit_link' do
                 .menu-glyph
-                  .menu-glyph-wrapper
+                  span.menu-glyph-wrapper
                     i.far.fa-check
-                |Import Members
+                = 'Bulk Edit Members'
+
+              li = link_to '#',
+                  class: "hover:bg-gray-100 inline-block px-4 py-2 w-full toggle-body-class",
+                  data: { action: 'event#toggleCancelledEvents' },
+                  id: 'show_inactive_members_link' do
+                .menu-glyph
+                  span.menu-glyph-wrapper
+                    i.far.fa-check
+                |Show Inactive Members (#{ @current_unit.members.status_inactive.count })               
+
+              li = link_to import_unit_members_path(@unit),
+                  class: "hover:bg-gray-100 inline-block px-4 py-2 w-full toggle-body-class",
+                  data: { action: 'event#toggleCancelledEvents' },
+                  id: 'import_members_link' do
+                .menu-glyph
+                  span.menu-glyph-wrapper
+                    i.far.fa-check
+                |Import Members  
 
     span.mb-3.me-3#bulk_edit_options(style="font-size: 80%;")
       span(style="display: inline-block; vertical-align: middle;")
@@ -66,3 +86,21 @@ header.mb-4.clearfix
       button.btn.btn-warning#execute_bulk_edit_button(disabled="disabled") Update Selected Members
       |&nbsp;
       button.btn.btn-secondary#cancel_bulk_edit Cancel
+javascript:
+  // search functionality
+  // adapted from https://www.w3schools.com/howto/howto_js_filter_table.asp
+  function performNameSearch() {
+    var input = document.querySelector('#search');
+    var filter = input.value.toUpperCase();
+
+    var rows = document.querySelectorAll('tr.member');
+    rows.forEach(function(row) {
+      var nameCell = row.querySelector('td.name');
+      var name = nameCell.innerText;
+      if (filter.length < 0 || name.toUpperCase().indexOf(filter) > -1) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }

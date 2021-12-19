@@ -5,7 +5,7 @@
 
 // BOOTSTRAP see https://bootrails.com/blog/rails-bootstrap-tutorial and https://whatapalaver.co.uk/bootstrap-5-rails-6
 
-import Rails from '@rails/ujs'
+// import Rails from '@rails/ujs'
 // import Turbolinks from 'turbolinks'
 import * as ActiveStorage from '@rails/activestorage'
 import 'channels'
@@ -21,9 +21,9 @@ import '@rails/actiontext'
 
 // import * as bootstrap from 'bootstrap';
 // import '../js/bootstrap_custom.js'
-window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js')
+// window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js')
 
-Rails.start()
+// Rails.start()
 // Turbolinks.start()
 ActiveStorage.start()
 

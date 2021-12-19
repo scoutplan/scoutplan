@@ -31,27 +31,21 @@ module EventsHelper
   end
 
   def event_badge(event)
+    common_classes = 'rounded px-2 py-1 text-xs tracking-wide font-bold text-white ml-2'
+    title = "Only visible to #{event.unit.name} administrators, like you."
     if event.cancelled?
-      content_tag(:span, t('events.index.cancelled'), class: 'badge bg-danger ml-2')
+      content_tag :span, t('events.index.cancelled'), class: "#{common_classes} bg-red-500", title: title
     elsif event.draft?
-      content_tag(:span, t('events.index.draft'), class: 'badge ml-2 bg-blue-700')
+      content_tag :span, t('events.index.draft'), class: "#{common_classes} bg-blue-500", title: title
     end
   end
 
+  # given an Event, generate a Google Maps URL. Assumes the Event has
+  # at least a destination
   def event_map_url(event)
-    base_url = "https://www.google.com/maps"
-    return "#{base_url}/dir/#{event_location_string(event.departs_from)}/#{event_location_string(event.address)}" \
-      if event.departs_from.present? && event.address.present?
-    return "#{base_url}/dir/#{event_location_string(event.departs_from)}/#{event_location_string(event.location)}" \
-      if event.departs_from.present? && event.location.present?
-    return "#{base_url}/search/#{event_location_string(event.address)}" if event.address.present?
-    return "#{base_url}/search/#{event_location_string(event.location)}" if event.location.present?
-
-    return ""
-  end
-
-  def event_location_string(str)
-    str.gsub!(',', '')
-    CGI.escape(str)
+    base_url = 'https://www.google.com/maps/'
+    parts = event.departs_from.present? ? ['dir', event.departs_from, event.destination] : ['search', event.destination]
+    search_path = parts.map { |m| CGI.escape(m.gsub(',', '')) }.join('/')
+    [base_url, search_path].join
   end
 end

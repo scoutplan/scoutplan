@@ -42,8 +42,12 @@ class User < ApplicationRecord
     nickname.blank? ? first_name : nickname
   end
 
-  def display_full_name
+  def full_display_name
     "#{display_first_name} #{last_name}"
+  end
+
+  def short_display_name
+    "#{display_first_name} #{last_name.first}."
   end
 
   def display_legal_and_nicknames
