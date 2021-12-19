@@ -1,8 +1,8 @@
 li = link_to '#',
-     class: "dropdown-item toggle-body-class #{@events.cancelled.length.zero? ? 'disabled' : ''}",
+     class: "hover:bg-gray-100 inline-block px-4 py-2 w-full toggle-body-class #{@events.cancelled.length.zero? ? 'disabled' : ''}",
      data: { action: 'event#toggleCancelledEvents' },
      id: 'show-cancelled-events-link' do
   .menu-glyph
-    .menu-glyph-wrapper
+    span.menu-glyph-wrapper
       i.far.fa-check
   = t('events.index.view.cancelled', count: @events.cancelled.count)

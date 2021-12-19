@@ -20,15 +20,14 @@ class UnitMembershipsController < ApplicationController
 
   def edit
     build_new_relationship
-    respond_to :js
   end
 
   def show
     authorize @target_membership
     @user = @target_membership.user
     @page_title = @user.full_name
-    page_title [@unit.name, @user.display_full_name]
-    build_new_relationship
+    page_title [@unit.name, @user.full_display_name]
+    puts '%%%%%%%%'
   end
 
   def create

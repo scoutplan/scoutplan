@@ -1,3 +1,5 @@
+:dynamic: true
+
 :schedule:
   send_digests:
     # cron: '0 0 * * * *' # every hour

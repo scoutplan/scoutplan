@@ -32,7 +32,7 @@ class MemberMailer < ScoutplanMailer
   private
 
   def set_addresses
-    @to_address = email_address_with_name(@member.user.email, @member.user.display_full_name)
+    @to_address = email_address_with_name(@member.user.email, @member.user.full_display_name)
     @from_address = email_address_with_name(@unit.settings(:communication).from_email, @unit.name)
   end
 

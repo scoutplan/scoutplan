@@ -20,7 +20,7 @@ class EventMailer < ScoutplanMailer
 
   def rsvp_confirmation_email
     @rsvp = params[:rsvp]
-    mail(to: email_address_with_name(@rsvp.user.email, @rsvp.user.display_full_name),
+    mail(to: email_address_with_name(@rsvp.user.email, @rsvp.user.full_display_name),
          from: email_address_with_name(@rsvp.unit.settings(:communication).from_email, @rsvp.unit.name),
          subject: "#{@rsvp.unit.name}: Your RSVP for #{@rsvp.event.title} has been received")
   end

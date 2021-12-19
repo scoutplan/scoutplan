@@ -13,9 +13,9 @@
             .mb-3
               = u.label :name, class: 'form-label'
               div
-                = u.text_field :first_name, class: 'form-control', autocomplete: 'off', autofocus: true, style: 'text-transform: capitalize', placeholder: 'First', style: 'width:32%; display: inline-block;'
-                = u.text_field :nickname, class: 'form-control', autocomplete: 'off', autofocus: true, style: 'text-transform: capitalize', placeholder: 'Nickname', style: 'width:32%; display: inline-block; margin-left: 0.5rem;'
-                = u.text_field :last_name, { class: 'form-control', autocomplete: 'off', style: 'text-transform: capitalize', placeholder: 'Last', style: 'width: 32%; display: inline-block; float: right;' }
+                = u.text_field :first_name, class: 'form-control', autocomplete: 'off', autofocus: true, placeholder: 'First', style: 'text-transform: capitalize width:32%; display: inline-block;'
+                = u.text_field :nickname, class: 'form-control', autocomplete: 'off', autofocus: true, placeholder: 'Nickname', style: 'text-transform: capitalize width:32%; display: inline-block; margin-left: 0.5rem;'
+                = u.text_field :last_name, { class: 'form-control', autocomplete: 'off', placeholder: 'Last', style: 'text-transform: capitalize width: 32%; display: inline-block; float: right;' }
 
             .mb-3
               = u.label :email, class: 'form-label'
@@ -26,15 +26,13 @@
               = u.phone_field :phone, { class: 'form-control' }
 
           .mb-3
-            label.me-3 Type:
+            label.inline-block.w-36 Type:
 
-            .form-check.form-check-inline
-              = f.radio_button :member_type, :youth, class: 'form-check-input'
-              = f.label :member_type, 'Youth', value: 'youth', class: 'form-check-label'
+            = f.radio_button :member_type, :youth, class: 'form-check-input'
+            = f.label :member_type, 'Youth', value: 'youth', class: 'form-check-label'
 
-            .form-check.form-check-inline
-              = f.radio_button :member_type, :adult, class: 'form-check-input'
-              = f.label :member_type, 'Adult', value: 'adult', class: 'form-check-label'
+            = f.radio_button :member_type, :adult, class: 'form-check-input'
+            = f.label :member_type, 'Adult', value: 'adult', class: 'form-check-label'
 
           .mb-3
             .form-check.form-check-inline

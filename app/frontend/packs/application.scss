@@ -1,59 +1,9 @@
-@import "bootstrap";
+// @import "bootstrap";
 @import "trix/dist/trix";
 @import "./actiontext.scss";
 
-body, .table {
+body, td {
   font-family: proxima-nova, sans-serif;
   font-weight: 400;
-  color: rgb(96, 96, 96);
-}
-
-h1 {
-  font-weight: 700;
-}
-
-// pay the mortgage
-table {
-  &.table-clickable {
-    td {
-      cursor: pointer;
-    }
-  }
-}
-
-th.desktop, td.desktop {
-  @extend .d-none, .d-lg-table-cell;
-}
-
-th.tablet, td.tablet {
-  @extend .d-none, .d-md-table-cell;
-}
-
-th.mobile, td.mobile {
-  @extend .d-table-cell, .d-md-none, .d-lg-none, .d-xl-none;
-}
-
-.row main {
-  @extend .col-md-6;
-  @extend .col-lg-7;
-  @extend .col-xl-8;
-}
-
-.row aside {
-  @extend .col-md-6;
-  @extend .col-lg-5;
-  @extend .col-xl-4;
-}
-
-tr.clickable {
-  cursor: pointer;
-}
-
-.menu-glyph {
-  display: inline-block;
-  width: 1.5rem;
-}
-
-.menu-glyph-wrapper {
-  display: none;
+  color: rgb(96, 96, 96) !important;
 }

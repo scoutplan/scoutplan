@@ -65,17 +65,17 @@
             = link_to 'Cancel This Event',
               unit_event_cancel_path(@unit, @event),
               data: { turbo_frame: 'event', turbo_action: 'advance' },
-              class: "bg-red-800 text-red-100 hover:bg-red-900 hover:text-red-200 px-4 py-2 border rounded text-sm font-bold tracking-wider text-uppercase no-underline mr-2"            
+              class: "bg-red-800 text-red-100 hover:bg-red-900 hover:text-red-200 px-4 py-2 border rounded text-sm font-bold tracking-wider uppercase no-underline mr-2"            
 
 
           = f.submit "#{@event_view.new_record? ? 'Add This Event' : 'Save Changes'}", 
             style: "background:#e66425;",
-            class: "px-4 py-2 border rounded text-white text-sm font-bold tracking-wider text-uppercase mr-2"
+            class: "px-4 py-2 border rounded text-white text-sm font-bold tracking-wider uppercase mr-2"
           
           = link_to t('global.cancel'),
             @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event),
             data: { turbo_action: 'advance' },
-            class: 'px-4 py-2 border bg-gray-200 text-black text-sm font-bold tracking-wider text-uppercase rounded no-underline'
+            class: 'px-4 py-2 border bg-gray-200 text-black text-sm font-bold tracking-wider uppercase rounded no-underline'
 
 javascript:
   // tab interfaces

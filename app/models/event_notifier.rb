@@ -7,7 +7,7 @@ class EventNotifier
   def self.after_publish(event)
     return unless event.requires_rsvp
 
-    event.unit.members.active.each do |member|
+    event.unit.members.status_active.each do |member|
       next unless member.contactable?
       next unless Flipper.enabled? :receive_event_publish_notice, member
 
@@ -17,7 +17,7 @@ class EventNotifier
   end
 
   def self.after_bulk_publish(unit, events)
-    unit.members.active.each do |member|
+    unit.members.status_active.each do |member|
       next unless Flipper.enabled? :receive_bulk_publish_notice, member
 
       user = member.user

@@ -11,7 +11,7 @@ class RsvpToken < ApplicationRecord
 
   # # given an Event, generate "magic link" tokens for all active
   # def self.generate_tokens_for_event(event)
-  #   event.unit.memberships.active.each { |membership| RsvpToken.create(user: membership.user, event: self) }
+  #   event.unit.memberships.status_active.each { |membership| RsvpToken.create(user: membership.user, event: self) }
   # end
 
   delegate :user, to: :unit_membership

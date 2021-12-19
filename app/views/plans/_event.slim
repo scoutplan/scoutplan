@@ -10,8 +10,14 @@
       span(title="#{event.category.name}")
         i.mt-3.fad(class="fa-#{event.category.glyph}" style="color:#{event.category.color}")
 
-  h3.clear-both = event.title
-  p = event.short_description
+  .clear-both
+  
+  h3.font-bold.text-lg
+    = event.title
+  
+  - if event.short_description.present?
+    p
+      = event.short_description
 
-  div.overflow-y-scroll(id="event_#{event.id}_activities")
+  div.mt-3.overflow-y-scroll(id="event_#{event.id}_activities")
     = render partial: 'activities', locals: { event: event } 

@@ -1,6 +1,6 @@
 // show a toast
 var toastBody = document.querySelector('#toast_body');
-toastBody.innerHTML = '<%= "#{ @message_name } was sent to #{ @target_membership.display_full_name }" %>';
+toastBody.innerHTML = '<%= "#{ @message_name } was sent to #{ @target_membership.full_display_name }" %>';
 toast.show();
 
 setupHoverLinks();

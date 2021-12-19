@@ -6,7 +6,7 @@
 .absolute.inset-0.bg-black.bg-opacity-25.z-40(class="event-#{@event.status}-modal")
 
   // white dialog
-  .relative.w-auto.my-12.mx-auto.max-w-2xl.bg-white.rounded.z-50.drop-shadow-xl.filter
+  .relative.w-auto.my-12.mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-xl.filter
 
     // CANCELLED watermark
     - if @event.cancelled?
@@ -19,8 +19,8 @@
         = t('index.events.draft')
 
     // modal header
-    header.pt-4.px-8.pb-3.overflow-auto
-      h3.m-0.font-bold.float-left
+    header.px-8.py-5.overflow-auto
+      h3.m-0.font-bold.float-left.text-xl
         = @event.title
         span.align-middle.ml-2.text-base = glyph_tag(@event)
         = content_tag(:div, @event.short_description, class: 'font-normal text-base text-gray-500') if @event.short_description.present?
@@ -55,7 +55,7 @@
       .flex.flex-col.sm:flex-row.mb-3
 
         / date panel
-        #date_time_card.bg-gray-100.rounded.p-3.mb-2.sm:flex-auto.flex-1
+        #date_time_card.text-center.bg-gray-100.rounded.p-3.mb-2.sm:flex-auto.flex-1
           = render partial: 'events/partials/show/date_card'
 
         / location panel (if location values are set)
@@ -65,19 +65,19 @@
 
       // third row: longform description, if present
       - if @event.description.present?
-        .flex.mb-3.overflow-y-scroll.max-h-60.border-b
-          .pb-3.overflow-auto
+        .flex.overflow-y-scroll.max-h-60.border-b
+          .overflow-auto
             == @event.description
 
     // footer, containing right-justified buttons
-    footer.overflow-auto.pb-4.px-6
+    footer.overflow-auto.py-5.px-6
       .float-right.overflow-auto
 
         // Organize button (if authorized)
         - if @event.organizable? && policy(@event).organize?
           = link_to t('events.show.organize_button_caption'),
             unit_event_organize_path(@event.unit, @event),
-            class: 'inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider text-uppercase',
+            class: 'inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase',
             data: { 'turbo-action' => 'advance', 'turbo-frame' => '_top' },
             title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)
 
@@ -85,13 +85,13 @@
         - if policy(@event).edit? && @event.editable?
           = link_to t('event_edit'),
             edit_unit_event_path(@event.unit, @event),
-            class: 'inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider text-uppercase',
+            class: 'inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase',
             data: { 'turbo-action' => 'advance' },
             title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)
 
         // Done button
         = link_to t('global.done'),
           unit_events_path(@event.unit),
-          class: 'inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-white text-sm font-bold tracking-wider text-uppercase',
+          class: 'inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-white text-sm font-bold tracking-wider uppercase',
           style: 'background:#e66425;',
           data: { 'turbo-action' => 'advance' }

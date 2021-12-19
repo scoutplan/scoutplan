@@ -78,12 +78,8 @@ class Event < ApplicationRecord
     Event.where(series_parent_id: series_parent_id)
   end
 
-  def map_address
-    address.blank? ? location : address
-  end
-
-  def slug
-    title.parameterize
+  def destination
+    address || location
   end
 
   private

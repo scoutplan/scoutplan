@@ -32,15 +32,11 @@ class Unit < ApplicationRecord
   end
 
   def to_param
-    "#{id}-#{slug.gsub(/[^a-z0-9]+/i, '-')}"
+    [id, name, location].join(' ').parameterize
   end
 
   def membership_for(user)
     members.includes(:parent_relationships, :child_relationships).find_by(user: user)
-  end
-
-  def slug
-    [name, location].join(' ').parameterize
   end
 
   def planner

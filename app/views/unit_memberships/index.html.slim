@@ -1,26 +1,26 @@
+= turbo_frame_tag('member_list')
+  .w-full.mx-auto
+    = render partial: 'unit_memberships/partials/index/header'
+    = form_tag bulk_update_unit_members_path(@unit), id: 'bulk_edit_form'
+      table.w-full
+        thead
+          tr
+            th.selection.text-left.text-black
+              = check_box_tag 'all_visible_events', 'on', false, class: 'form-check-input', id: 'select_all_members_checkbox'
+            th.member-type.text-left.px-2.py-2.text-black
+            th.text-left.px-2.py-2.text-black = t('members.name')
+            th.role.text-left.px-2.py-2.text-black
+            th.status.text-left.px-2.py-2.text-black
+            th.text-left.px-2.py-2.text-black.whitespace-nowrap = t('members.parent_guardian')
+            th.text-left.px-2.py-2.text-black = t('members.children')
+
+        tbody
+          = render @unit_memberships
+
+// empty turbo frame to be populated by a Member modal as needed
 = turbo_frame_tag 'member'
 
-.w-full.mx-auto
-  = render partial: 'unit_memberships/partials/index/header'
-  = form_tag bulk_update_unit_members_path(@unit), id: 'bulk_edit_form'
-    table.table.table-clickable.table-hover
-      thead
-        tr
-          th.selection
-            = check_box_tag 'all_visible_events', 'on', false, class: 'form-check-input', id: 'select_all_members_checkbox'
-          th = t('members.name')
-          th.role
-          th.status
-          th.member-type
-          th = t('members.parent_guardian')
-          th = t('members.children')
-
-      tbody
-        = render @unit_memberships
-
-= render partial: 'unit_memberships/partials/index/member_form'
-
-.modal.fade#member_modal
+= render partial: 'events/partials/styles'
 
 scss:
   th.selection, td.selection {
@@ -43,14 +43,6 @@ scss:
     #bulk_edit_options {
       display: inline-block;
     }
-  }
-
-  .badge.member-type-youth {
-    background: red;
-  }
-
-  .badge.member-type-adult {
-    background: green;
   }
 
   td.fit-width {
@@ -86,44 +78,9 @@ scss:
   }
 
 javascript:
-  // type the S key to search
-  /*
-  document.addEventListener('keydown', function(event) {
-    if(event.keyCode == 83 && (event.metaKey || event.ctrlKey) {
-      var input = document.querySelector('#search');
-      input.focus();
-      input.select();
-    }
-  });
-  */
+  // BULK EDIT FACILITY
 
-  // kludge alert!
-  // upon clicking a row, "click" the link hidden inside
-  document.querySelectorAll('tr.member').forEach(function(elem) {
-    elem.addEventListener('click', function(event) {
-      var link = this.querySelector('a');
-      link.click();
-    });
-  });
-
-  // search functionality
-  // adapted from https://www.w3schools.com/howto/howto_js_filter_table.asp
-  function performNameSearch() {
-    var input = document.querySelector('#search');
-    var filter = input.value.toUpperCase();
-
-    var rows = document.querySelectorAll('tr.member');
-    rows.forEach(function(row) {
-      var nameCell = row.querySelector('td.name');
-      var name = nameCell.innerText;
-      if (filter.length < 0 || name.toUpperCase().indexOf(filter) > -1) {
-        row.style.display = '';
-      } else {
-        row.style.display = 'none';
-      }
-    });
-  }
-
+  // 'Select All' checkbox
   document.querySelector('#select_all_members_checkbox').addEventListener('click', function(event) {
     const checked = this.checked;
     document.querySelectorAll('.bulk-publish-checkbox').forEach(function (elem) {
@@ -132,16 +89,19 @@ javascript:
     validateBulkEditState();
   });
 
+  // enter bulk edit mode by adding a body class
   document.querySelector('#bulk_edit_link').addEventListener('click', function(event) {
     document.body.classList.toggle('bulk-edit');
     event.preventDefault();
   });
 
+  // exit bulk edit mode by removing the same body class
   document.querySelector('#cancel_bulk_edit').addEventListener('click', function(event) {
     document.body.classList.remove('bulk-edit');
     event.preventDefault();
   });
 
+  // wire up each checkbox to validate the screen and update the checked count
   document.querySelectorAll('.bulk-edit-checkbox').forEach(function(elem) {
     elem.addEventListener('click', function(event) {
       validateBulkEditState();
@@ -149,12 +109,13 @@ javascript:
     })
   });
 
-  // wire up the bulk Publish button
+  // wire up the bulk edit Apply button
   document.querySelector('#execute_bulk_edit_button').addEventListener('click', function(event) {
     document.querySelector('#bulk_edit_form').submit();
     event.preventDefault();
   });
 
+  // toggle inactive members
   document.querySelector('#show_inactive_members_link').addEventListener('click', function(event) {
     document.body.classList.toggle('showing-inactive-members');
     event.preventDefault();
@@ -163,11 +124,13 @@ javascript:
   var bulkEditExecuteButton;
   var originalBulkEditExecuteButtonCaption;
 
+  // capture the button state at the outset so we can restore it if need be
   document.addEventListener("DOMContentLoaded", function() {
     bulkEditExecuteButton = document.querySelector('#execute_bulk_edit_button');
     originalBulkEditExecuteButtonCaption = bulkEditExecuteButton.innerText;
   });
 
+  // called each time a checkbox is changed
   function validateBulkEditState() {
     // tally up checked count
     const checkedCount = document.querySelectorAll('td.selection input:checked').length;
@@ -179,6 +142,6 @@ javascript:
     bulkEditExecuteButton.innerText = originalBulkEditExecuteButtonCaption + (checkedCount == 0 ? '' : ' (' + checkedCount + ')');
   }
 
-- if params[:member_id]
+- if params[:member_id] && false
   javascript:
     document.querySelector('#member_#{params[:member_id]}_row').querySelector('a').click();
