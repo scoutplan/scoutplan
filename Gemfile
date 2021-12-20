@@ -76,6 +76,7 @@ group :test do
   gem 'selenium-webdriver', '~> 3.142'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'simplecov', require: false
+  gem 'timecop'
   gem 'webdrivers', '~> 4.6'
 end
 

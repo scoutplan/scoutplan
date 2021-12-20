@@ -18,8 +18,11 @@ class MemberNotifier
 
   def self.send_digest(member)
     return unless member.contactable?
-    return unless Flipper.enabled? :receive_digest, member
 
+    Rails.logger.warn { "#{member.short_display_name} is contactable" }
+    return unless Flipper.enabled? :digest, member
+
+    Rails.logger.warn { "#{member.short_display_name} is Flipper-enabled" }
     MemberMailer.with(member: member).digest_email.deliver_later if member.settings(:communication).via_email
     send_digest_sms(member) if member.settings(:communication).via_sms
   end
@@ -30,7 +33,7 @@ class MemberNotifier
     Rails.logger.warn { 'Member is contactable' }
     return unless Flipper.enabled? :receive_daily_reminder, member
 
-    Rails.logger.warn { 'Flipper enabled '}
+    Rails.logger.warn { 'Flipper enabled ' }
     return unless member.unit.events.published.imminent.count.positive?
 
     Rails.logger.warn { 'There are imminent events to send' }
