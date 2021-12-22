@@ -47,7 +47,7 @@ class User < ApplicationRecord
   end
 
   def short_display_name
-    "#{display_first_name} #{last_name.first}."
+    "#{display_first_name} #{last_name&.first}."
   end
 
   def display_legal_and_nicknames

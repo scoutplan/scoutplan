@@ -11,7 +11,7 @@
 - if mode == 'append'
   = render partial: 'month_header', locals: { event: event }
 
-tr.border-t.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{row_class}")
+tr.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{row_class}")
   // bulk selection checkbox
   td.bulk-selection
     = check_box_tag "event_ids[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
@@ -19,45 +19,49 @@ tr.border-t.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{ro
   // dates
   td.event-dates.w-px
     = link_to unit_event_path(@unit, event),
-      class: "row-link cursor-pointer no-underline whitespace-nowrap start-day px-2 py-2",
+      class: "row-link cursor-pointer no-underline whitespace-nowrap start-day px-2 py-3 text-right",
       data: { turbo_frame: 'event', turbo_action: 'advance' } do
       = raw(@presenter.dates_to_s)
 
   // days
   td.event-days.w-px
     = link_to unit_event_path(@unit, event),
-      class: "hidden lg:table-cell row-link cursor-pointer no-underline whitespace-nowrap uppercase px-1 py-2",
+      class: "hidden lg:table-cell row-link cursor-pointer no-underline whitespace-nowrap uppercase px-1 py-3",
       data: { turbo_frame: 'event', turbo_action: 'advance' } do
       = raw(@presenter.days_to_s)
 
   // glyph
   td.event-glyph.w-px.hidden.sm:table-cell
     = link_to unit_event_path(@unit, event),
-      class: "px-2 py-2 row-link cursor-pointer no-underline w12 text-center glyph",
+      class: "px-2 py-3 row-link cursor-pointer no-underline w12 text-center glyph",
       data: { turbo_frame: 'event', turbo_action: 'advance' } do
       = glyph_tag(event)
       
   // title
   td.event-title
     = link_to unit_event_path(@unit, event),
-      class: "row-link cursor-pointer no-underline whitespace-nowrap px-1 py-2",
+      class: "row-link cursor-pointer no-underline px-1 py-3",
       data: { turbo_frame: 'event', turbo_action: 'advance' } do
       = event.title
       = event_badge(event)
+      - description_text = event.description.to_plain_text
       - if event.description.present?
-        i.fas.fa-comment-alt-lines.mx-2.text-red-600(title="#{event.description.to_plain_text}")
+        i.fas.fa-comment-alt-lines.mx-2.text-green-600(title="This event has notes:
+          
+          #{'"'}#{description_text[0, 100]}#{description_text.length > 100 ? '...(continues)' : ''}#{'"'}
+        ")
 
   // location
   td.event-location.hidden.xl:table-cell
     = link_to unit_event_path(@unit, event),
-      class: "row-link cursor-pointer no-underline",
+      class: "row-link cursor-pointer no-underline px-2 py-3",
       data: { turbo_frame: 'event', turbo_action: 'advance' } do
       = event.location
 
   // short description
   td.event-short-description.hidden.2xl:table-cell
     = link_to unit_event_path(@unit, event),
-      class: "row-link cursor-pointer no-underline px-2 py-2",
+      class: "row-link cursor-pointer no-underline px-2 py-3",
       data: { turbo_frame: 'event', turbo_action: 'advance' } do
       = event.short_description
 

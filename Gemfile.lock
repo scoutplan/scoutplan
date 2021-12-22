@@ -382,6 +382,7 @@ GEM
     thwait (0.2.0)
       e2mmap
     tilt (2.0.10)
+    timecop (0.9.4)
     trix (0.10.1)
       rails
     turbo-rails (0.9.0)
@@ -471,6 +472,7 @@ DEPENDENCIES
   stimulus-rails
   tailwindcss-rails!
   textris!
+  timecop
   trix (~> 0.10)
   turbo-rails
   twilio-ruby

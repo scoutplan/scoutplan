@@ -26,7 +26,8 @@ export default class extends Controller {
   }
 
   toggleSideNav(event) {
-    var navElem = document.querySelector('#nav_side');
+    const navSelector = '#main_nav';
+    var navElem = document.querySelector(navSelector);
     navElem.classList.toggle('hidden');
     // navElem.classList.toggle('xl:block');
   }

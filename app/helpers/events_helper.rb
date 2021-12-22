@@ -35,8 +35,9 @@ module EventsHelper
     title = "Only visible to #{event.unit.name} administrators, like you."
     if event.cancelled?
       content_tag :span, t('events.index.cancelled'), class: "#{common_classes} bg-red-500", title: title
+      content_tag :i, nil, class: 'fas fa-times-hexagon text-red-500 ml-2', title: "Cancelled"
     elsif event.draft?
-      content_tag :span, t('events.index.draft'), class: "#{common_classes} bg-blue-500", title: title
+      content_tag :i, nil, class: 'fas fa-ruler-triangle text-blue-500 ml-2', title: "Draft event, #{title.downcase}"
     end
   end
 

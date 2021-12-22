@@ -17,10 +17,12 @@ RSpec.describe Unit, type: :model do
       EventCategory.create(name: 'Camping')
       EventCategory.create(name: 'Court of Honor')
 
+      @category_count = EventCategory.seeds.count
+
       unit = Unit.create(name: 'Troop 1234')
 
       # unit = FactoryBot.create(:unit)
-      expect(unit.event_categories.count).to eq(3)
+      expect(unit.event_categories.count).to eq(@category_count)
     end
   end
 

@@ -65,8 +65,8 @@
 
       // third row: longform description, if present
       - if @event.description.present?
-        .flex.overflow-y-scroll.max-h-60.border-b
-          .overflow-auto
+        .flex.overflow-y-scroll.max-h-60
+          .overflow-auto.pb-3.mb-1
             == @event.description
 
     // footer, containing right-justified buttons

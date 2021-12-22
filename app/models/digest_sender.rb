@@ -9,7 +9,7 @@ require 'sidekiq-scheduler'
 class DigestSender
   include Sidekiq::Worker
 
-  attr_accessor :force_run, :unit, :current_datetime
+  attr_accessor :force_run, :unit
 
   def perform
     Rails.logger { 'Digest sender invoked' }

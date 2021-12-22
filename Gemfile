@@ -44,6 +44,7 @@ gem 'smarter_csv'
 gem 'stimulus-rails'
 gem "tailwindcss-rails", github: "dorianmariefr/tailwindcss-rails", branch: "minimal"
 gem 'textris', git: 'https://github.com/danielpuglisi/textris.git', branch: 'rails6'
+gem 'timecop'
 gem 'twilio-ruby'
 gem 'trix', '~> 0.10'
 # gem 'turbolinks', '~> 5.2'

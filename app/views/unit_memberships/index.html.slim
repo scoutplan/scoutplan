@@ -10,7 +10,6 @@
             th.member-type.text-left.px-2.py-2.text-black
             th.text-left.px-2.py-2.text-black = t('members.name')
             th.role.text-left.px-2.py-2.text-black
-            th.status.text-left.px-2.py-2.text-black
             th.text-left.px-2.py-2.text-black.whitespace-nowrap = t('members.parent_guardian')
             th.text-left.px-2.py-2.text-black = t('members.children')
 
@@ -42,6 +41,12 @@ scss:
 
     #bulk_edit_options {
       display: inline-block;
+    }
+  }
+
+  tr.member-inactive {
+    td a {
+      text-decoration: line-through;
     }
   }
 

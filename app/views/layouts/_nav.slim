@@ -1,4 +1,4 @@
-ul.p-0.m-o.list-none
+ul.p-0.mx-0.mb-12.list-none
   li#main_nav_item_events
     = link_to unit_events_path(@current_unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-gray-200 rounded-md' do
       span.w-8.inline-block.text-center.text-yellow-500
@@ -61,16 +61,25 @@ ul.p-0.m-o.list-none
       span.text-black
         = t('messaging.sent')
 
-.py-8
-  ul.p-0.m-o.list-none
-    - if policy(:unit_settings).edit?
-      li.main_nav_item_unit_settings
-        = link_to edit_unit_settings_path(@current_unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-gray-200 rounded-md' do
-          span.w-8.inline-block.text-center.text-gray-500
-            i.fa-sliders-h.fad
-            |&nbsp;&nbsp;
-          span.text-black
-            = "#{@current_unit.name} Settings"    
+  - if policy(:unit_settings).edit?
+    li.main_nav_item_unit_settings
+      = link_to edit_unit_settings_path(@current_unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-gray-200 rounded-md' do
+        span.w-8.inline-block.text-center.text-gray-500
+          i.fa-sliders-h.fad
+          |&nbsp;&nbsp;
+        span.text-black
+          = "#{@current_unit.name} Settings"
+
+.absolute.bottom-0.right-0.left-0.py-5.lg:py-10.pl-8.pr-2
+  ul.p-0.list-none
+    li.main_nav_item_signout
+      = button_to destroy_user_session_path,
+        data: { turbo_method: 'delete' },
+        class: 'w-full no-underline whitespace-nowrap p-2 block hover:bg-gray-200 rounded-md text-left' do
+        span.w-8.inline-block.text-center.text-gray-500
+          i.fa-sign-out.fad
+          |&nbsp;&nbsp;
+        = t('global.sign_out')
 
 scss:
   .newsletter-child {

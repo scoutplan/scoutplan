@@ -22,18 +22,18 @@
 
                 // two radio buttons (going/not going)
                 .table-cell.border-0
-                  .form-check.form-check-inline
-                    = rsvp_fields.radio_button :response, :accepted, class: 'form-check-input'
-                    = rsvp_fields.label :response, :accepted, value: :accepted, class: 'form-check-label' do
+                  .inline.mr-6
+                    = rsvp_fields.radio_button :response, :accepted, class: 'mr-1'
+                    = rsvp_fields.label :response, :accepted, value: :accepted, class: 'inline' do
                       = t('rsvp_accepted')
 
-                  .form-check.form-check-inline
-                    = rsvp_fields.radio_button :response, :declined, class: 'form-check-input'
-                    = rsvp_fields.label :response, :declined, value: :declined, class: 'form-check-label' do
+                  .inline
+                    = rsvp_fields.radio_button :response, :declined, class: 'mr-1'
+                    = rsvp_fields.label :response, :declined, value: :declined, class: 'inline' do
                       = t('rsvp_declined')                       
 
   // right column
-  .flex-shrink
+  .flex-grow
 
     // note field
     .mb-3
@@ -49,11 +49,11 @@
 
       // Send RSVPs button
       = f.submit t('helpers.label.event.rsvp_save'),
-        class: 'px-4 py-2 mr-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-800 hover:text-yellow-900 text-xs font-bold tracking-wider text-uppercase rounded',
+        class: 'px-4 py-2 mr-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-800 hover:text-yellow-900 text-xs font-bold tracking-wider uppercase rounded',
         data: { turbo_action: 'advance' }
 
       // Cancel button
       = link_to t('global.cancel'),
         unit_event_path(@event.unit, @event),
         data: { turbo_action: 'advance' },
-        class: 'px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded text-gray-500 hover:text-gray-600 text-xs font-bold tracking-wider text-uppercase no-underline'
+        class: 'px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded text-gray-500 hover:text-gray-600 text-xs font-bold tracking-wider uppercase no-underline'

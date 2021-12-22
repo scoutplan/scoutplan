@@ -1,4 +1,4 @@
-.w-full.mx-auto(data-controller="event")
+.w-full.relative.mx-auto(data-controller="event")
   = turbo_frame_tag('event_list')
     = render partial: 'events/partials/index/header'
     = render partial: 'events/partials/index/no_events' if @events.count.zero?
