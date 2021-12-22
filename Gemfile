@@ -44,6 +44,7 @@ gem 'smarter_csv'
 gem 'stimulus-rails'
 gem "tailwindcss-rails", github: "dorianmariefr/tailwindcss-rails", branch: "minimal"
 gem 'textris', git: 'https://github.com/danielpuglisi/textris.git', branch: 'rails6'
+gem 'timecop'
 gem 'twilio-ruby'
 gem 'trix', '~> 0.10'
 # gem 'turbolinks', '~> 5.2'
@@ -76,7 +77,6 @@ group :test do
   gem 'selenium-webdriver', '~> 3.142'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'simplecov', require: false
-  gem 'timecop'
   gem 'webdrivers', '~> 4.6'
 end
 

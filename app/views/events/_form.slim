@@ -65,7 +65,7 @@
             = link_to 'Cancel This Event',
               unit_event_cancel_path(@unit, @event),
               data: { turbo_frame: 'event', turbo_action: 'advance' },
-              class: "bg-red-800 text-red-100 hover:bg-red-900 hover:text-red-200 px-4 py-2 border rounded text-sm font-bold tracking-wider uppercase no-underline mr-2"            
+              class: 'px-4 py-2  text-sm font-bold tracking-wider uppercase no-underline mr-2'
 
 
           = f.submit "#{@event_view.new_record? ? 'Add This Event' : 'Save Changes'}", 

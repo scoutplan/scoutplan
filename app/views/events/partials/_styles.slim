@@ -6,11 +6,6 @@ scss:
     display: none;
   }
 
-  a.event-row {
-    text-decoration: none;
-    color: #333;
-  }
-
   .start-day, .days, .title {
     width: 1%;
     white-space: nowrap;
@@ -34,10 +29,6 @@ scss:
 
   tr.event-past, tr.event-cancelled, tr.event-future {
     display: none;
-  }
-
-  table.table row.event-past td {
-    color: #aaa;
   }
 
   .menu-glyph {
@@ -95,10 +86,6 @@ scss:
   body.showing-only-draft-events {
     .event-row {
       display: none;
-    }
-
-    .event-row.event-draft {
-      display: table-row !important;
     }
 
     #show-only-draft-events-link {
@@ -214,23 +201,27 @@ scss:
     }
   }
 
-  a.row-link {
-    color: #666;
+  tr.event td {
+    a.row-link {
+      color: #666;
+    }
   }
 
-  .table {
-    .table-row-group {
-      .table-row {
-        .table-cell {
-          padding: 12px 8px !important;
-        }
+  tr.event-past td {
+    a.row-link {
+      color: #aaa;
+    }
+  }
 
-        &:hover {
-          a.row-link {
-            color: black !important;
-          }
-        }
-      }
+  tr.event-row.event-draft {
+    td a.row-link {
+      font-weight: 800;
+    }
+  }
+
+  tr:hover td {
+    a.row-link {
+      color: #000;
     }
   }
 
@@ -252,12 +243,6 @@ scss:
     &:hover {
       color: black;
       cursor: default;
-    }
-  }
-
-  .event-past {
-    a.row-link {
-      color: #aaa;
     }
   }
 

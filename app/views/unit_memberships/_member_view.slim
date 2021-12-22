@@ -82,6 +82,8 @@
             = 'Send'
 
           ul.block
+
+            // Digest button
             li.inline
               = button_to send_member_path(@target_membership, item: :digest),
                 method: :post,
@@ -93,22 +95,24 @@
                 |&nbsp;
                 |Digest
 
+            // Daily reminder button
             li.inline
               = button_to send_member_path(@target_membership, item: :daily_reminder),
                 method: :post,
                 remote: true,
-                class: 'inline-block bg-gray-200 text-black rounded border px-4 py-1 mr-2',
+                class: 'inline-block bg-gray-200 hover:bg-gray-300 text-black rounded border px-4 py-1 mr-2',
                 form: { style: 'display: inline-block;' },
                 disabled: !@target_membership.contactable? do
                 i.fas.fa-envelope.mr-1.text-gray-500
                 |&nbsp;
                 |Daily Reminder
 
+            // test message button
             li.inline
               = button_to send_member_path(@target_membership, item: :test_message),
                 method: :post,
                 remote: true,
-                class: 'inline-block bg-gray-200 text-black rounded border px-4 py-1 mr-2',
+                class: 'inline-block bg-gray-200 hover:bg-gray-300 text-black rounded border px-4 py-1 mr-2',
                 form: { style: 'display: inline-block;' },
                 disabled: !@target_membership.contactable? do
                 i.fas.fa-envelope.mr-1.text-gray-500
