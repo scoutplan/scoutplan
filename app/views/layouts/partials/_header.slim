@@ -5,12 +5,12 @@ header.w-full.px-9.pb-2.pt-6.overflow-auto.fixed.z-40.bg-gray-600
       // hamburger
       li.inline-block.text-lg
         div(data-controller='event')
-          button.text-white.px-2.py-1.hover:bg-white.hover:bg-opacity-20(data-action="event#toggleSideNav")
+          button.text-white.px-2.py-1.hover:bg-white.hover:bg-opacity-30(data-action="event#toggleSideNav")
             i.fa-bars.far
 
       // home
       li.inline-block.text-lg
-        = link_to unit_events_path(@current_unit), class: 'text-white px-2 py-1 hover:bg-white hover:bg-opacity-20' do
+        = link_to unit_events_path(@current_unit), class: 'text-white px-2 py-1 hover:bg-white hover:bg-opacity-30' do
           i.fa-house.far
 
       - if Flipper.enabled? :global_search, @current_member
