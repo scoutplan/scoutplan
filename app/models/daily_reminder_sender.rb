@@ -36,7 +36,7 @@ class DailyReminderSender
       perform_for_member(member)
     end
 
-    unit.settings(:communication).update! last_daily_reminder_sent_at: DateTime.now
+    unit.settings(:communication).update! daily_reminder_last_sent_at: DateTime.now
   end
 
   def perform_for_member(member)

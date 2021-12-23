@@ -62,6 +62,16 @@ RSpec.describe DigestSender, type: :model do
       Flipper.disable_actor :digest, @member
       expect { @sender.perform }.to change { ActionMailer::Base.deliveries.count }.by(0)
     end
+
+    it 'raises the high watermark (HWM)' do
+      Flipper.enable_actor :digest, @member # make sure member is programmed to receive
+      @unit.settings(:communication).update! digest_last_sent_at: nil # clear the HWM
+      @unit.reload
+      expect(@unit.settings(:communication).digest_last_sent_at).to be_nil
+      @sender.perform
+      @unit.reload
+      expect(@unit.settings(:communication).digest_last_sent_at).not_to be_nil
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength
