@@ -5,7 +5,7 @@
 
 .max-w-3xl.mx-auto
   h4.mb-0.text-black = @view.titleize
-  - if @unit.settings(:communication).digest
+  - if @unit.settings(:communication).digest_schedule
     .text-sm.text-gray-400
       = t('newsletter.next_sends_at',
         unit_name: @unit.name,
