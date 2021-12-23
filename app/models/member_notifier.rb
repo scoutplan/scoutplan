@@ -81,7 +81,7 @@ class MemberNotifier
       sid = ENV[TWILIO_SID_KEY]
       token = ENV[TWILIO_TOKEN_KEY]
 
-      Rails.logger.warm { "Twilio token env: #{ENV[TWILIO_TOKEN_KEY]}"}
+      Rails.logger.warn { "Twilio token env: #{ENV[TWILIO_TOKEN_KEY]}"}
       Rails.logger.warn { "Twilio SID: #{sid}  token: #{token&.first(3)}...#{token&.last(3)}" }
 
       client = Twilio::REST::Client.new(sid, token)
