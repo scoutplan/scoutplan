@@ -14,7 +14,7 @@
           = f.select :event_category_id,
               @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
               { prompt: t('event_category_prompt'), selected: @event_view.event_category_id },
-              { class: 'mt-2 border rounded w-96 py-1 pl-2 pr-4 bg-white' }
+              { class: 'mt-2 border rounded w-full max-w-96 py-1 pl-2 pr-4 bg-white' }
 
           // TITLE & SHORT DESCRIPTION
           = f.text_field :title, { class: 'mt-2 w-full border rounded p-2 text-3xl font-bold', autocomplete: 'off', style: 'text-transform: capitalize', placeholder: 'Title' }
@@ -22,8 +22,8 @@
 
         // RSVP
         .form-check.mb-3
-          = f.check_box :requires_rsvp, class: 'form-check-input'
-          = f.label :requires_rsvp, class: 'form-check-label'
+          = f.check_box :requires_rsvp, class: 'w-4 h-4 text-green-500 rounded mr-2'
+          = f.label :requires_rsvp
 
         // tabbed interface
         .tabs.mt-6
@@ -57,7 +57,7 @@
       footer.overflow-auto.pb-4.px-8.pt-1
         .float-left
           span.inline-block.align-middle.mt-1
-            = f.check_box :status, { class: 'form-check-input mr-2' }, 'published', 'draft'
+            = f.check_box :status, { class: 'w-4 h-4 text-green-500 rounded mr-2' }, 'published', 'draft'
             = f.label :status, 'Published'
 
         .float-right

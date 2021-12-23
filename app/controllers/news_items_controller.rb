@@ -8,8 +8,8 @@ class NewsItemsController < UnitContextController
   def index
     authorize :message, :index?
     @view = params[:mode] || 'drafts'
-    if @unit.settings(:communication).digest
-      @schedule = IceCube::Schedule.from_yaml(@unit.settings(:communication).digest)
+    if @unit.settings(:communication).digest_schedule
+      @schedule = IceCube::Schedule.from_yaml(@unit.settings(:communication).digest_schedule)
     end
     set_news_items
   end

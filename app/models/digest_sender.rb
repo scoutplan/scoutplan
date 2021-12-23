@@ -28,36 +28,18 @@ class DigestSender
   def time_to_run?
     return true if force_run
     return true if @unit.settings(:utilities).fire_scheduled_tasks
-    return false unless @unit.settings(:communication).digest
+    return false unless @unit.settings(:communication).digest_schedule
 
-    schedule = IceCube::Schedule.from_yaml(@unit.settings(:communication).digest)
+    schedule = IceCube::Schedule.from_yaml(@unit.settings(:communication).digest_schedule)
     last_ran_at = @unit.settings(:communication).digest_last_sent_at&.localtime
     next_runs_at = schedule.next_occurrence(last_ran_at || 1.week.ago)
 
-    Rails.logger.warn { "#{@unit} digest last ran at #{last_ran_at}. Next run is at #{next_runs_at}"}
-    (@current_datetime || DateTime.now).after?(next_runs_at)
+    Rails.logger.warn { "#{@unit} next run is at #{next_runs_at}"}
+    DateTime.now.after?(next_runs_at)
   end
   # rubocop:enable Metrics/AbcSize
 
   private
-
-  # there's a potential race condition here that we're going to ignore for now:
-  # if someone authored a NewsItem *while this task is running*, it could get
-  # marked as sent. It's an edge case we'll come back to
-  def perform_for_unit
-    setup
-    return unless @unit.settings(:communication).digest.present?
-    return unless time_to_run?
-
-    Rails.logger.warn { "*** Time to run for #{@unit.name}" }
-
-    @unit.members.find_each do |member|
-      @member = member
-      perform_for_member
-    end
-
-    teardown
-  end
 
   def setup
     Rails.logger { "Processing #{@unit.name}" }
@@ -69,6 +51,24 @@ class DigestSender
     NewsItem.mark_all_queued_as_sent_by(unit: @unit)
     @unit.settings(:communication).update! digest_last_sent_at: DateTime.now
     Rails.logger.warn { "#{@unit.name} digest HWM set to #{@unit.settings(:communication).digest_last_sent_at}" }
+  end
+
+  # there's a potential race condition here that we're going to ignore for now:
+  # if someone authored a NewsItem *while this task is running*, it could get
+  # marked as sent. It's an edge case we'll come back to
+  def perform_for_unit
+    setup
+    return unless @unit.settings(:communication).digest_schedule.present?
+    return unless time_to_run?
+
+    Rails.logger.warn { "*** Time to run for #{@unit.name}" }
+
+    @unit.members.find_each do |member|
+      @member = member
+      perform_for_member
+    end
+
+    teardown
   end
 
   def perform_for_member

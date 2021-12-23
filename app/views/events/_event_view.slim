@@ -3,19 +3,19 @@
 - mode = 'rsvp' if action_name == 'edit_rsvps'
 
 // wall-to-wall opaque background
-.absolute.inset-0.bg-black.bg-opacity-25.z-40(class="event-#{@event.status}-modal")
+.fixed.inset-0.bg-black.bg-opacity-25.z-40(class="event-#{@event.status}-modal")
 
   // white dialog
-  .relative.w-auto.my-12.mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-xl.filter
+  .relative.w-auto.my-12.mx-2.lg:mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-xl.filter
 
     // CANCELLED watermark
     - if @event.cancelled?
-      .absolute.transform.-rotate-45.text-7xl.font-bold.text-red-500.uppercase.text-opacity-20.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/2(style="left:50%;top:50%;font-family:courier,serif;")
+      .absolute.transform.-rotate-45.text-7xl.font-bold.text-red-500.uppercase.text-opacity-30.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/2(style="left:50%;top:50%;font-family:courier,serif;")
         = t('index.events.cancelled')
 
     // DRAFT watermark
     - if @event.draft?
-      .absolute.transform.-rotate-45.text-7xl.font-bold.text-blue-500.uppercase.text-opacity-20.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/2(style="left:50%;top:50%;font-family:courier,serif;")
+      .absolute.transform.-rotate-45.text-7xl.font-bold.text-blue-500.uppercase.text-opacity-30.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/2(style="left:50%;top:50%;font-family:courier,serif;")
         = t('index.events.draft')
 
     // modal header
@@ -52,20 +52,20 @@
                 = render partial: 'rsvp_card'
 
       // second row: date and location (conditionally) panels
-      .flex.flex-col.sm:flex-row.mb-3
+      .flex.flex-col.sm:flex-row
 
         / date panel
-        #date_time_card.text-center.bg-gray-100.rounded.p-3.mb-2.sm:flex-auto.flex-1
+        #date_time_card.text-center.bg-gray-100.mb-2.lg:mb-0.rounded.p-3.sm:flex-auto.flex-1
           = render partial: 'events/partials/show/date_card'
 
         / location panel (if location values are set)
         - if @event.location.present? || @event.address.present? || @event.departs_from.present?
-          #location_card.bg-gray-100.rounded.p-3.mb-2.sm:ml-4.relative.sm:flex-auto.flex-shrink
+          #location_card.bg-gray-100.rounded.p-3.mb-2.lg:mb-0.sm:ml-4.relative.sm:flex-auto.flex-shrink
             = render partial: 'events/partials/show/location_card'
 
       // third row: longform description, if present
       - if @event.description.present?
-        .flex.overflow-y-scroll.max-h-60
+        .flex.overflow-y-scroll.max-h-60.mt-3
           .overflow-auto.pb-3.mb-1
             == @event.description
 
@@ -77,7 +77,7 @@
         - if @event.organizable? && policy(@event).organize?
           = link_to t('events.show.organize_button_caption'),
             unit_event_organize_path(@event.unit, @event),
-            class: 'inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase',
+            class: 'inline-block px-4 py-3 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase',
             data: { 'turbo-action' => 'advance', 'turbo-frame' => '_top' },
             title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)
 
@@ -85,13 +85,13 @@
         - if policy(@event).edit? && @event.editable?
           = link_to t('event_edit'),
             edit_unit_event_path(@event.unit, @event),
-            class: 'inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase',
+            class: 'inline-block px-4 py-3 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase',
             data: { 'turbo-action' => 'advance' },
             title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)
 
         // Done button
         = link_to t('global.done'),
           unit_events_path(@event.unit),
-          class: 'inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-white text-sm font-bold tracking-wider uppercase',
+          class: 'inline-block px-4 py-3 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-white text-sm font-bold tracking-wider uppercase',
           style: 'background:#e66425;',
           data: { 'turbo-action' => 'advance' }

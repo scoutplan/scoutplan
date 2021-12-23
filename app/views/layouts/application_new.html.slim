@@ -22,12 +22,12 @@ html
     .flex
       #main_nav.hidden.lg:block
         // transparent black overlay
-        .absolute.inset-0.bg-black.opacity-30.lg:hidden
+        .fixed.z-10.inset-0.bg-black.opacity-30.lg:hidden
 
         // actual <nav> element declaration. There are lots of classes here
         // so we take our time
         nav(class="
-          z-50
+          z-20
           absolute pl-8 pr-2 py-8 z-0
           w-full flex-shrink-0
           bg-white

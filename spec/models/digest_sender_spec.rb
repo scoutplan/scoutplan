@@ -8,13 +8,12 @@ end
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe DigestSender, type: :model do
+  # this will set up a run at 7:00 AM on Sunday and then simulate two
+  # Sundays from now — way past when it should have run
   describe 'time_to_run' do
-
-    # this will set up a run at 7:00 AM on Sunday and then simulate two
-    # Sundays from now — way past when it should have run    
     before do
       @unit = FactoryBot.create(:unit)
-      @unit.settings(:communication).update! digest: schedule_yaml
+      @unit.settings(:communication).digest_schedule = schedule_yaml
       @sender = DigestSender.new
       @sender.unit = @unit
     end
@@ -39,7 +38,7 @@ RSpec.describe DigestSender, type: :model do
       @unit = @member.unit
 
       # enable digest for the unit
-      @unit.settings(:communication).update! digest: schedule_yaml
+      @unit.settings(:communication).update! digest_schedule: schedule_yaml
 
       # enable digest for the member
       Flipper.enable_actor :digest, @member

@@ -1,21 +1,22 @@
 # frozen_string_literal: true
 
 class UnitSettingsController < UnitContextController
+  layout 'application_new'
   before_action :find_unit
 
   def edit
     @page_title = [@unit.name, 'Settings']
-    if @unit.settings(:communication).digest
-      @schedule = IceCube::Schedule.from_yaml(@unit.settings(:communication).digest)
-    end
+    # if @unit.settings(:communication).digest_schedule
+    #   @schedule = IceCube::Schedule.from_yaml(@unit.settings(:communication).digest_schedule)
+    # end
     authorize @unit, policy_class: UnitSettingsPolicy
   end
 
   def update
-    @unit.update(unit_params)
-    if params.dig(:settings, :utilities, :fire_scheduled_tasks)
-      @unit.settings(:utilities).fire_scheduled_tasks = true
-    end
+    @unit.update(unit_params) if params[:unit].present?
+    @unit.settings(:utilities).fire_scheduled_tasks = true if params.dig(:settings, :utilities, :fire_scheduled_tasks)
+    ap params.dig(:settings, :communication, :digest_schedule)
+    @unit.settings(:communication).digest_schedule = params.dig(:settings, :communication, :digest_schedule)
     @unit.save!
     redirect_to edit_unit_settings_path(@unit)
   end
@@ -32,7 +33,7 @@ class UnitSettingsController < UnitContextController
   end
 
   def unit_params
-    params.require(:unit).permit(:name, :location, :logo)
+    params.require(:unit).permit(:name, :location, :logo, settings: [:communication, :utilities])
   end
 
   def set_digest_schedule
