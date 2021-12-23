@@ -2,6 +2,10 @@
 
 # notify members about various events
 class MemberNotifier
+  TWILIO_SID_KEY = 'TWILIO_SID'.freeze
+  TWILIO_TOKEN_KEY = 'TWILIO_TOKEN'.freeze
+  TWILIO_NUMBER_KEY = 'TWILIO_NUMBER'.freeze
+
   # invite a user to a unit through a UnitMembership (aka member)
   def self.invite_member_to_unit(member)
     @magic_link_token = member.magic_link.token if
@@ -60,7 +64,7 @@ class MemberNotifier
       member.unit.settings(:security).enable_magic_links &&
       member.user.settings(:security).enable_magic_links
 
-    from = ENV['TWILIO_NUMBER']
+    from = ENV[TWILIO_NUMBER_KEY]
     to = member.user.phone
     events = member.unit.events.published.this_week
     message = "Hi, #{member.display_first_name}. Here's what's going on this week at #{member.unit.name}:\n"
@@ -74,9 +78,10 @@ class MemberNotifier
 
     Rails.logger.info { "Sending digest SMS to #{to}" }
     begin
-      sid = ENV['TWILIO_SID']
-      token = ENV['TWILIO_TOKEN']
+      sid = ENV[TWILIO_SID_KEY]
+      token = ENV[TWILIO_TOKEN_KEY]
 
+      Rails.logger.warm { "Twilio token env: #{ENV[TWILIO_TOKEN_KEY]}"}
       Rails.logger.warn { "Twilio SID: #{sid}  token: #{token&.first(3)}...#{token&.last(3)}" }
 
       client = Twilio::REST::Client.new(sid, token)
