@@ -71,12 +71,12 @@ class DigestSender
     Rails.logger { "Processing #{@unit.name}" }
     @unit.settings(:utilities).update!(fire_scheduled_tasks: false) # lower the force flag
     Time.zone = @unit.settings(:locale).time_zone
+    @unit.settings(:communication).update! digest_last_sent_at: DateTime.now
+    Rails.logger.warn { "#{@unit.name} digest HWM set to #{@unit.settings(:communication).digest_last_sent_at}" }
   end
 
   def unit_teardown
     NewsItem.mark_all_queued_as_sent_by(unit: @unit)
-    @unit.settings(:communication).update! digest_last_sent_at: DateTime.now
-    Rails.logger.warn { "#{@unit.name} digest HWM set to #{@unit.settings(:communication).digest_last_sent_at}" }
   end
 end
 

@@ -74,14 +74,16 @@ class MemberNotifier
 
     Rails.logger.info { "Sending digest SMS to #{to}" }
     begin
-      sid    = ENV['TWILIO_SID']
-      token  = ENV['TWILIO_TOKEN']
+      sid = ENV['TWILIO_SID']
+      token = ENV['TWILIO_TOKEN']
 
-      Rails.logger.info { "Twilio SID: #{ sid }  token: #{ token.first(3) }...#{ token.last(3) }"}
+      Rails.logger.info { "Twilio SID: #{sid}  token: #{token&.first(3)}...#{token&.last(3)}" }
 
       client = Twilio::REST::Client.new(sid, token)
       client.messages.create(from: from, to: to, body: message)
     rescue Twilio::REST::RestError => e
+      Rails.logger.error { e.message }
+    rescue => e
       Rails.logger.error { e.message }
     end
   end
