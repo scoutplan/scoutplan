@@ -72,11 +72,15 @@ class MemberNotifier
     message += "?r=#{@magic_link_token}" if @magic_link_token
     message += '.'
 
-    Rails.logger.info "Sending digest SMS to #{to}"
-    sid    = ENV['TWILIO_SID']
-    token  = ENV['TWILIO_TOKEN']
-    client = Twilio::REST::Client.new(sid, token)
-    client.messages.create(from: from, to: to, body: message)
+    Rails.logger.info { "Sending digest SMS to #{to}" }
+    begin
+      sid    = ENV['TWILIO_SID']
+      token  = ENV['TWILIO_TOKEN']
+      client = Twilio::REST::Client.new(sid, token)
+      client.messages.create(from: from, to: to, body: message)
+    rescue Twilio::REST::RestError => e
+      Rails.logger.error { e.message }
+    end
   end
 
   # TODO: move this to a Textris texter

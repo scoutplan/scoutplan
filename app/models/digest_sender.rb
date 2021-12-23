@@ -34,30 +34,18 @@ class DigestSender
     last_ran_at = @unit.settings(:communication).digest_last_sent_at&.localtime
     next_runs_at = schedule.next_occurrence(last_ran_at || 1.week.ago)
 
-    Rails.logger.warn { "#{@unit} next run is at #{next_runs_at}"}
+    Rails.logger.warn { "#{@unit.name} schedule is #{schedule.to_s}. Last run was at #{last_ran_at || 'never'}; next run is at #{next_runs_at}"}
     DateTime.now.after?(next_runs_at)
   end
   # rubocop:enable Metrics/AbcSize
 
   private
 
-  def setup
-    Rails.logger { "Processing #{@unit.name}" }
-    @unit.settings(:utilities).update!(fire_scheduled_tasks: false) # lower the force flag
-    Time.zone = @unit.settings(:locale).time_zone
-  end
-
-  def teardown
-    NewsItem.mark_all_queued_as_sent_by(unit: @unit)
-    @unit.settings(:communication).update! digest_last_sent_at: DateTime.now
-    Rails.logger.warn { "#{@unit.name} digest HWM set to #{@unit.settings(:communication).digest_last_sent_at}" }
-  end
-
   # there's a potential race condition here that we're going to ignore for now:
   # if someone authored a NewsItem *while this task is running*, it could get
   # marked as sent. It's an edge case we'll come back to
   def perform_for_unit
-    setup
+    unit_setup
     return unless @unit.settings(:communication).digest_schedule.present?
     return unless time_to_run?
 
@@ -68,7 +56,7 @@ class DigestSender
       perform_for_member
     end
 
-    teardown
+    unit_teardown
   end
 
   def perform_for_member
@@ -78,8 +66,26 @@ class DigestSender
     Rails.logger.warn { "Digest was enabled for #{@member.short_display_name} " }
     MemberNotifier.send_digest(@member)
   end
+
+  def unit_setup
+    Rails.logger { "Processing #{@unit.name}" }
+    @unit.settings(:utilities).update!(fire_scheduled_tasks: false) # lower the force flag
+    Time.zone = @unit.settings(:locale).time_zone
+  end
+
+  def unit_teardown
+    NewsItem.mark_all_queued_as_sent_by(unit: @unit)
+    @unit.settings(:communication).update! digest_last_sent_at: DateTime.now
+    Rails.logger.warn { "#{@unit.name} digest HWM set to #{@unit.settings(:communication).digest_last_sent_at}" }
+  end
 end
 
 # sample schedule YAML:
 #
-# "---\n:start_time: 2021-12-12 12:55:41.000000000 -05:00\n:rrules:\n- :validations:\n    :day:\n    - 1\n    :hour_of_day:\n    - 7\n    :minute_of_hour:\n    - 0\n    :second_of_minute:\n    - 0\n  :rule_type: IceCube::WeeklyRule\n  :interval: 1\n  :week_start: 0\n:rtimes: []\n:extimes: []\n"
+# ---\n:start_time: 2021-12-12 12:55:41.000000000 -05:00\n:rrules:\n- :validations:\n    :day:\n    - 1\n    :hour_of_day:\n    - 7\n    :minute_of_hour:\n    - 0\n    :second_of_minute:\n    - 0\n  :rule_type: IceCube::WeeklyRule\n  :interval: 1\n  :week_start: 0\n:rtimes: []\n:extimes: []\n
+
+# every ten minutes:
+# ---\n:start_time: 2021-12-23 09:50:17.000000000 -05:00\n:rrules:\n- :validations: {}\n  :rule_type: IceCube::MinutelyRule\n  :interval: 10\n:rtimes: []\n:extimes: []\n
+
+# every one minute:
+# ---\n:start_time: 2021-12-23 09:50:17.000000000 -05:00\n:rrules:\n- :validations: {}\n  :rule_type: IceCube::MinutelyRule\n  :interval: 1\n:rtimes: []\n:extimes: []\n
