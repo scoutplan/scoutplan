@@ -77,7 +77,7 @@ class MemberNotifier
       sid = ENV['TWILIO_SID']
       token = ENV['TWILIO_TOKEN']
 
-      Rails.logger.info { "Twilio SID: #{sid}  token: #{token&.first(3)}...#{token&.last(3)}" }
+      Rails.logger.warn { "Twilio SID: #{sid}  token: #{token&.first(3)}...#{token&.last(3)}" }
 
       client = Twilio::REST::Client.new(sid, token)
       client.messages.create(from: from, to: to, body: message)
@@ -105,8 +105,8 @@ class MemberNotifier
     if member.unit.settings(:security).enable_magic_links && member.user.settings(:security).enable_magic_links
       magic_link_token = member&.magic_link&.token
     end
-    date_format       = '%I:%M %p'
-    message           = "Hi, #{member.display_first_name}. Today at #{member.unit.name}:\n\n"
+    date_format = '%I:%M %p'
+    message = "Hi, #{member.display_first_name}. Today at #{member.unit.name}:\n\n"
     events.each do |event|
       message += "* #{event.title} at #{event.starts_at.strftime(date_format)}\n"
     end
