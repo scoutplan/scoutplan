@@ -3,7 +3,7 @@
 - notes = rsvps.map(&:note).uniq.join(', ')
 
 = form_with model: @event, url: unit_event_send_rsvps_path(@unit, @event), class: 'flex w-full' do |f|
-  .flex-grow
+  .flex-grow.p-2.items-center
     // left collumn
     .table.flush-top.flush-left
       .table-row-group
@@ -15,13 +15,13 @@
               = member_fields.fields_for 'event_rsvp', rsvp do |rsvp_fields|
 
                 // family member name
-                .table-cell.border-0.font-bold
+                .table-cell.border-0.px-3.py-2.font-bold
                   i.fa-user.fad.text-yellow-500
                   |&nbsp;&nbsp;
                   = @presenter.family_context_name(family_member)
 
                 // two radio buttons (going/not going)
-                .table-cell.border-0
+                .table-cell.px-3.py-2.border-0
                   .inline.mr-6
                     = rsvp_fields.radio_button :response, :accepted, class: 'mr-1'
                     = rsvp_fields.label :response, :accepted, value: :accepted, class: 'inline' do
@@ -33,7 +33,7 @@
                       = t('rsvp_declined')                       
 
   // right column
-  .flex-grow
+  .flex-grow.p-2
 
     // note field
     .mb-3
