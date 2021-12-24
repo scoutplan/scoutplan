@@ -42,6 +42,11 @@ spec:
                 secretKeyRef:
                   name: scoutplan-production
                   key: DATABASE_PASSWORD
+            - name: RAILS_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: RAILS_MASTER_KEY
             - name: SECRET_KEY_BASE
               valueFrom:
                 secretKeyRef:
