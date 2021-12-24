@@ -2,9 +2,9 @@
 
 # notify members about various events
 class MemberNotifier
-  TWILIO_SID_KEY = 'TWILIO_SID'.freeze
-  TWILIO_TOKEN_KEY = 'TWILIO_TOKEN'.freeze
-  TWILIO_NUMBER_KEY = 'TWILIO_NUMBER'.freeze
+  TWILIO_SID_KEY = 'TWILIO_SID'
+  TWILIO_TOKEN_KEY = 'TWILIO_TOKEN'
+  TWILIO_NUMBER_KEY = 'TWILIO_NUMBER'
 
   # invite a user to a unit through a UnitMembership (aka member)
   def self.invite_member_to_unit(member)
@@ -22,6 +22,8 @@ class MemberNotifier
 
   def self.send_digest(member)
     return unless member.contactable?
+
+    Rails.logger.warn { "Twilio token env: #{ENV[TWILIO_TOKEN_KEY]}"}
 
     Rails.logger.warn { "#{member.short_display_name} is contactable" }
     return unless Flipper.enabled? :digest, member
@@ -76,12 +78,13 @@ class MemberNotifier
     message += "?r=#{@magic_link_token}" if @magic_link_token
     message += '.'
 
-    Rails.logger.info { "Sending digest SMS to #{to}" }
+    Rails.logger.warn { "Sending digest SMS to #{to}" }
+
     begin
       sid = ENV[TWILIO_SID_KEY]
       token = ENV[TWILIO_TOKEN_KEY]
 
-      Rails.logger.warn { "Twilio token env: #{ENV[TWILIO_TOKEN_KEY]}"}
+      Rails.logger.warn { ENV }
       Rails.logger.warn { "Twilio SID: #{sid}  token: #{token&.first(3)}...#{token&.last(3)}" }
 
       client = Twilio::REST::Client.new(sid, token)
