@@ -65,5 +65,5 @@ tr.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{row_class}"
       data: { turbo_frame: 'event', turbo_action: 'advance' } do
       = event.short_description
 
-  td.event-actions.hidden.sm:table-cell.text-right
+  td.event-actions.hidden.sm:table-cell.text-right.pr-4
     = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps }
