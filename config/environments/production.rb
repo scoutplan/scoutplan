@@ -3,7 +3,6 @@
 require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
-  config.textris_delivery_method = :twilio
   config.logger = RemoteSyslogLogger.new(ENV['LOGGER_HOST'], ENV['LOGGER_PORT'])
   # Settings specified here will take precedence over those in config/application.rb.
 
