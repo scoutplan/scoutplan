@@ -84,7 +84,6 @@ class MemberNotifier
     send_sms member, body
   end
 
-  # TODO: move this to a Textris texter
   def self.send_daily_reminder_sms(member)
     body = daily_reminder_body member
     send_sms member, body

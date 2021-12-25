@@ -4,7 +4,6 @@ require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
   config.web_console.permissions = '172.20.0.0/16'
-  config.textris_delivery_method = :twilio
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.force_ssl = true
