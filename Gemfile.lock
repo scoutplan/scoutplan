@@ -175,9 +175,6 @@ GEM
     importmap-rails (1.0.1)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
-    jbuilder (2.11.5)
-      actionview (>= 5.0.0)
-      activesupport (>= 5.0.0)
     jmespath (1.4.0)
     jwt (2.3.0)
     ledermann-rails-settings (2.5.0)
@@ -248,8 +245,6 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.4.2)
       loofah (~> 2.3)
-    rails-observers (0.1.5)
-      activemodel (>= 4.0)
     railties (7.0.0)
       actionpack (= 7.0.0)
       activesupport (= 7.0.0)
@@ -308,16 +303,6 @@ GEM
     sanitize (6.0.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
-    sass-rails (6.0.0)
-      sassc-rails (~> 2.1, >= 2.1.1)
-    sassc (2.4.0)
-      ffi (~> 1.9)
-    sassc-rails (2.1.2)
-      railties (>= 4.0.0)
-      sassc (>= 2.0)
-      sprockets (> 3.0)
-      sprockets-rails
-      tilt
     scout_apm (5.1.1)
       parser
     seedbank (0.5.0)
@@ -416,55 +401,53 @@ PLATFORMS
 DEPENDENCIES
   acts_as_list
   apparition
-  awesome_print (~> 1.9)
+  awesome_print
   aws-sdk-s3
-  bootsnap (~> 1.8)
+  bootsnap
   byebug (~> 11.1)
   capybara (~> 3.35)
-  devise (~> 4.8)
+  devise
   dotenv-rails (~> 2.7)
   factory_bot_rails (~> 6.2)
-  faraday (~> 1.7)
-  flipper (~> 0.22)
-  flipper-active_record (~> 0.22)
-  flipper-ui (~> 0.22)
-  humanize (~> 2.5)
+  faraday
+  flipper
+  flipper-active_record
+  flipper-ui
+  humanize
   ice_cube
   importmap-rails
-  jbuilder (~> 2.11)
   ledermann-rails-settings
   listen (~> 3.7)
   lograge
   mixpanel-ruby
-  pg (~> 1.2)
-  puma (~> 5.5.1)
-  pundit (~> 2.1)
+  pg
+  puma (~> 5.0)
+  pundit
   rack-cors
   rack-mini-profiler (~> 2.3)
-  rails (~> 7.0)
-  rails-observers (~> 0.1)
+  rails (~> 7.0.0)
   remote_syslog_logger
-  rexml (~> 3.2)
+  rexml
   rspec-rails (~> 5.0)
-  rubocop (~> 1.20)
-  sass-rails (~> 6.0)
+  rubocop
   scout_apm
-  seedbank (~> 0.5)
+  seedbank
   selenium-webdriver (~> 3.142)
-  sentry-rails (~> 4.8)
-  sentry-ruby (~> 4.8)
-  sidekiq (~> 6.1)
+  sentry-rails
+  sentry-ruby
+  sidekiq
   sidekiq-scheduler
   sidekiq_alive
   simplecov
-  skylight (~> 5.1)
-  slim (~> 4.1)
+  skylight
+  slim
   smarter_csv
   spring (~> 2.1)
+  sprockets-rails
   stimulus-rails
   tailwindcss-rails!
   timecop
-  trix (~> 0.10)
+  trix
   turbo-rails
   twilio-ruby
   tzinfo-data
