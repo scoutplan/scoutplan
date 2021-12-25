@@ -62,7 +62,7 @@ class DigestSender
   def perform_for_member
     Rails.logger.warn { "Processing digest for #{@member.short_display_name} (flipper ID #{@member.flipper_id})" }
     return unless Flipper.enabled? :digest, @member
-    
+
     Rails.logger.warn { "Digest is enabled for #{@member.short_display_name} " }
     MemberNotifier.send_digest(@member)
   end
