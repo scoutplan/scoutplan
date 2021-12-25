@@ -27,7 +27,7 @@ gem 'pg', '~> 1.2'
 gem 'puma', '~> 5.5.1'
 gem 'pundit', '~> 2.1'
 gem 'rack-cors'
-gem 'rails', '~> 7.0'
+gem 'rails', '~> 6.1'
 gem 'rails-observers', '~> 0.1'
 gem 'remote_syslog_logger'
 gem 'rexml', '~> 3.2'
@@ -50,7 +50,6 @@ gem 'twilio-ruby'
 gem 'trix', '~> 0.10'
 # gem 'turbolinks', '~> 5.2'
 gem 'turbo-rails'
-gem 'webpacker', '~> 5.4'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

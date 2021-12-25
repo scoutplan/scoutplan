@@ -15,7 +15,6 @@ COPY Gemfile Gemfile.lock /app/
 RUN gem update bundler && bundle install
 COPY . /app
 RUN rake assets:precompile
-RUN rails webpacker:compile
 
 EXPOSE 3000
 
