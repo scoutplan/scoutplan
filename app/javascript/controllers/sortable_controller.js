@@ -1,5 +1,5 @@
 import Sortable from 'stimulus-sortable'
-// import { patch } from '@rails/request.js'
+import { patch } from '@rails/request.js'
 
 export default class extends Sortable {
   static targets = [ "source" ]
