@@ -30,7 +30,7 @@ gem 'rails', '~> 7.0.0'
 gem 'remote_syslog_logger'
 gem 'rexml'
 gem 'rubocop', require: false
-# gem 'sass-rails'
+gem 'sass-rails'
 gem 'seedbank'
 gem 'sentry-rails'
 gem 'sentry-ruby'
