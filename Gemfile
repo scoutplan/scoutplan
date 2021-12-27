@@ -42,7 +42,7 @@ gem 'slim'
 gem 'smarter_csv'
 gem 'sprockets-rails'
 gem 'stimulus-rails'
-gem "tailwindcss-rails", github: "dorianmariefr/tailwindcss-rails", branch: "minimal"
+gem "tailwindcss-rails" #, github: "dorianmariefr/tailwindcss-rails", branch: "minimal"
 gem 'timecop'
 gem 'twilio-ruby'
 gem 'trix'
