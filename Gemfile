@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.2'
 
-gem 'scout_apm' # needs to be first
+# gem 'scout_apm' # needs to be first
 
 gem 'acts_as_list'
 gem 'awesome_print'
@@ -32,12 +32,12 @@ gem 'rexml'
 gem 'rubocop', require: false
 gem 'sass-rails'
 gem 'seedbank'
-gem 'sentry-rails'
+# gem 'sentry-rails'
 gem 'sentry-ruby'
 gem 'sidekiq'
 gem 'sidekiq_alive'
 gem 'sidekiq-scheduler'
-gem 'skylight'
+# gem 'skylight'
 gem 'slim'
 gem 'smarter_csv'
 gem 'sprockets-rails'
