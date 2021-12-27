@@ -25,6 +25,7 @@ RSpec.describe DigestSender, type: :model do
     end
 
     it 'returns false when it\'s a week ago' do
+      @unit.settings(:communication).update! digest_last_sent_at: 2.days.ago
       Timecop.freeze(DateTime.now.sunday - 14.days)
       expect(@sender.time_to_run?).to be_falsey
       Timecop.return
