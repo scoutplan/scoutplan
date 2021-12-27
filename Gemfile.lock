@@ -195,6 +195,8 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.12.5-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.12.5-x86_64-linux)
+      racc (~> 1.4)
     orm_adapter (0.5.0)
     parallel (1.21.0)
     parser (3.0.3.2)
@@ -352,6 +354,8 @@ GEM
     syslog_protocol (0.9.2)
     tailwindcss-rails (2.0.2-x86_64-darwin)
       railties (>= 6.0.0)
+    tailwindcss-rails (2.0.2-x86_64-linux)
+      railties (>= 6.0.0)
     temple (0.8.2)
     thor (1.1.0)
     thwait (0.2.0)
@@ -391,6 +395,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   acts_as_list
