@@ -4,6 +4,8 @@ require 'active_support/core_ext/integer/time'
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.configure do
+  config.web_console.permissions = '172.0.0.0/16'
+  
   config.hosts = [
     IPAddr.new("0.0.0.0/0"),        # All IPv4 addresses.
     IPAddr.new("::/0"),             # All IPv6 addresses.
@@ -24,6 +26,9 @@ Rails.application.configure do
 
   # Show full error reports.
   config.consider_all_requests_local = true
+
+  # set to false to see production-like error handling
+  # config.consider_all_requests_local = false
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.

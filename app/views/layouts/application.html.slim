@@ -5,17 +5,12 @@ html
     meta name="viewport" content="width=device-width,initial-scale=1"
     = csrf_meta_tags
     = csp_meta_tag
-    / = stylesheet_link_tag "inter-font", "data-turbo-track": "reload"
-    = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
-    = javascript_link_tag 'application', 'data-turbo-track': 'reload'
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload'
-    = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: 'anonymous'
+    = stylesheet_link_tag 'application', 'data-turbo-track': 'reload'
+    = stylesheet_link_tag 'tailwind', 'data-turbo-track': 'reload'
     = stylesheet_link_tag "https://use.typekit.net/#{ ENV['ADOBE_FONT_KIT_ID'] }.css"
+    = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: 'anonymous'
+    = javascript_importmap_tags
     = yield :head
-
-    = javascript_include_tag 'https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'
-    = stylesheet_link_tag 'https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css'
-    = javascript_include_tag 'https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js'
 
   body(class="#{ yield :body_classes }")
     = render partial: 'layouts/partials/notices'
