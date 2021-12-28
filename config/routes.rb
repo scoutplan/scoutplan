@@ -2,10 +2,13 @@
 
 require 'sidekiq/web'
 
-# rubocop disable Metrics/BlockLength
+# rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
   devise_for :users
   root to: 'home#index'
+
+  match "/404", to: "errors#not_found", via: :all
+  match "/500", to: "errors#internal_server_error", via: :all
 
   resources :events, only: %i[show edit update destroy] do
     member do
@@ -79,4 +82,4 @@ Rails.application.routes.draw do
     get 'a', to: 'admin#index'
   end
 end
-# rubocop enable Metrics/BlockLength
+# rubocop:enable Metrics/BlockLength

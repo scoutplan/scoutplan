@@ -54,8 +54,8 @@ jobs:
       - name: Build container image
         run: docker build -t registry.digitalocean.com/scoutplan/app:$(echo $GITHUB_SHA | head -c7) .
 
-      - name: Log into DigitalOcean Container Registry with short-lived credentials
-        run: doctl registry login --expiry-seconds 600
+      - name: Add run number to deployment file
+        run: sed -i 's|github-run-number|$GITHUB_RUN_NUMBER|' $GITHUB_WORKSPACE/config/kube/deployment.yml        
 
       - name: Update job file
         run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|registry.digitalocean.com/scoutplan/app|registry.digitalocean.com/scoutplan/app:'${TAG}'|' $GITHUB_WORKSPACE/config/kube/db-migrate.yml
@@ -65,6 +65,9 @@ jobs:
 
       - name: Update sidekiq file
         run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|registry.digitalocean.com/scoutplan/app|registry.digitalocean.com/scoutplan/app:'${TAG}'|' $GITHUB_WORKSPACE/config/kube/sidekiq.yml
+
+      - name: Log into DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 600
 
       - name: Push image to DigitalOcean Container Registry
         run: docker push registry.digitalocean.com/scoutplan/app:$(echo $GITHUB_SHA | head -c7)

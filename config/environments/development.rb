@@ -2,8 +2,14 @@
 
 require 'active_support/core_ext/integer/time'
 
+# rubocop:disable Metrics/BlockLength
 Rails.application.configure do
-  config.web_console.permissions = '172.20.0.0/16'
+  config.hosts = [
+    IPAddr.new("0.0.0.0/0"),        # All IPv4 addresses.
+    IPAddr.new("::/0"),             # All IPv6 addresses.
+    "localhost",                    # The localhost reserved domain.
+    ENV["RAILS_DEVELOPMENT_HOSTS"]    
+  ]
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.force_ssl = true
@@ -12,8 +18,6 @@ Rails.application.configure do
   # it changes. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
-
-  config.hosts << 'local.scoutplan.org'
 
   # Do not eager load code on boot.
   config.eager_load = false
@@ -89,3 +93,4 @@ Rails.application.configure do
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 end
+# rubocop:enable Metrics/BlockLength

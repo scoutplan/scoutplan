@@ -47,6 +47,8 @@ spec:
             timeoutSeconds: 60
             failureThreshold: 5            
           env:
+            - name: GITHUB_RUN_NUMBER
+              value: "github-run-number"
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
