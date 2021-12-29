@@ -10,7 +10,7 @@ ruby '3.0.2'
 gem 'acts_as_list'
 gem 'awesome_print'
 gem 'aws-sdk-s3', require: false
-gem "bootsnap", require: false
+# gem "bootsnap", require: false
 gem 'devise'
 gem 'faraday'
 gem 'flipper'
