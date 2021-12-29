@@ -55,7 +55,7 @@ jobs:
         run: docker build -t registry.digitalocean.com/scoutplan/app:$(echo $GITHUB_SHA | head -c7) .
 
       - name: Add run number to deployment file
-        run: sed -i 's|github-run-number|$GITHUB_RUN_NUMBER|' $GITHUB_WORKSPACE/config/kube/deployment.yml        
+        run: sed -i 's|github-run-number|'${GITHUB_RUN_NUMBER}'|' $GITHUB_WORKSPACE/config/kube/deployment.yml
 
       - name: Update job file
         run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|registry.digitalocean.com/scoutplan/app|registry.digitalocean.com/scoutplan/app:'${TAG}'|' $GITHUB_WORKSPACE/config/kube/db-migrate.yml
