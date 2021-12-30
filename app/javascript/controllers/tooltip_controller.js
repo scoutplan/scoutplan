@@ -2,46 +2,73 @@ import { Controller } from "@hotwired/stimulus"
 import { createPopper } from "@popperjs/core"
 
 export default class extends Controller {
-  // static targets = [ "source" ];
-
   connect() {
     console.log("Tooltip controller loaded");
-    window.process = { env: {} }
-    const controller = this;
+    window.process = { env: {} } // hack to make Popper work
     var triggerElements = this.element.querySelectorAll("[title]");
-    triggerElements.forEach(function(triggerElem) {
-      var tooltipElem = controller.createTooltipElement(triggerElem);
-      var popperInstance = createPopper(triggerElem, tooltipElem, {
-        placement: "top",
-        strategy: "fixed",
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: [0, 8],
-            }
-          },
-          {
-            name: 'eventListeners',
-            enabled: false,
-          },
-        ],
-      });
-      triggerElem.popperInstance = popperInstance;
-      triggerElem.tooltipElem = tooltipElem;
+    // triggerElements.forEach((triggerElem) => {
+    //   setupTooltipTrigger(triggerElem);
+    // });
+    for(var i = 0; i < triggerElements.length; i++) {
+      var triggerElem = triggerElements[i];
+      this.setupTooltipTrigger(triggerElem);
+    }
+  }
 
-      triggerElem.addEventListener("mouseenter", function(event) {
-        var tooltipElem = this.tooltipElem;
-        var popperInstance = this.popperInstance;
-        tooltipElem.classList.remove("hidden");
-        popperInstance.update();
-      });
+  setupTooltipTrigger(triggerElem) {
+    var tooltipElem = this.createTooltipElement(triggerElem);
+    var popperInstance = this.createPopperInstance(triggerElem, tooltipElem);
 
-      triggerElem.addEventListener("mouseleave", function() {
-        var tooltipElem = this.tooltipElem;
-        tooltipElem.classList.add("hidden");
-      });
+    this.stripTitleAttribute(triggerElem);
+
+    // attach both the tooltip element and the popper instance
+    // directly to the trigger DOM object
+    triggerElem.popperInstance = popperInstance;
+    triggerElem.tooltipElem = tooltipElem;
+
+    // set up the event listeners
+    this.addTooltipMouseEnterListener(triggerElem);
+    this.addTooltipMouseLeaveListener(triggerElem);    
+  }
+
+  stripTitleAttribute(elem) {
+    elem.removeAttribute("title");
+  }
+
+  addTooltipMouseEnterListener(triggerElem) {
+    triggerElem.addEventListener("mouseenter", function(event) {
+      var tooltipElem = this.tooltipElem;
+      var popperInstance = this.popperInstance;
+      tooltipElem.classList.remove("hidden");
+      popperInstance.update(); 
     });
+  }
+
+  addTooltipMouseLeaveListener(triggerElem) {
+    triggerElem.addEventListener("mouseleave", function(event) {
+      var tooltipElem = this.tooltipElem;
+      tooltipElem.classList.add("hidden");
+    });
+  }
+
+  createPopperInstance(triggerElem, tooltipElem) {
+    var popperInstance = createPopper(triggerElem, tooltipElem, {
+      placement: "top",
+      strategy: "fixed",
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: [0, 8],
+          }
+        },
+        {
+          name: 'eventListeners',
+          enabled: false,
+        },
+      ],
+    });
+    return popperInstance;    
   }
 
   // create a new <div> tag to serve as the tooltip
