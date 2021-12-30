@@ -2,7 +2,7 @@ import Sortable from 'stimulus-sortable'
 import { patch } from '@rails/request.js'
 
 export default class extends Sortable {
-  static targets = [ "source" ]
+  static targets = [ "source" ];
 
   get options() {
     var result = super.options;

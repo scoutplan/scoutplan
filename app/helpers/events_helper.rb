@@ -24,8 +24,13 @@ module EventsHelper
     glyph_class = RSVP_GLYPH_CLASSES[rsvp&.response]
     text_color = RSVP_GLYPH_COLORS[rsvp&.response]
     title_tag = rsvp.nil? ? 'unknown' : rsvp.response
+    first_name = rsvp&.first_name
 
-    content_tag(:span, class: "span.rsvp-response.rsvp-unknown.#{text_color}", title: t("rsvp_#{title_tag}")) do
+    content_tag(
+      :span,
+      class: "span.rsvp-response.rsvp-unknown.#{text_color}",
+      title: "#{first_name}: " + t("rsvp_#{title_tag}")
+    ) do
       content_tag(:i, nil, class: "fad fa-#{glyph_class}")
     end
   end

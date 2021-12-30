@@ -24,8 +24,9 @@
           = @presenter.family_context_name(family_member)
 
         - if rsvp&.note.present?
+          - double_quote = '"'
           |&nbsp;&nbsp;
-          span(title="#{rsvp&.respondent&.full_display_name}: '#{rsvp.note}'" data-bs-toggle="tooltip")
+          span(title="#{rsvp&.respondent&.full_display_name}: #{double_quote}#{rsvp.note}#{double_quote}" data-bs-toggle="tooltip")
             i.fa-comment-alt-lines.fas
 
 .inline-block.text-right.align-middle.flex-auto.leading-none

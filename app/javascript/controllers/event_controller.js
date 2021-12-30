@@ -29,7 +29,6 @@ export default class extends Controller {
     const navSelector = '#main_nav';
     var navElem = document.querySelector(navSelector);
     navElem.classList.toggle('hidden');
-    // navElem.classList.toggle('xl:block');
   }
 
   close_modal(event) {

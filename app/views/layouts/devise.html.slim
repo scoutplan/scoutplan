@@ -1,31 +1,16 @@
 doctype html
 html
   head
-    title =t('app_name')
+    title = ((@page_title || []).reverse + [t("app_name")]).join(" · ")
     meta name="viewport" content="width=device-width,initial-scale=1"
     = csrf_meta_tags
     = csp_meta_tag
-    = stylesheet_link_tag 'tailwind', 'data-turbo-track': 'reload'
-    = stylesheet_link_tag "https://use.typekit.net/#{ ENV['ADOBE_FONT_KIT_ID'] }.css"
-    = stylesheet_link_tag 'application', 'data-turbo-track': 'reload'
-    = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: 'anonymous'
+    = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
+    = stylesheet_link_tag "application", "data-turbo-track": "reload"
+    = stylesheet_link_tag "https://use.typekit.net/#{ENV["ADOBE_FONT_KIT_ID"]}.css"
+    = javascript_include_tag "https://kit.fontawesome.com/#{ ENV["FONT_AWESOME_KIT_ID"] }.js", crossorigin: "anonymous"
     = javascript_importmap_tags
-    
-  body
-    .container
-      - if flash[:notice]
-        .alert.alert-info
-          = flash[:notice]
+    = yield :head
 
-      - if flash[:alert]
-        .alert.alert-warning
-          = flash[:alert]
-
-      = yield
-
-      = render 'layouts/partials/footer'
-
-scss:
-  .container {
-    max-width: 25rem;
-  }
+  body(class="bg-gray-100 text-gray-600 #{controller_name} #{action_name}")
+    = yield

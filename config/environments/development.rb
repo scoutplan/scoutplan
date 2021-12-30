@@ -4,13 +4,13 @@ require 'active_support/core_ext/integer/time'
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.configure do
-  config.web_console.permissions = '172.0.0.0/16'
-  
+  config.web_console.permissions = '172.0.0.0/8'
+
   config.hosts = [
     IPAddr.new("0.0.0.0/0"),        # All IPv4 addresses.
     IPAddr.new("::/0"),             # All IPv6 addresses.
     "localhost",                    # The localhost reserved domain.
-    ENV["RAILS_DEVELOPMENT_HOSTS"]    
+    ENV["RAILS_DEVELOPMENT_HOSTS"]
   ]
   # Settings specified here will take precedence over those in config/application.rb.
 

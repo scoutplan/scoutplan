@@ -74,7 +74,8 @@ ul.p-0.mx-0.mb-12.list-none
   ul.p-0.list-none
     li.main_nav_item_signout
       = button_to destroy_user_session_path,
-        data: { turbo_method: 'delete' },
+        method: :delete,
+        data: { turbo: 'false' },
         class: 'w-full no-underline whitespace-nowrap p-2 block hover:bg-gray-200 rounded-md text-left' do
         span.w-8.inline-block.text-center.text-gray-500
           i.fa-sign-out.fad

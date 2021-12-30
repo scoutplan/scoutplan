@@ -13,10 +13,3 @@
  *= require_tree .
  *= require_self
  */
-
-
- body, td {
-  font-family: proxima-nova, sans-serif;
-  font-weight: 400;
-  color: rgb(96, 96, 96);
-}
