@@ -5,14 +5,17 @@ export default class extends Controller {
   connect() {
     console.log("Tooltip controller loaded");
     window.process = { env: {} } // hack to make Popper work
-    var triggerElements = this.element.querySelectorAll("[title]");
-    // triggerElements.forEach((triggerElem) => {
-    //   setupTooltipTrigger(triggerElem);
-    // });
+
+    // iterate over trigger
+    var triggerElements = this.queryTriggerElements(this.element);
     for(var i = 0; i < triggerElements.length; i++) {
       var triggerElem = triggerElements[i];
       this.setupTooltipTrigger(triggerElem);
     }
+  }
+
+  queryTriggerElements(parentNode) {
+    return parentNode.querySelectorAll("[title]");
   }
 
   setupTooltipTrigger(triggerElem) {
@@ -84,6 +87,6 @@ export default class extends Controller {
 
   // tailwind classes to apply to the tooltip
   tooltipClasses() {
-    return ["tooltip", "hidden", "rounded", "bg-black", "text-white", "px-4", "py-3", "max-w-xs", "block"];
+    return ["tooltip", "hidden", "rounded", "bg-black", "text-white", "px-4", "py-3", "max-w-xs", "block", "drop-shadow-md"];
   }
 }
