@@ -12,8 +12,9 @@ class DigestSender
   attr_accessor :force_run, :unit
 
   def perform
-    Rails.logger { 'Digest sender invoked' }
+    Rails.logger { "Digest sender invoked" }
     Unit.includes(:setting_objects).find_each do |unit|
+      debugger
       @unit = unit
       perform_for_unit
     end
@@ -34,7 +35,7 @@ class DigestSender
     last_ran_at = @unit.settings(:communication).digest_last_sent_at&.localtime
     next_runs_at = schedule.next_occurrence(last_ran_at || 1.week.ago)
 
-    Rails.logger.warn { "#{@unit.name} schedule is #{schedule.to_s}. Last run was at #{last_ran_at || 'never'}; next run is at #{next_runs_at}"}
+    Rails.logger.warn { "#{@unit.name} schedule is #{schedule}. Last run was at #{last_ran_at || 'never'}; next run is at #{next_runs_at}"}
     DateTime.now.after?(next_runs_at)
   end
   # rubocop:enable Metrics/AbcSize

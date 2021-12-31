@@ -42,9 +42,9 @@
             <% if attachments.inline['logo'] %>
               <tr>
                   <td style="padding:40px 30px 30px 30px;text-align:center;font-size:24px;font-weight:bold;">
-                      <a href="https://go.scoutplan.org">
+                      <%= link_to root_url do %>
                         <%= image_tag attachments.inline['logo'].url, style: "width:80%;max-width:165px;height:auto;border:none;text-decoration:none;color:rgb(255,255,255,1.0);"%>
-                      </a>
+                      <% end %>
                   </td>
               </tr>
             <% end %>
