@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/integer/time'
+require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   config.hosts << /10\.\d+\.\d+\.\d+/ # internal IP addresses
-  config.hosts << 'go.scoutplan.org'
+  config.hosts << "go.scoutplan.org"
+  config.hosts << "kit.fontawesome.com"
 
-  config.logger = RemoteSyslogLogger.new(ENV['LOGGER_HOST'], ENV['LOGGER_PORT'])
+  config.logger = RemoteSyslogLogger.new(ENV["LOGGER_HOST"], ENV["LOGGER_PORT"])
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -29,7 +30,7 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :purger
@@ -38,19 +39,19 @@ Rails.application.configure do
   config.assets.compile = true
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  # config.asset_host = 'http://assets.example.com'
+  # config.asset_host = "http://assets.example.com"
 
   # Specifies the header that your server uses for sending files.
-  # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
-  # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
+  # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache
+  # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :digitalocean
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
-  # config.action_cable.url = 'wss://example.com/cable'
-  # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
+  # config.action_cable.url = "wss://example.com/cable"
+  # config.action_cable.allowed_request_origins = [ "http://example.com", /http:\/\/example.*/ ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
@@ -66,16 +67,18 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
-  # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "scoutplan_production"
 
-  config.active_job.queue_adapter   = :sidekiq
-  # config.active_job.queue_name_prefix = "scoutplan_production"
+  # RGB 12/31/21: temporarily subbing in the inline adapter. I know, it's not production-
+  # worthy. But Sidekiq is busted (see https://github.com/hotwired/turbo-rails/issues/285#issuecomment-1001690504).
+  # When and as that issue resolves, we'll go back to Sidekiq.
+  # config.active_job.queue_adapter = :sidekiq
+  config.active_job.queue_adapter = :inline
 
   config.action_mailer.raise_delivery_errors  = true
   config.action_mailer.delivery_method        = :smtp
   config.action_mailer.perform_caching        = false
-  config.action_mailer.default_url_options    = { host: 'go.scoutplan.org', protocol: :https }
+  config.action_mailer.default_url_options    = { host: ENV["APP_HOST"], protocol: :https }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -99,9 +102,9 @@ Rails.application.configure do
 
   # Use a different logger for distributed setups.
   # require "syslog/logger"
-  # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
+  # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
 
-  if ENV['RAILS_LOG_TO_STDOUT'].present?
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
     logger           = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
@@ -133,11 +136,11 @@ Rails.application.configure do
 end
 
 ActionMailer::Base.smtp_settings = {
-  user_name: ENV['SMTP_USERNAME'],
-  password: ENV['SMTP_PASSWORD'],
-  domain: ENV['SMTP_DOMAIN'],
-  address: ENV['SMTP_ADDRESS'],
-  port: ENV['SMTP_PORT'],
+  user_name: ENV["SMTP_USERNAME"],
+  password: ENV["SMTP_PASSWORD"],
+  domain: ENV["SMTP_DOMAIN"],
+  address: ENV["SMTP_ADDRESS"],
+  port: ENV["SMTP_PORT"],
   authentication: :plain,
   enable_starttls_auto: true
 }

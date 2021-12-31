@@ -4,13 +4,13 @@ require 'active_support/core_ext/integer/time'
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.configure do
-  config.web_console.permissions = '172.0.0.0/16'
-  
+  config.web_console.permissions = '172.0.0.0/8'
+
   config.hosts = [
     IPAddr.new("0.0.0.0/0"),        # All IPv4 addresses.
     IPAddr.new("::/0"),             # All IPv6 addresses.
     "localhost",                    # The localhost reserved domain.
-    ENV["RAILS_DEVELOPMENT_HOSTS"]    
+    ENV["RAILS_DEVELOPMENT_HOSTS"]
   ]
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -51,13 +51,15 @@ Rails.application.configure do
 
   # MAILER SETTINGS
   # delivers to Mailcatcher running on 1025
+  debugger
   config.action_mailer.raise_delivery_errors  = true
   config.action_mailer.delivery_method        = :smtp
   config.action_mailer.smtp_settings          = { address: 'mailcatcher', port: 1025 }
   config.action_mailer.perform_caching        = false
   config.action_mailer.default_url_options    = { host: 'local.scoutplan.org', protocol: :https }
 
-  config.active_job.queue_adapter   = :sidekiq
+  # config.active_job.queue_adapter = :sidekiq
+  config.active_job.queue_adapter = :inline
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

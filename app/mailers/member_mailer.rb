@@ -16,17 +16,29 @@ class MemberMailer < ScoutplanMailer
     @this_week_events = @unit.events.published.this_week
     @upcoming_events = @unit.events.published.upcoming
     @news_items = @unit.news_items.queued
-    mail(to: @to_address,
-         from: @from_address,
-         subject: "#{@unit.name} Digest")
+    mail(
+      to: @to_address,
+      from: @from_address,
+      subject: "#{@unit.name} Digest"
+    )
   end
 
   def daily_reminder_email
     Rails.logger.info "Emailing Daily Reminder to #{@member.flipper_id}..."
     @events = @unit.events.published.imminent
-    mail(to: @to_address,
-         from: @from_address,
-         subject: daily_reminder_subject)
+    mail(
+      to: @to_address,
+      from: @from_address,
+      subject: daily_reminder_subject
+    )
+  end
+
+  def test_email
+    mail(
+      to: @to_address,
+      from: @from_address,
+      subject: "Test Message from #{@unit.name}"
+    )
   end
 
   private

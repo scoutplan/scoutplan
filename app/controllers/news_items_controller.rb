@@ -2,7 +2,6 @@
 
 # News Items feed into digest newsletters
 class NewsItemsController < UnitContextController
-  layout 'application_new'
   before_action :find_news_item, only: [ :enqueue , :dequeue ]
 
   def index

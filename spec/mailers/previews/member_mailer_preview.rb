@@ -15,4 +15,9 @@ class MemberMailerPreview < ActionMailer::Preview
     event.save!
     MemberMailer.with(member: member).daily_reminder_email
   end
+
+  def test_email
+    member = Unit.first.members.first
+    MemberMailer.with(member: member).test_email
+  end
 end

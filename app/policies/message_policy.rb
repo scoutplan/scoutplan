@@ -7,4 +7,7 @@ class MessagePolicy < UnitContextPolicy
   def index?
     admin?
   end
+
+  def create?
+  end
 end

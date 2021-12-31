@@ -5,26 +5,42 @@ html
     meta name="viewport" content="width=device-width,initial-scale=1"
     = csrf_meta_tags
     = csp_meta_tag
-    = stylesheet_link_tag 'application', 'data-turbo-track': 'reload'
     = stylesheet_link_tag 'tailwind', 'data-turbo-track': 'reload'
-    = stylesheet_link_tag "https://use.typekit.net/#{ ENV['ADOBE_FONT_KIT_ID'] }.css"
+    = stylesheet_link_tag 'application', 'data-turbo-track': 'reload'
+    = stylesheet_link_tag "https://use.typekit.net/#{ENV['ADOBE_FONT_KIT_ID']}.css"
     = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: 'anonymous'
     = javascript_importmap_tags
     = yield :head
 
-  body(class="#{ yield :body_classes }")
-    = render partial: 'layouts/partials/notices'
-    = render 'layouts/partials/header'
+  body(class="text-gray-600 #{controller_name} #{action_name}")
+    // = render partial: 'layouts/partials/notices'
 
-    .container.pt-24
-      = yield
-      = render 'layouts/partials/footer'
+    .flex
+      #main_nav.hidden.lg:block
+        // transparent black overlay
+        .fixed.z-10.inset-0.bg-black.opacity-30.lg:hidden
+
+        // actual <nav> element declaration. There are lots of classes here
+        // so we take our time
+        nav(class="
+          z-20
+          absolute pl-8 pr-2 py-8 z-0
+          w-full flex-shrink-0
+          bg-white
+          lg:w-80 lg:block lg:h-screen lg:relative lg:z-0 lg:bg-gray-100
+        ")
+
+          // content of the nav
+          = render partial: 'layouts/nav'
+      
+      main.relative.h-screen.flex-grow.px-6.md:px-16.overflow-y-scroll
+        = yield
 
   javascript:
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipList = popoverTriggerList.map(function (popoverTriggerEl) {
-      return new bootstrap.Tooltip(popoverTriggerEl);
-    });
+    function setElemDisplay(elem, show) {
+      var elem = document.querySelector(elem);
+      elem.style.display = show ? 'block' : 'none';
+    }
 
   scss:
     .submit-conjunction {
@@ -74,9 +90,47 @@ html
       }
     }
 
-    body.newsletter.index {
-      #nav_link_newsletter {
+    body.news_items.index.drafts {
+      #nav_link_messaging {
         @include active-nav-link;
+      }
+
+      li#main_nav_item_newsletter_drafts a {
+        @apply bg-gray-200;
+        background: #e8e8e8;
+      }
+
+      li#main_nav_item_newsletter {
+        font-weight: 800;
+      }
+    }
+
+    body.news_items.index.queued {
+      li#main_nav_item_newsletter_queued a {
+        @apply bg-gray-200;
+        background: #e8e8e8;
+      }
+
+      li#main_nav_item_newsletter {
+        font-weight: 800;
+      }      
+    }
+
+    body.news_items.index.sent {
+      li#main_nav_item_newsletter_sent a {
+        @apply bg-gray-200;
+        background: #e8e8e8;
+      }
+
+      li#main_nav_item_newsletter {
+        font-weight: 800;
+      }      
+    }
+
+    body.plans.index {
+      li#main_nav_item_planner {
+        @apply bg-gray-200;
+        background: #e8e8e8;        
       }
     }
 

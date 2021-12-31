@@ -1,0 +1,93 @@
+doctype html
+html
+  head
+    title = ((@page_title || []).reverse + [t('app_name')]).join(' · ')
+    meta name="viewport" content="width=device-width,initial-scale=1"
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag 'application', 'data-turbo-track': 'reload'
+    = stylesheet_link_tag 'tailwind', 'data-turbo-track': 'reload'
+    = stylesheet_link_tag "https://use.typekit.net/#{ ENV['ADOBE_FONT_KIT_ID'] }.css"
+    = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: 'anonymous'
+    = javascript_importmap_tags
+    = yield :head
+
+  body(class="#{ yield :body_classes }")
+    = render partial: 'layouts/partials/notices'
+    = render 'layouts/partials/header'
+
+    .container.pt-24
+      = yield
+      = render 'layouts/partials/footer'
+
+  javascript:
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipList = popoverTriggerList.map(function (popoverTriggerEl) {
+      return new bootstrap.Tooltip(popoverTriggerEl);
+    });
+
+  scss:
+    .submit-conjunction {
+      display: inline;
+      padding: 0 1rem;
+    }
+
+    nav.navbar {
+      margin-bottom: 30px;
+    }
+
+    .navbar-dark .navbar-nav .nav-link {
+      color: #fff;
+    }
+
+    @mixin active-nav-link {
+      font-weight: 800;
+      cursor: default;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+
+    h1 .subtitle {
+      text-transform: uppercase;
+      font-size: 50%;
+      font-weight: 400;
+      letter-spacing: 2px;
+    }
+
+    body.events.index {
+      #nav_link_events {
+        @include active-nav-link;
+      }
+    }
+
+    body.members.index {
+      #nav_link_members {
+        @include active-nav-link;
+      }
+    }
+
+    body.plans.index {
+      #nav_link_plans {
+        @include active-nav-link;
+      }
+    }
+
+    body.newsletter.index {
+      #nav_link_newsletter {
+        @include active-nav-link;
+      }
+    }
+
+    nav.unit-id {
+      color: #888;
+      text-transform: uppercase;
+      font-size: 90%;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-weight: 400;
+    }

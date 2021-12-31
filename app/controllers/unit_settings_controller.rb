@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class UnitSettingsController < UnitContextController
-  layout 'application_new'
   before_action :find_unit
 
   def edit

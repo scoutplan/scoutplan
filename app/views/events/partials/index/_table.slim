@@ -14,4 +14,18 @@
 
 p.my-12.text-center#show-future-events-wrapper
   = t('events.index.showing_some')
-  = link_to(t('events.index.show_all'), '#', data: { action: 'event#toggleFutureEvents' }, class: 'text-blue-500 whitespace-nowrap')
+  = link_to(t('events.index.show_all'), '#', data: { action: 'event#toggleFutureEvents' }, class: 'text-blue-500 underline hover:no-underline whitespace-nowrap')
+
+
+css:
+  /* lil' arrow on bottom of tooltips */
+  .tooltip::after {
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;    
+  }
