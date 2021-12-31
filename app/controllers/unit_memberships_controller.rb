@@ -63,22 +63,6 @@ class UnitMembershipsController < ApplicationController
     @current_member
   end
 
-  # POST /members/:id/send/:item
-  # required param :item
-  # send a particular message type on demand.
-  # Possible message types are :digest, :daily_reminder, :test
-  def send_message
-
-    ap @current_member
-
-    return unless (item = params[:item])
-
-    method_name = "send_#{item}"
-    @message_name = item.humanize.titleize # for display in, say, a toast
-
-    MemberNotifier.send(method_name, @target_membership)
-  end
-
   # POST /bulk_update
   # when Events index was in bulk mode
   def bulk_update

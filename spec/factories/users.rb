@@ -6,6 +6,9 @@ FactoryBot.define do
   end
 
   factory :user do
+    first_name { 'Scouty' }
+    last_name { 'McScouterson' }
+    phone { '+19195551212' }
     email
     password { 'password' }
     type { 0 }
