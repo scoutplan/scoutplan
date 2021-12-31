@@ -14,7 +14,6 @@ class DigestSender
   def perform
     Rails.logger { "Digest sender invoked" }
     Unit.includes(:setting_objects).find_each do |unit|
-      debugger
       @unit = unit
       perform_for_unit
     end
