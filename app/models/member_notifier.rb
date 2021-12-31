@@ -11,6 +11,7 @@ class MemberNotifier
   def self.send_test_message(member)
     return unless member.contactable?
 
+    MemberMailer.with(member: member).test_email.deliver_later if member.settings(:communication).via_email
     TestTexter.new(member).send_message
   end
 

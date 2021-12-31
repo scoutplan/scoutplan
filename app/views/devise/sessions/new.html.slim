@@ -3,7 +3,7 @@
     = image_tag "https://www.scoutplan.org/assets/scoutplan_logo_sm.png", width: "40%", class: "mx-auto"
 
   .text-left
-    h2.text-xl.font-bold.pl-6.mb-3 Sign In
+    h2.text-xl.font-bold.pl-6.mb-3 = t("global.sign_in")
 
     .p-6.bg-white.rounded
       = form_for resource, as: resource_name, url: session_path(resource_name), data: { turbo: false } do |f|
@@ -29,7 +29,7 @@
 
         .pt-3.overflow-auto
           .float-left
-            = f.submit "Sign In", class: "rounded bg-red-500 font-bold px-8 py-2 text-white", style: "background:#e66425;"
+            = f.submit t("global.sign_in"), class: "rounded bg-red-500 font-bold px-8 py-2 text-white", style: "background:#e66425;"
           
           .float-right
             = link_to "Forgot your password?", new_password_path(resource_name), class: "inline-block pt-2 text-gray-400 underline"
