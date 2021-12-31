@@ -53,7 +53,7 @@
               dt.font-bold
                 = t('members.show.children')
               dd.text-sm.text-gray-400.mb-3
-                | Members that #{@target_membership.display_first_name} can RSVP on behalf of:
+                | #{@target_membership.display_first_name} can RSVP on behalf of:
               - @target_membership.children.each do |relative|
                 dd
                   = link_to unit_member_path(@unit, relative), class: 'inline-block py-2' do
