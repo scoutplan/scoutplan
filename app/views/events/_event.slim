@@ -38,7 +38,7 @@ tr.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{row_class}"
       = glyph_tag(event)
       
   // title
-  td.event-title
+  td.event-title.whitespace-nowrap
     = link_to unit_event_path(@unit, event),
       class: "row-link cursor-pointer no-underline px-1 py-3",
       data: { turbo_frame: "event", turbo_action: "advance" } do
