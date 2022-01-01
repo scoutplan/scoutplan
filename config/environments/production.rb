@@ -3,9 +3,9 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  config.hosts << /10\.\d+\.\d+\.\d+/ # internal IP addresses
   config.hosts << "go.scoutplan.org"
   config.hosts << "kit.fontawesome.com"
+  config.hosts << ENV["RAILS_PRODUCTION_HOSTS"]
 
   config.logger = RemoteSyslogLogger.new(ENV["LOGGER_HOST"], ENV["LOGGER_PORT"])
   # Settings specified here will take precedence over those in config/application.rb.
