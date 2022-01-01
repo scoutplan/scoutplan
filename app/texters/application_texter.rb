@@ -2,7 +2,7 @@
 
 # base Texter class...do not instantiate directly
 class ApplicationTexter
-  def initialize(*args)
+  def initialize(*_args)
     raise "Cannot directly instantiate an AbstractUser" if instance_of? ApplicationTexter
 
     super()
@@ -16,7 +16,7 @@ class ApplicationTexter
     raise ArgumentError, "'to' or 'body' arguments missing" unless to && body
 
     Rails.logger.warn { "Sending SMS to #{to} Twilio SID: #{@sid} token: #{@token&.first(3)}...#{@token&.last(3)}" }
-    @client.messages.create(from: @from, to: @to, body: @body)
+    @client.messages.create(from: @from, to: to, body: body)
   rescue Twilio::REST::RestError => e
     Rails.logger.error { e.message }
   end

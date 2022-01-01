@@ -30,7 +30,7 @@ RSpec.describe DigestTexter, type: :model do
       member = FactoryBot.create(:unit_membership)
       FactoryBot.create(:event, unit: member.unit)
       texter = DigestTexter.new(member)
-      expect{ texter.send_message }.not_to raise_exception
+      expect { texter.send_message }.not_to raise_exception
     end
   end
 end
