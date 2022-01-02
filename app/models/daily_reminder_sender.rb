@@ -45,6 +45,6 @@ class DailyReminderSender
     return unless time_to_run?(member, Time.zone.now)
 
     Rails.logger.warn { "Sending Daily Reminder to #{member.flipper_id}" }
-    MemberNotifier.send_daily_reminder(member)
+    MemberNotifier.new(member).send_daily_reminder
   end
 end

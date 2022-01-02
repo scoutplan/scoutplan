@@ -30,7 +30,7 @@ class DigestSender
     return true if @unit.settings(:utilities).fire_scheduled_tasks
     return false unless @unit.settings(:communication).digest_schedule
 
-    schedule = IceCube::Schedule.from_yaml(@unit.settings(:communication).digest_schedule)
+    schedule = IceCube::Schedule.from_hash @unit.settings(:communication).digest_schedule
     last_ran_at = @unit.settings(:communication).digest_last_sent_at&.localtime
     next_runs_at = schedule.next_occurrence(last_ran_at || 1.week.ago)
 
@@ -64,7 +64,7 @@ class DigestSender
     return unless Flipper.enabled? :digest, @member
 
     Rails.logger.warn { "Digest is enabled for #{@member.short_display_name} " }
-    MemberNotifier.send_digest(@member)
+    MemberNotifier.new(@member).send_digest
   end
 
   def unit_setup
