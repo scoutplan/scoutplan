@@ -5,19 +5,30 @@ class UnitSettingsController < UnitContextController
 
   def edit
     @page_title = [@unit.name, 'Settings']
-    # if @unit.settings(:communication).digest_schedule
-    #   @schedule = IceCube::Schedule.from_yaml(@unit.settings(:communication).digest_schedule)
-    # end
     authorize @unit, policy_class: UnitSettingsPolicy
+    schedule_hash = @unit.settings(:communication).digest_schedule
+    @schedule = IceCube::Schedule.from_hash(schedule_hash) if schedule_hash
   end
 
   def update
     @unit.update(unit_params) if params[:unit].present?
     @unit.settings(:utilities).fire_scheduled_tasks = true if params.dig(:settings, :utilities, :fire_scheduled_tasks)
-    ap params.dig(:settings, :communication, :digest_schedule)
-    @unit.settings(:communication).digest_schedule = params.dig(:settings, :communication, :digest_schedule)
+
+    set_schedule
+    @unit.settings(:communication).digest_schedule = @schedule
+
     @unit.save!
     redirect_to edit_unit_settings_path(@unit)
+  end
+
+  def set_schedule
+    day_of_week = params.dig(:settings, :communication, :digest_schedule, :day_of_week).to_i
+    hour_of_day = params.dig(:settings, :communication, :digest_schedule, :hour_of_day).to_i
+    @schedule = IceCube::Schedule.new
+    @schedule.add_recurrence_rule IceCube::Rule.weekly.day(day_of_week).hour_of_day(hour_of_day).minute_of_hour(0)
+    if params.dig(:settings, :communication, :digest_schedule, :every_ten_minutes) == "yes"
+      @schedule.add_recurrence_rule IceCube::Rule.minutely(10)
+    end
   end
 
   def pundit_user
@@ -32,26 +43,16 @@ class UnitSettingsController < UnitContextController
   end
 
   def unit_params
-    params.require(:unit).permit(:name, :location, :logo, settings: [:communication, :utilities])
-  end
-
-  def set_digest_schedule
-    Sidekiq.set_schedule(
-      digest_schedule_key,
-      cron: '0 7 * * sun',
-      class: 'DigestSender',
-      args: @unit.id
+    params.require(:unit).permit(
+      :name,
+      :location,
+      :logo,
+      settings: [
+        [communication: [digest_schedule: [:day_of_week, :hour_of_day, :every_ten_minutes]]],
+        :utilities
+      ]
     )
   end
-
-  def set daily_reminder_schedule_key
-  end
-
-  def digest_schedule_key
-    "send_digests_#{@unit.name.parameterize.underscore}"
-  end
-
-  def daily_reminder_schedule_key
-    "send_daily_reminders_#{@unit.name.parameterize.underscore}"
-  end
 end
+
+# IceCube::Schedule.new.add_recurrence_rule(IceCube::Rule.weekly.day(0).hour_of_day(7).minute_of_hour(0))
