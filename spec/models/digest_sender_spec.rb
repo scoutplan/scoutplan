@@ -10,7 +10,7 @@ end
 RSpec.describe DigestSender, type: :model do
   # this will set up a run at 7:00 AM on Sunday and then simulate two
   # Sundays from now — way past when it should have run
-  describe 'time_to_run' do
+  describe "time_to_run" do
     before do
       @unit = FactoryBot.create(:unit)
       @unit.settings(:communication).digest_schedule = schedule_yaml
@@ -18,13 +18,13 @@ RSpec.describe DigestSender, type: :model do
       @sender.unit = @unit
     end
 
-    it 'returns true when it\'s a week from now' do
+    it "returns true when it\'s a week from now" do
       Timecop.freeze(DateTime.now.sunday + 7.days)
       expect(@sender.time_to_run?).to be_truthy
       Timecop.return
     end
 
-    it 'returns false when it\'s a week ago' do
+    it "returns false when it's a week ago" do
       @unit.settings(:communication).update! digest_last_sent_at: 2.days.ago
       Timecop.freeze(DateTime.now.sunday - 14.days)
       expect(@sender.time_to_run?).to be_falsey
@@ -33,8 +33,9 @@ RSpec.describe DigestSender, type: :model do
   end
 
   # this is the method called from Sidekiq scheduler
-  describe 'perform' do
+  describe "perform" do
     before do
+      User.destroy_all
       @member = FactoryBot.create(:member)
       @unit = @member.unit
 
@@ -55,16 +56,16 @@ RSpec.describe DigestSender, type: :model do
       Timecop.return
     end
 
-    it 'sends an email when Flipper is enabled' do
+    it "sends an email when Flipper is enabled" do
       expect { @sender.perform }.to change { ActionMailer::Base.deliveries.count }.by(1)
     end
 
-    it 'does not send an email when Flipper is disabled' do
+    it "does not send an email when Flipper is disabled" do
       Flipper.disable_actor :digest, @member
       expect { @sender.perform }.to change { ActionMailer::Base.deliveries.count }.by(0)
     end
 
-    it 'raises the high watermark (HWM)' do
+    it "raises the high watermark (HWM)" do
       Flipper.enable_actor :digest, @member # make sure member is programmed to receive
       @unit.settings(:communication).update! digest_last_sent_at: nil # clear the HWM
       @unit.reload

@@ -15,7 +15,7 @@ class MessagesController < UnitContextController
 
     method_name = "send_#{message_type}"
     @message_name = message_type.humanize.titleize
-    MemberNotifier.send(method_name, @member)
+    MemberNotifier.new(@member).send method_name
   end
 
   private

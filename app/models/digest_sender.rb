@@ -64,7 +64,7 @@ class DigestSender
     return unless Flipper.enabled? :digest, @member
 
     Rails.logger.warn { "Digest is enabled for #{@member.short_display_name} " }
-    MemberNotifier.send_digest(@member)
+    MemberNotifier.new(@member).send_digest
   end
 
   def unit_setup
