@@ -21,6 +21,8 @@ spec:
       containers:
         - name: scoutplan-sidekiq
           image: registry.digitalocean.com/scoutplan/app
+
+          # change to bundle exec as per https://github.com/hotwired/turbo-rails/issues/285#issuecomment-1004395809
           command:
             - bundle
             - exec

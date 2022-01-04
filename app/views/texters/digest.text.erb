@@ -1,7 +1,0 @@
-Hi, <%= @member.first_name %>. Here's what's going on this at <%= @member.unit.name %>:
-
-<% @events.each do |event| %>
-  <%= "#{event.title} on #{event.starts_at.strftime('%A')}" %>
-<% end %>
-
-See the full calendar at <%= unit_events_url(@member.unit, r: @magic_link_token) %>

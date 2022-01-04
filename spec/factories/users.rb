@@ -6,11 +6,12 @@ FactoryBot.define do
   end
 
   factory :user do
-    first_name { 'Scouty' }
-    last_name { 'McScouterson' }
-    phone { '+19195551212' }
+    first_name  { "Scoutbert" }
+    nickname    { "Scouty" }
+    last_name   { "McScouterson" }
+    phone       { "+19195551212" }
+    password    { "password" }
     email
-    password { 'password' }
     type { 0 }
   end
 

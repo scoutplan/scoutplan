@@ -1,9 +1,8 @@
-# frozen_string_literal: true
-# Be sure to restart your server when you modify this file.
+# # frozen_string_literal: true
 
 # ActiveSupport::Reloader.to_prepare do
 #   ApplicationController.renderer.defaults.merge!(
-#     http_host: 'example.org',
-#     https: false
+#     http_host: ENV["SCOUTPLAN_HOST"],
+#     https: ENV["SCOUTPLAN_PROTOCOL"] == "https"
 #   )
 # end

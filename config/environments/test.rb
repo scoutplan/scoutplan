@@ -50,7 +50,11 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.perform_caching = false
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_url_options = { host: 'localhost:3000' }
+  config.action_mailer.default_url_options    = {
+    host: ENV["SCOUTPLAN_HOST"],
+    protocol: ENV["SCOUTPLAN_PROTOCOL"],
+    port: 3000
+  }
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
