@@ -1,12 +1,8 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
-def schedule_yaml
-  "---\n:start_time: 2021-12-12 12:55:41.000000000 -05:00\n:rrules:\n- :validations:\n    :day:\n    - 1\n    :hour_of_day:\n    - 7\n    :minute_of_hour:\n    - 0\n    :second_of_minute:\n    - 0\n  :rule_type: IceCube::WeeklyRule\n  :interval: 1\n  :week_start: 0\n:rtimes: []\n:extimes: []\n"
-end
-
-def schedule
+def the_schedule
   result = IceCube::Schedule.new
   result.add_recurrence_rule IceCube::Rule.weekly.day(0).hour_of_day(7)
   result
@@ -19,7 +15,7 @@ RSpec.describe DigestSender, type: :model do
   describe "time_to_run" do
     before do
       @unit = FactoryBot.create(:unit)
-      @unit.settings(:communication).update! digest_schedule: schedule.to_hash
+      @unit.settings(:communication).update! digest_schedule: the_schedule.to_hash
       @sender = DigestSender.new
       @sender.unit = @unit
     end
@@ -46,7 +42,7 @@ RSpec.describe DigestSender, type: :model do
       @unit = @member.unit
 
       # enable digest for the unit
-      @unit.settings(:communication).update! digest_schedule: schedule.to_hash
+      @unit.settings(:communication).update! digest_schedule: the_schedule.to_hash
 
       # enable digest for the member
       Flipper.enable_actor :digest, @member
