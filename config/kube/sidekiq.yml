@@ -18,25 +18,20 @@ spec:
       labels:
         app: scoutplan-sidekiq
     spec:
-      # initContainers:
-      # - name: migrations
-      #   image: registry.digitalocean.com/scoutplan/app
-      #   command:
-      #   - rake
-      #   - db:abort_if_pending_migrations
       containers:
         - name: scoutplan-sidekiq
           image: registry.digitalocean.com/scoutplan/app
-          command: ["sidekiq"]
+          command:
+            - bundle
+            - exec
+            - sidekiq
           imagePullPolicy: "Always"
           # readinessProbe:
           #   httpGet:
           #     path: /
-          #     port: 3000
-          #     scheme: HTTP
+          #     port: 7433
           #   initialDelaySeconds: 60
-          #   periodSeconds: 30
-          #   timeoutSeconds: 60
+          #   timeoutSeconds: 10
           env:
             - name: DATABASE_PASSWORD
               valueFrom:
