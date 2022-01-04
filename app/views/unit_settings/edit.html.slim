@@ -87,8 +87,8 @@ header.mt-5
             selected: hour_of_day
 
         .mb-3
-          = check_box "settings", "communication[digest_schedule][every_ten_minutes]", {}, "yes", "no"
-          = label_tag nil, "Every ten minutes, too", class: 'ml-2'
+          = check_box "settings", "communication[digest_schedule][every_hour]", {}, "yes", "no"
+          = label_tag nil, "Every hour, too", class: 'ml-2'
 
         .mb-3
           = check_box_tag 'settings[utilities][fire_scheduled_tasks]', class: 'w-4 h-4'

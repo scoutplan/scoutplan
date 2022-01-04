@@ -35,7 +35,7 @@ class MemberNotifier
 
   private
 
-  # should member receive daily reminders right now?
+  # should member receive daily reminders?
   def daily_reminder?
     Flipper.enabled?(:receive_daily_reminder, @member) && @member.unit.events.published.imminent.count.positive?
   end
