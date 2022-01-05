@@ -151,6 +151,7 @@ en:
       event_row:
         rsvp_respond: 'Respond'
         rsvp_change:  'Change'
+      rsvp_open:    'RSVP is open'
     form:
       timezone_prompt: "Dates and times are %{timezone_name}"
 

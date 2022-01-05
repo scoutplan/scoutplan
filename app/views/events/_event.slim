@@ -1,7 +1,7 @@
 - @presenter.event = event
 - rsvps = event.rsvps
 - row_class = 'event-row'
-- row_class += ' event-past'   if event.starts_at < Time.zone.now
+- row_class += ' event-past'   if event.starts_at.past?
 - row_class += ' event-future' if event.starts_at > 3.months.from_now
 - row_class += ' event-rsvp'   if event.requires_rsvp
 - row_class += ' event-draft'  if event.draft?
@@ -38,7 +38,7 @@ tr.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{row_class}"
       = glyph_tag(event)
       
   // title
-  td.event-title.whitespace-nowrap
+  td.event-title
     = link_to unit_event_path(@unit, event),
       class: "row-link cursor-pointer no-underline px-1 py-3",
       data: { turbo_frame: "event", turbo_action: "advance" } do
@@ -67,3 +67,8 @@ tr.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{row_class}"
 
   td.event-actions.hidden.sm:table-cell.text-right.pr-4
     = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps }
+
+  td.mini-event-actions.md:hidden
+    - if event.rsvp_open?
+      span(title=t("events.index.rsvp_open"))
+        i.fa-circle.fas.text-yellow-500
