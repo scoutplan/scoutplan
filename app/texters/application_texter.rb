@@ -16,6 +16,7 @@ class ApplicationTexter
     raise ArgumentError, "'to' or 'body' arguments missing" unless to && body
 
     Rails.logger.warn { "Sending SMS to #{to} Twilio SID: #{@sid} token: #{@token&.first(3)}...#{@token&.last(3)}" }
+    Rails.logger.warn { body }
     @client.messages.create(from: @from, to: to, body: body)
   rescue Twilio::REST::RestError => e
     Rails.logger.error { e.message }
