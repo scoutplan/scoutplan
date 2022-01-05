@@ -3,7 +3,7 @@
 # a Texter for sending digests
 class DigestTexter < MemberTexter
   def body
-    renderer.render(
+    @body ||= renderer.render(
       template: "member_texter/digest",
       format: "text",
       assigns: { member: @member, events: events, magic_link_token: magic_link_token }

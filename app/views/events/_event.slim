@@ -68,7 +68,7 @@ tr.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{row_class}"
   td.event-actions.hidden.sm:table-cell.text-right.pr-4
     = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps }
 
-  td.mini-event-actions
+  td.mini-event-actions.md:hidden
     - if event.rsvp_open?
       span(title=t("events.index.rsvp_open"))
         i.fa-circle.fas.text-yellow-500

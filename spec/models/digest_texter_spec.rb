@@ -48,6 +48,11 @@ RSpec.describe DigestTexter, type: :model do
       expect(texter.body).to include base_url
     end
 
+    it "ends with a period" do
+      texter = DigestTexter.new @member
+      expect(texter.body.last).to eq(".")
+    end
+
     # * Hiking Trip on Friday
     it "contains event synopsis" do
       texter = DigestTexter.new @member
