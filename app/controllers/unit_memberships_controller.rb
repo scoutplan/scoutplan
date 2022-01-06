@@ -26,7 +26,6 @@ class UnitMembershipsController < ApplicationController
     @user = @target_membership.user
     @page_title = @user.full_name
     page_title [@unit.name, @user.full_display_name]
-    puts '%%%%%%%%'
   end
 
   def create
