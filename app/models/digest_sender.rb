@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'sidekiq-scheduler'
+require "sidekiq-scheduler"
 
 # job called via cron-like mechanism to send weekly digests
 # (in this case, sidekiq-scheduler). For test purposes it's
@@ -28,11 +28,10 @@ class DigestSender
   def time_to_run?
     return true if force_run
     return true if @unit.settings(:utilities).fire_scheduled_tasks
-    return false unless @unit.settings(:communication).digest_schedule
+    return false unless schedule
 
-    schedule = IceCube::Schedule.from_hash @unit.settings(:communication).digest_schedule
     last_ran_at = @unit.settings(:communication).digest_last_sent_at&.localtime
-    next_runs_at = schedule.next_occurrence(last_ran_at || 1.week.ago)
+    next_runs_at = schedule.next_occurrence(last_ran_at || 1.week.ago) # is 1.week.ago right?
 
     Rails.logger.warn { "#{@unit.name} schedule is #{schedule}. Last run was at #{last_ran_at || 'never'}; next run is at #{next_runs_at}"}
     DateTime.now.after?(next_runs_at)
@@ -40,6 +39,17 @@ class DigestSender
   # rubocop:enable Metrics/AbcSize
 
   private
+
+  # returns an IceCube::Schedule object if the unit has one set up, otherwise nil
+  def schedule
+    return nil unless @unit.settings(:communication).digest_schedule
+
+    @schedule ||= IceCube::Schedule.from_hash @unit.settings(:communication).value[schedule_key]
+  end
+
+  def schedule_key
+    "digest_schedule"
+  end
 
   # there's a potential race condition here that we're going to ignore for now:
   # if someone authored a NewsItem *while this task is running*, it could get
