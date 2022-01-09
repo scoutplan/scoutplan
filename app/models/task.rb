@@ -32,10 +32,8 @@ class Task < ApplicationRecord
     perform if time_to_run?
   end
 
-  # set `last_ran_at`
-  #
-  def set_high_watermark
-    update! last_ran_at: DateTime.now
+  def time_to_run?
+    DateTime.now.after?(next_runs_at)
   end
 
   # When should it run next? Returns a DateTime
@@ -43,24 +41,32 @@ class Task < ApplicationRecord
     schedule.next_occurrence(last_ran_at || 1.week.ago)
   end
 
-  def time_to_run?
-    DateTime.now.after?(next_runs_at)
+  # set `last_ran_at`
+  #
+  def set_high_watermark
+    update! last_ran_at: DateTime.now
   end
 
+  # Make or rehydrate a Schedule object and store as instance var
+  #
   def schedule
     @schedule ||= schedule_hash.present? ? IceCube::Schedule.from_hash(schedule_hash) : IceCube::Schedule.new
+  end
+
+  # An attribute setter doesn't make sense in this context, so we'll stand up an
+  # explicit `save` method for classes to call when they're done manipulating the
+  # Schedule object
+  #
+  def save_schedule
+    update! schedule_hash: @schedule.to_hash
   end
 
   # Entrypoint for cron or other task runner: Task.perform_all. The assumption
   # is that this gets called frequently (e.g. every 60 seconds).
   #
-  # It iterates across all jobs, calling perform_on_schedule for each.
+  # It iterates over all Tasks, calling perform_on_schedule for each.
   #
-  def self.perform_all
-    return if @@running
-
-    @running = true
+  def self.perform_all_on_schedule
     Task.all.each(&:perform_on_schedule)
-    @running = false
   end
 end
