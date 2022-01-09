@@ -36,6 +36,7 @@ en:
     done:   'Done'
     sign_in: "Sign In"
     sign_out: 'Sign Out'
+    remember_me: "Stay signed in for two weeks"
   you_parenths: '(you)'
   app_name: 'Scoutplan'
   administration: 'Administration'
@@ -264,3 +265,8 @@ en:
         rsvp_save: 'Send RSVPs'
         create_confirmation: '%{event_name} was added to the calendar'
         description_save: 'Save This Description'
+
+  tasks:
+    undefined_description: "Undefined Task"
+    daily_reminder_description: "Daily Reminders"
+    unit_digest_description: "Unit Digest"

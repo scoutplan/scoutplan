@@ -1,37 +1,27 @@
 # frozen_string_literal: true
 
+# Controller for editing and updating Unit settings
+# TODO: factor this into a view model
+#
 class UnitSettingsController < UnitContextController
   before_action :find_unit
 
+  # GET /units/:unit_id/settings
   def edit
-    @page_title = [@unit.name, 'Settings']
+    @page_title = [@unit.name, "Settings"]
     authorize @unit, policy_class: UnitSettingsPolicy
-    schedule_hash = @unit.settings(:communication).digest_schedule
-    @schedule = IceCube::Schedule.from_hash(schedule_hash) if schedule_hash
   end
 
+  # POST /unit/:unit_id/settings
   def update
     @unit.update(unit_params) if params[:unit].present?
     @unit.settings(:utilities).fire_scheduled_tasks = true if params.dig(:settings, :utilities, :fire_scheduled_tasks)
 
     set_schedule
-    @unit.settings(:communication).digest_schedule = @schedule
 
     @unit.save!
     redirect_to edit_unit_settings_path(@unit)
   end
-
-  # rubocop:disable Style/GuardClause
-  def set_schedule
-    day_of_week = params.dig(:settings, :communication, :digest_schedule, :day_of_week).to_i
-    hour_of_day = params.dig(:settings, :communication, :digest_schedule, :hour_of_day).to_i
-    @schedule = IceCube::Schedule.new
-    @schedule.add_recurrence_rule IceCube::Rule.weekly.day(day_of_week).hour_of_day(hour_of_day).minute_of_hour(0)
-    if params.dig(:settings, :communication, :digest_schedule, :every_hour) == "yes"
-      @schedule.add_recurrence_rule IceCube::Rule.minutely(60)
-    end
-  end
-  # rubocop:enable Style/GuardClause
 
   def pundit_user
     @current_member
@@ -39,9 +29,25 @@ class UnitSettingsController < UnitContextController
 
   private
 
+  # handle scheduled task serialization
+  def set_schedule
+    digest_schedule_params = params.dig(:settings, :communication, :digest_schedule)
+    day_of_week = digest_schedule_params[:day_of_week].to_i
+    hour_of_day = digest_schedule_params[:hour_of_day].to_i
+    digest_task = @unit.tasks.find_or_create_by(key: "digest", type: "UnitDigestTask")
+    rule = IceCube::Rule.weekly.day(day_of_week).hour_of_day(hour_of_day).minute_of_hour(0)
+
+    digest_task.clear_schedule
+    digest_task.schedule.add_recurrence_rule rule
+    digest_task.schedule.add_recurrence_rule IceCube::Rule.minutely(60) if digest_schedule_params[:every_hour] == "yes"
+
+    digest_task.save_schedule
+  end
+
   def find_unit
     @current_unit = @unit = Unit.find(params[:id])
     @current_member = @unit.membership_for(current_user)
+    Time.zone = @unit.settings(:locale).time_zone
   end
 
   def unit_params

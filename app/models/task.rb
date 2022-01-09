@@ -19,6 +19,11 @@ class Task < ApplicationRecord
   # Prevent duplicate keys for a given Taskable
   validates_uniqueness_of :key, scope: :taskable
 
+  # override in subclasses
+  def description
+    I18n.t("tasks.undefined_description")
+  end
+
   # override `perform` in subclasses. Make
   # sure to call `super` in subclasses or, alternately,
   # call set_high_watermark from subclasses
@@ -50,7 +55,11 @@ class Task < ApplicationRecord
   # Make or rehydrate a Schedule object and store as instance var
   #
   def schedule
-    @schedule ||= schedule_hash.present? ? IceCube::Schedule.from_hash(schedule_hash) : IceCube::Schedule.new
+    @schedule ||= schedule_hash.present? ? IceCube::Schedule.from_yaml(schedule_hash) : IceCube::Schedule.new
+
+  # trap unparsable string errors, which tend to manifest as `undefined method`
+  rescue NoMethodError
+    @schedule = IceCube::Schedule.new
   end
 
   # An attribute setter doesn't make sense in this context, so we'll stand up an
@@ -58,7 +67,11 @@ class Task < ApplicationRecord
   # Schedule object
   #
   def save_schedule
-    update! schedule_hash: @schedule.to_hash
+    update! schedule_hash: schedule.to_yaml
+  end
+
+  def clear_schedule
+    schedule.remove_recurrence_rule(schedule.recurrence_rules.first) while schedule.recurrence_rules.count.positive?
   end
 
   # Entrypoint for cron or other task runner: Task.perform_all. The assumption

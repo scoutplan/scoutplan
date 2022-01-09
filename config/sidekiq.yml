@@ -1,10 +1,6 @@
 :dynamic: true
 
 :schedule:
-  send_digests:
-    cron: '0 * * * * *' # every minute
-    class: DigestSender
-
   run_tasks:
     cron: '0 * * * * *' # every minute
     class: TaskRunner

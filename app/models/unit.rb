@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# a Troop, Pack, Post, Lodge, or Crew
+# a Troop, Pack, Post, Lodge, or Crew.
+#
 class Unit < ApplicationRecord
   has_many :events
   has_many :event_categories
@@ -18,22 +19,15 @@ class Unit < ApplicationRecord
   after_create :populate_categories
 
   has_settings do |s|
-    s.key :security, defaults: { enable_magic_links: true }
-    s.key :appearance, defaults: { main_color: '#003F87' }
-    s.key :communication, defaults: {
-      from_email: 'events@scoutplan.org',
-      digest: false,
-      daily_reminder: 'daily at 6:00 AM',
-      digest_last_sent_at: nil,
-      daily_reminder_last_sent_at: nil
-    }
-    s.key :locale, defaults: { time_zone: 'Eastern Time (US & Canada)' }
-    s.key :security, defaults: { enable_magic_links: true }
-    s.key :utilities, defaults: { fire_scheduled_tasks: false }
+    s.key :security,      defaults: { enable_magic_links: true }
+    s.key :communication, defaults: { from_email: "reminders@scoutplan.org" }
+    s.key :appearance,    defaults: { main_color: "#003F87" }
+    s.key :locale,        defaults: { time_zone: "Eastern Time (US & Canada)" }
+    s.key :utilities,     defaults: { fire_scheduled_tasks: false }
   end
 
   def to_param
-    [id, name, location].join(' ').parameterize
+    [id, name, location].join(" ").parameterize
   end
 
   def membership_for(user)
@@ -50,6 +44,7 @@ class Unit < ApplicationRecord
 
   private
 
+  # TODO: move this somewhere else
   def populate_categories
     EventCategory.seeds.each do |category|
       event_categories.create(

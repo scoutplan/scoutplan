@@ -2,6 +2,10 @@
 
 # Recurring task to send daily reminders to members
 class DailyReminderTask < UnitTask
+  def description
+    I18n.t("tasks.daily_reminder_description")
+  end
+
   def perform
     return unless unit.events.published.imminent.count.positive?
 
@@ -10,6 +14,8 @@ class DailyReminderTask < UnitTask
     unit.members.find_each do |member|
       perform_for_member(member)
     end
+
+    super
   end
 
   def perform_for_member(member)

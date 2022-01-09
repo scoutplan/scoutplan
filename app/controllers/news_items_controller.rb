@@ -6,10 +6,7 @@ class NewsItemsController < UnitContextController
 
   def index
     authorize :message, :index?
-    @view = params[:mode] || 'drafts'
-    if @unit.settings(:communication).digest_schedule
-      @schedule = IceCube::Schedule.from_hash @unit.settings(:communication).digest_schedule
-    end
+    @view = params[:mode] || "drafts"
     set_news_items
   end
 
