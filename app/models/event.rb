@@ -5,7 +5,7 @@ class Event < ApplicationRecord
   default_scope { order(starts_at: :asc) }
 
   belongs_to :unit
-  belongs_to :series_parent, class_name: 'Event', optional: true
+  belongs_to :series_parent, class_name: "Event", optional: true
   belongs_to :event_category
   has_many   :event_rsvps, dependent: :destroy
   has_many   :members, through: :event_rsvps
@@ -25,15 +25,17 @@ class Event < ApplicationRecord
 
   enum status: { draft: 0, published: 1, cancelled: 2 }
 
-  scope :future,        -> { where('starts_at > ?', Date.today) }
-  scope :this_week,     -> { where('starts_at BETWEEN ? AND ?', Time.now, 7.days.from_now) }
-  scope :upcoming,      -> { where('starts_at BETWEEN ? AND ?', 7.days.from_now, 28.days.from_now) }
+  scope :future,        -> { where("starts_at > ?", Date.today) }
+  scope :this_week,     -> { where("starts_at BETWEEN ? AND ?", Time.now, 7.days.from_now) }
+  scope :upcoming,      -> { where("starts_at BETWEEN ? AND ?", 7.days.from_now, 28.days.from_now) }
   scope :rsvp_required, -> { where(requires_rsvp: true) }
-  scope :today,         -> { where('starts_at BETWEEN ? AND ?', Time.zone.now.beginning_of_day, Time.zone.now.at_end_of_day) }
-  scope :imminent,      -> { where('starts_at BETWEEN ? AND ?', Time.zone.now.beginning_of_day + 12.hours, Time.zone.now.at_end_of_day + 12.hours) }
+  scope :today,         -> { where("starts_at BETWEEN ? AND ?", Time.zone.now.beginning_of_day, Time.zone.now.at_end_of_day) }
+
+  # noon today to noon tomorrow. This scope is used for daily reminders
+  scope :imminent,      -> { where("starts_at BETWEEN ? AND ?", Time.zone.now.beginning_of_day + 12.hours, Time.zone.now.at_end_of_day + 12.hours) }
 
   def to_param
-    [id, title].join(' ').parameterize
+    [id, title].join(" ").parameterize
   end
 
   def past?
@@ -85,7 +87,7 @@ class Event < ApplicationRecord
   private
 
   # create a weekly series based on @event
-  # TODO: this is super-naive: it's not idempotent, it doesn't
+  # TODO: this is super-naive: it"s not idempotent, it doesn"t
   # handle things like updates, etc etc
   def create_series
     new_event = dup
