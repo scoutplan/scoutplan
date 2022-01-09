@@ -2,7 +2,17 @@
 
 require "rails_helper"
 
-class TestTask < Task; end
+class TestTask < Task
+  def perform
+    @@count ||= 0
+    @@count += 1
+    super
+  end
+
+  def self.count
+    @@count
+  end
+end
 
 def schedule
   IceCube::Schedule
@@ -55,7 +65,7 @@ RSpec.describe Task, type: :model do
   describe "set high watermark" do
     before do
       @unit = FactoryBot.create(:unit)
-      @task = @unit.tasks.create(key: "digest", type: "TestTask")
+      @task = @unit.tasks.create(key: "test", type: "TestTask")
     end
 
     it "persists last runtime" do
@@ -66,8 +76,39 @@ RSpec.describe Task, type: :model do
 
     it "sets high watermark after perform" do
       @task.perform
-      @task.reload
+      # @task.reload
       expect(@task.last_ran_at).to be_within(1.second).of DateTime.now
+    end
+  end
+
+  describe "class methods" do
+    describe "perform_all_on_schedule" do
+      before do
+        @unit = FactoryBot.create(:unit)
+        @task = @unit.tasks.create(key: "test", type: "TestTask")
+      end
+
+      it "correctly exercises the TestTask class" do
+        expect { @task.perform }.to change { TestTask.count }.by(1)
+      end
+    end
+  end
+
+  describe "schedule" do
+    before do
+      @unit = FactoryBot.create(:unit)
+      @task = @unit.tasks.create(key: "test", type: "TestTask")
+    end
+
+    it "returns a Schedule object" do
+      expect(Task.new.schedule).to be_a(IceCube::Schedule)
+    end
+
+    it "persists its schedule" do
+      @task.schedule.add_recurrence_rule IceCube::Rule.daily.hour_of_day(8).minute_of_hour(0)
+      expect(@task.schedule_hash).to be_nil
+      expect{@task.save_schedule}.not_to raise_exception
+      expect(@task.schedule_hash).not_to be_nil
     end
   end
 end

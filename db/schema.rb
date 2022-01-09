@@ -169,8 +169,8 @@ ActiveRecord::Schema.define(version: 2022_01_02_221416) do
     t.text "schedule_hash"
     t.string "type", null: false
     t.datetime "last_ran_at", precision: 6
-    t.string "taskable_type", null: false
-    t.bigint "taskable_id", null: false
+    t.string "taskable_type"
+    t.bigint "taskable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["taskable_type", "taskable_id"], name: "index_tasks_on_taskable"

@@ -9,3 +9,7 @@
   send_today_reminders:
     cron: '0 * * * * *' # check every minute
     class: DailyReminderSender
+
+  run_tasks:
+    cron: '0 * * * * *' # every minute
+    class: TaskRunner
