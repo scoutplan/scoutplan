@@ -57,20 +57,23 @@ header.mt-5
       h2.font-bold.text-lg = 'Digest'
 
       = form_for @unit, url: update_unit_settings_path(@unit), class: 'w-full' do |f|
+        - digest_task = @unit.tasks.find_by(key: "digest")
         - last_sent_at = @unit.settings(:communication).digest_last_sent_at
-        - day_of_week = @schedule.recurrence_rules.first.validations[:day].first.value if @schedule
-        - hour_of_day = @schedule.recurrence_rules.first.validations[:hour_of_day].first.value if @schedule
+        - day_of_week = digest_task.schedule.recurrence_rules.first.validations[:day]&.first&.value if digest_task&.schedule&.recurrence_rules&.first
+        - hour_of_day = digest_task.schedule.recurrence_rules.first.validations[:hour_of_day]&.first&.value if digest_task&.schedule&.recurrence_rules&.first
 
         .mb-3
           dl
+            dt.font-bold Unit time zone
+            dd.mb-2 = @unit.settings(:locale).time_zone
             dt.font-bold Current Schedule
-            dd.mb-2 = @schedule
+            dd.mb-2 = digest_task&.schedule
 
             dt.font-bold Last sent
-            dd.mb-2 = last_sent_at
+            dd.mb-2 = digest_task&.last_ran_at
 
             dt.font-bold Next send at
-            dd = @schedule&.next_occurrence(last_sent_at || 1.week.ago)&.localtime        
+            dd = digest_task&.next_runs_at&.localtime
 
         .mb-3
           = label_tag "Day of week", nil, class: "block font-bold"
