@@ -21,7 +21,7 @@ tr.border-b.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{ro
     = link_to unit_event_path(@unit, event),
       class: "row-link cursor-pointer no-underline whitespace-nowrap start-day px-2 py-2",
       data: { turbo_frame: "event", turbo_action: "advance" } do
-      .text-3xl.text-gray-800.font-semibold
+      .text-3xl.font-semibold
         = raw(@presenter.dates_to_s)
       
       .text-sm.text-gray-500.font-semibold.uppercase
@@ -39,7 +39,7 @@ tr.border-b.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{ro
     = link_to unit_event_path(@unit, event),
       class: "row-link cursor-pointer no-underline px-1 py-3",
       data: { turbo_frame: "event", turbo_action: "advance" } do
-      .text-gray-800.font-bold
+      .font-bold
         = event.title
         = event_badge(event)
         - description_text = event.description.to_plain_text
