@@ -1,20 +1,21 @@
 .h-0
 
-= form_tag bulk_publish_unit_events_path(@unit), id: 'bulk_action_form'
-  .table.bulk-selection
-    .table-row-group
-      .table-row
-        .table-cell
-          = check_box_tag 'all_visible_events', 'on', false, class: 'form-check-input', id: 'select_all_events_checkbox'
-          = label_tag :select_all_events_checkbox, 'Select all', class: 'ml-2'
+.max-w-4xl.mx-auto
+  = form_tag bulk_publish_unit_events_path(@unit), id: 'bulk_action_form'
+    .table.bulk-selection
+      .table-row-group
+        .table-row
+          .table-cell
+            = check_box_tag 'all_visible_events', 'on', false, class: 'form-check-input', id: 'select_all_events_checkbox'
+            = label_tag :select_all_events_checkbox, 'Select all', class: 'ml-2'
 
-  table.w-full
-    tbody
-      = render @events
+    table.w-full
+      tbody
+        = render @events
 
-p.my-12.text-center#show-future-events-wrapper
-  = t('events.index.showing_some')
-  = link_to(t('events.index.show_all'), '#', data: { action: 'event#toggleFutureEvents' }, class: 'text-blue-500 underline hover:no-underline whitespace-nowrap')
+  p.my-12.text-center#show-future-events-wrapper
+    = t('events.index.showing_some')
+    = link_to(t('events.index.show_all'), '#', data: { action: 'event#toggleFutureEvents' }, class: 'text-blue-500 underline hover:no-underline whitespace-nowrap')
 
 
 css:
