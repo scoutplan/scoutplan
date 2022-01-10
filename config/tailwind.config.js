@@ -11,6 +11,11 @@ module.exports = {
       fontFamily: {
         sans: ['proxima-nova', ...defaultTheme.fontFamily.sans],
       },
+      colors: {
+        scoutplan: {
+          500: '#e66425',
+        }
+      }
     },
   },
   plugins: [

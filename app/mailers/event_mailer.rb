@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The Mailer class for sending email to unit members
+#
 class EventMailer < ScoutplanMailer
   def token_invitation_email
     @token = params[:token]

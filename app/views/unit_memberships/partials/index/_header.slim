@@ -21,8 +21,7 @@ header.sticky.left-0.right-0.top-0.flex.px-0.bg-white.pb-8.pt-8.lg:pt-10.z-10.it
 
       // add a member
       = link_to new_unit_member_path(@unit),
-        class: 'rounded text-white font-bold text-sm tracking-wider uppercase px-4 py-2 mr-3',
-        style: 'background: rgb(230, 100, 37);' do
+        class: 'bg-scoutplan-500 rounded text-white font-bold text-sm tracking-wider uppercase px-4 py-2 mr-3' do
         i.fas.fa-user-plus(class='mr-3')
         = t('members.index.add_a_member')
 

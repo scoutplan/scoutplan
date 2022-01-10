@@ -1,4 +1,4 @@
-header.sticky.left-0.right-0.top-0.flex.px-0.bg-white.pb-8.pt-8.lg:pt-10.z-10.items-center
+header.max-w-4xl.mx-auto.sticky.left-0.right-0.top-0.flex.px-0.bg-white.pb-8.pt-8.lg:pt-10.z-10.items-center
 
   // left side
   .flex.flex-grow
@@ -6,7 +6,7 @@ header.sticky.left-0.right-0.top-0.flex.px-0.bg-white.pb-8.pt-8.lg:pt-10.z-10.it
     = render partial: 'layouts/partials/hamburger_button'
 
     // title
-    h1.text-xl.text-black.font-bold
+    h1.text-xl.text-black.font-bold.px-2
       = t('events.index.title')
 
     // subheadings, based on body class / view mode
@@ -23,9 +23,8 @@ header.sticky.left-0.right-0.top-0.flex.px-0.bg-white.pb-8.pt-8.lg:pt-10.z-10.it
       - if policy(:event).create?
         span#add_event_button_wrapper
           = link_to new_unit_event_path(@unit),
-            class: 'inline-block rounded text-white text-sm font-bold no-underline px-4 py-3 uppercase tracking-wider',
-            data: { turbo_frame: 'event', turbo_action: 'advance' },
-            style: "background-color: rgb(230, 100, 37);" do
+            class: 'bg-scoutplan-500 inline-block rounded text-white text-sm font-bold no-underline px-4 py-3 uppercase tracking-wider',
+            data: { turbo_frame: 'event', turbo_action: 'advance' } do
             i.fas.fa-calendar-plus
             .hidden.md:inline.ml-3
               = t(:event_add)

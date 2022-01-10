@@ -70,10 +70,18 @@ header.mt-5
             dd.mb-2 = digest_task&.schedule
 
             dt.font-bold Last sent
-            dd.mb-2 = digest_task&.last_ran_at
+            dd.mb-2
+              - if digest_task&.last_ran_at
+                = distance_of_time_in_words_to_now(digest_task.last_ran_at.in_time_zone(@unit.settings(:locale).time_zone))
+                | &nbsp;ago
+              - else
+                | Never
 
             dt.font-bold Next send at
-            dd = digest_task&.next_runs_at&.localtime
+            dd
+              - if digest_task&.next_runs_at
+                = distance_of_time_in_words_to_now(digest_task.next_runs_at.in_time_zone(@unit.settings(:locale).time_zone))
+                | &nbsp;from now
 
         .mb-3
           = label_tag "Day of week", nil, class: "block font-bold"
