@@ -4,8 +4,7 @@ RUN apk add --no-cache --update build-base \
     linux-headers \
     git \
     postgresql-dev \
-    nodejs \
-    yarn \    
+    gcompat \
     tzdata
 
 # copy Gemfile & then bundle install dependencies
