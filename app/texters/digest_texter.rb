@@ -6,7 +6,7 @@ class DigestTexter < MemberTexter
     @body ||= renderer.render(
       template: "member_texter/digest",
       format: "text",
-      assigns: { member: @member, events: events, magic_link_token: magic_link_token }
+      assigns: { member: @member, events: events }
     )
   end
 

@@ -4,6 +4,7 @@
 class MemberMailer < ScoutplanMailer
   before_action :set_addresses
   before_action :time_zone
+  helper MagicLinksHelper
 
   def invitation_email
     mail(to: @to_address,

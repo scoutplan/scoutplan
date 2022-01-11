@@ -1,6 +1,6 @@
 - events.each do |event|
   dt(style="margin-top:15px;")
-    = link_to event.title, event_url(event, r: @member.magic_link.token)
+    = magic_link_to @member, event.title, unit_event_url(event.unit, event)
 
   dd(style="margin-left:0;")
     = event.starts_at.strftime('%a %b %-d')

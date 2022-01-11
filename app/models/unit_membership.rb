@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
-# relates a User to a Unit; serves as
-# primary concept of a person in Scoutplan
+# A join model between Units and Users. In fact, the bulk of the
+# business logic in the app is based on a UnitMembership rather than
+# a User. The User model is really more for authentication and
+# basic user demographic information (e.g. DOB) that's unlikely to change
+# from one Unit to another
+#
 class UnitMembership < ApplicationRecord
   include Flipper::Identifier
   include Contactable
 
-  default_scope { includes(:user).order('users.first_name, users.last_name ASC') }
+  default_scope { includes(:user).order("users.first_name, users.last_name ASC") }
 
   belongs_to :unit
   belongs_to :user
@@ -63,7 +67,7 @@ class UnitMembership < ApplicationRecord
   end
 
   def admin?
-    role == 'admin'
+    role == "admin"
   end
 
   def parents
@@ -82,14 +86,7 @@ class UnitMembership < ApplicationRecord
     user
   end
 
-  def magic_link
-    return unless unit.settings(:security).enable_magic_links
-    return unless settings(:security).enable_magic_links
-
-    magic_links.first || magic_links.create!
-  end
-
   def time_zone
-    user.settings(:locale).time_zone || unit.settings(:locale).time_zone || 'Eastern Time (US & Canada)'
+    user.settings(:locale).time_zone || unit.settings(:locale).time_zone || "Eastern Time (US & Canada)"
   end
 end
