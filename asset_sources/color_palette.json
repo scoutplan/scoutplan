@@ -1,0 +1,45 @@
+/* for use with https://palettte.app/ */
+
+[
+  {
+    "paletteName": "Scoutplan",
+    "swatches": [
+      {
+        "name": "scoutplan-100",
+        "color": "E6BE9C"
+      },
+      {
+        "name": "scoutplan-200",
+        "color": "E5AC7E"
+      },
+      {
+        "name": "scoutplan-300",
+        "color": "E69661"
+      },
+      {
+        "name": "scoutplan-400",
+        "color": "E68143"
+      },
+      {
+        "name": "scoutplan-500",
+        "color": "E66425"
+      },
+      {
+        "name": "scoutplan-600",
+        "color": "BC521E"
+      },
+      {
+        "name": "scoutplan-700",
+        "color": "913F17"
+      },
+      {
+        "name": "scoutplan-800",
+        "color": "5F220C"
+      },
+      {
+        "name": "scoutplan-900",
+        "color": "300F08"
+      }
+    ]
+  }
+]

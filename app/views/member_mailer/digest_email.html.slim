@@ -17,7 +17,7 @@
   h2(style="color:#888; text-transform:uppercase;") Next Seven Days
   - @this_week_events.each do |event|
     h3(style="margin-bottom: 0;")
-      = link_to event.title, unit_event_url(event.unit, event, r: @member.magic_link.token)
+      = magic_link_to @member, event.title, [event.unit, event]
 
     p(style="margin-top:0;")
       = event.starts_at.localtime.strftime('%A, %b %-d')
@@ -51,7 +51,7 @@
       - if event.rsvp_open? && @member.adult?
         span(style="font-size: 80%;")
           - button_caption = family_rsvp_count.positive? ? 'Change RSVPs' : 'RSVP Now'
-          = link_to button_caption, unit_event_edit_rsvps_url(event.unit, event, r: @member.magic_link.token)
+          = magic_link_to @member, button_caption, unit_event_edit_rsvps_url(event.unit, event)
 
 - content_for :right_column do
   h2(style="color:#888; text-transform:uppercase;font-size:120%;") Beyond this week
@@ -61,7 +61,10 @@
 
 - content_for :pre_footer do
   p(style="text-align:center;")
-    = link_to "View all #{ @unit.name} events", unit_events_url(@unit, r: @member.magic_link.token), style: 'font-weight: bold; background-color: #e66425; color: #fff; text-decoration: none; padding: 1rem 3rem; border-radius:0.25rem;'
+    = magic_link_to @member,
+                    "View all #{ @unit.name} events",
+                    unit_events_url(@unit),
+                    style: "font-weight: bold; background-color: #e66425; color: #fff; text-decoration: none; padding: 1rem 3rem; border-radius:0.25rem;"
 
 scss:
   .accepted {

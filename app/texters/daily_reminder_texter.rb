@@ -6,7 +6,7 @@ class DailyReminderTexter < MemberTexter
     ApplicationController.render(
       template: "texters/daily_reminder",
       format: "text",
-      assigns: { member: @member, events: events, magic_link_token: magic_link_token }
+      assigns: { member: @member, events: events }
     )
   end
 

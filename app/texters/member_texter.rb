@@ -9,12 +9,6 @@ class MemberTexter < ApplicationTexter
     super
   end
 
-  def magic_link_token
-    member.magic_link.token if
-    member.unit.settings(:security).enable_magic_links &&
-    member.user.settings(:security).enable_magic_links
-  end
-
   def to
     @member.phone
   end
