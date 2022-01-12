@@ -22,7 +22,7 @@ module MagicLinksHelper
     path = magic_url_for(member, options)
 
     if block_given?
-      link_to(name, path, html_options) { yield }
+      link_to(name, path, html_options, &block)
     else
       link_to(name, path, html_options)
     end

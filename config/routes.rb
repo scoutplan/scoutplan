@@ -36,7 +36,7 @@ Rails.application.routes.draw do
   get "units/:unit_id/newsletter/sent",   to: "news_items#index", as: "unit_newsletter_sent",   defaults: { mode: "sent"}
 
   # begin units
-  resources :units do
+  resources :units, only: [] do
     resources :plans, path: "planner"
     resources :event_categories
     resources :news_items, only: %i[index new create]
@@ -81,14 +81,12 @@ Rails.application.routes.draw do
     post "dequeue", to: "news_items#dequeue", as: "dequeue"
   end
 
-  get ":token", to: "magic_links#resolve", as: "magic_link"
-  get "r(/:id)", to: "rsvp_tokens#login", as: "rsvp_response"
-  post "rsvp_tokens/:id/resend", to: "rsvp_tokens#resend", as: "rsvp_token_resend"
-
   constraints CanAccessFlipperUI do
     mount Sidekiq::Web => "/sidekiq"
     mount Flipper::UI.app(Flipper) => "/flipper"
     get "a", to: "admin#index"
   end
+
+  get ":token", to: "magic_links#resolve", as: "magic_link"
 end
 # rubocop:enable Metrics/BlockLength
