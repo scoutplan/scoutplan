@@ -38,6 +38,8 @@ class Task < ApplicationRecord
   end
 
   def time_to_run?
+    return false unless schedule_hash.present?
+
     DateTime.now.after?(next_runs_at)
   end
 

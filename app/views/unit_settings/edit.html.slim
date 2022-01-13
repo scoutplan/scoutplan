@@ -58,6 +58,7 @@ header.mt-5
 
       = form_for @unit, url: update_unit_settings_path(@unit), class: 'w-full' do |f|
         - digest_task = @unit.tasks.find_by(key: "digest")
+        - reminder_task = @unit.tasks.find_by(key: "daily_reminder")
         - last_sent_at = @unit.settings(:communication).digest_last_sent_at
         - day_of_week = digest_task.schedule.recurrence_rules.first.validations[:day]&.first&.value if digest_task&.schedule&.recurrence_rules&.first
         - hour_of_day = digest_task.schedule.recurrence_rules.first.validations[:hour_of_day]&.first&.value if digest_task&.schedule&.recurrence_rules&.first
@@ -66,7 +67,7 @@ header.mt-5
           dl
             dt.font-bold Unit time zone
             dd.mb-2 = @unit.settings(:locale).time_zone
-            dt.font-bold Current Schedule
+            dt.font-bold Digest Schedule
             dd.mb-2 = digest_task&.schedule
 
             dt.font-bold Last sent
@@ -78,10 +79,13 @@ header.mt-5
                 | Never
 
             dt.font-bold Next send at
-            dd
+            dd.mb-2
               - if digest_task&.next_runs_at
                 = distance_of_time_in_words_to_now(digest_task.next_runs_at.in_time_zone(@unit.settings(:locale).time_zone))
                 | &nbsp;from now
+
+            dt.font-bold Reminder Schedule
+            dd.mb-2 = reminder_task&.schedule
 
         .mb-3
           = label_tag "Day of week", nil, class: "block font-bold"
@@ -104,6 +108,10 @@ header.mt-5
         .mb-3
           = check_box_tag 'settings[utilities][fire_scheduled_tasks]', class: 'w-4 h-4'
           = label_tag nil, 'Run scheduled tasks now', class: 'ml-2'
+
+        .mb-3
+          = check_box "settings", "communication[daily_reminder]", {}, "yes", "no"
+          = label_tag nil, "Enable daily reminders", class: "ml-2"
 
         .mb-3
           = f.submit 'Save', class: 'px-8 py-2 rounded bg-red-500 text-white uppercase font-bold text-sm', data: { disable_with: false }
