@@ -14,11 +14,20 @@ require "rails_helper"
 # end
 RSpec.describe MagicLinksHelper, type: :helper do
   before do
+    User.destroy_all
     @member = FactoryBot.create(:member)
     @event = FactoryBot.create(:event, unit: @member.unit)
   end
 
-  it "works" do
-    expect { magic_link_to(@member, @event.title, @event) }.not_to raise_exception
+  describe "magic_link_to" do
+    it "works" do
+      expect { magic_link_to(@member, @event.title, @event) }.not_to raise_exception
+    end
+  end
+
+  describe "url_without_scheme" do
+    it "works" do
+      expect(url_without_scheme("https://example.com")).to eq("example.com")
+    end
   end
 end

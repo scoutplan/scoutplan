@@ -15,21 +15,21 @@ class MemberNotifier
   def send_test_message
     return unless @member.contactable?
 
-    send_email(proc { |recipient| MemberMailer.with(member: recipient).test_email.deliver_later })
+    send_email { |recipient| MemberMailer.with(member: recipient).test_email.deliver_later }
     send_text(proc { |recipient| TestTexter.new(recipient).send_message })
   end
 
   def send_digest
     return unless Flipper.enabled?(:digest, @member)
 
-    send_email(proc { |recipient| MemberMailer.with(member: recipient).digest_email.deliver_later })
+    send_email { |recipient| MemberMailer.with(member: recipient).digest_email.deliver_later }
     send_text(proc { |recipient| DigestTexter.new(recipient).send_message })
   end
 
   def send_daily_reminder
     return unless daily_reminder?
 
-    send_email(proc { |recipient| MemberMailer.with(member: recipient).daily_reminder_email.deliver_later })
+    send_email { |recipient| MemberMailer.with(member: recipient).daily_reminder_email.deliver_later }
     send_text(proc { |recipient| DailyReminderTexter.new(recipient).send_message })
   end
 
@@ -41,7 +41,7 @@ class MemberNotifier
   end
 
   # pipe all email through here to enforce common business rules
-  def send_email(block)
+  def send_email(&block)
     return unless @member.contactable?
     return unless @member.settings(:communication).via_email
 

@@ -4,4 +4,4 @@ Hi, <%= @member.display_first_name %>. Here's what's going on at <%= @member.uni
 <%= "* #{event.title} on #{event.starts_at.strftime('%A')}" %>
 
 <% end %>
-Visit <%= magic_url_for(@member, unit_events_path(@member.unit)) %> to view the full calendar.
+Visit <%= url_without_scheme(magic_url_for(@member, unit_events_path(@member.unit))) %> to view the full calendar.

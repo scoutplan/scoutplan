@@ -22,9 +22,15 @@ module MagicLinksHelper
     path = magic_url_for(member, options)
 
     if block_given?
-      link_to(name, path, html_options, &block)
+      link_to(path, html_options, &block)
     else
       link_to(name, path, html_options)
     end
+  end
+
+  # courtesy of https://stackoverflow.com/questions/55854766/how-can-i-remove-https-and-http-from-ruby-on-rails
+  def url_without_scheme(url)
+    uri = URI(url)
+    uri.hostname + uri.path
   end
 end
