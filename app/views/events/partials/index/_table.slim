@@ -1,6 +1,6 @@
 .h-0
 
-.max-w-4xl.mx-auto
+#event_table_container.max-w-4xl.mx-auto
   = form_tag bulk_publish_unit_events_path(@unit), id: 'bulk_action_form'
     .table.bulk-selection
       .table-row-group
@@ -16,7 +16,6 @@
   p.my-12.text-center#show-future-events-wrapper
     = t('events.index.showing_some')
     = link_to(t('events.index.show_all'), '#', data: { action: 'event#toggleFutureEvents' }, class: 'text-blue-500 underline hover:no-underline whitespace-nowrap')
-
 
 css:
   /* lil' arrow on bottom of tooltips */

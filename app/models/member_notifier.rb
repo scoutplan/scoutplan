@@ -37,7 +37,7 @@ class MemberNotifier
 
   # should member receive daily reminders?
   def daily_reminder?
-    Flipper.enabled?(:receive_daily_reminder, @member) && @member.unit.events.published.imminent.count.positive?
+    @member.unit.events.published.imminent.count.positive?
   end
 
   # pipe all email through here to enforce common business rules
