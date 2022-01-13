@@ -42,9 +42,9 @@ RSpec.describe DigestTexter, type: :model do
     end
 
     # Make sure URLs are correctly formed: https://local.scoutplan.org
-    it "contains the protocol and host" do
+    it "contains the host" do
       texter = DigestTexter.new @member
-      base_url = "#{ENV['SCOUTPLAN_PROTOCOL']}://#{ENV['SCOUTPLAN_HOST']}"
+      base_url = "#{ENV['SCOUTPLAN_HOST']}"
       expect(texter.body).to include base_url
     end
 

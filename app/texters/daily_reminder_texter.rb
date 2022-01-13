@@ -4,7 +4,7 @@
 class DailyReminderTexter < MemberTexter
   def body
     ApplicationController.render(
-      template: "texters/daily_reminder",
+      template: "member_texter/daily_reminder",
       format: "text",
       assigns: { member: @member, events: events }
     )

@@ -1,10 +1,12 @@
-<% date_format = '%I:%M %p' %>
-
-Hi, <%= @member.first_name %>. Today at <%= @member.unit.name %>:
-
+<% if @events.count == 1 %>
+<% event = @events.first %>
+Hi, <%= @member.display_first_name %>. As a reminder, the <%= event.title %> is <%= deictic_day(event.starts_at) %> at <%= event.starts_at.strftime("%I:%M %p") %>.
+<% else %>
+Hi, <%= @member.display_first_name %>. Today at <%= @member.unit.name %>:
 
 <% @events.each do |event| %>
-  <%= "* #{event.title} at #{event.starts_at.strftime(date_format)}\n" %>
+<%= "* #{event.title} at #{event.starts_at.strftime('%I:%M %p')}\n" %>
+<% end %>
 <% end %>
 
-See the full calendar at <%= unit_events_url(@member.unit, r: @magic_link_token) %>.
+See the full <%= @member.unit.name %> calendar at <%= url_without_scheme(magic_url_for(@member, unit_events_path(@member.unit))) %>.

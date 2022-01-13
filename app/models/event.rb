@@ -31,7 +31,7 @@ class Event < ApplicationRecord
   scope :rsvp_required, -> { where(requires_rsvp: true) }
   scope :today,         -> { where("starts_at BETWEEN ? AND ?", Time.zone.now.beginning_of_day, Time.zone.now.at_end_of_day) }
 
-  # noon today to noon tomorrow. This scope is used for daily reminders
+  # noon today to noon tomorrow. This scope is used for daily reminders. This logic needs to move elsewhere.
   scope :imminent,      -> { where("starts_at BETWEEN ? AND ?", Time.zone.now.beginning_of_day + 12.hours, Time.zone.now.at_end_of_day + 12.hours) }
 
   def to_param
