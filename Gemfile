@@ -47,6 +47,8 @@ gem "timecop"
 gem "trix"
 gem "turbo-rails"
 gem "twilio-ruby"
+gem "wicked_pdf"
+gem "wkhtmltopdf-binary"
 
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console

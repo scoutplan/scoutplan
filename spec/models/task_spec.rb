@@ -45,8 +45,10 @@ RSpec.describe Task, type: :model do
 
   describe "time_to_run" do
     before do
-      @task = Task.new
+      @unit = FactoryBot.create(:unit)
+      @task = @unit.tasks.create(key: "test", type: "TestTask")
       @task.schedule.add_recurrence_rule IceCube::Rule.weekly.day(0).hour_of_day(7)
+      @task.save_schedule
     end
 
     it "returns true when it's a week from now" do
@@ -57,6 +59,13 @@ RSpec.describe Task, type: :model do
 
     it "returns false when it's a week ago" do
       Timecop.freeze(DateTime.now.sunday - 14.days)
+      expect(@task.time_to_run?).to be_falsey
+      Timecop.return
+    end
+
+    it "returns false when the schedule hash is empty" do
+      Timecop.freeze(DateTime.now.sunday + 7.days)
+      @task.schedule_hash = nil
       expect(@task.time_to_run?).to be_falsey
       Timecop.return
     end
