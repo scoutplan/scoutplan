@@ -1,4 +1,4 @@
-Hi, <%= @member.display_first_name %>. Here's what's going on at <%= @member.unit.name %>:
+Hi, <%= @member.display_first_name %>. Coming up at <%= @member.unit.name %>:
 
 <% @events.each do |event| %>
 <%= "* #{event.title} on #{event.starts_at.strftime('%A')}" %>

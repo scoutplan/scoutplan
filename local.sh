@@ -1,0 +1,1 @@
+docker exec -it scoutplan_app_1 /bin/ash

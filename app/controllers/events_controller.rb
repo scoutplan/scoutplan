@@ -16,6 +16,22 @@ class EventsController < ApplicationController
     @current_family = @current_member.family
     @current_year = @current_month = nil
     page_title @unit.name, t('events.index.title')
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render(
+          locals: { events_by_month: @unit.events.published.group_by { |e| [e.starts_at.year, e.starts_at.month] } },
+          pdf: "#{@unit.name} Event Calendar",
+          encoding: "utf8",
+          orientation: "landscape",
+          footer: {
+            content: "As of #{DateTime.now.in_time_zone(@unit.settings(:locale).time_zone).strftime('%d %B %Y')}",
+            font_size: 6
+          },
+          margin: { top: 20, bottom: 20 }
+        )
+      end
+    end
   end
 
   def show

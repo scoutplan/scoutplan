@@ -3,21 +3,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: sh -c "bundle install && bundle exec puma -C config/puma.rb"
-    # command: "rails server"
+    command: sh -c "bundle exec puma -C config/puma.rb"
     volumes:
       - .:/app
     ports:
       - "3000:3000"
     depends_on:
       - db
-      # - sidekiq
 
   sidekiq:
     build:
       context: .
       dockerfile: Dockerfile
-    command: sh -c "bundle install && bundle exec sidekiq"
+    command: sh -c "bundle exec sidekiq"
     depends_on:
       - redis
     volumes:
