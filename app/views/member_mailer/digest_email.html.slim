@@ -2,7 +2,7 @@
   = t('mailers.member_mailer.digest_email.title', unit_name: @unit.name)
 
 - content_for :blurb do
-  p(style="font-size: 125%; margin-bottom:2rem; color:#666;") Good #{ Time.zone.now.time_of_day }, #{@member.display_first_name}. Here's what's going on:
+  p(style="font-size: 125%; margin-bottom:2rem; color:#666;") Good #{ Time.zone.now.time_of_day }, #{@member.display_first_name}. Coming up:
   - @news_items.each_with_index do |news_item, counter|
     - if counter > 0
       div(style="text-align:center;color:#aaa;") &#9679;

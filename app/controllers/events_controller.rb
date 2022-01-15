@@ -16,6 +16,12 @@ class EventsController < ApplicationController
     @current_family = @current_member.family
     @current_year = @current_month = nil
     page_title @unit.name, t('events.index.title')
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "#{@unit.name} Event Calendar"
+      end
+    end
   end
 
   def show

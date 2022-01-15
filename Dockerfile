@@ -1,3 +1,5 @@
+# FROM madnight/docker-alpine-wkhtmltopdf as wkhtmltopdf_image
+
 FROM ruby:3.0.2-alpine
 
 RUN apk add --no-cache --update build-base \
@@ -5,7 +7,12 @@ RUN apk add --no-cache --update build-base \
     git \
     postgresql-dev \
     gcompat \
-    tzdata
+    tzdata \
+    ttf-freefont \
+    fontconfig \
+    xvfb \
+    libxrender-dev \    
+    wkhtmltopdf
 
 # copy Gemfile & then bundle install dependencies
 RUN mkdir /app
@@ -14,6 +21,10 @@ COPY Gemfile Gemfile.lock /app/
 RUN gem update bundler && bundle install
 COPY . /app
 RUN rake assets:precompile
+
+# pull over an Alpine-friendly wkhtmltopdf binary, as described here:
+# https://github.com/mileszs/wicked_pdf/issues/841#issuecomment-507759176
+# COPY --from=wkhtmltopdf_image /bin/wkhtmltopdf /usr/bin/wkhtmltopdf
 
 EXPOSE 3000
 
