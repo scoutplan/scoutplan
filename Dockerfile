@@ -2,7 +2,8 @@
 
 FROM ruby:3.0.2-alpine
 
-RUN apk add --no-cache --update build-base \
+RUN apk add --no-cache --update \
+    build-base \
     linux-headers \
     git \
     postgresql-dev \
@@ -11,8 +12,10 @@ RUN apk add --no-cache --update build-base \
     ttf-freefont \
     fontconfig \
     xvfb \
-    libxrender-dev \    
-    wkhtmltopdf
+    libxrender-dev \
+    freetype \
+    wkhtmltopdf \
+    ttf-dejavu  
 
 # copy Gemfile & then bundle install dependencies
 RUN mkdir /app

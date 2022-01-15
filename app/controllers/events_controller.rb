@@ -19,7 +19,17 @@ class EventsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        render pdf: "#{@unit.name} Event Calendar"
+        render(
+          locals: { events_by_month: @unit.events.published.group_by { |e| [e.starts_at.year, e.starts_at.month] } },
+          pdf: "#{@unit.name} Event Calendar",
+          encoding: "utf8",
+          orientation: "landscape",
+          footer: {
+            content: "As of #{(DateTime.now.in_time_zone(@unit.settings(:locale).time_zone).strftime("%d %B %Y"))}",
+            font_size: 6
+          },
+          margin: { top: 20, bottom: 20 }
+        )
       end
     end
   end
