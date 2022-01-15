@@ -1,5 +1,6 @@
 <% current_year = 0 %>
 <% current_col = 0 %>
+<% presenter = EventPresenter.new %>
 
 <h1 style="margin-bottom:3rem;">
   <%= @unit.name %>
@@ -19,25 +20,33 @@
       <td valign="top" style="width:33%;">
 
         <%# month name and (sometimes) year %>
-        <h2>
+        <h2 style="color:#E66425;">
           <%= Date::MONTHNAMES[month] %>
       
           <% if current_year != year %>
             <% current_year = year %>
             <%= current_year %>
-          <% end %>          
+          <% end %> 
         </h2>
 
         <table style="width:100%;">
           <% events.each do |event| %>
+            <% presenter.event = event %>
             <tr>
               <td valign="top" style="padding: 1rem 1rem 1rem 0;">
-                <div style="font-size:200%;"><%= event.starts_at.strftime("%d") %></div>
-                <div style="font-weight:bold;"><%= event.starts_at.strftime("%a") %></div>
+                <div style="font-size:150%;">
+                  <%= presenter.dates_to_s %>
+                </div>
+
+                <div style="font-weight:bold;">
+                  <span style="white-space:nowrap;">
+                    <%= presenter.days_to_s %>
+                  </span>
+                </div>
               </td>
 
-              <td valign="top" style="padding: 1rem 0;">
-                <div style="font-weight:bold; font-size:1.25rem; line-height:1.25;"><%= event.title %></div>
+              <td valign="top" style="padding: 1rem 1rem 1rem 0;">
+                <div style="font-weight:bold; font-size:1.25rem; margin-bottom:0.25rem;"><%= event.title %></div>
                 <div><%= event.location %></div>
               </td>
             </tr>
@@ -57,7 +66,7 @@
 </table>
 
 <style>
-  h1 {
-    margin-bottom: 12rem;
+  body {
+    font-size: 13px;
   }
 </style>

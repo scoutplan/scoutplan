@@ -25,7 +25,7 @@ class EventsController < ApplicationController
           encoding: "utf8",
           orientation: "landscape",
           footer: {
-            content: "As of #{(DateTime.now.in_time_zone(@unit.settings(:locale).time_zone).strftime("%d %B %Y"))}",
+            content: "As of #{DateTime.now.in_time_zone(@unit.settings(:locale).time_zone).strftime('%d %B %Y')}",
             font_size: 6
           },
           margin: { top: 20, bottom: 20 }

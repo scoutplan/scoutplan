@@ -37,7 +37,7 @@ RSpec.describe DigestTexter, type: :model do
     # Hi, Scouty. Here's what's going on at Troop 231:
     it "contains the member greeting" do
       texter = DigestTexter.new @member
-      member_greeting = "Hi, #{@member.display_first_name}. Here's what's going on at #{@member.unit.name}:"
+      member_greeting = "Hi, #{@member.display_first_name}. Coming up at #{@member.unit.name}:"
       expect(texter.body).to include member_greeting
     end
 

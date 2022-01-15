@@ -15,7 +15,8 @@ RUN apk add --no-cache --update \
     libxrender-dev \
     freetype \
     wkhtmltopdf \
-    ttf-dejavu  
+    ttf-dejavu \
+    ttf-opensans  
 
 # copy Gemfile & then bundle install dependencies
 RUN mkdir /app
