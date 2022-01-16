@@ -31,8 +31,7 @@ class EventsController < ApplicationController
       layout: "pdf",
       encoding: "utf8",
       orientation: "landscape",
-      header: { html: { template: "layouts/partials/calendar_header", locals: { events_by_month: calendar_events } }},
-      footer: { html: { template: "layouts/partials/calendar_footer" }},
+      header: { html: { template: "events/partials/index/calendar_header", locals: { events_by_month: calendar_events } } },
       margin: { top: 20, bottom: 20 }
     )
   end
