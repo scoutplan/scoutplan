@@ -1,4 +1,4 @@
 = turbo_frame_tag 'event_list', src: unit_events_path(@event.unit)
 = turbo_frame_tag 'event'
-  = render partial: 'event_view', locals: { mode: 'show' }
+  = render partial: 'event_view', layout: "layouts/modal", locals: { mode: "show" }
 = render partial: 'events/partials/styles'

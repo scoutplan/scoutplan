@@ -19,19 +19,28 @@ class EventsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        render(
-          locals: { events_by_month: @unit.events.published.group_by { |e| [e.starts_at.year, e.starts_at.month] } },
-          pdf: "#{@unit.name} Event Calendar",
-          encoding: "utf8",
-          orientation: "landscape",
-          footer: {
-            content: "As of #{DateTime.now.in_time_zone(@unit.settings(:locale).time_zone).strftime('%d %B %Y')}",
-            font_size: 6
-          },
-          margin: { top: 20, bottom: 20 }
-        )
+        render_calendar
       end
     end
+  end
+
+  def render_calendar
+    render(
+      locals: { events_by_month: calendar_events },
+      pdf: "#{@unit.name} Event Calendar",
+      layout: "pdf",
+      encoding: "utf8",
+      orientation: "landscape",
+      header: { html: { template: "layouts/partials/calendar_header", locals: { events_by_month: calendar_events } }},
+      footer: { html: { template: "layouts/partials/calendar_footer" }},
+      margin: { top: 20, bottom: 20 }
+    )
+  end
+
+  def calendar_events
+    events = @unit.events.includes(:event_category).published
+    events = events.reject { |e| e.category.name == "Troop Meeting" } # TODO: not hard-wire this
+    events.group_by { |e| [e.starts_at.year, e.starts_at.month] }
   end
 
   def show

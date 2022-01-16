@@ -36,7 +36,7 @@ header#page_header.max-w-4xl.mx-auto.sticky.left-0.right-0.top-0.flex.px-0.bg-wh
             = t('events.index.view.dropdown')
           i.far.fa-chevron-down
 
-        .dropdown-menu.origin-top-right.absolute.right-0.py-4.mt-2.w-72.rounded-md.shadow-lg.bg-white.ring-1.ring-black.ring-opacity-5.divide-y.divide-gray-100.focus:outline-none
+        .dropdown-menu.origin-top-right.absolute.right-0.py-4.mt-2.w-72.rounded-md.shadow-lg.bg-gray-900.text-white.ring-1.ring-black.ring-opacity-5.divide-y.divide-gray-100.focus:outline-none
           ul
             = render partial: 'events/partials/index/dropdown_items/pdf_export'
             = render partial: 'events/partials/index/dropdown_items/bulk_publish'   if @current_member.admin?

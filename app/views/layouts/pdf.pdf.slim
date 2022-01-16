@@ -1,0 +1,55 @@
+doctype html
+html
+  head
+    title = "Scoutplan"
+
+  body
+    = yield
+
+
+css:
+  body {
+    font-size: 14px;
+    font-family: 'Open Sans';
+  }
+
+  h2 {
+    color: #e66425;
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    padding-top: 0.5rem;
+    border-top: 1px solid #e66425;
+  }
+
+  .dates {
+    font-size: 1.25rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .days {
+    font-weight: bold;
+    white-space: nowrap;
+    text-transform: uppercase;
+    color: #888;
+  }
+
+  footer {
+    font-weight: 600;
+    color: #888;
+  }
+
+  .month-cell {
+    padding: 6px;
+    width: 33%;
+    padding-bottom: 12px;
+  }
+
+  .month-cell:first-child {
+    padding-left: 0;
+  }
+
+  .month-cell:last-child {
+    padding-right: 0;
+  }

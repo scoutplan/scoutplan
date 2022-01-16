@@ -1,5 +1,5 @@
 li = link_to '#',
-     class: "hover:bg-gray-100 inline-block px-4 py-2 w-full toggle-body-class #{@event_drafts.length.zero? ? 'disabled' : ''}",
+     class: "hover:bg-gray-700 inline-block px-4 py-2 w-full toggle-body-class #{@event_drafts.length.zero? ? 'disabled' : ''}",
      data: { action: 'event#toggleBulkPublish' },
      id: 'show-only-draft-events-link' do
   .menu-glyph

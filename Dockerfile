@@ -10,13 +10,14 @@ RUN apk add --no-cache --update \
     gcompat \
     tzdata \
     ttf-freefont \
-    fontconfig \
     xvfb \
     libxrender-dev \
+    fontconfig \
     freetype \
     wkhtmltopdf \
     ttf-dejavu \
-    ttf-opensans  
+    ttf-opensans \
+    ttf-font-awesome  
 
 # copy Gemfile & then bundle install dependencies
 RUN mkdir /app
