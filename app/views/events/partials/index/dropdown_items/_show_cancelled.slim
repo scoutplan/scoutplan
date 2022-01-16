@@ -1,5 +1,5 @@
 li = link_to '#',
-     class: "hover:bg-gray-100 inline-block px-4 py-2 w-full toggle-body-class #{@events.cancelled.length.zero? ? 'disabled' : ''}",
+     class: "hover:bg-gray-700 inline-block px-4 py-2 w-full toggle-body-class #{@events.cancelled.length.zero? ? 'disabled' : ''}",
      data: { action: 'event#toggleCancelledEvents' },
      id: 'show-cancelled-events-link' do
   .menu-glyph

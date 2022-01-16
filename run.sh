@@ -1,2 +1,2 @@
 docker-compose pull app
-docker-compose up
+docker-compose up --force-recreate
