@@ -4,6 +4,7 @@ require "rails_helper"
 
 describe "unit_memberships", type: :feature do
   before do
+    User.destroy_all
     @admin = FactoryBot.create(:unit_membership, :admin)
     login_as(@admin.user, scope: :user)
   end
@@ -15,6 +16,7 @@ describe "unit_memberships", type: :feature do
   end
 
   it "visits a member", js: true do
+    User.destroy_all
     member = FactoryBot.create(:unit_membership, unit: @admin.unit)
     visit member_path(member)
   end

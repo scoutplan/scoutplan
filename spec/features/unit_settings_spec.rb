@@ -6,6 +6,7 @@ require "rails_helper"
 describe "unit settings", type: :feature do
   describe "as a non-admin" do
     before do
+      User.destroy_all
       @member = FactoryBot.create(:member, :non_admin)
       login_as @member.user
     end
