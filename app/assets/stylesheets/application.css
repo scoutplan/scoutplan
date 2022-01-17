@@ -12,8 +12,5 @@
  *
  *= require_tree .
  *= require_self
+ *= require trix
  */
-
- body {
-   font-family: proxima-nova, sans-serif;
- }

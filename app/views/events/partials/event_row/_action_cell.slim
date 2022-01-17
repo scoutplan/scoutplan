@@ -1,4 +1,4 @@
-- if event.rsvp_open?
+- if event.requires_rsvp
 
   - has_family_rsvps = false
 
@@ -14,7 +14,8 @@
           = member.display_first_name
           = " (you)" if member == @current_member
 
-    - if policy(event).rsvp?
+    // "Change" RSVP button, if user's allowed to
+    - if policy(event).rsvp? && event.rsvp_open?
       li.ml-3.hidden.xl:inline-block
         = link_to unit_event_edit_rsvps_path(@unit, event),
           class: 'event-rsvp-link text-sm py-1 px-4 font-bold tracking-wider rounded text-yellow-800 bg-yellow-400 hover:bg-yellow-500 hover:text-yellow-900 no-underline uppercase',

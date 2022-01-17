@@ -144,9 +144,9 @@ en:
       description_present: 'This event has notes to read'
       view:
         dropdown:   'Options'
-        cancelled:  'Show cancelled events (%{count})'
-        rsvps:      'Show only RSVP events (%{count})'
-        drafts:     'Bulk publish draft events (%{count})'
+        cancelled:  'Show cancelled events'
+        rsvps:      'Show only RSVP events'
+        drafts:     'Bulk publish draft events'
         past:       'Show past events'
         subscribe:  'Add this schedule to your calendar'
       event_row:

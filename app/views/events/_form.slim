@@ -3,78 +3,78 @@
 - @format_date = '%Y-%m-%d'
 - @format_time = '%H:%M:%S'
 
-.absolute.inset-0.bg-black.bg-opacity-25.z-40
-  .relative.w-auto.my-12.mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-xl.filter
-    = form_with model: @event_view, scope: 'event', url: url, method: method, data: { 'turbo-action' => 'advance' } do |f|
-      header.h-3
+.relative.w-auto.my-12.mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-xl.filter
+  = form_with model: @event_view, scope: 'event', url: url, method: method, data: { 'turbo-action' => 'advance' } do |f|
+    header.h-3
 
-      section.py-0.px-8
-        // EVENT CATEGORY
-        .mb-3
-          = f.select :event_category_id,
-              @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
-              { prompt: t('event_category_prompt'), selected: @event_view.event_category_id },
-              { class: 'mt-2 border rounded w-full max-w-96 py-1 pl-2 pr-4 bg-white' }
+    section.py-0.px-8
+      // EVENT CATEGORY
+      .mb-3
+        = f.select :event_category_id,
+            @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
+            { prompt: t('event_category_prompt'), selected: @event_view.event_category_id },
+            { class: 'mt-2 border rounded w-full max-w-96 py-1 pl-2 pr-4 bg-white' }
 
-          // TITLE & SHORT DESCRIPTION
-          = f.text_field :title, { class: 'mt-2 w-full border rounded p-2 text-3xl font-bold', autocomplete: 'off', style: 'text-transform: capitalize', placeholder: 'Title' }
-          = f.text_field :short_description, { class: 'mt-2 w-full border rounded p-2', autocomplete: 'off', placeholder: t('events.edit.short_description_placeholder') }
+        // TITLE & SHORT DESCRIPTION
+        = f.text_field :title, { class: 'mt-2 w-full border rounded p-2 text-3xl font-bold', autocomplete: 'off', style: 'text-transform: capitalize', placeholder: 'Title' }
+        = f.text_field :short_description, { class: 'mt-2 w-full border rounded p-2', autocomplete: 'off', placeholder: t('events.edit.short_description_placeholder') }
 
-        // RSVP
-        .form-check.mb-3
-          = f.check_box :requires_rsvp, class: 'w-4 h-4 text-green-500 rounded mr-2'
-          = f.label :requires_rsvp
+      // RSVP
+      .form-check.mb-3
+        = f.check_box :requires_rsvp, class: 'w-4 h-4 text-green-500 rounded mr-2'
+        = f.label :requires_rsvp
 
-        // tabbed interface
-        .tabs.mt-6
-          nav.flex(data-turbo="false")
-            = link_to t('events.dates'),
-              '#',
-              class: 'inline-block tab-label flex-grow text-center py-1 text-gray-400 hover:text-black no-underline border-b uppercase text-sm tracking-wider selected',
-              data: { 'toggle-target' => '#tab_dates' }
+      // tabbed interface
+      .tabs.mt-6
+        nav.flex(data-turbo="false")
+          = link_to t('events.dates'),
+            '#',
+            class: 'inline-block tab-label flex-grow text-center py-1 text-gray-400 hover:text-black no-underline border-b uppercase text-sm tracking-wider selected',
+            data: { 'toggle-target' => '#tab_dates' }
 
-            = link_to t('events.location'),
-              '#',
-              class: 'inline-block tab-label flex-grow text-center py-1 text-gray-400 hover:text-black no-underline border-b uppercase text-sm tracking-wider',
-              data: { 'toggle-target' => '#tab_location' }
+          = link_to t('events.location'),
+            '#',
+            class: 'inline-block tab-label flex-grow text-center py-1 text-gray-400 hover:text-black no-underline border-b uppercase text-sm tracking-wider',
+            data: { 'toggle-target' => '#tab_location' }
 
-            = link_to t('events.description'),
-              '#',
-              class: 'inline-block tab-label flex-grow text-center py-1 text-gray-400 hover:text-black no-underline border-b uppercase text-sm tracking-wider',
-              data: { 'toggle-target' => '#tab_description' }
+          = link_to t('events.description'),
+            '#',
+            class: 'inline-block tab-label flex-grow text-center py-1 text-gray-400 hover:text-black no-underline border-b uppercase text-sm tracking-wider',
+            data: { 'toggle-target' => '#tab_description' }
 
-          section.flex.w-full.pt-3
-            .tab-content.w-full#tab_dates
-              = render partial: 'events/partials/edit/dates', locals: { f: f }
+        section.flex.w-full.pt-3
+          .tab-content.w-full#tab_dates
+            = render partial: 'events/partials/edit/dates', locals: { f: f }
 
-            .tab-content.w-full.hidden#tab_location
-              = render partial: 'events/partials/edit/location', locals: { f: f }
+          .tab-content.w-full.hidden#tab_location
+            = render partial: 'events/partials/edit/location', locals: { f: f }
 
-            .tab-content.w-full.hidden#tab_description
-              = f.rich_text_area :description, style: 'height: 24rem; overflow: auto; margin-bottom: 1rem; border-color: #888;'
+          .tab-content.w-full.hidden#tab_description
+            = f.rich_text_area :description,
+                                class: "block border mb-4 overflow-auto h-48"
 
-      // footer
-      footer.overflow-auto.pb-4.px-8.pt-1
-        .float-left
-          span.inline-block.align-middle.mt-1
-            = f.check_box :status, { class: 'w-4 h-4 text-green-500 rounded mr-2' }, 'published', 'draft'
-            = f.label :status, 'Published'
+    // footer
+    footer.overflow-auto.pb-4.px-8.pt-1
+      .float-left
+        span.inline-block.align-middle.mt-1
+          = f.check_box :status, { class: 'w-4 h-4 text-green-500 rounded mr-2' }, 'published', 'draft'
+          = f.label :status, 'Published'
 
-        .float-right
-          - if !@event.new_record? && policy(@event).cancel?
-            = link_to 'Cancel This Event',
-              unit_event_cancel_path(@unit, @event),
-              data: { turbo_frame: 'event', turbo_action: 'advance' },
-              class: 'px-4 py-2  text-sm font-bold tracking-wider uppercase no-underline mr-2'
+      .float-right
+        - if !@event.new_record? && policy(@event).cancel?
+          = link_to 'Cancel This Event',
+            unit_event_cancel_path(@unit, @event),
+            data: { turbo_frame: 'event', turbo_action: 'advance' },
+            class: 'px-4 py-2  text-sm font-bold tracking-wider uppercase no-underline mr-2'
 
 
-          = f.submit "#{@event_view.new_record? ? 'Add This Event' : 'Save Changes'}", 
-            class: "bg-scoutplan-500 px-4 py-2 border rounded text-white text-sm font-bold tracking-wider uppercase mr-2"
-          
-          = link_to t('global.cancel'),
-            @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event),
-            data: { turbo_action: 'advance' },
-            class: 'px-4 py-2 border bg-gray-200 text-black text-sm font-bold tracking-wider uppercase rounded no-underline'
+        = f.submit "#{@event_view.new_record? ? 'Add This Event' : 'Save Changes'}", 
+          class: "bg-scoutplan-500 px-4 py-2 border rounded text-white text-sm font-bold tracking-wider uppercase mr-2"
+        
+        = link_to t('global.cancel'),
+          @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event),
+          data: { turbo_action: 'advance' },
+          class: 'px-4 py-2 border bg-gray-200 text-black text-sm font-bold tracking-wider uppercase rounded no-underline'
 
 javascript:
   // tab interfaces
