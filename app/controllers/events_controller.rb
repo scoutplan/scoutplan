@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
-require 'humanize'
+require "humanize"
 
 # controller for Events
+
+# rubocop:disable Metrics/ClassLength
 class EventsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish]
@@ -114,30 +116,23 @@ class EventsController < ApplicationController
     end
 
     # TODO: EventNotifier.after_bulk_publish(@unit, events)
-    flash[:notice] = t('events.index.bulk_publish.success_message')
+    flash[:notice] = t("events.index.bulk_publish.success_message")
 
     redirect_to unit_events_path(@unit)
   end
 
   # GET /units/:unit_id/events/:id/rsvp
+  # this is a variation on the 'show' action that swaps
+  # out the RSVP panel on the modal with a form where users
+  # can add/user their RSVPs.
+  # TODO: is there a better, more RESTful way of doing this?
   def edit_rsvps
     @unit = Unit.find(params[:unit_id])
     @event = Event.find(params[:event_id])
     @event_view = EventView.new(@event)
     @current_member = @unit.membership_for(current_user)
 
-    # if we're arriving here because the user clicked the "Update RSVP" button
-    # on the Show dialog, then we're just rendering the Edit RSVP partial. If we're
-    # arriving here from a deep link, then we're going to render a modified Show view
-    # that swaps in the Edit RSVP partial at render time
-
-    if turbo_frame_request?
-      # only render the edit_rsvps partial
-    else
-      render 'show'
-      # render the show template with edit_rsvp partial in lieu of rsvp_card
-      # (can delete edit_rsvps.html.slim)
-    end
+    render "show"
   end
 
   # POST /units/:unit_id/events/:id/rsvp
@@ -177,7 +172,7 @@ class EventsController < ApplicationController
     @event.status = :cancelled
     return unless @event.save!
 
-    flash[:notice] = t('events.show.cancel.confirmation', event_title: @event.title)
+    flash[:notice] = t("events.show.cancel.confirmation", event_title: @event.title)
     redirect_to unit_events_path(@unit)
   end
 
@@ -269,3 +264,4 @@ class EventsController < ApplicationController
     Time.use_zone(@current_unit.settings(:locale).time_zone, &block)
   end
 end
+# rubocop:enable Metrics/ClassLength
