@@ -31,6 +31,7 @@ class UnitSettingsController < UnitContextController
 
   # handle scheduled task serialization
   def set_schedule
+    Time.zone = @unit.settings(:locale).time_zone
     set_digest_schedule
     set_reminder_schedule
   end
@@ -43,6 +44,7 @@ class UnitSettingsController < UnitContextController
     rule = IceCube::Rule.weekly.day(day_of_week).hour_of_day(hour_of_day).minute_of_hour(0)
 
     digest_task.clear_schedule
+    digest_task.schedule.start_time = DateTime.now # this should put IceCube into the unit's local time zone
     digest_task.schedule.add_recurrence_rule rule
     digest_task.schedule.add_recurrence_rule IceCube::Rule.minutely(60) if digest_schedule_params[:every_hour] == "yes"
 
