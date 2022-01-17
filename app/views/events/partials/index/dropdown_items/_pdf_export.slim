@@ -1,6 +1,11 @@
-li = link_to unit_events_path(@unit, format: :pdf),
-             class: "hover:bg-gray-700 inline-block px-4 py-2 w-full" do
-  .menu-glyph
+= link_to unit_events_path(@unit, format: :pdf),
+          class: "table-row hover:bg-gray-700 inline-block px-4 py-2 w-full" do
+
+  .table-cell.p-2.pl-4.text-center
     span.menu-glyph-wrapper-visible
       i.fa-solid.fa-file-pdf
-  | Download as PDF
+
+  .table-cell.p-2
+    | Download as PDF
+
+  .table-cell.p-2

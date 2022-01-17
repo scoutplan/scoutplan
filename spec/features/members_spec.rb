@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "rails_helper"
+
 describe "unit_memberships", type: :feature do
   before do
     @admin = FactoryBot.create(:unit_membership, :admin)

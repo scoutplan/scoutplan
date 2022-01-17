@@ -2,6 +2,7 @@
 
 require "rails_helper"
 
+# rubocop:disable Metrics/BlockLength
 describe "news items", type: :feature do
   before do
     User.destroy_all
@@ -34,3 +35,4 @@ describe "news items", type: :feature do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
