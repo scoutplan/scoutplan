@@ -3,7 +3,7 @@
 - mode = 'rsvp' if action_name == 'edit_rsvps'
 
 // white dialog
-.relative.w-auto.my-12.mx-2.lg:mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-xl.filter
+.relative.w-auto.my-12.mx-2.md:mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-xl.filter
 
   // CANCELLED watermark
   - if @event.cancelled?
@@ -16,7 +16,7 @@
       = t('index.events.draft')
 
   // modal header
-  header.px-8.py-5.overflow-auto
+  header.px-6.py-5.overflow-auto
     h3.m-0.font-bold.float-left.text-xl
       = @event.title
       span.align-middle.ml-2.text-base = glyph_tag(@event)
@@ -36,7 +36,7 @@
       i.fa-times.far.hover:text-black
 
   // guts of the modal        
-  section.py-0.px-8
+  section.py-0.px-6
 
     // first row: RSVP panel
     - if @event.requires_rsvp
@@ -67,27 +67,37 @@
           == @event.description
 
   // footer, containing right-justified buttons
-  footer.overflow-auto.py-5.px-6
-    .float-right.overflow-auto
+  footer.py-5.px-6
+    .flex.flex-col.md:flex-row-reverse.gap-2.text-right.min-w-full
+
+      // Done button
+      = link_to t("global.done"),
+        unit_events_path(@event.unit),
+        class: "text-sm font-bold no-underline tracking-wider uppercase text-center " \
+               "block min-w-full px-6 py-3 " \
+               "md:min-w-fit md:inline-block " \
+               "text-white bg-scoutplan-500 hover:bg-scoutplan-600 rounded",
+        data: { 'turbo-action' => 'advance' }    
 
       // Organize button (if authorized)
       - if @event.organizable? && policy(@event).organize?
         = link_to t('events.show.organize_button_caption'),
           unit_event_organize_path(@event.unit, @event),
-          class: 'inline-block px-4 py-3 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase',
+          class:  "text-sm font-bold no-underline tracking-wider uppercase text-center " \
+                  "block min-w-full px-6 py-3 mr-2 mb-2 md:mb-0" \
+                  "md:min-w-fit md:inline-block " \
+                  "text-gray-900 bg-gray-200 hover:bg-gray-300 rounded",
           data: { 'turbo-action' => 'advance', 'turbo-frame' => '_top' },
           title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)
 
       // Edit button (if authorized)
       - if policy(@event).edit? && @event.editable?
-        = link_to t('event_edit'),
+        = link_to t("event_edit"),
           edit_unit_event_path(@event.unit, @event),
-          class: 'inline-block px-4 py-3 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase',
+          class:  "text-sm font-bold no-underline tracking-wider uppercase text-center " \
+                  "block px-6 py-3 mb-2 " \
+                  "md:inline-block " \
+                  "md:mb-0 " \
+                  "text-gray-900 bg-gray-200 hover:bg-gray-300 rounded",
           data: { 'turbo-action' => 'advance' },
           title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)
-
-      // Done button
-      = link_to t('global.done'),
-        unit_events_path(@event.unit),
-        class: 'bg-scoutplan-500 inline-block px-6 py-3 mr-2 no-underline hover:bg-scoutplan-600 rounded text-white text-sm font-bold tracking-wider uppercase',
-        data: { 'turbo-action' => 'advance' }
