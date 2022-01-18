@@ -3,7 +3,7 @@
 - mode = 'rsvp' if action_name == 'edit_rsvps'
 
 // white dialog
-.relative.w-auto.my-12.mx-2.md:mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-xl.filter
+.relative.w-auto.my-2.md:my-12.mx-2.md:mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-xl.filter
 
   // CANCELLED watermark
   - if @event.cancelled?
@@ -84,8 +84,9 @@
         = link_to t('events.show.organize_button_caption'),
           unit_event_organize_path(@event.unit, @event),
           class:  "text-sm font-bold no-underline tracking-wider uppercase text-center " \
-                  "block min-w-full px-6 py-3 mr-2 mb-2 md:mb-0" \
-                  "md:min-w-fit md:inline-block " \
+                  "block px-6 py-3 mb-2 " \
+                  "md:inline-block " \
+                  "md:mb-0 " \
                   "text-gray-900 bg-gray-200 hover:bg-gray-300 rounded",
           data: { 'turbo-action' => 'advance', 'turbo-frame' => '_top' },
           title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)
