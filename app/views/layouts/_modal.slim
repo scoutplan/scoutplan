@@ -1,3 +1,11 @@
 // wall-to-wall opaque background
 .fixed.inset-0.bg-black.bg-opacity-25.z-40
   = yield
+
+css:
+  .modal {
+    max-height:calc(100vh - 1rem);
+  }
+
+javascript:
+  document.querySelector('body').classList.add("modal-open");
