@@ -121,7 +121,7 @@ Some features are gated by Flipper and need to be enabled:
 
 ## Code Conventions
 
-We're using Tailwind for styling, which results in potentially lots of classes for a single element. For elements
+We're using [Tailwind](https://tailwindcss.com) for styling, which results in potentially lots of classes for a single element. For elements
 containing more than, let's say, four classes, we're adopting the following convention when using a Rails helper:
 
 * Use string continuation (\) to categorically organize classes across multiple lines
