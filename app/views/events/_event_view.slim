@@ -16,7 +16,12 @@
       = t('index.events.draft')
 
   // modal header
-  header.px-6.py-4.overflow-auto.sticky.top-0.bg-white.z-50
+  header(class="px-6 py-4 \
+                overflow-auto sticky \
+                top-0 bg-white z-50")
+
+    // " <- necessary evil comment to restore proper code highlighting in VS Code
+
     h3.m-0.font-bold.float-left.text-xl
       = @event.title
       span.align-middle.ml-2.text-base = glyph_tag(@event)
@@ -67,68 +72,82 @@
       .flex.md:overflow-y-scroll.mt-4
         == @event.description
 
+    // button stack for mobile (these buttons are, sadly, duplicated below for horizontal/desktop
+    // orientation; my CSS-fu was insufficient for that kind of complexity, alas).
+    // TODO: extract these buttons out to partials and, at least, DRY this out a bit.
     .md:hidden
-      // Organize button (if authorized)
-      - if @event.organizable? && policy(@event).organize?
-        = link_to t('events.show.organize_button_caption'),
-          unit_event_organize_path(@event.unit, @event),
-          class:  "text-sm font-bold no-underline tracking-wider uppercase text-center " \
-                  "block px-6 py-3 mb-2 " \
-                  "md:inline-block " \
-                  "md:mb-0 " \
-                  "text-gray-900 bg-gray-200 hover:bg-gray-300 rounded",
-          data: { 'turbo-action' => 'advance', 'turbo-frame' => '_top' },
-          title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)
-
       // Edit button (if authorized)
       - if policy(@event).edit? && @event.editable?
         = link_to t("event_edit"),
           edit_unit_event_path(@event.unit, @event),
-          class:  "text-sm font-bold no-underline tracking-wider uppercase text-center " \
-                  "block px-6 py-3 " \
-                  "md:inline-block " \
-                  "md:mb-0 " \
-                  "text-gray-900 bg-gray-200 hover:bg-gray-300 rounded",
+          class:  "text-sm font-bold no-underline tracking-wider uppercase text-center" \
+                  " block px-6 py-3 mb-2" \
+                  " hover:bg-gray-100" \
+                  " text-scoutplan-500 hover:text-scoutplan-600" \
+                  " border border-scoutplan-500 rounded" \
+                  "",
           data: { 'turbo-action' => 'advance' },
-          title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)        
+          title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)
+
+      // Organize button (if authorized)
+      - if @event.organizable? && policy(@event).organize?
+        = link_to t('events.show.organize_button_caption'),
+          unit_event_organize_path(@event.unit, @event),
+          class:  "text-sm font-bold no-underline tracking-wider uppercase text-center" \
+                  " block px-6 py-3" \
+                  " bg-scoutplan-100 hover:bg-scoutplan-200" \
+                  " text-scoutplan-500 hover:text-scoutplan-600" \
+                  " rounded" \
+                  "",
+          data: { 'turbo-action' => 'advance', 'turbo-frame' => '_top' },
+          title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)
 
   // footer, containing right-justified buttons
-  footer.pt-2.pb-4.px-6.rounded.w-full.bg-white.sticky.bottom-0
+  footer.pt-2.md:pt-4.pb-4.px-6.rounded.w-full.bg-white.sticky.bottom-0
     .flex.justify-between
-      div
+
+      // left side (on desktop)
+      div.hidden.md:block
+
+          // Edit button (if authorized)
+          - if policy(@event).edit? && @event.editable?
+            = link_to t("event_edit"),
+              edit_unit_event_path(@event.unit, @event),
+              class:  "text-sm font-bold no-underline tracking-wider uppercase text-center" \
+                      " hidden md:inline-block " \
+                      " px-6 py-3 pl-0 mr-2" \
+                      " text-scoutplan-500 hover:text-scoutplan-600" \
+                      " rounded" \
+                      "",
+              data: { 'turbo-action' => 'advance' },
+              title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)
+
+      // right side (on desktop)
+      div.flex-auto.md:flex-none
+
         // Organize button (if authorized)
         - if @event.organizable? && policy(@event).organize?
           = link_to t('events.show.organize_button_caption'),
             unit_event_organize_path(@event.unit, @event),
             class:  "text-sm font-bold no-underline tracking-wider uppercase text-center " \
-                    "block px-6 pl-0 py-3 mb-2 " \
-                    "md:inline-block " \
-                    "md:mb-0 " \
-                    "text-scoutplan-500 hover:text-scoutplan-600",
+                    " hidden md:inline-block" \
+                    " px-6 py-3 mr-2" \
+                    " bg-scoutplan-100 hover:bg-scoutplan-200" \
+                    " text-scoutplan-500 hover:text-scoutplan-600" \
+                    "",
             data: { 'turbo-action' => 'advance', 'turbo-frame' => '_top' },
-            title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)      
+            title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)   
 
-
-      div
-        .hidden.md:inline-block 
-          // Edit button (if authorized)
-          - if policy(@event).edit? && @event.editable?
-            = link_to t("event_edit"),
-              edit_unit_event_path(@event.unit, @event),
-              class:  "text-sm font-bold no-underline tracking-wider uppercase text-center " \
-                      "block px-6 py-3 mr-2 " \
-                      "bg-scoutplan-100 text-scoutplan-500 " \
-                      "hover:bg-scoutplan-200 hover:text-scoutplan-600 " \
-                      "rounded",
-              data: { 'turbo-action' => 'advance' },
-              title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)   
 
         // Done button
         = link_to t("global.done"),
           unit_events_path(@event.unit),
-          class: "text-sm font-bold no-underline tracking-wider uppercase text-center " \
-                "block px-4 py-3 " \
-                "md:inline-block md:min-w-fit md:inline-block min-w-96 " \
-                "text-white bg-scoutplan-500 hover:bg-scoutplan-600 rounded",
+          class:  "text-sm font-bold no-underline tracking-wider uppercase text-center " \
+                  " block md:inline-block" \
+                  " px-4 py-3" \
+                  " md:min-w-fit min-w-96" \
+                  " text-white bg-scoutplan-500 hover:bg-scoutplan-600" \
+                  " rounded" \
+                  "",
           data: { 'turbo-action' => 'advance' },
           onclick: "modalOpen(false);"
