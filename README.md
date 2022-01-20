@@ -118,3 +118,48 @@ Some features are gated by Flipper and need to be enabled:
 * :receive_rsvp_confirmation
 * :receive_digest
 * :receive_daily_reminder
+
+## Code Conventions
+
+We're using Tailwind for styling, which results in potentially lots of classes for a single element. For elements
+containing more than, let's say, four classes, we're adopting the following convention when using a Rails helper:
+
+* Use string continuation (\) to categorically organize classes across multiple lines
+* Spaces belong at the start of each line, except the first
+* Place the ending comma on its own line along with an empty string (can be omitted if `class` is the last argument)
+* Gang variations together (e.g. color and hover:color) on their own lines
+* Order categories thusly:
+
+1. Font and text
+1. Display: block, inline, flex, etc.
+1. Layout: padding, margins, width, min-width, etc.
+1. Background colors
+1. Foreground colors
+1. Other appearance classes (e.g. borders, rounded, etc.)
+
+Example:
+```
+class:  "text-sm font-bold no-underline tracking-wider uppercase text-center" \
+        " hidden md:inline-block" \
+        " px-6 py-3 mr-2" \
+        " bg-scoutplan-100 hover:bg-scoutplan-200" \
+        " text-scoutplan-500 hover:text-scoutplan-600" \
+        "",
+```
+
+In the case of non-helper Slim elements, up to four classes can be specified inline:
+
+```
+header.px-6.py-4.overflow-auto.sticky
+```
+
+Elements needing more than four elements should be specified using Slim attribute notation (note use of ugly Slim comment
+to straighten out code coloring):
+
+```
+header(class="px-6 py-4 \
+              overflow-auto sticky \
+              top-0 bg-white z-50")
+
+  // " <- necessary evil comment to restore proper code highlighting in VS Code
+```
