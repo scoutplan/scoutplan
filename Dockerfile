@@ -1,4 +1,4 @@
-# FROM madnight/docker-alpine-wkhtmltopdf as wkhtmltopdf_image
+FROM madnight/docker-alpine-wkhtmltopdf as wkhtmltopdf_image
 
 FROM ruby:3.0.2-alpine
 
@@ -14,7 +14,7 @@ RUN apk add --no-cache --update \
     libxrender-dev \
     fontconfig \
     freetype \
-    wkhtmltopdf \
+    # wkhtmltopdf \
     ttf-dejavu \
     ttf-opensans \
     ttf-font-awesome  
@@ -29,7 +29,7 @@ RUN rake assets:precompile
 
 # pull over an Alpine-friendly wkhtmltopdf binary, as described here:
 # https://github.com/mileszs/wicked_pdf/issues/841#issuecomment-507759176
-# COPY --from=wkhtmltopdf_image /bin/wkhtmltopdf /usr/bin/wkhtmltopdf
+COPY --from=wkhtmltopdf_image /bin/wkhtmltopdf /usr/bin/wkhtmltopdf
 
 EXPOSE 3000
 

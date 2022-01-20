@@ -1,3 +1,16 @@
 // wall-to-wall opaque background
 .fixed.inset-0.bg-black.bg-opacity-25.z-40
   = yield
+
+css:
+  .modal {
+    max-height:calc(100vh - 1rem);
+  }
+
+javascript:
+  // add or remove `modal-open` class to <body>
+  function modalOpen(isOpen) {
+    document.body.classList.toggle('modal-open', isOpen);
+  }
+
+  modalOpen(true);
