@@ -2,6 +2,11 @@
 
 require "active_support/core_ext/integer/time"
 
+Rails.application.default_url_options = {
+  host: ENV["SCOUTPLAN_HOST"],
+  protocol: ENV["SCOUTPLAN_PROTOCOL"]
+}
+
 Rails.application.configure do
   config.hosts << "go.scoutplan.org"
   config.hosts << "kit.fontawesome.com"

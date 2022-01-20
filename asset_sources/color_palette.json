@@ -1,22 +1,24 @@
+// https://palettte.app/
+
 [
   {
     "paletteName": "Scoutplan",
     "swatches": [
       {
         "name": "scoutplan-100",
-        "color": "E9E3D7"
+        "color": "F6F1E7"
       },
       {
         "name": "scoutplan-200",
-        "color": "E5AF75"
+        "color": "F4E1CC"
       },
       {
         "name": "scoutplan-300",
-        "color": "ED8844"
+        "color": "EDAD81"
       },
       {
         "name": "scoutplan-400",
-        "color": "EA7731"
+        "color": "EB8547"
       },
       {
         "name": "scoutplan-500",
