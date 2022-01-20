@@ -8,4 +8,9 @@ css:
   }
 
 javascript:
-  document.querySelector('body').classList.add("modal-open");
+  // add or remove `modal-open` class to <body>
+  function modalOpen(isOpen) {
+    document.body.classList.toggle('modal-open', isOpen);
+  }
+
+  modalOpen(true);

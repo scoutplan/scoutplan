@@ -3,7 +3,7 @@
 - mode = 'rsvp' if action_name == 'edit_rsvps'
 
 // white dialog
-.modal.w-auto.my-2.md:my-12.mx-2.md:mx-auto.max-w-3xl.bg-white.rounded.z-40.drop-shadow-xl.filter.overflow-y-scroll
+.modal.w-auto.my-2.mx-2.md:mx-auto.max-w-3xl.bg-white.rounded.z-40.drop-shadow-xl.filter.overflow-y-auto
 
   // CANCELLED watermark
   - if @event.cancelled?
@@ -16,7 +16,7 @@
       = t('index.events.draft')
 
   // modal header
-  header.px-6.py-5.overflow-auto.sticky
+  header.px-6.py-4.overflow-auto.sticky.top-0.bg-white.z-50
     h3.m-0.font-bold.float-left.text-xl
       = @event.title
       span.align-middle.ml-2.text-base = glyph_tag(@event)
@@ -32,18 +32,19 @@
     // close "X" button
     = link_to unit_events_path(@event.unit),
       class: 'inline-block float-right text-gray-500 hover:text-gray-500',
-      data: { 'turbo-action' => 'advance' } do
+      data: { 'turbo-action' => 'advance' },
+      onclick: "modalOpen(false);" do
       i.fa-times.far.hover:text-black
 
   // guts of the modal
   //.overflow-y-scroll.md:overflow-hidden  
-  section.pb-2.px-6
+  section.px-6
 
     // first row: RSVP panel
     - if @event.requires_rsvp
-      .bg-gray-100.rounded.mb-3.flex
+      .bg-gray-100.rounded.mb-3
         = turbo_frame_tag 'rsvp', class: 'flex w-full'
-          .p-3.flex.w-full(class="#{ mode == 'rsvp' ? 'attention' : '' }" id="rsvp_wrapper")
+          .p-3.w-full(class="#{ mode == 'rsvp' ? 'attention' : '' }" id="rsvp_wrapper")
             - if mode == 'rsvp'
               = render partial: 'edit_rsvp_form'
             - else
@@ -63,7 +64,7 @@
 
     // third row: longform description, if present
     - if @event.description.present?
-      .flex.overflow-y-scroll.mt-4
+      .flex.md:overflow-y-scroll.mt-4
         == @event.description
 
     // Organize button (if authorized)
@@ -83,7 +84,7 @@
       = link_to t("event_edit"),
         edit_unit_event_path(@event.unit, @event),
         class:  "text-sm font-bold no-underline tracking-wider uppercase text-center " \
-                "block px-6 py-3 mb-2 " \
+                "block px-6 py-3 " \
                 "md:inline-block " \
                 "md:mb-0 " \
                 "text-gray-900 bg-gray-200 hover:bg-gray-300 rounded",
@@ -91,7 +92,7 @@
         title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)        
 
   // footer, containing right-justified buttons
-  footer.py-5.px-6.rounded.w-full.bg-white.sticky.bottom-0
+  footer.py-2.px-6.rounded.w-full.bg-white.sticky.bottom-0
     .flex.flex-col.md:flex-row-reverse.gap-2.text-right.min-w-full
 
       // Done button
@@ -102,4 +103,4 @@
                "md:min-w-fit md:inline-block " \
                "text-white bg-scoutplan-500 hover:bg-scoutplan-600 rounded",
         data: { 'turbo-action' => 'advance' },
-        onclick: "document.body.classList.remove('modal-open');"
+        onclick: "modalOpen(false);"
