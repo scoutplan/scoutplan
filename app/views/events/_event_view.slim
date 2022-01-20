@@ -95,33 +95,39 @@
   // footer, containing right-justified buttons
   footer.pt-2.pb-4.px-6.rounded.w-full.bg-white.sticky.bottom-0
     .flex.justify-between
+
+      // left side (on desktop)
       div
-        // Organize button (if authorized)
-        - if @event.organizable? && policy(@event).organize?
-          = link_to t('events.show.organize_button_caption'),
-            unit_event_organize_path(@event.unit, @event),
+
+        // Edit button (if authorized)
+        - if policy(@event).edit? && @event.editable?
+          = link_to t("event_edit"),
+            edit_unit_event_path(@event.unit, @event),
             class:  "text-sm font-bold no-underline tracking-wider uppercase text-center " \
-                    "block px-6 pl-0 py-3 mb-2 " \
-                    "md:inline-block " \
-                    "md:mb-0 " \
-                    "text-scoutplan-500 hover:text-scoutplan-600",
-            data: { 'turbo-action' => 'advance', 'turbo-frame' => '_top' },
-            title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)      
+                    "block px-6 py-3 pl-0 mr-2 " \
+                    "rounded " \
+                    "text-scoutplan-500 hover:text-scoutplan-600" \
+                    "",
+            data: { 'turbo-action' => 'advance' },
+            title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)
 
-
+      // right side (on desktop)
       div
         .hidden.md:inline-block 
-          // Edit button (if authorized)
-          - if policy(@event).edit? && @event.editable?
-            = link_to t("event_edit"),
-              edit_unit_event_path(@event.unit, @event),
+          // Organize button (if authorized)
+          - if @event.organizable? && policy(@event).organize?
+            = link_to t('events.show.organize_button_caption'),
+              unit_event_organize_path(@event.unit, @event),
               class:  "text-sm font-bold no-underline tracking-wider uppercase text-center " \
                       "block px-6 py-3 mr-2 " \
-                      "bg-scoutplan-100 text-scoutplan-500 " \
-                      "hover:bg-scoutplan-200 hover:text-scoutplan-600 " \
-                      "rounded",
-              data: { 'turbo-action' => 'advance' },
-              title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)   
+                      "md:inline-block " \
+                      "md:mb-0 " \
+                      "bg-scoutplan-100 hover:bg-scoutplan-200 " \
+                      "text-scoutplan-500 hover:text-scoutplan-600 " \
+                      "",
+              data: { 'turbo-action' => 'advance', 'turbo-frame' => '_top' },
+              title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)   
+
 
         // Done button
         = link_to t("global.done"),
