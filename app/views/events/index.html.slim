@@ -1,11 +1,11 @@
 = turbo_frame_tag "main"
   .w-full.relative.mx-auto(data-controller="event")
-    = render partial: 'events/partials/index/header'
-    = render partial: 'events/partials/index/no_events' if @events.count.zero?
-    = render partial: 'events/partials/index/event_table' if @events.count.positive?
+    = render partial: "events/partials/index/header"
+    = render partial: "events/partials/index/no_events" if @events.count.zero?
+    = render partial: "events/partials/index/event_table" if @events.count.positive?
 
   - content_for :body_classes do
-    = 'showing-only-rsvp-events' if session[:view] == 'rsvps'
+    = "showing-only-rsvp-events showing-future-events" if params[:mode] == 'rsvps'
 
   = render partial: 'events/partials/styles'
   = javascript_include_tag "events"
