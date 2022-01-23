@@ -1,11 +1,15 @@
 .max-w-4xl.mx-auto.lg:w-full
   ul.p-0.mx-0.mb-12.list-none
+
+    // X button
     li#main_nav_item_close.pb-2.lg_hidden
       div(data-controller='event')
         button.p-2.lg:hidden(data-action="event#toggleSideNav")
           span.w-8.inline-block.text-center.text-gray-600
             i.fa-xmark.fa-solid
             |&nbsp;&nbsp;
+
+    // Events
     li#main_nav_item_events
       = link_to unit_events_path(@current_unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-gray-200 rounded-md' do
         span.w-8.inline-block.text-center.text-yellow-500
@@ -14,6 +18,7 @@
         span.text-black
           = t('events.index.title')
 
+    // Members
     li#main_nav_item_members
       = link_to unit_members_path(@current_unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-gray-200 rounded-md' do
         span.w-8.inline-block.text-center.text-indigo-500
@@ -22,6 +27,7 @@
         span.text-black
           = t('members.title')
 
+    // Planner
     li#main_nav_item_planner
       = link_to unit_plans_path(@current_unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-gray-200 rounded-md' do
         span.w-8.inline-block.text-center.text-green-500
@@ -30,6 +36,7 @@
         span.text-black
           = t('planner.title')
 
+    // Newsletter
     li#main_nav_item_newsletter
       = link_to unit_newsletter_drafts_path(@current_unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-gray-200 rounded-md' do
         span.w-8.inline-block.text-center.text-purple-500

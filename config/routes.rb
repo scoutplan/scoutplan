@@ -43,6 +43,7 @@ Rails.application.routes.draw do
 
     resources :events do
       collection do
+        get "my_rsvps", to: "events#index", defaults: { mode: "rsvps" }
         post "bulk_publish"
       end
       get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"

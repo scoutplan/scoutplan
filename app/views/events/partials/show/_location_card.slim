@@ -9,13 +9,15 @@
 
   dl.mb-0
     - if @event.location.present?
-      dt.font-bold Location
-      dd.mb-3 = @event.location
+      dt.font-bold(role="heading" aria-level="5") = t("events.show.location")
+      dd.mb-3
+        address.not-italic = @event.location
 
     - if @event.address.present?
-      dt.font-bold Address
-      dd.mb-3 = @event.address
+      dt.font-bold (role="heading" aria-level="5") = t("events.show.address")
+      dd.mb-3
+        address.not-italic = @event.address
 
     - if @event.departs_from.present?
-      dt.font-bold Depart From
+      dt.font-bold(role="heading" aria-level="5")  = t("events.show.departs_from")
       dd.mb-3 = @event.departs_from

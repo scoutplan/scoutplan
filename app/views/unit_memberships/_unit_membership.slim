@@ -2,43 +2,68 @@
 - row_classes += " member-#{ unit_membership.member_type }"
 - row_classes += " member-admin" if unit_membership.admin?
 - row_classes += " member-inactive" if unit_membership.status_inactive?
+- @current_letter ||= ""
 
-tr.border-t.hover:bg-gray-100.member.member-row(class="#{ row_classes }" id="member_#{unit_membership.id}_row")
+- if unit_membership.display_first_name.first != @current_letter
+  - @current_letter = unit_membership.display_first_name.first
+  tr.letter-index
+    td.px-2.pt-2.pb-4
+      .text-scoutplan-500.font-bold.text-base
+        a(name="#{@current_letter}")
+        = @current_letter
+
+tr.border-b.hover:bg-gray-100.member.member-row(class="#{ row_classes }" id="member_#{unit_membership.id}_row")
   td.selection
     = link_to unit_membership.full_display_name, edit_member_path(unit_membership), style: 'display: none;', data: { turbo_action: 'advance', turbo_frame: 'member' }
     = check_box_tag "members[]", unit_membership.id, false, class: 'form-check-input bulk-edit-checkbox'
 
-  td.member-type.w-1
-    = link_to unit_member_path(@unit, unit_membership),
-      class: 'inline-block px-2 py-2 whitespace-nowrap', data: { turbo_frame: 'member', turbo_action: 'advance' } do
-      - if unit_membership.status_inactive? && unit_membership.youth?
-        i.text-gray-300.fas.fa-user(title="Inactive Youth")
-      - elsif unit_membership.status_inactive? && unit_membership.adult?
-        i.text-gray-300.far.fa-user(title="Inactive Adult")
-      - elsif unit_membership.admin? && unit_membership.adult?
-        i.text-yellow-500.fad.fa-user-crown(title="Adult Admin")
-      - elsif unit_membership.admin? && unit_membership.youth?        
-        i.text-yellow-500.fas.fa-user-crown(title="Youth Admin")
-      - elsif unit_membership.adult?
-        i.text-purple-700.far.fa-user(title="Adult")
-      - elsif unit_membership.youth?
-        i.text-purple-700.fas.fa-user(title="Youth")
-
   td.name.w-1
     = link_to unit_member_path(@unit, unit_membership),
-      class: 'inline-block px-2 py-2 whitespace-nowrap w-full', data: { turbo_action: 'advance' } do
-      = unit_membership.full_display_name
+      class: "block px-2 py-2 whitespace-nowrap w-full",
+      data: { turbo_action: 'advance' } do
+      .block.font-bold = unit_membership.full_display_name
 
-  td.role.w-1
-    = link_to unit_member_path(@unit, unit_membership),
-          class: 'inline-block px-2 py-2 whitespace-nowrap', data: { turbo_action: 'advance' } do
+    // contact info below name
+    .text-sm.text-gray-500.px-2.min-h-4.whitespace-nowrap
+      - if unit_membership.emailable?
+        = mail_to unit_membership.email,
+                  class: "inline-block pt-0 pb-3 hover:text-gray-700" do
+          i.fa-envelope.fas.mr-1.text-gray-300
+          = unit_membership.email
 
-  td.parents-list.w-1
-    = link_to unit_member_path(@unit, unit_membership),
-      class: 'text-left px-2 py-2 inline-block w-full whitespace-nowrap', data: { turbo_action: 'advance' } do
-      = unit_membership.parent_relationships.map { |r| r.parent_member.full_name }.join(', ')
+      - if unit_membership.phone.present?
+        = link_to "tel:#{unit_membership.phone}",
+                   class: "inline-block pt-0 pb-3 hover:text-gray-700" do
+          i.fa-phone.fas.ml-5.mr-1.text-gray-300
+          = number_to_phone unit_membership.phone
 
-  td.children-list
+  td.role.w-1.hidden.md:table-cell
     = link_to unit_member_path(@unit, unit_membership),
-      class: 'text-left px-2 py-2 inline-block w-full', data: { turbo_action: 'advance' } do
-      = unit_membership.child_relationships.map { |r| r.child_member.full_name }.join(', ')
+              class: 'inline-block px-2 py-2 whitespace-nowrap',
+              data: { turbo_action: 'advance' } do
+
+              .text-xs.font-bold.mt-1.flex.gap-1.whitespace-nowrap
+                - case unit_membership.member_type
+                - when "adult"
+                  .inline-block.bg-amber-100.text-amber-700.px-2.py-1.rounded-md Adult
+                - when "youth"
+                  .inline-block.bg-lime-100.text-lime-700.px-2.py-1.rounded-md Youth
+
+                - case unit_membership.status
+                - when "active"
+                  .inline-block.bg-cyan-100.text-cyan-700.px-2.py-1.rounded-md Active
+                - when "inactive"
+                  .inline-block.bg-rose-100.text-rose-700.px-2.py-1.rounded-md Inactive
+
+  td.family-members.w-1.px-2.hidden.sm:table-cell
+    .flex.gap-4.whitespace-nowrap
+      - unit_membership.family(include_self: false).map do |m|
+        = link_to unit_member_path(@unit, m),
+                  class: "hover:text-gray-700",
+                  turbo: { frame: "main" } do
+          - case m.member_type
+          - when "youth"
+            i.fa-user.fad.mr-1.text-lime-500
+          - when "adult"
+            i.fa-user.fad.mr-1.text-amber-500
+          = m.display_first_name

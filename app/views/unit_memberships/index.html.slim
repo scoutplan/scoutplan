@@ -1,23 +1,18 @@
-.w-full.mx-auto
+.max-w-4xl.mx-auto
   = turbo_frame_tag('member_list')
     = render partial: 'unit_memberships/partials/index/header'
     = form_tag bulk_update_unit_members_path(@unit), id: 'bulk_edit_form'
-      table.w-full
-        thead
+      table.w-full.mb-12
+        thead.sticky.relative
           tr
             th.selection.text-left.text-black
               = check_box_tag 'all_visible_events', 'on', false, class: 'form-check-input', id: 'select_all_members_checkbox'
-            th.member-type.text-left.px-2.py-2.text-black
             th.text-left.px-2.py-2.text-black = t('members.name')
-            th.role.text-left.px-2.py-2.text-black
-            th.text-left.px-2.py-2.text-black.whitespace-nowrap = t('members.parent_guardian')
-            th.text-left.px-2.py-2.text-black = t('members.children')
+            th.hidden.sm:table-cell.badges.text-left.px-2.py-2.text-black Status
+            th.hidden.md:table-cell.px-2.py-2.text-black.text-left Family
 
         tbody
           = render @unit_memberships
-
-// empty turbo frame to be populated by a Member modal as needed
-= turbo_frame_tag 'member'
 
 = render partial: 'events/partials/styles'
 
@@ -41,12 +36,6 @@ scss:
 
     #bulk_edit_options {
       display: inline-block;
-    }
-  }
-
-  tr.member-inactive {
-    td a {
-      text-decoration: line-through;
     }
   }
 

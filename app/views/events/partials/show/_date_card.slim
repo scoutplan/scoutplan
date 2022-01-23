@@ -31,6 +31,5 @@
 
 - if @event.series?
   .text-sm.text-gray-500.text-center.mt-1
-    i.fas.fa-repeat
-    |&nbsp;
-    = "#{ @event.series_children.count + @event.series_siblings.count + 1 } events in this series"      
+    i.fas.fa-repeat.mr-2
+    = t("events.show.series_count", count: @event.series_children.count + @event.series_siblings.count + 1)

@@ -78,8 +78,10 @@ class UnitMembership < ApplicationRecord
     child_relationships.map(&:child_member)
   end
 
-  def family
-    (children | parents).append(self).sort_by(&:first_name)
+  def family(include_self: true)
+    res = (children | parents)
+    res.append(self) if include_self
+    res.sort_by(&:first_name)
   end
 
   def contactable_object

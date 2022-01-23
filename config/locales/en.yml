@@ -176,6 +176,10 @@ en:
       organize_button_caption: 'Manage RSVPs'
       edit_reason_admin:      "Not available to most, but available to you because you're a %{unit_name} administrator."
       organize_reason_admin:  "Not available to most, but available to you because you're a %{unit_name} administrator."
+      location:               "Location"
+      address:                "Address"
+      departs_from:           "Departs From"
+      series_count:           "%{count} events in this series"
     
     edit:
       short_description_placeholder: 'Brief description (optional, appears in email & text)'
