@@ -179,6 +179,7 @@ en:
       location:               "Location"
       address:                "Address"
       departs_from:           "Departs From"
+      series_count:           "%{count} events in this series"
     
     edit:
       short_description_placeholder: 'Brief description (optional, appears in email & text)'
