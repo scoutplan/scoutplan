@@ -1,7 +1,2 @@
-// unit_memberships#show
-
-= turbo_frame_tag 'member_list', src: unit_members_path(@unit)
-= turbo_frame_tag 'member'
-  = render partial: "member_view", layout: "layouts/modal"
-
-= render partial: 'events/partials/styles'
+= turbo_frame_tag "main"
+  = render partial: "member_view"
