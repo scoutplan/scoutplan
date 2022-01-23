@@ -23,7 +23,7 @@ class Event < ApplicationRecord
   after_create :create_series, if: :repeats_until?
   after_initialize :set_defaults, if: :new_record?
 
-  enum status: { draft: 0, published: 1, cancelled: 2 }
+  enum status: { draft: 0, published: 1, cancelled: 2, archived: 3 }
 
   scope :past,          -> { where("starts_at < ?", Date.today) }
   scope :future,        -> { where("starts_at > ?", Date.today) }

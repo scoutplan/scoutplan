@@ -4,7 +4,8 @@
 
   ul.whitespace-nowrap.w-full.mb-0
     - @current_family.each do |member|
-      - rsvp = rsvps.find_by(unit_membership: member)
+      / - rsvp = rsvps.find_by(unit_membership: member)
+      - rsvp = rsvps.select { |r| r.unit_membership == member }&.first
       - has_family_rsvps = has_family_rsvps || rsvp.present?
 
       li.inline-block.ml-3
