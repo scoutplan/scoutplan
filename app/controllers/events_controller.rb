@@ -12,8 +12,8 @@ class EventsController < ApplicationController
   around_action :set_time_zone
 
   def index
-    @events = UnitEventQuery.new(@unit, @current_member).execute
-    @event_drafts = @events.draft
+    @events = UnitEventQuery.new(@current_member).execute
+    @event_drafts = @events.select { |e| e.draft? }
     @presenter = EventPresenter.new
     @current_family = @current_member.family
     @current_year = @current_month = nil
@@ -200,12 +200,21 @@ class EventsController < ApplicationController
   # we don't guarantee that @unit is populated, hence...
   # @display_unit is used for global nav and other common
   # elements where unit is needed
+  #
+  # ^ kludge alert...this whole @unit / @current_unit thing needs to be undone...it sucks
 
   # for index, new, and create
+  # rubocop:disable Style/SymbolArray
   def find_unit
-    @current_unit = @unit = Unit.includes(:setting_objects).find(params[:unit_id])
+    @current_unit = Unit.includes(
+      :setting_objects,
+      unit_memberships: [:user, :parent_relationships, :child_relationships]
+    ).find(params[:unit_id])
+    # @current_member = @unit.membership_for(current_user)
+    @unit = @current_unit
     @current_member = @unit.membership_for(current_user)
   end
+  # rubocop:enable Style/SymbolArray
 
   # for show, edit, update, destroy...important that @unit
   # is *not* set for those actions

@@ -35,8 +35,10 @@ html
           // content of the nav
           = render partial: 'layouts/nav'
       
+      // main
       main.relative.h-screen.flex-grow.px-6.md:px-16.overflow-y-scroll
-        = yield
+        = turbo_frame_tag "main"
+          = yield
   
   footer
     /!  CI #{ENV["GITHUB_RUN_NUMBER"]}

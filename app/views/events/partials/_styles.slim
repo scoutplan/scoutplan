@@ -269,25 +269,18 @@ scss:
     }
   } 
 
-javascript:
-  document.addEventListener('click', function(event) {
-    var openMenus = document.querySelectorAll('.menu-open');
-    if (openMenus.length == 0) {
-      return;
-    }
-    openMenus.forEach(function(elem) {
-      if (elem.contains(event.target)) {
-        // clicked in the menu
-      } else {
-        elem.classList.remove('menu-open');
-      }
-    });
-  });
+  /* lil' arrow on bottom of tooltips */
+  .tooltip::after {
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;    
+  }
 
-  document.querySelectorAll('.dropdown a').forEach(function(linkElem) {
-    linkElem.addEventListener('click', function(event) {
-      document.querySelectorAll('.dropdown').forEach(function(elem) {
-        elem.classList.remove('menu-open');
-      })
-    });
-  });
+  body.modal-open main {
+    overflow: hidden;
+  }

@@ -3,7 +3,7 @@
 - @format_date = '%Y-%m-%d'
 - @format_time = '%H:%M:%S'
 
-.relative.w-auto.my-12.mx-auto.max-w-3xl.bg-white.rounded.z-50.drop-shadow-xl.filter
+.mx-auto.max-w-3xl
   = form_with model: @event_view, scope: 'event', url: url, method: method, data: { 'turbo-action' => 'advance' } do |f|
     header.h-3
 
@@ -50,8 +50,7 @@
             = render partial: 'events/partials/edit/location', locals: { f: f }
 
           .tab-content.w-full.hidden#tab_description
-            = f.rich_text_area :description,
-                                class: "block border mb-4 overflow-auto h-48"
+            = f.rich_text_area :description, class: "block border mb-4 overflow-auto h-48"
 
     // footer
     footer.overflow-auto.pb-4.px-8.pt-1
