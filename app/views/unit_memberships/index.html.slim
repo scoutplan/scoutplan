@@ -2,14 +2,14 @@
   = turbo_frame_tag('member_list')
     = render partial: 'unit_memberships/partials/index/header'
     = form_tag bulk_update_unit_members_path(@unit), id: 'bulk_edit_form'
-      table.w-full
-        thead
+      table.w-full.mb-12
+        thead.sticky.relative
           tr
             th.selection.text-left.text-black
               = check_box_tag 'all_visible_events', 'on', false, class: 'form-check-input', id: 'select_all_members_checkbox'
             th.text-left.px-2.py-2.text-black = t('members.name')
-            th.badges.text-left.px-2.py-2.text-black Status
-            th.px-2.py-2.text-black.text-left Family
+            th.hidden.sm:table-cell.badges.text-left.px-2.py-2.text-black Status
+            th.hidden.md:table-cell.px-2.py-2.text-black.text-left Family
 
         tbody
           = render @unit_memberships
