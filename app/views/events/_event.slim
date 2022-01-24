@@ -18,7 +18,7 @@ tr.border-b.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{ro
     = check_box_tag "event_ids[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
 
   // dates & days
-  td.event-dates.w-px
+  td.event-dates.w-px.pr-6
     = link_to unit_event_path(@unit, event),
       class: "row-link cursor-pointer no-underline whitespace-nowrap start-day px-2 py-2",
       data: { turbo_frame: turbo_frame_name, turbo_action: "advance" } do
@@ -43,13 +43,16 @@ tr.border-b.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{ro
           i.fas.fa-comment-alt-lines.mx-2.text-green-600(title="#{description_text}")
 
       .text-gray-500.text-sm
-        = event.location.presence || raw("&nbsp;")
+        - if event.location.present?
+          i.fa-location-dot.fas.text-gray-300.mr-1
+          = event.location
+        - else
+          = raw("&nbsp;")
 
   // glyph
   td.event-glyph.w-px.hidden.sm:table-cell
     = link_to unit_event_path(@unit, event),
-      class: "rounded text-sm px-3 py-3 row-link cursor-pointer no-underline w12 glyph whitespace-nowrap",
-      style: "background-color: #{event.category.color}",
+      class: "row-link cursor-pointer no-underline w12 glyph whitespace-nowrap",
       data: { turbo_frame: turbo_frame_name, turbo_action: "advance" } do
       span.w-10.text-center
         = glyph_tag(event)
