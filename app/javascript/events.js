@@ -1,9 +1,9 @@
 /* scroll event list */
-document.querySelector('#event_table_container').addEventListener('wheel', function(event) {
-  var div = event.target;
-  console.log(div.scrollYOffset);
-  document.querySelector('#page_header').classList.add('border-b', div.offsetTop > 500);
-});
+// document.querySelector('#event_table_container').addEventListener('wheel', function(event) {
+//   var div = event.target;
+//   console.log(div.scrollYOffset);
+//   document.querySelector('#page_header').classList.add('border-b', div.offsetTop > 500);
+// });
 
 /* BULK PUBLISH */
 

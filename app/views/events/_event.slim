@@ -22,18 +22,11 @@ tr.border-b.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{ro
     = link_to unit_event_path(@unit, event),
       class: "row-link cursor-pointer no-underline whitespace-nowrap start-day px-2 py-2",
       data: { turbo_frame: turbo_frame_name, turbo_action: "advance" } do
-      .text-3xl.font-semibold
+      .text-base.font-bold
         = raw(@presenter.dates_to_s)
       
       .text-sm.text-gray-500.font-semibold.uppercase
         = raw(@presenter.days_to_s)
-
-  // glyph
-  td.event-glyph.w-px.hidden.sm:table-cell
-    = link_to unit_event_path(@unit, event),
-      class: "px-3 py-3 row-link cursor-pointer no-underline w12 text-center glyph",
-      data: { turbo_frame: turbo_frame_name, turbo_action: "advance" } do
-      = glyph_tag(event)
       
   // title
   td.event-title
@@ -49,8 +42,19 @@ tr.border-b.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{ro
         - if event.description.present?
           i.fas.fa-comment-alt-lines.mx-2.text-green-600(title="#{description_text}")
 
-      .text-gray-500
-        = event.location
+      .text-gray-500.text-sm
+        = event.location.presence || raw("&nbsp;")
+
+  // glyph
+  td.event-glyph.w-px.hidden.sm:table-cell
+    = link_to unit_event_path(@unit, event),
+      class: "rounded text-sm px-3 py-3 row-link cursor-pointer no-underline w12 glyph whitespace-nowrap",
+      style: "background-color: #{event.category.color}",
+      data: { turbo_frame: turbo_frame_name, turbo_action: "advance" } do
+      span.w-10.text-center
+        = glyph_tag(event)
+      span.ml-1
+        = event.category.name
 
   // short description
   td.event-short-description.hidden.2xl:table-cell
