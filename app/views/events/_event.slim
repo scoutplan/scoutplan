@@ -54,9 +54,9 @@ tr.border-b.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{ro
     = link_to unit_event_path(@unit, event),
       class: "row-link cursor-pointer no-underline w12 glyph whitespace-nowrap",
       data: { turbo_frame: turbo_frame_name, turbo_action: "advance" } do
-      span.w-10.text-center
+      .w-7.h-7.inline-flex.items-center.justify-center.rounded-full.bg-gray-800.text-white.text-sm(style="background-color:#{event.category.color}")
         = glyph_tag(event)
-      span.ml-1
+      span.ml-2
         = event.category.name
 
   // short description

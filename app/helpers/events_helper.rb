@@ -12,7 +12,6 @@ module EventsHelper
         :i,
         nil,
         class: "fad fa-#{event.event_category.glyph}",
-        style: "color: #{event.event_category.color}",
         title: event.event_category.name
       )
     end
