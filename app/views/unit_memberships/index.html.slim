@@ -1,5 +1,5 @@
-.max-w-4xl.mx-auto
-  = turbo_frame_tag('member_list')
+= turbo_frame_tag("main")
+  .max-w-4xl.mx-auto
     = render partial: 'unit_memberships/partials/index/header'
     = form_tag bulk_update_unit_members_path(@unit), id: 'bulk_edit_form'
       table.w-full.mb-12

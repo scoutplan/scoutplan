@@ -8,6 +8,8 @@
     = "showing-only-rsvp-events showing-future-events" if params[:mode] == 'rsvps'
 
   = render partial: 'events/partials/styles'
+
+= content_for :head do
   = javascript_include_tag "events"
 
 javascript:

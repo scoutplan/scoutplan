@@ -20,7 +20,7 @@ tr.border-b.hover:bg-gray-100.member.member-row(class="#{ row_classes }" id="mem
   td.name.w-1
     = link_to unit_member_path(@unit, unit_membership),
       class: "block px-2 py-2 whitespace-nowrap w-full",
-      data: { turbo_action: 'advance' } do
+      data: { turbo_frame: "main", turbo_action: "advance" } do
       .block.font-bold = unit_membership.full_display_name
 
     // contact info below name
