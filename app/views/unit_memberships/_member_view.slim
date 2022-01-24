@@ -1,5 +1,5 @@
 // white dialog
-.relative.w-auto.my-12.mx-auto.max-w-2xl.bg-white.rounded.z-50.drop-shadow-xl.filter
+.mx-auto.max-w-2xl
 
   // CANCELLED watermark
   - if @target_membership.status_inactive?
@@ -132,4 +132,4 @@
       = link_to t('global.done'),
         unit_members_path(@unit),
         class: 'bg-scoutplan-500 inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-white text-sm font-bold tracking-wider uppercase',
-        data: { turbo_action: 'advance' }
+        data: { turbo_frame: "main", turbo_action: "advance" }

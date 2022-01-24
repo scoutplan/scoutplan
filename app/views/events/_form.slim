@@ -5,19 +5,32 @@
 
 .mx-auto.max-w-3xl
   = form_with model: @event_view, scope: 'event', url: url, method: method, data: { 'turbo-action' => 'advance' } do |f|
-    header.h-3
 
-    section.py-0.px-8
-      // EVENT CATEGORY
-      .mb-3
+    section
+
+      // title
+      .border-b.py-4
+        = f.label :title, class: "inline-block w-[25%]"
+        = f.text_field :title,
+          class: "bg-gray-100 border-0 rounded p-2 w-[75%] hover:ring-scoutplan-500",
+          autocomplete: 'off',
+          placeholder: 'Title'
+
+      // category
+      .border-b.py-4
+        = f.label :category, class: "inline-block w-[25%]"
         = f.select :event_category_id,
             @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
             { prompt: t('event_category_prompt'), selected: @event_view.event_category_id },
-            { class: 'mt-2 border rounded w-full max-w-96 py-1 pl-2 pr-4 bg-white' }
+            { class: "border-0 rounded py-2 bg-gray-100" }
 
-        // TITLE & SHORT DESCRIPTION
-        = f.text_field :title, { class: 'mt-2 w-full border rounded p-2 text-3xl font-bold', autocomplete: 'off', style: 'text-transform: capitalize', placeholder: 'Title' }
-        = f.text_field :short_description, { class: 'mt-2 w-full border rounded p-2', autocomplete: 'off', placeholder: t('events.edit.short_description_placeholder') }
+      // short description
+      .border-b.py-4
+        = f.label :short_description, class: "inline-block w-[25%]"
+        = f.text_field :short_description,
+          class: "w-[75%] border-0 rounded bg-gray-100 p-2",
+          autocomplete: "off",
+          placeholder: t("events.edit.short_description_placeholder")
 
       // RSVP
       .form-check.mb-3
@@ -53,7 +66,7 @@
             = f.rich_text_area :description, class: "block border mb-4 overflow-auto h-48"
 
     // footer
-    footer.overflow-auto.pb-4.px-8.pt-1
+    footer.sticky.bottom-0
       .float-left
         span.inline-block.align-middle.mt-1
           = f.check_box :status, { class: 'w-4 h-4 text-green-500 rounded mr-2' }, 'published', 'draft'
