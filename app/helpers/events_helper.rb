@@ -11,7 +11,8 @@ module EventsHelper
       content_tag(
         :i,
         nil,
-        class: "fad fa-#{event.event_category.glyph}",
+        class: "w-12 text-center fad fa-#{event.category.glyph}",
+        style: "color:#{event.category.color}",
         title: event.event_category.name
       )
     end
