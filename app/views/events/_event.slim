@@ -33,7 +33,7 @@ tr.border-b.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{ro
     = link_to unit_event_path(@unit, event),
       class: "row-link cursor-pointer no-underline px-1 py-3",
       data: { turbo_frame: turbo_frame_name, turbo_action: "advance" } do
-      .font-bold
+      .font-bold.whitespace-nowrap
         = event.title
         = event_badge(event)
         - description_text = event.description.to_plain_text
@@ -44,27 +44,23 @@ tr.border-b.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{ro
 
       .text-gray-500.text-sm
         - if event.location.present?
-          i.fa-location-dot.fas.text-gray-300.mr-1
-          = event.location
+          .whitespace-nowrap
+            i.fa-location-dot.fas.text-gray-300.mr-1
+            = event.location
         - else
           = raw("&nbsp;")
 
   // glyph
   td.event-glyph.w-px.hidden.sm:table-cell
     = link_to unit_event_path(@unit, event),
-      class: "row-link cursor-pointer no-underline w12 glyph whitespace-nowrap",
+      class: "row-link cursor-pointer no-underline py-3 glyph whitespace-nowrap",
       data: { turbo_frame: turbo_frame_name, turbo_action: "advance" } do
-      span.w-10.text-center
+      div
         = glyph_tag(event)
-      span.ml-1
         = event.category.name
 
-  // short description
-  td.event-short-description.hidden.2xl:table-cell
-    = link_to unit_event_path(@unit, event),
-      class: "row-link cursor-pointer no-underline px-2 py-3",
-      data: { turbo_frame: turbo_frame_name, turbo_action: "advance" } do
-      = event.short_description
+      .text-sm.text-gray-500.pl-12
+        = event.short_description
 
   td.event-actions.hidden.sm:table-cell.text-right.pr-4
     = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps }
@@ -74,3 +70,7 @@ tr.border-b.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{ro
     - if event.rsvp_open?
       span(title=t("events.index.rsvp_open"))
         i.fa-circle.fas.text-yellow-500
+
+
+/      .w-7.h-7.inline-flex.items-center.justify-center.rounded-full.bg-gray-800.text-white.text-sm(style="background-color:#{event.category.color}")
+/        = glyph_tag(event)        

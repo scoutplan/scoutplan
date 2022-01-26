@@ -3,90 +3,91 @@
 - @format_date = '%Y-%m-%d'
 - @format_time = '%H:%M:%S'
 
-.mx-auto.max-w-3xl
-  = form_with model: @event_view, scope: 'event', url: url, method: method, data: { 'turbo-action' => 'advance' } do |f|
+.mx-auto.max-w-3xl.py-4.md:py-4
 
-    section
+  h1.font-bold.text-2xl.mb-4
+    = @event.new_record? ? "Add an Event" : "Change Event Details"
+
+  = form_with model: @event_view, scope: 'event', url: url, method: method, data: { 'turbo-action' => 'advance' } do |f|
+    section.bg-stone-100.px-4.py-2.md:px-8.md:py-0.mb-2.rounded
 
       // title
-      .border-b.py-4
-        = f.label :title, class: "inline-block w-[25%]"
+      .md:border-b.py-2.md:py-4
+        = f.label :title, class: "block md:inline-block md:w-[25%] mb-2 text-sm font-bold tracking-wide uppercase"
         = f.text_field :title,
-          class: "bg-gray-100 border-0 rounded p-2 w-[75%] hover:ring-scoutplan-500",
+          class: "bg-white border-0 rounded p-2 w-full md:w-[75%] hover:ring-scoutplan-500",
           autocomplete: 'off',
           placeholder: 'Title'
 
       // category
-      .border-b.py-4
-        = f.label :category, class: "inline-block w-[25%]"
+      .md:border-b.py-4
+        = f.label :category, class: "block md:inline-block md:w-[25%] mb-2 text-sm font-bold tracking-wide uppercase"
         = f.select :event_category_id,
             @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
             { prompt: t('event_category_prompt'), selected: @event_view.event_category_id },
-            { class: "border-0 rounded py-2 bg-gray-100" }
+            { class: "border-0 rounded py-2 bg-white w-full md:w-fit" }
 
       // short description
-      .border-b.py-4
-        = f.label :short_description, class: "inline-block w-[25%]"
+      .py-4
+        = f.label :short_description, class: "block md:inline-block md:w-[25%] mb-2 text-sm font-bold tracking-wide uppercase"
         = f.text_field :short_description,
-          class: "w-[75%] border-0 rounded bg-gray-100 p-2",
+          class: "w-full md:w-[75%] border-0 rounded bg-white p-2",
           autocomplete: "off",
           placeholder: t("events.edit.short_description_placeholder")
-
-      // RSVP
-      .form-check.mb-3
+    
+    // RSVP
+    section.bg-stone-100.py-4.px-4.md:px-8.mb-2.rounded
+      .form-check
         = f.check_box :requires_rsvp, class: 'w-4 h-4 text-green-500 rounded mr-2'
-        = f.label :requires_rsvp
+        = f.label :requires_rsvp, class: "text-sm font-bold tracking-wide uppercase"
 
-      // tabbed interface
-      .tabs.mt-6
-        nav.flex(data-turbo="false")
-          = link_to t('events.dates'),
-            '#',
-            class: 'inline-block tab-label flex-grow text-center py-1 text-gray-400 hover:text-black no-underline border-b uppercase text-sm tracking-wider selected',
-            data: { 'toggle-target' => '#tab_dates' }
+    section.bg-stone-100.p-4.md:px-8.mb-2.rounded      
+      = render partial: 'events/partials/edit/dates', locals: { f: f }
 
-          = link_to t('events.location'),
-            '#',
-            class: 'inline-block tab-label flex-grow text-center py-1 text-gray-400 hover:text-black no-underline border-b uppercase text-sm tracking-wider',
-            data: { 'toggle-target' => '#tab_location' }
+    section.bg-stone-100.py-2.px-4.md:px-8.mb-2.rounded
+      = render partial: 'events/partials/edit/location', locals: { f: f }
 
-          = link_to t('events.description'),
-            '#',
-            class: 'inline-block tab-label flex-grow text-center py-1 text-gray-400 hover:text-black no-underline border-b uppercase text-sm tracking-wider',
-            data: { 'toggle-target' => '#tab_description' }
+    section.bg-stone-100.p-4.md:p-8.mb-2.rounded
+      = f.rich_text_area :description, class: "block border mb-4 overflow-auto h-48"
 
-        section.flex.w-full.pt-3
-          .tab-content.w-full#tab_dates
-            = render partial: 'events/partials/edit/dates', locals: { f: f }
-
-          .tab-content.w-full.hidden#tab_location
-            = render partial: 'events/partials/edit/location', locals: { f: f }
-
-          .tab-content.w-full.hidden#tab_description
-            = f.rich_text_area :description, class: "block border mb-4 overflow-auto h-48"
+    section.bg-stone-100.p-4.md:p-8.mb-2.rounded
+      = f.check_box :status, { class: 'w-4 h-4 text-green-500 rounded mr-2' }, 'published', 'draft'
+      = f.label :status, 'Published'
 
     // footer
-    footer.sticky.bottom-0
-      .float-left
-        span.inline-block.align-middle.mt-1
-          = f.check_box :status, { class: 'w-4 h-4 text-green-500 rounded mr-2' }, 'published', 'draft'
-          = f.label :status, 'Published'
+    footer.bg-white.py-2.md:py-4.px-8.-mx-8.sticky.bottom-0.flex.flex-col.md:flex-row.md:justify-between.gap-2
 
-      .float-right
-        - if !@event.new_record? && policy(@event).cancel?
+      // Cancel event
+      .flex.flex-col-reverse.md:flex-row.gap-2
+        - if event_cancellable?(@current_member, @event)
           = link_to 'Cancel This Event',
             unit_event_cancel_path(@unit, @event),
-            data: { turbo_frame: 'event', turbo_action: 'advance' },
-            class: 'px-4 py-2  text-sm font-bold tracking-wider uppercase no-underline mr-2'
+            class: "text-sm font-bold tracking-wider uppercase no-underline text-center \
+                    block w-full pl-0 pr-4 py-2 \
+                    text-scoutplan-500 hover:text-scoutplan-600 \
+                    border rounded border-scoutplan-500 md:border-0",
+            data: { turbo_frame: "event", turbo_action: "advance" }
 
+      .flex.flex-col-reverse.md:flex-row.md:justify-end.gap-2
 
-        = f.submit "#{@event_view.new_record? ? 'Add This Event' : 'Save Changes'}", 
-          class: "bg-scoutplan-500 px-4 py-2 border rounded text-white text-sm font-bold tracking-wider uppercase mr-2"
+        // Save Changes
+        = f.submit "#{@event_view.new_record? ? t("events.new.add_this_event") : t("global.save_changes")}",
+          class: "text-white text-sm font-bold tracking-wider uppercase \
+                  inline-block w-full md:w-fit px-4 py-2 \
+                  bg-scoutplan-500 hover:bg-scoutplan-600 \
+                  border-scoutplan-500 hover:border-scoutplan-600 \
+                  border rounded cursor-pointer"
         
-        = link_to t('global.cancel'),
+        // Discard Changes
+        = button_to t('global.discard_changes'),
           @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event),
-          data: { turbo_action: 'advance' },
-          class: 'px-4 py-2 border bg-gray-200 text-black text-sm font-bold tracking-wider uppercase rounded no-underline'
+          type: "button",
+          data: { turbo_action: "advance" },
+          class: "text-black text-center text-sm font-bold tracking-wider uppercase no-underline \
+                  inline-block w-full md:w-fit px-4 py-2 \
+                  bg-stone-200 hover:bg-stone-300 \
+                  border-stone-200 hover:border-stone-300 \
+                  rounded border"
 
 javascript:
   // tab interfaces

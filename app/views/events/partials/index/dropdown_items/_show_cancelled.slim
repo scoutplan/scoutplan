@@ -1,5 +1,5 @@
 = link_to '#',
-    class: "table-row hover:bg-gray-700 inline-block px-4 py-2 w-full toggle-body-class #{@events.cancelled.length.zero? ? 'disabled' : ''}",
+    class: "table-row hover:bg-stone-700 inline-block px-4 py-2 w-full toggle-body-class #{@events.cancelled.length.zero? ? 'disabled' : ''}",
     data: { action: 'event#toggleCancelledEvents' },
     id: 'show-cancelled-events-link' do
 

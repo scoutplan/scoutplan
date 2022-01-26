@@ -9,8 +9,8 @@
 
   = render partial: 'events/partials/styles'
 
-= content_for :head do
-  = javascript_include_tag "events"
+  = content_for :head do
+    = javascript_include_tag "events"
 
 javascript:
   document.addEventListener("turbo:load", function() {

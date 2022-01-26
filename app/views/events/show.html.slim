@@ -25,7 +25,7 @@
 
       // " <- necessary evil comment to restore proper code highlighting in VS Code
 
-      h3.m-0.font-bold.float-left.text-xl
+      h3.m-0.font-bold.text-xl
         = @event.title
         span.align-middle.ml-2.text-base = glyph_tag(@event)
         = content_tag(:div, @event.short_description, class: 'font-normal text-base text-gray-500') if @event.short_description.present?
@@ -35,17 +35,10 @@
           | Cancelled
 
       - if @event.past?
-        .inline-block.text-sm.mt-2.ml-4.text-gray-400.font-bold This event has already occurred.
+        p.bg-yellow-300.text-yellow-800.p-4.mt-2.rounded
+          i.fa-exclamation-triangle.fas.mr-2
+          = t("events.show.past_warning")
 
-      // close "X" button
-      = link_to unit_events_path(@event.unit),
-        class: 'inline-block float-right text-gray-500 hover:text-gray-500',
-        data: { turbo_frame: "main", turbo_action: "advance" },
-        onclick: "modalOpen(false);" do
-        i.fa-times.far.hover:text-black
-
-    // guts of the modal
-    //.overflow-y-scroll.md:overflow-hidden  
     section
 
       // first row: RSVP panel
@@ -88,9 +81,10 @@
                 edit_unit_event_path(@event.unit, @event),
                 class:  " text-sm font-bold no-underline tracking-wider uppercase text-center" \
                         " block md:inline-block " \
-                        " w-full px-6 py-3 mb-2 md:mb-0" \
+                        " w-full px-6 py-2 mb-2 md:pl-0" \
                         " text-scoutplan-500 hover:text-scoutplan-600" \
                         " border-scoutplan-500 border" \
+                        " md:border-0 " \
                         " rounded" \
                         "",
                 data: { 'turbo-action' => 'advance' },
@@ -105,10 +99,10 @@
               unit_event_organize_path(@event.unit, @event),
               class:  " text-sm font-bold no-underline tracking-wider uppercase text-center " \
                       " block md:inline-block" \
-                      " px-6 py-3 mr-0 md:mr-2 mb-2 md:mb-0" \
+                      " px-4 py-2 mr-0 md:mr-2 mb-2 md:mb-0" \
                       " bg-scoutplan-100 hover:bg-scoutplan-200" \
                       " text-scoutplan-500 hover:text-scoutplan-600" \
-                      " rounded border border-scoutplan-100 hover:border-scoutplan-200" \
+                      " rounded" \
                       "",
               data: { 'turbo-action' => 'advance', 'turbo-frame' => '_top' },
               title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)   
@@ -117,11 +111,10 @@
           // Done button
           = link_to t("global.done"),
             unit_events_path(@event.unit),
-            class:  " text-sm font-bold no-underline tracking-wider uppercase text-center " \
-                    " block md:inline-block" \
-                    " px-4 py-3" \
-                    " min-w-[8rem]" \
-                    " text-white bg-scoutplan-500 hover:bg-scoutplan-600" \
-                    " rounded border border-scoutplan-500 hover:border-scoutplan-600" \
-                    "",
+            class:  "text-white text-sm font-bold no-underline tracking-wider uppercase text-center  \
+                    block md:inline-block \
+                    px-4 py-2 \
+                    min-w-[8rem] \
+                    bg-scoutplan-500 hover:bg-scoutplan-600 \
+                    rounded border border-scoutplan-500 hover:border-scoutplan-600",
             data: { turbo_frame: "main", turbo_action: "restore" }
