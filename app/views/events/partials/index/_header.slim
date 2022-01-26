@@ -29,19 +29,19 @@ header#page_header.max-w-4xl.mx-auto.sticky.left-0.right-0.top-0.px-0.bg-white.p
 
         // Options dropdown button
         .inline-block.relative.dropdown
-          button.text-sm.uppercase.tracking-wider.font-bold.rounded.bg-gray-200.hover:bg-gray-300.no-underline.text-black.px-4.py-2(type="button" onclick="this.parentElement.classList.toggle('menu-open');")
+          button.text-sm.uppercase.tracking-wider.font-bold.rounded.bg-stone-200.hover:bg-stone-300.no-underline.text-black.px-4.py-2(type="button" onclick="this.parentElement.classList.toggle('menu-open');")
             .hidden.md:inline.mr-3
               = t('events.index.view.dropdown')
             i.far.fa-chevron-down
 
-          .dropdown-menu.origin-top-right.absolute.right-0.py-2.mt-px.min-w-max.rounded-md.shadow-lg.bg-gray-900.text-white.ring-1.ring-black.ring-opacity-5.divide-y.divide-gray-100.focus:outline-none
+          .dropdown-menu.origin-top-right.absolute.right-0.py-2.mt-px.min-w-max.rounded-md.shadow-lg.bg-stone-900.text-white.ring-1.ring-black.ring-opacity-5.divide-y.divide-stone-100.focus:outline-none
             .table
-                = render partial: 'events/partials/index/dropdown_items/bulk_publish'   if @current_member.admin?
-                = render partial: 'events/partials/index/dropdown_items/show_cancelled' if @current_member.admin?
-                = render partial: 'events/partials/index/dropdown_items/show_only_rsvps'
-                = render partial: 'events/partials/index/dropdown_items/show_past_events'
-                = render partial: "events/partials/index/dropdown_items/divider"
-                = render partial: 'events/partials/index/dropdown_items/pdf_export'
+              = render partial: 'events/partials/index/dropdown_items/bulk_publish'   if @current_member.admin?
+              = render partial: 'events/partials/index/dropdown_items/show_cancelled' if @current_member.admin?
+              = render partial: 'events/partials/index/dropdown_items/show_only_rsvps'
+              = render partial: 'events/partials/index/dropdown_items/show_past_events'
+              = render partial: "events/partials/index/dropdown_items/divider"
+              = render partial: 'events/partials/index/dropdown_items/pdf_export'
 
       span#bulk_publish_button_wrapper
         = button_to t('events.index.bulk_publish.execute_caption'),

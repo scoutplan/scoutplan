@@ -8,35 +8,45 @@
 /* BULK PUBLISH */
 
 // wire up the bulk Publish button
-document.querySelector('#bulk_publish_execute_button').addEventListener('click', function(event) {
-  document.querySelector('#bulk_action_form').submit();
-  event.preventDefault();
-});
 
-// wire up the check/uncheck all box
-document.querySelector('#select_all_events_checkbox').addEventListener('click', function(event) {
-  const checked = this.checked;
-  document.querySelectorAll('.bulk-publish-checkbox').forEach(function (elem) {
-      elem.checked = checked && elem.offsetParent !== null;
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelector('#bulk_publish_execute_button').addEventListener('click', function(event) {
+    document.querySelector('#bulk_action_form').submit();
+    event.preventDefault();
   });
-  validateBulkPublishState();
-});
 
-var bulkPublishExecuteButton = document.querySelector('#bulk_publish_execute_button');
-var originalBulkPublishExecuteButtonCaption = bulkPublishExecuteButton.value;
-
-// wire up Cancel bulk publish button
-document.querySelector('#cancel_bulk_publish').addEventListener('click', function(event) {
-  document.body.classList.toggle('showing-only-draft-events');
-  document.body.classList.toggle('events-filtered');
-  event.preventDefault();
-});
-
-// wire up event row checkboxes
-document.querySelectorAll('.bulk-publish-checkbox').forEach(function(elem) {
-  elem.addEventListener('click', function(event) {
+  // wire up the check/uncheck all box
+  document.querySelector('#select_all_events_checkbox').addEventListener('click', function(event) {
+    const checked = this.checked;
+    document.querySelectorAll('.bulk-publish-checkbox').forEach(function (elem) {
+        elem.checked = checked && elem.offsetParent !== null;
+    });
     validateBulkPublishState();
   });
+
+  // wire up event row checkboxes
+  document.querySelectorAll('.bulk-publish-checkbox').forEach(function(elem) {
+    elem.addEventListener('click', function(event) {
+      validateBulkPublishState();
+    });
+  });
+
+  // wire up Cancel bulk publish button
+  document.querySelector('#cancel_bulk_publish').addEventListener('click', function(event) {
+    document.body.classList.toggle('showing-only-draft-events');
+    document.body.classList.toggle('events-filtered');
+    event.preventDefault();
+  });
+
+
+  // upon content load, perform a hide operation and stand up
+  // an observer on the <body> element to watch for changes
+  hideEmptyMonthHeaders();
+  const mutationObserver = new MutationObserver(bodyMutated);
+  mutationObserver.observe(document.body, { attributes: true });  
+
+  var bulkPublishExecuteButton = document.querySelector('#bulk_publish_execute_button');
+  var originalBulkPublishExecuteButtonCaption = bulkPublishExecuteButton.value;
 });
 
 function validateBulkPublishState() {
@@ -104,14 +114,6 @@ function bodyMutated(mutationsList, observer) {
     }
   });
 }
-
-// upon content load, perform a hide operation and stand up
-// an observer on the <body> element to watch for changes
-document.addEventListener('DOMContentLoaded', function() {
-  hideEmptyMonthHeaders();
-  const mutationObserver = new MutationObserver(bodyMutated);
-  mutationObserver.observe(document.body, { attributes: true });
-});
 
 // close any open menus and dropdowns upon clicking anywhere on the page
 // TODO: move this to a Stimulus controller

@@ -18,6 +18,11 @@ module EventsHelper
     end
   end
 
+  # can a given member cancel a given event?
+  def event_cancellable?(event, member)
+    !@event.new_record? && EventPolicy.new(event, member).cancel?
+  end
+
   # given an EventRsvp object, return a fully-formed span tag containing the correct
   # FontAwesome glphy
   def rsvp_glyph_tag(rsvp)

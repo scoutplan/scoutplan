@@ -1,66 +1,76 @@
-= turbo_frame_tag 'event_list', src: unit_events_path(@event.unit)
-= turbo_frame_tag 'event'
-  .absolute.inset-0.bg-black.bg-opacity-25.z-40
-    .relative.w-auto.my-12.mx-auto.max-w-xl.bg-white.rounded.z-50.drop-shadow-xl.filter
-      = form_with model: @event, url: unit_event_cancel_path(@unit, @event), method: :post, data: { turbo_action: 'advance' } do |f|
-        header.px-6.py-4.overflow-auto
-          // Dialog caption
-          h3.mb-0.float-left.text-red-800
-            i.far.fa-exclamation-circle
-            | &nbsp;&nbsp;
-            | Cancel Event
+= turbo_frame_tag "main"
+  .mx-auto.max-w-xl.py-8
+    = form_with model: @event, url: unit_event_cancel_path(@unit, @event), method: :post, data: { turbo_action: 'advance' } do |f|
+      header.sticky.top-0.pb-4
+        h1.font-bold.text-2xl Cancel Event
 
-          // close "X" button
-          = link_to edit_unit_event_path(@unit, @event),
-            class: 'inline-block float-right text-gray-500 hover:text-gray-500',
-            data: { 'turbo-action' => 'advance' } do
-            i.fa-times.far.hover:text-black          
+        - if @event.past?
+          p.bg-yellow-300.text-yellow-800.p-4.mt-2.rounded
+            i.fa-exclamation-triangle.fas.mr-2
+            = t("events.cancel.past_warning")
 
-        section.px-6.clear-both
-          p.mb-3
-            = raw("You are cancelling the <strong>#{@event.title}</strong> on #{@event.starts_at.strftime('%B %-d')}.")
-            br
-            - if !@event.requires_rsvp
-              = 'No RSVP was required.'
-            - elsif @event.rsvps.accepted.count.positive?
-              = "#{@event.rsvps.accepted.count} members are planning to attend."
-            - else
-              = 'No one is planning to attend.'
-            = raw(" Send a cancellation message?")
-          
+      section
+        p.mb-4
+          = raw("You are cancelling the <strong>#{@event.title}</strong> on ")
+          span.whitespace-nowrap.font-bold
+            = @event.starts_at.strftime('%B %-d')
+          |.&nbsp
+
+          - if !@event.requires_rsvp
+            = 'No RSVP was required.'
+          - elsif @event.rsvps.accepted.count.positive?
+            = "There are #{@event.rsvps.accepted.count} members planning to attend"
+
+            - if @event.rsvps.declined.count.positive?
+              = " and #{@event.rsvps.declined.count} who declined"
+
+            = "."
+          - else
+            = 'No one is planning to attend.'
+
+        p.mb-4
+          = t("events.cancel.message_prompt")
+        
+        .mb-1
+          = f.radio_button :message_audience, :none, checked: true, class: 'mr-2'
+          = f.label :message_audience_none, "No, don't send a message"
+
+        - if @event.requires_rsvp && @event.rsvps.accepted.count.positive?
           .mb-1
-            = f.radio_button :message_audience, :none, checked: true, class: 'mr-2'
-            = f.label :message_audience_none, "No, don't send a message"
+            = f.radio_button :message_audience, :acceptors, class: 'mr-2'
+            = f.label :message_audience_acceptors, "Yes, to the #{@event.rsvps.accepted.count} who plan on attending"
 
-          - if @event.requires_rsvp && @event.rsvps.accepted.count.positive?
-            .mb-1
-              = f.radio_button :message_audience, :acceptors, class: 'mr-2'
-              = f.label :message_audience_acceptors, "Yes, to the #{@event.rsvps.accepted.count} who plan on attending"
+        .mb-1
+          = f.radio_button :message_audience, :active_members, class: 'mr-2'
+          = f.label :message_audience_active_members, "Yes, to all #{@unit.members.status_active.count} active members"
 
-          .mb-1
-            = f.radio_button :message_audience, :active_members, class: 'mr-2'
-            = f.label :message_audience_active_members, "Yes, to all #{@unit.members.status_active.count} active members"
+        .mb-3
+          = f.radio_button :message_audience, :all_members, class: 'mr-2'
+          = f.label :message_audience_all_members, "Yes, to all #{@unit.members.count} active and inactive members"
 
-          .mb-3
-            = f.radio_button :message_audience, :all_members, class: 'mr-2'
-            = f.label :message_audience_all_members, "Yes, to all #{@unit.members.count} active and inactive members"
+        = f.text_area :note,
+          class: 'border rounded w-full h-24 p-2 hidden',
+          placeholder: 'Type your cancellation message here'
 
-          = f.text_area :note,
-            class: 'border rounded w-full h-24 p-2 hidden',
-            placeholder: 'Type your cancellation message here'
+      // footer, containing right-justified buttons
+      footer.py-4.sticky.bottom-0.flex.gap-2.flex-col.md:flex-row.md:justify-end
+          // Don't Cancel button
+          = link_to t("events.cancel.abandon"),
+            unit_event_path(@unit, @event),
+            class: "text-center px-4 py-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase \
+                  inline-block w-full md:w-fit",
+            data: { turbo_frame: "main", turbo_action: "advance" }
 
-        // footer, containing right-justified buttons
-        footer.overflow-auto.py-4.px-6
-          .float-right.overflow-auto
-            = f.submit 'Cancel Event',
-              class: 'inline-block px-4 py-2 mr-2 no-underline bg-red-800 hover:bg-red-900 text-red-100 hover:text-red-200 rounded text-sm font-bold tracking-wider uppercase',
-              data: { confirm: 'Are you sure you want to cancel?' }
+          // Do Cancel button
+          = f.submit t("events.cancel.proceed"),
+            class: "text-sm font-bold tracking-wider uppercase no-underline  \
+                    inline-block px-4 py-2 \
+                    bg-red-600 hover:bg-red-700 \
+                    text-red-100 hover:text-red-200 \
+                    w-full md:w-fit rounded cursor-pointer",
+            data: { confirm: t("events.cancel.confirm") },
+            onclick: "return confirm('Are you sure you want to cancel this event?');"
 
-            // Don't Cancel button
-            = link_to "Don't Cancel",
-              unit_event_path(@unit, @event),
-              class: 'inline-block px-4 py-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase',
-              data: { 'turbo-action' => 'advance' }            
 
 = render partial: 'events/partials/styles'
 

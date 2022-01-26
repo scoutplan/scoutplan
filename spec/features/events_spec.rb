@@ -55,6 +55,31 @@ describe "events", type: :feature do
       end
     end
 
+    describe "cancel" do
+      it "visits the cancel page" do
+        event = FactoryBot.create(:event, :published, unit: @unit, title: "Published event")
+        visit edit_unit_event_path(event.unit, event)
+        expect(page).to have_selector(:link_or_button, I18n.t("events.show.cancel_title"))
+        click_link_or_button I18n.t("events.show.cancel_title")
+        expect(page).to have_current_path(unit_event_cancel_path(event.unit, event))
+        expect(page).to have_selector(:link_or_button, I18n.t("events.cancel.proceed"))
+        expect(page).to have_selector(:link_or_button, I18n.t("events.cancel.abandon"))
+      end
+
+      it "warns when event is past" do
+        event = FactoryBot.create(:event, :published, :past, unit: @unit)
+        visit edit_unit_event_path(event.unit, event)
+        expect(page).to have_content(I18n.t("events.cancel.past_warning"))
+      end
+
+      it "prevents non-admins from accessing" do
+        logout
+        login_as(@normal_user)
+        event = FactoryBot.create(:event, :published, :past, unit: @unit)
+        expect { visit edit_unit_event_path(event.unit, event) }.to raise_exception
+      end
+    end
+
     describe "organize" do
       it "accesses the page" do
         path = organize_event_path(@event)

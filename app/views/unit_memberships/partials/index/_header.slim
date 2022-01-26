@@ -36,8 +36,8 @@ header.sticky.left-0.right-0.top-0.flex.px-0.bg-white.pb-8.pt-8.lg:pt-10.z-10.it
 
           // 'Options' button
           button(class= "text-sm uppercase tracking-wider font-bold \
-                        rounded bg-gray-200 no-underline text-black px-4 py-2 \
-                        border border-gray-200"
+                        rounded bg-stone-200 no-underline text-black px-4 py-2 \
+                        border border-stone-200"
                         type="button"
                         onclick="this.parentElement.classList.toggle('menu-open');"
                 )
@@ -45,10 +45,10 @@ header.sticky.left-0.right-0.top-0.flex.px-0.bg-white.pb-8.pt-8.lg:pt-10.z-10.it
               = t('events.index.view.dropdown')
             i.far.fa-chevron-down
 
-          .dropdown-menu.text-left.origin-top-right.absolute.right-0.mt-2.w-72.rounded-md.shadow-lg.bg-white.ring-1.ring-black.ring-opacity-5.divide-y.divide-gray-100.focus:outline-none
+          .dropdown-menu.text-left.origin-top-right.absolute.right-0.mt-2.w-72.rounded-md.shadow-lg.bg-white.ring-1.ring-black.ring-opacity-5.divide-y.divide-stone-100.focus:outline-none
             ul
               li = link_to '#',
-                  class: "hover:bg-gray-100 inline-block px-4 py-2 w-full toggle-body-class",
+                  class: "hover:bg-stone-100 inline-block px-4 py-2 w-full toggle-body-class",
                   data: { action: 'event#toggleCancelledEvents' },
                   id: 'bulk_edit_link' do
                 .menu-glyph

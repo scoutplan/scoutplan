@@ -32,6 +32,8 @@
 en:
   global:
     cancel: 'Cancel'
+    discard_changes: "Discard Changes"
+    save_changes:    "Save Changes"
     next:   'Next'
     done:   'Done'
     sign_in: "Sign In"
@@ -181,9 +183,20 @@ en:
       address:                "Address"
       departs_from:           "Departs From"
       series_count:           "%{count} events in this series"
+      past_warning:           "This event has already occurred."
+
+    cancel:
+      proceed: "Cancel This Event"
+      abandon: "Don't Cancel"
+      confirm: "Are you sure you want to cancel?"
+      message_prompt: "Send a cancellation message?"
+      past_warning:   "Cancelling events that occurred in the past is not recommended."
     
     edit:
       short_description_placeholder: 'Brief description (optional, appears in email & text)'
+
+    new:
+      add_this_event: "Add This Event"
 
     organize:
       subtitle:     'Organizer View'

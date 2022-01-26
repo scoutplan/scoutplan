@@ -1,11 +1,23 @@
-.table.flush-table.mt-2
-  .table-row-group
-    .table-row
-      .table-cell.border-0(style="padding-left:0;") = f.label :location
-      .table-cell.border-0(style="padding-right:0;") = f.text_field :location, { class: 'w-full border rounded p-2', autocomplete: 'off', style: 'text-transform: capitalize' }
-    .table-row
-      .table-cell.border-0(style="padding-left:0;") = f.label :address
-      .table-cell.border-0(style="padding-right:0;") = f.text_field :address, { class: 'w-full border rounded p-2', autocomplete: 'off', style: 'text-transform: capitalize' }
-    .table-row
-      .table-cell.border-0(style="padding-left:0;") = f.label :departs_from
-      .table-cell.border-0(style="padding-right:0;") = f.text_field :departs_from, { class: 'w-full border rounded p-2', autocomplete: 'off', style: 'text-transform: capitalize' }
+// location
+.md:border-b.py-2.md:py-4
+  = f.label :location, class: "block md:inline-block md:w-[25%] mb-2 text-sm font-bold tracking-wide uppercase"
+  = f.text_field :location,
+    class: "bg-white border-0 rounded p-2 w-full md:w-[75%] hover:ring-scoutplan-500",
+    autocomplete: 'off',
+    placeholder: 'Location'
+
+// adddress
+.md:border-b.py-2.md:py-4
+  = f.label :address, class: "block md:inline-block md:w-[25%] mb-2 text-sm font-bold tracking-wide uppercase"
+  = f.text_field :address,
+    class: "bg-white border-0 rounded p-2 w-full md:w-[75%] hover:ring-scoutplan-500",
+    autocomplete: 'off',
+    placeholder: 'Address or place name'
+
+// departs from
+.py-2.md:py-4
+  = f.label :departs_from, class: "block md:inline-block md:w-[25%] mb-2 text-sm font-bold tracking-wide uppercase"
+  = f.text_field :departs_from,
+    class: "bg-white border-0 rounded p-2 w-full md:w-[75%] hover:ring-scoutplan-500",
+    autocomplete: 'off',
+    placeholder: "Departure address"
