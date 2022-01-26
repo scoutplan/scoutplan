@@ -43,11 +43,6 @@ describe "events", type: :feature do
         expect(page).to have_current_path(path)
       end
 
-      # it "displays a Publish button on drafts" do
-      #   visit event_path(@event)
-      #   expect(page).to have_selector(:link_or_button, "Publish")
-      # end
-
       it "does not display a Publish button on published events" do
         event = FactoryBot.create(:event, :published, unit: @unit, title: "Published event")
         visit event_path(event)
@@ -68,15 +63,8 @@ describe "events", type: :feature do
 
       it "warns when event is past" do
         event = FactoryBot.create(:event, :published, :past, unit: @unit)
-        visit edit_unit_event_path(event.unit, event)
+        visit unit_event_cancel_path(event.unit, event)
         expect(page).to have_content(I18n.t("events.cancel.past_warning"))
-      end
-
-      it "prevents non-admins from accessing" do
-        logout
-        login_as(@normal_user)
-        event = FactoryBot.create(:event, :published, :past, unit: @unit)
-        expect { visit edit_unit_event_path(event.unit, event) }.to raise_exception
       end
     end
 
@@ -87,40 +75,6 @@ describe "events", type: :feature do
         expect(page).to have_current_path(path)
       end
     end
-
-    # describe "create" do
-    #   it "redirects to Event page after Event draft creation" do
-    #     visit unit_events_path(@unit)
-    #     expect(page).to have_current_path(unit_events_path(@unit))
-
-    #     # now raise and fill the dialog
-    #     click_link_or_button I18n.t("event_add")
-    #     select("Troop Meeting")
-    #     fill_in "Title", with: "Troop Meeting"
-    #     click_button I18n.t("helpers.label.event.accept_button")
-
-    #     # we should be redirected
-    #     expect(page).to have_content("Troop Meeting was added to the calendar")
-    #   end
-    # end
-
-    # describe "publish" do
-    #   it "publishes & displays confirmation message" do
-    #     visit event_path(@event)
-    #     click_button("Publish")
-    #     expect(page).to have_content("#{@event.title} was published")
-    #   end
-    # end
-
-    # describe "edit description" do
-    #   it "allows description edits" do
-    #     visit event_path(@event)
-    #     click_link_or_button("Edit Event Description")
-    #     find("trix-editor").click.set("I can"t believe it"s not butter!")
-    #     click_link_or_button "Save This Description"
-    #     # expect(page).to have_content("Description was updated")
-    #   end
-    # end
   end
 
   describe "as a non-admin" do
@@ -130,11 +84,11 @@ describe "events", type: :feature do
 
     it "prevents access a draft Event page" do
       path = event_path(@event)
-      expect { visit path }.to raise_error(Pundit::NotAuthorizedError)
+      expect { visit path }.to raise_error Pundit::NotAuthorizedError
     end
 
     it "prevents access to the Organize page" do
-      expect { visit organize_event_path(@event) }.to raise_error
+      expect { visit organize_event_path(@event) }.to raise_error Pundit::NotAuthorizedError
     end
 
     it "hides the add event button on the Index page" do
@@ -147,6 +101,11 @@ describe "events", type: :feature do
     it "hides draft events on the Index page" do
       visit unit_events_path(@unit)
       expect(page).not_to have_content("Draft Event")
+    end
+
+    it "prevents non-admins from accessing" do
+      event = FactoryBot.create(:event, :published, :past, unit: @unit)
+      expect { visit edit_unit_event_path(event.unit, event) }.to raise_error Pundit::NotAuthorizedError
     end
   end
 end
