@@ -12,4 +12,11 @@ class MemberTexter < ApplicationTexter
   def to
     @member.phone
   end
+
+  def renderer
+    ApplicationController.renderer.new(
+      http_host: ENV["SCOUTPLAN_HOST"],
+      https: ENV["SCOUTPLAN_PROTOCOL"] == "https"
+    )
+  end
 end
