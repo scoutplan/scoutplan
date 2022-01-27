@@ -36,7 +36,7 @@ Rails.application.routes.draw do
   get "units/:unit_id/newsletter/sent",   to: "news_items#index", as: "unit_newsletter_sent",   defaults: { mode: "sent"}
 
   # begin units
-  resources :units, only: [] do
+  resources :units, only: [:show] do
     resources :plans, path: "planner"
     resources :event_categories
     resources :news_items, only: %i[index new create]
@@ -62,18 +62,6 @@ Rails.application.routes.draw do
     end
   end
   # end units
-
-  # begin members
-  resources :unit_memberships, path: "members", as: "members", only: %i[show edit update destroy] do
-    member do
-      post "invite"
-      # post "send/:item", as: :send, to: "unit_memberships#send_message"
-    end
-    resources :member_relationships, as: "relationships", path: "relationships", only: %i[new create destroy]
-  end
-  # end members
-
-  post "units/:unit_id/members/:member_id/messages/:message_type", to: "messages#create", as: "create_unit_member_message"
 
   resources :member_relationships, as: "relationships", path: "relationships", only: %i[destroy]
 
