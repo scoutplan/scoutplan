@@ -60,15 +60,5 @@ tr.border-b.hover:bg-stone-100.hover:text-stone-800(id="#{dom_id(event)}" class=
         .text-sm.text-gray-500.pl-12.overflow-hidden.whitespace-nowrap.w-60.text-ellipsis
           = event.short_description
 
-  td.event-actions.hidden.sm:table-cell.text-right.pr-4
-    = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps }
-
-  // on small screens we represents RSVP with a yellow dot
-  td.mini-event-actions.md:hidden
-    - if event.rsvp_open?
-      span(title=t("events.index.rsvp_open"))
-        i.fa-circle.fas.text-yellow-500
-
-
-/      .w-7.h-7.inline-flex.items-center.justify-center.rounded-full.bg-gray-800.text-white.text-sm(style="background-color:#{event.category.color}")
-/        = glyph_tag(event)        
+  td.event-actions.text-right.pr-2
+    = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps } if event.requires_rsvp

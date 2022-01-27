@@ -154,7 +154,10 @@ en:
       event_row:
         rsvp_respond: 'Respond'
         rsvp_change:  'Change'
-      rsvp_open:    'RSVP is open'
+      rsvp:   
+        no_response:      "RSVP is open. Your family hasn't responded yet. You can still change your response."
+        partial_response: "RSVP is open. Some of your family has responded; some remain outstanding. You can still change your response."
+        full_response:    "RSVP is open. Your family has responded."
       download_pdf: "Download a Printable PDF"
     form:
       timezone_prompt: "Dates and times are %{timezone_name}"
