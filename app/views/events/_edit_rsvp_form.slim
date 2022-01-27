@@ -3,10 +3,11 @@
 - notes = rsvps.map(&:note).uniq.join(', ')
 
 = form_with model: @event, url: unit_event_send_rsvps_path(@unit, @event), class: 'flex w-full' do |f|
-  .flex-grow.p-2.items-center
-    // left collumn
-    .table.flush-top.flush-left
-      .table-row-group
+  .flex.flex-col.md:flex-row.md:gap-12.w-full
+
+    // left/top segment (family members)
+    .flex.flex-col.w-full.md:w-fit
+      .table.w-full
         - @current_member.family.each do |family_member|
           .table-row
             - existing_rsvp = @event.rsvps.find_by(unit_membership: family_member)
@@ -32,28 +33,37 @@
                     = rsvp_fields.label :response, :declined, value: :declined, class: 'inline' do
                       = t('rsvp_declined')                       
 
-  // right column
-  .flex-grow.p-2
+    // right/bottom segment
+    .flex-grow.p-2.w-full.md:w-fit
 
-    // note field
-    .mb-3
-      = f.label :note, class: 'form-label font-bold'
-      = text_field_tag :note,
-        notes,
-        class: 'rounded p-2 block border w-full',
-        placeholder: t('events.rsvp.note_placeholder'),
-        autocomplete: 'off'
-    
-    // buttons
-    .text-right
+      // note field
+      .mb-3
+        = text_field_tag :note,
+          notes,
+          class: "rounded p-2 block w-full border-0 placeholder-stone-400 text-sm",
+          placeholder: t('events.rsvp.note_placeholder'),
+          autocomplete: 'off'
+      
+      // buttons
+      .text-right
 
-      // Send RSVPs button
-      = f.submit t('helpers.label.event.rsvp_save'),
-        class: 'px-4 py-2 mr-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-800 hover:text-yellow-900 text-xs font-bold tracking-wider uppercase rounded',
-        data: { turbo_action: 'advance' }
+        // Send RSVPs button
+        = f.submit t('helpers.label.event.rsvp_save'),
+          class: "text-sm font-bold tracking-wider uppercase \
+                  w-full md:w-fit \
+                  px-4 py-2 mr-2 \
+                  bg-yellow-400 hover:bg-yellow-500 \
+                  text-yellow-800 hover:text-yellow-900  \
+                  rounded",
+          data: { turbo_action: "advance" }
 
-      // Cancel button
-      = link_to t('global.cancel'),
-        unit_event_path(@event.unit, @event),
-        data: { turbo_action: 'advance' },
-        class: 'px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded text-gray-500 hover:text-gray-600 text-xs font-bold tracking-wider uppercase no-underline'
+        // Cancel button
+        = link_to t('global.cancel'),
+          unit_event_path(@event.unit, @event),
+          class: "text-sm font-bold tracking-wider uppercase text-center \
+                  inline-block w-full md:w-fit \
+                  px-4 py-2 mr-2 mt-2 \
+                  bg-stone-200 hover:bg-stone-300 \
+                  text-stone-800 hover:text-stone-900  \
+                  rounded",
+          data: { turbo_action: "advance" }

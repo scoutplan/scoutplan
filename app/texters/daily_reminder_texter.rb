@@ -3,7 +3,7 @@
 # a Texter for sending daily reminders
 class DailyReminderTexter < MemberTexter
   def body
-    ApplicationController.render(
+    @body ||= renderer.render(
       template: "member_texter/daily_reminder",
       format: "text",
       assigns: { member: @member, events: events }

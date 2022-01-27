@@ -14,26 +14,28 @@
 
 tr.border-b.hover:bg-gray-100.member.member-row(class="#{ row_classes }" id="member_#{unit_membership.id}_row")
   td.selection
-    = link_to unit_membership.full_display_name, edit_member_path(unit_membership), style: 'display: none;', data: { turbo_action: 'advance', turbo_frame: 'member' }
+    = link_to unit_membership.full_display_name, edit_unit_member_path(@unit, unit_membership), style: 'display: none;', data: { turbo_action: 'advance', turbo_frame: 'member' }
     = check_box_tag "members[]", unit_membership.id, false, class: 'form-check-input bulk-edit-checkbox'
 
-  td.name.w-1
+  td.name.w-1.pb-2
+
+    // person name
     = link_to unit_member_path(@unit, unit_membership),
-      class: "block px-2 py-2 whitespace-nowrap w-full",
+      class: "block px-2 pt-3 pb-1 font-bold whitespace-nowrap w-full",
       data: { turbo_frame: "main", turbo_action: "advance" } do
-      .block.font-bold = unit_membership.full_display_name
+        = unit_membership.full_display_name
 
     // contact info below name
     .text-sm.text-gray-500.px-2.min-h-4.whitespace-nowrap
       - if unit_membership.emailable?
         = mail_to unit_membership.email,
-                  class: "inline-block pt-0 pb-3 hover:text-gray-700" do
+                  class: "inline-block pb-1 hover:text-gray-700" do
           i.fa-envelope.fas.mr-1.text-gray-300
           = unit_membership.email
 
       - if unit_membership.phone.present?
         = link_to "tel:#{unit_membership.phone}",
-                   class: "inline-block pt-0 pb-3 hover:text-gray-700" do
+                   class: "inline-block pb-1 hover:text-gray-700" do
           i.fa-phone.fas.ml-5.mr-1.text-gray-300
           = number_to_phone unit_membership.phone
 

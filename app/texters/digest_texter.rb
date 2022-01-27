@@ -12,13 +12,6 @@ class DigestTexter < MemberTexter
 
   private
 
-  def renderer
-    ApplicationController.renderer.new(
-      http_host: ENV["SCOUTPLAN_HOST"],
-      https: ENV["SCOUTPLAN_PROTOCOL"] == "https"
-    )
-  end
-
   def events
     @member.unit.events.published.this_week
   end

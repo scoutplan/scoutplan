@@ -4,11 +4,11 @@
 #
 # To use the locales, use `I18n.t`:
 #
-#     I18n.t 'hello'
+#     I18n.t "hello"
 #
 # In views, this is aliased to just `t`:
 #
-#     <%= t('hello') %>
+#     <%= t("hello") %>
 #
 # To use a different locale, set it with `I18n.locale`:
 #
@@ -24,27 +24,27 @@
 # Instead, surround them with single quotes.
 #
 # en:
-#   'true': 'foo'
+#   "true": "foo"
 #
 # To learn more, please read the Rails Internationalization guide
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
   global:
-    cancel: 'Cancel'
+    cancel: "Cancel"
     discard_changes: "Discard Changes"
     save_changes:    "Save Changes"
-    next:   'Next'
-    done:   'Done'
+    next:   "Next"
+    done:   "Done"
     sign_in: "Sign In"
-    sign_out: 'Sign Out'
+    sign_out: "Sign Out"
     remember_me: "Stay signed in for two weeks"
-  you_parenths: '(you)'
-  app_name: 'Scoutplan'
-  administration: 'Administration'
+  you_parenths: "(you)"
+  app_name: "Scoutplan"
+  administration: "Administration"
   rsvps: "Your RSVPs"
-  dates_times_locations: 'Date, Time & Location'
-  app_name: 'Scoutplan'
+  dates_times_locations: "Date, Time & Location"
+  app_name: "Scoutplan"
   hello: "Hello world"
   event_add: "Add a Calendar Event"
   event_update: "Change a Calendar Event"
@@ -53,203 +53,219 @@ en:
   event_date: "Date"
   event_title: "Title"
   event_location: "Location"
-  event_category_prompt: '- select -'
-  event_rsvp: 'RSVP'
-  rsvp_dialog_title: 'My RSVPs'
-  change_rsvp: 'Update Your RSVPs'
-  rsvp_accepted: 'Going'
-  rsvp_declined: 'Not going'
-  rsvp_unknown: 'No response'
-  rsvp_posted: 'Your RSVP has been received'
-  passwordless_warning: "You're logged in using a password-less \"magic link.\"  This link is valid until x/x/xx."
+  event_category_prompt: "- select -"
+  event_rsvp: "RSVP"
+  rsvp_dialog_title: "My RSVPs"
+  change_rsvp: "Update Your RSVPs"
+  rsvp_accepted: "Going"
+  rsvp_declined: "Not going"
+  rsvp_unknown: "No response"
+  rsvp_posted: "Your RSVP has been received"
+  passwordless_warning: "You"re logged in using a password-less \"magic link.\"  This link is valid until x/x/xx."
+  
   be_verb:
     present_tense:
-      third_person: 'is'
+      third_person: "is"
     past_tense:
-      third_person: 'was'
+      third_person: "was"
 
   newsletter:
-    title: 'Newsletter'
+    title: "Newsletter"
     modal:
-      status: 'Status:'
-      draft:  'Draft'
-      queued: 'Queued'
-    next_sends_at: 'Scoutplan will automatically send the next %{unit_name} email newsletter on %{next_newsletter_datetime}.'
+      status: "Status:"
+      draft:  "Draft"
+      queued: "Queued"
+    next_sends_at: "Scoutplan will automatically send the next %{unit_name} email newsletter on %{next_newsletter_datetime}."
 
   messaging:
-    title: 'Messaging'
-    new_item_description: "News items appear in the %{unit_name} weekly digest once they're approved"
-    new_news_item: 'Write a Newsletter Item'
-    drafts: 'Drafts'
-    queued: 'Queued'
-    queued_long: 'Queued for next newsletter'
-    news_item_create_title: 'Add a News Item'
-    news_item_edit_title:   'Update a News Item'
+    title: "Messaging"
+    new_item_description: "News items appear in the %{unit_name} weekly digest once they"re approved"
+    new_news_item: "Write a Newsletter Item"
+    drafts: "Drafts"
+    queued: "Queued"
+    queued_long: "Queued for next newsletter"
+    news_item_create_title: "Add a News Item"
+    news_item_edit_title:   "Update a News Item"
     news_item_modal:
-      submit: 'Add This News Item'
-    enqueue_draft: 'Move this news item to the queue to be sent with the next newsletter'
-    dequeue: 'Remove this item from the newsletter queue and set to draft'
-    delete_draft: 'Delete this item'
-    edit: 'Edit this item'
+      submit: "Add This News Item"
+    enqueue_draft: "Move this news item to the queue to be sent with the next newsletter"
+    dequeue: "Remove this item from the newsletter queue and set to draft"
+    delete_draft: "Delete this item"
+    edit: "Edit this item"
 
   unit_settings:
-    title: 'Unit Settings'
-    logo:  'Logo'
-    event_categories: 'Event Categories'
-    utilities: 'Utilities'
+    title: "Unit Settings"
+    logo:  "Logo"
+    event_categories: "Event Categories"
+    utilities: "Utilities"
     placeholders:
-      location: 'e.g. city name'
+      location: "e.g. city name"
 
   magic_links:
-    login_success: "You're signed in as %{name} via Magic Link."
+    login_success: "You"re signed in as %{name} via Magic Link."
 
   planner:
-    title:      'Planner'
+    title:  "Planner"
     activities:
-      add:      'Add an Activity'
+      add:  "Add an Activity"
       add_modal:
-        title:  'Add an Event Activity'
-        event_title_caption:    'Add to'
-        activity_title_caption: 'Activity Name'
-        submit: 'Add This Activity'
+        title:                  "Add an Event Activity"
+        event_title_caption:    "Add to"
+        activity_title_caption: "Activity Name"
+        submit:                 "Add This Activity"
 
   events:
-    object_name: 'event'
-    draft-warning: "This event is a draft, only visible to Unit Administrators & Event Organizers. When you're ready, %{href} to make it visible to everyone in %{unit_name}."
-    publish: 'Publish'
-    publish_message: "%{title} was published"
-    update_confirmation: "%{title} was updated"
-    location: 'Location'
-    dates: 'Dates'
+    object_name:          "event"
+    draft-warning:        "This event is a draft, only visible to Unit Administrators & Event Organizers. When you"re ready, %{href} to make it visible to everyone in %{unit_name}."
+    publish:              "Publish"
+    publish_message:      "%{title} was published"
+    update_confirmation:  "%{title} was updated"
+    location:             "Location"
+    dates:                "Dates"
 
     rsvp:
-      note_placeholder: 'e.g. "Need a ride", or "Arriving late"'
-      no_response: 'No response'
-      closed: 'RSVPs are closed'
-      past: 'Event has already occurred'
+      note_placeholder: "Note, e.g. \"Need a ride\", \"Arriving late\", etc."
+      no_response:      "No response"
+      closed:           "RSVPs are closed"
+      past:             "Event has already occurred"
 
     index:
-      title:      'Event Calendar'
-      page_title: 'Event Calendar'
+      title:                "Event Calendar"
+      page_title:           "Event Calendar"
+      showing_some:         "Showing events for the upcoming 3 months. "
+      showing_rsvps:        "Showing only events requiring an RSVP"
+      show_all:             "Show everything"
+      no_events:            "No events are planned right now."
+      draft:                "Draft"
+      cancelled:            "Cancelled"
+      description_present:  "This event has notes to read"
+      download_pdf:         "Download a Printable PDF"
+
       bulk_publish:
-        execute_caption: 'Publish Selected Events'
-        cancel_caption:  'Cancel'
-        confirm_message: '%{count} published'
-        verb: 'published'
-        success_message: 'Bulk publish successful'
-      showing_some: 'Showing events for the upcoming 3 months. '
-      showing_rsvps: 'Showing only events requiring an RSVP'
-      show_all:     'Show everything'
-      no_events:    'No events are planned right now.'
-      draft:        'Draft'
-      cancelled:    'Cancelled'
-      description_present: 'This event has notes to read'
+        execute_caption:  "Publish Selected Events"
+        cancel_caption:   "Cancel"
+        confirm_message:  "%{count} published"
+        verb:             "published"
+        success_message:  "Bulk publish successful"
+
       view:
-        dropdown:   'Options'
-        cancelled:  'Show cancelled events'
-        rsvps:      'Show only RSVP events'
-        drafts:     'Bulk publish draft events'
-        past:       'Show past events'
-        subscribe:  'Add this schedule to your calendar'
+        dropdown:   "Options"
+        cancelled:  "Show cancelled events"
+        rsvps:      "Show only RSVP events"
+        drafts:     "Bulk publish draft events"
+        past:       "Show past events"
+        subscribe:  "Add this schedule to your calendar"
+
       event_row:
-        rsvp_respond: 'Respond'
-        rsvp_change:  'Change'
-      rsvp_open:    'RSVP is open'
-      download_pdf: "Download a Printable PDF"
+        rsvp_respond: "Respond"
+        rsvp_change:  "Change"
+
+      rsvp:   
+        no_response:      "RSVP is open. Your family hasn't responded yet. You can still change your response."
+        partial_response: "RSVP is open. Some of your family has responded; some remain outstanding. You can still change your response."
+        full_response:    "RSVP is open. Your family has responded."
+
     form:
       timezone_prompt: "Dates and times are %{timezone_name}"
 
     show:
-      upcoming_events_title:  'Other upcoming events'
-      description_empty:      "There's no description for this event yet."
-      description_cta:        'Write one now.'
-      confirm_publish:        'Publishing will make this event visible to all members. Are you sure you want to publish it?'
-      published:              'This event is published'
-      edit_description_title: 'Edit Event Description'
-      cancel_title:           'Cancel This Event'
-      cancel_button:          'Yes, Cancel This Event'
+      upcoming_events_title:  "Other upcoming events"
+      description_empty:      "There"s no description for this event yet."
+      description_cta:        "Write one now."
+      confirm_publish:        "Publishing will make this event visible to all members. Are you sure you want to publish it?"
+      published:              "This event is published"
+      edit_description_title: "Edit Event Description"
+      cancel_title:           "Cancel This Event"
+      cancel_button:          "Yes, Cancel This Event"
       cancel_cancel:          "No, Don't Cancel"
-      cancel:
-        notice:               "Cancelling a published event will remove it from the calendar. Are you sure you want to proceed?"
-        notify_title:         "Send a cancellation notice to:"
-        everyone:             "All active %{unit_name} members (%{count})"
-        accepted:             "'Going' RSVPS (%{count})"
-        none:                 "Don't send a notification"
-        confirmation:         "%{event_title} has been cancelled"
-      organize_button_caption: 'Manage RSVPs'
-      edit_reason_admin:      "Not available to most, but available to you because you're a %{unit_name} administrator."
-      organize_reason_admin:  "Not available to most, but available to you because you're a %{unit_name} administrator."
+      organize_button_caption: "Manage RSVPs"
+      edit_reason_admin:      "Not available to most, but available to you because you"re a %{unit_name} administrator."
+      organize_reason_admin:  "Not available to most, but available to you because you"re a %{unit_name} administrator."
       location:               "Location"
       address:                "Address"
       departs_from:           "Departs From"
       series_count:           "%{count} events in this series"
       past_warning:           "This event has already occurred."
 
+      cancel:
+        notice:       "Cancelling a published event will remove it from the calendar. Are you sure you want to proceed?"
+        notify_title: "Send a cancellation notice to:"
+        everyone:     "All active %{unit_name} members (%{count})"
+        accepted:     "\"Going\" RSVPS (%{count})"
+        none:         "Don't send a notification"
+        confirmation: "%{event_title} has been cancelled"      
+
     cancel:
-      proceed: "Cancel This Event"
-      abandon: "Don't Cancel"
-      confirm: "Are you sure you want to cancel?"
+      proceed:        "Cancel This Event"
+      abandon:        "Don't Cancel"
+      confirm:        "Are you sure you want to cancel?"
       message_prompt: "Send a cancellation message?"
       past_warning:   "Cancelling events that occurred in the past is not recommended."
     
     edit:
-      short_description_placeholder: 'Brief description (optional, appears in email & text)'
+      short_description_placeholder: "Brief description (optional, appears in email & text)"
 
     new:
       add_this_event: "Add This Event"
 
     organize:
-      subtitle:     'Organizer View'
-      accepts:      'Going'
-      declines:     'Not going'
-      no_responses: 'No response'
-      no_invites:   'No invitations'
-      update_toast: "%{user_name}'s RSVP for %{event_title} has been updated."
-      invite_toast: 'An invitation to %{event_title} was sent to %{recipient}'
-      back:         'Back to main event page'
+      subtitle:     "Organizer View"
+      accepts:      "Going"
+      declines:     "Not going"
+      no_responses: "No response"
+      no_invites:   "No invitations"
+      update_toast: "%{user_name}"s RSVP for %{event_title} has been updated."
+      invite_toast: "An invitation to %{event_title} was sent to %{recipient}"
+      back:         "Back to main event page"
 
   members:
-    title:            'Members'
-    name:             'Name'
-    type:             'Type'
-    parent_guardian:  'Parents, Guardians, and Delegates'
-    children:         'Children, Guardees, and Delgatees'
-    status:           'Status'
-    member_type:      'Youth/Adult'
-    search_by_name:   'Search by name'
+    title:            "Members"
+    name:             "Name"
+    type:             "Type"
+    parent_guardian:  "Parents, Guardians, and Delegates"
+    children:         "Children, Guardees, and Delgatees"
+    status:           "Status"
+    member_type:      "Youth/Adult"
+    search_by_name:   "Search by name"
+
     index:
-      page_title:     'Member Roster'
-      title:          'Member Roster'
-      add_a_member:   'Add a Member'
+      page_title:     "Member Roster"
+      title:          "Member Roster"
+      add_a_member:   "Add a Member"
+
     new:
-      title: 'Add a Member'
+      title: "Add a Member"
+
     show:
-      children:         'Children, Guardees, and Delegatees'
-      parent_guardian:  'Parents, Guardians, and Delegates'
-      add_relationship: 'Add Relationship'
-      return_link:      'Return to the %{unit_name} Member Roster'
+      children:         "Children, Guardees, and Delegatees"
+      parent_guardian:  "Parents, Guardians, and Delegates"
+      add_relationship: "Add Relationship"
+      return_link:      "Return to the %{unit_name} Member Roster"
+
     import:
-      title:           'Import Member Spreadsheet'
-      success_message: '%{count_and_noun} were successfully imported and invited via email'
-      member:          'member'
-      roster_file:     'Roster file'
+      title:            "Import Member Spreadsheet"
+      success_message:  "%{count_and_noun} were successfully imported and invited via email"
+      member:           "member"
+      roster_file:      "Roster file"
+
     relationships:
-      success_message: '%{first_name} can now RSVP on behalf of %{second_name}'
+      success_message:  "%{first_name} can now RSVP on behalf of %{second_name}"
+
     bulk_update:
-      success_message: 'Members were updated successfully'
+      success_message:  "Members were updated successfully"
 
   event_categories:
-    camping:          'Camping'
-    hiking:           'Hiking'
-    service_project:  'Service Project'
-    court_of_honor:   'Court of Honor'
+    camping:          "Camping"
+    hiking:           "Hiking"
+    service_project:  "Service Project"
+    court_of_honor:   "Court of Honor"
 
   mailers:
     member_mailer:
       digest_email:
-        title: 'Coming Up At %{unit_name}'
+        title: "Coming Up At %{unit_name}"
       daily_reminder:
-        this: 'This'
+        this: "This"
         multiple_events: "Today's Events"
 
   helpers:
@@ -258,33 +274,33 @@ en:
       update: "Confirm Changes to This %{model}"
 
     label:
-      next: 'Next'
+      next: "Next"
 
       event:
-        category: 'Category'
-        title: 'Title'
-        from: 'From'
-        to: 'To'
-        repeats: 'Repeats Weekly'
-        location: 'Location'
-        description: 'Notes'
-        requires_rsvp: 'Requires RSVP'
-        rsvp_notify: 'Notify everyone when RSVP opens'
-        accept_button: 'Save As Draft Event'
-        cancel_button: 'Cancel'
-        update_button: 'Save These Changes'
-        cancel_event:  'Cancel This Event'
-        delete_event: 'Delete This Draft'
-        cancel_update: 'Cancel'
-        update_scope: 'Change: '
-        update_single: 'just this event'
-        update_series: 'all events in the series'
-        rsvp_noun: 'RSVP'
-        rsvp_save: 'Send RSVPs'
-        create_confirmation: '%{event_name} was added to the calendar'
-        description_save: 'Save This Description'
+        category:             "Category"
+        title:                "Title"
+        from:                 "From"
+        to:                   "To"
+        repeats:              "Repeats Weekly"
+        location:             "Location"
+        description:          "Notes"
+        requires_rsvp:        "Requires RSVP"
+        rsvp_notify:          "Notify everyone when RSVP opens"
+        accept_button:        "Save As Draft Event"
+        cancel_button:        "Cancel"
+        update_button:        "Save These Changes"
+        cancel_event:         "Cancel This Event"
+        delete_event:         "Delete This Draft"
+        cancel_update:        "Cancel"
+        update_scope:         "Change: "
+        update_single:        "just this event"
+        update_series:        "all events in the series"
+        rsvp_noun:            "RSVP"
+        rsvp_save:            "Send RSVPs"
+        create_confirmation:  "%{event_name} was added to the calendar"
+        description_save:     "Save This Description"
 
   tasks:
-    undefined_description: "Undefined Task"
+    undefined_description:      "Undefined Task"
     daily_reminder_description: "Daily Reminders"
-    unit_digest_description: "Unit Digest"
+    unit_digest_description:    "Unit Digest"

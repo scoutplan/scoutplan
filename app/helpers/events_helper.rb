@@ -25,11 +25,11 @@ module EventsHelper
 
   # given an EventRsvp object, return a fully-formed span tag containing the correct
   # FontAwesome glphy
-  def rsvp_glyph_tag(rsvp)
+  def rsvp_glyph_tag(member, rsvp)
     glyph_class = RSVP_GLYPH_CLASSES[rsvp&.response]
     text_color = RSVP_GLYPH_COLORS[rsvp&.response]
     title_tag = rsvp.nil? ? 'unknown' : rsvp.response
-    first_name = rsvp&.first_name
+    first_name = member.display_first_name
 
     content_tag(
       :span,

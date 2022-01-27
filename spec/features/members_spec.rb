@@ -18,6 +18,6 @@ describe "unit_memberships", type: :feature do
   it "visits a member", js: true do
     User.destroy_all
     member = FactoryBot.create(:unit_membership, unit: @admin.unit)
-    visit member_path(member)
+    visit unit_member_path(member.unit, member)
   end
 end

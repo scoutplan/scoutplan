@@ -1,5 +1,4 @@
 - @presenter.event = event
-- turbo_frame_name = "main"
 - rsvps = event.rsvps
 - row_class = 'event-row'
 - row_class += ' event-past'   if event.starts_at.past?
@@ -12,7 +11,7 @@
 - if mode == 'append'
   = render partial: 'month_header', locals: { event: event }
 
-tr.border-b.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{row_class}")
+tr.border-b.hover:bg-stone-100.hover:text-stone-800(id="#{dom_id(event)}" class="#{row_class}")
   // bulk selection checkbox
   td.bulk-selection
     = check_box_tag "event_ids[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
@@ -20,9 +19,9 @@ tr.border-b.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{ro
   // dates & days
   td.event-dates.w-px.pr-6
     = link_to unit_event_path(@unit, event),
-      class: "row-link cursor-pointer no-underline whitespace-nowrap start-day px-2 py-2",
-      data: { turbo_frame: turbo_frame_name, turbo_action: "advance" } do
-      .text-base.font-bold
+      class: "row-link cursor-pointer no-underline whitespace-nowrap start-day px-2",
+      data: { turbo_frame: "main", turbo_action: "advance" } do
+      .text-base.font-bold.py-1
         = raw(@presenter.dates_to_s)
       
       .text-sm.text-gray-500.font-semibold.uppercase
@@ -31,9 +30,9 @@ tr.border-b.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{ro
   // title
   td.event-title
     = link_to unit_event_path(@unit, event),
-      class: "row-link cursor-pointer no-underline px-1 py-3",
-      data: { turbo_frame: turbo_frame_name, turbo_action: "advance" } do
-      .font-bold.whitespace-nowrap
+      class: "row-link cursor-pointer no-underline px-1 py-2",
+      data: { turbo_frame: "main", turbo_action: "advance" } do
+      .font-bold.whitespace-nowrap.py-1
         = event.title
         = event_badge(event)
         - description_text = event.description.to_plain_text
@@ -44,33 +43,22 @@ tr.border-b.hover:bg-gray-100.hover:text-black(id="#{dom_id(event)}" class="#{ro
 
       .text-gray-500.text-sm
         - if event.location.present?
-          .whitespace-nowrap
+          .whitespace-nowrap.overflow-hidden.text-ellipsis.w-60
             i.fa-location-dot.fas.text-gray-300.mr-1
             = event.location
         - else
           = raw("&nbsp;")
 
-  // glyph
-  td.event-glyph.w-px.hidden.sm:table-cell
+  // glyph + description
+  td.event-glyph.hidden.sm:table-cell.overflow-hidden
     = link_to unit_event_path(@unit, event),
-      class: "row-link cursor-pointer no-underline py-3 glyph whitespace-nowrap",
-      data: { turbo_frame: turbo_frame_name, turbo_action: "advance" } do
-      div
+      class: "row-link cursor-pointer no-underline py-3 glyph",
+      data: { turbo_frame: "main", turbo_action: "advance" } do
         = glyph_tag(event)
         = event.category.name
 
-      .text-sm.text-gray-500.pl-12
-        = event.short_description
+        .text-sm.text-gray-500.pl-12.overflow-hidden.whitespace-nowrap.w-60.text-ellipsis
+          = event.short_description
 
-  td.event-actions.hidden.sm:table-cell.text-right.pr-4
-    = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps }
-
-  // on small screens we represents RSVP with a yellow dot
-  td.mini-event-actions.md:hidden
-    - if event.rsvp_open?
-      span(title=t("events.index.rsvp_open"))
-        i.fa-circle.fas.text-yellow-500
-
-
-/      .w-7.h-7.inline-flex.items-center.justify-center.rounded-full.bg-gray-800.text-white.text-sm(style="background-color:#{event.category.color}")
-/        = glyph_tag(event)        
+  td.event-actions.text-right.pr-2
+    = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps } if event.requires_rsvp
