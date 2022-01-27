@@ -123,7 +123,7 @@ en:
     dates: 'Dates'
 
     rsvp:
-      note_placeholder: 'e.g. "Need a ride", or "Arriving late"'
+      note_placeholder: "Note, e.g. \"Need a ride\", \"Arriving late\", etc."
       no_response: 'No response'
       closed: 'RSVPs are closed'
       past: 'Event has already occurred'
