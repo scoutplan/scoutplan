@@ -1,13 +1,26 @@
 = turbo_frame_tag "main"
-  header.max-w-6xl.mx-auto.flex.justify-between
-    h1.text-xl.font-bold.my-4
-      = t("events.organize.title", event_title: @event.title)
-      .inline.ml-2.text-base = glyph_tag(@event)
+  header.max-w-6xl.mx-auto
+    .flex.justify-between
+      h1.text-xl.font-bold.my-4
+        = t("events.organize.title", event_title: @event.title)
+        .inline.ml-2.text-base = glyph_tag(@event)
 
-    = link_to "Done",
-      unit_event_path(@event.unit, @event),
-      class: "py-5 text-sm font-semibold text-stone-400 hover:text-stone-600",
-      data: { turbo: { frame: "main", action: "advance" } }
+      = link_to "Done",
+        unit_event_path(@event.unit, @event),
+        class: "py-5 text-sm font-semibold text-stone-400 hover:text-stone-600",
+        data: { turbo: { frame: "main", action: "advance" } }
+
+    // SEARCH
+    .relative.block.mb-2
+      = text_field_tag \
+        :search,
+        "",
+        placeholder: t("events.organize.placeholders.search"),
+        id: "search_term",
+        class: "w-full rounded border-0 bg-stone-100 focus:ring-scoutplan-500 placeholder-stone-400",
+        onkeyup: "performNameSearch();"
+
+      i.fa-magnifying-glass.fas.absolute.right-4(style="top:50%;transform:translateY(-50%);")    
 
   - if flash[:notice]
     section.mb-4.max-w-6xl.mx-auto#notices
@@ -149,3 +162,37 @@
     }
 
     setupHoverLinks();
+
+    function performNameSearch() {
+      var searchTermElem = document.querySelector("#search_term");
+      var searchTerm = searchTermElem.value.toUpperCase();
+
+      var memberItems = document.querySelectorAll("li.member");
+      memberItems.forEach(function(elem) {
+        var nameElem = elem.querySelector(".member-name");
+        var name = nameElem.innerText;
+        if (searchTerm.length < 0 || name.toUpperCase().indexOf(searchTerm) > -1) {
+          elem.classList.remove("hidden");
+        } else {
+          elem.classList.add("hidden");
+        }        
+      });
+    }
+
+
+
+  / function performNameSearch() {
+  /   var input = document.querySelector('#search');
+  /   var filter = input.value.toUpperCase();
+
+  /   var rows = document.querySelectorAll('tr.member');
+  /   rows.forEach(function(row) {
+  /     var nameCell = row.querySelector('td.name');
+  /     var name = nameCell.innerText;
+  /     if (filter.length < 0 || name.toUpperCase().indexOf(filter) > -1) {
+  /       row.style.display = '';
+  /     } else {
+  /       row.style.display = 'none';
+  /     }
+  /   });
+  / }    
