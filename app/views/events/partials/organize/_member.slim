@@ -25,3 +25,5 @@ ul.m-0
       span.w-7.text-center.inline-block
         i.fas.fa-couch.text-red-500.inline-block
       = t("events.organize.actions.decline_html")
+
+  = render partial: "events/partials/organize/member_details_item", locals: { member: member }

@@ -18,7 +18,7 @@
   section.max-w-6xl.mx-auto.grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-2.xl:grid-cols-4.gap-2
     .bg-green-50.rounded.p-4#accepted_rsvp_container
       .flex.justify-between
-        h2.text-lg.font-bold
+        h2.text-lg.font-bold.text-green-700
           i.fa-person-hiking.fas.text-green-600.mr-2
           = t("events.organize.accepts")
 
@@ -36,7 +36,7 @@
     // DECLINED
     .bg-red-50.rounded.p-4#declined_rsvp_container
       .flex.justify-between
-        h2.text-lg.font-bold
+        h2.text-lg.font-bold.text-red-700
           i.fa-couch.fas.text-red-500.mr-2
           = t("events.organize.declines")
 
@@ -54,7 +54,7 @@
     // NO RESPONSE
     .bg-orange-50.rounded.p-4
       .flex.justify-between
-        h2.text-lg.font-bold
+        h2.text-lg.font-bold.text-orange-700
           i.fa-ghost.fas.text-orange-500.mr-2
           = t("events.organize.non_respondents")
 
