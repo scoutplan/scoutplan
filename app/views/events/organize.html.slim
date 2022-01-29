@@ -9,11 +9,21 @@
       class: "py-5 text-sm font-semibold text-stone-400 hover:text-stone-600",
       data: { turbo: { frame: "main", action: "advance" } }
 
+  - if flash[:notice]
+    section.mb-4.max-w-6xl.mx-auto#notices
+      p.p-4.m-0.bg-amber-100.text-amber-700.rounded
+        i.fa-info-circle.fas.mr-2
+        = flash[:notice]
+
   section.max-w-6xl.mx-auto.grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-2.xl:grid-cols-4.gap-2
     .bg-green-50.rounded.p-4#accepted_rsvp_container
-      h2.text-lg.font-bold
-        i.fa-person-hiking.fas.text-green-600.mr-2
-        = t("events.organize.accepts")
+      .flex.justify-between
+        h2.text-lg.font-bold
+          i.fa-person-hiking.fas.text-green-600.mr-2
+          = t("events.organize.accepts")
+
+        .rounded.font-bold.tracking-wide.text-sm.px-2.py-1.bg-green-500.text-green-100
+          = @event.rsvps.accepted.count
 
       // list of "going" members
       ul.mt-2.empty:mt-0
@@ -25,9 +35,13 @@
 
     // DECLINED
     .bg-red-50.rounded.p-4#declined_rsvp_container
-      h2.text-lg.font-bold
-        i.fa-couch.fas.text-red-500.mr-2
-        = t("events.organize.declines")
+      .flex.justify-between
+        h2.text-lg.font-bold
+          i.fa-couch.fas.text-red-500.mr-2
+          = t("events.organize.declines")
+
+        .rounded.font-bold.tracking-wide.text-sm.px-2.py-1.bg-red-500.text-red-100
+          = @event.rsvps.declined.count        
 
       // list of "not going" members
       ul.mt-2.empty:mt-0
@@ -39,9 +53,13 @@
 
     // NO RESPONSE
     .bg-orange-50.rounded.p-4
-      h2.text-lg.font-bold
-        i.fa-ghost.fas.text-orange-500.mr-2
-        = t("events.organize.non_respondents")
+      .flex.justify-between
+        h2.text-lg.font-bold
+          i.fa-ghost.fas.text-orange-500.mr-2
+          = t("events.organize.non_respondents")
+
+        .rounded.font-bold.tracking-wide.text-sm.px-2.py-1.bg-orange-500.text-orange-100
+          = @non_respondents.count           
 
       ul.mt-2.empty:mt-0
         = render \
@@ -52,9 +70,13 @@
 
     // NON-INVITEES
     .bg-zinc-100.rounded.p-4
-      h2.text-lg.font-bold
-        i.fa-address-book.fas.text-stone-500.mr-2
-        = t("events.organize.non_invitees")
+      .flex.justify-between
+        h2.text-lg.font-bold
+          i.fa-address-book.fas.text-stone-500.mr-2
+          = t("events.organize.non_invitees")
+          
+        .rounded.font-bold.tracking-wide.text-sm.px-2.py-1.bg-zinc-500.text-zinc-100
+          = @non_invitees.count   
 
       ul.mt-2.empty:mt-0
         = render \

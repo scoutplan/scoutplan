@@ -4,25 +4,25 @@
 - @member_name = rsvp.full_display_name
 
 ul.m-0
-    // Change to Decline
-    li
-      = button_to \
-        event_rsvps_path(@event, member_id: rsvp.member.id, response: :declined),
-        method: :post,
-        class: "change-rsvp-button block py-2",
-        id: "change_rsvp_#{rsvp.id}_button" \
-        do
-        span.w-7.text-center.inline-block
-          i.fas.fa-couch.text-red-500.inline-block.hover:text-black
-        = t("events.organize.actions.decline_html")
+  // Change to Declined
+  li
+    = button_to \
+      event_rsvps_path(@event, member_id: rsvp.member.id, response: :declined),
+      method: :post,
+      class: "change-rsvp-button block py-2",
+      id: "change_rsvp_#{rsvp.id}_button" \
+      do
+      span.w-7.text-center.inline-block
+        i.fas.fa-couch.text-red-500.inline-block.hover:text-black
+      = t("events.organize.actions.decline_html")
 
-    // Mark as paid
-    li
-      = button_to \
-        event_rsvp_path(rsvp),
-        method: :delete,
-        class: "block py-2" \
-        do
-        span.w-7.text-center.inline-block
-          i.fas.fa-trash.text-black.text-orange-600
-        = t("events.organize.actions.delete")
+  // Delete RSVP
+  li
+    = button_to \
+      event_rsvp_path(rsvp),
+      method: :delete,
+      class: "block py-2" \
+      do
+      span.w-7.text-center.inline-block
+        i.fas.fa-trash.text-black.text-orange-600
+      = t("events.organize.actions.delete")

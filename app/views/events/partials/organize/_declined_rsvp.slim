@@ -4,6 +4,7 @@
 - @member_name = rsvp.full_display_name
 
 ul.m-0
+  // Change to Accepted
   li
     = button_to \
       event_rsvps_path(@event, member_id: rsvp.member.id, response: :accepted),
@@ -14,3 +15,14 @@ ul.m-0
       span.w-7.text-center.inline-block
         i.fas.fa-person-hiking.text-green-500.inline-block
       = t("events.organize.actions.accept_html")
+
+  // Delete RSVP
+  li
+    = button_to \
+      event_rsvp_path(rsvp),
+      method: :delete,
+      class: "block py-2" \
+      do
+      span.w-7.text-center.inline-block
+        i.fas.fa-trash.text-black.text-orange-600
+      = t("events.organize.actions.delete")      
