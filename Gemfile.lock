@@ -450,7 +450,6 @@ DEPENDENCIES
   trix
   turbo-rails
   twilio-ruby
-  tzinfo-data
   web-console (~> 4.1)
   webdrivers (~> 4.6)
   wicked_pdf
