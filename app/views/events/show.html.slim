@@ -6,7 +6,7 @@
 // .modal.w-auto.my-2.mx-2.md:mx-auto.max-w-3xl.bg-white.rounded.z-40.drop-shadow-xl.filter.overflow-y-auto
 
 = turbo_frame_tag "main"
-  .max-w-3xl.mx-auto
+  .max-w-4xl.mx-auto
 
     // CANCELLED watermark
     - if @event.cancelled?
@@ -102,9 +102,9 @@
                       " px-4 py-2 mr-0 md:mr-2 mb-2 md:mb-0" \
                       " bg-scoutplan-100 hover:bg-scoutplan-200" \
                       " text-scoutplan-500 hover:text-scoutplan-600" \
-                      " rounded" \
+                      " rounded border border-scoutplan-100 hover:border-scoutplan-200" \
                       "",
-              data: { 'turbo-action' => 'advance', 'turbo-frame' => '_top' },
+              data: { turbo_action: "advance", turbo_frame: "main" },
               title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)   
 
 

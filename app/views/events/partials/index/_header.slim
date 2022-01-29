@@ -1,5 +1,4 @@
 header#page_header.max-w-4xl.mx-auto.sticky.left-0.right-0.top-0.px-0.bg-white.pb-8.pt-8.lg:pt-10.z-10.items-center
-
   .flex
     // left side
     .flex.flex-grow
@@ -56,12 +55,16 @@ header#page_header.max-w-4xl.mx-auto.sticky.left-0.right-0.top-0.px-0.bg-white.p
           class: 'ml-3 text-sm font-bold rounded bg-gray-100 text-black no-underline px-4 py-2 uppercase',
           id: 'cancel_bulk_publish'
 
+  div.pl-2.mt-5
+    .flex.gap-3
+      .filter-status.filter-status-only-rsvps.inline-block.rounded.px-4.py-2.mt-6.bg-sky-100.text-sky-600
+          i.fa-thumbs-up.fas.mr-3
+          = t('events.index.showing_rsvps')
 
-  // subheadings, based on body class / view mode
-  .filter-status
-    = 'Showing only some events'
+      .filter-status.filter-status-past-events.inline-block.rounded.px-4.py-2.mt-6.bg-sky-100.text-sky-600
+          i.fa-clock-rotate-left.fas.mr-3
+          = t('events.index.showing_past')
 
-  .filter-status.filter-status-only-rsvps
-    .inline-block.rounded.px-6.py-3.mt-6.bg-amber-100.text-amber-600
-      i.fa-info-circle.fas.mr-3
-      = t('events.index.showing_rsvps')
+      .filter-status.filter-status-cancelled.inline-block.rounded.px-4.py-2.mt-6.bg-sky-100.text-sky-600
+          i.fa-times-hexagon.fas.mr-3
+          = t('events.index.showing_cancelled')          

@@ -63,7 +63,20 @@ Rails.application.routes.draw do
   end
   # end units
 
+  # begin members
+  resources :unit_memberships, path: "members", as: "members", only: %i[show edit update destroy] do
+    member do
+      post "invite"
+      # post "send/:item", as: :send, to: "unit_memberships#send_message"
+    end
+    resources :member_relationships, as: "relationships", path: "relationships", only: %i[new create destroy]
+  end
+  # end members
+
+  post "units/:unit_id/members/:member_id/messages/:message_type", to: "messages#create", as: "create_unit_member_message"  
+
   resources :member_relationships, as: "relationships", path: "relationships", only: %i[destroy]
+  resources :event_rsvps, except: [:index, :show, :edit, :update, :new]
 
   resources :news_items, only: %i[show edit update destroy] do
     post "enqueue", to: "news_items#enqueue", as: "enqueue"

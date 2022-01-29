@@ -38,15 +38,7 @@ class UnitMembership < ApplicationRecord
   enum status: { inactive: 0, active: 1 }, _prefix: true
   enum member_type: { unknown: 0, youth: 1, adult: 2 }
 
-  delegate :full_name, to: :user
-  delegate :first_name, to: :user
-  delegate :last_name, to: :user
-  delegate :display_first_name, to: :user
-  delegate :full_display_name, to: :user
-  delegate :short_display_name, to: :user
-  delegate :nickname, to: :user
-  delegate :email, to: :user
-  delegate :phone, to: :user
+  delegate_missing_to :user
 
   accepts_nested_attributes_for :user
   accepts_nested_attributes_for :child_relationships,

@@ -3,7 +3,7 @@
 # application-wide helpers
 module ApplicationHelper
   # rubocop:disable Metrics/MethodLength
-  def deictic_day(val)
+  def deictic_string_for_time_interval_from_day(val)
     if val.today?
       "today"
     elsif val.tomorrow?

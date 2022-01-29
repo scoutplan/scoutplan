@@ -1,0 +1,29 @@
+// This partial shows members not having an RSVP, so possible actions
+// are Accept and Decline
+
+- @member_name = member.full_display_name
+
+ul.m-0
+  li
+    = button_to \
+      event_rsvps_path(@event, member_id: member.id, response: :accepted),
+      method: :post,
+      class: "change-rsvp-button block py-2",
+      id: "change_rsvp_#{member.id}_button" \
+      do
+      span.w-7.text-center.inline-block
+        i.fas.fa-person-hiking.text-green-500.inline-block
+      = t("events.organize.actions.accept_html")
+
+  li
+    = button_to \
+      event_rsvps_path(@event, member_id: member.id, response: :declined),
+      method: :post,
+      class: "change-rsvp-button block py-2",
+      id: "change_rsvp_#{member.id}_button" \
+      do
+      span.w-7.text-center.inline-block
+        i.fas.fa-couch.text-red-500.inline-block
+      = t("events.organize.actions.decline_html")
+
+  = render partial: "events/partials/organize/member_details_item", locals: { member: member }

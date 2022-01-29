@@ -14,12 +14,7 @@ class EventRsvp < ApplicationRecord
 
   alias_attribute :member, :unit_membership
 
-  delegate :first_name, to: :unit_membership
-  delegate :full_name, to: :unit_membership
-  delegate :display_first_name, to: :unit_membership
-  delegate :user, to: :unit_membership
-  delegate :unit, to: :unit_membership
-  delegate :contactable?, to: :unit_membership
+  delegate_missing_to :unit_membership
 
   # do the Event and UnitMembership share a Unit in common?
   # if not, something's wrong

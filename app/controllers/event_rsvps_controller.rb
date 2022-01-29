@@ -5,9 +5,9 @@ class EventRsvpsController < ApplicationController
   def create
     @event = Event.find(params[:event_id])
     @unit = @event.unit
-    @member = @unit.memberships.find(params[:member_id])
-    @rsvp = @event.rsvps.find_or_create_by(unit_membership: @member)
-    @respondent = @unit.membership_for(current_user) || @member
+    target_member = @unit.memberships.find(params[:member_id])
+    @rsvp = @event.rsvps.find_or_create_by(unit_membership: target_member)
+    @respondent = @unit.membership_for(current_user) || target_member
     @rsvp.respondent = @respondent
     @rsvp.response = params[:response]
 
@@ -17,7 +17,8 @@ class EventRsvpsController < ApplicationController
     EventNotifier.send_rsvp_confirmation(@rsvp)
 
     find_event_responses
-    respond_to :js
+    flash[:notice] = I18n.t("events.organize.confirmations.updated_html", name: target_member.full_display_name)
+    redirect_to unit_event_organize_path(@unit, @event)
   end
 
   # send or re-send an invitation
@@ -28,6 +29,22 @@ class EventRsvpsController < ApplicationController
     EventNotifier.invite_member_to_event(@token)
     find_event_responses
     respond_to :js
+  end
+
+  def destroy
+    rsvp = EventRsvp.find(params[:id])
+    unit = rsvp.unit
+    event = rsvp.event
+    target_member = rsvp.member
+    @member = unit.membership_for(current_user)
+    authorize rsvp
+    flash[:notice] = I18n.t("events.organize.confirmations.delete", name: target_member.full_display_name)
+    rsvp.destroy
+    redirect_to unit_event_organize_path(unit, event)
+  end
+
+  def pundit_user
+    @member
   end
 
   private

@@ -1,0 +1,24 @@
+// This is a small layout for displaying an entry on the Events#organize page.
+// It's intended to be used by the two partials found in /views/events/partials/organize
+
+li.member
+  = link_to "#",
+    class: "leading-none block w-full py-2 md:py-2", \
+    onclick: "this.closest('.member').classList.toggle('open'); return false;" \
+    do
+
+    .flex.justify-between
+      // this is cheating...we shouldn't have had to use an instance variable,
+      // but yielding here wasn't working
+      .hover:text-black
+        = @member_name
+
+      .little-buttons
+        .disclosure-button.hidden
+          i.fa-chevron-right.fas.text-sm.text-black.opacity-30
+
+        .close-button.hidden
+          i.fa-times-circle.fas.text-sm.text-black.opacity-30
+
+  .member-actions.hidden.rsvp-action.text-sm.bg-black/5.rounded.p-2.mt-1/2.mb-2
+    = yield
