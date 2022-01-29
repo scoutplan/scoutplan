@@ -1,9 +1,7 @@
-.flex
-  .flex-0
-    label(class="block text-black mr-3 font-semibold w-36")
-      = 'Type'
+= label_tag "Type", nil, class: "text-sm font-bold uppercase tracking-wide block md:inline-block w-1/4"
 
-  .flex-auto
+.inline-block.flex-auto.w-[75%]
+  .inline-block.py-2
     span.mr-3
       = f.radio_button :member_type, :youth, class: 'mr-1'
       = f.label :member_type, 'Youth', value: 'youth', class: ''
@@ -12,6 +10,6 @@
       = f.radio_button :member_type, :adult, class: 'mr-1'
       = f.label :member_type, 'Adult', value: 'adult', class: ''
 
-    span.ml-3
-      = f.check_box :role, { class: 'mr-1' }, 'admin', 'member'
-      = f.label :role, "#{ @unit.name } Administrator", class: 'form-check-label'
+  span.md:ml-6.py-2.block.md:inline
+    = f.check_box :role, { class: 'mr-1' }, 'admin', 'member'
+    = f.label :role, "#{ @unit.name } Administrator", class: 'form-check-label'

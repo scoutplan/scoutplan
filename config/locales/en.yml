@@ -235,7 +235,6 @@ en:
         search: "Search for members by name"
         
   members:
-    title:            "Members"
     name:             "Name"
     type:             "Type"
     parent_guardian:  "Parents, Guardians, and Delegates"
@@ -244,10 +243,11 @@ en:
     member_type:      "Youth/Adult"
     search_by_name:   "Search by name"
 
-    index:
-      page_title:     "Member Roster"
-      title:          "Member Roster"
-      add_a_member:   "Add a Member"
+    titles:
+      new:     "Add a Member"
+      edit:    "Update Member Details"
+      index:   "Member Roster"
+
 
     new:
       title: "Add a Member"
