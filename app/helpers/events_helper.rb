@@ -28,7 +28,7 @@ module EventsHelper
   def rsvp_glyph_tag(member, rsvp)
     glyph_class = RSVP_GLYPH_CLASSES[rsvp&.response]
     text_color = RSVP_GLYPH_COLORS[rsvp&.response]
-    title_tag = rsvp.nil? ? 'unknown' : rsvp.response
+    title_tag = rsvp.nil? ? "unknown" : rsvp.response
     first_name = member.display_first_name
 
     content_tag(
@@ -41,7 +41,7 @@ module EventsHelper
   end
 
   def event_badge(event)
-    common_classes = 'rounded px-2 py-1 text-xs tracking-wide font-bold text-white ml-2'
+    common_classes = "rounded px-2 py-1 text-xs tracking-wide font-bold text-white ml-2"  
     title = "Only visible to #{event.unit.name} administrators, like you."
     if event.cancelled?
       content_tag :span, t('events.index.cancelled'), class: "#{common_classes} bg-red-500", title: title

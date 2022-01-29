@@ -53,6 +53,8 @@ Rails.application.routes.draw do
       post  "cancel", to: "events#perform_cancellation"
     end
 
+    resources :unit_memberships
+
     resources :unit_memberships, path: "members", as: "members" do
       collection do
         post "bulk_update", to: "unit_memberships#bulk_update"

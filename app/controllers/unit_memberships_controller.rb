@@ -21,6 +21,12 @@ class UnitMembershipsController < ApplicationController
     build_new_relationship
   end
 
+  def new
+    @target_membership = @unit.memberships.build
+    @target_membership.build_user
+    build_new_relationship
+  end
+
   def show
     authorize @target_membership
     @user = @target_membership.user

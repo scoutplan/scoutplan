@@ -12,11 +12,7 @@ li.member
       // but yielding here wasn't working
       .hover:text-black
 
-        - case @member.member_type
-        - when "youth"
-          i.fa-user.fad.mr-2.text-lime-500
-        - when "adult"
-          i.fa-user.fad.mr-2.text-amber-500
+        = raw member_glyph_tag(@member)
 
         span.member-name
           = @member.full_display_name

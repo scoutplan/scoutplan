@@ -4,7 +4,7 @@
   // white dialog
   .relative.w-auto.my-12.mx-auto.max-w-2xl.bg-white.rounded.z-50.drop-shadow-xl.filter
 
-    = form_with model: @target_membership, local: true, url: unit_member_path(@unit, @target_membership), id: 'member_info_form' do |f|  
+    = form_with model: [@unit, @target_membership], id: 'member_info_form' do |f|  
 
       // modal header
       header.pt-4.px-8.pb-3.overflow-auto
@@ -47,7 +47,8 @@
             class: 'bg-scoutplan-500 inline-block px-4 py-2 mr-2 no-underline rounded text-white text-sm font-bold tracking-wider uppercase'
           
           // cancel
-          = link_to unit_member_path(@unit, @target_membership),
+          - cancel_path = @target_membership.new_record? ? unit_members_path(@unit) : unit_member_path(@unit, @target_membership)
+          = link_to cancel_path,
             class: 'inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase',
             data: { turbo_action: 'advance' } do
             = t('helpers.label.event.cancel_update')
