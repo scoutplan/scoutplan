@@ -23,6 +23,9 @@
 
 = render partial: 'events/partials/styles'
 
+= content_for :head do
+    = javascript_include_tag "events"
+
 scss:
   th.selection, td.selection {
     display: none;
@@ -76,7 +79,7 @@ scss:
  .collapse-anim-off {
     -webkit-transition: none;
     transition: none;
-  }
+  }  
 
 javascript:
   // BULK EDIT FACILITY
@@ -143,6 +146,33 @@ javascript:
     bulkEditExecuteButton.innerText = originalBulkEditExecuteButtonCaption + (checkedCount == 0 ? '' : ' (' + checkedCount + ')');
   }
 
-- if params[:member_id] && false
-  javascript:
-    document.querySelector('#member_#{params[:member_id]}_row').querySelector('a').click();
+  function hideEmptyLetterIndices() {
+    // first, iterate over all month rows and hide them...
+    document.querySelectorAll('.letter-index').forEach(function(elem) {
+      elem.style.display = 'none';
+    });
+
+    console.log('All letter indices are now hidden');
+
+    // ...then, iterate over all visible event rows, traverse backward until we
+    // hit a month header, and reveal it. There's an inefficiency here in that
+    // we're iterating on every visible event row, meaning we'll repeatedly
+    // unhide the same month headers. TODO: traverse forward to next month header,
+    // then traverse from there to the next visible event row
+    document.querySelectorAll('.member-row').forEach(function(elem) {
+      var compStyles = window.getComputedStyle(elem);
+      var compDisplay = compStyles.getPropertyValue('display');
+      if(compDisplay == 'none') {
+        return; // nothing to see here...move on
+      }
+
+      const selector = '.letter-index';
+      var indexRow = queryPreviousSiblingSelector(elem, selector);
+      console.log('Unhiding ' + indexRow.innerText);
+      indexRow.style.display = 'table-row';
+    });    
+  }
+
+  document.addEventListener("turbo:load", function() {
+    hideEmptyLetterIndices();
+  })  
