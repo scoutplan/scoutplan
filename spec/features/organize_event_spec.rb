@@ -42,7 +42,7 @@ describe "events", type: :feature do
 
     it "changes RSVP to 'not going' by clicking on the 'Change RSVP' button" do
       change_rsvp_button = find_button("change_rsvp_#{@rsvp.id}_button")
-      expect(change_rsvp_button).to have_text(I18n.t("events.organize.actions.decline"))
+      expect(change_rsvp_button).to have_text("Change RSVP to Not Going")
       change_rsvp_button.click
 
       rsvp_list = find(:css, "#declined_rsvp_container")
@@ -64,7 +64,7 @@ describe "events", type: :feature do
 
     it "changes RSVP to 'going' by clicking on the 'Change RSVP' button" do
       change_rsvp_button = find_button("change_rsvp_#{@rsvp.id}_button")
-      expect(change_rsvp_button).to have_text(I18n.t("events.organize.actions.accept"))
+      expect(change_rsvp_button).to have_text("Change RSVP to Going")
       change_rsvp_button.click
 
       rsvp_list = find(:css, "#accepted_rsvp_container")

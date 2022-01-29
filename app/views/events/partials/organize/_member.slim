@@ -6,7 +6,7 @@
 ul.m-0
   li
     = button_to \
-      event_rsvps_path(@event, member_id: member.member.id, response: :accepted),
+      event_rsvps_path(@event, member_id: member.id, response: :accepted),
       method: :post,
       class: "change-rsvp-button block py-2",
       id: "change_rsvp_#{member.id}_button" \
@@ -17,7 +17,7 @@ ul.m-0
 
   li
     = button_to \
-      event_rsvps_path(@event, member_id: member.member.id, response: :declined),
+      event_rsvps_path(@event, member_id: member.id, response: :declined),
       method: :post,
       class: "change-rsvp-button block py-2",
       id: "change_rsvp_#{member.id}_button" \

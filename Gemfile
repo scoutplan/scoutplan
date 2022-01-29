@@ -74,10 +74,8 @@ group :test do
   gem "capybara", "~> 3.35"
   gem "faker"
   gem "selenium-webdriver", "~> 3.142"
-  # Easy installation and use of web drivers to run system tests with browsers
   gem "simplecov", require: false
+  
+  # Easy installation and use of web drivers to run system tests with browsers
   gem "webdrivers", "~> 4.6"
 end
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]

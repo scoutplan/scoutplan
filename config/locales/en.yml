@@ -225,7 +225,8 @@ en:
         accept_html:  "Change RSVP to <em>Going</em>"
         decline_html: "Change RSVP to <em>Not Going</em>"
         mark_as_paid: "Mark as paid"
-
+        delete:       "Discard this RSVP"
+        
   members:
     title:            "Members"
     name:             "Name"

@@ -30,6 +30,20 @@ class EventRsvpsController < ApplicationController
     respond_to :js
   end
 
+  def destroy
+    rsvp = EventRsvp.find(params[:id])
+    unit = rsvp.unit
+    event = rsvp.event
+    @member = unit.membership_for(current_user)
+    authorize rsvp
+    rsvp.destroy
+    redirect_to unit_event_organize_path(unit, event)
+  end
+
+  def pundit_user
+    @member
+  end
+
   private
 
   def find_event_responses

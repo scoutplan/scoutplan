@@ -19,10 +19,10 @@ ul.m-0
     // Mark as paid
     li
       = button_to \
-        event_rsvps_path(@event, member_id: rsvp.member.id, paid: true),
-        method: :post,
+        event_rsvp_path(rsvp),
+        method: :delete,
         class: "block py-2" \
         do
         span.w-7.text-center.inline-block
-          i.fas.fa-badge-dollar.text-black.opacity-30
-        = t("events.organize.actions.mark_as_paid")
+          i.fas.fa-trash.text-black.text-orange-600
+        = t("events.organize.actions.delete")
