@@ -1,4 +1,4 @@
-#event_table_container.max-w-4xl.mx-auto
+#event_table_container.max-w-full
   = form_tag bulk_publish_unit_events_path(@unit), id: "bulk_action_form"
     .table.bulk-selection
       .table-row-group
@@ -7,7 +7,7 @@
             = check_box_tag "all_visible_events", "on", false, class: "form-check-input", id: "select_all_events_checkbox"
             = label_tag :select_all_events_checkbox, "Select all", class: "ml-2"
 
-    table.w-full
+    table.w-full.max-w-full
       tbody
         // see /views/events/_event.slim
         = render @events

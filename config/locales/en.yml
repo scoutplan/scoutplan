@@ -64,6 +64,10 @@ en:
     sign_out: "Sign Out"
     remember_me: "Stay signed in for two weeks"  
   
+  main_nav:
+    events:  "Event Calendar"
+    members: "Member Roster"
+  
   be_verb:
     present_tense:
       third_person: "is"
