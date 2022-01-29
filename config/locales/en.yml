@@ -248,9 +248,15 @@ en:
       edit:    "Update Member Details"
       index:   "Member Roster"
 
+    confirmations:
+      create: "%{member_name} was added to %{unit_name}"
 
-    new:
-      title: "Add a Member"
+    placeholders:
+      email: "address@example.com (optional)"
+      phone: "111-222-3333 (optional)"
+
+    index:
+      new_button_caption: "Add a Member"
 
     show:
       children:         "Children, Guardees, and Delegatees"

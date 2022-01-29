@@ -1,10 +1,10 @@
 = label_tag :status, nil, class: "text-sm font-bold uppercase tracking-wide block md:inline-block w-1/4 py-2"
 
 .block.md:inline-block.md:w-3/4
-  span.mr-3
-    = f.radio_button :status, :active, class: 'mr-1'
+  span.mr-4
+    = f.radio_button :status, :active, class: "mr-2"
     = f.label :status, 'Active', value: 'active', class: ''
 
-  span.mr-3
-    = f.radio_button :status, :inactive, class: 'mr-1'
+  span.mr-4
+    = f.radio_button :status, :inactive, class: "mr-2"
     = f.label :status, 'Inactive', value: 'inactive', class: ''

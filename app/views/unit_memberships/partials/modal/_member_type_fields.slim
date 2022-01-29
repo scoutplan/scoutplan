@@ -3,13 +3,13 @@
 .inline-block.flex-auto.w-[75%]
   .inline-block.py-2
     span.mr-3
-      = f.radio_button :member_type, :youth, class: 'mr-1'
+      = f.radio_button :member_type, :youth, class: "mr-2"
       = f.label :member_type, 'Youth', value: 'youth', class: ''
 
     span.mr-3
-      = f.radio_button :member_type, :adult, class: 'mr-1'
+      = f.radio_button :member_type, :adult, class: "mr-2"
       = f.label :member_type, 'Adult', value: 'adult', class: ''
 
   span.md:ml-6.py-2.block.md:inline
-    = f.check_box :role, { class: 'mr-1' }, 'admin', 'member'
+    = f.check_box :role, { class: "mr-2" }, 'admin', 'member'
     = f.label :role, "#{ @unit.name } Administrator", class: 'form-check-label'

@@ -15,8 +15,16 @@
 
   .pt-2.md:pt-4.pb-4.border-b
     = u.label :email, class: "block md:inline-block text-sm mb-1 py-2 font-bold uppercase tracking-wide md:w-[25%]"
-    = u.email_field :email, class: "block md:inline-block rounded border-0 p-2 placeholder-stone-400 w-full md:w-[75%]", autocomplete: 'off', placeholder: "address@example.com"
+    = u.email_field \
+      :email,
+      class: "block md:inline-block rounded border-0 p-2 placeholder-stone-400 w-full md:w-[75%]",
+      autocomplete: 'off',
+      placeholder: t("members.placeholders.email")
 
   .pt-2.md:pt-4.pb-4.border-0
     = u.label :phone, class: "block md:inline-block text-sm mb-1 py-2 font-bold uppercase tracking-wide md:w-[25%]"
-    = u.phone_field :phone, class: "block md:inline-block rounded border-0 p-2 placeholder-stone-400 w-full md:w-[75%]", autocomplete: 'off', placeholder: "111-222-3333"
+    = u.phone_field \
+      :phone,
+      class: "block md:inline-block rounded border-0 p-2 placeholder-stone-400 w-full md:w-[75%]",
+      autocomplete: 'off',
+      placeholder: t("members.placeholders.phone")

@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class UnitMembershipPolicy < UnitContextPolicy
-  def initialize(membership, target_membership)
-    super(membership, target_membership)
-    @target_membership = target_membership
-  end
+  # def initialize(current_member, target_member)
+  #   ap current_member
+  #   super
+  #   # @membership = current_member
+  # end
 
   def index?
     admin?
