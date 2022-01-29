@@ -1,7 +1,8 @@
 // This partial shows an Accepted RSVP, so possible actions are to
 // change to Declined and Mark as Paid
 
-- @member_name = rsvp.full_display_name
+// kludge alert: setting this instance variable is ugly
+- @member = rsvp.member
 
 ul.m-0
   // Change to Declined

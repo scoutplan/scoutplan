@@ -19,13 +19,13 @@ class UnitMembership < ApplicationRecord
   validates_presence_of :user, :status
 
   has_many  :parent_relationships,
-            foreign_key: 'child_unit_membership_id',
-            class_name: 'MemberRelationship',
+            foreign_key: "child_unit_membership_id",
+            class_name: "MemberRelationship",
             dependent: :destroy
 
   has_many  :child_relationships,
-            foreign_key: 'parent_unit_membership_id',
-            class_name: 'MemberRelationship',
+            foreign_key: "parent_unit_membership_id",
+            class_name: "MemberRelationship",
             dependent: :destroy
 
   has_many :rsvp_tokens, dependent: :destroy
@@ -43,7 +43,7 @@ class UnitMembership < ApplicationRecord
   accepts_nested_attributes_for :user
   accepts_nested_attributes_for :child_relationships,
                                 allow_destroy: true,
-                                reject_if: ->(attributes) { attributes['child_unit_membership_id'].blank? }
+                                reject_if: ->(attributes) { attributes["child_unit_membership_id"].blank? }
   accepts_nested_attributes_for :parent_relationships, allow_destroy: true
 
   has_settings do |s|
@@ -55,7 +55,7 @@ class UnitMembership < ApplicationRecord
   end
 
   def to_param
-    "#{id}-#{full_display_name.parameterize}"
+    [id, user&.full_display_name].join("-").parameterize
   end
 
   def admin?

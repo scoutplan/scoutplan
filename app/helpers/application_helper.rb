@@ -27,4 +27,16 @@ module ApplicationHelper
   def pill_tag_if(condition, text)
     pill_tag(text) if condition
   end
+
+  # given a member, return the appropriate FontAwesome element tag
+  def member_glyph_tag(member)
+    case member.member_type
+    when "youth"
+      color = "sky-500"
+    when "adult"
+      color = "pink-500"
+    end
+
+    content_tag :i, nil, class: "fa-user fad mr-2 text-#{color}"
+  end
 end

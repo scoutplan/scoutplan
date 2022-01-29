@@ -1,56 +1,54 @@
-// wall-to-wall opaque background
-.fixed.inset-0.bg-black.bg-opacity-25.z-40
+.max-w-2xl.mx-auto.mt-4
+  header.my-2
+    h3.text-2xl.font-bold
+      = t("members.titles.#{@target_membership.new_record? ? "new" : "edit"}")
 
-  // white dialog
-  .relative.w-auto.my-12.mx-auto.max-w-2xl.bg-white.rounded.z-50.drop-shadow-xl.filter
+  = form_with model: [@unit, @target_membership], id: 'member_info_form' do |f|
 
-    = form_with model: @target_membership, local: true, url: unit_member_path(@unit, @target_membership), id: 'member_info_form' do |f|  
+    // guts of the modal
+    section
+      .bg-stone-100.rounded.px-2.md:px-6.py-0.mb-2
+        = render partial: 'unit_memberships/partials/modal/user_fields', locals: { f: f }
 
-      // modal header
-      header.pt-4.px-8.pb-3.overflow-auto
-        h3.m-0.font-bold.float-left.text-black.text-lg
-          - if @target_membership.new_record?
-            | New Member
-          - else
-            | Update Member Details
-
-        // close "X" button
-        = link_to unit_members_path(@unit),
-          class: 'inline-block float-right text-gray-500 hover:text-gray-500',
-          data: { 'turbo-action' => 'advance' } do
-          i.fa-times.far.hover:text-black
-
-      // guts of the modal
-      section.py-0.px-8
-        .mb-6
-          = render partial: 'unit_memberships/partials/modal/user_fields', locals: { f: f }
-
-        .mb-6
+      .bg-stone-100.rounded.px-2.md:px-6.py-2.mb-2
+        .py-4.border-b
           = render partial: 'unit_memberships/partials/modal/member_type_fields', locals: { f: f }
 
-        .mb-6
+        .py-4.border-b
           = render partial: 'unit_memberships/partials/modal/member_status_fields', locals: { f: f }
 
-        .mb-6
+        .py-4
           = render partial: 'unit_memberships/partials/modal/communication_settings_fields', locals: { f: f }
 
-        .mb-3
-          = render partial: 'unit_memberships/partials/modal/relationships', locals: { f: f }
+      .bg-stone-100.rounded.px-2.md:px-6.py-2
+        = render partial: 'unit_memberships/partials/modal/relationships', locals: { f: f }
 
 
-      // footer, containing right-justified buttons
-      footer.overflow-auto.pb-4.px-6.pt-4
-        .float-right.overflow-auto
+    // footer, containing right-justified buttons
+    footer.flex.flex-col.md:flex-row.justify-between.mt-4
+      // top/left
+      div
 
-          // save
-          = f.submit @target_membership.new_record? ? 'Add This Member' : 'Save These Changes',
-            class: 'bg-scoutplan-500 inline-block px-4 py-2 mr-2 no-underline rounded text-white text-sm font-bold tracking-wider uppercase'
-          
-          // cancel
-          = link_to unit_member_path(@unit, @target_membership),
-            class: 'inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase',
-            data: { turbo_action: 'advance' } do
-            = t('helpers.label.event.cancel_update')
+      // right/bottom
+      .flex.flex-col.md:flex-row.gap-2
+
+        // cancel
+        - cancel_path = @target_membership.new_record? ? unit_members_path(@unit) : unit_member_path(@unit, @target_membership)
+        = link_to cancel_path,
+          class: "text-sm font-bold tracking-wider uppercase no-underline text-center \
+                  w-full md:w-fit md:inline-block px-4 py-2 \
+                  text-scoutplan-700 hover:textscoutplan-800 \
+                  bg-scoutplan-100 hover:bg-scoutplan-200 \
+                  border border-scoutplan-100 hover:border-scoutplan-200 \
+                  rounded",
+          data: { turbo_action: 'advance' } do
+          = t('helpers.label.event.cancel_update')
+
+        // save
+        = f.submit @target_membership.new_record? ? 'Add This Member' : 'Save These Changes',
+          class: 'bg-scoutplan-500 inline-block px-4 py-2 no-underline rounded text-white text-sm font-bold tracking-wider uppercase'
+        
+
 
 scss:
   input.destroy_relationship_input:checked {

@@ -12,12 +12,12 @@ class User < ApplicationRecord
 
   has_many :unit_memberships, dependent: :destroy
   has_many  :parent_relationships,
-            foreign_key: 'child_unit_membership_id',
-            class_name: 'MemberRelationship',
+            foreign_key: "child_unit_membership_id",
+            class_name: "MemberRelationship",
             dependent: :destroy
   has_many  :child_relationships,
-            foreign_key: 'parent_unit_membership_id',
-            class_name: 'MemberRelationship',
+            foreign_key: "parent_unit_membership_id",
+            class_name: "MemberRelationship",
             dependent: :destroy
 
   before_validation :check_email
@@ -26,7 +26,7 @@ class User < ApplicationRecord
   enum type: { unknown: 0, youth: 1, adult: 2 }
 
   has_settings do |s|
-    s.key :locale, defaults: { time_zone: 'Eastern Time (US & Canada)' }
+    s.key :locale, defaults: { time_zone: "Eastern Time (US & Canada)" }
     s.key :security, defaults: { enable_magic_links: true }
   end
 
@@ -54,7 +54,7 @@ class User < ApplicationRecord
     res = [first_name]
     res << "(#{ nickname})" unless nickname.blank?
     res << last_name
-    res.join(' ')
+    res.join(" ")
   end
 
   def check_email

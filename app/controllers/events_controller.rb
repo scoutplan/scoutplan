@@ -86,12 +86,13 @@ class EventsController < ApplicationController
 
     # render turbo_stream: turbo_stream.replace(@event, partial: 'events/event', locals: { event: @event })
 
-    flash[:notice] = t('events.update_confirmation', title: @event.title)
+    flash[:notice] = t("events.update_confirmation", title: @event.title)
     redirect_to [@unit, @event]
   end
 
   def organize
     authorize @event
+    @page_title = [@event.title, "Organize"]
     @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
     @non_invitees = @event.unit.members.status_inactive - @event.rsvps.collect(&:member)
   end

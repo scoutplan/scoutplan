@@ -1,21 +1,34 @@
 = turbo_frame_tag "main"
-  header.max-w-6xl.mx-auto.flex.justify-between
-    h1.text-xl.font-bold.my-4
-      = t("events.organize.title", event_title: @event.title)
-      .inline.ml-2.text-base = glyph_tag(@event)
+  header.max-w-6xl.mx-auto.sticky.top-0.bg-white.z-10.pb-1.border-b
+    .flex.justify-between
+      h1.text-xl.font-bold.my-4
+        = t("events.organize.title", event_title: @event.title)
+        .inline.ml-2.text-base = glyph_tag(@event)
 
-    = link_to "Done",
-      unit_event_path(@event.unit, @event),
-      class: "py-5 text-sm font-semibold text-stone-400 hover:text-stone-600",
-      data: { turbo: { frame: "main", action: "advance" } }
+      = link_to "Done",
+        unit_event_path(@event.unit, @event),
+        class: "py-5 text-sm font-semibold text-stone-400 hover:text-stone-600",
+        data: { turbo: { frame: "main", action: "advance" } }
+
+    // SEARCH
+    .relative.block.mb-2
+      = text_field_tag \
+        :search,
+        "",
+        placeholder: t("events.organize.placeholders.search"),
+        id: "search_term",
+        class: "w-full rounded border-0 bg-stone-100 focus:ring-scoutplan-500 placeholder-stone-400",
+        onkeyup: "performNameSearch();"
+
+      i.fa-magnifying-glass.fas.absolute.right-4(style="top:50%;transform:translateY(-50%);")    
 
   - if flash[:notice]
-    section.mb-4.max-w-6xl.mx-auto#notices
+    section.mt-2.max-w-6xl.mx-auto#notices
       p.p-4.m-0.bg-amber-100.text-amber-700.rounded
         i.fa-info-circle.fas.mr-2
         = flash[:notice]
 
-  section.max-w-6xl.mx-auto.grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-2.xl:grid-cols-4.gap-2
+  section.max-w-6xl.mx-auto.grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-2.xl:grid-cols-4.gap-2.mt-2
     .bg-green-50.rounded.p-4#accepted_rsvp_container
       .flex.justify-between
         h2.text-lg.font-bold.text-green-700
@@ -123,6 +136,8 @@
     .subtitle {
       font-size: 75%;
     }
+  
+  .text-pink-500
 
   javascript:
     var tooltipList = [];
@@ -149,3 +164,19 @@
     }
 
     setupHoverLinks();
+
+    function performNameSearch() {
+      var searchTermElem = document.querySelector("#search_term");
+      var searchTerm = searchTermElem.value.toUpperCase();
+
+      var memberItems = document.querySelectorAll("li.member");
+      memberItems.forEach(function(elem) {
+        var nameElem = elem.querySelector(".member-name");
+        var name = nameElem.innerText;
+        if (searchTerm.length < 0 || name.toUpperCase().indexOf(searchTerm) > -1) {
+          elem.classList.remove("hidden");
+        } else {
+          elem.classList.add("hidden");
+        }        
+      });
+    }

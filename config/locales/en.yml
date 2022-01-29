@@ -231,9 +231,10 @@ en:
         decline_html: "Change RSVP to <em>Not Going</em>"
         mark_as_paid: "Mark as paid"
         delete:       "Discard this RSVP"
+      placeholders:
+        search: "Search for members by name"
         
   members:
-    title:            "Members"
     name:             "Name"
     type:             "Type"
     parent_guardian:  "Parents, Guardians, and Delegates"
@@ -242,13 +243,20 @@ en:
     member_type:      "Youth/Adult"
     search_by_name:   "Search by name"
 
-    index:
-      page_title:     "Member Roster"
-      title:          "Member Roster"
-      add_a_member:   "Add a Member"
+    titles:
+      new:     "Add a Member"
+      edit:    "Update Member Details"
+      index:   "Member Roster"
 
-    new:
-      title: "Add a Member"
+    confirmations:
+      create: "%{member_name} was added to %{unit_name}"
+
+    placeholders:
+      email: "address@example.com (optional)"
+      phone: "111-222-3333 (optional)"
+
+    index:
+      new_button_caption: "Add a Member"
 
     show:
       children:         "Children, Guardees, and Delegatees"

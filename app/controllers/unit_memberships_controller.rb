@@ -12,12 +12,18 @@ class UnitMembershipsController < ApplicationController
       { parent_relationships: { parent_unit_membership: :user } },
       { child_relationships: { child_unit_membership: :user } }
     )
-    @page_title = @unit.name, t('members.index.page_title')
+    @page_title = @unit.name, t("members.titles.index")
     @membership = @unit.memberships.build
     @membership.build_user
   end
 
   def edit
+    build_new_relationship
+  end
+
+  def new
+    @target_membership = @unit.memberships.build
+    @target_membership.build_user
     build_new_relationship
   end
 
@@ -35,7 +41,7 @@ class UnitMembershipsController < ApplicationController
     @member.user.password = @member.user.password_confirmation = generated_password
     return unless @member.save!
 
-    flash[:notice] = 'Member Added'
+    flash[:notice] = t("members.confirmations.create", member_name: @member.full_display_name, unit_name: @unit.name)
     redirect_to unit_members_path(@unit)
   end
 
@@ -44,7 +50,7 @@ class UnitMembershipsController < ApplicationController
     update_settings_params
     return unless @target_membership.save!
 
-    flash[:notice] = 'Member information updated'
+    flash[:notice] = "Member information updated"
     redirect_to unit_members_path(@current_unit)
   end
 

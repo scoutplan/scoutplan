@@ -1,13 +1,10 @@
-.flex
-  .flex-0
-    label(class="block text-black mr-3 font-semibold w-36")
-      = 'Status'
+= label_tag :status, nil, class: "text-sm font-bold uppercase tracking-wide block md:inline-block w-1/4 py-2"
 
-  .flex-auto
-    span.mr-3
-      = f.radio_button :status, :active, class: 'mr-1'
-      = f.label :status, 'Active', value: 'active', class: ''
+.block.md:inline-block.md:w-3/4
+  span.mr-4
+    = f.radio_button :status, :active, class: "mr-2"
+    = f.label :status, 'Active', value: 'active', class: ''
 
-    span.mr-3
-      = f.radio_button :status, :inactive, class: 'mr-1'
-      = f.label :status, 'Inactive', value: 'inactive', class: ''
+  span.mr-4
+    = f.radio_button :status, :inactive, class: "mr-2"
+    = f.label :status, 'Inactive', value: 'inactive', class: ''

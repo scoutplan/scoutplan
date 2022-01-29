@@ -2,22 +2,76 @@
 
 require "rails_helper"
 
+# rubocop:disable Metrics/BlockLength
 describe "unit_memberships", type: :feature do
   before do
     User.destroy_all
     @admin = FactoryBot.create(:unit_membership, :admin)
+    @unit = @admin.unit
     login_as(@admin.user, scope: :user)
   end
 
   it "visits the members page" do
-    path = unit_members_path(@admin.unit)
+    path = unit_members_path(@unit)
     visit path
     expect(page).to have_current_path(path)
   end
 
-  it "visits a member", js: true do
-    User.destroy_all
-    member = FactoryBot.create(:unit_membership, unit: @admin.unit)
-    visit unit_member_path(member.unit, member)
+  it "visits a member" do
+    member = FactoryBot.create(:unit_membership, unit: @unit)
+    visit unit_member_path(@unit, member)
+    expect(page).to have_current_path unit_member_path(@unit, member)
+  end
+
+  it "creates a member" do
+    visit unit_members_path(@unit)
+    click_link_or_button I18n.t("members.index.new_button_caption")
+
+    # fill in the new member form
+    fill_in "unit_membership_user_attributes_first_name", with: Faker::Name.first_name
+    fill_in "unit_membership_user_attributes_last_name", with: Faker::Name.last_name
+    fill_in "unit_membership_user_attributes_nickname", with: Faker::Name.first_name
+    fill_in "unit_membership_user_attributes_email", with: Faker::Internet.email
+    fill_in "unit_membership_user_attributes_phone", with: Faker::PhoneNumber.phone_number
+    choose "unit_membership_member_type_youth"
+    choose "unit_membership_status_active"
+    check "settings_communication_via_email"
+    check "settings_communication_via_sms"
+
+    # click the button
+    expect { click_link_or_button "Add This Member" }.to change { UnitMembership.all.count }.by 1
+    expect(page).to have_current_path unit_members_path(@unit)
+
+    # fetch the newly-created member
+    member = UnitMembership.last
+
+    # flash message
+    expect(page).to have_content(I18n.t("members.confirmations.create", member_name: member.full_display_name, unit_name: @unit.name))
+  end
+
+  it "creates a member without email and phone" do
+    visit unit_members_path(@unit)
+    click_link_or_button I18n.t("members.index.new_button_caption")
+
+    # fill in the new member form
+    fill_in "unit_membership_user_attributes_first_name", with: Faker::Name.first_name
+    fill_in "unit_membership_user_attributes_last_name", with: Faker::Name.last_name
+    fill_in "unit_membership_user_attributes_nickname", with: Faker::Name.first_name
+    choose "unit_membership_member_type_youth"
+    choose "unit_membership_status_active"
+    check "settings_communication_via_email"
+    check "settings_communication_via_sms"
+
+    # click the button
+    expect { click_link_or_button "Add This Member" }.to change { UnitMembership.all.count }.by 1
+    expect(page).to have_current_path unit_members_path(@unit)
+
+    # fetch the newly-created member
+    member = UnitMembership.last
+    expect(member.anonymous_email?).to be_truthy
+
+    # flash message
+    expect(page).to have_content(I18n.t("members.confirmations.create", member_name: member.full_display_name, unit_name: @unit.name))
   end
 end
+# rubocop:enable Metrics/BlockLength

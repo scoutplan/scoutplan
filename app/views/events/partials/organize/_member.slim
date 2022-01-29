@@ -1,7 +1,8 @@
 // This partial shows members not having an RSVP, so possible actions
 // are Accept and Decline
 
-- @member_name = member.full_display_name
+// kludge alert: setting this instance variable is ugly
+- @member = member
 
 ul.m-0
   li

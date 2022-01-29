@@ -11,7 +11,11 @@ li.member
       // this is cheating...we shouldn't have had to use an instance variable,
       // but yielding here wasn't working
       .hover:text-black
-        = @member_name
+
+        = raw member_glyph_tag(@member)
+
+        span.member-name
+          = @member.full_display_name
 
       .little-buttons
         .disclosure-button.hidden
