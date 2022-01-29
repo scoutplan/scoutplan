@@ -92,8 +92,8 @@ class EventsController < ApplicationController
 
   def organize
     authorize @event
-    @non_respondents = @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)
-    @non_invitees = @event.unit.members - @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)
+    @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
+    @non_invitees = @event.unit.members.status_inactive - @event.rsvps.collect(&:member)
   end
 
   def publish

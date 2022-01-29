@@ -17,7 +17,7 @@ class EventRsvpsController < ApplicationController
     EventNotifier.send_rsvp_confirmation(@rsvp)
 
     find_event_responses
-    respond_to :js
+    redirect_to unit_event_organize_path(@unit, @event)
   end
 
   # send or re-send an invitation

@@ -6,10 +6,10 @@
 
   .table-cell.p-2.pl-4.text-center
     span.menu-glyph-wrapper
-      i.far.fa-check
+      i.far.fa-check.text-sky-400
 
   .table-cell.p-2
-    = t 'events.index.view.rsvps'
+    = t("events.index.view.rsvps")
 
   .table-cell.p-2.text-right
     = pill_tag_if @events.rsvp_required.future.count.positive?, @events.rsvp_required.future.count

@@ -1,0 +1,16 @@
+// This partial shows a Declined RSVP, so possible actions are to
+// change to Accepted
+
+- @member_name = rsvp.full_display_name
+
+ul.m-0
+  li
+    = button_to \
+      event_rsvps_path(@event, member_id: rsvp.member.id, response: :accepted),
+      method: :post,
+      class: "change-rsvp-button block py-2",
+      id: "change_rsvp_#{rsvp.id}_button" \
+      do
+      span.w-7.text-center.inline-block
+        i.fas.fa-person-hiking.text-green-500.inline-block
+      = t("events.organize.actions.accept_html")

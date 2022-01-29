@@ -1,61 +1,129 @@
-header.mb-4.mt-4.clearfix
-  .float-start
-    h1
-      = @event.title
-      .subtitle
-        = t('events.organize.subtitle')
+= turbo_frame_tag "main"
+  header.max-w-6xl.mx-auto.flex.justify-between
+    h1.text-xl.font-bold.my-4
+      = t("events.organize.title", event_title: @event.title)
+      .inline.ml-2.text-base = glyph_tag(@event)
 
-  .float-end
-    = link_to t('events.organize.back'), event_path(@event)
+    = link_to "Done",
+      unit_event_path(@event.unit, @event),
+      class: "py-5 text-sm font-semibold text-stone-400 hover:text-stone-600",
+      data: { turbo: { frame: "main", action: "advance" } }
 
-#responses
-  = render 'events/partials/organize/responses'
+  section.max-w-6xl.mx-auto.grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-2.xl:grid-cols-4.gap-2
+    .bg-green-50.rounded.p-4#accepted_rsvp_container
+      h2.text-lg.font-bold
+        i.fa-person-hiking.fas.text-green-600.mr-2
+        = t("events.organize.accepts")
 
-scss:
-  .actions {
-    display: none;
-    margin-left: 1rem;
-  }
+      // list of "going" members
+      ul.mt-2.empty:mt-0
+        = render \
+          partial:    "events/partials/organize/accepted_rsvp",
+          collection: @event.rsvps.accepted,
+          as:         :rsvp,
+          layout:     "events/partials/organize/organize_entry"
 
-  tr {
-    cursor: pointer;
-    &:hover {
-      .actions {
-        display: inline-block;
+    // DECLINED
+    .bg-red-50.rounded.p-4#declined_rsvp_container
+      h2.text-lg.font-bold
+        i.fa-couch.fas.text-red-500.mr-2
+        = t("events.organize.declines")
+
+      // list of "not going" members
+      ul.mt-2.empty:mt-0
+        = render \
+          partial:    "events/partials/organize/declined_rsvp",
+          collection: @event.rsvps.declined,
+          as:         :rsvp,
+          layout:     "events/partials/organize/organize_entry"          
+
+    // NO RESPONSE
+    .bg-orange-50.rounded.p-4
+      h2.text-lg.font-bold
+        i.fa-ghost.fas.text-orange-500.mr-2
+        = t("events.organize.non_respondents")
+
+      ul.mt-2.empty:mt-0
+        = render \
+          partial:    "events/partials/organize/member",
+          collection: @non_respondents,
+          as:         :member,
+          layout:     "events/partials/organize/organize_entry"
+
+    // NON-INVITEES
+    .bg-zinc-100.rounded.p-4
+      h2.text-lg.font-bold
+        i.fa-address-book.fas.text-stone-500.mr-2
+        = t("events.organize.non_invitees")
+
+      ul.mt-2.empty:mt-0
+        = render \
+          partial:    "events/partials/organize/member",
+          collection: @non_invitees,
+          as:         :member,
+          layout:     "events/partials/organize/organize_entry"
+
+  footer.h-4
+
+  css:
+    .member.open .member-actions {
+      display: block;
+    }
+
+    .member.open .close-button {
+      display: inline;
+    }
+
+    .member:not(.open):hover .disclosure-button {
+      display: inline;
+    }
+
+
+  scss:
+    .actions {
+      display: none;
+      margin-left: 1rem;
+    }
+
+    tr {
+      cursor: pointer;
+      &:hover {
+        .actions {
+          display: inline-block;
+        }
       }
     }
-  }
 
-  .headcount {
-    color: #aaa;
-  }
+    .headcount {
+      color: #aaa;
+    }
 
-  .subtitle {
-    font-size: 75%;
-  }
+    .subtitle {
+      font-size: 75%;
+    }
 
-javascript:
-  var tooltipList = [];
+  javascript:
+    var tooltipList = [];
 
-  function setupHoverLinks() {
-    // tooltipList.map(function(elem) {
-    //   elem.hide();
-    // });
+    function setupHoverLinks() {
+      // tooltipList.map(function(elem) {
+      //   elem.hide();
+      // });
 
-    var clipboardLinks = [].slice.call(document.querySelectorAll('a[data-href]:not([data-href=""])'));
-    clipboardLinks.map(function (clipboardLink) {
-      clipboardLink.addEventListener('click', function(event) {
-        var href = this.dataset.href;
-        navigator.clipboard.writeText(href);
+      var clipboardLinks = [].slice.call(document.querySelectorAll('a[data-href]:not([data-href=""])'));
+      clipboardLinks.map(function (clipboardLink) {
+        clipboardLink.addEventListener('click', function(event) {
+          var href = this.dataset.href;
+          navigator.clipboard.writeText(href);
 
-        var toastBody = document.querySelector('#toast_body');
-        toastBody.innerHTML = 'Invitation link has been copied to the clipboard.';
-        toast.show();
+          var toastBody = document.querySelector('#toast_body');
+          toastBody.innerHTML = 'Invitation link has been copied to the clipboard.';
+          toast.show();
 
-        event.preventDefault();
-        return false;
+          event.preventDefault();
+          return false;
+        });
       });
-    });
-  }
+    }
 
-  setupHoverLinks();
+    setupHoverLinks();

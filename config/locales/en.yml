@@ -135,6 +135,8 @@ en:
       page_title:           "Event Calendar"
       showing_some:         "Showing events for the upcoming 3 months. "
       showing_rsvps:        "Showing only events requiring an RSVP"
+      showing_past:         "Showing past events"
+      showing_cancelled:    "Showing cancelled events"
       show_all:             "Show everything"
       no_events:            "No events are planned right now."
       draft:                "Draft"
@@ -210,14 +212,19 @@ en:
       add_this_event: "Add This Event"
 
     organize:
+      title:        "%{event_title}"
       subtitle:     "Organizer View"
       accepts:      "Going"
       declines:     "Not going"
-      no_responses: "No response"
-      no_invites:   "No invitations"
+      no_responses: "No response, active"
+      no_invites:   "No response, inactive"
       update_toast: "%{user_name}'s RSVP for %{event_title} has been updated."
       invite_toast: "An invitation to %{event_title} was sent to %{recipient}"
       back:         "Back to main event page"
+      actions:
+        accept_html:  "Change RSVP to <em>Going</em>"
+        decline_html: "Change RSVP to <em>Not Going</em>"
+        mark_as_paid: "Mark as paid"
 
   members:
     title:            "Members"
