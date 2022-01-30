@@ -42,7 +42,7 @@
       ul.mt-2.empty:mt-0
         = render \
           partial:    "events/partials/organize/accepted_rsvp",
-          collection: @event.rsvps.accepted,
+          collection: @event.rsvps.accepted.ordered,
           as:         :rsvp,
           layout:     "events/partials/organize/organize_entry"
 
@@ -60,7 +60,7 @@
       ul.mt-2.empty:mt-0
         = render \
           partial:    "events/partials/organize/declined_rsvp",
-          collection: @event.rsvps.declined,
+          collection: @event.rsvps.declined.ordered,
           as:         :rsvp,
           layout:     "events/partials/organize/organize_entry"          
 

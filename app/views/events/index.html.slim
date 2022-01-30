@@ -1,5 +1,5 @@
 = turbo_frame_tag "main"
-  .w-full.relative.mx-auto(data-controller="event")
+  .max-w-5xl.mx-auto.relative.(data-controller="event")
     = render partial: "events/partials/index/header"
     = render partial: "events/partials/index/no_events" if @events.count.zero?
     = render partial: "events/partials/index/event_table" if @events.count.positive?
@@ -11,6 +11,8 @@
 
   = content_for :head do
     = javascript_include_tag "events"
+
+  footer.h-4
 
 javascript:
   document.addEventListener("turbo:load", function() {

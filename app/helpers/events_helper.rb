@@ -44,10 +44,9 @@ module EventsHelper
     common_classes = "rounded px-2 py-1 text-xs tracking-wide font-bold text-white ml-2"  
     title = "Only visible to #{event.unit.name} administrators, like you."
     if event.cancelled?
-      content_tag :span, t('events.index.cancelled'), class: "#{common_classes} bg-red-500", title: title
-      content_tag :i, nil, class: 'fas fa-times-hexagon text-red-500 ml-2', title: "Cancelled"
+      pill_tag("Cancelled", "bg-red-500 text-white font-bold uppercase tracking-wider")
     elsif event.draft?
-      content_tag :i, nil, class: 'fas fa-ruler-triangle text-sky-500 ml-2', title: "Draft event, #{title.downcase}"
+      pill_tag("Draft", "bg-sky-500 text-white font-bold uppercase tracking-wider")
     end
   end
 

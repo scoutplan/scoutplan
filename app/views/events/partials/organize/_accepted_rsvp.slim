@@ -3,6 +3,7 @@
 
 // kludge alert: setting this instance variable is ugly
 - @member = rsvp.member
+- @rsvp = rsvp
 
 ul.m-0
   // Change to Declined
@@ -16,6 +17,31 @@ ul.m-0
       span.w-7.text-center.inline-block
         i.fas.fa-couch.text-red-500.inline-block.hover:text-black
       = t("events.organize.actions.decline_html")
+
+  // Mark as paid
+  - if !rsvp.paid
+    li
+      = button_to \
+        event_rsvps_path(@event, member_id: rsvp.member.id, payment: "full"),
+        method: :post,
+        class: "pay-rsvp-button block py-2",
+        id: "pay_rsvp_#{rsvp.id}_button" \
+        do
+        span.w-7.text-center.inline-block
+          i.fas.fa-money-bill.text-emerald-500.inline-block.hover:text-black
+        = t("events.organize.actions.mark_as_paid")
+
+  - if rsvp.paid
+    li
+      = button_to \
+        event_rsvps_path(@event, member_id: rsvp.member.id, payment: "none"),
+        method: :post,
+        class: "unpay-rsvp-button block py-2",
+        id: "unpay_rsvp_#{rsvp.id}_button" \
+        do
+        span.w-7.text-center.inline-block
+          i.fas.fa-hand-holding-dollar.text-amber-700.inline-block.hover:text-black
+        = t("events.organize.actions.mark_as_unpaid")  
 
   // Delete RSVP
   li

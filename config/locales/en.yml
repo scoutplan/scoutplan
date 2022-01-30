@@ -64,6 +64,10 @@ en:
     sign_out: "Sign Out"
     remember_me: "Stay signed in for two weeks"  
   
+  main_nav:
+    events:  "Event Calendar"
+    members: "Member Roster"
+  
   be_verb:
     present_tense:
       third_person: "is"
@@ -227,10 +231,11 @@ en:
         updated_html: "%{name}'s RSVP is updated."
         delete:       "%{name}'s RSVP has been discarded."
       actions:
-        accept_html:  "Change RSVP to <em>Going</em>"
-        decline_html: "Change RSVP to <em>Not Going</em>"
-        mark_as_paid: "Mark as paid"
-        delete:       "Discard this RSVP"
+        accept_html:    "Change RSVP to <em>Going</em>"
+        decline_html:   "Change RSVP to <em>Not Going</em>"
+        mark_as_paid:   "Mark as paid"
+        mark_as_unpaid: "Mark as unpaid"
+        delete:         "Discard this RSVP"
       placeholders:
         search: "Search for members by name"
         
@@ -242,6 +247,10 @@ en:
     status:           "Status"
     member_type:      "Youth/Adult"
     search_by_name:   "Search by name"
+
+    types:
+      youth: "Youth member"
+      adult: "Adult member"
 
     titles:
       new:     "Add a Member"

@@ -18,9 +18,10 @@ module ApplicationHelper
   end
   # rubocop:enable Metrics/MethodLength
 
-  def pill_tag(text)
-    # classes = "text-xs rounded bg-gray-100 text-gray-800 px-2 py-1 mx-2"
-    classes = "text-xs font-semibold inline-block text-center text-white bg-gray-600 rounded px-2 py-1 mx-2 min-w-[2rem]"
+  def pill_tag(text, additional_classes = nil)
+    additional_classes ||= "text-white bg-gray-600"
+    classes = "text-xs font-semibold inline-block text-center rounded px-2 py-1 mx-2 min-w-[2rem]"
+    classes = [classes, additional_classes].join(" ")
     content_tag :span, text, class: classes
   end
 
@@ -37,6 +38,10 @@ module ApplicationHelper
       color = "pink-500"
     end
 
-    content_tag :i, nil, class: "fa-user fad mr-2 text-#{color}"
+    content_tag \
+      :i,
+      nil,
+      class: "fa-user fad mr-2 text-#{color}",
+      title: I18n.t("members.types.#{member.member_type}")
   end
 end

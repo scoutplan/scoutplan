@@ -28,11 +28,11 @@ tr.border-b.hover:bg-stone-100.hover:text-stone-800(id="#{dom_id(event)}" class=
         = raw(@presenter.days_to_s)
       
   // title
-  td.event-title
+  td.event-title.w-px
     = link_to unit_event_path(@unit, event),
       class: "row-link cursor-pointer no-underline px-1 py-2",
       data: { turbo_frame: "main", turbo_action: "advance" } do
-      .font-bold.whitespace-nowrap.py-1
+      .font-bold.py-1.w-full.overflow-hidden.w-60.text-ellipsis
         = event.title
         = event_badge(event)
         - description_text = event.description.to_plain_text
@@ -41,24 +41,22 @@ tr.border-b.hover:bg-stone-100.hover:text-stone-800(id="#{dom_id(event)}" class=
         - if event.description.present?
           i.fas.fa-comment-alt-lines.mx-2.text-green-600(title="#{description_text}")
 
-      .text-gray-500.text-sm
-        - if event.location.present?
-          .whitespace-nowrap.overflow-hidden.text-ellipsis.w-60
-            i.fa-location-dot.fas.text-gray-300.mr-1
-            = event.location
-        - else
-          = raw("&nbsp;")
+      - if event.location.present?
+        .text-gray-500.text-sm
+          i.fa-location-dot.fas.text-gray-300.mr-1
+          = event.location
 
   // glyph + description
-  td.event-glyph.hidden.sm:table-cell.overflow-hidden
+  td.event-glyph.hidden.sm:table-cell
     = link_to unit_event_path(@unit, event),
       class: "row-link cursor-pointer no-underline py-3 glyph",
       data: { turbo_frame: "main", turbo_action: "advance" } do
-        = glyph_tag(event)
+        span.mr-2
+          = glyph_tag(event)
         = event.category.name
 
-        .text-sm.text-gray-500.pl-12.overflow-hidden.whitespace-nowrap.w-60.text-ellipsis
+        .text-sm.text-gray-500
           = event.short_description
 
-  td.event-actions.text-right.pr-2
+  td.event-actions.text-right.pr-2.w-px
     = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps } if event.requires_rsvp
