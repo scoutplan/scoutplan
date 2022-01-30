@@ -9,8 +9,11 @@
   <!--[if mso]>
   <style>
       table {border-collapse:collapse;border-spacing:0;border:none;margin:0;}
-      div, td {padding:0;}
+      div, td {padding:0;color:#78716C;}
       div {margin:0 !important;}
+      table, td, div, h1, p {
+        font-family: Arial, sans-serif;
+      }      
   </style>
   <noscript>
       <xml>
@@ -20,95 +23,65 @@
       </xml>
   </noscript>
   <![endif]-->
-  <style>
-    table, td, div, h1, p {
-      font-family: Arial, sans-serif;
-    }
-  </style>
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-rqn26AG5Pj86AF4SO72RK5fyefcQ/x32DNQfChxWvbXIyXFePlEktwD18fEz+kQU" crossorigin="anonymous">
 </head>
 <body style="margin:0;padding:0;word-spacing:normal;background-color:#fff;">
-  <div role="article" aria-roledescription="email" lang="en" style="text-size-adjust:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#f3f3f3;">
-    <table role="presentation" style="width:100%;border:none;border-spacing:0;">
+  <div role="article" aria-roledescription="email" lang="en" style="text-size-adjust:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#ffffff;">
+    <table role="presentation" style="color:#78716C;width:100%;border:none;border-spacing:0;">
       <tr>
         <td align="center" style="padding:0;">
           <!--[if mso]>
-          <table role="presentation" align="center" style="width:600px;">
+          <table role="presentation" align="center" style="width:400px;">
           <tr>
           <td>
           <![endif]-->
-          <table role="presentation" style="width:94%;max-width:700px;border:none;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636; margin-bottom:30px;">
+          <table role="presentation" style="background:#E7E5E4;color:#78716C;max-width:460px;border:none;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;">
 
             <% if attachments.inline['logo'] %>
               <tr>
-                  <td style="padding:40px 30px 30px 30px;text-align:center;font-size:24px;font-weight:bold;">
+                  <td style="padding:30px 30px 15px 30px;text-align:center;font-size:24px;font-weight:bold;">
                       <%= link_to root_url do %>
-                        <%= image_tag attachments.inline['logo'].url, style: "width:80%;max-width:165px;height:auto;border:none;text-decoration:none;color:rgb(255,255,255,1.0);"%>
+                        <%= image_tag attachments.inline['logo'].url, style: "width:80%;max-width:150px;height:auto;border:none;text-decoration:none;color:rgb(255,255,255,1.0);"%>
                       <% end %>
                   </td>
               </tr>
             <% end %>
 
             <tr>
-                <td style="padding:30px 30px 0 30px;background-color:rgb(255,255,255,1.0);border-top-left-radius:10px;border-top-right-radius:10px;">
-                    <% if content_for?(:title) %>
-                      <h1 style="margin-top:0;margin-bottom:2rem;font-size:3rem;line-height:100%;font-weight:bold;letter-spacing:-0.02em;"><%= yield :title %></h1>
-                    <% end %>
-                    <% if content_for?(:blurb) %>
-                      <p style="margin:0;"><%= yield :blurb %></p>
-                    <% end %>
+                <td style="padding:15px 30px;">
+                  
+                  <p style="color:#57534E;font-weight:bold;text-transform:uppercase;letter-spacing:0.5px;margin-top:0;"><%= @unit.name %></p>
+
+                  <% if content_for?(:title) %>
+                    <h1 style="color:#57534E;font-weight:normal;margin-top:0;margin-bottom:1rem;font-size:3rem;line-height:110%;letter-spacing:-0.02em;"><%= yield :title %></h1>
+                  <% end %>
+                  <% if content_for?(:blurb) %>
+                    <p style="margin:0;"><%= yield :blurb %></p>
+                  <% end %>
+
+                  <%= yield :left_column %>
                 </td>
             </tr>
 
-            <% if content_for?(:left_column) && content_for?(:right_column) %>
+            <% if @news_items.present? %>
               <tr>
-                  <td style="padding:5px 30px 11px 30px;font-size:0;background-color:rgb(255,255,255,1.0);">
-
-                    <!--[if mso]>
-                    <table role="presentation" width="100%">
-                    <tr>
-                    <td style="width:395px;padding-bottom:20px;" valign="top">
-                    <![endif]-->
-                        <div class="col-lge" style="font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;display:inline-block;width:100%;max-width:345px;vertical-align:top;padding-bottom:20px;padding-right:40px;">
-                            <%= yield :left_column %>
-                        </div>
-                    <!--[if mso]>
-                    </td>
-                    <td style="width:145px;" align="left" valign="top">
-                    <![endif]-->
-                        <div class="col-sml" style="font-family:Arial,sans-serif;font-size:14px;color:#363636;display:inline-block;width:100%;max-width:195px;vertical-align:top;text-align:left;">
-                            <%= yield :right_column %>
-                        </div>
-                    <!--[if mso]>
-                    </td>
-                    </tr>
-                    </table>
-                    <![endif]-->
-
-                  </td>
-              </tr>
-            <% else %>
-              <tr>
-                  <td style="padding:5px 30px 11px 30px;font-size:0;background-color:rgb(255,255,255,1.0);">
-                      <div class="col-lge" style="font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;display:inline-block;width:100%;vertical-align:top;padding-bottom:20px;padding-right:40px;">
-                        <%= yield %>
-                      </div>
-                  </td>
-              </tr>
-            <% end %>
-            
-            <% if content_for?(:pre_footer) %>
-              <tr>
-                <td style="background-color: #fff; padding-bottom: 1rem;">
-                  <%= yield :pre_footer %>
+                <td style="padding:30px;background:#FBBF24;">
+                  <h2 style="color:#78350F;font-weight:normal;">News</h2>
                 </td>
               </tr>
             <% end %>
 
-            <tr>
-                <td style="padding:30px;font-size:12px;background-color:rgba(0,0,0,0.05);color:#000;border-bottom-left-radius:10px;border-bottom-right-radius:10px;font-weight:800;">
-                    Sent from Scoutplan
-                </td>
+            <tr class="secondary_content">
+              <td style="padding:30px;background:#BAE6FD;color:#0369A1;">
+                <p style="margin-bottom:1rem;"><%= yield :right_column %></p>
+                <p><%= yield :pre_footer %></p>
+              </td>
+            </tr>
+
+            <tr class="footer">
+              <td style="padding:30px;font-size:12px;background-color:#44403C;color:#E7E5E4;font-weight:800;">
+                  Sent from Scoutplan
+              </td>
             </tr>
           </table>
           <!--[if mso]>

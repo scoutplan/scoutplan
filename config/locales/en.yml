@@ -211,6 +211,7 @@ en:
     
     edit:
       short_description_placeholder: "Brief description (optional, appears in email & text)"
+      published: "Published"
 
     new:
       add_this_event: "Add This Event"
@@ -294,7 +295,7 @@ en:
   mailers:
     member_mailer:
       digest_email:
-        title: "Coming Up At %{unit_name}"
+        title: "Coming Up This Week"
       daily_reminder:
         this: "This"
         multiple_events: "Today's Events"

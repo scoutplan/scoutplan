@@ -1,8 +1,10 @@
 - content_for :title do
-  = t('mailers.member_mailer.digest_email.title', unit_name: @unit.name)
+  | Coming Up
 
 - content_for :blurb do
-  p(style="font-size: 125%; margin-bottom:2rem; color:#666;") Good #{ Time.zone.now.time_of_day }, #{@member.display_first_name}. Coming up:
+  p(style="font-size: 125%; margin-bottom:2rem; color:#666;line-height:150%;")
+    | Good #{ Time.zone.now.time_of_day }, #{@member.display_first_name}. Here's what's going on:
+
   - @news_items.each_with_index do |news_item, counter|
     - if counter > 0
       div(style="text-align:center;color:#aaa;") &#9679;
@@ -11,27 +13,36 @@
       h3(style="margin-bottom:0.25rem; color:#000;") = news_item.title
       == news_item.body
 
-  hr(style="border:1px solid #eee;")
-
 - content_for :left_column do
-  h2(style="color:#888; text-transform:uppercase;") Next Seven Days
-  - @this_week_events.each do |event|
-    h3(style="margin-bottom: 0;")
-      = magic_link_to @member, event.title, [event.unit, event]
+  h2(style="color:#57534E;font-size:2rem;font-weight:normal;") Next Seven Days
 
-    p(style="margin-top:0;")
+  - @this_week_events.each do |event|
+    h3(style="margin-bottom:0;line-height:150%;")
+      = magic_link_to \
+        @member,
+        event.title,
+        [event.unit, event],
+        style: "color:black;font-weight:normal;"
+
+    p(style="margin-top:0;line-height:150%;")
       = event.starts_at.localtime.strftime('%A, %b %-d')
       br
       = event.starts_at.localtime.strftime('%-I:%M %p')
       |&thinsp;&ndash;&thinsp;
       = event.ends_at.localtime.strftime('%-I:%M %p')
 
-    - if event.short_description.present?
-      p(style="font-size:90%;") = event.short_description
+      - if event.location.present?
+        br
+        = event.location
 
-    - next unless event.requires_rsvp
+      - if event.short_description.present?
+        br
+        = event.short_description
 
-    p
+      - next unless event.requires_rsvp
+
+      br
+
       - family_rsvp_count = 0
       - @member.family.each do |member|
         - rsvp = member.rsvps.find_by(event: event)
@@ -53,18 +64,26 @@
           - button_caption = family_rsvp_count.positive? ? 'Change RSVPs' : 'RSVP Now'
           = magic_link_to @member, button_caption, unit_event_edit_rsvps_url(event.unit, event)
 
+  p
+    = magic_link_to \
+      @member,
+      "View all #{ @unit.name} events",
+      unit_events_url(@unit),
+      style: "display:block;text-align:center;border:1px solid #44403C;color:#44403C;text-decoration: none; padding: 1rem 3rem; border-radius:0.25rem;"
+
 - content_for :right_column do
-  h2(style="color:#888; text-transform:uppercase;font-size:120%;") Beyond this week
+  h1(style="font-size:2rem;font-weight:normal;") Looking Further&#8230;
 
   dl
     = render partial: 'member_mailer/partials/event_rows', locals: { events: @upcoming_events }
 
 - content_for :pre_footer do
-  p(style="text-align:center;")
-    = magic_link_to @member,
-                    "View all #{ @unit.name} events",
-                    unit_events_url(@unit),
-                    style: "font-weight: bold; background-color: #e66425; color: #fff; text-decoration: none; padding: 1rem 3rem; border-radius:0.25rem;"
+  p
+    = magic_link_to \
+    @member,
+    "View all #{ @unit.name} events",
+    unit_events_url(@unit),
+    style: "display:block;text-align:center;border:1px solid #44403C;color:#44403C;text-decoration: none; padding: 1rem 3rem; border-radius:0.25rem;"
 
 scss:
   .accepted {
