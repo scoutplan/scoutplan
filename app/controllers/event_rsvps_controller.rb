@@ -9,7 +9,9 @@ class EventRsvpsController < ApplicationController
     @rsvp = @event.rsvps.find_or_create_by(unit_membership: target_member)
     @respondent = @unit.membership_for(current_user) || target_member
     @rsvp.respondent = @respondent
-    @rsvp.response = params[:response]
+    @rsvp.response = params[:response] if params[:response].present?
+    @rsvp.paid = true if params[:payment] == "full"
+    @rsvp.paid = false if params[:payment] == "none"
 
     @rsvp.save!
     @event.reload

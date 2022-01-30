@@ -38,6 +38,10 @@ module ApplicationHelper
       color = "pink-500"
     end
 
-    content_tag :i, nil, class: "fa-user fad mr-2 text-#{color}"
+    content_tag \
+      :i,
+      nil,
+      class: "fa-user fad mr-2 text-#{color}",
+      title: I18n.t("members.types.#{member.member_type}")
   end
 end

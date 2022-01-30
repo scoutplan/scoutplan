@@ -16,6 +16,8 @@ class EventRsvp < ApplicationRecord
 
   delegate_missing_to :unit_membership
 
+  scope :ordered, -> { includes(unit_membership: :user).order("users_unit_memberships.last_name, users_unit_memberships.first_name") }
+
   # do the Event and UnitMembership share a Unit in common?
   # if not, something's wrong
   def common_unit?

@@ -17,6 +17,10 @@ li.member
         span.member-name
           = @member.full_display_name
 
+        - if @rsvp&.paid
+          / = pill_tag("Paid", "bg-emerald-500 text-emerald-100 uppercase font-bold tracking-wider")
+          i.fa-badge-dollar.fas.text-emerald-500.ml-1(title="Paid")
+
       .little-buttons
         .disclosure-button.hidden
           i.fa-chevron-right.fas.text-sm.text-black.opacity-30
