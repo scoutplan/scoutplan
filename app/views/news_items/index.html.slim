@@ -3,45 +3,11 @@
 - content_for :body_classes do
   = @view
 
-.max-w-3xl.mx-auto
-  h4.mb-0.text-black = @view.titleize
-  - if schedule = @unit.tasks.find_by(key: "digest")&.schedule
-    .text-sm.text-gray-400
-      = t("newsletter.next_sends_at",
-        unit_name: @unit.name,
-        next_newsletter_datetime: schedule.next_occurrence.strftime(schedule_format))
+= turbo_frame_tag("main")
+  .max-w-3xl.mx-auto
+    header.pt-8.pb-4.flex.justify-between
+      h1.font-bold.text-xl
+        = @view.titleize
 
-  #news_items_container.mt-11
-    = render partial: "news_items"
-
-.modal#modal_wrapper
-
-scss:
-  article.news-item {
-    &:hover {
-      .news-item-actions {
-        display: inline-block;
-      }
-    }
-
-    .edit-mode {
-      display: none;
-    }
-  }
-
-  article.news-item.editing {
-    .display-mode {
-      display: none;
-    }
-
-    .edit-mode {
-      display: inline-block;
-    }
-  }
-
-javascript:
-  function clickItemEditLinkForId(id) {
-    selector = '#edit_item_' + id + '_link';
-    var elem = document.querySelector(selector);
-    elem.click();
-  }
+    section
+      = render partial: "news_items"

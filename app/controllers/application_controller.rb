@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'mixpanel-ruby'
+require "mixpanel-ruby"
 
 # base Controller class
 class ApplicationController < ActionController::Base
@@ -20,9 +20,9 @@ class ApplicationController < ActionController::Base
 
   def track_member(tracker)
     tracker.people.set(@current_member.id, {
-      '$first_name' => 'John',
-      '$last_name'  => 'Doe',
-      '$unit'       => [ @current_member.unit.name, @current_member.unit.location].join(' ')
+      "$first_name" => "John",
+      "$last_name"  => "Doe",
+      "$unit"       => [ @current_member.unit.name, @current_member.unit.location].join(" ")
     })
   end
 
@@ -31,8 +31,8 @@ class ApplicationController < ActionController::Base
   end
 
   def set_cors_headers
-    headers['Access-Control-Allow-Origin'] = '*'
-    headers['Access-Control-Request-Method'] = '*'
+    headers["Access-Control-Allow-Origin"] = "*"
+    headers["Access-Control-Request-Method"] = "*"
   end
 
   # if a ?view=NNNN querystring is present, stuff the value

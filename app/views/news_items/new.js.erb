@@ -1,6 +1,0 @@
-var modalElem = document.createElement('div');
-modalElem.setAttribute('id', 'news_item_modal');
-modalElem.classList.add('sp_modal');
-modalElem.innerHTML = '<%= escape_javascript(render "news_item_modal") %>';
-document.body.append(modalElem);
-modalElem.querySelector('#news_item_title').focus();

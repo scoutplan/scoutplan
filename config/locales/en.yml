@@ -82,6 +82,19 @@ en:
       queued: "Queued"
     next_sends_at: "Scoutplan will automatically send the next %{unit_name} email newsletter on %{next_newsletter_datetime}."
 
+  news_items:
+    index:
+      write_one_now: "Write one now..."
+
+    titles:
+      new: "Write a News Item"
+
+    new:
+      submit_caption: "Add This News Item"
+
+    placeholders:
+      body: "Write your news item"
+      
   messaging:
     title: "Messaging"
     new_item_description: "News items appear in the %{unit_name} weekly digest once they're approved"
@@ -127,6 +140,12 @@ en:
     update_confirmation:  "%{title} was updated"
     location:             "Location"
     dates:                "Dates"
+
+    placeholders:
+      title:        "Event title"
+      location:     "Location"
+      address:      "Address or place name"
+      departs_from: "Departure address"
 
     rsvp:
       note_placeholder: "Note, e.g. \"Need a ride\", \"Arriving late\", etc."
@@ -239,6 +258,10 @@ en:
         delete:         "Discard this RSVP"
       placeholders:
         search: "Search for members by name"
+
+    titles:
+      new:  "Add a Calendar Event"
+      edit: "Change Event Details"
         
   members:
     name:             "Name"
