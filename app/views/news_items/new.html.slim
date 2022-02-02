@@ -1,0 +1,51 @@
+= turbo_frame_tag("main")
+  .max-w-3xl.mx-auto
+    = form_with model: [@unit, @news_item], builder: ApplicationFormBuilder do |f|
+
+      = styled_header_tag t("news_items.titles.new")
+
+      section.bg-stone-100.px-4.py-4.mb-2.rounded
+        = f.label :title, class: "block md:inline-block md:w-[25%] mb-2 text-sm font-bold tracking-wide uppercase"
+        = f.text_field :title,
+          class: "w-full md:w-[75%] border border-stone-200 rounded bg-white p-2 placeholder-stone-300",
+          placeholder: t("news_items.placeholders.title"),
+          autocomplete: "off"
+
+      section.bg-stone-100.px-4.py-4.mb-2.rounded.w-full
+        = f.label :body, class: "block mb-4 text-sm font-bold tracking-wide uppercase"
+        = f.rich_text_area \
+          :body,
+          class: "bg-white w-full border border-stone-200 overflow-auto h-48 placeholder-stone-300",
+          placeholder: t("news_items.placeholders.body")
+
+      section.bg-stone-100.px-4.py-4.mb-2.rounded
+        = f.styled_label :status, t("news_items.labels.status"), layout: :inline
+
+        span.mx-3
+          = f.radio_button :status, :draft, class: 'mr-2'
+          = f.label :status_draft, t('newsletter.modal.draft')
+
+        span.mx-3
+          = f.radio_button :status, :queued, class: 'mr-2'
+          = f.label :status_queued, t('newsletter.modal.queued')   
+
+      footer.flex.flex-col.md:flex-row.md:justify-end.gap-2.pt-4.sticky.bottom-0
+        = button_to \
+          t("global.cancel"),
+          unit_news_items_path(@unit),
+          class: "text-sm font-bold uppercase tracking-wider \
+                  text-stone-800 hover:text-stone-900 \
+                  bg-stone-100 hover:bg-stone-200 \
+                  border-stone-100 hover:border-stone-200 \
+                  inline-block px-4 py-2 min-w-[8rem] \
+                  rounded",
+          data: { turbo_action: "advance" }
+
+        = f.submit \
+          t("news_items.captions.submit_new"),
+          class: "text-sm font-bold uppercase tracking-wider \
+                  text-white hover:text-scoutplan-100 \
+                  bg-scoutplan-500 hover:bg-scoutplan-600 \
+                  border-scoutplan-500 hover:border-scoutplan-600 \
+                  block md:inline-block w-full md:w-fit px-4 py-2 \
+                  rounded"

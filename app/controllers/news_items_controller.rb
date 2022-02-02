@@ -11,16 +11,13 @@ class NewsItemsController < UnitContextController
   end
 
   def new
-    @news_item = @current_unit.news_items.new(status: 'draft')
-    @news_item_unit = @current_unit
-    respond_to :js
+    @news_item = @unit.news_items.new
   end
 
   def create
     @news_item = @current_unit.news_items.new(news_item_params)
     @news_item.save!
-    set_news_items
-    respond_to :js
+    redirect_to unit_news_items_path(@unit)
   end
 
   def edit

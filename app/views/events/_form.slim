@@ -3,42 +3,52 @@
 - @format_date = '%Y-%m-%d'
 - @format_time = '%H:%M:%S'
 
-.mx-auto.max-w-3xl.py-4.md:py-4
+.mx-auto.max-w-3xl
 
-  h1.font-bold.text-2xl.mb-4
-    = @event.new_record? ? "Add an Event" : "Change Event Details"
+  = styled_header_tag @event.new_record? ? t("events.titles.new") : t("events.titles.edit")
 
-  = form_with model: @event_view, scope: 'event', url: url, method: method, data: { 'turbo-action' => 'advance' } do |f|
+  = form_with \
+    model: @event_view,
+    builder: ApplicationFormBuilder,
+    scope: 'event',
+    url: url,
+    method: method,
+    data: { 'turbo-action' => 'advance' } do |f|
+    
     section.bg-stone-100.px-4.py-2.md:px-8.md:py-0.mb-2.rounded
 
       // title
       .md:border-b.py-2.md:py-4
-        = f.label :title, class: "block md:inline-block md:w-[25%] mb-2 text-sm font-bold tracking-wide uppercase"
+        = f.styled_label :title, layout: :inline
         = f.text_field :title,
-          class: "bg-white border-0 rounded p-2 w-full md:w-[75%] hover:ring-scoutplan-500",
+          class: "bg-white border border-stone-200 rounded p-2 w-full md:w-[75%] hover:ring-brand-500 placeholder-stone-300",
           autocomplete: 'off',
-          placeholder: 'Title'
+          placeholder: t("events.placeholders.title")
 
       // category
       .md:border-b.py-4
-        = f.label :category, class: "block md:inline-block md:w-[25%] mb-2 text-sm font-bold tracking-wide uppercase"
-        = f.select :event_category_id,
-            @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
-            { prompt: t('event_category_prompt'), selected: @event_view.event_category_id },
-            { class: "border-0 rounded py-2 bg-white w-full md:w-fit" }
+        = f.styled_label :category, layout: :inline
+        = f.select \
+          :event_category_id,
+          @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
+          { \
+            prompt: t("events.placeholders.category"),
+            selected: @event_view.event_category_id,
+          },
+          { class: "border border-stone-200 rounded py-2 bg-white w-full md:w-fit" }
 
       // short description
       .py-4
-        = f.label :short_description, class: "block md:inline-block md:w-[25%] mb-2 text-sm font-bold tracking-wide uppercase"
+        = f.styled_label :short_description, layout: :inline
         = f.text_field :short_description,
-          class: "w-full md:w-[75%] border-0 rounded bg-white p-2",
+          class: "w-full md:w-[75%] border border-stone-200 rounded bg-white p-2 placeholder-stone-300",
           autocomplete: "off",
           placeholder: t("events.edit.short_description_placeholder")
     
     // RSVP
     section.bg-stone-100.py-4.px-4.md:px-8.mb-2.rounded
       .form-check
-        = f.check_box :requires_rsvp, class: 'w-4 h-4 text-green-500 rounded mr-2'
+        = f.check_box :requires_rsvp, class: "w-4 h-4 text-green-500 rounded mr-2"
         = f.label :requires_rsvp, class: "text-sm font-bold tracking-wide uppercase"
 
     section.bg-stone-100.p-4.md:px-8.mb-2.rounded      
@@ -47,65 +57,47 @@
     section.bg-stone-100.py-2.px-4.md:px-8.mb-2.rounded
       = render partial: 'events/partials/edit/location', locals: { f: f }
 
-    section.bg-stone-100.p-4.md:p-8.mb-2.rounded
-      = f.rich_text_area :description, class: "block border mb-4 overflow-auto h-48"
-
-    section.bg-stone-100.p-4.md:p-8.mb-2.rounded
+    // Published
+    section.bg-stone-100.p-4.mb-2.rounded
       = f.check_box :status, { class: 'w-4 h-4 text-green-500 rounded mr-2' }, 'published', 'draft'
-      = f.label :status, 'Published'
+      = f.styled_label :status, t("events.edit.published"), layout: :checkbox
+
+    section.bg-stone-100.py-2.px-4.md:px-8.md:py-4.mb-2.rounded
+      = f.label :description, class: "block mb-2 text-sm font-bold tracking-wide uppercase"
+      = f.rich_text_area :description, class: "bg-white block border border-stone-200 overflow-auto h-48"
 
     // footer
-    footer.bg-white.py-2.md:py-4.px-0.sticky.bottom-0.flex.flex-col.md:flex-row.md:justify-between.gap-2
+    footer.bg-white.pb-2.md:py-4.px-0.sticky.bottom-0.flex.flex-col.md:flex-row.md:justify-between.gap-2.border-t
 
       // Cancel event
       .flex.flex-col-reverse.md:flex-row.gap-2
         - if event_cancellable?(@current_member, @event)
-          = link_to 'Cancel This Event',
+          = link_to @event.new_record? ? t("global.cancel") : t("events.show.cancel_title"),
             unit_event_cancel_path(@unit, @event),
             class: "text-sm font-bold tracking-wider uppercase no-underline text-center \
                     block w-full pl-0 pr-4 py-2 \
-                    text-scoutplan-500 hover:text-scoutplan-600 \
-                    border rounded border-scoutplan-500 md:border-0",
+                    text-brand-500 hover:text-brand-600 \
+                    border rounded border-brand-500 md:border-0",
             data: { turbo_frame: "event", turbo_action: "advance" }
 
-      .flex.flex-col-reverse.md:flex-row.md:justify-end.gap-2
-
-        // Save Changes
-        = f.submit "#{@event_view.new_record? ? t("events.new.add_this_event") : t("global.save_changes")}",
-          class: "text-white text-sm font-bold tracking-wider uppercase \
-                  inline-block w-full md:w-fit px-4 py-2 \
-                  bg-scoutplan-500 hover:bg-scoutplan-600 \
-                  border-scoutplan-500 hover:border-scoutplan-600 \
-                  border rounded cursor-pointer"
+      .flex.flex-col.md:flex-row.md:justify-end.gap-2
         
         // Discard Changes
-        = button_to t('global.discard_changes'),
+        = link_to t("global.discard_changes"),
           @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event),
           type: "button",
-          data: { turbo_action: "advance" },
-          class: "text-black text-center text-sm font-bold tracking-wider uppercase no-underline \
+          data: { turbo_action: "advance", turbo_frame: "main" },
+          class: "text-center text-sm font-bold tracking-wider uppercase no-underline \
                   inline-block w-full md:w-fit px-4 py-2 \
-                  bg-stone-200 hover:bg-stone-300 \
-                  border-stone-200 hover:border-stone-300 \
+                  bg-brand-100 hover:bg-brand-200 \
+                  text-brand-500 hover:text-brand-600 \
+                  border-brand-100 hover:border-brand-100 \
                   rounded border"
 
-javascript:
-  // tab interfaces
-  document.querySelectorAll('.tab-label[data-toggle-target]').forEach(function(elem) {
-    elem.addEventListener('click', function(event) {
-      event.stopPropagation();
-      event.preventDefault();
-
-      // toggle tab link selected
-      document.querySelectorAll('.tab-label').forEach(function(elem) {
-        elem.classList.remove('selected');
-      });
-      this.classList.add('selected');
-
-      // toggle tab content visibility
-      document.querySelectorAll('.tab-content').forEach(function(elem) {
-        elem.style.display = 'none';
-      });
-      document.querySelector(elem.dataset.toggleTarget).style.display = 'block';
-    });
-  });
+        // Save Changes
+        = f.submit @event_view.new_record? ? t("events.new.add_this_event") : t("global.save_changes"),
+          class: "text-white text-sm font-bold tracking-wider uppercase \
+                  inline-block w-full md:w-fit px-4 py-2 \
+                  bg-brand-500 hover:bg-brand-600 \
+                  border-brand-500 hover:border-brand-600 \
+                  border rounded cursor-pointer"                  

@@ -31,17 +31,12 @@ module ApplicationHelper
 
   # given a member, return the appropriate FontAwesome element tag
   def member_glyph_tag(member)
-    case member.member_type
-    when "youth"
-      color = "sky-500"
-    when "adult"
-      color = "pink-500"
-    end
+    colors = {
+      "youth" => "sky-500",
+      "adult" => "pink-500"
+    }
+    color = colors[member.member_type]
 
-    content_tag \
-      :i,
-      nil,
-      class: "fa-user fad mr-2 text-#{color}",
-      title: I18n.t("members.types.#{member.member_type}")
+    content_tag :i, nil, class: "fa-user fad mr-2 text-#{color}", title: I18n.t("members.types.#{member.member_type}")
   end
 end

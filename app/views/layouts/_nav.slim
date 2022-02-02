@@ -52,9 +52,7 @@
           |&nbsp;&nbsp;
         span.text-black
           = t('messaging.drafts')
-        - if @current_unit.news_items.draft.count.positive?
-          span.text-xs.px-2.font-medium.bg-white.text-stone-800.rounded.py-0.5.ml-3.float-right.mt-1.border.border-red-500
-            = @current_unit.news_items.draft.count          
+          = pill_tag(@current_unit.news_items.draft.count)
 
     li.newsletter-child#main_nav_item_newsletter_queued
       = link_to unit_newsletter_queued_path(@current_unit), class: 'no-underline whitespace-nowrap pt-2 pb-2 pr-2 pl-8 block hover:bg-stone-200 rounded-md' do
