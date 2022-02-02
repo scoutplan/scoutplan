@@ -14,3 +14,7 @@
  *= require_self
  *= require trix
  */
+
+ trix-editor:empty:not(:focus)::before {
+  color: #E7E5E4;
+}

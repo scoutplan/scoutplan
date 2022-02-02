@@ -1,38 +1,53 @@
-article.border-b.pb-4
+article.border-b.py-4
   header.pb-2
     h5.font-bold.flex.justify-between
       span
-        i.fa-envelope.fas.mr-2
         = news_item.title
       
       span
-        = news_item.updated_at
+        = deictic_string_for_time_interval_from_day(news_item.updated_at)
 
   p == news_item.body
 
-    .news-item-actions.float-right.hidden
-      - if news_item.demotable?
-        = link_to news_item_dequeue_path(news_item),
-          method: :post,
-          remote: true,
-          title: t('messaging.dequeue'),
-          class: 'mx-1.5 text-yellow-500',
-          data: { 'bs-toggle' => 'tooltip' } do
-          i.fa-inbox-out.far
+  .flex.flex-row.mt-4.gap-2
+    - if news_item.demotable?
+      = button_to \
+        news_item_dequeue_path(news_item),
+        method: :post,
+        form_class: "inline-block",
+        title: t("messaging.dequeue"),
+        class: "inline-block mx-1.5 text-yellow-500" do
 
-      - if news_item.promotable?
-        = link_to news_item_enqueue_path(news_item),
-          method: :post,
-          remote: true,
-          title: t('messaging.enqueue_draft'),
-          class: 'mx-1.5 text-green-400',
-          data: { 'bs-toggle' => 'tooltip' } do
-          i.fa-check-circle.far
+        i.fa-inbox-out.far
 
-      - if news_item.editable?
-        = link_to edit_news_item_path(news_item), remote: true, id: "edit_item_#{news_item.id}_link", title: t('messaging.edit'), class: 'news-item-edit-toggler mx-1.5 text-indigo-400', data: { 'bs-toggle' => 'tooltip', news_item_id: news_item.id } do
-          i.fa-edit.far
+    - if news_item.promotable?
+      = button_to \
+        news_item_enqueue_path(news_item),
+        method: :post,
+        form_class: "inline-block",
+        title: t("news_items.titles.enqueue"),
+        class: "text-white uppercase text-sm font-bold tracking-wider bg-scoutplan-500 border-scoutplan-500 hover:border-scoutplan-600 px-4 py-2 rounded" do
 
-      - if news_item.deletable?
-        = link_to news_item, method: :delete, remote: true, title: t('messaging.delete_draft'), class: 'mx-1.5 text-red-400', data: { 'bs-toggle' => 'tooltip' } do
-          i.fa-trash.far
+        i.fa-check-circle.far.mr-2
+        = t("news_items.captions.enqueue")
+
+    - if news_item.editable?
+      = link_to \
+        edit_news_item_path(news_item), 
+        id: "edit_item_#{news_item.id}_link",
+        title: t('messaging.edit'),
+        class: "text-scoutplan-600 uppercase text-sm font-bold tracking-wider bg-scoutplan-100 border-scoutplan-100 hover:border-scoutplan-200 px-4 py-2 rounded" do
+        
+        i.fa-edit.far.mr-2
+        = t("news_items.captions.edit")
+
+    - if news_item.deletable?
+      = button_to \
+        news_item,
+        method: :delete,
+        title: t("messaging.delete_draft"),
+        form_class: "inline-block",
+        class: "text-sm font-bold uppercase tracking-wider text-scoutplan-500 border rounded border-scoutplan-500 px-4 py-2" do
+        
+        i.fa-trash.far.mr-2
+        = t("news_items.captions.delete")

@@ -3,7 +3,7 @@
 - @format_date = '%Y-%m-%d'
 - @format_time = '%H:%M:%S'
 
-.mx-auto.max-w-3xl.py-4.md:py-4
+.mx-auto.max-w-3xl
 
   = styled_header_tag @event.new_record? ? t("events.titles.new") : t("events.titles.edit")
 
@@ -28,10 +28,14 @@
       // category
       .md:border-b.py-4
         = f.styled_label :category, layout: :inline
-        = f.select :event_category_id,
-            @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
-            { prompt: t('event_category_prompt'), selected: @event_view.event_category_id },
-            { class: "border border-stone-200 rounded py-2 bg-white w-full md:w-fit" }
+        = f.select \
+          :event_category_id,
+          @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
+          { \
+            prompt: t("events.placeholders.category"),
+            selected: @event_view.event_category_id,
+          },
+          { class: "border border-stone-200 rounded py-2 bg-white w-full md:w-fit" }
 
       // short description
       .py-4
@@ -63,7 +67,7 @@
       = f.rich_text_area :description, class: "bg-white block border border-stone-200 overflow-auto h-48"
 
     // footer
-    footer.bg-white.py-2.md:py-4.px-0.sticky.bottom-0.flex.flex-col.md:flex-row.md:justify-between.gap-2.border-t
+    footer.bg-white.pb-2.md:py-4.px-0.sticky.bottom-0.flex.flex-col.md:flex-row.md:justify-between.gap-2.border-t
 
       // Cancel event
       .flex.flex-col-reverse.md:flex-row.gap-2
@@ -76,13 +80,13 @@
                     border rounded border-brand-500 md:border-0",
             data: { turbo_frame: "event", turbo_action: "advance" }
 
-      .flex.flex-col-reverse.md:flex-row.md:justify-end.gap-2
+      .flex.flex-col.md:flex-row.md:justify-end.gap-2
         
         // Discard Changes
-        = button_to t('global.discard_changes'),
+        = link_to t("global.discard_changes"),
           @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event),
           type: "button",
-          data: { turbo_action: "advance" },
+          data: { turbo_action: "advance", turbo_frame: "main" },
           class: "text-center text-sm font-bold tracking-wider uppercase no-underline \
                   inline-block w-full md:w-fit px-4 py-2 \
                   bg-brand-100 hover:bg-brand-200 \

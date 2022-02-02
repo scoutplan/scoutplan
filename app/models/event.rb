@@ -105,8 +105,8 @@ class Event < ApplicationRecord
 
   def set_defaults
     return unless unit
-    
-    self.event_category = unit.event_categories.first
+
+    # self.event_category = unit.event_categories.first
     self.starts_at = 4.weeks.from_now
     self.ends_at = self.starts_at + 4.hours
   end

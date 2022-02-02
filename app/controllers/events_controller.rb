@@ -58,6 +58,7 @@ class EventsController < ApplicationController
   def new
     build_prototype_event
     @event_view = EventView.new(@event)
+    ap @event_view
     @presenter = EventPresenter.new(event: @event, current_user: current_user)
   end
 

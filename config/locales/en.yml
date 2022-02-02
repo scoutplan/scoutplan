@@ -34,8 +34,6 @@ en:
   app_name: "Scoutplan"
   administration: "Administration"
   rsvps: "Your RSVPs"
-  dates_times_locations: "Date, Time & Location"
-  app_name: "Scoutplan"
   hello: "Hello world"
   event_add: "Add a Calendar Event"
   event_update: "Change a Calendar Event"
@@ -111,6 +109,28 @@ en:
     delete_draft: "Delete this item"
     edit: "Edit this item"
 
+  news_items:
+    titles:
+      enqueue: "Move this news item to the queue to be sent with the next newsletter"
+      new: "Write a News Item"
+
+    captions:
+      enqueue: "Move to Newsletter Queue"
+      delete:  "Move to Trash"
+      edit:    "Edit Item"
+      new:     "Write a News Item"
+      submit_new: "Add This Item"
+
+    placeholders:
+      body: "Type your news here..."
+      title: "News title"
+    
+    index:
+      write_one_now: "Write one now..."
+
+    labels:
+      status: "Status"
+
   unit_settings:
     title: "Unit Settings"
     logo:  "Logo"
@@ -146,6 +166,7 @@ en:
       location:     "Location"
       address:      "Address or place name"
       departs_from: "Departure address"
+      category:     "Select an event category"
 
     rsvp:
       note_placeholder: "Note, e.g. \"Need a ride\", \"Arriving late\", etc."
