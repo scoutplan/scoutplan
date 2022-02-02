@@ -72,7 +72,7 @@
       // Cancel event
       .flex.flex-col-reverse.md:flex-row.gap-2
         - if event_cancellable?(@current_member, @event)
-          = link_to @event.new_record? ? t("global.cancel") : t("global.discard_changes"),
+          = link_to @event.new_record? ? t("global.cancel") : t("events.show.cancel_title"),
             unit_event_cancel_path(@unit, @event),
             class: "text-sm font-bold tracking-wider uppercase no-underline text-center \
                     block w-full pl-0 pr-4 py-2 \
@@ -95,30 +95,9 @@
                   rounded border"
 
         // Save Changes
-        = f.submit "#{@event_view.new_record? ? t("events.new.add_this_event") : t("global.save_changes")}",
+        = f.submit @event_view.new_record? ? t("events.new.add_this_event") : t("global.save_changes"),
           class: "text-white text-sm font-bold tracking-wider uppercase \
                   inline-block w-full md:w-fit px-4 py-2 \
                   bg-brand-500 hover:bg-brand-600 \
                   border-brand-500 hover:border-brand-600 \
                   border rounded cursor-pointer"                  
-
-javascript:
-  // tab interfaces
-  document.querySelectorAll('.tab-label[data-toggle-target]').forEach(function(elem) {
-    elem.addEventListener('click', function(event) {
-      event.stopPropagation();
-      event.preventDefault();
-
-      // toggle tab link selected
-      document.querySelectorAll('.tab-label').forEach(function(elem) {
-        elem.classList.remove('selected');
-      });
-      this.classList.add('selected');
-
-      // toggle tab content visibility
-      document.querySelectorAll('.tab-content').forEach(function(elem) {
-        elem.style.display = 'none';
-      });
-      document.querySelector(elem.dataset.toggleTarget).style.display = 'block';
-    });
-  });

@@ -17,7 +17,7 @@
         "",
         placeholder: t("events.organize.placeholders.search"),
         id: "search_term",
-        class: "w-full rounded border-0 bg-stone-100 focus:ring-scoutplan-500 placeholder-stone-400",
+        class: "w-full rounded border border-stone-200 bg-stone-100 focus:ring-scoutplan-500 placeholder-stone-400",
         onkeyup: "performNameSearch();"
 
       i.fa-magnifying-glass.fas.absolute.right-4(style="top:50%;transform:translateY(-50%);")    
@@ -29,14 +29,20 @@
         = flash[:notice]
 
   section.max-w-6xl.mx-auto.grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-2.xl:grid-cols-4.gap-2.mt-2
+    // ACCEPTED
     .bg-green-50.rounded.p-4#accepted_rsvp_container
       .flex.justify-between
         h2.text-lg.font-bold.text-green-700
           i.fa-person-hiking.fas.text-green-600.mr-2
           = t("events.organize.accepts")
 
-        .rounded.font-bold.tracking-wide.text-sm.px-2.py-1.bg-green-500.text-green-100
-          = @event.rsvps.accepted.count
+        .font-bold.tracking-wide.text-sm
+          .px-2.py-1.bg-sky-500.text-sky-100.inline.rounded-l
+            = @event.rsvps.accepted.select { |r| r.adult? }.count
+            = " A"
+          .px-2.py-1.bg-pink-500.text-pink-100.inline.rounded-r
+            = @event.rsvps.accepted.select { |r| r.youth? }.count
+            = " Y"
 
       // list of "going" members
       ul.mt-2.empty:mt-0
@@ -101,6 +107,14 @@
   footer.h-4
 
   css:
+    .rsvp-action-button.processing .glyph {
+      display: none;
+    }
+
+    .rsvp-action-button.processing .processing-glyph {
+      display: inline-block;
+    }
+
     .member.open .member-actions {
       display: block;
     }

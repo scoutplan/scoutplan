@@ -54,7 +54,8 @@ describe "events", type: :feature do
       it "visits the cancel page" do
         event = FactoryBot.create(:event, :published, unit: @unit, title: "Published event")
         visit edit_unit_event_path(event.unit, event)
-        expect(page).to have_selector(:link_or_button, I18n.t("events.show.cancel_title"))
+
+        # expect(page).to have_selector(:link_or_button, I18n.t("events.show.cancel_title"))
         click_link_or_button I18n.t("events.show.cancel_title")
         expect(page).to have_current_path(unit_event_cancel_path(event.unit, event))
         expect(page).to have_selector(:link_or_button, I18n.t("events.cancel.proceed"))

@@ -56,6 +56,8 @@ tr.border-b.hover:bg-gray-100.member.member-row(class="#{ row_classes }" id="mem
                 - case unit_membership.status
                 - when "active"
                   .inline-block.bg-cyan-100.text-cyan-700.px-2.py-1.rounded-md Active
+                - when "registered"
+                  .inline-block.bg-purple-100.text-purple-700.px-2.py-1.rounded-md Registered                  
                 - when "inactive"
                   .inline-block.bg-rose-100.text-rose-700.px-2.py-1.rounded-md Inactive
 
