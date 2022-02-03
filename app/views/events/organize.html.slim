@@ -31,24 +31,28 @@
   section.max-w-6xl.mx-auto.grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-2.xl:grid-cols-4.gap-2.mt-2
     // ACCEPTED
     .bg-green-50.rounded.p-4#accepted_rsvp_container
-      .flex.justify-between
+      header.flex.justify-between
         h2.text-lg.font-bold.text-green-700
           i.fa-person-hiking.fas.text-green-600.mr-2
           = t("events.organize.accepts")
 
-        .font-bold.tracking-wide.text-sm
-          .px-2.py-1.bg-sky-500.text-sky-50.inline.rounded-l(title="Youth")
+        .font-bold.tracking-wide.text-sm.pt-1
+          span.px-2.py-1.bg-sky-500.text-sky-50.rounded-l(title="Youth")
             = @event.rsvps.accepted.select { |r| r.youth? }.count
-            = " Y"
+
+
+          span.px-2.py-1.bg-rose-500.text-rose-50.(title="Adults")
+            = @event.rsvps.accepted.select { |r| r.adult? }.count
+
+          span.px-2.py-1.bg-emerald-300.text-emerald-700.rounded-r(title="Total Headcount")
+            = "= "
+            = @event.rsvps.accepted.count
 
           - if @event.includes_activity
-            .px-2.py-1.bg-emerald-900.text-emerald-100.inline(title="#{@event.activity_name} participants")
+            span.ml-1.px-2.py-1.bg-emerald-900.text-emerald-100.rounded(title="#{@event.activity_name} participants")
               = @event.rsvps.accepted.select { |r| r.includes_activity }.count
               i.fas.fa-check-circle.ml-1
 
-          .px-2.py-1.bg-rose-500.text-rose-50.inline.rounded-r(title="Adults")
-            = @event.rsvps.accepted.select { |r| r.adult? }.count
-            = " A"
 
       // list of "going" members
       ul.mt-2.empty:mt-0
@@ -60,13 +64,14 @@
 
     // DECLINED
     .bg-red-50.rounded.p-4#declined_rsvp_container
-      .flex.justify-between
+      header.flex.justify-between
         h2.text-lg.font-bold.text-red-700
           i.fa-couch.fas.text-red-500.mr-2
           = t("events.organize.declines")
 
-        .rounded.font-bold.tracking-wide.text-sm.px-2.py-1.bg-red-500.text-red-100
-          = @event.rsvps.declined.count        
+        .font-bold.tracking-wide.text-sm.pt-1
+          span.px-2.py-1.rounded.bg-red-500.text-red-100
+            = @event.rsvps.declined.count     
 
       // list of "not going" members
       ul.mt-2.empty:mt-0
@@ -78,13 +83,14 @@
 
     // NO RESPONSE
     .bg-orange-50.rounded.p-4
-      .flex.justify-between
+      header.flex.justify-between
         h2.text-lg.font-bold.text-orange-700
           i.fa-ghost.fas.text-orange-500.mr-2
           = t("events.organize.non_respondents")
 
-        .rounded.font-bold.tracking-wide.text-sm.px-2.py-1.bg-orange-500.text-orange-100
-          = @non_respondents.count           
+        .font-bold.tracking-wide.text-sm.pt-1
+          span.px-2.py-1.bg-orange-500.text-orange-100.rounded
+            = @non_respondents.count           
 
       ul.mt-2.empty:mt-0
         = render \
@@ -95,13 +101,14 @@
 
     // NON-INVITEES
     .bg-zinc-100.rounded.p-4
-      .flex.justify-between
+      header.flex.justify-between
         h2.text-lg.font-bold
           i.fa-address-book.fas.text-stone-500.mr-2
           = t("events.organize.non_invitees")
-          
-        .rounded.font-bold.tracking-wide.text-sm.px-2.py-1.bg-zinc-500.text-zinc-100
-          = @non_invitees.count   
+
+        .font-bold.tracking-wide.text-sm.mt-1
+          span.px-2.py-1.bg-zinc-500.text-zinc-100.rounded
+            = @non_invitees.count   
 
       ul.mt-2.empty:mt-0
         = render \
