@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_29_235343) do
+ActiveRecord::Schema.define(version: 2022_02_02_210059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 2022_01_29_235343) do
     t.string "note"
     t.integer "respondent_id"
     t.boolean "paid", default: false, null: false
+    t.boolean "includes_activity", default: false, null: false
   end
 
   create_table "events", force: :cascade do |t|
@@ -102,6 +103,8 @@ ActiveRecord::Schema.define(version: 2022_01_29_235343) do
     t.string "address"
     t.text "short_description"
     t.string "departs_from"
+    t.boolean "includes_activity", default: false, null: false
+    t.string "activity_name"
   end
 
   create_table "flipper_features", force: :cascade do |t|
