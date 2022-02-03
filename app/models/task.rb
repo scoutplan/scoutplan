@@ -59,7 +59,7 @@ class Task < ApplicationRecord
   def schedule
     @schedule ||= schedule_hash.present? ? IceCube::Schedule.from_yaml(schedule_hash) : IceCube::Schedule.new
 
-  # trap unparsable string errors, which tend to manifest as `undefined method`
+    # trap unparsable string errors, which tend to manifest as `undefined method`
   rescue NoMethodError
     @schedule = IceCube::Schedule.new
   end
