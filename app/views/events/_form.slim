@@ -3,7 +3,7 @@
 - @format_date = '%Y-%m-%d'
 - @format_time = '%H:%M:%S'
 
-.mx-auto.max-w-3xl
+.mx-auto.max-w-2xl
 
   = styled_header_tag @event.new_record? ? t("events.titles.new") : t("events.titles.edit")
 
@@ -50,6 +50,11 @@
       .form-check
         = f.check_box :requires_rsvp, class: "w-4 h-4 text-green-500 rounded mr-2"
         = f.label :requires_rsvp, class: "text-sm font-bold tracking-wide uppercase"
+
+      / .form-check
+        / = f.check_box :includes_activity, class: "w-4 h-4 text-green-500 rounded mr-2"
+        / = f.label :includes_activity, class: "text-sm font-bold tracking-wide uppercase"
+        / = f.text_field :activity_name, class: "w-full md:w-[75%] border border-stone-200 rounded bg-white p-2 placeholder-stone-300"
 
     section.bg-stone-100.p-4.md:px-8.mb-2.rounded      
       = render partial: 'events/partials/edit/dates', locals: { f: f }

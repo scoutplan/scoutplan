@@ -1,5 +1,6 @@
 # app-specific tags
 module TagsHelper
+  HEADER_CLASSES = "flex justify-between py-8"
   HEADING_1_CLASSES = "font-bold text-2xl"
   BUTTON_CLASSES = "text-sm font-bold uppercase tracking-wider px-4 py-2 border rounded"
   BUTTON_CLASSES_PRIMARY = "bg-brand-500 hover:bg-brand-600 text-white border-brand-500 hover:border-brand-600"
@@ -25,7 +26,7 @@ module TagsHelper
   #
   #
   def styled_header_tag(title, &block)
-    content_tag :header, class: "flex justify-between py-8" do
+    content_tag :header, class: HEADER_CLASSES do
       concat(content_tag(:h1, title, class: HEADING_1_CLASSES))
       if block_given?
         concat(content_tag(:div) do
