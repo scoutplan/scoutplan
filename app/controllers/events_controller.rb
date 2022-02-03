@@ -238,6 +238,8 @@ class EventsController < ApplicationController
       :description,
       :short_description,
       :requires_rsvp,
+      :includes_activity,
+      :activity_name,
       :starts_at_date,
       :starts_at_time,
       :ends_at_date,

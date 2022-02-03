@@ -37,6 +37,6 @@ module ApplicationHelper
     }
     color = colors[member.member_type]
 
-    content_tag :i, nil, class: "fa-user fad mr-2 text-#{color}", title: I18n.t("members.types.#{member.member_type}")
+    content_tag :i, nil, class: "fa-user fad mr-1 text-#{color}", title: I18n.t("members.types.#{member.member_type}")
   end
 end

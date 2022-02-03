@@ -37,12 +37,18 @@
           = t("events.organize.accepts")
 
         .font-bold.tracking-wide.text-sm
-          .px-2.py-1.bg-sky-500.text-sky-100.inline.rounded-l
-            = @event.rsvps.accepted.select { |r| r.adult? }.count
-            = " A"
-          .px-2.py-1.bg-pink-500.text-pink-100.inline.rounded-r
+          .px-2.py-1.bg-sky-500.text-sky-50.inline.rounded-l(title="Youth")
             = @event.rsvps.accepted.select { |r| r.youth? }.count
             = " Y"
+
+          - if @event.includes_activity
+            .px-2.py-1.bg-emerald-900.text-emerald-100.inline(title="#{@event.activity_name} participants")
+              = @event.rsvps.accepted.select { |r| r.includes_activity }.count
+              i.fas.fa-check-circle.ml-1
+
+          .px-2.py-1.bg-rose-500.text-rose-50.inline.rounded-r(title="Adults")
+            = @event.rsvps.accepted.select { |r| r.adult? }.count
+            = " A"
 
       // list of "going" members
       ul.mt-2.empty:mt-0
