@@ -31,11 +31,11 @@
       <tr>
         <td align="center" style="padding:0;">
           <!--[if mso]>
-          <table role="presentation" align="center" style="width:400px;">
+          <table role="presentation" align="center" style="min-width:400px; width:400px;">
           <tr>
           <td>
           <![endif]-->
-          <table role="presentation" style="background:#E7E5E4;color:#78716C;max-width:460px;border:none;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;">
+          <table role="presentation" style="background:#E7E5E4;color:#78716C;width:460px;border:none;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;">
 
             <% if attachments.inline['logo'] %>
               <tr>
@@ -71,12 +71,14 @@
               </tr>
             <% end %>
 
-            <tr class="secondary_content">
-              <td style="padding:30px;background:#BAE6FD;color:#0369A1;">
-                <p style="margin-bottom:1rem;"><%= yield :right_column %></p>
-                <p><%= yield :pre_footer %></p>
-              </td>
-            </tr>
+            <% if content_for(:right_column ) %>
+              <tr class="secondary_content">
+                <td style="padding:30px;background:#BAE6FD;color:#0369A1;">
+                  <p style="margin-bottom:1rem;"><%= yield :right_column %></p>
+                  <p><%= yield :pre_footer %></p>
+                </td>
+              </tr>
+            <% end %>
 
             <tr class="footer">
               <td style="padding:30px;font-size:12px;background-color:#44403C;color:#E7E5E4;font-weight:800;">

@@ -1,34 +1,36 @@
 - current_heading = :none
 
-- @events.each do |event|
+- content_for :left_column do
 
-  - if event.starts_at.localtime.today? && current_heading != :today
-    - current_heading = :today
-    h1(style="margin-bottom: 10px;") Today
-    p(style="margin-top: 4px;")
-      = event.starts_at.localtime.strftime('%A, %B %d')
-      br
-      = event.location
+  - @events.each do |event|
 
-  - elsif event.starts_at.localtime.tomorrow? && current_heading != :tomorrow
-    - current_heading = :tomorrow
-    h1(style="margin-bottom: 4px;") Tomorrow
-    p(style="margin-top: 4px; color: #888; text-transform: uppercase;")
-      = event.starts_at.localtime.strftime('%A, %B %d')
-      br
-      = event.location
+    - if event.starts_at.localtime.today? && current_heading != :today
+      - current_heading = :today
+      h1(style="margin-bottom: 10px;") Today
+      p(style="margin-top: 4px;")
+        = event.starts_at.localtime.strftime('%A, %B %d')
+        br
+        = event.location
 
-  = magic_link_to(@member, event) do
-    h3(style="margin-bottom: 4px;") = event.title
+    - elsif event.starts_at.localtime.tomorrow? && current_heading != :tomorrow
+      - current_heading = :tomorrow
+      h1(style="margin-bottom: 4px;") Tomorrow
+      p(style="margin-top: 4px; color: #888; text-transform: uppercase;")
+        = event.starts_at.localtime.strftime('%A, %B %d')
+        br
+        = event.location
 
-  p(style="margin-top: 4px; margin-bottom: 0; font-weight: 600;")
-    = event.starts_at.localtime.strftime('%-I:%M %p')
-    |&thinsp;&ndash;&thinsp;
-    = event.ends_at.localtime.strftime('%-I:%M %p')
+    = magic_link_to(@member, event) do
+      h3(style="margin-bottom: 4px;") = event.title
 
-  p(style="margin-top: 0;text-transform: uppercase;") = event.location
+    p(style="margin-top: 4px; margin-bottom: 0; font-weight: 600;")
+      = event.starts_at.localtime.strftime('%-I:%M %p')
+      |&thinsp;&ndash;&thinsp;
+      = event.ends_at.localtime.strftime('%-I:%M %p')
 
-  == event.description
+    p(style="margin-top: 0;text-transform: uppercase;") = event.location
+
+    == event.description
 
 p(style="text-align: center; padding-top: 30px;")
   = magic_link_to( @member,
