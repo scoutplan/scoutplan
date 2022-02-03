@@ -94,7 +94,7 @@ class EventsController < ApplicationController
   def organize
     authorize @event
     @page_title = [@event.title, "Organize"]
-    @non_respondents = @event.unit.members.status_active + @event.rsvps.collect(&:member)
+    @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
     @non_invitees = @event.unit.members.status_registered - @event.rsvps.collect(&:member)
   end
 
