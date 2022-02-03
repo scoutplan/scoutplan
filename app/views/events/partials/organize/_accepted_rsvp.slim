@@ -1,18 +1,49 @@
 // This partial shows an Accepted RSVP, so possible actions are to
-// change to Declined and Mark as Paid
+// change to Declined and Mark as Paid/Unpaid
 
 // kludge alert: setting this instance variable is ugly
 - @member = rsvp.member
 - @rsvp = rsvp
 
 ul.m-0
+  // Activity
+  - if @event.includes_activity
+    - if rsvp.includes_activity
+      li
+        = button_to \
+          event_rsvps_path(@event, member_id: rsvp.member.id, activity: :no),
+          onclick: "this.classList.add('processing');",
+          method: :post,
+          class: "rsvp-action-button change-rsvp-button block py-2 font-normal",
+          id: "change_rsvp_#{rsvp.id}_button" \
+          do
+          span.w-7.text-center.inline-block.glyph
+            i.far.fa-check-square.text-gray-900.inline-block.hover:text-black
+          span.pl-1.w-7.text-center.inline-block.hidden.processing-glyph
+            i.fas.fa-refresh.inline-block.mr-2.fa-spin
+          = @event.activity_name + "?"
+    - else
+      li
+        = button_to \
+          event_rsvps_path(@event, member_id: rsvp.member.id, activity: :yes),
+          onclick: "this.classList.add('processing');",
+          method: :post,
+          class: "rsvp-action-button change-rsvp-button block py-2 font-normal",
+          id: "change_rsvp_#{rsvp.id}_button" \
+          do
+          span.w-7.text-center.inline-block.glyph
+            i.far.fa-square.text-gray-900.inline-block.hover:text-black
+          span.pl-1.w-7.text-center.inline-block.hidden.processing-glyph
+            i.fas.fa-refresh.inline-block.mr-2.fa-spin
+          = @event.activity_name + "?"
+
   // Change to Declined
   li
     = button_to \
       event_rsvps_path(@event, member_id: rsvp.member.id, response: :declined),
       onclick: "this.classList.add('processing');",
       method: :post,
-      class: "rsvp-action-button change-rsvp-button block py-2",
+      class: "rsvp-action-button change-rsvp-button block py-2 font-normal",
       id: "change_rsvp_#{rsvp.id}_button" \
       do
       span.w-7.text-center.inline-block.glyph
@@ -28,7 +59,7 @@ ul.m-0
         event_rsvps_path(@event, member_id: rsvp.member.id, payment: "full"),
         onclick: "this.classList.add('processing');",
         method: :post,
-        class: "rsvp-action-button pay-rsvp-button block py-2",
+        class: "rsvp-action-button pay-rsvp-button block py-2 font-normal",
         id: "pay_rsvp_#{rsvp.id}_button" \
         do
         span.w-7.text-center.inline-block.glyph
@@ -44,7 +75,7 @@ ul.m-0
         event_rsvps_path(@event, member_id: rsvp.member.id, payment: "none"),
         onclick: "this.classList.add('processing');",
         method: :post,
-        class: "rsvp-action-button unpay-rsvp-button block py-2",
+        class: "rsvp-action-button unpay-rsvp-button block py-2 font-normal",
         id: "unpay_rsvp_#{rsvp.id}_button" \
         do
         span.w-7.text-center.inline-block.glyph
@@ -59,7 +90,7 @@ ul.m-0
       event_rsvp_path(rsvp),
       onclick: "this.classList.add('processing');",
       method: :delete,
-      class: "rsvp-action-button block py-2" \
+      class: "rsvp-action-button block py-2 font-normal" \
       do
       span.w-7.text-center.inline-block.glyph
         i.fas.fa-trash.text-black.text-orange-600

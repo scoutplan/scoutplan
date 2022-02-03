@@ -17,8 +17,10 @@ li.member
         span.member-name
           = @member.full_display_name
 
+        - if @rsvp&.includes_activity
+          i.fa-check-circle.fas.text-emerald-900.ml-1(title="Will be #{@event.activity_name}")
+
         - if @rsvp&.paid
-          / = pill_tag("Paid", "bg-emerald-500 text-emerald-100 uppercase font-bold tracking-wider")
           i.fa-badge-dollar.fas.text-emerald-500.ml-1(title="Paid")
 
       .little-buttons

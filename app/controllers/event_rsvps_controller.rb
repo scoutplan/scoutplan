@@ -12,6 +12,8 @@ class EventRsvpsController < ApplicationController
     @rsvp.response = params[:response] if params[:response].present?
     @rsvp.paid = true if params[:payment] == "full"
     @rsvp.paid = false if params[:payment] == "none"
+    @rsvp.includes_activity = true if params[:activity] == "yes"
+    @rsvp.includes_activity = false if params[:activity] == "no"
 
     @rsvp.save!
     @event.reload

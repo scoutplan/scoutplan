@@ -14,6 +14,8 @@ class EventView
                 :ends_at_date,
                 :ends_at_time
 
+  # TODO: delegate missing to @event
+
   def_delegators :@event,
                  :title,
                  :short_description,
@@ -24,6 +26,8 @@ class EventView
                  :address,
                  :departs_from,
                  :requires_rsvp,
+                 :includes_activity,
+                 :activity_name,
                  :new_record?,
                  :save,
                  :save!,
