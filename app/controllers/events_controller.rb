@@ -154,7 +154,7 @@ class EventsController < ApplicationController
     @current_member = @unit.membership_for(current_user)
     @current_family = @current_member.family
 
-    redirect_to [@unit, @event], notice: t("events.edit_rsvps.noticed.update")
+    redirect_to [@unit, @event], notice: t("events.edit_rsvps.notices.update")
   end
 
   # GET cancel
