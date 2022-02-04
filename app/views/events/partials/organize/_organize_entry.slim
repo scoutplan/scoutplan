@@ -17,7 +17,7 @@ li.member
         span.member-name
           = @member.full_display_name
 
-        - if @rsvp&.includes_activity
+        - if @event.includes_activity && @rsvp&.includes_activity
           i.fa-check-circle.fas.text-emerald-900.ml-1(title="Will be #{@event.activity_name}")
 
         - if @rsvp&.paid

@@ -5,7 +5,8 @@
   title: 'View Map' do
 
   .absolute.right-0.top-0.p-3.text-purple-500
-    i.fa-map.fad
+    i.fa-map.fad.mr-1 
+    = t("events.show.map")
 
   dl.mb-0
     - if @event.location.present?

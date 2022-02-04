@@ -1,3 +1,82 @@
-= turbo_frame_tag('event_list', src: unit_events_path(@event.unit))
-= turbo_frame_tag('event')
-  = render partial: 'event_view', locals: { mode: 'rsvp' }
+= turbo_frame_tag "main"
+  .max-w-xl.mx-auto
+
+    // CANCELLED watermark
+    - if @event.cancelled?
+      .absolute.transform.-rotate-45.text-7xl.font-bold.text-red-500.uppercase.text-opacity-30.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/2(style="left:50%;top:50%;font-family:courier,serif;")
+        = t('index.events.cancelled')
+
+    // DRAFT watermark
+    - if @event.draft?
+      .absolute.transform.-rotate-45.text-7xl.font-bold.text-blue-500.uppercase.text-opacity-30.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/2(style="left:50%;top:50%;font-family:courier,serif;")
+        = t('index.events.draft')
+
+    // modal header
+    header.py-4.overflow-auto.sticky.top-0.bg-white.z-50
+      h3.m-0.font-bold.text-xl
+        = t("events.edit_rsvps.title")
+        = @event.title
+        span.align-middle.ml-2.text-base = glyph_tag(@event)
+        = content_tag(:div, @event.short_description, class: 'font-normal text-base text-gray-500') if @event.short_description.present?
+
+      - if @event.cancelled?
+        span.inline-block.ml-3.rounded.text-xs.bg-red-500.text-white.font-bold.px-2.py-1.tracking-wide.mt-1
+          | Cancelled
+
+      - if @event.past?
+        p.bg-yellow-300.text-yellow-800.p-4.mt-2.rounded
+          i.fa-exclamation-triangle.fas.mr-2
+          = t("events.show.past_warning")
+
+    = form_with model: @event, url: unit_event_send_rsvps_path(@unit, @event) do |f|
+
+      // first row: RSVP panel
+      - if @event.requires_rsvp
+        section.bg-stone-100.rounded.p-4.mb-2
+          = render partial: "edit_rsvp_form", locals: { f: f }
+
+      // date panel
+      section#date_time_card.text-center.bg-stone-100.p-4.mb-2.rounded
+        = render partial: 'events/partials/show/date_card'
+
+      - if @event.location.present? || @event.address.present? || @event.departs_from.present?
+        section#location_card.bg-stone-100.rounded.p-4.mb-2.relative
+          = render partial: 'events/partials/show/location_card'
+
+      // third row: longform description, if present
+      - if @event.description.present?
+        .flex.md:overflow-y-scroll.mt-4
+          == @event.description
+
+      // footer, containing right-justified buttons
+      footer.pt-2.md:pt-4.pb-4.rounded.w-full.bg-white.sticky.bottom-0
+        .flex.flex-col.md:flex-row.md:justify-between
+
+          // left side (on desktop)
+          .block
+
+
+          // right side (on desktop)
+          div.flex-auto.md:flex-none
+
+            // Cancel button
+            = link_to t("global.cancel"),
+              unit_event_path(@event.unit, @event),
+              class:  " text-sm font-bold no-underline tracking-wider uppercase text-center " \
+                      " block md:inline-block" \
+                      " px-4 py-2 mr-0 md:mr-2 mb-2 md:mb-0" \
+                      " bg-yellow-200 hover:bg-yellow-300" \
+                      " text-yellow-600 hover:text-yellow-700" \
+                      " rounded border border-yellow-200 hover:border-yellow-300" \
+                      "",
+              data: { turbo_action: "advance", turbo_frame: "main" }
+
+            // Done button
+            = f.submit t("events.edit_rsvps.captions.submit"),
+              class: "text-sm font-bold no-underline tracking-wider uppercase text-center  \
+                      block md:inline-block \
+                      px-4 py-2 \
+                      min-w-[8rem] \
+                      bg-yellow-400 hover:bg-yellow-500 text-yellow-800 hover:text-yellow-900 \
+                      rounded",
+              data: { turbo_frame: "main", turbo_action: "restore" }

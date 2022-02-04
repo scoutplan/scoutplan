@@ -34,6 +34,7 @@ class Task < ApplicationRecord
   # if we're calling every minute, most of the time there's nothing to do
   #
   def perform_on_schedule
+    Rails.logger.warn { "Next runs at #{next_runs_at}" }
     perform if time_to_run?
   end
 
@@ -76,7 +77,7 @@ class Task < ApplicationRecord
     schedule.remove_recurrence_rule(schedule.recurrence_rules.first) while schedule.recurrence_rules.count.positive?
   end
 
-  # Entrypoint for cron or other task runner: Task.perform_all. The assumption
+  # Entrypoint for cron or other task runner. The assumption
   # is that this gets called frequently (e.g. every 60 seconds).
   #
   # It iterates over all Tasks, calling perform_on_schedule for each.

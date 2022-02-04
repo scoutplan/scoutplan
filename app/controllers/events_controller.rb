@@ -47,12 +47,24 @@ class EventsController < ApplicationController
 
   def show
     authorize @event
-
     @event_view = EventView.new(@event)
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).organize?
     @current_family = @current_member.family
     page_title @event.unit.name, @event.title
+  end
+
+  # GET /units/:unit_id/events/:id/rsvp
+  # this is a variation on the 'show' action that swaps
+  # out the RSVP panel on the modal with a form where users
+  # can add/user their RSVPs.
+  # TODO: is there a better, more RESTful way of doing this?
+  def edit_rsvps
+    authorize @event
+    @unit = Unit.find(params[:unit_id])
+    @event = Event.find(params[:event_id])
+    @event_view = EventView.new(@event)
+    @current_member = @unit.membership_for(current_user)
   end
 
   def new
@@ -85,16 +97,13 @@ class EventsController < ApplicationController
     @event_view.assign_attributes(event_params)
     return unless @event_view.save!
 
-    # render turbo_stream: turbo_stream.replace(@event, partial: 'events/event', locals: { event: @event })
-
-    flash[:notice] = t("events.update_confirmation", title: @event.title)
-    redirect_to [@unit, @event]
+    redirect_to unit_event_path(@unit, @event), notice: t("events.update_confirmation", title: @event.title)
   end
 
   def organize
     authorize @event
     @page_title = [@event.title, "Organize"]
-    @non_respondents = @event.unit.members.status_active + @event.rsvps.collect(&:member)
+    @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
     @non_invitees = @event.unit.members.status_registered - @event.rsvps.collect(&:member)
   end
 
@@ -105,7 +114,7 @@ class EventsController < ApplicationController
     @event.update!(status: :published)
 
     # TODO: EventNotifier.after_publish(@event)
-    flash[:notice] = t('events.publish_message', title: @event.title)
+    flash[:notice] = t("events.publish_message", title: @event.title)
     redirect_to @event
   end
 
@@ -124,27 +133,15 @@ class EventsController < ApplicationController
     redirect_to unit_events_path(@unit)
   end
 
-  # GET /units/:unit_id/events/:id/rsvp
-  # this is a variation on the 'show' action that swaps
-  # out the RSVP panel on the modal with a form where users
-  # can add/user their RSVPs.
-  # TODO: is there a better, more RESTful way of doing this?
-  def edit_rsvps
-    @unit = Unit.find(params[:unit_id])
-    @event = Event.find(params[:event_id])
-    @event_view = EventView.new(@event)
-    @current_member = @unit.membership_for(current_user)
-
-    render "show"
-  end
-
   # POST /units/:unit_id/events/:id/rsvp
   def create_or_update_rsvps
     note = params[:note]
     params[:event][:members].each do |member_id, values|
       response = values[:event_rsvp][:response]
+      includes_activity = values[:event_rsvp][:includes_activity]
       rsvp = @event.rsvps.create_with(
         response: response,
+        includes_activity: includes_activity,
         note: note,
         respondent: @current_member
       ).find_or_create_by!(unit_membership_id: member_id)
@@ -156,6 +153,8 @@ class EventsController < ApplicationController
     @unit = @event.unit
     @current_member = @unit.membership_for(current_user)
     @current_family = @current_member.family
+
+    redirect_to [@unit, @event], notice: t("events.edit_rsvps.notices.update")
   end
 
   # GET cancel

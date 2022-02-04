@@ -12,6 +12,10 @@ class EventPolicy < UnitContextPolicy
     @event.published? || admin?
   end
 
+  def edit_rsvps?
+    true
+  end
+
   def create?
     admin?
   end

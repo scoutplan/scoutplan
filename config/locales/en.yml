@@ -167,6 +167,14 @@ en:
       address:      "Address or place name"
       departs_from: "Departure address"
       category:     "Select an event category"
+    
+    edit_rsvps:
+      title: "RSVP — "
+      captions:
+        submit: "Send These RSVPs"
+
+      notices:
+        update: "Your RSVPs have been updated"
 
     rsvp:
       note_placeholder: "Note, e.g. \"Need a ride\", \"Arriving late\", etc."
@@ -233,6 +241,7 @@ en:
       departs_from:             "Departs From"
       series_count:             "%{count} events in this series"
       past_warning:             "This event has already occurred."
+      map:                      "Map"
 
       cancel:
         notice:       "Cancelling a published event will remove it from the calendar. Are you sure you want to proceed?"
