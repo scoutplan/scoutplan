@@ -6,7 +6,7 @@
 // .modal.w-auto.my-2.mx-2.md:mx-auto.max-w-3xl.bg-white.rounded.z-40.drop-shadow-xl.filter.overflow-y-auto
 
 = turbo_frame_tag "main"
-  .max-w-3xl.mx-auto
+  .max-w-xl.mx-auto
 
     // CANCELLED watermark
     - if @event.cancelled?
@@ -19,12 +19,7 @@
         = t('index.events.draft')
 
     // modal header
-    header(class="py-4 \
-                  overflow-auto sticky \
-                  top-0 bg-white z-50")
-
-      // " <- necessary evil comment to restore proper code highlighting in VS Code
-
+    header.py-4.overflow-auto.sticky.top-0.bg-white.z-50
       h3.m-0.font-bold.text-xl
         = @event.title
         span.align-middle.ml-2.text-base = glyph_tag(@event)
@@ -39,34 +34,23 @@
           i.fa-exclamation-triangle.fas.mr-2
           = t("events.show.past_warning")
 
-    section
+    // first row: RSVP panel
+    - if @event.requires_rsvp
+      section.bg-stone-100.rounded.p-4.mb-2
+        = render partial: 'rsvp_card'
 
-      // first row: RSVP panel
-      - if @event.requires_rsvp
-        .bg-stone-100.rounded.mb-2
-          = turbo_frame_tag 'rsvp', class: 'flex w-full'
-            .p-2.w-full(class="#{ mode == 'rsvp' ? 'attention' : '' }" id="rsvp_wrapper")
-              - if mode == 'rsvp'
-                = render partial: 'edit_rsvp_form'
-              - else
-                = render partial: 'rsvp_card'
+    // date panel
+    section#date_time_card.text-center.bg-stone-100.p-4.mb-2.rounded
+      = render partial: 'events/partials/show/date_card'
 
-      // second row: date and location (conditionally) panels
-      .flex.flex-col.sm:flex-row
+    - if @event.location.present? || @event.address.present? || @event.departs_from.present?
+      section#location_card.bg-stone-100.rounded.p-4.mb-2.relative
+        = render partial: 'events/partials/show/location_card'
 
-        / date panel
-        #date_time_card.text-center.bg-stone-100.mb-2.lg:mb-0.rounded.p-3.sm:flex-auto.flex-1
-          = render partial: 'events/partials/show/date_card'
-
-        / location panel (if location values are set)
-        - if @event.location.present? || @event.address.present? || @event.departs_from.present?
-          #location_card.bg-stone-100.rounded.p-3.pb-0.mb-2.lg:mb-0.sm:ml-2.relative.sm:flex-auto.flex-shrink
-            = render partial: 'events/partials/show/location_card'
-
-      // third row: longform description, if present
-      - if @event.description.present?
-        .flex.md:overflow-y-scroll.mt-4
-          == @event.description
+    // third row: longform description, if present
+    - if @event.description.present?
+      .flex.md:overflow-y-scroll.mt-4
+        == @event.description
 
     // footer, containing right-justified buttons
     footer.pt-2.md:pt-4.pb-4.rounded.w-full.bg-white.sticky.bottom-0
