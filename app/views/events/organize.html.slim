@@ -1,123 +1,153 @@
 = turbo_frame_tag "main"
-  header.max-w-6xl.mx-auto.sticky.top-0.bg-white.z-10.pb-1.border-b
-    .flex.justify-between
-      h1.text-xl.font-bold.my-4
-        = t("events.organize.title", event_title: @event.title)
-        .inline.ml-2.text-base = glyph_tag(@event)
+  .max-w-6xl.mx-auto
+    header.sticky.top-0.bg-white.z-10.py-4.border-b
+      .flex.justify-between.mb-4
+        div
+          h1.text-xl.font-bold
+            = t("events.organize.title", event_title: @event.title)
+            .inline.ml-2.text-base = glyph_tag(@event)
 
-      = link_to "Done",
-        unit_event_path(@event.unit, @event),
-        class: "py-5 text-sm font-semibold text-stone-400 hover:text-stone-600",
-        data: { turbo: { frame: "main", action: "advance" } }
+          p.mb-0.text-sm.font-semibold.mt-1
+            i.fa-calendar.fas.mr-1.text-stone-400
+            = @event.starts_at.strftime("%-d %b")
 
-    // SEARCH
-    .relative.mb-1
-      = text_field_tag \
-        :search,
-        "",
-        placeholder: t("events.organize.placeholders.search"),
-        id: "search_term",
-        class: "w-full rounded border border-stone-200 bg-stone-100 focus:ring-scoutplan-500 placeholder-stone-400",
-        onkeyup: "performNameSearch();"
+            i.fa-location-dot.fas.mr-1.text-stone-400.ml-6
+            = @event.location
 
-      i.fa-magnifying-glass.fas.absolute.right-4(style="top:50%;transform:translateY(-50%);")    
+        div
+          - if @previous_event
+            = link_to unit_event_organize_path(@unit, @previous_event),
+              class: "text-sm px-4 hover:text-brand-500",
+              data: { turbo_action: "advance" } do
+            
+              i.fas.fa-chevron-left.mr-1
+              = t("events.organize.previous", title: @previous_event.title, date: @previous_event.starts_at.strftime("%-d %b"))
 
-  - if flash[:notice]
-    section.mt-2.max-w-6xl.mx-auto#notices
-      p.p-4.m-0.bg-amber-100.text-amber-700.rounded
-        i.fa-info-circle.fas.mr-2
-        = flash[:notice]
+          - if @next_event
+            = link_to unit_event_organize_path(@unit, @next_event),
+              class: "text-sm px-4 hover:text-brand-500",
+              data: { turbo_action: "advance" } do
 
-  section.max-w-6xl.mx-auto.grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-2.xl:grid-cols-4.gap-2.mt-2
-    // ACCEPTED
-    .bg-green-50.rounded.p-4#accepted_rsvp_container
-      header.flex.justify-between
-        h2.text-lg.font-bold.text-green-700
-          i.fa-person-hiking.fas.text-green-600.mr-2
-          = t("events.organize.accepts")
-
-        .font-bold.tracking-wide.text-sm.pt-1
-          span.px-2.py-1.bg-sky-500.text-sky-50.rounded-l(title="Youth")
-            = @event.rsvps.accepted.select { |r| r.youth? }.count
+              = t("events.organize.next", title: @next_event.title, date: @next_event.starts_at.strftime("%-d %b"))
+              i.fas.fa-chevron-right.ml-1
 
 
-          span.px-2.py-1.bg-rose-500.text-rose-50.(title="Adults")
-            = @event.rsvps.accepted.select { |r| r.adult? }.count
+          = link_to "Done",
+            unit_event_path(@event.unit, @event),
+            class: "text-sm font-bold text-white uppercase tracking-wider \
+                    inline-block px-4 py-2 \
+                    bg-brand-500 hover:bg-brand-600 \
+                    rounded",
+            data: { turbo: { frame: "main", action: "advance" } }
 
-          span.px-2.py-1.bg-emerald-300.text-emerald-700.rounded-r(title="Total Headcount")
-            = "= "
-            = @event.rsvps.accepted.count
+      // SEARCH
+      .relative
+        = text_field_tag \
+          :search,
+          "",
+          placeholder: t("events.organize.placeholders.search"),
+          id: "search_term",
+          class: "w-full rounded border border-stone-200 bg-stone-100 focus:ring-scoutplan-500 placeholder-stone-400",
+          onkeyup: "performNameSearch();"
 
-          - if @event.includes_activity
-            span.ml-1.px-2.py-1.bg-emerald-900.text-emerald-100.rounded(title="#{@event.activity_name} participants")
-              = @event.rsvps.accepted.select { |r| r.includes_activity }.count
-              i.fas.fa-check-circle.ml-1
+        i.fa-magnifying-glass.fas.absolute.right-4(style="top:50%;transform:translateY(-50%);")    
+
+    - if flash[:notice]
+      section.mt-2.max-w-6xl.mx-auto#notices
+        p.p-4.m-0.bg-amber-100.text-amber-700.rounded
+          i.fa-info-circle.fas.mr-2
+          = flash[:notice]
+
+    section.max-w-6xl.mx-auto.grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-2.xl:grid-cols-4.gap-2.mt-2
+      // ACCEPTED
+      .bg-green-50.rounded.p-4#accepted_rsvp_container
+        header.flex.justify-between
+          h2.text-lg.font-bold.text-green-700
+            i.fa-person-hiking.fas.text-green-600.mr-2
+            = t("events.organize.accepts")
+
+          .font-bold.tracking-wide.text-sm.pt-1
+            span.px-2.py-1.bg-sky-500.text-sky-50.rounded-l(title="Youth")
+              = @event.rsvps.accepted.select { |r| r.youth? }.count
 
 
-      // list of "going" members
-      ul.mt-2.empty:mt-0
-        = render \
-          partial:    "events/partials/organize/accepted_rsvp",
-          collection: @event.rsvps.accepted.ordered,
-          as:         :rsvp,
-          layout:     "events/partials/organize/organize_entry"
+            span.px-2.py-1.bg-rose-500.text-rose-50.(title="Adults")
+              = @event.rsvps.accepted.select { |r| r.adult? }.count
 
-    // DECLINED
-    .bg-red-50.rounded.p-4#declined_rsvp_container
-      header.flex.justify-between
-        h2.text-lg.font-bold.text-red-700
-          i.fa-couch.fas.text-red-500.mr-2
-          = t("events.organize.declines")
+            span.px-2.py-1.bg-emerald-300.text-emerald-700.rounded-r(title="Total Headcount")
+              = "= "
+              = @event.rsvps.accepted.count
 
-        .font-bold.tracking-wide.text-sm.pt-1
-          span.px-2.py-1.rounded.bg-red-500.text-red-100
-            = @event.rsvps.declined.count     
+            - if @event.includes_activity
+              span.ml-1.px-2.py-1.bg-emerald-900.text-emerald-100.rounded(title="#{@event.activity_name} participants")
+                = @event.rsvps.accepted.select { |r| r.includes_activity }.count
+                i.fas.fa-check-circle.ml-1
 
-      // list of "not going" members
-      ul.mt-2.empty:mt-0
-        = render \
-          partial:    "events/partials/organize/declined_rsvp",
-          collection: @event.rsvps.declined.ordered,
-          as:         :rsvp,
-          layout:     "events/partials/organize/organize_entry"          
 
-    // NO RESPONSE
-    .bg-orange-50.rounded.p-4
-      header.flex.justify-between
-        h2.text-lg.font-bold.text-orange-700
-          i.fa-ghost.fas.text-orange-500.mr-2
-          = t("events.organize.non_respondents")
+        // list of "going" members
+        ul.mt-2.empty:mt-0
+          = render \
+            partial:    "events/partials/organize/accepted_rsvp",
+            collection: @event.rsvps.accepted.ordered,
+            as:         :rsvp,
+            layout:     "events/partials/organize/organize_entry"
 
-        .font-bold.tracking-wide.text-sm.pt-1
-          span.px-2.py-1.bg-orange-500.text-orange-100.rounded
-            = @non_respondents.count           
+      // DECLINED
+      .bg-red-50.rounded.p-4#declined_rsvp_container
+        header.flex.justify-between
+          h2.text-lg.font-bold.text-red-700
+            i.fa-couch.fas.text-red-500.mr-2
+            = t("events.organize.declines")
 
-      ul.mt-2.empty:mt-0
-        = render \
-          partial:    "events/partials/organize/member",
-          collection: @non_respondents,
-          as:         :member,
-          layout:     "events/partials/organize/organize_entry"
+          .font-bold.tracking-wide.text-sm.pt-1
+            span.px-2.py-1.rounded.bg-red-500.text-red-100
+              = @event.rsvps.declined.count     
 
-    // NON-INVITEES
-    .bg-zinc-100.rounded.p-4
-      header.flex.justify-between
-        h2.text-lg.font-bold
-          i.fa-address-book.fas.text-stone-500.mr-2
-          = t("events.organize.non_invitees")
+        // list of "not going" members
+        ul.mt-2.empty:mt-0
+          = render \
+            partial:    "events/partials/organize/declined_rsvp",
+            collection: @event.rsvps.declined.ordered,
+            as:         :rsvp,
+            layout:     "events/partials/organize/organize_entry"          
 
-        .font-bold.tracking-wide.text-sm.mt-1
-          span.px-2.py-1.bg-zinc-500.text-zinc-100.rounded
-            = @non_invitees.count   
+      // NO RESPONSE
+      .bg-orange-50.rounded.p-4
+        header.flex.justify-between
+          h2.text-lg.font-bold.text-orange-700
+            i.fa-ghost.fas.text-orange-500.mr-2
+            = t("events.organize.non_respondents")
 
-      ul.mt-2.empty:mt-0
-        = render \
-          partial:    "events/partials/organize/member",
-          collection: @non_invitees,
-          as:         :member,
-          layout:     "events/partials/organize/organize_entry"
+          .font-bold.tracking-wide.text-sm.pt-1
+            span.px-2.py-1.bg-orange-500.text-orange-100.rounded
+              = @non_respondents.count           
 
-  footer.h-4
+        ul.mt-2.empty:mt-0
+          = render \
+            partial:    "events/partials/organize/member",
+            collection: @non_respondents,
+            as:         :member,
+            layout:     "events/partials/organize/organize_entry"
+
+      // NON-INVITEES
+      .bg-zinc-100.rounded.p-4
+        header.flex.justify-between
+          h2.text-lg.font-bold
+            i.fa-address-book.fas.text-stone-500.mr-2
+            = t("events.organize.non_invitees")
+
+          .font-bold.tracking-wide.text-sm.mt-1
+            span.px-2.py-1.bg-zinc-500.text-zinc-100.rounded
+              = @non_invitees.count   
+
+        ul.mt-2.empty:mt-0
+          = render \
+            partial:    "events/partials/organize/member",
+            collection: @non_invitees,
+            as:         :member,
+            layout:     "events/partials/organize/organize_entry"
+
+    footer.h-4
 
   css:
     .rsvp-action-button.processing .glyph {
