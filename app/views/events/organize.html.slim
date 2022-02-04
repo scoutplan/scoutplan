@@ -2,9 +2,17 @@
   .max-w-6xl.mx-auto
     header.sticky.top-0.bg-white.z-10.py-4.border-b
       .flex.justify-between.mb-4
-        h1.text-xl.font-bold
-          = t("events.organize.title", event_title: @event.title)
-          .inline.ml-2.text-base = glyph_tag(@event)
+        div
+          h1.text-xl.font-bold
+            = t("events.organize.title", event_title: @event.title)
+            .inline.ml-2.text-base = glyph_tag(@event)
+
+          p.mb-0.text-sm.font-semibold.mt-1
+            i.fa-calendar.fas.mr-1.text-stone-400
+            = @event.starts_at.strftime("%-d %b")
+
+            i.fa-location-dot.fas.mr-1.text-stone-400.ml-6
+            = @event.location
 
         div
           - if @previous_event
@@ -13,14 +21,14 @@
               data: { turbo_action: "advance" } do
             
               i.fas.fa-chevron-left.mr-1
-              = t("events.organize.previous", title: @previous_event.title, date: @previous_event.starts_at.strftime("%d %b"))
+              = t("events.organize.previous", title: @previous_event.title, date: @previous_event.starts_at.strftime("%-d %b"))
 
           - if @next_event
             = link_to unit_event_organize_path(@unit, @next_event),
               class: "text-sm px-4 hover:text-brand-500",
               data: { turbo_action: "advance" } do
 
-              = t("events.organize.next", title: @next_event.title, date: @next_event.starts_at.strftime("%d %b"))
+              = t("events.organize.next", title: @next_event.title, date: @next_event.starts_at.strftime("%-d %b"))
               i.fas.fa-chevron-right.ml-1
 
 
