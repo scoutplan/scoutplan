@@ -276,6 +276,8 @@ en:
       non_invitees: "Registered"
       update_toast: "%{user_name}'s RSVP for %{event_title} has been updated."
       invite_toast: "An invitation to %{event_title} was sent to %{recipient}"
+      next:         "Next: %{title} on %{date}"
+      previous:     "Previous: %{title} on %{date}"
       back:         "Back to main event page"
       confirmations:
         updated_html: "%{name}'s RSVP is updated."

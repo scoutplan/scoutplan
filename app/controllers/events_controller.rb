@@ -102,6 +102,11 @@ class EventsController < ApplicationController
 
   def organize
     authorize @event
+
+    @unit = @event.unit
+    @next_event = @unit.events.published.future.rsvp_required.where("starts_at > ?", @event.starts_at)&.first
+    @previous_event = @unit.events.published.future.rsvp_required.where("starts_at < ?", @event.starts_at).order("starts_at DESC")&.first
+
     @page_title = [@event.title, "Organize"]
     @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
     @non_invitees = @event.unit.members.status_registered - @event.rsvps.collect(&:member)
