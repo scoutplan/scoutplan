@@ -14,6 +14,7 @@
     // modal header
     header.py-4.overflow-auto.sticky.top-0.bg-white.z-50
       h3.m-0.font-bold.text-xl
+        = t("events.edit_rsvps.title")
         = @event.title
         span.align-middle.ml-2.text-base = glyph_tag(@event)
         = content_tag(:div, @event.short_description, class: 'font-normal text-base text-gray-500') if @event.short_description.present?
