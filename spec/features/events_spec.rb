@@ -71,8 +71,8 @@ describe "events", type: :feature do
 
     describe "organize" do
       before do
-        @rsvp_event_1 = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit, starts_at: 2.weeks.from_now)
-        @rsvp_event_2 = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit, starts_at: 4.weeks.from_now)
+        @rsvp_event_1 = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit, starts_at: 2.weeks.from_now.in_time_zone(@unit.settings(:locale).time_zone))
+        @rsvp_event_2 = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit, starts_at: 4.weeks.from_now.in_time_zone(@unit.settings(:locale).time_zone))
       end
 
       it "accesses the page" do
@@ -83,12 +83,12 @@ describe "events", type: :feature do
 
       it "next & previous link works" do
         visit unit_event_organize_path(@unit, @rsvp_event_1)
-        text = I18n.t("events.organize.next", title: @rsvp_event_2.title, date: @rsvp_event_2.starts_at.strftime("%-d %b"))
-        # text += '<i class="fas fa-chevron-right ml-1">'
+
+        text = I18n.t("events.organize.next", title: @rsvp_event_2.title, date: @rsvp_event_2.starts_at.in_time_zone(@unit.settings(:locale).time_zone).strftime("%-d %b"))
         click_link_or_button(text)
         expect(page).to have_current_path(unit_event_organize_path(@unit, @rsvp_event_2))
 
-        text = I18n.t("events.organize.previous", title: @rsvp_event_1.title, date: @rsvp_event_1.starts_at.strftime("%-d %b"))
+        text = I18n.t("events.organize.previous", title: @rsvp_event_1.title, date: @rsvp_event_1.starts_at.in_time_zone(@unit.settings(:locale).time_zone).strftime("%-d %b"))
         click_link_or_button(text)
         expect(page).to have_current_path(unit_event_organize_path(@unit, @rsvp_event_1))
       end
