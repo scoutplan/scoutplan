@@ -143,7 +143,7 @@ class EventsController < ApplicationController
     note = params[:note]
     params[:event][:members].each do |member_id, values|
       response = values[:event_rsvp][:response]
-      includes_activity = values[:event_rsvp][:includes_activity]
+      includes_activity = values[:event_rsvp][:includes_activity] == "1"
       rsvp = @event.rsvps.create_with(
         response: response,
         includes_activity: includes_activity,
@@ -159,7 +159,11 @@ class EventsController < ApplicationController
     @current_member = @unit.membership_for(current_user)
     @current_family = @current_member.family
 
-    redirect_to [@unit, @event], notice: t("events.edit_rsvps.notices.update")
+    if (member_id = params[:member_id].presence)
+      redirect_to unit_member_path(@unit, member_id), notice: t("events.edit_rsvps.notices.update")
+    else
+      redirect_to [@unit, @event], notice: t("events.edit_rsvps.notices.update")
+    end
   end
 
   # GET cancel

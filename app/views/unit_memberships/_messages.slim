@@ -1,0 +1,41 @@
+.rounded.bg-stone-100.p-4.mb-2
+  h4.font-bold.mb-3
+    = 'Send'
+
+  ul.block
+
+    // Digest button
+    li.inline
+      = button_to create_unit_member_message_path(@unit, @target_membership, message_type: :digest),
+        method: :post,
+        remote: true,
+        class: 'inline-block bg-gray-200 hover:bg-gray-300 text-black rounded border px-4 py-1 mr-2',
+        form: { style: 'display: inline-block;' },
+        disabled: !@target_membership.contactable? do
+        i.fas.fa-envelope.mr-1.text-gray-500
+        |&nbsp;
+        |Digest
+
+    // Daily reminder button
+    li.inline
+      = button_to create_unit_member_message_path(@unit, @target_membership, message_type: :daily_reminder),
+        method: :post,
+        remote: true,
+        class: 'inline-block bg-gray-200 hover:bg-gray-300 text-black rounded border px-4 py-1 mr-2',
+        form: { style: 'display: inline-block;' },
+        disabled: !@target_membership.contactable? do
+        i.fas.fa-envelope.mr-1.text-gray-500
+        |&nbsp;
+        |Daily Reminder
+
+    // test message button
+    li.inline
+      = button_to create_unit_member_message_path(@unit, @target_membership, message_type: :test_message),
+        method: :post,
+        remote: true,
+        class: 'inline-block bg-gray-200 hover:bg-gray-300 text-black rounded border px-4 py-1 mr-2',
+        form: { style: 'display: inline-block;' },
+        disabled: !@target_membership.contactable? do
+        i.fas.fa-envelope.mr-1.text-gray-500
+        |&nbsp;
+        |Test Message   
