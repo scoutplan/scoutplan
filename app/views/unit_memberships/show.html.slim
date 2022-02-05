@@ -54,7 +54,7 @@
               - @target_membership.children.each do |relative|
                 dd
                   = link_to unit_member_path(@unit, relative), class: 'inline-block py-2' do
-                    i.fas.fa-user.text-purple-500.mr-2
+                    i.fad.fa-user.text-sky-500.mr-2
                     = relative.full_display_name
 
         // parents
@@ -69,7 +69,7 @@
               - @target_membership.parents.each do |relative|
                 dd
                   = link_to unit_member_path(@unit, relative), class: 'inline-block py-2' do
-                    i.far.fa-user.text-purple-500.mr-2
+                    i.fad.fa-user.text-rose-500.mr-2
                     = relative.full_display_name
 
       // send messages
