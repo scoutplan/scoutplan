@@ -1,5 +1,5 @@
 = turbo_frame_tag "main"
-  .mx-auto.max-w-2xl
+  .max-w-2xl.mx-auto
 
     // INACTIVE watermark
     - if @target_membership.status_inactive?
@@ -7,7 +7,7 @@
         = 'Inactive'
 
     // modal header
-    header.pt-4.px-8.pb-3.overflow-auto
+    header.py-4.sticky.top-0.bg-white
       h3.m-0.font-bold.float-left.text-black.text-lg
         = @target_membership.full_display_name
 
@@ -21,18 +21,18 @@
 
       // close "X" button
       = link_to unit_members_path(@unit),
-        class: 'inline-block float-right text-gray-500 hover:text-gray-500',
-        data: { 'turbo-action' => 'advance' } do
+        class: "inline-block float-right text-stone-500 hover:text-stone-500",
+        data: { turbo_action: "advance" } do
         i.fa-times.far.hover:text-black
 
     // guts of the modal
-    section.py-0.px-8
+    section
 
       - if @target_membership.email.present? || @target_membership.phone.present?
-        .rounded.bg-gray-100.p-4.mb-3
+        .rounded.bg-stone-100.p-4.mb-2
           - if @target_membership.email.present?
-            p.block.mb-3
-              i.fad.fa-envelope.mr-2
+            p.block.mb-2
+              i.fas.fa-envelope.mr-2
               = link_to @target_membership.email, "mailto:#{@target_membership.email}"
 
           - if @target_membership.phone.present?
@@ -41,83 +41,44 @@
               = link_to number_to_phone(@target_membership.phone, area_code: true), "tel:#{@target_membership.phone}"
 
       // parents & children
-      .flex
+      .flex.mb-2
 
         // children
         - if @target_membership.children.length.positive?
-          .flex.flex-grow.rounded.bg-gray-100.p-4
+          .flex.flex-grow.rounded.bg-stone-100.p-4
             dl
               dt.font-bold
-                = t('members.show.children')
-              dd.text-sm.text-gray-400.mb-3
+                = t("members.show.children")
+              dd.text-sm.text-stone-400.mb-3
                 | #{@target_membership.display_first_name} can RSVP on behalf of:
               - @target_membership.children.each do |relative|
                 dd
                   = link_to unit_member_path(@unit, relative), class: 'inline-block py-2' do
-                    i.fas.fa-user.text-purple-500.mr-2
+                    i.fad.fa-user.text-sky-500.mr-2
                     = relative.full_display_name
 
         // parents
         - if @target_membership.parents.length.positive?
-          .flex.flex-grow.rounded.bg-gray-100.p-4
+          .flex.flex-grow.rounded.bg-stone-100.p-4
             dl
               dt.font-bold.text-black
                 | Parents, Guardians, and Delegates
-              dd.text-sm.text-gray-400.mb-3
+              dd.text-sm.text-stone-400.mb-3
                 | Members that can RSVP on behalf of #{@target_membership.display_first_name}:               
 
               - @target_membership.parents.each do |relative|
                 dd
                   = link_to unit_member_path(@unit, relative), class: 'inline-block py-2' do
-                    i.far.fa-user.text-purple-500.mr-2
+                    i.fad.fa-user.text-rose-500.mr-2
                     = relative.full_display_name
 
       // send messages
       - if @current_member.admin?
-        .rounded.bg-gray-100.p-4.mt-3
-          h4.font-bold.mb-3
-            = 'Send'
-
-          ul.block
-
-            // Digest button
-            li.inline
-              = button_to create_unit_member_message_path(@unit, @target_membership, message_type: :digest),
-                method: :post,
-                remote: true,
-                class: 'inline-block bg-gray-200 hover:bg-gray-300 text-black rounded border px-4 py-1 mr-2',
-                form: { style: 'display: inline-block;' },
-                disabled: !@target_membership.contactable? do
-                i.fas.fa-envelope.mr-1.text-gray-500
-                |&nbsp;
-                |Digest
-
-            // Daily reminder button
-            li.inline
-              = button_to create_unit_member_message_path(@unit, @target_membership, message_type: :daily_reminder),
-                method: :post,
-                remote: true,
-                class: 'inline-block bg-gray-200 hover:bg-gray-300 text-black rounded border px-4 py-1 mr-2',
-                form: { style: 'display: inline-block;' },
-                disabled: !@target_membership.contactable? do
-                i.fas.fa-envelope.mr-1.text-gray-500
-                |&nbsp;
-                |Daily Reminder
-
-            // test message button
-            li.inline
-              = button_to create_unit_member_message_path(@unit, @target_membership, message_type: :test_message),
-                method: :post,
-                remote: true,
-                class: 'inline-block bg-gray-200 hover:bg-gray-300 text-black rounded border px-4 py-1 mr-2',
-                form: { style: 'display: inline-block;' },
-                disabled: !@target_membership.contactable? do
-                i.fas.fa-envelope.mr-1.text-gray-500
-                |&nbsp;
-                |Test Message   
+        = render partial: "messages"
+        = render partial: "rsvps" if @rsvp_events.present?
 
     // footer, containing right-justified buttons
-    footer.overflow-auto.pb-4.px-6.pt-4
+    footer.overflow-auto.py-4.sticky.bottom-0.bg-white
       .float-right.overflow-auto
 
         // Edit button (if authorized)
@@ -133,5 +94,5 @@
         = link_to t('global.done'),
           unit_members_path(@unit),
           role: "button",
-          class: 'bg-scoutplan-500 inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-white text-sm font-bold tracking-wider uppercase',
+          class: 'bg-scoutplan-500 inline-block px-4 py-2 no-underline bg-stone-200 hover:bg-stone-300 rounded text-white text-sm font-bold tracking-wider uppercase',
           data: { turbo_frame: "main", turbo_action: "advance" }

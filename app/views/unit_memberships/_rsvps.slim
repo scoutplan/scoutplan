@@ -1,0 +1,52 @@
+// partial embedded into UnitMemberships#show so that an admin can set
+// RSVPs en masse for a member
+
+.bg-stone-100.rounded.p-4
+  header
+    h2.font-bold.mb-2 RSVPs
+
+  section
+    - @rsvp_events.each do |event|
+      dl.w-full.mb-4
+        - existing_rsvp = event.rsvps.find_by(unit_membership: @target_membership)
+        - rsvp = event.rsvps.build \
+          unit_membership: @target_membership,
+          response: existing_rsvp&.response,
+          includes_activity: existing_rsvp&.includes_activity,
+          paid: existing_rsvp&.paid
+
+        = form_with \
+          model: event,
+          url: unit_event_send_rsvps_path(@unit, event, mode: "member", member_id: @target_membership.id),
+          class: "w-full" do |f|
+
+          = f.fields_for "members[]", @target_membership do |member_fields|
+            = member_fields.fields_for "event_rsvp", rsvp do |rsvp_fields|
+
+              dt.py-2.font-bold.border-t
+                = event.starts_at.strftime("%-d %b")
+                = " "
+                = event.title
+
+              dd.md:inline-block.py-2.mr-6
+                = rsvp_fields.radio_button :response, :declined, class: "mr-2", onclick: "submitParentForm();"
+                = "Not Going"
+
+              dd.md:inline-block.py-2.mr-6
+                = rsvp_fields.radio_button :response, :accepted, class: "mr-2", onclick: "submitParentForm();"
+                = "Going"
+
+              - if event.includes_activity
+                dd.md:inline-block.py-2.mr-6
+                  = rsvp_fields.check_box :includes_activity, class: "mr-2", onclick: "submitParentForm();"
+                  = rsvp_fields.label :includes_activity, event.activity_name
+              
+              dd.md:inline-block.py-2.mr-6
+                = rsvp_fields.check_box :paid, class: "mr-2", onclick: "submitParentForm();"
+                = rsvp_fields.label :paid
+
+javascript:
+  function submitParentForm() {
+    var form = event.target.closest("form");
+    form.submit();
+  }

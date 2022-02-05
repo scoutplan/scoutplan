@@ -31,6 +31,7 @@ class UnitMembershipsController < ApplicationController
     authorize @target_membership
     @user = @target_membership.user
     @page_title = @user.full_name
+    @rsvp_events = @unit.events.published.future.rsvp_required
     page_title [@unit.name, @user.full_display_name]
   end
 
