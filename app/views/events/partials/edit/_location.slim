@@ -1,16 +1,18 @@
 // location
 .md:border-b.py-2.md:py-4
-  = f.styled_label :location, layout: :inline
-  = f.text_field :location,
-    class: "bg-white border border-stone-200 rounded p-2 w-full md:w-[75%] hover:ring-brand-500 placeholder-stone-300",
-    autocomplete: 'off',
-    placeholder: I18n.t("events.placeholders.location")
+  div(data-controller="geocoding")
+    = f.styled_label :location, layout: :inline
+    = f.text_field :location,
+      class: "geocoded bg-white border border-stone-200 rounded p-2 w-full md:w-[75%] hover:ring-brand-500 placeholder-stone-300",
+      autocomplete: 'off',
+      placeholder: I18n.t("events.placeholders.location"),
+      data: { geocoding_target: "query" }
 
 // adddress
 .md:border-b.py-2.md:py-4
   = f.styled_label :address, layout: :inline
   = f.text_field :address,
-    class: "bg-white border border-stone-200 rounded p-2 w-full md:w-[75%] hover:ring-brand-500 placeholder-stone-300",
+    class: "geocoded bg-white border border-stone-200 rounded p-2 w-full md:w-[75%] hover:ring-brand-500 placeholder-stone-300",
     autocomplete: 'off',
     placeholder: t("events.placeholders.address")
 
@@ -18,6 +20,6 @@
 .py-2.md:py-4
   = f.styled_label :departs_from, layout: :inline
   = f.text_field :departs_from,
-    class: "bg-white border border-stone-200 rounded p-2 w-full md:w-[75%] hover:ring-brand-500 placeholder-stone-300",
+    class: "geocoded bg-white border border-stone-200 rounded p-2 w-full md:w-[75%] hover:ring-brand-500 placeholder-stone-300",
     autocomplete: 'off',
     placeholder: t("events.placeholders.departs_from")
