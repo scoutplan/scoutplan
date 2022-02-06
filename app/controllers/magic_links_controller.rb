@@ -12,7 +12,7 @@ class MagicLinksController < ApplicationController
 
   # GET /:token
   def resolve
-    redirect_to root_path unless @magic_link
+    redirect_to root_path and return unless @magic_link
 
     sign_in @magic_link.user
     session[:via_magic_link] = true
