@@ -1,14 +1,15 @@
 doctype html
 html
   head
-    title = ((@page_title || []).reverse + [t('app_name')]).join(' · ')
+    title = ((@page_title || []).reverse + [t("app_name")]).join(" · ")
     meta name="viewport" content="width=device-width,initial-scale=1"
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag 'tailwind', 'data-turbo-track': 'reload'
     = stylesheet_link_tag 'application', 'data-turbo-track': 'reload'
     = stylesheet_link_tag "https://use.typekit.net/#{ENV['ADOBE_FONT_KIT_ID']}.css"
-    = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: 'anonymous'
+    = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: "anonymous"
+    = javascript_include_tag "https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"
     = javascript_importmap_tags
     = yield :head
 
@@ -27,7 +28,6 @@ html
           p-8
           w-full flex-shrink-0
           bg-white
-          
           lg:w-80 lg:block lg:h-screen lg:relative lg:z-0 lg:bg-stone-100
           lg:pr-2          
         ")

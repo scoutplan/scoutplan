@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Controller for Units
 class UnitsController < ApplicationController
   def index
     redirect_to root_path

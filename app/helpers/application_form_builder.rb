@@ -2,7 +2,7 @@
 
 # An app-specific form builder that adds a few tags
 class ApplicationFormBuilder < ActionView::Helpers::FormBuilder
-  LABEL_CLASSES = "block uppercase mb-2 text-sm font-bold tracking-wide".freeze
+  LABEL_CLASSES = "block uppercase mb-2 md:mb-0 text-sm font-bold tracking-wide".freeze
   LABEL_CLASSES_INLINE = "md:inline-block md:w-[25%]".freeze
 
   # build a label tag that's properly styled via Tailwind

@@ -74,7 +74,7 @@
       = render partial: 'events/partials/edit/location', locals: { f: f }
 
     // Published
-    section.bg-stone-100.p-4.mb-2.rounded
+    section.bg-stone-100.py-4.px-4.md:px-8.mb-2.rounded
       = f.check_box :status, { class: 'w-4 h-4 text-green-500 rounded mr-2' }, 'published', 'draft'
       = f.styled_label :status, t("events.edit.published"), layout: :checkbox
 
@@ -101,7 +101,6 @@
         // Discard Changes
         = link_to t("global.discard_changes"),
           @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event),
-          type: "button",
           data: { turbo_action: "advance", turbo_frame: "main" },
           class: "text-center text-sm font-bold tracking-wider uppercase no-underline \
                   inline-block w-full md:w-fit px-4 py-2 \
@@ -126,3 +125,24 @@ javascript:
       fieldsElem.focus();
     }
   }
+
+  document.addEventListener('turbo:load', function() {
+    var mapboxClient = mapboxSdk({ accessToken: '#{ENV['MAPBOX_TOKEN']}' });
+    var currentPosition = [];
+    var searchTerm = "Immaculate Heart of Mary Scarsdale";
+    var config = { query: searchTerm };
+
+    navigator.geolocation.getCurrentPosition(function(position) {
+      config.proximity = [
+        position.coords.longitude,
+        position.coords.latitude,
+      ];
+      console.log(config);
+    });
+
+    mapboxClient.geocoding.forwardGeocode(config)
+      .send()
+      .then(function(response) {
+        console.log(response.body);
+      });
+  });

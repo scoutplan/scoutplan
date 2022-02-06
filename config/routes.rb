@@ -36,10 +36,10 @@ Rails.application.routes.draw do
   get "units/:unit_id/newsletter/sent",   to: "news_items#index", as: "unit_newsletter_sent",   defaults: { mode: "sent"}
 
   # begin units
-  resources :units, only: [:show] do
+  resources :units, only: %i[show index] do
     resources :plans, path: "planner"
     resources :event_categories
-    resources :news_items, only: %i[index new create]
+    resources :news_items
 
     resources :events do
       collection do
@@ -52,7 +52,7 @@ Rails.application.routes.draw do
       get   "cancel"
       post  "cancel", to: "events#perform_cancellation"
     end
-
+    
     resources :unit_memberships
 
     resources :unit_memberships, path: "members", as: "members" do

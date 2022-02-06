@@ -1,14 +1,35 @@
-article.border-b.py-4
-  header.pb-2
-    h5.font-bold.flex.justify-between
-      span
+article.border-b.px-2.py-4.hover:bg-stone-100.flex.justify-between.gap-8
+  span#left_side
+    - if news_item.editable?
+      = link_to \
+        edit_news_item_path(news_item),
+        data: { turbo_action: "advance" } do
+
+        h5.text-lg.font-bold.flex.justify-between.mb-2
+          = news_item.title
+        p == news_item.body
+
+    - else
+      h5.font-bold.flex.justify-between
         = news_item.title
-      
-      span
-        = deictic_string_for_time_interval_from_day(news_item.updated_at)
+      p == news_item.body
 
-  p == news_item.body
+  span.
+    .whitespace-nowrap#right_side
+      = distance_of_time_in_words_to_now(news_item.updated_at)
+      = " ago"
 
+      - if news_item.deletable?
+        = button_to \
+          news_item,
+          method: :delete,
+          title: t("messaging.delete_draft"),
+          form_class: "inline-block",
+          class: "text-brand-500 px-4 py-2 text-center" do
+          
+          i.fa-trash.far
+
+- if false
   .flex.flex-row.mt-4.gap-2
     - if news_item.demotable?
       = button_to \
@@ -26,9 +47,9 @@ article.border-b.py-4
         method: :post,
         form_class: "inline-block",
         title: t("news_items.titles.enqueue"),
-        class: "text-white uppercase text-sm font-bold tracking-wider bg-scoutplan-500 border-scoutplan-500 hover:border-scoutplan-600 px-4 py-2 rounded" do
+        class: "text-white uppercase text-sm font-bold tracking-wider bg-brand-500 border-brand-500 hover:border-brand-600 px-4 py-2 rounded" do
 
-        i.fa-check-circle.far.mr-2
+        i.fa-arrow-to-right.far.mr-2
         = t("news_items.captions.enqueue")
 
     - if news_item.editable?
@@ -36,18 +57,8 @@ article.border-b.py-4
         edit_news_item_path(news_item), 
         id: "edit_item_#{news_item.id}_link",
         title: t('messaging.edit'),
-        class: "text-scoutplan-600 uppercase text-sm font-bold tracking-wider bg-scoutplan-100 border-scoutplan-100 hover:border-scoutplan-200 px-4 py-2 rounded" do
+        class: "text-brand-600 uppercase text-sm font-bold tracking-wider bg-brand-100 border-brand-100 hover:border-brand-200 px-4 py-2 rounded" do
         
         i.fa-edit.far.mr-2
         = t("news_items.captions.edit")
 
-    - if news_item.deletable?
-      = button_to \
-        news_item,
-        method: :delete,
-        title: t("messaging.delete_draft"),
-        form_class: "inline-block",
-        class: "text-sm font-bold uppercase tracking-wider text-scoutplan-500 border rounded border-scoutplan-500 px-4 py-2" do
-        
-        i.fa-trash.far.mr-2
-        = t("news_items.captions.delete")

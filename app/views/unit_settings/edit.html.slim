@@ -49,6 +49,10 @@ header.mt-5
           = f.label :location
           = f.text_field :location, class: 'block w-full rounded border px-2 py-1', placeholder: t('unit_settings.placeholders.location')
 
+        .mb-3 
+          = f.label :meeting_location
+          = text_field_tag :meeting_location
+
         .mb-3
           = f.submit 'Save', class: 'px-4 py-2 rounded bg-gray-100 uppercase font-bold text-sm'
 
