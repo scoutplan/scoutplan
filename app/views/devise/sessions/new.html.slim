@@ -26,7 +26,7 @@
             = f.label :remember_me, t("global.remember_me")
 
         .pt-3.overflow-auto
-          = f.submit t("global.sign_in"), class: "block w-full rounded bg-scoutplan-500 hover:bg-scoutplan-600 font-bold uppercase tracking-wide px-8 py-2 text-white"
+          = f.submit t("global.sign_in"), class: "block w-full rounded bg-brand-500 hover:bg-brand-600 font-bold uppercase tracking-wide px-8 py-2 text-white"
           = link_to "Forgot your password?", new_password_path(resource_name), class: "block text-center pt-2 text-gray-400 underline"
 
     p = flash[:notice]

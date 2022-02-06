@@ -25,7 +25,6 @@ class NewsItemsController < UnitContextController
     @current_unit = @unit = @news_item.unit
     @membership = @unit.membership_for(current_user)
     authorize @news_item
-    respond_to :js
   end
 
   def update

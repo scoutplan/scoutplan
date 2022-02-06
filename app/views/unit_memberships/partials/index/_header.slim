@@ -10,7 +10,7 @@ header.sticky.left-0.right-0.top-0.flex.px-0.bg-white.pb-8.pt-8.lg:pt-10.z-10.it
       .relative.inline-block
         = search_field_tag(:search, 
           "",
-          class: "rounded text-sm px-3 py-2 bg-gray-100 mr-2 md:w-60 lg:w-48 xl:w-72 border-0 focus:ring-1 focus:ring-inset focus:ring-scoutplan-500",
+          class: "rounded text-sm px-3 py-2 bg-gray-100 mr-2 md:w-60 lg:w-48 xl:w-72 border-0 focus:ring-1 focus:ring-inset focus:ring-brand-500",
           autofocus: true,
           autocomplete: 'off',
           placeholder: raw(t('members.search_by_name')),
@@ -24,7 +24,7 @@ header.sticky.left-0.right-0.top-0.flex.px-0.bg-white.pb-8.pt-8.lg:pt-10.z-10.it
       // add a member
       = link_to new_unit_member_path(@unit),
                 data: { turbo_action: "advance", turbo_frame: "main" },
-                class:  " bg-scoutplan-500 rounded text-white" \
+                class:  " bg-brand-500 rounded text-white" \
                         " font-bold text-sm tracking-wider uppercase px-4 py-2 mr-2" \
                         "" do
         i.fas.fa-user-plus.text-sm

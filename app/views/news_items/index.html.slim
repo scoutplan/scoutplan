@@ -5,15 +5,17 @@
 
 = turbo_frame_tag("main")
   .max-w-3xl.mx-auto
-    = styled_header_tag @view.titleize do
-      = styled_link_to \
-        new_unit_news_item_path(@unit),
-        button_style: :primary,
-        data: { turbo_action: "advance" } do
+    .px-2
+      = styled_header_tag @view.titleize do
+        = styled_link_to \
+          new_unit_news_item_path(@unit),
+          button_style: :primary,
+          class: "ml-2",
+          data: { turbo_action: "advance" } do
 
-        i.fa-square-plus.fas.mr-0.md:mr-2
-        .hidden.md:inline
-          = t("news_items.captions.new")
+          i.fa-square-plus.fas.mr-0.md:mr-2
+          .hidden.md:inline
+            = t("news_items.captions.new")
 
     section
       = render partial: "news_items"

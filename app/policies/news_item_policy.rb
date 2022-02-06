@@ -1,5 +1,9 @@
+# frozen_string_literal: true
+
+# Policy for writing News Items
 class NewsItemPolicy < UnitContextPolicy
   def initialize(membership, news_item)
+    super
     @membership = membership
     @news_item = news_item
   end

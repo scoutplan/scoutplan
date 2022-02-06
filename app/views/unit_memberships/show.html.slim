@@ -86,7 +86,7 @@
           = link_to 'Change Member Details',
             edit_unit_member_path(@unit, @target_membership),
             role: "button",
-            class: "inline-block px-4 py-2 mr-2 no-underline bg-scoutplan-100 hover:bg-scoutplan-200 rounded text-scoutplan-500 hover:text-scoutplan-600 text-sm font-bold tracking-wider uppercase",
+            class: "inline-block px-4 py-2 mr-2 no-underline bg-brand-100 hover:bg-brand-200 rounded text-brand-500 hover:text-brand-600 text-sm font-bold tracking-wider uppercase",
             data: { turbo_action: 'advance' },
             title: 'Make changes to this member\'s details'
 
@@ -94,5 +94,5 @@
         = link_to t('global.done'),
           unit_members_path(@unit),
           role: "button",
-          class: 'bg-scoutplan-500 inline-block px-4 py-2 no-underline bg-stone-200 hover:bg-stone-300 rounded text-white text-sm font-bold tracking-wider uppercase',
+          class: 'bg-brand-500 inline-block px-4 py-2 no-underline bg-stone-200 hover:bg-stone-300 rounded text-white text-sm font-bold tracking-wider uppercase',
           data: { turbo_frame: "main", turbo_action: "advance" }

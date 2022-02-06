@@ -142,8 +142,8 @@ Example:
 class:  "text-sm font-bold no-underline tracking-wider uppercase text-center" \
         " hidden md:inline-block" \
         " px-6 py-3 mr-2" \
-        " bg-scoutplan-100 hover:bg-scoutplan-200" \
-        " text-scoutplan-500 hover:text-scoutplan-600" \
+        " bg-brand-100 hover:bg-brand-200" \
+        " text-brand-500 hover:text-brand-600" \
         "",
 ```
 
