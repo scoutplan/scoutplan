@@ -101,7 +101,6 @@
         // Discard Changes
         = link_to t("global.discard_changes"),
           @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event),
-          type: "button",
           data: { turbo_action: "advance", turbo_frame: "main" },
           class: "text-center text-sm font-bold tracking-wider uppercase no-underline \
                   inline-block w-full md:w-fit px-4 py-2 \
