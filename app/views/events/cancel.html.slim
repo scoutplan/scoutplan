@@ -32,7 +32,7 @@
           = t("events.cancel.message_prompt")
         
         .mb-1
-          = f.radio_button :message_audience, :none, checked: true, class: 'mr-2'
+          = f.radio_button :message_audience, :none, class: 'mr-2'
           = f.label :message_audience_none, "No, don't send a message"
 
         - if @event.requires_rsvp && @event.rsvps.accepted.count.positive?
@@ -41,12 +41,12 @@
             = f.label :message_audience_acceptors, "Yes, to the #{@event.rsvps.accepted.count} who plan on attending"
 
         .mb-1
-          = f.radio_button :message_audience, :active_members, class: 'mr-2'
+          = f.radio_button :message_audience, :active_members, class: 'mr-2', checked: true
           = f.label :message_audience_active_members, "Yes, to all #{@unit.members.status_active.count} active members"
 
         .mb-3
           = f.radio_button :message_audience, :all_members, class: 'mr-2'
-          = f.label :message_audience_all_members, "Yes, to all #{@unit.members.count} active and inactive members"
+          = f.label :message_audience_all_members, "Yes, to all #{@unit.members.count} registered members"
 
         = f.text_area :note,
           class: 'border rounded w-full h-24 p-2 hidden',
@@ -54,13 +54,6 @@
 
       // footer, containing right-justified buttons
       footer.py-4.sticky.bottom-0.flex.gap-2.flex-col.md:flex-row.md:justify-end
-          // Don't Cancel button
-          = link_to t("events.cancel.abandon"),
-            unit_event_path(@unit, @event),
-            class: "text-center px-4 py-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase \
-                  inline-block w-full md:w-fit",
-            data: { turbo_frame: "main", turbo_action: "advance" }
-
           // Do Cancel button
           = f.submit t("events.cancel.proceed"),
             class: "text-sm font-bold tracking-wider uppercase no-underline  \
@@ -70,6 +63,14 @@
                     w-full md:w-fit rounded cursor-pointer",
             data: { confirm: t("events.cancel.confirm") },
             onclick: "return confirm('Are you sure you want to cancel this event?');"
+            
+          // Don't Cancel button
+          = link_to t("events.cancel.abandon"),
+            unit_event_path(@unit, @event),
+            class: "text-center px-4 py-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase \
+                  inline-block w-full md:w-fit",
+            data: { turbo_frame: "main", turbo_action: "advance" }
+
 
 
 = render partial: 'events/partials/styles'

@@ -92,8 +92,8 @@
             unit_event_cancel_path(@unit, @event),
             class: "text-sm font-bold tracking-wider uppercase no-underline text-center \
                     block w-full pl-0 pr-4 py-2 \
-                    text-brand-500 hover:text-brand-600 \
-                    border rounded border-brand-500 md:border-0",
+                    text-red-500 hover:text-red-600 \
+                    border rounded border-red-500 hover:border-red-600 md:border-0",
             data: { turbo_frame: "event", turbo_action: "advance" }
 
       .flex.flex-col.md:flex-row.md:justify-end.gap-2
@@ -126,23 +126,3 @@ javascript:
     }
   }
 
-  document.addEventListener('turbo:load', function() {
-    var mapboxClient = mapboxSdk({ accessToken: '#{ENV['MAPBOX_TOKEN']}' });
-    var currentPosition = [];
-    var searchTerm = "Immaculate Heart of Mary Scarsdale";
-    var config = { query: searchTerm };
-
-    navigator.geolocation.getCurrentPosition(function(position) {
-      config.proximity = [
-        position.coords.longitude,
-        position.coords.latitude,
-      ];
-      console.log(config);
-    });
-
-    mapboxClient.geocoding.forwardGeocode(config)
-      .send()
-      .then(function(response) {
-        console.log(response.body);
-      });
-  });
