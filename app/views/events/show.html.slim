@@ -6,7 +6,7 @@
 // .modal.w-auto.my-2.mx-2.md:mx-auto.max-w-3xl.bg-white.rounded.z-40.drop-shadow-xl.filter.overflow-y-auto
 
 = turbo_frame_tag "main"
-  .max-w-xl.mx-auto
+  .max-w-3xl.mx-auto
 
     // CANCELLED watermark
     - if @event.cancelled?
@@ -20,19 +20,11 @@
 
     // modal header
     header.py-4.overflow-auto.sticky.top-0.bg-white.z-50
-      h3.m-0.font-bold.text-xl
+      h3.m-0.font-bold.text-2xl
         = @event.title
         span.align-middle.ml-2.text-base = glyph_tag(@event)
         = content_tag(:div, @event.short_description, class: 'font-normal text-base text-gray-500') if @event.short_description.present?
 
-      - if @event.cancelled?
-        span.inline-block.ml-3.rounded.text-xs.bg-red-500.text-white.font-bold.px-2.py-1.tracking-wide.mt-1
-          | Cancelled
-
-      - if @event.past?
-        p.bg-yellow-300.text-yellow-800.p-4.mt-2.rounded
-          i.fa-exclamation-triangle.fas.mr-2
-          = t("events.show.past_warning")
 
     // first row: RSVP panel
     - if @event.requires_rsvp

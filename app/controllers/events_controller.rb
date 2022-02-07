@@ -97,7 +97,7 @@ class EventsController < ApplicationController
     @event_view.assign_attributes(event_params)
     return unless @event_view.save!
 
-    redirect_to unit_event_path(@unit, @event), notice: t("events.update_confirmation", title: @event.title)
+    redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
   end
 
   def organize
