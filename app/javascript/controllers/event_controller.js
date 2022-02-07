@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   connect() {
-    console.log('Events controller loaded');
+    console.log('Event controller loaded');
   }
 
   toggleFutureEvents(event) {

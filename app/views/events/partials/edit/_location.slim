@@ -4,16 +4,20 @@
     = f.styled_label :location, layout: :inline
     = f.text_field :location,
       class: "geocoded bg-white border border-stone-200 rounded p-2 w-full md:w-[75%] hover:ring-brand-500 placeholder-stone-300",
-      autocomplete: 'off',
+      autocomplete: "off",
       placeholder: I18n.t("events.placeholders.location"),
-      data: { geocoding_target: "query" }
+      data: { \
+        geocoding_target: "query",
+        geocoding_mapbox_token: "#{ENV['MAPBOX_TOKEN']}",
+        action: "keyup->geocoding#performQuery",
+      }
 
 // adddress
 .md:border-b.py-2.md:py-4
   = f.styled_label :address, layout: :inline
   = f.text_field :address,
     class: "geocoded bg-white border border-stone-200 rounded p-2 w-full md:w-[75%] hover:ring-brand-500 placeholder-stone-300",
-    autocomplete: 'off',
+    autocomplete: "off",
     placeholder: t("events.placeholders.address")
 
 // departs from
@@ -21,5 +25,5 @@
   = f.styled_label :departs_from, layout: :inline
   = f.text_field :departs_from,
     class: "geocoded bg-white border border-stone-200 rounded p-2 w-full md:w-[75%] hover:ring-brand-500 placeholder-stone-300",
-    autocomplete: 'off',
+    autocomplete: "off",
     placeholder: t("events.placeholders.departs_from")
