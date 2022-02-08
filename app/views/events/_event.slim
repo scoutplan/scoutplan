@@ -17,7 +17,7 @@ tr.border-b.hover:bg-stone-100.hover:text-stone-800(id="#{dom_id(event)}" class=
     = check_box_tag "event_ids[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
 
   // dates & days
-  td.event-dates.w-px.pr-6
+  td.event-dates.w-px
     = link_to unit_event_path(@unit, event),
       class: "row-link cursor-pointer no-underline whitespace-nowrap start-day px-2",
       data: { turbo_frame: "main", turbo_action: "advance" } do
