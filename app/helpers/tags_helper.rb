@@ -2,7 +2,7 @@
 
 # app-specific tags
 module TagsHelper
-  HEADER_CLASSES          = "flex justify-between py-4"
+  HEADER_CLASSES          = "flex justify-between py-2 md:py-4"
   HEADING_1_CLASSES       = "font-bold text-2xl"
   BUTTON_CLASSES          = "text-sm font-bold uppercase tracking-wider px-4 py-2 border rounded"
   BUTTON_CLASSES_PRIMARY  = "bg-brand-500 hover:bg-brand-600 text-white border-brand-500 hover:border-brand-600"
