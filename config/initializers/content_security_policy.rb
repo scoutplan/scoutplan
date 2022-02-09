@@ -11,11 +11,11 @@ Rails.application.config.content_security_policy do |policy|
   # policy.font_src    :self, :https, :data
   # policy.img_src     :self, :https, :data
   # policy.object_src  :none
-  # policy.script_src  :self, :https, :unsafe_inline, 'https://kit.fontawesome.com'
+  # policy.script_src :self, :https, :unsafe_inline, "https://kit.fontawesome.com", "*.googleapis.com"
   # policy.style_src   :self, :https, :unsafe_inline
   # # If you are using webpack-dev-server then specify webpack-dev-server host
   # policy.connect_src :self, :https, "http://localhost:3035", "ws://localhost:3035" if Rails.env.development?
-  # policy.connect_src :self, :https, "https://*.tiles.mapbox.com", "https://api.mapbox.com", "https://events.mapbox.com"
+  # policy.connect_src :self, :https, "*.googleapis.com"
   # policy.worker_src :self, :https, :blob
   # policy.child_src :self, :https, :blob
   # policy.img_src :self, :https, :data, :blob

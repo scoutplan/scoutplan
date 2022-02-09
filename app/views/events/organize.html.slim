@@ -1,37 +1,15 @@
 = turbo_frame_tag "main"
   .max-w-6xl.mx-auto
-    header.sticky.top-0.bg-white.z-10.py-4.border-b
-      .flex.justify-between.mb-4
+    header.sticky.top-0.bg-white.z-10.pt-4.pb-2.border-b
+      .flex.justify-between
+        // left side
         div
           h1.text-xl.font-bold
             = t("events.organize.title", event_title: @event.title)
             .inline.ml-2.text-base = glyph_tag(@event)
 
-          p.mb-0.text-sm.font-semibold.mt-1
-            i.fa-calendar.fas.mr-1.text-stone-400
-            = @event.starts_at.strftime("%-d %b")
-
-            i.fa-location-dot.fas.mr-1.text-stone-400.ml-6
-            = @event.location
-
+        // right side
         div
-          - if @previous_event
-            = link_to unit_event_organize_path(@unit, @previous_event),
-              class: "text-sm px-4 hover:text-brand-500",
-              data: { turbo_action: "advance" } do
-            
-              i.fas.fa-chevron-left.mr-1
-              = t("events.organize.previous", title: @previous_event.title, date: @previous_event.starts_at.strftime("%-d %b"))
-
-          - if @next_event
-            = link_to unit_event_organize_path(@unit, @next_event),
-              class: "text-sm px-4 hover:text-brand-500",
-              data: { turbo_action: "advance" } do
-
-              = t("events.organize.next", title: @next_event.title, date: @next_event.starts_at.strftime("%-d %b"))
-              i.fas.fa-chevron-right.ml-1
-
-
           = link_to "Done",
             unit_event_path(@event.unit, @event),
             class: "text-sm font-bold text-white uppercase tracking-wider \
@@ -39,6 +17,44 @@
                     bg-brand-500 hover:bg-brand-600 \
                     rounded",
             data: { turbo: { frame: "main", action: "advance" } }
+    
+    header
+      .flex.flex-col.md:flex-row.justify-between
+        // left
+        div
+          p.mb-0.text-sm.font-semibold.mt-4
+            i.fa-calendar.fas.mr-1.text-stone-400
+            = @event.starts_at.strftime("%-d %b")
+
+            i.fa-location-dot.fas.mr-1.text-stone-400.ml-6
+            = @event.location        
+
+        // right
+        div
+          - if @previous_event
+            = link_to unit_event_organize_path(@unit, @previous_event),
+              class: "inline-block text-sm hover:text-brand-500 py-4",
+              data: { turbo_action: "advance" } do
+            
+              i.fas.fa-chevron-left.mr-1
+              .hidden.md:inline-block
+                = t("events.organize.previous", title: @previous_event.title, date: @previous_event.starts_at.strftime("%-d %b"))
+
+              .md:hidden.inline-block
+                = t("events.organize.previous_short", title: @previous_event.title)
+
+          - if @next_event
+            = link_to unit_event_organize_path(@unit, @next_event),
+              class: "inline-block text-sm hover:text-brand-500 py-4",
+              data: { turbo_action: "advance" } do
+
+              .hidden.md:inline-block
+                = t("events.organize.next", title: @next_event.title, date: @next_event.starts_at.strftime("%-d %b"))
+
+              .md:hidden.inline-block
+                = t("events.organize.next_short", title: @next_event.title)
+
+              i.fas.fa-chevron-right.ml-1        
 
       // SEARCH
       .relative

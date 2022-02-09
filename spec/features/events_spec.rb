@@ -69,28 +69,36 @@ describe "events", type: :feature do
       end
     end
 
+    describe "update" do
+      it "updates an event" do
+        visit edit_unit_event_path(@unit, @event)
+        click_link_or_button I18n.t("global.save_changes")
+        expect(page).to have_current_path(unit_event_path(@unit, @event))
+      end
+    end
+
     describe "organize" do
       before do
-        @rsvp_event_1 = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit, starts_at: 2.weeks.from_now.in_time_zone(@unit.settings(:locale).time_zone))
-        @rsvp_event_2 = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit, starts_at: 4.weeks.from_now.in_time_zone(@unit.settings(:locale).time_zone))
+        @rsvp_event1 = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit, starts_at: 2.weeks.from_now.in_time_zone(@unit.settings(:locale).time_zone))
+        @rsvp_event2 = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit, starts_at: 4.weeks.from_now.in_time_zone(@unit.settings(:locale).time_zone))
       end
 
       it "accesses the page" do
-        path = organize_event_path(@rsvp_event_1)
+        path = organize_event_path(@rsvp_event1)
         visit path
         expect(page).to have_current_path(path)
       end
 
       it "next & previous link works" do
-        visit unit_event_organize_path(@unit, @rsvp_event_1)
+        visit unit_event_organize_path(@unit, @rsvp_event1)
 
-        text = I18n.t("events.organize.next", title: @rsvp_event_2.title, date: @rsvp_event_2.starts_at.in_time_zone(@unit.settings(:locale).time_zone).strftime("%-d %b"))
+        text = I18n.t("events.organize.next", title: @rsvp_event2.title, date: @rsvp_event2.starts_at.in_time_zone(@unit.settings(:locale).time_zone).strftime("%-d %b"))
         click_link_or_button(text)
-        expect(page).to have_current_path(unit_event_organize_path(@unit, @rsvp_event_2))
+        expect(page).to have_current_path(unit_event_organize_path(@unit, @rsvp_event2))
 
-        text = I18n.t("events.organize.previous", title: @rsvp_event_1.title, date: @rsvp_event_1.starts_at.in_time_zone(@unit.settings(:locale).time_zone).strftime("%-d %b"))
+        text = I18n.t("events.organize.previous", title: @rsvp_event1.title, date: @rsvp_event1.starts_at.in_time_zone(@unit.settings(:locale).time_zone).strftime("%-d %b"))
         click_link_or_button(text)
-        expect(page).to have_current_path(unit_event_organize_path(@unit, @rsvp_event_1))
+        expect(page).to have_current_path(unit_event_organize_path(@unit, @rsvp_event1))
       end
     end
   end
