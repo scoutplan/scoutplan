@@ -19,8 +19,7 @@
 
 * Docker & docker-compose installed
 
-* Mapbox account
-
+* Google Places API credentials
 
 ## Set up local HTTPS
 

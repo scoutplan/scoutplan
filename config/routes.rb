@@ -43,16 +43,17 @@ Rails.application.routes.draw do
 
     resources :events do
       collection do
-        get "my_rsvps", to: "events#index", defaults: { mode: "rsvps" }
+        get  "my_rsvps", to: "events#index", defaults: { mode: "rsvps" }
+        get  "public", as: "public", to: "events#public"
         post "bulk_publish"
       end
       get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"
-      patch "rsvp", as: "send_rsvps", to: "events#create_or_update_rsvps"
       get   "organize", as: "organize"
       get   "cancel"
       post  "cancel", to: "events#perform_cancellation"
+      patch "rsvp", as: "send_rsvps", to: "events#create_or_update_rsvps"
     end
-    
+
     resources :unit_memberships
 
     resources :unit_memberships, path: "members", as: "members" do
