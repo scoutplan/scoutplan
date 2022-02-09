@@ -6,24 +6,31 @@ require "humanize"
 
 # rubocop:disable Metrics/ClassLength
 class EventsController < ApplicationController
-  before_action :authenticate_user!
-  before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish]
-  before_action :find_event, except: %i[index create new bulk_publish]
+  before_action :authenticate_user!, except: :public
+  before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish public]
+  before_action :find_member, only: %i[index create new edit edit_rsvps bulk_publish]
+  before_action :find_event, except: %i[index create new bulk_publish public]
   around_action :set_time_zone
 
+  # TODO: refactor this mess
   def index
-    @events = UnitEventQuery.new(@current_member).execute
-    @event_drafts = @events.select { |e| e.draft? }
+    @events = UnitEventQuery.new(@current_member, @unit).execute
+    @event_drafts = @events.select(&:draft?)
     @presenter = EventPresenter.new
     @current_family = @current_member.family
     @current_year = @current_month = nil
-    page_title @unit.name, t('events.index.title')
+    page_title @unit.name, t("events.index.title")
     respond_to do |format|
       format.html
       format.pdf do
         render_calendar
       end
     end
+  end
+
+  def public
+    @events = @unit.events.published.future.limit(params[:limit] || 4)
+    render "public_index", layout: "public"
   end
 
   def render_calendar
@@ -222,9 +229,13 @@ class EventsController < ApplicationController
     ).find(params[:unit_id])
     # @current_member = @unit.membership_for(current_user)
     @unit = @current_unit
-    @current_member = @unit.membership_for(current_user)
   end
   # rubocop:enable Style/SymbolArray
+
+  def find_member
+    return unless user_signed_in?
+    @current_member = @unit.membership_for(current_user)
+  end
 
   # for show, edit, update, destroy...important that @unit
   # is *not* set for those actions

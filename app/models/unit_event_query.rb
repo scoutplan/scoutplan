@@ -4,9 +4,9 @@
 class UnitEventQuery
   attr_accessor :search_term, :start_date
 
-  def initialize(membership)
+  def initialize(membership, unit = nil)
     @membership = membership
-    @unit = membership.unit
+    @unit = membership&.unit || unit
   end
 
   def execute
@@ -14,7 +14,7 @@ class UnitEventQuery
     scope = scope.where(["starts_at >= ?", @start_date]) if @start_date.present?
 
     # limit non-admins to only published events
-    scope = scope.where(status: :published) unless @membership.admin?
+    scope = scope.where(status: :published) unless @membership&.admin?
 
     # all the left joins
     scope = scope.includes(:event_category, [event_rsvps: :unit_membership])

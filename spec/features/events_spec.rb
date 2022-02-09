@@ -18,6 +18,15 @@ describe "events", type: :feature do
     @unit.memberships.create(user: @normal_user, role: "member", status: :active)
   end
 
+  describe "public page" do
+    it "is accessible when logged out" do
+      path = public_unit_events_path(@unit)
+      logout(:user)
+      visit(path)
+      expect(page).to have_current_path(path)
+    end
+  end
+
   describe "as an admin..." do
     before :each do
       login_as(@admin_user, scope: :user)
