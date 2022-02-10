@@ -3,7 +3,7 @@
 # Controller for Units
 class UnitsController < ApplicationController
   def index
-    redirect_to root_path
+    @units = current_user.unit_memberships.map(&:unit)
   end
 
   def show

@@ -84,11 +84,24 @@
 
   .absolute.bottom-0.right-0.left-0.py-5.lg:py-10.pl-8.pr-2
     ul.p-0.list-none
+
+      - if current_user.unit_memberships.count > 1
+        li
+          .p-2.font-bold.uppercase.tracking-wider.text-sm
+            | Switch to
+
+        - current_user.unit_memberships.each do |member|
+          - next if member.unit == @unit
+          li
+            = link_to member.unit.name,
+              unit_events_path(member.unit),
+              class: "w-full no-underline whitespace-nowrap p-2 block hover:bg-stone-200 rounded-md text-left"
+
       li.main_nav_item_signout
         = button_to destroy_user_session_path,
           method: :delete,
           data: { turbo: 'false' },
-          class: 'w-full no-underline whitespace-nowrap p-2 block hover:bg-stone-200 rounded-md text-left' do
+          class: "w-full no-underline whitespace-nowrap p-2 block hover:bg-stone-200 rounded-md text-left" do
           span.w-8.inline-block.text-center.text-stone-500
             i.fa-sign-out.fad
             |&nbsp;&nbsp;
