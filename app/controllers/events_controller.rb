@@ -5,7 +5,7 @@ require "humanize"
 # controller for Events
 
 # rubocop:disable Metrics/ClassLength
-class EventsController < ApplicationController
+class EventsController < UnitContextController
   before_action :authenticate_user!, except: :public
   before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish public]
   before_action :find_member, only: %i[index create new edit edit_rsvps bulk_publish]
@@ -32,7 +32,7 @@ class EventsController < ApplicationController
     @events = @unit.events.published.future.limit(params[:limit] || 4)
 
     # TODO: limit this to the unit's designated site(s)
-    response.headers["X-Frame-Options"] = "ALLOWALL"
+    response.headers["X-Frame-Options"] = "ALLOW"
     render "public_index", layout: "public"
   end
 

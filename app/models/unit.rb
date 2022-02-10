@@ -19,11 +19,15 @@ class Unit < ApplicationRecord
   after_create :populate_categories
 
   has_settings do |s|
-    s.key :security,      defaults: { enable_magic_links: true }
+    s.key :security, defaults: { enable_magic_links: true }
     s.key :communication, defaults: { from_email: "reminders@scoutplan.org" }
-    s.key :appearance,    defaults: { main_color: "#003F87" }
-    s.key :locale,        defaults: { time_zone: "Eastern Time (US & Canada)" }
-    s.key :utilities,     defaults: { fire_scheduled_tasks: false }
+    s.key :appearance, defaults: { main_color: "#003F87" }
+    s.key :locale, defaults: {
+      time_zone: "Eastern Time (US & Canada)",
+      meeting_location: nil,
+      meeting_address: nil
+    }
+    s.key :utilities, defaults: { fire_scheduled_tasks: false }
   end
 
   def to_param
