@@ -89,6 +89,18 @@ Rails.application.configure do
     protocol: ENV["SCOUTPLAN_PROTOCOL"]
   }
 
+  # RGB 10 Feb 2022: moved these settings from end of file, as recommended at
+  # https://github.com/rails/rails/issues/44161
+  config.action_mailer.smtp_settings = {
+    user_name: ENV["SMTP_USERNAME"],
+    password: ENV["SMTP_PASSWORD"],
+    domain: ENV["SMTP_DOMAIN"],
+    address: ENV["SMTP_ADDRESS"],
+    port: ENV["SMTP_PORT"],
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
@@ -144,12 +156,14 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 end
 
-ActionMailer::Base.smtp_settings = {
-  user_name: ENV["SMTP_USERNAME"],
-  password: ENV["SMTP_PASSWORD"],
-  domain: ENV["SMTP_DOMAIN"],
-  address: ENV["SMTP_ADDRESS"],
-  port: ENV["SMTP_PORT"],
-  authentication: :plain,
-  enable_starttls_auto: true
-}
+# moving SMTP configuration into mainline config, above, per https://github.com/rails/rails/issues/44161
+
+# ActionMailer::Base.smtp_settings = {
+#   user_name: ENV["SMTP_USERNAME"],
+#   password: ENV["SMTP_PASSWORD"],
+#   domain: ENV["SMTP_DOMAIN"],
+#   address: ENV["SMTP_ADDRESS"],
+#   port: ENV["SMTP_PORT"],
+#   authentication: :plain,
+#   enable_starttls_auto: true
+# }
