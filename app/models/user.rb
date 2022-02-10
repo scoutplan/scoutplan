@@ -10,7 +10,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :validatable
 
-  has_many :unit_memberships, dependent: :destroy
+  has_many  :unit_memberships, dependent: :destroy
+  has_many  :units, through: :unit_memberships
   has_many  :parent_relationships,
             foreign_key: "child_unit_membership_id",
             class_name: "MemberRelationship",

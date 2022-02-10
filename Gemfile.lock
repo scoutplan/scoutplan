@@ -176,6 +176,8 @@ GEM
     humanize (2.5.1)
     i18n (1.9.1)
       concurrent-ruby (~> 1.0)
+    icalendar (2.7.1)
+      ice_cube (~> 0.16)
     ice_cube (0.16.4)
     importmap-rails (1.0.2)
       actionpack (>= 6.0.0)
@@ -444,6 +446,7 @@ DEPENDENCIES
   flipper-active_record
   flipper-ui
   humanize
+  icalendar
   ice_cube
   importmap-rails
   ledermann-rails-settings

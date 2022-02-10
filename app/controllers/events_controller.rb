@@ -30,6 +30,9 @@ class EventsController < ApplicationController
 
   def public
     @events = @unit.events.published.future.limit(params[:limit] || 4)
+
+    # TODO: limit this to the unit's designated site(s)
+    response.headers["X-Frame-Options"] = "ALLOWALL"
     render "public_index", layout: "public"
   end
 
