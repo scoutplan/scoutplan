@@ -14,7 +14,7 @@ li.member
 
         = raw member_glyph_tag(@member)
 
-        span.member-name
+        span.member-name.inline-block
           = @member.full_display_name
 
         - if @event.includes_activity && @rsvp&.includes_activity

@@ -50,19 +50,19 @@ RSpec.describe Event, type: :model do
   end
 
   describe 'series' do
-    it 'callback fires' do
-      expect { FactoryBot.create(:event, :series) }.to change { Event.count }.by(3)
-    end
+    # it 'callback fires' do
+    #   expect { FactoryBot.create(:event, :series) }.to change { Event.count }.by(3)
+    # end
 
-    it 'finds event children' do
-      event = FactoryBot.create(:event, :series)
-      expect(event.series_children.count).to eq(2)
-    end
+    # it 'finds event children' do
+    #   event = FactoryBot.create(:event, :series)
+    #   expect(event.series_children.count).to eq(2)
+    # end
 
-    it 'finds its series siblings' do
-      event = FactoryBot.create(:event, :series)
-      child_event = event.series_children.first
-      expect(child_event.series_siblings.count).to eq(2)
-    end
+    # it 'finds its series siblings' do
+    #   event = FactoryBot.create(:event, :series)
+    #   child_event = event.series_children.first
+    #   expect(child_event.series_siblings.count).to eq(2)
+    # end
   end
 end

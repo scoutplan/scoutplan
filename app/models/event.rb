@@ -20,7 +20,7 @@ class Event < ApplicationRecord
 
   validates_presence_of :title, :starts_at, :ends_at
 
-  after_create :create_series, if: :repeats_until?
+  # after_create :create_series, if: :repeats_until?
   after_initialize :set_defaults, if: :new_record?
 
   enum status: { draft: 0, published: 1, cancelled: 2, archived: 3 }
