@@ -1,7 +1,6 @@
 <% if @events.count == 1 %>
 <% event = @events.first %>
-Hi, <%= @member.display_first_name %>. As a reminder, the <%= event.title %> is
-<%= deictic_string_for_time_interval_from_day(event.starts_at) %> at <%= event.starts_at.strftime("%I:%M %p") %>.
+Hi, <%= @member.display_first_name %>. As a reminder, the <%= event.title %> is <%= deictic_string_for_time_interval_from_day(event.starts_at) %> at <%= event.starts_at.strftime("%I:%M %p") %>.
 <% else %>
 Hi, <%= @member.display_first_name %>. Today at <%= @member.unit.name %>:
 
