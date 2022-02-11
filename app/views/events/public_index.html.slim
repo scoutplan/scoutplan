@@ -1,6 +1,6 @@
 table
   - @events.each do |event|
-    tr
-      td = link_to event.title, unit_event_url(event.unit, event, target: "_parent")
-      td = event.starts_at.strftime("%B %-d")
-      td = link_to "Details", unit_event_url(event.unit, event, target: "_parent")
+    tr.hover:text-brand-500
+      td = link_to event.title, unit_event_url(event.unit, event, target: "_parent"), class: "p-4"
+      td = link_to event.starts_at.strftime("%B %-d"), unit_event_url(event.unit, event, target: "_parent"), class: "p-4"
+      td = link_to "Details", unit_event_url(event.unit, event, target: "_parent"), class: "p-4"

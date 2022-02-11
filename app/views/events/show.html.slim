@@ -10,13 +10,13 @@
 
     // CANCELLED watermark
     - if @event.cancelled?
-      .absolute.transform.-rotate-45.text-7xl.font-bold.text-red-500.uppercase.text-opacity-30.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/2(style="left:50%;top:50%;font-family:courier,serif;")
-        = t('index.events.cancelled')
+      .absolute.transform.-rotate-45.text-7xl.font-bold.text-red-500.uppercase.text-opacity-20.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/4(style="left:50%;top:25%;font-family:courier,serif;")
+        = t("index.events.cancelled")
 
     // DRAFT watermark
     - if @event.draft?
-      .absolute.transform.-rotate-45.text-7xl.font-bold.text-blue-500.uppercase.text-opacity-30.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/2(style="left:50%;top:50%;font-family:courier,serif;")
-        = t('index.events.draft')
+      .absolute.transform.-rotate-45.text-7xl.font-bold.text-blue-500.uppercase.text-opacity-20.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/2(style="left:50%;top:25%;font-family:courier,serif;")
+        = t("index.events.draft")
 
     // modal header
     header.pt-4.pb-1.overflow-auto.sticky.top-0.bg-white.z-50

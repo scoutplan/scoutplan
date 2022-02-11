@@ -5,7 +5,7 @@ require "humanize"
 # controller for Events
 
 # rubocop:disable Metrics/ClassLength
-class EventsController < ApplicationController
+class EventsController < UnitContextController
   before_action :authenticate_user!, except: :public
   before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish public]
   before_action :find_member, only: %i[index create new edit edit_rsvps bulk_publish]
@@ -32,7 +32,7 @@ class EventsController < ApplicationController
     @events = @unit.events.published.future.limit(params[:limit] || 4)
 
     # TODO: limit this to the unit's designated site(s)
-    response.headers["X-Frame-Options"] = "ALLOWALL"
+    response.headers["X-Frame-Options"] = "ALLOW"
     render "public_index", layout: "public"
   end
 
@@ -80,19 +80,16 @@ class EventsController < ApplicationController
   def new
     build_prototype_event
     @event_view = EventView.new(@event)
-    ap @event_view
     @presenter = EventPresenter.new(event: @event, current_user: current_user)
   end
 
   def create
     authorize :event, :create?
+    service = EventService.new(@unit)
+    @event = service.create(event_params)
+    return unless @event.present?
 
-    @event_view = EventView.new(@unit.events.new)
-    @event_view.assign_attributes(event_params)
-    return unless @event_view.save!
-
-    flash[:notice] = t('helpers.label.event.create_confirmation', event_name: @event_view.title)
-    redirect_to [@unit, @event]
+    redirect_to [@unit, @event], notice: t("helpers.label.event.create_confirmation", event_name: @event.title)
   end
 
   def edit

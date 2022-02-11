@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'forwardable'
+require "forwardable"
 
 # a wrapper around Event objects for form input
 # see https://nimblehq.co/blog/lets-play-design-patterns-form-objects
@@ -8,7 +8,7 @@ class EventView
   include ActiveModel::Model
   extend Forwardable
 
-  attr_accessor :event, :update_scope
+  attr_accessor :event, :update_scope, :event_repeats
   attr_writer   :starts_at_date,
                 :starts_at_time,
                 :ends_at_date,
@@ -77,7 +77,7 @@ class EventView
   end
 
   def assign_computed_attributes(params)
-    @event.repeats_until = nil unless params[:event_repeats] == 'on'
+    @event.repeats_until = nil unless params[:event_repeats] == "on"
 
     if params[:starts_at_date].present? && params[:starts_at_time].present?
       @event.starts_at = compose_datetime(params[:starts_at_date], params[:starts_at_time])

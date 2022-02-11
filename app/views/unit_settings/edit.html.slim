@@ -51,7 +51,11 @@ header.mt-5
 
         .mb-3 
           = f.label :meeting_location
-          = text_field_tag :meeting_location
+          = text_field_tag "settings[locale][meeting_location]", @unit.settings(:locale).meeting_location
+
+        .mb-3 
+          = f.label :meeting_address
+          = text_field_tag "settings[locale][meeting_address]", @unit.settings(:locale).meeting_address
 
         .mb-3
           = f.submit 'Save', class: 'px-4 py-2 rounded bg-gray-100 uppercase font-bold text-sm'
