@@ -1,7 +1,9 @@
 - @presenter.event = event
 - rsvps = event.rsvps
 - row_class = 'event-row'
-- row_class += ' event-past'   if event.starts_at.past?
+
+// TODO: this logic needs to move
+- row_class += ' event-past'   if event.ends_at.localtime.past?
 - row_class += ' event-future' if event.starts_at > 3.months.from_now
 - row_class += ' event-rsvp'   if event.requires_rsvp
 - row_class += ' event-draft'  if event.draft?
