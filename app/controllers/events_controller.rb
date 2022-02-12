@@ -249,6 +249,7 @@ class EventsController < UnitContextController
   # permitted parameters
   # rubocop:disable Metrics/MethodLength
   def event_params
+    ap params
     params.require(:event).permit(
       :title,
       :event_category_id,
@@ -263,6 +264,7 @@ class EventsController < UnitContextController
       :starts_at_time,
       :ends_at_date,
       :ends_at_time,
+      :repeats,
       :repeats_until,
       :departs_from,
       :status

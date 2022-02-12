@@ -8,7 +8,7 @@ class EventView
   include ActiveModel::Model
   extend Forwardable
 
-  attr_accessor :event, :update_scope, :event_repeats
+  attr_accessor :event, :update_scope, :repeats
   attr_writer   :starts_at_date,
                 :starts_at_time,
                 :ends_at_date,
@@ -71,7 +71,7 @@ class EventView
         :starts_at_time,
         :ends_at_date,
         :ends_at_time,
-        :event_repeats
+        :repeats
       )
     )
   end

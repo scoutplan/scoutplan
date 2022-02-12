@@ -3,7 +3,7 @@
     = image_tag "https://www.scoutplan.org/assets/scoutplan_logo_sm.png", width: "40%", class: "mx-auto"
 
   .text-left
-    h2.text-xl.font-bold.pl-6.mb-3.text-center = t("global.sign_in")
+    h2.text-xl.font-bold.mb-3.text-center = t("global.sign_in")
 
     - if flash[:alert]
       p.p-6.mx-2
@@ -22,7 +22,7 @@
 
         - if devise_mapping.rememberable?
           .mb-3
-            = f.check_box :remember_me, class: 'mr-2'
+            = f.check_box :remember_me, class: "mr-3 w-5 h-5 rounded text-brand-500 focus:ring-brand-500 border-brand-500"
             = f.label :remember_me, t("global.remember_me")
 
         .pt-3.overflow-auto

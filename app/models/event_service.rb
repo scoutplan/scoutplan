@@ -15,8 +15,7 @@ class EventService
     @event_view.event.repeats_until = params[:repeats_until]
     return unless @event_view.save!
 
-    create_series if @event_view.repeats_until.present?
-
+    create_series if params[:repeats] == "yes"
     @event_view.event
   end
 
