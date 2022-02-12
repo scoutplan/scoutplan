@@ -7,33 +7,39 @@
       = f.label :from, class: "font-bold text-sm uppercase tracking-wide"
 
     .flex.gap-x-4
-      = f.date_field :starts_at_date, class: 'flex border rounded p-2'
-      = f.time_field :starts_at_time, class: 'flex border rounded p-2', step: '900', value: @event.starts_at.localtime.strftime("#{ @format_time }")
+      = f.date_field :starts_at_date, class: "flex border rounded p-2"
+      = f.time_field :starts_at_time,
+        class: "flex border rounded p-2",
+        step: "900",
+        value: @event.starts_at.localtime.strftime("#{ @format_time }")
 
   // to
   .flex.flex-grow.grid.grid-rows-2
     = f.label :to, nil, class: "font-bold text-sm uppercase tracking-wide"
 
     .flex.flex-grow.gap-x-4
-      = f.date_field :ends_at_date, class: 'flex flex-grow border rounded p-2'
-      = f.time_field :ends_at_time, class: 'flex flex-grow border rounded p-2', step: '900', value: @event.ends_at.localtime.strftime("#{ @format_time }")
+      = f.date_field :ends_at_date, class: "flex flex-grow border rounded p-2"
+      = f.time_field :ends_at_time,
+        class: "flex flex-grow border rounded p-2",
+        step: "900",
+        value: @event.ends_at.localtime.strftime("#{ @format_time }")
 
 // repeats
 .flex.mb-3.h-10.mt-4
   .py-6.inline-flex.items-center
     = f.check_box :repeats, { \
         class: "w-4 h-4 text-green-500 rounded mr-2",
-        onclick: 'setElemDisplay("#repeat_fields", this.checked);setElemDisplay("#repeat_label_on", this.checked);setElemDisplay("#repeat_label_off", !this.checked);' \
+        onclick: "setElemDisplay(\"#repeat_fields\", this.checked);setElemDisplay(\"#repeat_label_on\", this.checked);setElemDisplay(\"#repeat_label_off\", !this.checked);" \
       }, "yes", "no"
 
-    = f.label 'Repeats weekly',
-      for: 'event_repeats',
-      id: 'repeat_label_off',
+    = f.label "Repeats weekly",
+      for: "event_repeats",
+      id: "repeat_label_off",
       class: "font-bold text-sm uppercase tracking-wide"
 
-    = f.label 'Repeats weekly until',
-      for: 'event_repeats',
-      id: 'repeat_label_on',
+    = f.label "Repeats weekly until",
+      for: "event_repeats",
+      id: "repeat_label_on",
       class: "hidden font-bold text-sm uppercase tracking-wide"
 
   #repeat_fields.hidden
@@ -41,4 +47,4 @@
 
 // timezone message
 .mb-0
-  .text-sm.text-gray-400 = t('events.form.timezone_prompt', timezone_name: @current_unit.settings(:locale).time_zone)
+  .text-sm.text-gray-400 = t("events.form.timezone_prompt", timezone_name: @current_unit.settings(:locale).time_zone)

@@ -22,7 +22,7 @@
 
         - if devise_mapping.rememberable?
           .mb-3
-            = f.check_box :remember_me, class: 'mr-2'
+            = f.check_box :remember_me, class: "mr-3 w-5 h-5 rounded text-brand-500 focus:ring-brand-500 border-brand-500"
             = f.label :remember_me, t("global.remember_me")
 
         .pt-3.overflow-auto
