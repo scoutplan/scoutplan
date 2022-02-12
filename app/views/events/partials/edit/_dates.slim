@@ -21,8 +21,10 @@
 // repeats
 .flex.mb-3.h-10.mt-4
   .py-6.inline-flex.items-center
-    = check_box_tag 'event_repeats', nil, false, class: 'w-4 h-4 text-green-500 rounded mr-2',
-      onclick: 'setElemDisplay("#repeat_fields", this.checked);setElemDisplay("#repeat_label_on", this.checked);setElemDisplay("#repeat_label_off", !this.checked);'
+    = f.check_box :repeats, { \
+        class: "w-4 h-4 text-green-500 rounded mr-2",
+        onclick: 'setElemDisplay("#repeat_fields", this.checked);setElemDisplay("#repeat_label_on", this.checked);setElemDisplay("#repeat_label_off", !this.checked);' \
+      }, "yes", "no"
 
     = f.label 'Repeats weekly',
       for: 'event_repeats',
