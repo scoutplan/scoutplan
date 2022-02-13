@@ -173,6 +173,7 @@ GEM
       raabro (~> 1.4)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    honeybadger (4.10.0)
     humanize (2.5.1)
     i18n (1.9.1)
       concurrent-ruby (~> 1.0)
@@ -241,6 +242,8 @@ GEM
     raabro (1.4.0)
     racc (1.6.0)
     rack (2.2.3)
+    rack-attack (6.6.0)
+      rack (>= 1.0, < 3)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
     rack-mini-profiler (2.3.3)
@@ -447,6 +450,7 @@ DEPENDENCIES
   flipper
   flipper-active_record
   flipper-ui
+  honeybadger (~> 4.0)
   humanize
   icalendar
   ice_cube
@@ -458,6 +462,7 @@ DEPENDENCIES
   pg
   puma (~> 5.0)
   pundit
+  rack-attack
   rack-cors
   rack-mini-profiler (~> 2.3)
   rails (~> 7.0.0)
