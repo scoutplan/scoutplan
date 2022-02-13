@@ -24,9 +24,10 @@
             = member_fields.fields_for "event_rsvp", rsvp do |rsvp_fields|
 
               dt.py-2.font-bold.border-t
-                = event.starts_at.strftime("%-d %b")
-                = " "
-                = event.title
+                = link_to unit_event_path(@unit, event) do
+                  = event.starts_at.strftime("%-d %b")
+                  = " "
+                  = event.title
 
               dd.md:inline-block.py-2.mr-6
                 = rsvp_fields.radio_button :response, :declined, class: "mr-2", onclick: "submitParentForm();"
