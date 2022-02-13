@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "query" ];
+  static targets = [ "query", "address" ];
   static values = {
     apiToken: String
   }
@@ -13,11 +13,34 @@ export default class extends Controller {
   }
   
   connect() {
-    this.connectBespokeElem();
+    this.createQueryResultElement();
+    this.connectEventListeners();
   }
 
-  connectBespokeElem() {
-    this.createQueryResultElement();
+  createQueryResultElement() {
+    console.log("Geocoding connected.");
+    this.resultsDiv = document.createElement("div");
+    this.resultsDiv.setAttribute("id", "geocode_results")
+    this.resultsDiv.classList.add("text-sm", "text-stone-500", "z-10", "w-24", "h-36", "shadow", "bg-white", "border", "border-stone-200", "rounded", "overflow-x-hidden", "overflow-y-auto", "absolute", "hidden");
+
+
+    this.queryTarget.parentNode.appendChild(this.resultsDiv);
+
+    var listElem = document.createElement("ul");
+    this.resultsDiv.appendChild(listElem);
+  }
+
+  connectEventListeners() {
+    document.addEventListener("click", function(event) {
+      var resultsDiv = document.querySelector("#geocode_results");
+      resultsDiv.classList.add("hidden");
+    });
+    document.addEventListener("keyup", function(event) {
+      if(event.keyCode == 27) {
+        var resultsDiv = document.querySelector("#geocode_results");
+        resultsDiv.classList.add("hidden");        
+      }
+    });
   }
 
   connectAutoComplete() {
@@ -29,8 +52,9 @@ export default class extends Controller {
     this.autocomplete = new google.maps.places.Autocomplete(this.queryTarget, options);    
   }
 
+  // TODO: modularize this mess
   performQuery(event) {
-    var searchTerm = this.queryTarget.value;
+    var searchTerm = event.target.value;
     var request = {
       query: searchTerm,
       fields: ["name", "formatted_address"],
@@ -46,7 +70,9 @@ export default class extends Controller {
 
     var resultsDiv = this.resultsDiv;
     resultsDiv.classList.remove("hidden");
+    this.positionQueryResultElement(event.target);
 
+    // should we be using the Google Autocomplete API instead?
     this.placesService.findPlaceFromQuery(request, function(results, status) {
       if (status === google.maps.places.PlacesServiceStatus.OK) {
         resultsDiv.firstChild.innerHTML = "";
@@ -55,7 +81,7 @@ export default class extends Controller {
           var address = {
             country: addressParts.slice(-1)[0].trim(),
             state: addressParts.slice(-2)[0].trim().split(" ")[0],
-            city: addressParts.slice(-3)[0].trim(),
+            city: addressParts.slice(-3)[0].trim(), // TODO: this isn't right
           }
 
           var listItemElem = document.createElement("li");
@@ -78,25 +104,31 @@ export default class extends Controller {
     });
   }
 
+  // fired when user clicks on a query result
   select(event) {
     var elem = event.target;
     if (elem.nodeName != "A") { elem = elem.parentNode; }
-    var placeName = elem.dataset.resultPlaceName;
-    this.queryTarget.value = placeName;
+    if (elem.nodeName != "A") {
+      console.log("Something went wrong.");
+      return;
+    }
+
+    if (elem == this.queryTarget) {
+      this.queryTarget.value = elem.dataset.resultPlaceName;
+      if (this.addressTarget.value == "") { this.addressTarget.value = elem.dataset.resultAddress; }
+    } else if (elem == this.addressTarget) {
+      this.addressTarget.value = elem.dataset.resultAddress;
+      if (this.queryTarget.value == "") { this.queryTarget.value = elem.dataset.resultPlaceName; }
+    }
+    
     this.resultsDiv.classList.add("hidden");
     event.preventDefault(); // don't let the link click do anything
   }
 
-  createQueryResultElement() {
-    console.log("Geocoding connected.");
-    this.resultsDiv = document.createElement("div");
-    this.resultsDiv.classList.add("text-sm", "text-stone-500", "w-24", "h-36", "shadow", "bg-white", "border", "border-stone-200", "rounded", "overflow-x-hidden", "overflow-y-auto", "absolute", "hidden");
-    this.resultsDiv.style.width = this.queryTarget.clientWidth + 2 + "px";
-    this.resultsDiv.style.left = this.queryTarget.offsetLeft + "px";
-
-    this.queryTarget.parentNode.appendChild(this.resultsDiv);
-
-    var listElem = document.createElement("ul");
-    this.resultsDiv.appendChild(listElem);
+  positionQueryResultElement(queryElem) {
+    console.log(queryElem);
+    this.resultsDiv.style.width = queryElem.clientWidth + 2 + "px";
+    this.resultsDiv.style.left = queryElem.offsetLeft + "px";
+    this.resultsDiv.style.top = queryElem.offsetTop + queryElem.clientHeight + 1 + "px";
   }
 }

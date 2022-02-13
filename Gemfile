@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.0.2"
 
-# gem "scout_apm" # needs to be first
+gem "scout_apm" # needs to be first
 
 gem "acts_as_list"
 gem "awesome_print"
