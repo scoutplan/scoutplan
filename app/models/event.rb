@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "icalendar"
+
 # a calendar event
 class Event < ApplicationRecord
   default_scope { order(starts_at: :asc) }
@@ -83,6 +85,18 @@ class Event < ApplicationRecord
 
   def destination
     address || location
+  end
+
+  def to_ical
+    Time.zone = unit.settings(:locale).time_zone
+    event = Icalendar::Event.new
+    event.summary = title
+    event.dtstart = starts_at.utc
+    event.dtend   = ends_at.utc
+    event.location = location
+    event.location << address if address.present?
+    event.description = description || short_description
+    event
   end
 
   private

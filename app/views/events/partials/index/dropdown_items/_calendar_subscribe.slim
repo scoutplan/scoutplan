@@ -1,4 +1,19 @@
-li = link_to '#', class: 'dropdown-item' do
-  .menu-glyph
-    i.far.fa-calendar
-  = t('events.index.view.subscribe')
+- url = calendar_feed_unit_events_url( \
+    token: @ical_magic_link.token,
+    unit_id: @unit.to_param,
+    format: :ics,
+    only_path: false,
+    protocol: "webcal" \
+  )
+
+= link_to url,
+          class: "table-row hover:bg-gray-700 inline-block px-4 py-2 w-full" do
+
+  .table-cell.p-2.pl-4.text-center
+    span.menu-glyph-wrapper-visible
+      i.fa-solid.fa-calendar
+
+  .table-cell.p-2
+    = t("events.index.view.subscribe")
+
+  .table-cell.p-2

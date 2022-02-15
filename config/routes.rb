@@ -43,6 +43,7 @@ Rails.application.routes.draw do
 
     resources :events do
       collection do
+        get  "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
         get  "my_rsvps", to: "events#index", defaults: { mode: "rsvps" }
         get  "public", as: "public", to: "events#public"
         post "bulk_publish"
