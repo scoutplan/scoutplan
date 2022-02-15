@@ -19,6 +19,7 @@ class EventsController < UnitContextController
     @presenter = EventPresenter.new
     @current_family = @current_member.family
     @current_year = @current_month = nil
+    @ical_magic_link = MagicLink.generate_link(@current_member, "icalendar") # create a MagicLink object
     page_title @unit.name, t("events.index.title")
     respond_to do |format|
       format.html
@@ -249,7 +250,6 @@ class EventsController < UnitContextController
   # permitted parameters
   # rubocop:disable Metrics/MethodLength
   def event_params
-    ap params
     params.require(:event).permit(
       :title,
       :event_category_id,

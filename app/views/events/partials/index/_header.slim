@@ -43,6 +43,7 @@ header#page_header.w-full.sticky.left-0.right-0.top-0.px-0.bg-white.pb-8.pt-8.lg
               = render partial: 'events/partials/index/dropdown_items/show_past_events'
               = render partial: "events/partials/index/dropdown_items/divider"
               = render partial: 'events/partials/index/dropdown_items/pdf_export'
+              = render partial: "events/partials/index/dropdown_items/calendar_subscribe"
 
       span#bulk_publish_button_wrapper
         = button_to t('events.index.bulk_publish.execute_caption'),

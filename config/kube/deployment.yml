@@ -45,7 +45,7 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 60
-            failureThreshold: 5            
+            failureThreshold: 5        
           env:
             - name: GITHUB_RUN_NUMBER
               value: "github-run-number"

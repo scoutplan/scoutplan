@@ -15,7 +15,7 @@ describe "events", type: :feature do
     @event = FactoryBot.create(:event, :draft, unit: @unit, title: "Draft Event")
 
     @unit.memberships.create(user: @admin_user,  role: "admin", status: :active)
-    @unit.memberships.create(user: @normal_user, role: "member", status: :active)
+    @normal_member = @unit.memberships.create(user: @normal_user, role: "member", status: :active)
   end
 
   describe "public page" do
@@ -165,6 +165,33 @@ describe "events", type: :feature do
     it "prevents non-admins from accessing" do
       event = FactoryBot.create(:event, :published, :past, unit: @unit)
       expect { visit edit_unit_event_path(event.unit, event) }.to raise_error Pundit::NotAuthorizedError
+    end
+  end
+
+  require "icalendar"
+
+  describe "ical" do
+    it "works" do
+      Time.zone = @unit.settings(:locale).time_zone
+      starts_at = 36.hours.from_now
+      ends_at = 38.hours.from_now
+      event = FactoryBot.create( \
+        :event,
+        :published,
+        unit: @unit,
+        location: Faker::Address.community,
+        starts_at: starts_at,
+        ends_at: ends_at \
+      )
+      magic_link = MagicLink.generate_link(@normal_member, "icalendar")
+      visit(calendar_feed_unit_events_path(@unit, magic_link.token))
+
+      cals = Icalendar::Calendar.parse(page.body)
+      cal = cals.first
+      cal_event = cal.events.first
+      expect(cal_event.dtstart.utc).to be_within(1.second).of(starts_at)
+      expect(cal_event.summary).to eq(event.title)
+      expect(cal_event.location).to eq(event.location)
     end
   end
 end
