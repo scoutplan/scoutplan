@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
-require "icalendar"
-
 # a calendar event
 class Event < ApplicationRecord
-  include EventIcal
-
   default_scope { order(starts_at: :asc) }
 
   belongs_to :unit
