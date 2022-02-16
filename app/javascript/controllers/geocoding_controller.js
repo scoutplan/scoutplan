@@ -17,6 +17,10 @@ export default class extends Controller {
     this.connectEventListeners();
   }
 
+  disconnect() {
+    console.log("Geocoding disconnect");
+  }
+
   createQueryResultElement() {
     console.log("Geocoding connected.");
     this.resultsDiv = document.createElement("div");
@@ -36,11 +40,16 @@ export default class extends Controller {
       resultsDiv.classList.add("hidden");
     });
     document.addEventListener("keyup", function(event) {
-      if(event.keyCode == 27) {
+      if(event.key === "Escape") {
         var resultsDiv = document.querySelector("#geocode_results");
         resultsDiv.classList.add("hidden");        
       }
     });
+  }
+
+  disconnectEventListeners() {
+    document.removeEventListener("click");
+    document.removeEventListener("keyup");
   }
 
   connectAutoComplete() {

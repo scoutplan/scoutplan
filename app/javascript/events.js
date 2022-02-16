@@ -83,8 +83,6 @@ function hideEmptyMonthHeaders() {
     elem.style.display = 'none';
   });
 
-  console.log('All month headers are now hidden');
-
   // ...then, iterate over all visible event rows, traverse backward until we
   // hit a month header, and reveal it. There's an inefficiency here in that
   // we're iterating on every visible event row, meaning we'll repeatedly
@@ -99,7 +97,6 @@ function hideEmptyMonthHeaders() {
 
     const selector = '.event-month-boundary';
     var monthHeader = queryPreviousSiblingSelector(elem, selector);
-    console.log('Unhiding ' + monthHeader.innerText);
     monthHeader.style.display = 'table-row';
   });    
 }

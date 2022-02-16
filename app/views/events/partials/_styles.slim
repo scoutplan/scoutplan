@@ -270,6 +270,16 @@ scss:
     }
   }
 
+  .dropdown button svg {
+    transform: rotate(0deg);
+    transition: transform 150ms ease;    
+  }
+
+  .dropdown.menu-open button svg {
+    transform: rotate(180deg);
+    transition: transform 150ms ease;    
+  }
+
   .dropdown.menu-open {
     button {
       color: #fff;
