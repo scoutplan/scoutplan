@@ -12,7 +12,6 @@ class IcalExporter
 
   # rubocop:disable Metrics/AbcSize
   def to_ical
-    Time.zone = unit.settings(:locale).time_zone
     event = Icalendar::Event.new
     event.summary = @event.title
     event.dtstart = @event.starts_at.utc
@@ -20,7 +19,7 @@ class IcalExporter
     event.location = @event.location
     event.location << @event.address if @event.address.present?
     event.description = @event.description&.to_plain_text || @event.short_description
-    event.url = Rails.application.routes.url_helpers.unit_event_url(@event.unit, @unit, host: ENV["APP_HOST"])
+    event.url = Rails.application.routes.url_helpers.unit_event_url(@event.unit, @event, host: ENV["APP_HOST"])
     event
   end
   # rubocop:enable Metrics/AbcSize
