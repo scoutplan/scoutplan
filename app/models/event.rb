@@ -95,7 +95,7 @@ class Event < ApplicationRecord
     event.dtend   = ends_at.utc
     event.location = location
     event.location << address if address.present?
-    event.description = description || short_description
+    event.description = description&.to_plain_text || short_description
     event
   end
 
