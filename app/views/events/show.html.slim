@@ -1,4 +1,4 @@
-- url = @event_view.new_record? ? unit_events_path(@unit) : event_path(@event_view.event)
+- url = @event_view.new_record? ? unit_events_path(@event_view.unit) : unit_event_path(@event_view.unit, @event_view.event)
 - method = @event_view.new_record? ? 'post' : 'patch'
 - mode = 'rsvp' if action_name == 'edit_rsvps'
 

@@ -17,6 +17,7 @@ class EventView
   # TODO: delegate missing to @event
 
   def_delegators :@event,
+                 :unit,
                  :title,
                  :short_description,
                  :description,

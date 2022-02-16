@@ -14,7 +14,7 @@ describe "events", type: :feature do
     @unit  = FactoryBot.create(:unit)
     @event = FactoryBot.create(:event, :draft, unit: @unit, title: "Draft Event")
 
-    @unit.memberships.create(user: @admin_user,  role: "admin", status: :active)
+    @admin_member = @unit.memberships.create(user: @admin_user,  role: "admin", status: :active)
     @normal_member = @unit.memberships.create(user: @normal_user, role: "member", status: :active)
   end
 
@@ -48,13 +48,13 @@ describe "events", type: :feature do
 
     describe "show" do
       it "accesses drafts" do
-        visit(path = event_path(@event))
+        visit(path = unit_event_path(@unit, @event))
         expect(page).to have_current_path(path)
       end
 
       it "does not display a Publish button on published events" do
         event = FactoryBot.create(:event, :published, unit: @unit, title: "Published event")
-        visit event_path(event)
+        visit unit_event_path(@unit, event)
         expect(page).not_to have_selector(:link_or_button, "Publish")
       end
     end
@@ -62,7 +62,7 @@ describe "events", type: :feature do
     describe "cancel" do
       it "visits the cancel page" do
         event = FactoryBot.create(:event, :published, unit: @unit, title: "Published event")
-        visit edit_unit_event_path(event.unit, event)
+        visit edit_unit_event_path(@unit, event)
 
         # expect(page).to have_selector(:link_or_button, I18n.t("events.show.cancel_title"))
         click_link_or_button I18n.t("events.show.cancel_title")
@@ -93,7 +93,7 @@ describe "events", type: :feature do
       end
 
       it "accesses the page" do
-        path = organize_event_path(@rsvp_event1)
+        path = unit_event_organize_path(@unit, @rsvp_event1)
         visit path
         expect(page).to have_current_path(path)
       end
@@ -142,12 +142,12 @@ describe "events", type: :feature do
     end
 
     it "prevents access a draft Event page" do
-      path = event_path(@event)
+      path = unit_event_path(@unit, @event)
       expect { visit path }.to raise_error Pundit::NotAuthorizedError
     end
 
     it "prevents access to the Organize page" do
-      expect { visit organize_event_path(@event) }.to raise_error Pundit::NotAuthorizedError
+      expect { visit unit_event_organize_path(@unit, @event) }.to raise_error Pundit::NotAuthorizedError
     end
 
     it "hides the add event button on the Index page" do
@@ -191,9 +191,48 @@ describe "events", type: :feature do
       cal = cals.first
       cal_event = cal.events.first
       expect(cal_event.dtstart.utc).to be_within(1.second).of(starts_at)
-      expect(cal_event.summary).to     eq(event.title)
-      expect(cal_event.location).to    eq(event.location)
+      expect(cal_event.summary).to eq(event.title)
+      expect(cal_event.location).to eq(event.location)
       expect(cal_event.description).to eq(event.description.to_plain_text)
+      expect(cal_event.url.to_s).not_to be_empty
+    end
+
+    it "excludes cancelled and draft events for admins" do
+      @unit.events.destroy_all
+      FactoryBot.create( \
+        :event,
+        :published,
+        unit: @unit,
+        location: Faker::Address.community,
+        description: Faker::Lorem.paragraph(sentence_count: 3),
+        starts_at: 36.hours.from_now,
+        ends_at: 38.hours.from_now \
+      )
+      FactoryBot.create( \
+        :event,
+        :cancelled,
+        unit: @unit,
+        location: Faker::Address.community,
+        description: Faker::Lorem.paragraph(sentence_count: 3),
+        starts_at: 40.hours.from_now,
+        ends_at: 42.hours.from_now \
+      )
+      FactoryBot.create( \
+        :event,
+        :draft,
+        unit: @unit,
+        location: Faker::Address.community,
+        description: Faker::Lorem.paragraph(sentence_count: 3),
+        starts_at: 50.hours.from_now,
+        ends_at: 52.hours.from_now \
+      )
+      expect(@unit.events.count).to eq(3)
+      magic_link = MagicLink.generate_link(@admin_member, "icalendar")
+      visit(calendar_feed_unit_events_path(@unit, magic_link.token))
+      cals = Icalendar::Calendar.parse(page.body)
+      cal = cals.first
+      ap cal.events.count
+      expect(cal.events.count).to eq(1)
     end
   end
 end

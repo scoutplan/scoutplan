@@ -17,14 +17,9 @@ class CalendarController < ApplicationController
     events = UnitEventQuery.new(member, unit).execute
     cal = Icalendar::Calendar.new
     events.each do |event|
+      next unless event.published?
       cal.add_event(event.to_ical)
     end
-
-    # unit_tz = ActiveSupport::TimeZone.new(unit.settings(:locale).time_zone)
-    # cal_tz = unit_tz.tzinfo
-
-    # cal.add_timezone cal_tz
-    # cal.publish
 
     render plain: cal.to_ical, content_type: "text/calendar"
   end
