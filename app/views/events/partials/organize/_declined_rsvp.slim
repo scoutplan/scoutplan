@@ -9,7 +9,7 @@ ul.m-0
   // Change to Accepted
   li
     = button_to \
-      event_rsvps_path(@event, member_id: rsvp.member.id, response: :accepted),
+      unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.member.id, response: :accepted),
       method: :post,
       class: "change-rsvp-button block py-2 font-normal",
       id: "change_rsvp_#{rsvp.id}_button" \

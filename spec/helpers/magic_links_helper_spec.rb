@@ -21,7 +21,7 @@ RSpec.describe MagicLinksHelper, type: :helper do
 
   describe "magic_link_to" do
     it "works" do
-      expect { magic_link_to(@member, @event.title, @event) }.not_to raise_exception
+      expect { magic_link_to(@member, @event.title, [@event.unit, @event]) }.not_to raise_exception
     end
   end
 

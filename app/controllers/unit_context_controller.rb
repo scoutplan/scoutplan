@@ -3,11 +3,18 @@
 # an abstract controller to be subclassed for instances
 # where a Unit is being manipulated (which is to say, most)
 class UnitContextController < ApplicationController
-  before_action :find_unit_info, only: %i[index new create]
+  before_action :find_unit_info, only: %i[index new create edit]
   before_action :set_unit_cookie
 
   def current_unit
-    Unit.find(params[:unit_id]) if params[:unit_id].present?
+    @current_unit || (@current_unit = Unit.includes(
+      :setting_objects,
+      unit_memberships: [:user, :parent_relationships, :child_relationships]
+    ).find(params[:unit_id]))
+  end
+
+  def current_member
+    @current_member || (@current_member = current_unit.membership_for(current_user))
   end
 
   attr_reader :current_membership

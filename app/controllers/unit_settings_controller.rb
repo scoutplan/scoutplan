@@ -70,7 +70,7 @@ class UnitSettingsController < UnitContextController
   end
 
   def find_unit
-    @current_unit = @unit = Unit.find(params[:id])
+    @current_unit = @unit = Unit.find(params[:unit_id])
     @current_member = @unit.membership_for(current_user)
     Time.zone = @unit.settings(:locale).time_zone
   end

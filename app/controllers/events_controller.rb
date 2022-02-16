@@ -14,7 +14,7 @@ class EventsController < UnitContextController
 
   # TODO: refactor this mess
   def index
-    @events = UnitEventQuery.new(@current_member, @unit).execute
+    @events = UnitEventQuery.new(current_member, current_unit).execute
     @event_drafts = @events.select(&:draft?)
     @presenter = EventPresenter.new
     @current_family = @current_member.family
@@ -296,7 +296,7 @@ class EventsController < UnitContextController
   end
 
   def set_time_zone(&block)
-    Time.use_zone(@current_unit.settings(:locale).time_zone, &block)
+    Time.use_zone(current_unit.settings(:locale).time_zone, &block)
   end
 end
 # rubocop:enable Metrics/ClassLength

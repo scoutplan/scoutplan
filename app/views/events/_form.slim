@@ -1,4 +1,4 @@
-- url = @event_view.new_record? ? unit_events_path(@unit) : event_path(@event_view.event)
+- url = @event_view.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event_view.event)
 - method = @event_view.new_record? ? "post" : "patch"
 - @format_date = "%Y-%m-%d"
 - @format_time = "%H:%M:%S"

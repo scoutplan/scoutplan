@@ -12,24 +12,24 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  resources :events, only: %i[show edit update destroy] do
-    member do
-      get   "organize"
-      patch "create_or_update_rsvp"
-      post  "cancel"
-      post  "publish"
-      post  "invite", to: "event_rsvps#invite"
-      get   "edit_rsvps"
-    end
+  # resources :events, only: %i[show edit update destroy] do
+  #   member do
+  #     get   "organize"
+  #     patch "create_or_update_rsvp"
+  #     post  "cancel"
+  #     post  "publish"
+  #     post  "invite", to: "event_rsvps#invite"
+  #     get   "edit_rsvps"
+  #   end
 
-    resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
-    resources :event_activities, as: "activities", path: "activities", only: %i[new create]
-  end
+  #   resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
+  #   resources :event_activities, as: "activities", path: "activities", only: %i[new create]
+  # end
 
   resources :event_activities, as: "activities"
 
-  get "units/:id/settings", as: "edit_unit_settings", to: "unit_settings#edit"
-  patch "units/:id/settings", as: "update_unit_settings", to: "unit_settings#update"
+  get "units/:unit_id/settings", as: "edit_unit_settings", to: "unit_settings#edit"
+  patch "units/:unit_id/settings", as: "update_unit_settings", to: "unit_settings#update"
 
   get "units/:unit_id/newsletter/drafts", to: "news_items#index", as: "unit_newsletter_drafts", defaults: { mode: "drafts" }
   get "units/:unit_id/newsletter/queued", to: "news_items#index", as: "unit_newsletter_queued", defaults: { mode: "queued" }
@@ -42,6 +42,7 @@ Rails.application.routes.draw do
     resources :news_items
 
     resources :events do
+      resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
       collection do
         get  "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
         get  "my_rsvps", to: "events#index", defaults: { mode: "rsvps" }
