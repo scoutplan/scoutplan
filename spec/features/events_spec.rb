@@ -180,6 +180,7 @@ describe "events", type: :feature do
         :published,
         unit: @unit,
         location: Faker::Address.community,
+        description: Faker::Lorem.paragraph(sentence_count: 3),
         starts_at: starts_at,
         ends_at: ends_at \
       )
@@ -190,8 +191,9 @@ describe "events", type: :feature do
       cal = cals.first
       cal_event = cal.events.first
       expect(cal_event.dtstart.utc).to be_within(1.second).of(starts_at)
-      expect(cal_event.summary).to eq(event.title)
-      expect(cal_event.location).to eq(event.location)
+      expect(cal_event.summary).to     eq(event.title)
+      expect(cal_event.location).to    eq(event.location)
+      expect(cal_event.description).to eq(event.description.to_plain_text)
     end
   end
 end
