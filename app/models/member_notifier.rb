@@ -39,6 +39,7 @@ class MemberNotifier
 
   # should member receive daily reminders?
   def daily_reminder?
+    Time.zone = @member.unit.settings(:locale).time_zone
     @member.unit.events.published.imminent.count.positive?
   end
 

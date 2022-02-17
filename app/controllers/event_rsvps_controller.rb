@@ -1,28 +1,12 @@
 # frozen_string_literal: true
 
 # only intended to be called via XHR...no HTML view exists for this controller
-class EventRsvpsController < ApplicationController
+class EventRsvpsController < UnitContextController
   def create
-    @event = Event.find(params[:event_id])
-    @unit = @event.unit
-    target_member = @unit.memberships.find(params[:member_id])
-    @rsvp = @event.rsvps.find_or_create_by(unit_membership: target_member)
-    @respondent = @unit.membership_for(current_user) || target_member
-    @rsvp.respondent = @respondent
-    @rsvp.response = params[:response] if params[:response].present?
-    @rsvp.paid = true if params[:payment] == "full"
-    @rsvp.paid = false if params[:payment] == "none"
-    @rsvp.includes_activity = true if params[:activity] == "yes"
-    @rsvp.includes_activity = false if params[:activity] == "no"
-
-    @rsvp.save!
-    @event.reload
-
-    EventNotifier.send_rsvp_confirmation(@rsvp)
-
-    find_event_responses
-    flash[:notice] = I18n.t("events.organize.confirmations.updated_html", name: target_member.full_display_name)
-    redirect_to unit_event_organize_path(@unit, @event)
+    service = EventRsvpService.new(current_member)
+    rsvp = service.create_or_update(params)
+    flash[:notice] = I18n.t("events.organize.confirmations.updated_html", name: rsvp.member.full_display_name)
+    redirect_to unit_event_organize_path(@unit, rsvp.event)
   end
 
   # send or re-send an invitation

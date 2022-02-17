@@ -231,7 +231,6 @@ describe "events", type: :feature do
       visit(calendar_feed_unit_events_path(@unit, magic_link.token))
       cals = Icalendar::Calendar.parse(page.body)
       cal = cals.first
-      ap cal.events.count
       expect(cal.events.count).to eq(1)
     end
   end
