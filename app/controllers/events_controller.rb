@@ -187,7 +187,6 @@ class EventsController < UnitContextController
   def perform_cancellation
     find_unit
     find_event
-    ap @event
     @event.status = :cancelled
     return unless @event.save!
 
