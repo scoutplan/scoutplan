@@ -20,7 +20,7 @@
         br
         = event.location
 
-    = magic_link_to(@member, event) do
+    = magic_link_to(@member, [event.unit, event]) do
       h3(style="margin-bottom: 4px;") = event.title
 
     p(style="margin-top: 4px; margin-bottom: 0; font-weight: 600;")
