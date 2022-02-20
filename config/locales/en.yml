@@ -210,6 +210,8 @@ en:
         drafts:     "Bulk publish draft events"
         past:       "Show past events"
         subscribe:  "Add this schedule to your calendar"
+        calendar:   "View as Calendar"
+        list:       "View as List"
 
       event_row:
         rsvp_respond: "Respond"

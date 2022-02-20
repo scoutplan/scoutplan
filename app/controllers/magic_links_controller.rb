@@ -31,8 +31,8 @@ class MagicLinksController < ApplicationController
 
   def track_activity
     Tracker.new(@magic_link.member).track_activity(
-      "Magic Link",
-      { "Target" => @magic_link.path }
+      "magic_link",
+      { "target" => @magic_link.path }
     )
   end
 end

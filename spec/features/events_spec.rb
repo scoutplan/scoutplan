@@ -168,6 +168,14 @@ describe "events", type: :feature do
     end
   end
 
+  describe "variations" do
+    it "shows as a calendar" do
+      path = calendar_unit_events_path(@unit)
+      visit(path)
+      expect(page).to have_current_path(path)
+    end
+  end
+
   require "icalendar"
 
   describe "ical" do
