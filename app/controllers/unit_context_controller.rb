@@ -5,6 +5,27 @@
 class UnitContextController < ApplicationController
   before_action :find_unit_info, only: %i[index new create edit]
   before_action :set_unit_cookie
+  before_action :track_activity
+
+  # invoke Mixpanel tracker
+  def track_activity
+    tracker = Mixpanel::Tracker.new(ENV["MIXPANEL_TOKEN"])
+    track_member(tracker)
+    event = [controller_name, action_name].join("#")
+    tracker.track(@current_member.id, event)
+  end
+
+  def track_member(tracker)
+    tracker.people.set(
+      current_member.id,
+      {
+        "$first_name" => current_member.first_name,
+        "$last_name" => current_member.last_name,
+        "$email" => current_member.email,
+        "$unit" => [ @current_member.unit.name, @current_member.unit.location].join(" ")
+      }
+    )
+  end
 
   def current_unit
     @current_unit || (@current_unit = Unit.includes(
