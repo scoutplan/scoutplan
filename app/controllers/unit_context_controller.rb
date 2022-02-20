@@ -5,6 +5,14 @@
 class UnitContextController < ApplicationController
   before_action :find_unit_info, only: %i[index new create edit]
   before_action :set_unit_cookie
+  before_action :track_activity
+
+  # analytics
+  def track_activity
+    event = [controller_name, action_name].join("#")
+    event << " " << request.format if request.format != "html"
+    Tracker.new(current_member).track_activity(event)
+  end
 
   def current_unit
     @current_unit || (@current_unit = Unit.includes(
