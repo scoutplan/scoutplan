@@ -7,23 +7,27 @@ class ApplicationController < ActionController::Base
   include Pundit
   before_action :authenticate_user!
   before_action :process_query_string
+  before_action :track_activity
   after_action  :clear_session_view
 
   def track_activity
     return unless user_signed_in?
     return unless @current_member
 
-    tracker = Mixpanel::Tracker.new(ENV['MIXPANEL_TOKEN'])
-    event = [controller_name, action_name].join('#')
+    tracker = Mixpanel::Tracker.new(ENV["MIXPANEL_TOKEN"])
+    event = [controller_name, action_name].join("#")
     tracker.track(@current_member.id, event)
   end
 
   def track_member(tracker)
-    tracker.people.set(@current_member.id, {
-      "$first_name" => "John",
-      "$last_name"  => "Doe",
-      "$unit"       => [ @current_member.unit.name, @current_member.unit.location].join(" ")
-    })
+    tracker.people.set(
+      @current_member.id,
+      {
+        "$first_name" => "John",
+        "$last_name" => "Doe",
+        "$unit" => [ @current_member.unit.name, @current_member.unit.location].join(" ")
+      }
+    )
   end
 
   def new_session_path(_scope)
