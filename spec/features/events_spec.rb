@@ -169,8 +169,24 @@ describe "events", type: :feature do
   end
 
   describe "variations" do
+    before :each do
+      login_as(@normal_user, scope: :user)
+    end
+
     it "shows as a calendar" do
       path = calendar_unit_events_path(@unit)
+      visit(path)
+      expect(page).to have_current_path(path)
+    end
+  end
+
+  describe "planner" do
+    before :each do
+      login_as(@normal_user, scope: :user)
+    end
+
+    it "visits the page" do
+      path = unit_plans_path(@unit)
       visit(path)
       expect(page).to have_current_path(path)
     end

@@ -43,6 +43,7 @@ Rails.application.routes.draw do
 
     resources :events do
       resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
+      resources :event_activities, as: "activities", path: "activities", only: %i[new create]
       collection do
         get  "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
         get  "my_rsvps", to: "events#index", defaults: { mode: "rsvps" }
