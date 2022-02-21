@@ -1,0 +1,24 @@
+= content_tag :li,
+  class: "event-activity \
+          text-neutral-900 text-sm font-bold \
+          mb-1 block p-2 \
+          bg-neutral-200 rounded",
+  id: "event_activity_#{event_activity.id}",
+  data: { \
+    sortable_update_url: "#{unit_event_event_activity_path(event_activity.event.unit, event_activity.event, event_activity)}",
+    position: event_activity.position \
+  } do
+
+  .sort-grip
+    .activity-action-link(title="#{t('planner.titles.reorder')}")
+      i.fa-grip-vertical.far.text-neutral-900
+
+  .activity-title
+    = event_activity.title
+
+  .activity-action-link.float-right
+    = button_to unit_event_event_activity_path(event_activity.event.unit, event_activity.event, event_activity),
+      title: t("planner.activities.titles.delete_activity"),
+      method: :delete,
+      form_class: "inline-block" do
+        i.fa-trash-alt.fas.text-neutral-900.px-2.hover:text-red-500

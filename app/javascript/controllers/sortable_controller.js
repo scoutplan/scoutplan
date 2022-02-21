@@ -19,9 +19,4 @@ export default class extends Sortable {
 
     patch(item.dataset.sortableUpdateUrl, { body: data });
   }
-
-  delete() {
-    alert('sdfsdfs');
-    alert(this.sourceTarget);
-  }
 }

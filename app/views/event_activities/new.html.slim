@@ -1,8 +1,7 @@
 = turbo_frame_tag "new_activity"
-  / = form_with model: @activity, url: unit_event_activities_path(@event.unit, @event) do |f|
-  = form_with model: [@event.unit, @event, @activity] do |f|
-    section.py-2
-      .mb-1
+  = form_with model: [@event.unit, @event, @activity], data: { turbo_frame: "event_#{@event.id}_activities" } do |f|
+    section
+      .mb-2
         = f.text_field :title,
           autocomplete: "off",
           class: "text-sm w-full border rounded p-2 focus:ring-0",

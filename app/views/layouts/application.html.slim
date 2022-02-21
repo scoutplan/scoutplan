@@ -10,7 +10,6 @@ html
     = stylesheet_link_tag 'application', 'data-turbo-track': 'reload'
     = stylesheet_link_tag "https://use.typekit.net/#{ENV['ADOBE_FONT_KIT_ID']}.css"
     = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: "anonymous"
-    = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&libraries=places", async: true
     = javascript_importmap_tags
     = yield :head
 
