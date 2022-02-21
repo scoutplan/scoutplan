@@ -16,8 +16,8 @@
     = event.title
   
   - if event.short_description.present?
-    p
-      = event.short_description
+    p = event.short_description
 
-  div.mt-3.overflow-y-scroll(id="event_#{event.id}_activities")
-    = render partial: 'activities', locals: { event: event } 
+  = turbo_frame_tag "activities"
+    div.mt-3.overflow-y-scroll(id="event_#{event.id}_activities")
+      = render partial: "activities", locals: { event: event }

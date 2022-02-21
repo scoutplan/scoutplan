@@ -16,7 +16,10 @@ ul.event-activities(
       = link_to activity_path(activity), method: :delete, remote: true, class: 'activity-action-link float-end text-red-500 ml-2' do
         i.fa-trash-alt.far
 
-= link_to new_unit_event_activity_path(@unit, event), remote: true, class: "add-activity-link" do
-  i.fa-plus.far
-  |&nbsp;
-  = t("planner.activities.add")
+= turbo_frame_tag "new_activity"
+  = link_to new_unit_event_event_activity_path(event.unit, event),
+    class: "add-activity-link" do
+
+      i.fa-plus.far
+      |&nbsp;
+      = t("planner.activities.add")
