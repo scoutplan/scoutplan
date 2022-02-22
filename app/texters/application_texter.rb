@@ -3,7 +3,7 @@
 # base Texter class...do not instantiate directly
 class ApplicationTexter
   def initialize(*_args)
-    raise "Cannot directly instantiate an AbstractUser" if instance_of? ApplicationTexter
+    raise "Cannot directly instantiate an ApplicationTexter" if instance_of? ApplicationTexter
 
     super()
     @sid   = Rails.application.credentials.twilio[:account_sid]

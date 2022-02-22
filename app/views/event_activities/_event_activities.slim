@@ -1,0 +1,16 @@
+= turbo_frame_tag "event_#{event.id}_activities"
+  ul.event-activities(
+    data-controller="sortable"
+    data-sortable-animation-value="150"
+    data-sortable-group-value="meetings"
+    data-sortable-to-id="#{event.id}"
+    data-sortable-resource-name-value="event_activity")
+
+    = render event.activities.order(:position)
+
+  = turbo_frame_tag "new_activity"
+    = link_to new_unit_event_event_activity_path(event.unit, event),
+      class: "event-activity-add-link block hover:text-neutral-900 mt-2" do
+        i.fa-plus.far.text-brand-500
+        |&nbsp;
+        = t("planner.activities.add")

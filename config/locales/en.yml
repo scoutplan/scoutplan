@@ -65,6 +65,7 @@ en:
   main_nav:
     events:  "Event Calendar"
     members: "Member Roster"
+    planner: "Planner"
   
   be_verb:
     present_tense:
@@ -143,14 +144,19 @@ en:
     login_success: "You're signed in as %{name} via Magic Link."
 
   planner:
-    title:  "Planner"
+    title:  "%{unit} Planner"
     activities:
+      placeholder: "Activity description"
       add:  "Add an Activity"
       add_modal:
         title:                  "Add an Event Activity"
         event_title_caption:    "Add to"
         activity_title_caption: "Activity Name"
-        submit:                 "Add This Activity"
+        submit:                 "Add"
+      
+    titles:
+      delete_activity:  "Remove this activity"
+      reorder:          "Drag to change order or move to another event"
 
   events:
     object_name:          "event"
@@ -210,6 +216,8 @@ en:
         drafts:     "Bulk publish draft events"
         past:       "Show past events"
         subscribe:  "Add this schedule to your calendar"
+        calendar:   "View as Calendar"
+        list:       "View as List"
 
       event_row:
         rsvp_respond: "Respond"

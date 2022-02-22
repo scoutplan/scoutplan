@@ -1,0 +1,27 @@
+= turbo_frame_tag "new_activity"
+  = form_with model: [@event.unit, @event, @activity], data: { turbo_frame: "event_#{@event.id}_activities" } do |f|
+    section
+      .mb-2
+        = f.text_field :title,
+          autocomplete: "off",
+          class: "text-sm w-full border rounded p-2 focus:ring-0",
+          autofocus: true,
+          placeholder: t("planner.activities.placeholder")
+
+      - if false
+        .mb-3
+          = f.label :equipment
+          - @activity.equipment.each do |item|
+            = f.text_field 'equipment[]', class: 'form-control'
+
+    footer.flex.gap-2
+      = f.submit t("planner.activities.add_modal.submit"),
+        class: "text-sm font-bold uppercase tracking-wide \
+                bg-brand-500 hover:bg-brand-600 \
+                px-6 py-2 rounded text-white"
+
+      = link_to t("global.cancel"),
+        unit_event_event_activities_path(@event.unit, @event),
+        class: "text-sm uppercase tracking-wide font-bold \
+                bg-stone-200 hover:bg-stone-300 \
+                px-6 py-2 rounded"

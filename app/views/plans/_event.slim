@@ -1,4 +1,4 @@
-.shadow.inline-block.w-72.h-128.p-6.rounded.bg-gray-100.m-2(class="event-#{event.category.name.parameterize}")
+.shadow.inline-block.w-72.h-128.p-6.rounded.bg-neutral-100.m-2(class="event-card event-#{event.category.name.parameterize}")
   header
     h1.float-left
       .text-sm.font-bold.uppercase = event.starts_at.strftime('%b') 
@@ -15,9 +15,7 @@
   h3.font-bold.text-lg
     = event.title
   
-  - if event.short_description.present?
-    p
-      = event.short_description
+  = content_tag :p, event.short_description if event.short_description.present?
 
-  div.mt-3.overflow-y-scroll(id="event_#{event.id}_activities")
-    = render partial: 'activities', locals: { event: event } 
+  .mt-3.overflow-y-scroll
+    = render partial: "event_activities/event_activities", locals: { event: event }
