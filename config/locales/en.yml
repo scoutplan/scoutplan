@@ -202,6 +202,10 @@ en:
       description_present:  "This event has notes to read"
       download_pdf:         "Download a Printable PDF"
 
+      calendar_view:
+        prev_month: "Previous month"
+        next_month: "Next month"
+
       bulk_publish:
         execute_caption:  "Publish Selected Events"
         cancel_caption:   "Cancel"
