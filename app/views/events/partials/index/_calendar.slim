@@ -1,6 +1,91 @@
+- display_year = params[:y]&.to_i || Date.today.year
+- display_month = params[:m]&.to_i || Date.today.month
+- first_day_of_month = Date.new(display_year, display_month, 1)
+- first_day_of_last_month = first_day_of_month.last_month
+- days_in_month = first_day_of_month.end_of_month.day
+- days_in_last_month = first_day_of_last_month.end_of_month.day
+- display_day = - first_day_of_month.wday + 1
+- done = false
+
+h2.px-2
+  .inline-block.w-36.font-bold.text-lg.text-brand-500
+    = first_day_of_month.strftime("%B %Y")
+
+  = link_to calendar_unit_events_path(@unit, m: (display_month > 1) ? display_month - 1 : 12, y: (display_month > 1) ? display_year : display_year - 1),
+    title: t("events.calendar_view.prev_month"),
+    class: "inline-block py-1 px-4 rounded-l border-t border-b border-l" do
+      i.fa-chevron-left.fas
+        = "Prev"
+
+  = link_to calendar_unit_events_path(@unit, m: (display_month == 12) ? 1 : display_month + 1, y: (display_month == 12) ? display_year + 1 : display_year),
+    title: t("events.calendar_view.next_month"),
+    class: "inline-block py-1 px-4 rounded-r border" do
+      i.fa-chevron-right.fas
+        = "Next"
+
+.table.px-0.w-full.table-fixed
+  .table-row.font-bold
+    - 7.times do |dow|
+      .table-cell.p-2 = Date::DAYNAMES[dow]
+
+  // start of loop
+  - until display_day >= days_in_month do
+    .table-row
+      - 7.times do |col|
+        - cell_class = "cal-cell-dow-#{col}"
+        - cell_class << " bg-lime-500 bg-opacity-10" if Date::WEEKEND_DAYS.include? col
+        - display_date = first_day_of_month + display_day.days - 1
+
+        - if display_day > days_in_month
+          - cell_class.gsub!("bg-lime-500", "")
+          - cell_class << " bg-neutral-500 bg-opacity-10"
+          - day_number = display_day - days_in_month
+        - elsif display_day < 1
+          - cell_class.gsub!("bg-lime-500", "")
+          - cell_class << " bg-neutral-500 bg-opacity-10"
+          - day_number = days_in_last_month + display_day
+        - else
+          - day_number = display_day
+          - month_number = display_month
+
+        // now render the cell
+        .table-cell.p-2.h-32.cal-cell.hover:bg-brand-200(class="#{cell_class}" data-cal-date="#{display_date}")
+          - if display_date.today?
+            .cal-day-number.text-brand-500.font-bold
+              = day_number
+          - else
+            .cal-day-number
+              = day_number
+
+          - @events.each do |event|
+            / - if event.starts_at.beginning_of_day.localtime == display_date.beginning_of_day
+            / - if display_date.beginning_of_day.localtime < event.starts_at.localtime && \
+                / display_date.end_of_day.localtime > event.ends_at.localtime
+            - if display_date.beginning_of_day >= event.starts_at.beginning_of_day && \
+              display_date.beginning_of_day <= event.ends_at.end_of_day
+              .cal-event.text-xs.overflow-hidden
+                = link_to event.title, [ event.unit, event ],
+                  class: "hover:text-brand-500",
+                  style: "color: #{event.category.color}"
+
+        - display_day += 1
+
+    // end of 7-day loop
+  // end of until loop
 
 javascript:
   document.addEventListener("turbo:load", function() {
     document.body.classList.remove("showing-as-list");
     document.body.classList.add("showing-as-calendar");
+    setupCalendarClicks();
   })
+
+  function setupCalendarClicks() {
+    document.querySelectorAll(".cal-cell").forEach(function(elem) {
+      elem.addEventListener("click", function(elem) {
+        // var targetDate = elem.dataset.calDate;
+        // console.log(targetDate);
+        console.log(elem);
+      });
+    });
+  }

@@ -7,10 +7,9 @@ require "humanize"
 # rubocop:disable Metrics/ClassLength
 class EventsController < UnitContextController
   before_action :authenticate_user!, except: :public
-  before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish public]
-  before_action :find_member, only: %i[index create new edit edit_rsvps bulk_publish]
+  # before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish public]
+  # before_action :find_member, only: %i[index create new edit edit_rsvps bulk_publish]
   before_action :find_event, except: %i[index create new bulk_publish public]
-  around_action :set_time_zone
 
   # TODO: refactor this mess
   def index
@@ -178,8 +177,8 @@ class EventsController < UnitContextController
   # display cancel dialog where user confirms cancellation and where
   # notification options are chosen
   def cancel
-    find_unit
-    find_event
+    # find_unit
+    # find_event
   end
 
   # POST cancel
@@ -222,27 +221,25 @@ class EventsController < UnitContextController
 
   # for index, new, and create
   # rubocop:disable Style/SymbolArray
-  def find_unit
-    @current_unit = Unit.includes(
-      :setting_objects,
-      unit_memberships: [:user, :parent_relationships, :child_relationships]
-    ).find(params[:unit_id])
-    # @current_member = @unit.membership_for(current_user)
-    @unit = @current_unit
-  end
-  # rubocop:enable Style/SymbolArray
+  # def find_unit
+  #   @current_unit = Unit.includes(
+  #     :setting_objects,
+  #     unit_memberships: [:user, :parent_relationships, :child_relationships]
+  #   ).find(params[:unit_id])
+  #   # @current_member = @unit.membership_for(current_user)
+  #   @unit = @current_unit
+  # end
+  # # rubocop:enable Style/SymbolArray
 
-  def find_member
-    return unless user_signed_in?
-    @current_member = @unit.membership_for(current_user)
-  end
+  # def find_member
+  #   return unless user_signed_in?
+  #   @current_member = @unit.membership_for(current_user)
+  # end
 
-  # for show, edit, update, destroy...important that @unit
-  # is *not* set for those actions
   def find_event
-    @event = Event.includes(:event_rsvps).find(params[:id] || params[:event_id])
-    @current_unit = @event.unit
-    @current_member = @current_unit.membership_for(current_user)
+    @event = @unit.events.includes(:event_rsvps).find(params[:id] || params[:event_id])
+    # @current_unit = @event.unit
+    # @current_member = @current_unit.membership_for(current_user)
     @presenter = EventPresenter.new(event: @event, current_user: current_user)
   end
 

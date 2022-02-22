@@ -3,9 +3,10 @@
 # an abstract controller to be subclassed for instances
 # where a Unit is being manipulated (which is to say, most)
 class UnitContextController < ApplicationController
-  before_action :find_unit_info, only: %i[index new create edit]
+  before_action :find_unit_info
   before_action :set_unit_cookie
   before_action :track_activity
+  # around_action :set_time_zone
 
   # analytics
   def track_activity
@@ -44,5 +45,9 @@ class UnitContextController < ApplicationController
 
   def set_unit_cookie
     cookies[:current_unit_id] = { value: current_unit&.id }
+  end
+
+  def set_time_zone(&block)
+    Time.use_zone(current_unit.settings(:locale).time_zone, &block)
   end
 end
