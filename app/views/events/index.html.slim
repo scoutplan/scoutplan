@@ -1,7 +1,10 @@
 - variation = params[:variation] || "event_table"
 
+// kludge alert
+- wrapper_class = (variation == "calendar") ? "max-w-full" : "max-w-5xl"
+
 = turbo_frame_tag "main"
-  .max-w-5xl.mx-auto.relative.(data-controller="event")
+  .mx-auto.relative(data-controller="event" class="#{wrapper_class}")
     = render partial: "events/partials/index/header"
     = render partial: "events/partials/index/no_events" if @events.count.zero?
     = render partial: "events/partials/index/#{variation}" if @events.count.positive?
