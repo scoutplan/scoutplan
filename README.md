@@ -11,7 +11,7 @@
 [![View performance data on Skylight](https://badges.skylight.io/rpm/O56zZFqqFZWO.svg)](https://oss.skylight.io/app/applications/O56zZFqqFZWO)
 [![View performance data on Skylight](https://badges.skylight.io/status/O56zZFqqFZWO.svg)](https://oss.skylight.io/app/applications/O56zZFqqFZWO)
 
-## Assumptions & pre-reqs
+## Assumptions & prerequisites
 
 * You have a FontAwesome kit defined
 
@@ -20,6 +20,18 @@
 * Docker & docker-compose installed
 
 * Google Places API credentials
+
+* Honeybadger account
+
+* ScoutAPM account
+
+* Twilio account with SMS enabled
+
+* Mixpanel account
+
+* Solarwinds Papertrail account
+
+* S3-compatible storage (coded against DigitalOcean)
 
 ## Set up local HTTPS
 
@@ -35,7 +47,7 @@ See https://codewithhugo.com/docker-compose-local-https/ for inspiration
 
 ## Rails credentials
 
-* twilio.account_sid (requires a Twilio account)
+* twilio.account_sid
 * twilio.auth_token
 
 ## ENV vars (.env in dev, K8S in production as described below)
@@ -162,3 +174,7 @@ header(class="px-6 py-4 \
 
   // " <- necessary evil comment to restore proper code highlighting in VS Code
 ```
+
+## Sources
+
+Sign-in page background: https://heropatterns.com/

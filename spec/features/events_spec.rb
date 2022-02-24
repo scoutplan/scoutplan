@@ -76,6 +76,13 @@ describe "events", type: :feature do
         visit unit_event_cancel_path(event.unit, event)
         expect(page).to have_content(I18n.t("events.cancel.past_warning"))
       end
+
+      it "performs the cancellation" do
+        event = FactoryBot.create(:event, :published, unit: @unit, title: "Published event")
+        visit unit_event_cancel_path(@unit, event)
+        choose :event_message_audience_none
+        expect { click_link_or_button "Cancel This Event" }.not_to raise_exception
+      end
     end
 
     describe "update" do

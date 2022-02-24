@@ -184,8 +184,8 @@ class EventsController < UnitContextController
   # POST cancel
   # actually cancel the event and send out notifications
   def perform_cancellation
-    find_unit
-    find_event
+    # find_unit
+    # find_event
     @event.status = :cancelled
     return unless @event.save!
 
