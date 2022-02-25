@@ -47,6 +47,10 @@ class Event < ApplicationRecord
     requires_rsvp && starts_at > DateTime.now
   end
 
+  def rsvps?
+    rsvps.accepted.count.positive?
+  end
+
   def organizable?
     requires_rsvp
   end

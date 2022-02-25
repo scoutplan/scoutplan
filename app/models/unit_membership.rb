@@ -38,6 +38,8 @@ class UnitMembership < ApplicationRecord
   enum status: { inactive: 0, active: 1, registered: 2 }, _prefix: true
   enum member_type: { unknown: 0, youth: 1, adult: 2 }
 
+  scope :status_active_and_registered, -> { where(status: %i[active registered]) } # everyone except inactives
+
   delegate_missing_to :user
 
   accepts_nested_attributes_for :user

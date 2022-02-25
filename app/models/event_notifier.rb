@@ -4,6 +4,12 @@
 class EventNotifier
   def rsvp_opening(user); end
 
+  def initialize(event)
+    @event = event
+  end
+
+  def send_cancellation(member); end
+
   def self.after_publish(event)
     return unless event.requires_rsvp
 

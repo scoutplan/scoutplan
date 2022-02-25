@@ -176,22 +176,18 @@ class EventsController < UnitContextController
   # GET cancel
   # display cancel dialog where user confirms cancellation and where
   # notification options are chosen
-  def cancel
-    # find_unit
-    # find_event
-  end
+  def cancel; end
 
   # POST cancel
   # actually cancel the event and send out notifications
+  # rubocop:disable Style/GuardClause
   def perform_cancellation
-    # find_unit
-    # find_event
-    @event.status = :cancelled
-    return unless @event.save!
-
-    flash[:notice] = t("events.show.cancel.confirmation", event_title: @event.title)
-    redirect_to unit_events_path(@unit)
+    service = EventCancellationService.new(@event, event_params)
+    if service.cancel
+      redirect_to unit_events_path(@unit), notice: t("events.show.cancel.confirmation", event_title: @event.title)
+    end
   end
+  # rubocop:enable Style/GuardClause
 
   # this override is needed to pass the membership instead of the user
   # as the object to be evaluated in Pundit policies
@@ -263,7 +259,11 @@ class EventsController < UnitContextController
       :repeats,
       :repeats_until,
       :departs_from,
-      :status
+      :status,
+
+      # these ones are specifically for cancellation
+      :message_audience,
+      :note,
     )
   end
   # rubocop:enable Metrics/MethodLength

@@ -1,6 +1,6 @@
 = turbo_frame_tag "main"
   .mx-auto.max-w-xl.py-8
-    = form_with model: @event, url: unit_event_cancel_path(@unit, @event), method: :post, data: { turbo_action: 'advance' } do |f|
+    = form_with model: @event, url: unit_event_cancel_path(@unit, @event), method: :post, data: { turbo_action: "advance" } do |f|
       header.sticky.top-0.pb-4
         h1.font-bold.text-2xl Cancel Event
 
@@ -13,11 +13,11 @@
         p.mb-4
           = raw("You are cancelling the <strong>#{@event.title}</strong> on ")
           span.whitespace-nowrap.font-bold
-            = @event.starts_at.strftime('%B %-d')
+            = @event.starts_at.strftime("%B %-d")
           |.&nbsp
 
           - if !@event.requires_rsvp
-            = 'No RSVP was required.'
+            = "No RSVP was required."
           - elsif @event.rsvps.accepted.count.positive?
             = "There are #{@event.rsvps.accepted.count} members planning to attend"
 
@@ -26,31 +26,32 @@
 
             = "."
           - else
-            = 'No one is planning to attend.'
+            = "No one is planning to attend."
 
         p.mb-4
           = t("events.cancel.message_prompt")
         
         .mb-1
-          = f.radio_button :message_audience, :none, class: 'mr-2'
+          = f.radio_button :message_audience, :none, class: "mr-2"
           = f.label :message_audience_none, "No, don't send a message"
 
-        - if @event.requires_rsvp && @event.rsvps.accepted.count.positive?
+        - if @event.rsvps?
           .mb-1
-            = f.radio_button :message_audience, :acceptors, class: 'mr-2'
+            = f.radio_button :message_audience, :acceptors, class: "mr-2"
             = f.label :message_audience_acceptors, "Yes, to the #{@event.rsvps.accepted.count} who plan on attending"
 
         .mb-1
-          = f.radio_button :message_audience, :active_members, class: 'mr-2', checked: true
+          = f.radio_button :message_audience, :active_members, class: "mr-2", checked: true
           = f.label :message_audience_active_members, "Yes, to all #{@unit.members.status_active.count} active members"
 
         .mb-3
-          = f.radio_button :message_audience, :all_members, class: 'mr-2'
+          = f.radio_button :message_audience, :all_members, class: "mr-2"
           = f.label :message_audience_all_members, "Yes, to all #{@unit.members.count} registered members"
 
         = f.text_area :note,
-          class: 'border rounded w-full h-24 p-2 hidden',
-          placeholder: 'Type your cancellation message here'
+          class: "border rounded w-full h-24 p-2 placholder-stone-300 border-stone-500",
+          autofocus: true,
+          placeholder: t("events.placeholders.cancellation_message")
 
       // footer, containing right-justified buttons
       footer.py-4.sticky.bottom-0.flex.gap-2.flex-col.md:flex-row.md:justify-end
@@ -67,24 +68,30 @@
           // Don't Cancel button
           = link_to t("events.cancel.abandon"),
             unit_event_path(@unit, @event),
-            class: "text-center px-4 py-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase \
-                  inline-block w-full md:w-fit",
+            class: "text-black text-sm font-bold text-center \
+                    no-underline px-4 py-2  bg-gray-200 hover:bg-gray-300 rounded  tracking-wider uppercase \
+                    inline-block w-full md:w-fit",
             data: { turbo_frame: "main", turbo_action: "advance" }
 
+= render partial: "events/partials/styles"
 
-
-= render partial: 'events/partials/styles'
+css:
+  textarea::placeholder {
+    color: #D6D3D1;
+    opacity: 1;
+  }
 
 javascript:
   function setupNoteField() {
-    var messageAudience = document.querySelector('input[name="message_audience"]:checked').value;
-    var noteField = document.querySelector('#note');
-    noteField.style.display = (messageAudience == 'none') ? 'none' : 'block';
+    var messageAudience = document.querySelector("input[name='event[message_audience]']:checked").value;
+    var noteField = document.querySelector("#event_note");
+    noteField.style.display = (messageAudience == "none") ? "none" : "block";
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('input[type="radio"]').forEach(function(elem) {
-      elem.addEventListener('click', function(elem) {
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll("input[type='radio']").forEach(function(elem) {
+      elem.addEventListener("click", function(elem) {
+        console.log("CLICK!");
         setupNoteField();
       });
     });

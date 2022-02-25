@@ -72,6 +72,7 @@ header.flex.justify-between.pb-2.border-b
               .cal-event.text-xs.overflow-hidden
                 = link_to event.title, [ event.unit, event ],
                   class: "block p-1 font-bold hover:bg-stone-100 rounded",
+                  data: { turbo_action: "advance" },
                   style: "color: #{event.category.color}"
 
         - display_day += 1
