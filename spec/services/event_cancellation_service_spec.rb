@@ -9,7 +9,7 @@ RSpec.describe EventCancellationService, type: :model do
 
   it "cancels" do
     service = EventCancellationService.new(@event)
-    service.cancel!
+    service.cancel
     expect(@event.cancelled?).to be_truthy
   end
 end

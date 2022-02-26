@@ -8,7 +8,11 @@ class EventNotifier
     @event = event
   end
 
-  def send_cancellation(member); end
+  def send_cancellation(member, note)
+    return unless member.contactable?
+
+    EventMailer.with(event: @event, member: member, note: note).cancellation_email.deliver_later
+  end
 
   def self.after_publish(event)
     return unless event.requires_rsvp

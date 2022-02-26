@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# abstract Mailer class that performs some basic housekeeping
 class ScoutplanMailer < ApplicationMailer
   before_action :find_member
   before_action :find_unit

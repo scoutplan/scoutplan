@@ -20,9 +20,10 @@ class EventCancellationService < BaseEventService
     set_audience
     return if @audience.empty?
 
+    note = @params[:note]
     notifier = EventNotifier.new(@event)
     @audience.each do |member|
-      notifier.send_cancellation(member)
+      notifier.send_cancellation(member, note)
     end
   end
 
