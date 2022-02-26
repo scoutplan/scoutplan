@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# a Texter subclass for sending SMS to existing members
+# a Texter base class for sending SMS to existing members
 class MemberTexter < ApplicationTexter
   attr_accessor :member
 

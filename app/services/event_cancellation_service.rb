@@ -18,7 +18,6 @@ class EventCancellationService < BaseEventService
   # send out email & text notifications based on audience selected in UI
   def send_notifications
     set_audience
-    return if @audience.empty?
 
     note = @params[:note]
     notifier = EventNotifier.new(@event)
@@ -38,6 +37,8 @@ class EventCancellationService < BaseEventService
       @audience = @event.unit.members.status_active
     when "all_members"
       @audience = @event.unit.members.status_active_and_registered
+    else
+      @audience = []
     end
   end
 end
