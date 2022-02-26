@@ -13,6 +13,7 @@ class EventsController < UnitContextController
 
   # TODO: refactor this mess
   def index
+    store_path
     @events = UnitEventQuery.new(current_member, current_unit).execute
     @event_drafts = @events.select(&:draft?)
     @presenter = EventPresenter.new
@@ -293,6 +294,12 @@ class EventsController < UnitContextController
 
   def set_time_zone(&block)
     Time.use_zone(current_unit.settings(:locale).time_zone, &block)
+  end
+
+  private
+
+  def store_path
+    cookies[:events_index_path] = request.original_fullpath
   end
 end
 # rubocop:enable Metrics/ClassLength
