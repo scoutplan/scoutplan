@@ -11,15 +11,15 @@ services:
     depends_on:
       - db
 
-  # sidekiq:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   command: sh -c "bundle exec sidekiq"
-  #   depends_on:
-  #     - redis
-  #   volumes:
-  #     - .:/app
+  sidekiq:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "bundle exec sidekiq"
+    depends_on:
+      - redis
+    volumes:
+      - .:/app
 
   db:
     image: postgres:13-alpine

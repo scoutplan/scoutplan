@@ -24,7 +24,8 @@
         = f.styled_label :title, layout: :inline
         = f.text_field :title,
           class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300",
-          autocomplete: 'off',
+          autocomplete: "off",
+          autofocus: true,
           placeholder: t("events.placeholders.title")
 
       // category

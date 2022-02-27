@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # service for cancelling events & notifying the appropriate people
-class EventCancellationService < BaseEventService
+class EventCancellationService < EventService
   def cancel
     return if @event.cancelled?
 
@@ -16,29 +16,25 @@ class EventCancellationService < BaseEventService
   private
 
   # send out email & text notifications based on audience selected in UI
+  # these will be enqueued into Sidekiq and despooled separately
   def send_notifications
-    set_audience
-
     note = @params[:note]
-    notifier = EventNotifier.new(@event)
-    @audience.each do |member|
-      notifier.send_cancellation(member, note)
+    audience.each do |member|
+      EventNotifier.perform_async(@event.id, member.id, note)
     end
   end
 
   # who's getting notified?
-  def set_audience
+  def audience
     case @params[:message_audience]
-    when "none"
-      @audience = []
     when "acceptors"
-      @audience = @event.rsvps.accepted
+      @event.rsvps.accepted
     when "active_members"
-      @audience = @event.unit.members.status_active
+      @event.unit.members.status_active
     when "all_members"
-      @audience = @event.unit.members.status_active_and_registered
+      @event.unit.members.status_active_and_registered
     else
-      @audience = []
+      []
     end
   end
 end

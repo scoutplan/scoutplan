@@ -86,7 +86,7 @@ class EventsController < UnitContextController
 
   def create
     authorize :event, :create?
-    service = EventService.new(@unit)
+    service = EventCreationService.new(@unit)
     @event = service.create(event_params)
     return unless @event.present?
 
@@ -177,7 +177,9 @@ class EventsController < UnitContextController
   # GET cancel
   # display cancel dialog where user confirms cancellation and where
   # notification options are chosen
-  def cancel; end
+  def cancel
+    redirect_to [@unit, @event], alert: "Event is already cancelled." and return if @event.cancelled?
+  end
 
   # POST cancel
   # actually cancel the event and send out notifications

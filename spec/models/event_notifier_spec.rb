@@ -3,28 +3,21 @@
 require "rails_helper"
 
 RSpec.describe EventNotifier, type: :model do
-  # describe 'after publish' do
-  #   it 'executes' do
-  #     event = FactoryBot.create(:event, :requires_rsvp)
-  #     Flipper.enable :receive_event_publish_notice
-  #     expect { EventNotifier.after_publish(event) }.to change { ActionMailer::Base.deliveries.count }.by(event.unit.members.count)
-  #   end
-  # end
+  describe "cancellation" do
+    before do
+      @event = FactoryBot.create(:event, :cancelled)
+      @unit = @event.unit
+      @member = FactoryBot.create(:unit_membership, unit: @unit)
+      @unit.settings(:communication).update! via_email: true, via_sms: true
+      @notifier = EventNotifier.new(@event)
+    end
 
-  # describe 'after_bulk_publish' do
-  #   it 'executes' do
-  #     unit = FactoryBot.create(:unit_with_members)
-  #     Flipper.enable :receive_bulk_publish_notice
-  #     # unit.members.each { |m| Flipper.enable_actor :receive_bulk_publish_notice, m.flipper_id }
-  #     5.times do
-  #       FactoryBot.create(:event, unit: unit, status: :published)
-  #     end
-  #     expect { EventNotifier.after_bulk_publish(unit, unit.events) }.to change { ActionMailer::Base.deliveries.count }.by(unit.members.count)
-  #   end
-  # end
+    it "sends an email and text" do
+      expect { @notifier.send_cancellation(@member) }.to change { ActionMailer::Base.deliveries.count }.by(1)
 
-  # describe 'send_rsvp_confirmation' do
-  #   it 'executes' do
-  #   end
-  # end
+      # Texter doesn't have a "deliveries" concept and we're relying on Twilio test credentials here, so
+      # we're going to assume that if we reach this point without an error, we're good. We'll have to check
+      # SMS test deliveries by hand for now
+    end
+  end
 end

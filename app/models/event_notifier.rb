@@ -2,13 +2,23 @@
 
 # notify users under different scenarios
 class EventNotifier
+  include Sidekiq::Job
+
   def rsvp_opening(user); end
 
-  def initialize(event)
+  # this gets called by Sidekiq
+  def perform(event_id, member_id, note = nil)
+    @event = Event.find(event_id)
+    member = UnitMembership.find(member_id)
+    send_cancellation(member, note)
+  end
+
+  # this gets called when instantiating the class directly
+  def initialize(event = nil)
     @event = event
   end
 
-  def send_cancellation(member, note)
+  def send_cancellation(member, note = nil)
     return unless member.contactable?
 
     EventMailer.with(event: @event, member: member, note: note).cancellation_email.deliver_later

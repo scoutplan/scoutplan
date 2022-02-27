@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 # business logic for Events
-class EventService
+class EventCreationService < ApplicationService
   def initialize(unit = nil)
     @unit = unit
+    super()
   end
 
   def create(params)
