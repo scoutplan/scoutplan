@@ -10,7 +10,8 @@ RSpec.describe EventCancellationService, type: :model do
   end
 
   it "cancels" do
-    EventCancellationService.new.perform(@event.id, event: { message_audience: "none" })
+    service = EventCancellationService.new(@event, event: { message_audience: "none" })
+    service.cancel
     @event.reload
     expect(@event.cancelled?).to be_truthy
   end

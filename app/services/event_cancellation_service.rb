@@ -28,7 +28,7 @@ class EventCancellationService < EventService
   def audience
     case @params[:message_audience]
     when "acceptors"
-      @event.rsvps.accepted
+      @event.rsvps.accepted.map(&:member)
     when "active_members"
       @event.unit.members.status_active
     when "all_members"

@@ -178,3 +178,12 @@ header(class="px-6 py-4 \
 ## Sources
 
 Sign-in page background: https://heropatterns.com/
+
+## Testing
+
+Run specs from command line: ```rspec```
+
+Load testing: https://octoperf.com/blog/2017/10/26/how-to-install-jmeter-mac/
+
+SSL configuration: https://www.ssllabs.com/ssltest/
+
