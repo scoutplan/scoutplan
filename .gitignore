@@ -56,3 +56,5 @@ act.sh
 !/app/assets/builds/.keep
 
 .DS_Store
+
+jmeter.log

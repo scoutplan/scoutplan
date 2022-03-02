@@ -57,31 +57,11 @@ describe "events", type: :feature do
         visit unit_event_path(@unit, event)
         expect(page).not_to have_selector(:link_or_button, "Publish")
       end
-    end
 
-    describe "cancel" do
-      it "visits the cancel page" do
-        event = FactoryBot.create(:event, :published, unit: @unit, title: "Published event")
-        visit edit_unit_event_path(@unit, event)
-
-        # expect(page).to have_selector(:link_or_button, I18n.t("events.show.cancel_title"))
-        click_link_or_button I18n.t("events.show.cancel_title")
-        expect(page).to have_current_path(unit_event_cancel_path(event.unit, event))
-        expect(page).to have_selector(:link_or_button, I18n.t("events.cancel.proceed"))
-        expect(page).to have_selector(:link_or_button, I18n.t("events.cancel.abandon"))
-      end
-
-      it "warns when event is past" do
-        event = FactoryBot.create(:event, :published, :past, unit: @unit)
-        visit unit_event_cancel_path(event.unit, event)
-        expect(page).to have_content(I18n.t("events.cancel.past_warning"))
-      end
-
-      it "performs the cancellation" do
-        event = FactoryBot.create(:event, :published, unit: @unit, title: "Published event")
-        visit unit_event_cancel_path(@unit, event)
-        choose :event_message_audience_none
-        expect { click_link_or_button "Cancel This Event" }.not_to raise_exception
+      it "does not display Cancel link on cancelled events" do
+        @event.update!(status: :cancelled)
+        visit edit_unit_event_path(@unit, @event)
+        expect(page).not_to have_link(I18n.t("events.show.cancel_title"))
       end
     end
 

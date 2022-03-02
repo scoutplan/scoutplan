@@ -16,5 +16,21 @@ FactoryBot.define do
     trait :non_admin do
       role { "member" }
     end
+
+    trait :inactive do
+      status { "inactive" }
+    end
+
+    trait :registered do
+      status { "registered" }
+    end
+
+    trait :active do
+      status { "active" }
+    end
+
+    trait :youth do
+      member_type { "youth" }
+    end
   end
 end

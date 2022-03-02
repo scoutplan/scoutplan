@@ -1,14 +1,29 @@
 # frozen_string_literal: true
 
-# The Mailer class for sending email to unit members
+# The Mailer class for sending email relating to specific events
 #
 class EventMailer < ScoutplanMailer
+  def cancellation_email
+    @event  = params[:event]
+    @member = params[:member]
+    @note   = params[:note]
+    mail(
+      to: @member.email,
+      from: @unit.settings(:communication).from_email,
+      subject: "#{@unit.name} #{@event.title} Cancelled"
+    )
+  end
+
   def token_invitation_email
     @token = params[:token]
     @event = @token.event
     @user  = @token.user
     @url   = rsvp_response_url(@token.value)
-    mail(to: @user.email, from: @unit.settings(:communication).from_email, subject: "#{@unit.name} Event Invitation: #{@event.title}")
+    mail(
+      to: @user.email,
+      from: @unit.settings(:communication).from_email,
+      subject: "#{@unit.name} Event Invitation: #{@event.title}"
+    )
   end
 
   def bulk_publish_email
@@ -22,7 +37,8 @@ class EventMailer < ScoutplanMailer
 
   def rsvp_confirmation_email
     @rsvp = params[:rsvp]
-    mail(to: email_address_with_name(@rsvp.user.email, @rsvp.user.full_display_name),
+    user = @rsvp.user
+    mail(to: email_address_with_name(user.email, user.full_display_name),
          from: email_address_with_name(@rsvp.unit.settings(:communication).from_email, @rsvp.unit.name),
          subject: "#{@rsvp.unit.name}: Your RSVP for #{@rsvp.event.title} has been received")
   end

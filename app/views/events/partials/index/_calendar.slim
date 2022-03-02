@@ -12,20 +12,26 @@ header.flex.justify-between.pb-2.border-b
     = first_day_of_month.strftime("%B %Y")
   
   div
+    // prev button
     = link_to calendar_unit_events_path(@unit, m: (display_month > 1) ? display_month - 1 : 12, y: (display_month > 1) ? display_year : display_year - 1),
       title: t("events.calendar_view.prev_month"),
+      data: { turbo_action: "advance" },
       class: "text-sm inline-block py-1 px-4 rounded-l border-t border-b border-l hover:bg-stone-100" do
         i.fa-chevron-left.fas
           = "Prev"
 
+    // next button
     = link_to calendar_unit_events_path(@unit, m: (display_month == 12) ? 1 : display_month + 1, y: (display_month == 12) ? display_year + 1 : display_year),
       title: t("events.calendar_view.next_month"),
+      data: { turbo_action: "advance" },
       class: "uppercase text-sm font-bold inline-block py-1 px-4 rounded-r border hover:bg-stone-100" do
         i.fa-chevron-right.fas
           = "Next"
 
+    // today button
     = link_to "Today",
       calendar_unit_events_path(@unit),
+      data: { turbo_action: "advance" },
       class: "inline-block uppercase font-bold text-sm tracking-wide hover:bg-stone-100 border rounded px-2 py-1 ml-2"
 
 .table.px-0.w-full.table-fixed
@@ -67,11 +73,15 @@ header.flex.justify-between.pb-2.border-b
                   = display_date.strftime("%-d")
 
           - @events.each do |event|
+            - css_classes = "event-cancelled" if event.cancelled?
+            - css_classes = "event-draft" if event.draft?
+
             - if display_date.beginning_of_day >= event.starts_at.beginning_of_day && \
               display_date.beginning_of_day <= event.ends_at.end_of_day
-              .cal-event.text-xs.overflow-hidden
+              .cal-event.text-xs.overflow-hidden(class="#{css_classes}")
                 = link_to event.title, [ event.unit, event ],
                   class: "block p-1 font-bold hover:bg-stone-100 rounded",
+                  data: { turbo_action: "advance" },
                   style: "color: #{event.category.color}"
 
         - display_day += 1

@@ -1,0 +1,9 @@
+<% content_for :left_column do %>
+  <h1>Event Cancelled</h1>
+
+  <p>Heads up: <%= @event.title %> on <%= @event.starts_at.strftime("%B %-d") %> has been cancelled.</p>
+
+  <% if @note.present? %>
+    <p><%= @note %>
+  <% end %>
+<% end %>

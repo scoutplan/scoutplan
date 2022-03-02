@@ -13,6 +13,7 @@ class EventsController < UnitContextController
 
   # TODO: refactor this mess
   def index
+    store_path
     @events = UnitEventQuery.new(current_member, current_unit).execute
     @event_drafts = @events.select(&:draft?)
     @presenter = EventPresenter.new
@@ -85,7 +86,7 @@ class EventsController < UnitContextController
 
   def create
     authorize :event, :create?
-    service = EventService.new(@unit)
+    service = EventCreationService.new(@unit)
     @event = service.create(event_params)
     return unless @event.present?
 
@@ -177,21 +178,19 @@ class EventsController < UnitContextController
   # display cancel dialog where user confirms cancellation and where
   # notification options are chosen
   def cancel
-    # find_unit
-    # find_event
+    redirect_to [@unit, @event], alert: "Event is already cancelled." and return if @event.cancelled?
   end
 
   # POST cancel
   # actually cancel the event and send out notifications
+  # rubocop:disable Style/GuardClause
   def perform_cancellation
-    # find_unit
-    # find_event
-    @event.status = :cancelled
-    return unless @event.save!
-
-    flash[:notice] = t("events.show.cancel.confirmation", event_title: @event.title)
-    redirect_to unit_events_path(@unit)
+    service = EventCancellationService.new(@event, event_params)
+    if service.cancel
+      redirect_to unit_events_path(@unit), notice: t("events.show.cancel.confirmation", event_title: @event.title)
+    end
   end
+  # rubocop:enable Style/GuardClause
 
   # this override is needed to pass the membership instead of the user
   # as the object to be evaluated in Pundit policies
@@ -263,7 +262,11 @@ class EventsController < UnitContextController
       :repeats,
       :repeats_until,
       :departs_from,
-      :status
+      :status,
+
+      # these ones are specifically for cancellation
+      :message_audience,
+      :note,
     )
   end
   # rubocop:enable Metrics/MethodLength
@@ -293,6 +296,12 @@ class EventsController < UnitContextController
 
   def set_time_zone(&block)
     Time.use_zone(current_unit.settings(:locale).time_zone, &block)
+  end
+
+  private
+
+  def store_path
+    cookies[:events_index_path] = request.original_fullpath
   end
 end
 # rubocop:enable Metrics/ClassLength

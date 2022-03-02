@@ -7,10 +7,11 @@
       = f.label :from, class: "font-bold text-sm uppercase tracking-wide"
 
     .flex.gap-x-4
-      = f.date_field :starts_at_date, class: "flex border rounded p-2"
+      = f.date_field :starts_at_date, class: "flex border rounded p-2", tabindex: -1
       = f.time_field :starts_at_time,
         class: "flex border rounded p-2",
         step: "900",
+        tabindex: -1,
         value: @event.starts_at.localtime.strftime("#{ @format_time }")
 
   // to
@@ -18,10 +19,11 @@
     = f.label :to, nil, class: "font-bold text-sm uppercase tracking-wide"
 
     .flex.flex-grow.gap-x-4
-      = f.date_field :ends_at_date, class: "flex flex-grow border rounded p-2"
+      = f.date_field :ends_at_date, class: "flex flex-grow border rounded p-2", tabindex: -1
       = f.time_field :ends_at_time,
         class: "flex flex-grow border rounded p-2",
         step: "900",
+        tabindex: -1,
         value: @event.ends_at.localtime.strftime("#{ @format_time }")
 
 // repeats

@@ -173,6 +173,7 @@ en:
       address:      "Address or place name"
       departs_from: "Departure address"
       category:     "Select an event category"
+      cancellation_message:       "Type your cancellation message here (optional)"
     
     edit_rsvps:
       title: "RSVP — "

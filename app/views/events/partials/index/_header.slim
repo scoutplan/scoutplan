@@ -61,6 +61,9 @@ header#page_header.w-full.sticky.left-0.right-0.top-0.px-0.bg-white.pb-4.pt-8.lg
           class: 'ml-3 text-sm font-bold rounded bg-gray-100 text-black no-underline px-4 py-2 uppercase',
           id: 'cancel_bulk_publish'
 
+- if flash[:notice]
+  p = flash[:notice]
+
 div.pl-2.mt-5
   .flex.gap-3
     .filter-status.filter-status-only-rsvps.inline-block.rounded.px-4.py-2.mt-6.bg-sky-100.text-sky-600

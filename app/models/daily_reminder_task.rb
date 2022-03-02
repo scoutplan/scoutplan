@@ -8,15 +8,23 @@ class DailyReminderTask < UnitTask
 
   def perform
     Time.zone = unit.settings(:locale).time_zone
-    return unless unit.events.published.imminent.count.positive?
+    find_events
+    send_reminders if @events.count.positive?
+    super
+  end
 
+  private
+
+  def find_events
+    @events = unit.events.published.imminent
+  end
+
+  def send_reminders
     Rails.logger.warn { "Sending Daily Reminders for #{unit.name}" }
 
     unit.members.find_each do |member|
       perform_for_member(member)
     end
-
-    super
   end
 
   def perform_for_member(member)

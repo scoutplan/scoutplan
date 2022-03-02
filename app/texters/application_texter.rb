@@ -12,13 +12,16 @@ class ApplicationTexter
     @client = Twilio::REST::Client.new(@sid, @token)
   end
 
+  # returns true if successful, false if not
   def send_message
     raise ArgumentError, "'to' or 'body' arguments missing" unless to && body
 
     Rails.logger.warn { "Sending SMS to #{to}: #{body}" }
     @client.messages.create(from: @from, to: to, body: body)
+    true
   rescue Twilio::REST::RestError => e
     Rails.logger.error { e.message }
+    false
   end
 
   # override in subclasses

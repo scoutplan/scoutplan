@@ -2,9 +2,26 @@
 
 # Preview all emails at http://localhost:3000/rails/mailers/event
 
-require 'factory_bot'
+require "faker"
+require "factory_bot"
 
-class EventPreview < ActionMailer::Preview
+class EventMailerPreview < ActionMailer::Preview
+  def cancellation_email
+    unit = Unit.first
+    member = unit.members.first
+    event = FactoryBot.build(:event, :published, unit: unit)
+    note = "Schade. Dass tut mir leid!"
+    EventMailer.with(event: event, member: member, note: note).cancellation_email
+  end
+
+  def cancellation_email_no_note
+    unit = Unit.first
+    member = unit.members.first
+    event = FactoryBot.build(:event, :published, unit: unit)
+    note = ""
+    EventMailer.with(event: event, member: member, note: note).cancellation_email
+  end
+
   def token_invitation_email
     unit = Unit.new(name: 'Test Unit')
     event = Event.new(title: 'Test Event', unit: unit, description: "I'm baby williamsburg pabst master cleanse, gentrify letterpress yr kogi. Taiyaki air plant austin four dollar toast post-ironic humblebrag keffiyeh tofu palo santo bushwick locavore everyday carry shoreditch tbh. Bicycle rights helvetica bitters cray sartorial ramps literally raclette. Kitsch YOLO normcore single-origin coffee artisan literally, offal umami VHS poutine direct trade vexillologist banh mi. Fanny pack food truck health goth actually jianbing mixtape, typewriter woke gastropub tbh beard ennui. Small batch chia authentic craft beer cred.")

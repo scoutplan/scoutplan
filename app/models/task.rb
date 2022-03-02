@@ -34,7 +34,8 @@ class Task < ApplicationRecord
   # if we're calling every minute, most of the time there's nothing to do
   #
   def perform_on_schedule
-    Rails.logger.warn { "Next runs at #{next_runs_at}" }
+    class_name = self.class.name
+    Rails.logger.warn { "#{class_name} next runs at #{next_runs_at}" }
     perform if time_to_run?
   end
 
