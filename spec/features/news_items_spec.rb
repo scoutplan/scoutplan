@@ -5,13 +5,28 @@ require "rails_helper"
 # rubocop:disable Metrics/BlockLength
 describe "news items", type: :feature do
   before do
-    User.destroy_all
-    @member = FactoryBot.create(:member, :admin)
-    @unit = @member.unit
-    login_as @member.user
+    @admin_member = FactoryBot.create(:member, :admin)
+    @unit = @admin_member.unit
+    login_as @admin_member.user
   end
 
   describe "drafts page" do
+    before do
+      @news_item = FactoryBot.create(:news_item, unit: @unit)
+    end
+
+    it "creates a draft" do
+    end
+
+    it "deletes a draft" do
+    end
+
+    it "edits a draft" do
+    end
+  end
+
+  # we may not need these specs anymore
+  describe "digest settings" do
     it "navigates when legacy digest settings are in place" do
       @unit.settings(:communication).update! digest_schedule: "blah"
       path = unit_newsletter_drafts_path(@unit)
