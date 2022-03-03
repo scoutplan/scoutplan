@@ -455,6 +455,7 @@ DEPENDENCIES
   listen (~> 3.7)
   lograge
   mixpanel-ruby
+  nokogiri (>= 1.13.2)
   pg
   puma (~> 5.0)
   pundit
