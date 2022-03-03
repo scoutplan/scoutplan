@@ -16,8 +16,7 @@ class IcalExporter
     event.summary = @event.title
     event.dtstart = @event.starts_at.utc
     event.dtend = @event.ends_at.utc
-    event.location = @event.location
-    event.location << @event.address if @event.address.present?
+    event.location = [@event.location.presence, @event.address.presence].compact.join(" ")
     event.description = @event.description&.to_plain_text || @event.short_description
     event.url = Rails.application.routes.url_helpers.unit_event_url(@event.unit, @event, host: ENV["APP_HOST"])
     event
