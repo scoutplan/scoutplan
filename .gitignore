@@ -50,6 +50,7 @@ docker-compose.override.yml
 act.sh
 
 /coverage
+/_temp
 
 .vscode
 /app/assets/builds/*

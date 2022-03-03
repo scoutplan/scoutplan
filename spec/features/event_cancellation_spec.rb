@@ -58,6 +58,15 @@ describe "event_cancellation", type: :feature do
       expect { click_link_or_button "Cancel This Event" }.not_to raise_exception
     end
 
+    describe "default selections" do
+      it "defaults to 'none' when event is draft" do
+        @event.update!(status: :draft)
+      end
+
+      it "defaults to 'active' when event is published" do
+      end
+    end
+
     describe "notifications" do
       before do
         FactoryBot.create(:unit_membership, :inactive, unit: @unit)

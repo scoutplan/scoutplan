@@ -225,9 +225,9 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.1-x86_64-darwin)
+    nokogiri (1.13.3-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.13.1-x86_64-linux)
+    nokogiri (1.13.3-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     parallel (1.21.0)
@@ -455,6 +455,7 @@ DEPENDENCIES
   listen (~> 3.7)
   lograge
   mixpanel-ruby
+  nokogiri (>= 1.13.2)
   pg
   puma (~> 5.0)
   pundit

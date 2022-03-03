@@ -2,12 +2,20 @@
 
 FactoryBot.define do
   factory :event do
-    title           { "Hiking Trip" }
-    association     :unit, factory: :unit_with_members
-    starts_at       { 14.days.from_now }
-    ends_at         { 15.days.from_now }
-    status          { :draft }
+    title       { "Hiking Trip" }
+    association :unit, factory: :unit_with_members
+    starts_at   { 14.days.from_now }
+    ends_at     { 15.days.from_now }
+    status      { :draft }
     event_category
+  end
+
+  trait :with_location do
+    location { Faker::Address.community }
+  end
+
+  trait :with_address do
+    address { Faker::Address.street_address }
   end
 
   trait :requires_rsvp do

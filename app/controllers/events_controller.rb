@@ -263,10 +263,9 @@ class EventsController < UnitContextController
       :repeats_until,
       :departs_from,
       :status,
-
       # these ones are specifically for cancellation
       :message_audience,
-      :note,
+      :note
     )
   end
   # rubocop:enable Metrics/MethodLength
@@ -297,8 +296,6 @@ class EventsController < UnitContextController
   def set_time_zone(&block)
     Time.use_zone(current_unit.settings(:locale).time_zone, &block)
   end
-
-  private
 
   def store_path
     cookies[:events_index_path] = request.original_fullpath

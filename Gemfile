@@ -24,6 +24,7 @@ gem "importmap-rails"
 gem "ledermann-rails-settings"
 gem "lograge"
 gem "mixpanel-ruby"
+gem "nokogiri", ">= 1.13.2"
 gem "pg"
 gem "puma", "~> 5.0"
 gem "pundit"
@@ -76,7 +77,7 @@ group :test do
   gem "faker"
   gem "selenium-webdriver", "~> 3.142"
   gem "simplecov", require: false
-  
+
   # Easy installation and use of web drivers to run system tests with browsers
   gem "webdrivers", "~> 4.6"
 end
