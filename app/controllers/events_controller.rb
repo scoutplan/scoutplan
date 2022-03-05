@@ -293,10 +293,6 @@ class EventsController < UnitContextController
     ).utc
   end
 
-  def set_time_zone(&block)
-    Time.use_zone(current_unit.settings(:locale).time_zone, &block)
-  end
-
   def store_path
     cookies[:events_index_path] = request.original_fullpath
   end

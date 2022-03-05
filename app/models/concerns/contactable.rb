@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# attributes determining our ability to contact a user/member
 module Contactable
   extend ActiveSupport::Concern
 
