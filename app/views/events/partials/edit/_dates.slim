@@ -12,7 +12,7 @@
         class: "flex border rounded p-2",
         step: "900",
         tabindex: -1,
-        value: @event.starts_at.localtime.strftime("#{ @format_time }")
+        value: @event.starts_at.strftime("#{ @format_time }")
 
   // to
   .flex.flex-grow.grid.grid-rows-2
@@ -24,7 +24,7 @@
         class: "flex flex-grow border rounded p-2",
         step: "900",
         tabindex: -1,
-        value: @event.ends_at.localtime.strftime("#{ @format_time }")
+        value: @event.ends_at.strftime("#{ @format_time }")
 
 // repeats
 .flex.mb-3.h-10.mt-4

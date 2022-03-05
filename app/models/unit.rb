@@ -46,6 +46,10 @@ class Unit < ApplicationRecord
     categories.first
   end
 
+  def time_zone
+    settings(:locale).time_zone
+  end
+
   private
 
   # TODO: move this somewhere else

@@ -5,7 +5,6 @@ require "rails_helper"
 # rubocop:disable Metrics/BlockLength
 RSpec.describe DigestTexter, type: :model do
   before do
-    User.destroy_all
     @member = FactoryBot.create(:member)
     FactoryBot.create(:event, unit: @member.unit, starts_at: 3.days.from_now, status: :published)
     FactoryBot.create(
@@ -33,7 +32,6 @@ RSpec.describe DigestTexter, type: :model do
   end
 
   describe "body" do
-
     # Hi, Scouty. Here's what's going on at Troop 231:
     it "contains the member greeting" do
       texter = DigestTexter.new @member

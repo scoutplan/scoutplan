@@ -6,7 +6,7 @@ class UnitContextController < ApplicationController
   before_action :find_unit_info
   before_action :set_unit_cookie
   before_action :track_activity
-  # around_action :set_time_zone
+  around_action :time_zone
 
   # analytics
   def track_activity
@@ -47,7 +47,7 @@ class UnitContextController < ApplicationController
     cookies[:current_unit_id] = { value: current_unit&.id }
   end
 
-  def set_time_zone(&block)
-    Time.use_zone(current_unit.settings(:locale).time_zone, &block)
+  def time_zone(&block)
+    Time.use_zone(current_unit.time_zone, &block)
   end
 end

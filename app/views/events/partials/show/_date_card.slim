@@ -6,28 +6,28 @@
   .table-row-group
     .table-row
       .table-cell.text-center.border-0
-        .uppercase.text-sm.font-bold.text-red-800.tracking-wider = @event.starts_at.localtime.strftime('%a')
+        .uppercase.text-sm.font-bold.text-red-800.tracking-wider = @event.starts_at.in_time_zone.strftime('%a')
       - if multiday
         .table-cell.text-center.border-0
         .table-cell.text-center.border-0
-          .uppercase.text-sm.font-bold.text-red-800.tracking-wider = @event.ends_at.localtime.strftime('%a')
+          .uppercase.text-sm.font-bold.text-red-800.tracking-wider = @event.ends_at.in_time_zone.strftime('%a')
 
     .table-row
       .table-cell.text-center.border-0.py-0
         .text-red-800.text-5xl = @event.starts_at.day
       - if multiday          
         .table-cell.text-center.border-0.py-0
-          i.far.fa-arrow-right.text-gray-500.text-4xl
+          i.far.fa-arrow-right.text-gray-500.text-4xl.mx-3
         .table-cell.text-center.border-0.py-0
           .text-red-800.text-5xl = @event.ends_at.day
 
     .table-row
       .table-cell.text-center.border-0
-        .font-bold.text-red-800.whitespace-nowrap = @event.starts_at.localtime.strftime('%-I:%M %p')
+        .font-bold.text-red-800.whitespace-nowrap = @event.starts_at.in_time_zone.strftime('%-I:%M %p')
       - if multiday
         .table-cell.border-0
         .table-cell.text-center.border-0
-          .font-bold.text-red-800.whitespace-nowrap = @event.ends_at.localtime.strftime('%-I:%M %p')
+          .font-bold.text-red-800.whitespace-nowrap = @event.ends_at.in_time_zone.strftime('%-I:%M %p')
 
 - if @event.series?
   .text-sm.text-gray-500.text-center.mt-1

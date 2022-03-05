@@ -94,8 +94,11 @@ class EventView
     @event.ends_at = compose_datetime(ends_at_date, ends_at_time).utc
   end
 
+  # Holy sh*t timezones are hard! This post shed light on how to parse *into*
+  # the current zone. Otherwise everything is UTC.
+  # https://rubyinrails.com/2018/05/30/rails-parse-date-time-string-in-utc-zone/
   def compose_datetime(date_str, time_str)
     str = "#{date_str} #{time_str}"
-    DateTime.parse(str)
+    Time.zone.parse(str) # parse into the current zone
   end
 end

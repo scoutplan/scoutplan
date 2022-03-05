@@ -3,11 +3,13 @@
 # a Texter for sending daily reminders
 class DailyReminderTexter < MemberTexter
   def body
-    @body ||= renderer.render(
-      template: "member_texter/daily_reminder",
-      format: "text",
-      assigns: { member: @member, events: events }
-    )
+    Time.use_zone(@member.unit.time_zone) do
+      @body ||= renderer.render(
+        template: "member_texter/daily_reminder",
+        format: "text",
+        assigns: { member: @member, events: events }
+      )
+    end
   end
 
   private
