@@ -21,7 +21,7 @@ article.border-b.px-2.py-4.hover:bg-stone-100.flex.justify-between.gap-8
 
       - if news_item.deletable?
         = button_to \
-          news_item,
+          [@unit, news_item],
           method: :delete,
           title: t("messaging.delete_draft"),
           form_class: "inline-block",
