@@ -94,7 +94,7 @@
           - next if member.unit == @unit
           li
             = link_to member.unit.name,
-              unit_events_path(member.unit),
+              unit_path(member.unit),
               class: "w-full no-underline whitespace-nowrap p-2 block hover:bg-stone-200 rounded-md text-left"
 
       li.main_nav_item_signout
