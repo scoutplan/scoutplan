@@ -22,5 +22,5 @@ class ApplicationNotifier
     return unless @member.settings(:communication).via_sms
 
     block.call @member
-  end  
+  end
 end

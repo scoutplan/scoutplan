@@ -25,11 +25,11 @@
         style: "color:black;font-weight:normal;"
 
     p(style="margin-top:0;line-height:150%;")
-      = event.starts_at.localtime.strftime('%A, %b %-d')
+      = event.starts_at.in_time_zone(@member.unit.time_zone).strftime('%A, %b %-d')
       br
-      = event.starts_at.localtime.strftime('%-I:%M %p')
+      = event.starts_at.in_time_zone(@member.unit.time_zone).strftime('%-I:%M %p')
       |&thinsp;&ndash;&thinsp;
-      = event.ends_at.localtime.strftime('%-I:%M %p')
+      = event.ends_at.in_time_zone(@member.unit.time_zone).strftime('%-I:%M %p')
 
       - if event.location.present?
         br

@@ -27,4 +27,18 @@ class MemberTexter < ApplicationTexter
       https: ENV["SCOUTPLAN_PROTOCOL"] == "https"
     )
   end
+
+  # used by superclass to composes the SMS. Here, we wrap it
+  # in a time zone so the body has the right timestamps
+  def body
+    Time.use_zone(@member.unit.time_zone) do
+      body_text
+    end
+  end
+
+  # override in subclasses. We could probably refactor
+  # this to infer the correct template from the subclass
+  # name, thus avoiding the need to override this method
+  # in subclasses. Later.
+  def body_text; end
 end
