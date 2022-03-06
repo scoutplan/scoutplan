@@ -4,19 +4,19 @@
 
   - @events.each do |event|
 
-    - if event.starts_at.localtime.today? && current_heading != :today
+    - if event.starts_at.in_time_zone(@unit.time_zone).today? && current_heading != :today
       - current_heading = :today
       h1(style="margin-bottom: 10px;") Today
       p(style="margin-top: 4px;")
-        = event.starts_at.localtime.strftime('%A, %B %d')
+        = event.starts_at.in_time_zone(@unit.time_zone).strftime('%A, %B %d')
         br
         = event.location
 
-    - elsif event.starts_at.localtime.tomorrow? && current_heading != :tomorrow
+    - elsif event.starts_at.in_time_zone(@unit.time_zone).tomorrow? && current_heading != :tomorrow
       - current_heading = :tomorrow
       h1(style="margin-bottom: 4px;") Tomorrow
       p(style="margin-top: 4px; color: #888; text-transform: uppercase;")
-        = event.starts_at.localtime.strftime('%A, %B %d')
+        = event.starts_at.in_time_zone(@unit.time_zone).strftime('%A, %B %d')
         br
         = event.location
 
@@ -24,9 +24,9 @@
       h3(style="margin-bottom: 4px;") = event.title
 
     p(style="margin-top: 4px; margin-bottom: 0; font-weight: 600;")
-      = event.starts_at.localtime.strftime('%-I:%M %p')
+      = event.starts_at.in_time_zone(@unit.time_zone).strftime('%-I:%M %p')
       |&thinsp;&ndash;&thinsp;
-      = event.ends_at.localtime.strftime('%-I:%M %p')
+      = event.ends_at.in_time_zone(@unit.time_zone).strftime('%-I:%M %p')
 
     p(style="margin-top: 0;text-transform: uppercase;") = event.location
 

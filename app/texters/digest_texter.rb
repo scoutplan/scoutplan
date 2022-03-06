@@ -2,8 +2,8 @@
 
 # a Texter for sending digests
 class DigestTexter < MemberTexter
-  def body
-    @body ||= renderer.render(
+  def body_text
+    renderer.render(
       template: "member_texter/digest",
       format: "text",
       assigns: { member: @member, events: events }

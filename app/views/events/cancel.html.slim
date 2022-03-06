@@ -10,19 +10,29 @@
             = t("events.cancel.past_warning")
 
       section
+
+        // BLURB AT TOP ("You are cancelling...")
         p.mb-4
-          = raw("You are cancelling the <strong>#{@event.title}</strong> on ")
+          = raw("You are cancelling <strong>#{@event.title}</strong> on ")
           span.whitespace-nowrap.font-bold
             = @event.starts_at.strftime("%B %-d")
           |.&nbsp
 
-          - if !@event.requires_rsvp
+          - if @event.draft?
+            = "The event is an unpublished draft."
+          - elsif !@event.requires_rsvp
             = "No RSVP was required."
           - elsif @event.rsvps.accepted.count.positive?
             = "There are #{@event.rsvps.accepted.count} members planning to attend"
 
             - if @event.rsvps.declined.count.positive?
               = " and #{@event.rsvps.declined.count} who declined"
+
+            |&nbsp;
+            = link_to "(View RSVPs)",
+                      unit_event_organize_path(@unit, @event),
+                      class: "underline text-blue-500",
+                      data: { turbo_action: "advance" }
 
             = "."
           - else
@@ -31,19 +41,31 @@
         p.mb-4
           = t("events.cancel.message_prompt")
         
+        // NONE RADIO
         .mb-1
-          = f.radio_button :message_audience, :none, class: "mr-2"
+          = f.radio_button :message_audience,
+                           :none,
+                           class: "mr-2",
+                           checked: @event.draft?
           = f.label :message_audience_none, "No, don't send a message"
 
+        // ACCEPTORS RADIO
         - if @event.rsvps?
           .mb-1
-            = f.radio_button :message_audience, :acceptors, class: "mr-2"
+            = f.radio_button :message_audience,
+                             :acceptors,
+                             class: "mr-2"
             = f.label :message_audience_acceptors, "Yes, to the #{@event.rsvps.accepted.count} who plan on attending"
 
+        // ACTIVE MEMBERS RADIO
         .mb-1
-          = f.radio_button :message_audience, :active_members, class: "mr-2", checked: true
+          = f.radio_button :message_audience,
+                           :active_members,
+                           class: "mr-2",
+                           checked: @event.published?
           = f.label :message_audience_active_members, "Yes, to all #{@unit.members.contactable.status_active.count} active, contactable members"
 
+        // ALL MEMBERS RADIO
         .mb-3
           = f.radio_button :message_audience, :all_members, class: "mr-2"
           = f.label :message_audience_all_members, "Yes, to all #{@unit.members.contactable.count} registered, contactable members"

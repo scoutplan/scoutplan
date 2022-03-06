@@ -61,9 +61,13 @@ describe "event_cancellation", type: :feature do
     describe "default selections" do
       it "defaults to 'none' when event is draft" do
         @event.update!(status: :draft)
+        visit unit_event_cancel_path(@unit, @event)
+        expect(page).to have_checked_field("event_message_audience_none")
       end
 
       it "defaults to 'active' when event is published" do
+        visit unit_event_cancel_path(@unit, @event)
+        expect(page).to have_checked_field("event_message_audience_active_members")
       end
     end
 

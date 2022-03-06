@@ -6,29 +6,26 @@ require "rails_helper"
 RSpec.describe DigestTexter, type: :model do
   before do
     @member = FactoryBot.create(:member)
-    FactoryBot.create(:event, unit: @member.unit, starts_at: 3.days.from_now, status: :published)
-    FactoryBot.create(
+    @unit = @member.unit
+    @troop_meeting = FactoryBot.create(
       :event,
       unit: @member.unit,
-      starts_at: 4.days.from_now,
+      starts_at: 3.days.from_now,
+      status: :published
+    )
+
+    # the committee meeting will be at 7:15 PM Eastern, 00:15 UDT,
+    # so we can test timezone conversion
+
+    Time.zone = "UTC"
+
+    @committee_meeting = FactoryBot.create(
+      :event,
+      unit: @member.unit,
+      starts_at: 4.days.from_now.change(hour: 0, min: 15),
       status: :published,
       title: "Committee Meeting"
     )
-  end
-
-  it "instantiates" do
-    expect { DigestTexter.new @member }.not_to raise_exception
-  end
-
-  it "renders" do
-    texter = DigestTexter.new @member
-    # just dump the text to the screen so we can see it
-    puts
-    puts "**************************************"
-    puts
-    puts texter.body
-    puts
-    puts "**************************************"
   end
 
   describe "body" do
@@ -42,7 +39,7 @@ RSpec.describe DigestTexter, type: :model do
     # Make sure URLs are correctly formed: https://local.scoutplan.org
     it "contains the host" do
       texter = DigestTexter.new @member
-      base_url = "#{ENV['SCOUTPLAN_HOST']}"
+      base_url = ENV["SCOUTPLAN_HOST"]
       expect(texter.body).to include base_url
     end
 
@@ -54,8 +51,7 @@ RSpec.describe DigestTexter, type: :model do
     # * Hiking Trip on Friday
     it "contains event synopsis" do
       texter = DigestTexter.new @member
-      event = @member.unit.events.first
-      event_synopsis = "* #{event.title} on #{event.starts_at.strftime('%A')}"
+      event_synopsis = "* #{@committee_meeting.title} on #{@committee_meeting.starts_at.in_time_zone(@unit.time_zone).strftime('%A')}"
       expect(texter.body).to include event_synopsis
     end
   end
