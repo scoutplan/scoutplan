@@ -40,12 +40,9 @@ class NewsItemsController < UnitContextController
 
   def destroy
     @news_item = NewsItem.find(params[:id])
-    @current_unit = @unit = @news_item.unit
-    @membership = @unit.membership_for(current_user)
     authorize @news_item
     @news_item.destroy
-    set_news_items
-    respond_to :js
+    redirect_to unit_news_items_path(@unit)
   end
 
   def enqueue
