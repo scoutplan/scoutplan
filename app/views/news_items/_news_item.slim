@@ -1,8 +1,10 @@
 article.border-b.px-2.py-4.hover:bg-stone-100.flex.justify-between.gap-8
+
+  // TITLE
   span#left_side
     - if news_item.editable?
       = link_to \
-        edit_news_item_path(news_item),
+        edit_unit_news_item_path(@unit, news_item.id),
         data: { turbo_action: "advance" } do
 
         h5.text-lg.font-bold.flex.justify-between.mb-2
@@ -14,10 +16,11 @@ article.border-b.px-2.py-4.hover:bg-stone-100.flex.justify-between.gap-8
         = news_item.title
       p == news_item.body
 
+  // AGE AND ACTION LINKS
   span.
     .whitespace-nowrap#right_side
-      = distance_of_time_in_words_to_now(news_item.updated_at)
-      = " ago"
+      span.mr-2
+        = "#{distance_of_time_in_words_to_now(news_item.updated_at)} ago"
 
       - if news_item.deletable?
         = button_to \
@@ -25,40 +28,27 @@ article.border-b.px-2.py-4.hover:bg-stone-100.flex.justify-between.gap-8
           method: :delete,
           title: t("messaging.delete_draft"),
           form_class: "inline-block",
-          class: "text-brand-500 px-4 py-2 text-center" do
+          class: "text-brand-500 hover:text-brand-600 px-2 py-2 text-center" do
           
-          i.fa-trash.far
+            i.fa-trash.fas
 
-- if false
-  .flex.flex-row.mt-4.gap-2
-    - if news_item.demotable?
-      = button_to \
-        news_item_dequeue_path(news_item),
-        method: :post,
-        form_class: "inline-block",
-        title: t("messaging.dequeue"),
-        class: "inline-block mx-1.5 text-yellow-500" do
+      - if news_item.demotable?
+        = button_to \
+          unit_news_item_dequeue_path(@unit, news_item),
+          method: :post,
+          form_class: "inline-block",
+          title: t("messaging.dequeue"),
+          class: "text-brand-500 hover:text-brand-600 px-2 py-2 text-center" do
 
-        i.fa-inbox-out.far
+            i.fa-inbox-out.fas
 
-    - if news_item.promotable?
-      = button_to \
-        news_item_enqueue_path(news_item),
-        method: :post,
-        form_class: "inline-block",
-        title: t("news_items.titles.enqueue"),
-        class: "text-white uppercase text-sm font-bold tracking-wider bg-brand-500 border-brand-500 hover:border-brand-600 px-4 py-2 rounded" do
+      - if news_item.promotable?
+        = button_to \
+          unit_news_item_enqueue_path(news_item.unit, news_item),
+          method: :post,
+          form_class: "inline-block",
+          title: t("news_items.titles.enqueue"),
+          class: "text-brand-500 hover:text-brand-600 px-2 py-2 text-center" do
 
-        i.fa-arrow-to-right.far.mr-2
-        = t("news_items.captions.enqueue")
-
-    - if news_item.editable?
-      = link_to \
-        edit_news_item_path(news_item), 
-        id: "edit_item_#{news_item.id}_link",
-        title: t('messaging.edit'),
-        class: "text-brand-600 uppercase text-sm font-bold tracking-wider bg-brand-100 border-brand-100 hover:border-brand-200 px-4 py-2 rounded" do
-        
-        i.fa-edit.far.mr-2
-        = t("news_items.captions.edit")
+            i.fa-arrow-to-right.fas
 

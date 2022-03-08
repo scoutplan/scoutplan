@@ -25,8 +25,12 @@ module ApplicationHelper
     content_tag :span, text, class: classes
   end
 
-  def pill_tag_if(condition, text)
-    pill_tag(text) if condition
+  def pill_tag_if(condition, text, additional_classes = nil)
+    pill_tag(text, additional_classes) if condition
+  end
+
+  def pill_tag_positive?(number, additional_classes = nil)
+    pill_tag_if(number.positive?, number, additional_classes)
   end
 
   # given a member, return the appropriate FontAwesome element tag

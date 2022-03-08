@@ -2,10 +2,11 @@
 
   = styled_header_tag t("news_items.titles.new")
 
+  // TITLE
   section.bg-stone-100.px-4.py-4.mb-2.rounded
-    = f.label :title, class: "block md:inline-block md:w-[25%] mb-2 text-sm font-bold tracking-wide uppercase"
+    = f.label :title, class: "block md:inline-block md:w-[20%] mb-2 text-sm font-bold tracking-wide uppercase"
     = f.text_field :title,
-      class: "w-full md:w-[75%] border border-stone-200 rounded bg-white p-2 placeholder-stone-300",
+      class: "w-full md:w-[80%] border border-stone-200 rounded bg-white p-2 placeholder-stone-300",
       placeholder: t("news_items.placeholders.title"),
       autocomplete: "off"
 
@@ -20,12 +21,12 @@
     = f.styled_label :status, t("news_items.labels.status"), layout: :inline
 
     span.mx-3
-      = f.radio_button :status, :draft, class: 'mr-2'
-      = f.label :status_draft, t('newsletter.modal.draft')
+      = f.radio_button :status, :draft, class: "mr-2"
+      = f.label :status_draft, t("newsletter.modal.draft")
 
     span.mx-3
-      = f.radio_button :status, :queued, class: 'mr-2'
-      = f.label :status_queued, t('newsletter.modal.queued')   
+      = f.radio_button :status, :queued, class: "mr-2"
+      = f.label :status_queued, t("newsletter.modal.queued")   
 
   footer.flex.flex-col.md:flex-row.md:justify-end.gap-2.pt-4.sticky.bottom-0
     = link_to \

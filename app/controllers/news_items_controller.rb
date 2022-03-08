@@ -2,12 +2,12 @@
 
 # News Items feed into digest newsletters
 class NewsItemsController < UnitContextController
-  before_action :find_news_item, only: [ :enqueue , :dequeue ]
+  before_action :find_news_item, only: [:enqueue, :dequeue]
 
   def index
     authorize :message, :index?
     @view = params[:mode] || "drafts"
-    set_news_items
+    find_news_items
   end
 
   def new
@@ -34,7 +34,7 @@ class NewsItemsController < UnitContextController
     authorize @news_item
     @news_item.assign_attributes(news_item_params)
     @news_item.save!
-    set_news_items
+    find_news_items
     respond_to :js
   end
 
@@ -46,12 +46,12 @@ class NewsItemsController < UnitContextController
   end
 
   def enqueue
-    @view = 'drafts'
+    @view = "drafts"
     update_item_status(:queued)
   end
 
   def dequeue
-    @view = 'queued'
+    @view = "queued"
     update_item_status(:draft)
   end
 
@@ -59,22 +59,22 @@ class NewsItemsController < UnitContextController
 
   def update_item_status(status)
     @current_unit = @unit = @news_item.unit
-    set_news_items
+    find_news_items
     @news_item.status = status
     @news_item.save!
-    set_news_items
-    respond_to :js
+    find_news_items
   end
 
-  def set_news_items
-    @view = params[:mode] || 'drafts'
-    @news_items = case @view
-                  when 'queued'
+  def find_news_items
+    @news_items = case @view = params[:mode] || "drafts"
+                  when "queued"
                     @current_unit.news_items.queued
-                  when 'sent'
+                  when "sent"
                     @current_unit.news_items.sent
-                  else
+                  when "drafts"
                     @current_unit.news_items.draft
+                  else
+                    []
                   end
   end
 

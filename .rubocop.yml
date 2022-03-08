@@ -6,3 +6,6 @@ Style/StringLiterals:
 
 Style/ParallelAssignment:
   Enabled: false
+
+Style/SymbolArray:
+  Enabled: false

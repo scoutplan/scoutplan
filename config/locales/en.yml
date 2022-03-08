@@ -295,7 +295,7 @@ en:
       previous_short:   "Prev: %{title}"
       back:             "Back to main event page"
       confirmations:
-        updated_html: "%{name}'s RSVP is updated."
+        updated_html: "%{name}'s RSVP has been updated."
         delete:       "%{name}'s RSVP has been discarded."
       actions:
         accept_html:    "Change RSVP to <em>Going</em>"
