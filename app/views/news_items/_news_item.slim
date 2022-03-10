@@ -1,4 +1,4 @@
-article.border-b.px-2.py-4.hover:bg-stone-100.flex.justify-between.gap-8
+article.border-t.px-2.py-4.hover:bg-stone-100.flex.justify-between.gap-8
 
   // TITLE
   span#left_side
@@ -22,6 +22,7 @@ article.border-b.px-2.py-4.hover:bg-stone-100.flex.justify-between.gap-8
       span.mr-2
         = "#{distance_of_time_in_words_to_now(news_item.updated_at)} ago"
 
+      // DELETE
       - if news_item.deletable?
         = button_to \
           [@unit, news_item],
@@ -29,26 +30,27 @@ article.border-b.px-2.py-4.hover:bg-stone-100.flex.justify-between.gap-8
           title: t("messaging.delete_draft"),
           form_class: "inline-block",
           class: "text-brand-500 hover:text-brand-600 px-2 py-2 text-center" do
-          
             i.fa-trash.fas
 
+      // DEQUEUE / DEMOTE
       - if news_item.demotable?
         = button_to \
           unit_news_item_dequeue_path(@unit, news_item),
           method: :post,
           form_class: "inline-block",
           title: t("messaging.dequeue"),
+          data: { turbo_action: "advance" },
           class: "text-brand-500 hover:text-brand-600 px-2 py-2 text-center" do
+            i.fa-arrow-to-left.fas
 
-            i.fa-inbox-out.fas
-
+      // ENQUEUE / PROMOTE
       - if news_item.promotable?
         = button_to \
           unit_news_item_enqueue_path(news_item.unit, news_item),
           method: :post,
           form_class: "inline-block",
           title: t("news_items.titles.enqueue"),
+          data: { turbo_action: "advance" },
           class: "text-brand-500 hover:text-brand-600 px-2 py-2 text-center" do
-
             i.fa-arrow-to-right.fas
 

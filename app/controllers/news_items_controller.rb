@@ -46,23 +46,23 @@ class NewsItemsController < UnitContextController
   end
 
   def enqueue
-    @view = "drafts"
     update_item_status(:queued)
   end
 
   def dequeue
-    @view = "queued"
     update_item_status(:draft)
   end
 
   private
 
-  def update_item_status(status)
-    @current_unit = @unit = @news_item.unit
-    find_news_items
-    @news_item.status = status
-    @news_item.save!
-    find_news_items
+  def update_item_status(new_status)
+    @news_item.update!(status: new_status)
+    path = new_status == :queued ? unit_newsletter_queued_path(@unit) : unit_newsletter_drafts_path(@unit)
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@message) }
+      format.html { redirect_to path, notice: t("news_items.notices.status_update") }
+    end
   end
 
   def find_news_items

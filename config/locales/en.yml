@@ -93,6 +93,9 @@ en:
 
     placeholders:
       body: "Write your news item"
+
+    notices:
+      status_update: "Your news items has been updated"
       
   messaging:
     title: "Messaging"
