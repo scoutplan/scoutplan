@@ -39,7 +39,10 @@ Rails.application.routes.draw do
   resources :units, only: %i[show index] do
     resources :plans, path: "planner"
     resources :event_categories
-    resources :news_items
+    resources :news_items do
+      post "enqueue", to: "news_items#enqueue", as: "enqueue"
+      post "dequeue", to: "news_items#dequeue", as: "dequeue"
+    end
 
     resources :events do
       resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
@@ -84,11 +87,6 @@ Rails.application.routes.draw do
 
   resources :member_relationships, as: "relationships", path: "relationships", only: %i[destroy]
   resources :event_rsvps, except: [:index, :show, :edit, :update, :new]
-
-  resources :news_items, only: %i[show edit update destroy] do
-    post "enqueue", to: "news_items#enqueue", as: "enqueue"
-    post "dequeue", to: "news_items#dequeue", as: "dequeue"
-  end
 
   constraints CanAccessFlipperUI do
     mount Sidekiq::Web => "/sidekiq"
