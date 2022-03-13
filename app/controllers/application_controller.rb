@@ -4,7 +4,7 @@ require "mixpanel-ruby"
 
 # base Controller class
 class ApplicationController < ActionController::Base
-  include Pundit
+  include Pundit::Authorization
   before_action :authenticate_user!
   before_action :process_query_string
   after_action  :clear_session_view
