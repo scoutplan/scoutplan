@@ -6,6 +6,7 @@ ul.whitespace-nowrap.w-full.mb-0.hidden.md:inline-block
     - rsvp = rsvps.select { |r| r.unit_membership == member }&.first
     - family_rsvps = family_rsvps || rsvp.present?
     - family_fully_responded = family_fully_responded && rsvp.present?
+    - next unless member.status_active? || rsvp&.accepted?
 
     li.inline-block.ml-3
       = raw(rsvp_glyph_tag(member, rsvp))

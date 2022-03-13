@@ -13,8 +13,9 @@
       - @current_member.family.each do |family_member|
         / find the RSVP for the family member for the event (may or may not exist)
         - rsvp = @event.rsvp_for(family_member)
+        - next unless family_member.status_active? || rsvp&.accepted?
         li.py-1.md:inline-block.md:mr-5
-          / show one of three glyphs depending on status
+          // show one of three glyphs depending on status
           - if rsvp.nil?
             span.rsvp-response.rsvp-unknown.text-gray-400(title="#{ t('rsvp_unknown') }")
               i.fas.fa-ghost
