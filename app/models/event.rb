@@ -19,9 +19,7 @@ class Event < ApplicationRecord
   alias_attribute :activities, :event_activities
 
   validates_presence_of :title, :starts_at, :ends_at
-
-  # after_create :create_series, if: :repeats_until?
-  after_initialize :set_defaults, if: :new_record?
+  validate :dates_are_subsequent
 
   enum status: { draft: 0, published: 1, cancelled: 2, archived: 3 }
 
@@ -35,6 +33,11 @@ class Event < ApplicationRecord
   # noon today to noon tomorrow. This scope is used for daily reminders. This logic needs to move elsewhere.
   scope :imminent,      -> { where("starts_at BETWEEN ? AND ?", Time.zone.now.beginning_of_day + 12.hours, Time.zone.now.at_end_of_day + 12.hours) }
 
+  def dates_are_subsequent
+    errors.add(:ends_at, "must be after start_date") if starts_at > ends_at
+    errors.add(:rsvp_closes_at, "must be before start_date") if rsvp_closes_at > starts_at
+  end
+
   def to_param
     [id, title].join(" ").parameterize
   end
@@ -43,8 +46,13 @@ class Event < ApplicationRecord
     starts_at.past?
   end
 
+  # override getter
+  def rsvp_closes_at
+    read_attribute(:rsvp_closes_at) || starts_at
+  end
+
   def rsvp_open?
-    requires_rsvp && starts_at > DateTime.now
+    requires_rsvp && rsvp_closes_at > DateTime.now
   end
 
   def rsvps?
@@ -69,10 +77,6 @@ class Event < ApplicationRecord
 
   def rsvp_token_for(member)
     rsvp_tokens.find_by(unit_membership: member)
-  end
-
-  def rsvp_closes_at
-    @rsvp_closes_at || starts_at
   end
 
   def series_children
@@ -105,13 +109,5 @@ class Event < ApplicationRecord
       new_event.save!
       new_event = new_event.dup
     end
-  end
-
-  def set_defaults
-    return unless unit
-
-    # self.event_category = unit.event_categories.first
-    self.starts_at = 4.weeks.from_now
-    self.ends_at = self.starts_at + 4.hours
   end
 end

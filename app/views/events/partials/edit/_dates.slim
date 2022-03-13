@@ -4,19 +4,19 @@
   // from
   .flex.flex-grow.grid.grid-rows-2
     .flex
-      = f.label :from, class: "font-bold text-sm uppercase tracking-wide"
+      = f.label :from, "Starts at", class: "font-bold text-sm uppercase tracking-wide"
 
     .flex.gap-x-4
       = f.date_field :starts_at_date, class: "flex border rounded p-2", tabindex: -1
       = f.time_field :starts_at_time,
         class: "flex border rounded p-2",
-        step: "900",
+        list: "suggested_times",
         tabindex: -1,
         value: @event.starts_at.strftime("#{ @format_time }")
 
   // to
   .flex.flex-grow.grid.grid-rows-2
-    = f.label :to, nil, class: "font-bold text-sm uppercase tracking-wide"
+    = f.label :to, "Ends at", class: "font-bold text-sm uppercase tracking-wide"
 
     .flex.flex-grow.gap-x-4
       = f.date_field :ends_at_date, class: "flex flex-grow border rounded p-2", tabindex: -1
@@ -50,3 +50,6 @@
 // timezone message
 .mb-0
   .text-sm.text-gray-400 = t("events.form.timezone_prompt", timezone_name: @current_unit.settings(:locale).time_zone)
+
+datalist#suggested_times
+  option(value="9:00 AM")
