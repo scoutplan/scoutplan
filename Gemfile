@@ -71,13 +71,9 @@ group :development do
 end
 
 group :test do
-  # Adds support for Capybara system testing and selenium driver
-  gem "apparition"
   gem "capybara", "~> 3.35"
   gem "faker"
-  gem "selenium-webdriver", "~> 3.142"
+  gem "launchy"
   gem "simplecov", require: false
-
-  # Easy installation and use of web drivers to run system tests with browsers
   gem "webdrivers", "~> 4.6"
 end

@@ -27,6 +27,7 @@ class EventView
                  :address,
                  :departs_from,
                  :requires_rsvp,
+                 :rsvp_closes_at,
                  :includes_activity,
                  :activity_name,
                  :new_record?,

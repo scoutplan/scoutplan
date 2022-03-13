@@ -80,7 +80,7 @@ class EventsController < UnitContextController
 
   def new
     build_prototype_event
-    @event_view = EventView.new(@event)
+    # @event_view = EventView.new(@event)
     @presenter = EventPresenter.new(event: @event, current_user: current_user)
   end
 
@@ -200,16 +200,17 @@ class EventsController < UnitContextController
 
   private
 
+  # the default Event will start on the first Saturday at least 4 weeks (28 days) from today
+  # from 10 AM to 4 PM with RSVPs closing a week before start
   def build_prototype_event
-    @event = @unit.events.new(
-      starts_at: 28.days.from_now,
-      ends_at: 28.days.from_now
+    @event = Event.new(
+      unit: @unit,
+      starts_at: 28.days.from_now.next_occurring(:saturday).change({ hour: 10 }),
+      ends_at: 28.days.from_now.next_occurring(:saturday).change({ hour: 16 }),
+      rsvp_closes_at: 21.days.from_now.next_occurring(:saturday).change({ hour: 10 })
     )
-
-    @event.starts_at = @event.starts_at.change({ hour: 10 }) # default starts at 10 AM
-    @event.ends_at   = @event.ends_at.change({ hour: 16 }) # default ends at 4 PM
     @event_view = EventView.new(@event)
-    @member_rsvps = @current_member.event_rsvps
+    @member_rsvps = current_member.event_rsvps
   end
 
   # we don't guarantee that @unit is populated, hence...
