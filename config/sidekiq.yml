@@ -7,4 +7,4 @@
 
   rsvp_reminder_five_days:
     cron: '0 * * * *' # every hour
-    class: RsvpReminderFiveDays
+    class: RsvpRemindersFiveDays
