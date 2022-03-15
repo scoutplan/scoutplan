@@ -6,7 +6,6 @@
 - @format_time = "%H:%M:%S"
 
 .mx-auto.max-w-3xl
-
   = styled_header_tag @event.new_record? ? t("events.titles.new") : t("events.titles.edit")
 
   = form_with \
@@ -54,11 +53,10 @@
         = f.check_box :requires_rsvp, class: "w-4 h-4 text-green-500 rounded mr-2"
         = f.label :requires_rsvp, class: "text-sm font-bold tracking-wide uppercase"
 
-      #rsvp_fields.hidden.mt-6
+      #rsvp_fields.mt-6(class="#{@event.requires_rsvp ? '' : 'hidden'}")
         = f.styled_label :rsvp_closes_at, t("events.form.rsvp_closes_at"), layout: :inline
         = f.date_field :rsvp_closes_at,
-          class: "bg-white border border-stone-200 rounded p-2 w-full md:w-fit hover:ring-brand-500 placeholder-stone-300",
-          step: "900"
+          class: "bg-white border border-stone-200 rounded p-2 w-full md:w-fit hover:ring-brand-500 placeholder-stone-300"
 
     // activity
     section.bg-stone-100.py-4.px-4.md:px-8.mb-1.rounded
@@ -137,9 +135,6 @@ javascript:
     }
   }
 
-  function toggleRsvpFields() {
-  }
-  
   document.addEventListener("DOMContentLoaded", function() {
     document.querySelector("#event_requires_rsvp").addEventListener("click", function(event){
       var rsvpFields = document.querySelector("#rsvp_fields");

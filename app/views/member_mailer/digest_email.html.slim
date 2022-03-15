@@ -46,6 +46,7 @@
       - family_rsvp_count = 0
       - @member.family.each do |member|
         - rsvp = member.rsvps.find_by(event: event)
+        - next unless member.status_active? || rsvp&.accepted?
         - if rsvp&.accepted?
           - family_rsvp_count += 1
           span.accepted(title="Going" style="color:green;cursor:default;") &#10003;

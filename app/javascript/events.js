@@ -5,11 +5,10 @@
 //   document.querySelector('#page_header').classList.add('border-b', div.offsetTop > 500);
 // });
 
-/* BULK PUBLISH */
-
-// wire up the bulk Publish button
-
 document.addEventListener("DOMContentLoaded", function() {
+  // START BULK PUBLISH
+
+  // wire up the bulk Publish button
   document.querySelector('#bulk_publish_execute_button').addEventListener('click', function(event) {
     document.querySelector('#bulk_action_form').submit();
     event.preventDefault();
@@ -37,6 +36,8 @@ document.addEventListener("DOMContentLoaded", function() {
     document.body.classList.toggle('events-filtered');
     event.preventDefault();
   });
+
+  // END BULK PUBLISH  
 
   // As the user changes visibility options (e.g. show/hide cancelled), we need to
   // recalculate which month headers should be shown or hidden. Months containing
