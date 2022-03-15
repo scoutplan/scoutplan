@@ -11,7 +11,7 @@ class RsvpRemindersFiveDays
     Rails.logger.warn { "RsvpRemindersFiveDays invoked" }
     Unit.all.find_each do |unit|
       reminder = RsvpReminder.new(unit)
-      reminder.send_to_members(5.days, send_via: :email)
+      reminder.send_to_members(days_prior: 5.days, send_via: :email)
     end
   end
 end

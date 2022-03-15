@@ -22,6 +22,6 @@ class RsvpReminder
   private
 
   def send_for_event(event)
-    return unless event.starts_at = Time.current
+    return unless event.starts_at == Time.current
   end
 end
