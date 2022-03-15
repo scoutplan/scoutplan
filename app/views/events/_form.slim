@@ -6,7 +6,6 @@
 - @format_time = "%H:%M:%S"
 
 .mx-auto.max-w-3xl
-
   = styled_header_tag @event.new_record? ? t("events.titles.new") : t("events.titles.edit")
 
   = form_with \
@@ -135,3 +134,10 @@ javascript:
       fieldsElem.focus();
     }
   }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector("#event_requires_rsvp").addEventListener("click", function(event){
+      var rsvpFields = document.querySelector("#rsvp_fields");
+      rsvpFields.classList.toggle("hidden", !event.target.checked);
+    });
+  });

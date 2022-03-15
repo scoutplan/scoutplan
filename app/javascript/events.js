@@ -6,12 +6,6 @@
 // });
 
 document.addEventListener("DOMContentLoaded", function() {
-  // toggle RSVP fields
-  document.querySelector("#event_requires_rsvp").addEventListener("change", function(event){
-    var rsvpFields = document.querySelector("#rsvp_fields");
-    rsvpFields.classList.toggle("hidden", !event.target.checked);
-  });
-
   // START BULK PUBLISH
 
   // wire up the bulk Publish button
