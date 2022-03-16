@@ -13,6 +13,13 @@ class EventsController < UnitContextController
 
   # TODO: refactor this mess
   def index
+    if params[:variation].nil?
+      redirect_to cookies[:events_index_path] and return \
+        if cookies[:events_index_path].present?
+
+      redirect_to list_unit_events_path(@unit)
+    end
+
     store_path
     @events = UnitEventQuery.new(current_member, current_unit).execute
     @event_drafts = @events.select(&:draft?)
@@ -24,7 +31,7 @@ class EventsController < UnitContextController
     respond_to do |format|
       format.html
       format.pdf do
-        render_calendar
+        render_printable_calendar
       end
     end
   end
@@ -37,7 +44,7 @@ class EventsController < UnitContextController
     render "public_index", layout: "public"
   end
 
-  def render_calendar
+  def render_printable_calendar
     render(
       locals: { events_by_month: calendar_events },
       pdf: "#{@unit.name} Event Calendar",

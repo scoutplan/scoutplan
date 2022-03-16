@@ -100,7 +100,7 @@
 
           // Done button
           = link_to t("global.done"),
-            cookies[:events_index_path] || unit_events_path(@event.unit),
+            unit_events_path(@event.unit),
             class:  "text-white text-sm font-bold no-underline tracking-wider uppercase text-center  \
                     block md:inline-block \
                     px-4 py-2 \
