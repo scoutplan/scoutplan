@@ -30,13 +30,13 @@
 
     // Planner
     - if policy(:event).plan?
-    li#main_nav_item_planner
-      = link_to unit_plans_path(@current_unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-stone-200 rounded-md' do
-        span.w-8.inline-block.text-center.text-green-500
-          i.fa-map.fad
-          |&nbsp;&nbsp;
-        span.text-black
-          = t("main_nav.planner")
+      li#main_nav_item_planner
+        = link_to unit_plans_path(@current_unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-stone-200 rounded-md' do
+          span.w-8.inline-block.text-center.text-green-500
+            i.fa-map.fad
+            |&nbsp;&nbsp;
+          span.text-black
+            = t("main_nav.planner")
 
     // Newsletter
     - if policy(:news_item).edit?

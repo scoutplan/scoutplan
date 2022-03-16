@@ -17,11 +17,11 @@ class IcalEventImporter
 
     calendar.events.each do |event|
       # next unless event.dtstart.future?
-      ap event.dtstart
-      ap event.summary
-      ap event.location
-      ap event.rrule
-      ap event.uid
+      # ap event.dtstart
+      # ap event.summary
+      # ap event.location
+      # ap event.rrule
+      # ap event.uid
     end
   end
 end

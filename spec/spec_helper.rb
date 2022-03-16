@@ -12,7 +12,7 @@ require "warden"
 #   Capybara::Selenium::Driver.new(app, browser: :firefox, options: browser_options)
 # end
 
-Capybara.javascript_driver = :selenium_headless
+Capybara.javascript_driver = :selenium
 
 # require "capybara/apparition"
 # Capybara.javascript_driver = :apparition
