@@ -40,13 +40,13 @@
 
     // Newsletter
     - if policy(:news_item).edit?
-    li#main_nav_item_newsletter
-      = link_to unit_newsletter_drafts_path(@current_unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-stone-200 rounded-md' do
-        span.w-8.inline-block.text-center.text-purple-500
-          i.fa-newspaper.fad
-          |&nbsp;&nbsp;
-        span.text-black
-          = t("newsletter.title")
+      li#main_nav_item_newsletter
+        = link_to unit_newsletter_drafts_path(@current_unit), class: 'no-underline whitespace-nowrap p-2 block hover:bg-stone-200 rounded-md' do
+          span.w-8.inline-block.text-center.text-purple-500
+            i.fa-newspaper.fad
+            |&nbsp;&nbsp;
+          span.text-black
+            = t("newsletter.title")
 
     = turbo_frame_tag "newsletter_nav" do
 

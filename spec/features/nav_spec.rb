@@ -1,9 +1,9 @@
-# Test creation of an Event
-
 # frozen_string_literal: true
 
+# Test creation of an Event
 require "rails_helper"
 
+# rubocop:disable Metrics/BlockLength
 describe "events", type: :feature do
   before do
     User.where(email: "test_admin@scoutplan.org").destroy_all
@@ -33,6 +33,10 @@ describe "events", type: :feature do
       expect(page).to have_content("Member Roster")
     end
 
+    it "shows roster" do
+      expect(page).to have_content("Newsletter")
+    end
+
     it "shows settings" do
       expect(page).to have_content("#{@unit.name} Settings")
     end
@@ -52,8 +56,13 @@ describe "events", type: :feature do
       expect(page).not_to have_content("Member Roster")
     end
 
+    it "doesn't show roster" do
+      expect(page).not_to have_content("Newsletter")
+    end
+
     it "doesn't show settings" do
       expect(page).not_to have_content("#{@unit.name} Settings")
-    end    
+    end
   end
 end
+# rubocop:enable Metrics/BlockLength
