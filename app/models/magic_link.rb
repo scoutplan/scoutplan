@@ -20,11 +20,19 @@ class MagicLink < ApplicationRecord
   # to generate a non-expiring token (good for things like ical subscriptions). Otherwise
   # it'll expire in 5 days.
   #
-  # possible usages:
-  # e.g. MagicLink.generate_link(@member, "/some/path")
-  # e.g. MagicLink.generate_link(@member, "/some/path", 2.weeks.from_now)
-  # e.g. MagicLink.generate_link(@member, "/some/path", :never)
+  # Usage:
+  #
+  # default expiration 120 hours:
+  # MagicLink.generate_link(@member, "/some/path")
+  #
+  # override with longer expiration period:
+  # MagicLink.generate_link(@member, "/some/path", 2.weeks.from_now)
+  #
+  # never expire:
+  # MagicLink.generate_link(@member, "/some/path", :never)
+  # or
   # e.g. MagicLink.generate_link(@member, "/some/path", nil)
+  #
   def self.generate_link(member, path, expires_at = 120.hours.from_now)
     expires_at = nil unless expires_at.is_a?(Time)
     MagicLink.create_with(expires_at: expires_at).find_or_create_by(member: member, path: path)
