@@ -5,29 +5,30 @@ export default class extends Controller {
   }
 
   toggleFutureEvents(event) {
-    this.toggleBodyClass(event, 'showing-future-events');
+    this.toggleBodyClass(event, "showing-future-events");
   }
 
   togglePastEvents(event) {
-    this.toggleBodyClass(event, 'showing-past-events');
+    this.toggleBodyClass(event, "showing-past-events");
   }
 
   toggleCancelledEvents(event) {
-    this.toggleBodyClass(event, 'showing-cancelled-events');
+    this.toggleBodyClass(event, "showing-cancelled-events");
   }
 
   toggleRsvpEvents(event) {
-    this.toggleBodyClass(event, 'showing-only-rsvp-events');
+    this.toggleBodyClass(event, "showing-only-rsvp-events");
   }
 
   toggleBulkPublish(event) {
-    this.toggleBodyClass(event, 'showing-only-draft-events');
+    this.toggleBodyClass(event, "showing-only-draft-events");
   }
 
   toggleSideNav(event) {
-    const navSelector = '#main_nav';
+    const navSelector = "#main_nav";
     var navElem = document.querySelector(navSelector);
-    navElem.classList.toggle('hidden');
+    navElem.classList.toggle("-translate-x-full");
+    // navElem.classList.toggle("-translate-x-0");
   }
 
   close_modal(event) {
