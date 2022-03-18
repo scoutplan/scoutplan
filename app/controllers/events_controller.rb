@@ -26,7 +26,9 @@ class EventsController < UnitContextController
     @presenter = EventPresenter.new
     @current_family = @current_member.family
     @current_year = @current_month = nil
-    @ical_magic_link = MagicLink.generate_link(@current_member, "icalendar") # create a MagicLink object
+
+    # kludge alert: we shouldn't generate this here, now
+    @ical_magic_link = MagicLink.generate_link(@current_member, "icalendar", :never) # create a MagicLink object
     page_title @unit.name, t("events.index.title")
     respond_to do |format|
       format.html
