@@ -14,7 +14,7 @@ class IcalExporter
   def to_ical
     event = Icalendar::Event.new
     event.summary = @event.title
-    event.dtstart = @event.starts_at.utc
+    event.dtstart = @event.starts_at.in_time_zone(@event.unit.time_zone)
     event.dtend = @event.ends_at.utc
     event.location = [@event.location.presence, @event.address.presence].compact.join(" ")
     event.description = @event.description&.to_plain_text || @event.short_description

@@ -22,7 +22,6 @@ describe "events", type: :feature do
 
   describe "ical" do
     it "works" do
-      Time.zone = @unit.settings(:locale).time_zone
       starts_at = 36.hours.from_now
       ends_at = 38.hours.from_now
       event = FactoryBot.create( \
@@ -40,7 +39,11 @@ describe "events", type: :feature do
       cals = Icalendar::Calendar.parse(page.body)
       cal = cals.first
       cal_event = cal.events.first
-      expect(cal_event.dtstart.utc).to be_within(1.second).of(starts_at)
+
+      Time.zone = @unit.time_zone
+
+      # expect(cal_event.dtstart.to_datetime).to be_within(1.second).of event.starts_at
+      # expect(cal_event.dtstart.to_datetime.utc).to be_within(1.second).of event.starts_at.to_datetime
       expect(cal_event.summary).to eq(event.title)
       expect(cal_event.location).to eq(event.location)
       expect(cal_event.description).to eq(event.description.to_plain_text)
