@@ -46,7 +46,7 @@ class MagicLink < ApplicationRecord
 
   # for now we're just gonna hard-code links to last five (5) days
   def set_expiration
-    self.expires_at = 120.hours.from_now
+    self.expires_at = 120.hours.from_now unless expires_at.present?
   end
 
   def destroy_if_expired!

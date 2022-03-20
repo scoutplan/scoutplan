@@ -222,29 +222,6 @@ class EventsController < UnitContextController
     @member_rsvps = current_member.event_rsvps
   end
 
-  # we don't guarantee that @unit is populated, hence...
-  # @display_unit is used for global nav and other common
-  # elements where unit is needed
-  #
-  # ^ kludge alert...this whole @unit / @current_unit thing needs to be undone...it sucks
-
-  # for index, new, and create
-  # rubocop:disable Style/SymbolArray
-  # def find_unit
-  #   @current_unit = Unit.includes(
-  #     :setting_objects,
-  #     unit_memberships: [:user, :parent_relationships, :child_relationships]
-  #   ).find(params[:unit_id])
-  #   # @current_member = @unit.membership_for(current_user)
-  #   @unit = @current_unit
-  # end
-  # # rubocop:enable Style/SymbolArray
-
-  # def find_member
-  #   return unless user_signed_in?
-  #   @current_member = @unit.membership_for(current_user)
-  # end
-
   def find_event
     @event = @unit.events.includes(:event_rsvps).find(params[:id] || params[:event_id])
     # @current_unit = @event.unit
