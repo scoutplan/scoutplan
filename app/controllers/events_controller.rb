@@ -13,14 +13,21 @@ class EventsController < UnitContextController
 
   # TODO: refactor this mess
   def index
-    if params[:variation].nil?
-      redirect_to cookies[:events_index_path] and return \
-        if cookies[:events_index_path].present?
-
-      redirect_to list_unit_events_path(@unit)
+    variation = params[:variation]
+    if variation.nil?
+      variation = cookies[:event_index_variation] || "event_table"
+      case variation
+      when "event_table"
+        redirect_to list_unit_events_path(@unit)
+        return
+      when "calendar"
+        redirect_to calendar_unit_events_path(@unit)
+        return
+      end
     end
 
-    store_path
+    cookies[:event_index_variation] = variation
+
     @events = UnitEventQuery.new(current_member, current_unit).execute
     @event_drafts = @events.select(&:draft?)
     @presenter = EventPresenter.new
