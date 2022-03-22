@@ -65,17 +65,18 @@
               = " No response"
 
           // right side
-          = link_to t('events.show.organize_button_caption'),
+          = link_to t("events.show.organize_button_caption"),
             unit_event_organize_path(@event.unit, @event),
-            class:  " text-sm font-bold no-underline tracking-wider uppercase text-center " \
-                    " block md:inline-block" \
-                    " px-4 py-3 md:py-2" \
-                    " bg-cyan-600 hover:bg-cyan-700" \
-                    " text-cyan-100 hover:text-cyan-200" \
-                    " rounded" \
-                    " mt-2 md:mt-0",
+            class:  "text-sm font-bold no-underline tracking-wider uppercase text-center " \
+                    "block md:inline-block " \
+                    "align-middle " \
+                    "px-4 py-3 md:py-2 " \
+                    "bg-cyan-600 hover:bg-cyan-700 " \
+                    "text-cyan-100 hover:text-cyan-200 " \
+                    "rounded " \
+                    "mt-3 md:mt-0",
             data: { turbo_action: "advance", turbo_frame: "main" },
-            title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)
+            title: t("events.show.organize_reason_admin", unit_name: @event.unit.name)
 
     // date panel
     section#date_time_card.text-center.bg-stone-100.px-6.py-4.mb-1.rounded
