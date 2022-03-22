@@ -42,15 +42,47 @@
 
     // first row: RSVP panel
     - if @event.requires_rsvp
-      section.bg-stone-100.rounded.p-4.mb-2
+      section.bg-stone-100.rounded.px-6.py-4.mb-1
         = render partial: 'rsvp_card'
 
+    - if @event.organizable? && policy(@event).organize?
+      section#manage_rsvps_card.bg-stone-100.rounded.px-6.py-4.mb-1
+        .flex.md:flex-row.flex-col.justify-between
+          // left side
+          div
+            .md:inline-block.bg-green-200.text-green-800.px-4.py-2.rounded-tl.rounded-tr.md:rounded-tr-none.md:rounded-bl
+              strong = @event.rsvps.accepted.count
+              = " Going"
+              = " (#{@event.rsvps.accepted.select { |r| r.youth? }.count} Youth,"
+              = " #{@event.rsvps.accepted.select { |r| r.adult? }.count} Adult)"
+
+            .md:inline-block.bg-red-200.text-red-800.px-4.py-2
+              strong = @event.rsvps.declined.count
+              = " Not going"
+
+            .md:inline-block.bg-orange-200.text-orange-800.px-4.py-2.rounded-br.rounded-bl.md:rounded-bl-none.md:rounded-tr
+              strong = @event.unit.members.status_active.count - @event.rsvps.collect(&:member).count
+              = " No response"
+
+          // right side
+          = link_to t('events.show.organize_button_caption'),
+            unit_event_organize_path(@event.unit, @event),
+            class:  " text-sm font-bold no-underline tracking-wider uppercase text-center " \
+                    " block md:inline-block" \
+                    " px-4 py-3 md:py-2" \
+                    " bg-cyan-600 hover:bg-cyan-700" \
+                    " text-cyan-100 hover:text-cyan-200" \
+                    " rounded" \
+                    " mt-2 md:mt-0",
+            data: { turbo_action: "advance", turbo_frame: "main" },
+            title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)
+
     // date panel
-    section#date_time_card.text-center.bg-stone-100.p-4.mb-2.rounded
+    section#date_time_card.text-center.bg-stone-100.px-6.py-4.mb-1.rounded
       = render partial: 'events/partials/show/date_card'
 
     - if @event.location.present? || @event.address.present? || @event.departs_from.present?
-      section#location_card.bg-stone-100.rounded.p-4.mb-2.relative
+      section#location_card.bg-stone-100.rounded.px-6.py-4.mb-1.relative
         = render partial: 'events/partials/show/location_card'
 
     // third row: longform description, if present
@@ -64,46 +96,29 @@
 
         // left side (on desktop)
         .block
-
-            // Edit button (if authorized)
-            - if policy(@event).edit? && @event.editable?
-              = link_to t("event_edit"),
-                edit_unit_event_path(@event.unit, @event),
-                class:  " text-sm font-bold no-underline tracking-wider uppercase text-center" \
-                        " block md:inline-block " \
-                        " w-full px-6 py-2 mb-2 md:pl-0" \
-                        " text-brand-500 hover:text-brand-600" \
-                        " border-brand-500 border" \
-                        " md:border-0 " \
-                        " rounded" \
-                        "",
-                data: { 'turbo-action' => 'advance' },
-                title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)
+          // Edit button (if authorized)
+          - if policy(@event).edit? && @event.editable?
+            = link_to t("event_edit"),
+              edit_unit_event_path(@event.unit, @event),
+              class:  " text-sm font-bold no-underline tracking-wider uppercase text-center" \
+                      " block md:inline-block " \
+                      " w-full px-6 py-2 mb-2 md:pl-0" \
+                      " text-brand-500 hover:text-brand-600" \
+                      " border-brand-500 border" \
+                      " md:border-0 " \
+                      " rounded" \
+                      "",
+              data: { 'turbo-action' => 'advance' },
+              title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)
 
         // right side (on desktop)
         div.flex-auto.md:flex-none
-
-          // Organize button (if authorized)
-          - if @event.organizable? && policy(@event).organize?
-            = link_to t('events.show.organize_button_caption'),
-              unit_event_organize_path(@event.unit, @event),
-              class:  " text-sm font-bold no-underline tracking-wider uppercase text-center " \
-                      " block md:inline-block" \
-                      " px-4 py-2 mr-0 md:mr-2 mb-2 md:mb-0" \
-                      " bg-brand-100 hover:bg-brand-200" \
-                      " text-brand-500 hover:text-brand-600" \
-                      " rounded border border-brand-100 hover:border-brand-200" \
-                      "",
-              data: { turbo_action: "advance", turbo_frame: "main" },
-              title: t('events.show.organize_reason_admin', unit_name: @event.unit.name)   
-
-
           // Done button
           = link_to t("global.done"),
             unit_events_path(@event.unit),
             class:  "text-white text-sm font-bold no-underline tracking-wider uppercase text-center  \
                     block md:inline-block \
-                    px-4 py-2 \
+                    px-4 py-3 md:py-2 \
                     min-w-[8rem] \
                     bg-brand-500 hover:bg-brand-600 \
                     rounded border border-brand-500 hover:border-brand-600",
