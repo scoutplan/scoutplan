@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "query", "address" ];
+  static targets = [ "placeName", "address", "activeInput" ];
   static values = {
     apiToken: String
   }
@@ -28,20 +28,21 @@ export default class extends Controller {
     this.resultsDiv.classList.add("text-sm", "text-stone-500", "z-10", "w-24", "h-36", "shadow", "bg-white", "border", "border-stone-200", "rounded", "overflow-x-hidden", "overflow-y-auto", "absolute", "hidden");
 
 
-    this.queryTarget.parentNode.appendChild(this.resultsDiv);
+    this.placeNameTarget.parentNode.appendChild(this.resultsDiv);
 
     var listElem = document.createElement("ul");
     this.resultsDiv.appendChild(listElem);
   }
 
   connectEventListeners() {
+    var elem = document.querySelector("#geocode_results");
     document.addEventListener("click", function(event) {
-      var resultsDiv = document.querySelector("#geocode_results");
+      var resultsDiv = elem;
       resultsDiv.classList.add("hidden");
     });
     document.addEventListener("keyup", function(event) {
       if(event.key === "Escape") {
-        var resultsDiv = document.querySelector("#geocode_results");
+        var resultsDiv = elem;
         resultsDiv.classList.add("hidden");        
       }
     });
@@ -63,6 +64,7 @@ export default class extends Controller {
 
   // TODO: modularize this mess
   performQuery(event) {
+    this.activeInput = event.target;
     var searchTerm = event.target.value;
     var request = {
       query: searchTerm,
@@ -107,8 +109,6 @@ export default class extends Controller {
             </a>`;
           resultsDiv.firstChild.appendChild(listItemElem);
         }
-      } else {
-        this.resultsDiv.classList.add("hidden");
       }
     });
   }
@@ -122,12 +122,12 @@ export default class extends Controller {
       return;
     }
 
-    if (elem == this.queryTarget) {
-      this.queryTarget.value = elem.dataset.resultPlaceName;
+    if (this.activeInput == this.placeNameTarget) {
+      this.placeNameTarget.value = elem.dataset.resultPlaceName;
       if (this.addressTarget.value == "") { this.addressTarget.value = elem.dataset.resultAddress; }
-    } else if (elem == this.addressTarget) {
+    } else if (this.activeInput == this.addressTarget) {
       this.addressTarget.value = elem.dataset.resultAddress;
-      if (this.queryTarget.value == "") { this.queryTarget.value = elem.dataset.resultPlaceName; }
+      if (this.placeNameTarget.value == "") { this.placeNameTarget.value = elem.dataset.resultPlaceName; }
     }
     
     this.resultsDiv.classList.add("hidden");
