@@ -22,11 +22,10 @@ ul.m-0
   // Delete RSVP
   li
     = button_to \
-      event_rsvp_path(rsvp),
+      unit_event_rsvp_path(@event.unit, rsvp),
       method: :delete,
-      class: "block py-2 font-normal" \
-      do
-      
-      span.w-7.text-center.inline-block
-        i.fas.fa-trash.text-black.text-orange-600
-      = t("events.organize.actions.delete")      
+      class: "delete-rsvp-button block py-2 font-normal" \
+      do      
+        span.w-7.text-center.inline-block
+          i.fas.fa-trash.text-black.text-orange-600
+        = t("events.organize.actions.delete")      

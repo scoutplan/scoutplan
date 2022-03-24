@@ -71,9 +71,10 @@ group :development do
 end
 
 group :test do
-  gem "capybara", "~> 3.35"
+  gem "capybara"
   gem "faker"
   gem "launchy"
   gem "simplecov", require: false
-  gem "webdrivers"
+  # gem "webdrivers"
+  gem "apparition"
 end

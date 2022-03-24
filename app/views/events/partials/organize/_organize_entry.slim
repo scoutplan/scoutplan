@@ -1,7 +1,7 @@
 // This is a small layout for displaying an entry on the Events#organize page.
 // It's intended to be used by the two partials found in /views/events/partials/organize
 
-li.member
+li.member(id="unit_membership_#{@member.id}")
   = link_to "#",
     class: "leading-none block w-full py-2 md:py-2", \
     onclick: "this.closest('.member').classList.toggle('open'); return false;" \
