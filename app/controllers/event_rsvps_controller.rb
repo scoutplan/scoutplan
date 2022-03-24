@@ -2,6 +2,8 @@
 
 # only intended to be called via XHR...no HTML view exists for this controller
 class EventRsvpsController < UnitContextController
+  before_action :find_rsvp, only: [:destroy]
+
   def create
     service = EventRsvpService.new(current_member)
     rsvp = service.create_or_update(params)
@@ -20,22 +22,19 @@ class EventRsvpsController < UnitContextController
   end
 
   def destroy
-    rsvp = EventRsvp.find(params[:id])
-    unit = rsvp.unit
-    event = rsvp.event
-    target_member = rsvp.member
-    @member = unit.membership_for(current_user)
-    authorize rsvp
-    flash[:notice] = I18n.t("events.organize.confirmations.delete", name: target_member.full_display_name)
-    rsvp.destroy
-    redirect_to unit_event_organize_path(unit, event)
-  end
-
-  def pundit_user
-    @member
+    authorize @rsvp
+    event = @rsvp.event
+    display_name = @rsvp.full_display_name
+    @rsvp.destroy
+    redirect_to unit_event_organize_path(@unit, event),
+                notice: I18n.t("events.organize.confirmations.delete", name: display_name)
   end
 
   private
+
+  def find_rsvp
+    @rsvp = EventRsvp.find(params[:id])
+  end
 
   def find_event_responses
     @non_respondents = @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)

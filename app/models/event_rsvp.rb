@@ -4,7 +4,7 @@
 class EventRsvp < ApplicationRecord
   belongs_to :event
   belongs_to :unit_membership
-  belongs_to :respondent, class_name: 'UnitMembership'
+  belongs_to :respondent, class_name: "UnitMembership"
 
   validates_uniqueness_of :event, scope: :unit_membership
   validates_presence_of :response
@@ -21,6 +21,6 @@ class EventRsvp < ApplicationRecord
   # do the Event and UnitMembership share a Unit in common?
   # if not, something's wrong
   def common_unit?
-    errors.add(:event, 'and Member must belong to the same Unit') unless event.unit == member.unit
+    errors.add(:event, "and Member must belong to the same Unit") unless event.unit == member.unit
   end
 end

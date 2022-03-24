@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/integer/time'
+require "active_support/core_ext/integer/time"
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.configure do
-  config.web_console.permissions = '172.0.0.0/8'
+  config.web_console.permissions = "172.0.0.0/8"
 
   config.hosts = [
     IPAddr.new("0.0.0.0/0"),        # All IPv4 addresses.
@@ -32,13 +32,13 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
-  if Rails.root.join('tmp', 'caching-dev.txt').exist?
+  if Rails.root.join("tmp", "caching-dev.txt").exist?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
-      'Cache-Control' => "public, max-age=#{2.days.to_i}"
+      "Cache-Control" => "public, max-age=#{2.days.to_i}"
     }
   else
     config.action_controller.perform_caching = false
@@ -53,9 +53,9 @@ Rails.application.configure do
   # delivers to Mailcatcher running on 1025
   config.action_mailer.raise_delivery_errors  = true
   config.action_mailer.delivery_method        = :smtp
-  config.action_mailer.smtp_settings          = { address: 'mailcatcher', port: 1025 }
+  config.action_mailer.smtp_settings          = { address: "mailcatcher", port: 1025 }
   config.action_mailer.perform_caching        = false
-  config.action_mailer.default_url_options    = { host: 'local.scoutplan.org', protocol: :https }
+  config.action_mailer.default_url_options    = { host: "local.scoutplan.org", protocol: :https }
 
   # config.active_job.queue_adapter = :sidekiq
   config.active_job.queue_adapter = :inline

@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   resources :units, only: %i[show index] do
     resources :plans, path: "planner"
     resources :event_categories
+    resources :event_rsvps, only: [:destroy]
     resources :news_items do
       post "enqueue", to: "news_items#enqueue", as: "enqueue"
       post "dequeue", to: "news_items#dequeue", as: "dequeue"
