@@ -1,4 +1,4 @@
-header#page_header.w-full.sticky.left-0.right-0.top-0.px-0.bg-white.pb-4.pt-8.lg:pt-10.z-10.items-center
+header#page_header.w-full.sticky.left-0.right-0.top-0.px-0.bg-white.pb-4.pt-8.lg:pt-10.z-10.items-center.border-b
   .flex
     // left side
     .flex.flex-grow
@@ -64,7 +64,7 @@ header#page_header.w-full.sticky.left-0.right-0.top-0.px-0.bg-white.pb-4.pt-8.lg
 - if flash[:notice]
   p = flash[:notice]
 
-div.pl-2.mt-5
+div.filter-status.pl-2.mt-5
   .flex.gap-3
     .filter-status.filter-status-only-rsvps.inline-block.rounded.px-4.py-2.mt-6.bg-sky-100.text-sky-600
         i.fa-thumbs-up.fas.mr-3
@@ -77,3 +77,5 @@ div.pl-2.mt-5
     .filter-status.filter-status-cancelled.inline-block.rounded.px-4.py-2.mt-6.bg-sky-100.text-sky-600
         i.fa-times-hexagon.fas.mr-3
         = t('events.index.showing_cancelled')
+
+div#things_you_can_do

@@ -1,5 +1,5 @@
-- display_year = params[:y]&.to_i || Date.today.year
-- display_month = params[:m]&.to_i || Date.today.month
+- display_year = (params[:y] || cookies[:calendar_display_year] || Date.today.year).to_i
+- display_month = (params[:m] || cookies[:calendar_display_month] || Date.today.month).to_i
 - first_day_of_month = Date.new(display_year, display_month, 1)
 - first_day_of_last_month = first_day_of_month.last_month
 - days_in_month = first_day_of_month.end_of_month.day
@@ -88,6 +88,41 @@ header.flex.justify-between.pb-2.border-b
 
     // end of 7-day loop
   // end of until loop
+
+.flex.flex-row.px-2.py-4.gap-10
+  // VIEW AS CALENDAR
+  = link_to list_unit_events_path(@unit),
+            class: "inline-block py-2 text-sky-500 hover:text-sky-600 text-sm font-bold",
+            data: { turbo_action: "advance" },
+            id: "show_as_calendar" do
+
+    i.far.fa-list.mr-2
+    = "View as a list"
+
+  // PDF DOWNLOAD
+  = link_to list_unit_events_path(@unit, format: :pdf),
+            class: "inline-block py-2 text-sky-500 hover:text-sky-600 text-sm font-bold",
+            data: { turbo_action: "advance" },
+            id: "show_as_calendar" do
+
+    i.far.fa-print.mr-2
+    = "Download a printable schedule"
+
+  // ICAL SUBSCRIBE
+  - ics_url = calendar_feed_unit_events_url( \
+      token: @ical_magic_link.token,
+      unit_id: @unit.to_param,
+      format: :ics,
+      only_path: false,
+      protocol: "webcal" \
+    )
+  = link_to ics_url,
+            class: "inline-block py-2 text-sky-500 hover:text-sky-600 text-sm font-bold",
+            data: { turbo_action: "advance" },
+            id: "show_as_calendar" do
+
+    i.far.fa-tower-broadcast.mr-2
+    = "Download a printable schedule"
 
 javascript:
   document.addEventListener("turbo:load", function() {
