@@ -9,26 +9,61 @@
             .inline.ml-2.text-base = glyph_tag(@event)
 
         // right side
-        div
+        .flex.flex-row.gap-2
+          - if @previous_event.present?
+            = link_to unit_event_organize_path(@unit, @previous_event),
+              class: "inline-block font-bold text-sm text-cyan-500 hover:text-cyan-600 px-4 py-2 uppercase tracking-wide border border-cyan-500 hover:border-cyan-600 rounded",
+              title: "#{@previous_event&.title} on #{@previous_event&.starts_at&.strftime("%-d %b")}",
+              disabled: @previous_event.blank?,
+              data: { turbo_action: "advance" } do
+                i.fas.fa-chevron-left.mr-1
+                = t("events.organize.previous_short")
+
+          - else
+            = link_to "#",
+              class: "inline-block font-bold text-sm text-stone-300 px-4 py-2 uppercase tracking-wide border border-stone-300 rounded pointer-events-none" do
+                i.fas.fa-chevron-left.mr-1
+                = t("events.organize.previous_short")
+
+          - if @next_event.present?
+            = link_to unit_event_organize_path(@unit, @next_event),
+              class: "inline-block font-bold text-sm text-cyan-500 hover:text-cyan-600 px-4 py-2 uppercase tracking-wide border border-cyan-500 hover:border-cyan-600 rounded",
+              title: "#{@next_event&.title} on #{@next_event&.starts_at&.strftime("%-d %b")}",
+              disabled: @next_event.blank?,
+              data: { turbo_action: "advance" } do
+                = t("events.organize.next_short")
+                i.fas.fa-chevron-right.ml-1
+
+          - else
+            = link_to "#",
+              class: "inline-block font-bold text-sm text-stone-300 px-4 py-2 uppercase tracking-wide border border-stone-300 rounded pointer-events-none" do
+                = t("events.organize.next_short")
+                i.fas.fa-chevron-right.ml-1             
+
           = link_to "Done",
             unit_event_path(@event.unit, @event),
             class: "text-sm font-bold text-white uppercase tracking-wider \
-                    inline-block px-4 py-2 \
+                    inline-block px-6 py-2 \
                     bg-cyan-600 hover:bg-cyan-700 \
+                    border border-cyan-600 hover:border-cyan-700 \
                     text-cyan-100 bg:text-cyan-200 \
                     rounded",
-            data: { turbo_action: "advance" }
+            data: { turbo_action: "advance" }                
     
     header
       .flex.flex-col.md:flex-row.justify-between
         // left
         div
-          p.mb-0.text-sm.font-semibold.mt-4.py-1
-            i.fa-calendar.fas.mr-1.text-stone-400
+          p.mb-0.text-sm.font-semibold.py-1.leading-relaxed
+            span.inline-block.w-5
+              i.fa-calendar.fas.mr-1.text-rose-400
             = @event.starts_at.strftime("%-d %b")
 
-            i.fa-location-dot.fas.mr-1.text-stone-400.ml-6
-            = @event.location    
+            - if @event.location.present?
+              br
+              span.inline-block.w-5
+                i.fa-location-dot.fas.mr-1.text-indigo-400
+              = @event.location
 
         // search
         div     
@@ -41,34 +76,7 @@
               class: "max-w-full w-96 rounded border border-stone-200 bg-stone-100 focus:ring-brand-500 placeholder-stone-400",
               onkeyup: "performNameSearch();"
 
-            i.fa-magnifying-glass.fas.absolute.right-4(style="top:50%;transform:translateY(-50%);")                 
-
-        // prev/next
-        div
-          - if @previous_event
-            = link_to unit_event_organize_path(@unit, @previous_event),
-              class: "inline-block text-sm hover:text-brand-500 py-4",
-              data: { turbo_action: "advance" } do
-            
-              i.fas.fa-chevron-left.mr-1
-              .hidden.md:inline-block
-                = t("events.organize.previous", title: @previous_event.title, date: @previous_event.starts_at.strftime("%-d %b"))
-
-              .md:hidden.inline-block
-                = t("events.organize.previous_short", title: @previous_event.title)
-
-          - if @next_event
-            = link_to unit_event_organize_path(@unit, @next_event),
-              class: "inline-block text-sm hover:text-brand-500 py-4 ml-2",
-              data: { turbo_action: "advance" } do
-
-              .hidden.md:inline-block
-                = t("events.organize.next", title: @next_event.title, date: @next_event.starts_at.strftime("%-d %b"))
-
-              .md:hidden.inline-block
-                = t("events.organize.next_short", title: @next_event.title)
-
-              i.fas.fa-chevron-right.ml-1   
+            i.fa-magnifying-glass.fas.absolute.right-4(style="top:50%;transform:translateY(-50%);") 
 
     - if flash[:notice]
       section.mt-2.max-w-6xl.mx-auto#notices

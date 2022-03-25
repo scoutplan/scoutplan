@@ -17,6 +17,7 @@
   h2(style="color:#57534E;font-size:2rem;font-weight:normal;") Next Seven Days
 
   - @this_week_events.each do |event|
+    - presenter = EventPresenter.new(event: event, current_member: @member)
     h3(style="margin-bottom:0;line-height:150%;")
       = magic_link_to \
         @member,
@@ -25,11 +26,19 @@
         style: "color:black;font-weight:normal;"
 
     p(style="margin-top:0;line-height:150%;")
-      = event.starts_at.in_time_zone(@member.unit.time_zone).strftime('%A, %b %-d')
-      br
-      = event.starts_at.in_time_zone(@member.unit.time_zone).strftime('%-I:%M %p')
-      |&thinsp;&ndash;&thinsp;
-      = event.ends_at.in_time_zone(@member.unit.time_zone).strftime('%-I:%M %p')
+      = presenter.full_dates_to_s
+      / - if presenter.single_day?
+      /   = event.starts_at.in_time_zone(@member.time_zone).strftime('%A, %b %-d')
+      /   br
+      /   = event.starts_at.in_time_zone(@member.time_zone).strftime('%-I:%M %p')
+      /   |&thinsp;&ndash;&thinsp;
+      /   = event.ends_at.in_time_zone(@member.time_zone).strftime('%-I:%M %p')
+      / - else
+      /  = event.starts_at.in_time_zone(@member.time_zone).strftime("%A")
+      /  |&ndash;
+      /  = event.ends_at.in_time_zone(@member.time_zone).strftime("%A")
+
+       
 
       - if event.location.present?
         br
