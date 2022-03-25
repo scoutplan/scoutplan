@@ -55,11 +55,11 @@ describe "events", type: :feature do
     it "next & previous link works" do
       visit unit_event_organize_path(@unit, @rsvp_event1)
 
-      text = I18n.t("events.organize.next", title: @rsvp_event2.title, date: @rsvp_event2.starts_at.in_time_zone(@unit.settings(:locale).time_zone).strftime("%-d %b"))
+      text = I18n.t("events.organize.next_short")
       click_link_or_button(text)
       expect(page).to have_current_path(unit_event_organize_path(@unit, @rsvp_event2))
 
-      text = I18n.t("events.organize.previous", title: @rsvp_event1.title, date: @rsvp_event1.starts_at.in_time_zone(@unit.settings(:locale).time_zone).strftime("%-d %b"))
+      text = I18n.t("events.organize.previous_short")
       click_link_or_button(text)
       expect(page).to have_current_path(unit_event_organize_path(@unit, @rsvp_event1))
     end
