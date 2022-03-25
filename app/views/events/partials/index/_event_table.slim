@@ -1,4 +1,40 @@
 #event_table_container.max-w-full
+
+  .flex.flex-row.px-2.gap-10.border-b
+    // VIEW AS CALENDAR
+    = link_to calendar_unit_events_path(@unit),
+              class: "inline-block py-2 text-sky-500 hover:text-sky-600 text-sm font-bold",
+              data: { turbo_action: "advance" },
+              id: "show_as_calendar" do
+
+      i.far.fa-calendar.mr-2
+      = "View as a calendar"
+
+    // PDF DOWNLOAD
+    = link_to list_unit_events_path(@unit, format: :pdf),
+              class: "inline-block py-2 text-sky-500 hover:text-sky-600 text-sm font-bold",
+              data: { turbo_action: "advance" },
+              id: "show_as_calendar" do
+
+      i.far.fa-print.mr-2
+      = "Download a printable schedule"
+
+    // ICAL SUBSCRIBE
+    - ics_url = calendar_feed_unit_events_url( \
+        token: @ical_magic_link.token,
+        unit_id: @unit.to_param,
+        format: :ics,
+        only_path: false,
+        protocol: "webcal" \
+      )
+    = link_to ics_url,
+              class: "inline-block py-2 text-sky-500 hover:text-sky-600 text-sm font-bold",
+              data: { turbo_action: "advance" },
+              id: "show_as_calendar" do
+
+      i.far.fa-tower-broadcast.mr-2
+      = "Download a printable schedule"
+
   = form_tag bulk_publish_unit_events_path(@unit), id: "bulk_action_form"
     .table.bulk-selection
       .table-row-group

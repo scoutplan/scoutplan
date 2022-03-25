@@ -31,13 +31,15 @@
               title: "#{@next_event&.title} on #{@next_event&.starts_at&.strftime("%-d %b")}",
               disabled: @next_event.blank?,
               data: { turbo_action: "advance" } do
-                = t("events.organize.next_short")
+                .hidden.md:inline
+                  = t("events.organize.next_short")
                 i.fas.fa-chevron-right.ml-1
 
           - else
             = link_to "#",
               class: "inline-block font-bold text-sm text-stone-300 px-4 py-2 uppercase tracking-wide border border-stone-300 rounded pointer-events-none" do
-                = t("events.organize.next_short")
+                .hidden.md:inline
+                  = t("events.organize.next_short")
                 i.fas.fa-chevron-right.ml-1             
 
           = link_to "Done",

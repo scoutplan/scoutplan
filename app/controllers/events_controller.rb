@@ -28,6 +28,9 @@ class EventsController < UnitContextController
 
     cookies[:event_index_variation] = variation
 
+    cookies[:calendar_display_month] = params[:m] if params[:m]
+    cookies[:calendar_display_year] = params[:y] if params[:y]
+
     @events = UnitEventQuery.new(current_member, current_unit).execute
     @event_drafts = @events.select(&:draft?)
     @presenter = EventPresenter.new
@@ -61,7 +64,7 @@ class EventsController < UnitContextController
       encoding: "utf8",
       orientation: "landscape",
       header: { html: { template: "events/partials/index/calendar_header", locals: { events_by_month: calendar_events } } },
-      footer: { html: { template: "events/partials/index/calendar_footer", locals: { events_by_month: calendar_events } } },
+      # footer: { html: { template: "events/partials/index/calendar_footer", locals: { events_by_month: calendar_events } } },
       margin: { top: 20, bottom: 20 }
     )
   end
