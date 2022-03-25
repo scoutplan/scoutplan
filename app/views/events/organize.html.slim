@@ -57,7 +57,7 @@
           p.mb-0.text-sm.font-semibold.py-1.leading-relaxed
             span.inline-block.w-5
               i.fa-calendar.fas.mr-1.text-rose-400
-            = @event.starts_at.strftime("%-d %b")
+            = @event.starts_at.strftime("%-d %B %Y")
 
             - if @event.location.present?
               br
