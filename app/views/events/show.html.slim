@@ -49,32 +49,37 @@
       section#manage_rsvps_card.bg-stone-100.rounded.px-6.py-4.mb-1
         .flex.md:flex-row.flex-col.justify-between
           // left side
-          div
-            .md:inline-block.bg-green-200.text-green-800.px-4.py-2.rounded-tl.rounded-tr.md:rounded-tr-none.md:rounded-bl
+          .flex.flex-col.md:flex-row.gap-4.md:gap-6.py-2
+            .md:inline-block
+              .inline-block.w-6.md:w-auto.text-green-500.text-center.mr-2
+                i.fa-hiking.fas
               strong = @event.rsvps.accepted.count
               = " Going"
-              = " (#{@event.rsvps.accepted.select { |r| r.youth? }.count} Youth,"
-              = " #{@event.rsvps.accepted.select { |r| r.adult? }.count} Adult)"
+              - if @event.rsvps.accepted.count.positive?
+                = " (#{@event.rsvps.accepted.select { |r| r.youth? }.count} Youth,"
+                = " #{@event.rsvps.accepted.select { |r| r.adult? }.count} Adult)"
 
-            .md:inline-block.bg-red-200.text-red-800.px-4.py-2
+            .md:inline-block
+              .inline-block.w-6.md:w-auto.text-red-500.text-center.mr-2
+                i.fa-couch.fas
               strong = @event.rsvps.declined.count
               = " Not going"
 
-            .md:inline-block.bg-orange-200.text-orange-800.px-4.py-2.rounded-br.rounded-bl.md:rounded-bl-none.md:rounded-tr
+            .md:inline-block
+              .inline-block.w-6.md:w-auto.text-amber-500.text-center.mr-2
+                i.fa-ghost.fas
               strong = @event.unit.members.status_active.count - @event.rsvps.collect(&:member).count
               = " No response"
 
           // right side
           = link_to t("events.show.organize_button_caption"),
             unit_event_organize_path(@event.unit, @event),
-            class:  "text-sm font-bold no-underline tracking-wider uppercase text-center " \
-                    "block md:inline-block " \
-                    "align-middle " \
-                    "px-4 py-3 md:py-2 " \
-                    "bg-cyan-600 hover:bg-cyan-700 " \
-                    "text-cyan-100 hover:text-cyan-200 " \
-                    "rounded " \
-                    "mt-3 md:mt-0",
+            class:  "text-sm font-bold no-underline tracking-wider uppercase text-center" \
+                    " px-4 py-3 md:py-2" \
+                    " block md:inline-block" \
+                    " bg-cyan-600 hover:bg-cyan-700" \
+                    " text-cyan-100 hover:text-cyan-200" \
+                    " rounded",
             data: { turbo_action: "advance", turbo_frame: "main" },
             title: t("events.show.organize_reason_admin", unit_name: @event.unit.name)
 
