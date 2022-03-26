@@ -10,47 +10,50 @@
 
         // right side
         .flex.flex-row.gap-2
-          - if @previous_event.present?
-            = link_to unit_event_organize_path(@unit, @previous_event),
-              class: "inline-block font-bold text-sm text-cyan-500 hover:text-cyan-600 px-4 py-2 uppercase tracking-wide border border-cyan-500 hover:border-cyan-600 rounded",
-              title: "#{@previous_event&.title} on #{@previous_event&.starts_at&.strftime("%-d %b")}",
-              disabled: @previous_event.blank?,
-              data: { turbo_action: "advance" } do
-                i.fas.fa-chevron-left.mr-1
-                = t("events.organize.previous_short")
+          .hidden.md:flex.flex-row.gap-2
+            - if @previous_event.present?
+              = link_to unit_event_organize_path(@unit, @previous_event),
+                class: "inline-block font-bold text-sm text-cyan-500 hover:text-cyan-600 px-4 py-2 uppercase tracking-wide border border-cyan-500 hover:border-cyan-600 rounded",
+                title: "#{@previous_event&.title} on #{@previous_event&.starts_at&.strftime("%-d %b")}",
+                disabled: @previous_event.blank?,
+                data: { turbo_action: "advance" } do
+                  i.fas.fa-chevron-left.mr-1
+                  = t("events.organize.previous_short")
 
-          - else
-            = link_to "#",
-              class: "inline-block font-bold text-sm text-stone-300 px-4 py-2 uppercase tracking-wide border border-stone-300 rounded pointer-events-none" do
-                i.fas.fa-chevron-left.mr-1
-                = t("events.organize.previous_short")
+            - else
+              = link_to "#",
+                class: "inline-block font-bold text-sm text-stone-300 px-4 py-2 uppercase tracking-wide border border-stone-300 rounded pointer-events-none" do
+                  i.fas.fa-chevron-left.mr-1
+                  = t("events.organize.previous_short")
 
-          - if @next_event.present?
-            = link_to unit_event_organize_path(@unit, @next_event),
-              class: "inline-block font-bold text-sm text-cyan-500 hover:text-cyan-600 px-4 py-2 uppercase tracking-wide border border-cyan-500 hover:border-cyan-600 rounded",
-              title: "#{@next_event&.title} on #{@next_event&.starts_at&.strftime("%-d %b")}",
-              disabled: @next_event.blank?,
-              data: { turbo_action: "advance" } do
-                .hidden.md:inline
+            - if @next_event.present?
+              = link_to unit_event_organize_path(@unit, @next_event),
+                class: "inline-block font-bold text-sm text-cyan-500 hover:text-cyan-600 px-4 py-2 uppercase tracking-wide border border-cyan-500 hover:border-cyan-600 rounded",
+                title: "#{@next_event&.title} on #{@next_event&.starts_at&.strftime("%-d %b")}",
+                disabled: @next_event.blank?,
+                data: { turbo_action: "advance" } do
                   = t("events.organize.next_short")
-                i.fas.fa-chevron-right.ml-1
+                  i.fas.fa-chevron-right.ml-1
 
-          - else
-            = link_to "#",
-              class: "inline-block font-bold text-sm text-stone-300 px-4 py-2 uppercase tracking-wide border border-stone-300 rounded pointer-events-none" do
-                .hidden.md:inline
+            - else
+              = link_to "#",
+                class: "inline-block font-bold text-sm text-stone-300 px-4 py-2 uppercase tracking-wide border border-stone-300 rounded pointer-events-none" do
                   = t("events.organize.next_short")
-                i.fas.fa-chevron-right.ml-1             
+                  i.fas.fa-chevron-right.ml-1             
 
-          = link_to "Done",
-            unit_event_path(@event.unit, @event),
+          = link_to unit_event_path(@event.unit, @event),
             class: "text-sm font-bold text-white uppercase tracking-wider \
-                    inline-block px-6 py-2 \
+                    inline-block px-4 md:px-6 py-2 \
                     bg-cyan-600 hover:bg-cyan-700 \
                     border border-cyan-600 hover:border-cyan-700 \
                     text-cyan-100 bg:text-cyan-200 \
                     rounded",
-            data: { turbo_action: "advance" }                
+            data: { turbo_action: "advance" }
+            do
+              .hidden.md:inline
+                = "Done"
+              .inline.md:hidden
+                i.fa-times.fas
     
     header
       .flex.flex-col.md:flex-row.justify-between

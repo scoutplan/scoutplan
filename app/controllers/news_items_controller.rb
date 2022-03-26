@@ -60,7 +60,7 @@ class NewsItemsController < UnitContextController
     path = new_status == :queued ? unit_newsletter_queued_path(@unit) : unit_newsletter_drafts_path(@unit)
 
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@message) }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@news_item) }
       format.html { redirect_to path, notice: t("news_items.notices.status_update") }
     end
   end

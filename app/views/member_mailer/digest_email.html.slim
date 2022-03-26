@@ -26,19 +26,7 @@
         style: "color:black;font-weight:normal;"
 
     p(style="margin-top:0;line-height:150%;")
-      = presenter.full_dates_to_s
-      / - if presenter.single_day?
-      /   = event.starts_at.in_time_zone(@member.time_zone).strftime('%A, %b %-d')
-      /   br
-      /   = event.starts_at.in_time_zone(@member.time_zone).strftime('%-I:%M %p')
-      /   |&thinsp;&ndash;&thinsp;
-      /   = event.ends_at.in_time_zone(@member.time_zone).strftime('%-I:%M %p')
-      / - else
-      /  = event.starts_at.in_time_zone(@member.time_zone).strftime("%A")
-      /  |&ndash;
-      /  = event.ends_at.in_time_zone(@member.time_zone).strftime("%A")
-
-       
+      = presenter.full_dates_to_s      
 
       - if event.location.present?
         br

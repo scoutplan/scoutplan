@@ -28,6 +28,14 @@ class MemberMailer < ScoutplanMailer
   def daily_reminder_email
     Rails.logger.info "Emailing Daily Reminder to #{@member.flipper_id}..."
     @events = @unit.events.published.imminent
+    @rsvp_closes_three_days = @unit.events.published.where(
+      "rsvp_closes_at BETWEEN ? AND ?",
+      3.days.from_now.beginning_of_day,
+      3.days.from_now.end_of_day
+    )
+
+
+
     mail(
       to: @to_address,
       from: @from_address,

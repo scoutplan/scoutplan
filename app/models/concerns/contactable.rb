@@ -9,7 +9,11 @@ module Contactable
   end
 
   def emailable?
-    !contactable_object.anonymous_email?
+    contactable_object.email.present? && !contactable_object.anonymous_email?
+  end
+
+  def smsable?
+    contactable_object.phone.present?
   end
 
   def contactable?

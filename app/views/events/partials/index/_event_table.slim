@@ -1,6 +1,6 @@
 #event_table_container.max-w-full
 
-  .flex.flex-row.px-2.gap-10.border-b
+  .flex.flex-col.md:flex-row.px-2.gap-0.md:gap-10.border-b
     // VIEW AS CALENDAR
     = link_to calendar_unit_events_path(@unit),
               class: "inline-block py-2 text-sky-500 hover:text-sky-600 text-sm font-bold",
@@ -33,7 +33,7 @@
               id: "show_as_calendar" do
 
       i.far.fa-tower-broadcast.mr-2
-      = "Download a printable schedule"
+      = "Add this Schedule to your Googla Calendar, Outlook, or iCal"
 
   = form_tag bulk_publish_unit_events_path(@unit), id: "bulk_action_form"
     .table.bulk-selection
