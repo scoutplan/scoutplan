@@ -29,7 +29,7 @@ module ApplicationHelper
     pill_tag(text, additional_classes) if condition
   end
 
-  def pill_tag_positive?(number, additional_classes = nil)
+  def pill_tag_if_positive(number, additional_classes = nil)
     pill_tag_if(number.positive?, number, additional_classes)
   end
 

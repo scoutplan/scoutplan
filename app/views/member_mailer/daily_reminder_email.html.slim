@@ -3,7 +3,6 @@
 - content_for :left_column do
 
   - @events.each do |event|
-
     - if event.starts_at.in_time_zone(@unit.time_zone).today? && current_heading != :today
       - current_heading = :today
       h1(style="margin-bottom: 10px;") Today
@@ -31,6 +30,40 @@
     p(style="margin-top: 0;text-transform: uppercase;") = event.location
 
     == event.description
+
+  / - if @rsvp_closes_three_days.present?
+  /   p(style="margin-top: 4px; margin-bottom: 0; font-weight: 600;")
+  /     | RSVPs for
+  /     - @rsvp_closes_three_days.each do |event|
+  /       = magic_link_to(@member, [event.unit, event]) do
+  /         = event.title
+  /     | close in three days.
+
+
+  /     / - family_rsvp_count = 0
+  /     / - @member.family.each do |member|
+  /     /   - rsvp = member.rsvps.find_by(event: event)
+  /     /   - next unless member.status_active? || rsvp&.accepted?
+  /     /   - if rsvp&.accepted?
+  /     /     - family_rsvp_count += 1
+  /     /     span.accepted(title="Going" style="color:green;cursor:default;") &#10003;
+  /     /   - elsif rsvp&.declined?
+  /     /     - family_rsvp_count += 1
+  /     /     span.declined(title="Not going" style="color:red;cursor:default;") &times;
+  /     /   - else
+  /     /     span.unknown(title="No response" style="color:#666;font-weight:bold;cursor:default;") ?
+
+  /     /   |&nbsp;
+  /     /   = member == @member ? 'You' : member.display_first_name
+  /     /   |&nbsp;&nbsp;&nbsp;&nbsp;
+
+  /     / - if event.rsvp_open? && @member.adult?
+  /     /   span(style="font-size: 80%;")
+  /     /     - button_caption = family_rsvp_count.positive? ? 'Change RSVPs' : 'RSVP Now'
+  /     /     = magic_link_to @member, button_caption, unit_event_edit_rsvps_url(event.unit, event)
+
+     
+
 
 p(style="text-align: center; padding-top: 30px;")
   = magic_link_to( @member,

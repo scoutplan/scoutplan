@@ -108,8 +108,8 @@ en:
     news_item_edit_title:   "Update a News Item"
     news_item_modal:
       submit: "Add This News Item"
-    enqueue_draft: "Move this news item to the queue to be sent with the next newsletter"
-    dequeue: "Remove this item from the newsletter queue and set to draft"
+    enqueue_draft: "Move this news item to the Queue to be sent with the next newsletter"
+    dequeue: "Move back to Drafts"
     delete_draft: "Delete this item"
     edit: "Edit this item"
 

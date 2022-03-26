@@ -30,14 +30,16 @@ header.flex.justify-between.pb-2.border-b
 
     // today button
     = link_to "Today",
-      calendar_unit_events_path(@unit),
+      calendar_unit_events_path(@unit, m: Time.now.month, y: Time.now.year),
       data: { turbo_action: "advance" },
       class: "inline-block uppercase font-bold text-sm tracking-wide hover:bg-stone-100 border rounded px-2 py-1 ml-2"
 
 .table.px-0.w-full.table-fixed
   .table-row.font-bold
     - 7.times do |dow|
-      .table-cell.p-2 = Date::DAYNAMES[dow]
+      .table-cell.p-2
+        .hidden.md:inline = Date::DAYNAMES[dow]
+        .inline.md:hidden = Date::DAYNAMES[dow][0, 3]
 
   // start of loop
   - until display_day >= days_in_month do
@@ -89,7 +91,7 @@ header.flex.justify-between.pb-2.border-b
     // end of 7-day loop
   // end of until loop
 
-.flex.flex-row.px-2.py-4.gap-10
+.flex.flex-col.md:flex-row.px-2.py-4.md:gap-10
   // VIEW AS CALENDAR
   = link_to list_unit_events_path(@unit),
             class: "inline-block py-2 text-sky-500 hover:text-sky-600 text-sm font-bold",
@@ -122,7 +124,7 @@ header.flex.justify-between.pb-2.border-b
             id: "show_as_calendar" do
 
     i.far.fa-tower-broadcast.mr-2
-    = "Download a printable schedule"
+    = "Add this Schedule to your Googla Calendar, Outlook, or iCal"
 
 javascript:
   document.addEventListener("turbo:load", function() {
