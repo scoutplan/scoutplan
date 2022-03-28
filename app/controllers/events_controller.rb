@@ -10,6 +10,7 @@ class EventsController < UnitContextController
   # before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish public]
   # before_action :find_member, only: %i[index create new edit edit_rsvps bulk_publish]
   before_action :find_event, except: %i[index create new bulk_publish public]
+  before_action :collate_rsvps, only: [:show, :organize]
 
   # TODO: refactor this mess
   def index
@@ -135,7 +136,6 @@ class EventsController < UnitContextController
     @previous_event = @unit.events.published.future.rsvp_required.where("starts_at < ?", @event.starts_at).order("starts_at DESC")&.first
 
     @page_title = [@event.title, "Organize"]
-    @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
     @non_invitees = @event.unit.members.status_registered - @event.rsvps.collect(&:member)
   end
 
@@ -218,6 +218,10 @@ class EventsController < UnitContextController
   end
 
   private
+
+  def collate_rsvps
+    @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
+  end    
 
   # the default Event will start on the first Saturday at least 4 weeks (28 days) from today
   # from 10 AM to 4 PM with RSVPs closing a week before start

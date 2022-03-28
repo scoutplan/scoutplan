@@ -68,7 +68,7 @@
             .md:inline-block
               .inline-block.w-6.md:w-auto.text-amber-500.text-center.mr-2
                 i.fa-ghost.fas
-              strong = @event.unit.members.status_active.count - @event.rsvps.collect(&:member).count
+              strong = @non_respondents.count
               = " No response"
 
           // right side
