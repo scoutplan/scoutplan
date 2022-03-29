@@ -80,9 +80,9 @@
           // Do Cancel button
           = f.submit t("events.cancel.proceed"),
             class: "text-sm font-bold tracking-wider uppercase no-underline  \
-                    inline-block px-4 py-2 \
-                    bg-red-600 hover:bg-red-700 \
-                    text-red-100 hover:text-red-200 \
+                    inline-block px-4 py-3 md:py-2 \
+                    border border-red-500 hover:border-red-600 \
+                    text-red-500 hover:text-red-600 \
                     w-full md:w-fit rounded cursor-pointer",
             data: { confirm: t("events.cancel.confirm") },
             onclick: "return confirm('Are you sure you want to cancel this event?');"
@@ -90,9 +90,11 @@
           // Don't Cancel button
           = link_to t("events.cancel.abandon"),
             unit_event_path(@unit, @event),
-            class: "text-black text-sm font-bold text-center \
-                    no-underline px-4 py-2  bg-gray-200 hover:bg-gray-300 rounded  tracking-wider uppercase \
-                    inline-block w-full md:w-fit",
+            class: "text-white text-sm tracking-wider uppercase font-bold text-center \
+                    inline-block w-full md:w-fit \
+                    no-underline px-4 py-3 md:py-2 \
+                    bg-gray-500 hover:bg-gray-600 \
+                    rounded",
             data: { turbo_frame: "main", turbo_action: "advance" }
 
 = render partial: "events/partials/styles"

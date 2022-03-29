@@ -270,7 +270,7 @@ en:
 
     cancel:
       proceed:        "Cancel This Event"
-      abandon:        "Don't Cancel"
+      abandon:        "Don't Cancel Event"
       confirm:        "Are you sure you want to cancel?"
       message_prompt: "Send a cancellation message?"
       past_warning:   "Cancelling events that occurred in the past is not recommended."

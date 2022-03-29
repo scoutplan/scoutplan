@@ -92,14 +92,18 @@
       = f.rich_text_area :description, class: "bg-white block border border-stone-200 overflow-auto h-48"
 
     - if event_cancellable?(@current_member, @event)
-      section.bg-stone-100.py-2.px-4.md:px-8.md:py-4.mb-1.rounded
+      section.bg-red-100.py-2.px-4.md:px-8.md:py-4.mb-1.rounded
+        = f.styled_label "", "Danger", { layout: :inline, class: "color-red-500" }
         = link_to @event.new_record? ? t("global.cancel") : t("events.show.cancel_title"),
           unit_event_cancel_path(@unit, @event),
           class: "text-sm font-bold tracking-wider uppercase no-underline text-center \
-                  block w-full pl-0 pr-4 py-2 \
-                  text-red-500 hover:text-red-600 \
-                  border rounded border-red-500 hover:border-red-600 md:border-0",
+                  block md:inline-block px-4 py-3 md:py-2 \
+                  text-red-100 hover:text-red-200 \
+                  bg-red-500 hover:bg-red-600 \
+                  rounded",
           data: { turbo_frame: "event", turbo_action: "advance" }
+
+    .h-4
 
     // footer
     footer.bg-white.pb-2.md:py-4.px-0.sticky.bottom-0.flex.flex-col.md:flex-row.md:justify-between.gap-2.border-t
