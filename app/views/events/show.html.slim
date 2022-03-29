@@ -34,9 +34,19 @@
 
     // modal header
     header.py-4.overflow-auto.sticky.top-0.bg-white.z-50
-      h3.font-bold.text-2xl
-        = @event.title
-        span.align-middle.ml-2.text-base = glyph_tag(@event)
+      .flex.flex-row.justify-between
+        h3.font-bold.text-2xl
+          = @event.title
+          span.align-middle.ml-2.text-base = glyph_tag(@event)
+
+        .block.md:hidden
+          - if policy(@event).edit? && @event.editable?
+            = link_to edit_unit_event_path(@event.unit, @event),
+              class: "block p-2 text-brand-500",
+              data: { turbo_action: "advance" },
+              title: "Edit Event Details"
+              do
+                i.fa-pencil.fas
 
     = content_tag(:div, @event.short_description, class: 'mb-2 font-normal text-base text-gray-500') if @event.short_description.present?
 
@@ -101,7 +111,7 @@
       .flex.flex-col.md:flex-row.md:justify-between
 
         // left side (on desktop)
-        .block
+        .hidden.md:block
           // Edit button (if authorized)
           - if policy(@event).edit? && @event.editable?
             = link_to t("event_edit"),
@@ -114,7 +124,7 @@
                       " md:border-0 " \
                       " rounded" \
                       "",
-              data: { 'turbo-action' => 'advance' },
+              data: { turbo_action: "advance" },
               title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)
 
         // right side (on desktop)
