@@ -60,7 +60,7 @@ class EventsController < UnitContextController
   def render_printable_calendar
     render(
       locals: { events_by_month: calendar_events },
-      pdf: "#{@unit.name} Event Calendar",
+      pdf: "#{@unit.name} Event Schedule",
       layout: "pdf",
       encoding: "utf8",
       orientation: "landscape",
@@ -221,7 +221,7 @@ class EventsController < UnitContextController
 
   def collate_rsvps
     @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
-  end    
+  end
 
   # the default Event will start on the first Saturday at least 4 weeks (28 days) from today
   # from 10 AM to 4 PM with RSVPs closing a week before start

@@ -25,9 +25,8 @@
         data: { turbo_action: "advance" } do
         i.fa-times.far.hover:text-black
 
-    // guts of the modal
+    // guts of the page
     section
-
       - if @target_membership.email.present? || @target_membership.phone.present?
         .rounded.bg-stone-100.p-4.mb-2
           - if @target_membership.email.present?
@@ -42,7 +41,6 @@
 
       // parents & children
       .flex.mb-2
-
         // children
         - if @target_membership.children.length.positive?
           .flex.flex-grow.rounded.bg-stone-100.p-4
