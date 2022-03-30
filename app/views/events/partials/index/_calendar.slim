@@ -121,10 +121,13 @@ header.flex.justify-between.pb-2.border-b
   = link_to ics_url,
             class: "inline-block py-2 text-sky-500 hover:text-sky-600 text-sm font-bold",
             data: { turbo_action: "advance" },
-            id: "show_as_calendar" do
-
-    i.far.fa-tower-broadcast.mr-2
-    = "Add this Schedule to your Googla Calendar, Outlook, or iCal"
+            id: "show_as_calendar"
+            do
+              i.far.fa-mobile.mr-2
+              .hidden.md:inline
+                = "Add this Schedule to your Google Calendar, Outlook, or iCal"
+              .inline.md:hidden
+                = "Add this Schedule to your calendar"
 
 javascript:
   document.addEventListener("turbo:load", function() {

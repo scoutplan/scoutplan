@@ -193,8 +193,8 @@ en:
       past:             "Event has already occurred"
 
     index:
-      title:                "Event Calendar"
-      page_title:           "Event Calendar"
+      title:                "Event Schedule"
+      page_title:           "Event Schedule"
       showing_some:         "Showing events for the upcoming 3 months. "
       showing_rsvps:        "Showing only events requiring an RSVP"
       showing_past:         "Showing past events"
@@ -270,7 +270,7 @@ en:
 
     cancel:
       proceed:        "Cancel This Event"
-      abandon:        "Don't Cancel"
+      abandon:        "Don't Cancel Event"
       confirm:        "Are you sure you want to cancel?"
       message_prompt: "Send a cancellation message?"
       past_warning:   "Cancelling events that occurred in the past is not recommended."

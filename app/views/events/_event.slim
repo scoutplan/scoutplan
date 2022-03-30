@@ -60,5 +60,13 @@ tr.border-b.hover:bg-stone-100.hover:text-stone-800(id="#{dom_id(event)}" class=
         .text-sm.text-gray-500
           = event.short_description
 
+  // RSVP info
+  td.rsvps.hidden.sm:table-cell
+    - if event.requires_rsvp? && Pundit.policy(@current_member, event).organize?
+      = link_to unit_event_organize_path(@unit, event) do
+        .inline-block.bg-emerald-500.text-emerald-100.px-4.py-2.rounded.font-bold
+          i.fa-hiking.fas.mr-2
+          = event.rsvps.accepted.count
+
   td.event-actions.text-right.pr-2.w-px
     = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps } if event.requires_rsvp

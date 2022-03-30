@@ -19,7 +19,7 @@ class UnitContextController < ApplicationController
     @current_unit || (@current_unit = Unit.includes(
       :setting_objects,
       unit_memberships: [:user, :parent_relationships, :child_relationships]
-    ).find(params[:unit_id]))
+    ).find(params[:unit_id] || params[:id]))
   end
 
   def current_member
@@ -35,10 +35,10 @@ class UnitContextController < ApplicationController
   private
 
   def find_unit_info
-    return unless params[:unit_id].present?
+    return unless params[:unit_id].present? || params[:id].present?
 
     # TODO: scope this to the current user's memberships
-    @current_unit = @unit = Unit.includes(:unit_memberships).find(params[:unit_id])
+    @current_unit = @unit = Unit.includes(:unit_memberships).find(params[:unit_id] || params[:id])
     @current_member = @membership = @unit.membership_for(current_user)
     Time.zone = @unit.settings(:locale).time_zone
   end
