@@ -19,12 +19,22 @@ module EventsHelper
   end
 
   # can a given member cancel a given event?
-  # Two things have to be true: (a) event is persisted, (b) member is authorized
+  # Three things have to be true: (a) event is persisted, (b) event isn't in a cancelled state already,
+  # (c) member is authorized
   # TODO: should we also prevent past events from being cancelled?
   def event_cancellable?(event, member)
     !@event.new_record? &&
       !@event.cancelled? &&
       EventPolicy.new(event, member).cancel?
+  end
+
+  # can a given member cancel a given event?
+  # Three things have to be true: (a) event is persisted, (b) event is cancelled or draft, (c) member is authorized
+  # TODO: should we also prevent past events from being cancelled?
+  def event_deletable?(event, member)
+    !@event.new_record? &&
+      (@event.cancelled? || @event.draft?) &&
+      EventPolicy.new(event, member).delete?
   end
 
   # given an EventRsvp object, return a fully-formed span tag containing the correct

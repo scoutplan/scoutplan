@@ -98,12 +98,14 @@ class EventsController < UnitContextController
     @current_member = @unit.membership_for(current_user)
   end
 
+  # POST /:unit_id/events/new
   def new
     build_prototype_event
     # @event_view = EventView.new(@event)
     @presenter = EventPresenter.new(event: @event, current_user: current_user)
   end
 
+  # POST /:unit_id/events
   def create
     authorize :event, :create?
     service = EventCreationService.new(@unit)
@@ -113,11 +115,13 @@ class EventsController < UnitContextController
     redirect_to [@unit, @event], notice: t("helpers.label.event.create_confirmation", event_name: @event.title)
   end
 
+  # GET /:unit_id/events/:event_id/edit
   def edit
     authorize @event
     @event_view = EventView.new(@event)
   end
 
+  # PATCH /:unit_id/events/:event_id
   def update
     authorize @event
 
@@ -126,6 +130,13 @@ class EventsController < UnitContextController
     return unless @event_view.save!
 
     redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
+  end
+
+  # DELETE /:unit_id/events/:event_id
+  def destroy
+    authorize @event
+    @event.destroy!
+    redirect_to unit_events_path(@unit)
   end
 
   def organize

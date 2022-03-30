@@ -47,4 +47,12 @@ class EventPolicy < UnitContextPolicy
   def cancel?
     admin?
   end
+
+  def delete?
+    destroy?
+  end
+
+  def destroy?
+    admin?
+  end
 end
