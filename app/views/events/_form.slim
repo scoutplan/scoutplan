@@ -152,7 +152,7 @@
 
 - if event_deletable?(@current_member, @event)
   .hidden
-    = button_to t("events.form.delete_caption"),
+    = button_to "Hidden Delete Button",
       unit_event_path(@unit, @event),
       method: :delete,
       form: { id: "delete_event_form" },

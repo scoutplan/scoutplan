@@ -73,6 +73,7 @@ describe "events", type: :feature do
         fill_in :event_title, with: "New Event Title"
         click_button "Save Changes"
 
+        @event.reload
         expect(page).to have_current_path(unit_event_path(@unit, @event))
       end
     end

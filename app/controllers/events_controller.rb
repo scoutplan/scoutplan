@@ -133,7 +133,6 @@ class EventsController < UnitContextController
 
   # DELETE /:unit_id/events/:event_id
   def destroy
-    byebug
     authorize @event
     @event.destroy!
     redirect_to unit_events_path(@unit), notice: "#{@event.title} has been permanently deleted."
@@ -248,7 +247,7 @@ class EventsController < UnitContextController
   end
 
   def find_event
-    @event = @unit.events.includes(:event_rsvps).find(params[:id] || params[:event_id])
+    @event = @unit.events.includes(:event_rsvps).find(params[:event_id] || params[:id])
     # @current_unit = @event.unit
     # @current_member = @current_unit.membership_for(current_user)
     @presenter = EventPresenter.new(event: @event, current_user: current_user)

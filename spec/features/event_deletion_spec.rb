@@ -44,7 +44,7 @@ describe "event_deletion", type: :feature do
   describe "perform deletion" do
     it "deletes an event" do
       visit edit_unit_event_path(@unit, @event)
-      expect { click_link_or_button(I18n.t("events.form.delete_caption")) }.to change { Event.count }.by(-1)
+      expect { click_link_or_button("Hidden Delete Button") }.to change { Event.count }.by(-1)
       expect(page).to have_current_path(list_unit_events_path(@unit))
     end
   end
