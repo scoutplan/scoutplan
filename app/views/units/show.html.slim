@@ -7,51 +7,73 @@
     h2.text-md.font-bold.mb-2
       = "Your RSVPs"
 
-    - @current_unit.events.published.future.rsvp_required.each do |event|
-      article.rounded.p-4.bg-stone-100
-        = link_to \
-          unit_event_path(@unit, event),
-          class: "block mb-4"
-          do
-          h3.font-bold.text-lg
-            = event.title
+    .flex.flex-col.gap-1
+      - @current_unit.events.published.future.rsvp_required.each do |event|
+        - presenter = EventPresenter.new(event: event, current_member: @current_member)
+        - family_has_rsvps = false
+        - family_fully_responded = true
 
-          time.text-sm
-            .inline-block.w-4.text-center.mr-1
-              i.fa-calendar.fas.text-cyan-400
-            = event.starts_at
+        article.rounded.p-4.bg-stone-100
+          = link_to \
+            unit_event_path(@unit, event),
+            class: "block mb-5"
+            do
+            h3.font-bold.text-lg
+              = event.title
 
-          address.not-italic.text-sm
-            .inline-block.w-4.text-center.mr-1
-              i.fa-location-dot.fas.text-purple-400
-            = event.location
+            time.text-sm.text-stone-500
+              .inline-block.w-4.text-center.mr-1
+                i.fa-calendar.fas.text-stone-400
+              = presenter.full_dates_to_s
 
-        .flex.flex-col.md:flex-row.justify-between.gap-4
-          .flex.flex-row.gap-4
-            - @current_member.family.each do |member|
-              - rsvp = event.rsvp_for(member)
-              div
-                span.mr-1
-                  - if rsvp&.accepted?
-                    i.fa-hiking.fas.text-green-500(title="Going")
-                  - elsif rsvp&.declined?
-                    i.fa-couch.fas.text-red-500(title="Not going")
+            - if event.location.present?
+              address.not-italic.text-sm.text-stone-500
+                .inline-block.w-4.text-center.mr-1
+                  i.fa-location-dot.fas.text-stone-400
+                = event.location
+
+          .flex.flex-col.md:flex-row.justify-between.gap-4
+            .flex.flex-row.gap-4
+              - @current_member.family.each do |member|
+                - rsvp = event.rsvp_for(member)
+                - next unless member.status_active? || rsvp&.accepted?
+                
+                - family_has_rsvps = family_has_rsvps || rsvp.present?
+                - family_fully_responded = family_fully_responded && rsvp.present?
+
+                div
+                  span.mr-1
+                    - if rsvp&.accepted?
+                      i.fa-hiking.fas.text-green-500(title="Going")
+                    - elsif rsvp&.declined?
+                      i.fa-couch.fas.text-red-500(title="Not going")
+                    - else
+                      i.fa-ghost.fas.text-stone-300(title="No response")
+
+                  = member.display_first_name
+                  = " (you)" if member == @current_member
+
+            div
+              // "Change" RSVP button, if user's allowed to
+              - if event.rsvp_open?
+                - if policy(event).rsvp?
+                  - if family_has_rsvps
+                    = link_to unit_event_edit_rsvps_path(@unit, event),
+                      class: "event-rsvp-link text-sm py-3 md:py-1 px-4 text-center \
+                              block md:inline \
+                              font-bold tracking-wider rounded \
+                              border border-yellow-700 text-yellow-700 \
+                              no-underline uppercase",
+                      data: { turbo_frame: 'event', turbo_action: 'advance' }
+                      do
+                        = "Change your RSVPs"
+                                      
                   - else
-                    i.fa-ghost.fas.text-stone-300(title="No response")
-
-                = member.display_first_name
-                = " (you)" if member == @current_member
-
-
-          div
-            // "Change" RSVP button, if user's allowed to
-            - if event.rsvp_open?
-              - if policy(event).rsvp?
-                = link_to unit_event_edit_rsvps_path(@unit, event),
-                  class: "event-rsvp-link text-sm py-3 md:py-1 px-4 text-center \
-                          block md:inline \
-                          font-bold tracking-wider rounded text-yellow-800 bg-yellow-400 \
-                          hover:bg-yellow-500 hover:text-yellow-900 no-underline uppercase",
-                  data: { turbo_frame: 'event', turbo_action: 'advance' }
-                  do
-                    = "RSVP Now"
+                    = link_to unit_event_edit_rsvps_path(@unit, event),
+                      class: "event-rsvp-link text-sm py-3 md:py-1 px-4 text-center \
+                              block md:inline \
+                              font-bold tracking-wider rounded text-yellow-800 bg-yellow-400 \
+                              hover:bg-yellow-500 hover:text-yellow-900 no-underline uppercase",
+                      data: { turbo_frame: 'event', turbo_action: 'advance' }
+                      do
+                        = "RSVP Now"

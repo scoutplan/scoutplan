@@ -103,11 +103,19 @@
 
     // third row: longform description, if present
     - if @event.description.present?
-      .flex.md:overflow-y-scroll.mt-4
-        == @event.description
+      section#location_card.bg-stone-100.rounded.px-6.py-4.mb-1.relative.overflow-y-scroll
+        .md:overflow-y-scroll
+          .font-bold.mt-2
+            .inline-block.w-5
+              i.fa-comment-lines.fas.mr-1.text-indigo-400
+            = "Description"
+          .block
+            == @event.description
+
+    .h-3
 
     // footer, containing right-justified buttons
-    footer.pt-2.md:pt-4.pb-4.rounded.w-full.bg-white.sticky.bottom-0
+    footer.pt-2.md:pt-4.pb-4.rounded.w-full.bg-white.sticky.bottom-0.border-t
       .flex.flex-col.md:flex-row.md:justify-between
 
         // left side (on desktop)

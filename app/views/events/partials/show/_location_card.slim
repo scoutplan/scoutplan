@@ -8,17 +8,23 @@
     i.fa-map.fad.mr-1 
     = t("events.show.map")
 
-  dl.mb-0
+  dl
     - if @event.location.present?
-      dt.font-bold(role="heading" aria-level="5") = t("events.show.location")
-      dd.mb-3
+      dt.font-bold(role="heading" aria-level="5")
+        .inline-block.w-5
+          i.fa-location-dot.fas.mr-1.text-rose-400
+        = t("events.show.location")
+      dd.mb
         address.not-italic = @event.location
 
     - if @event.address.present?
-      dt.font-bold (role="heading" aria-level="5") = t("events.show.address")
-      dd.mb-3
+      dd
         address.not-italic = @event.address
 
     - if @event.departs_from.present?
-      dt.font-bold(role="heading" aria-level="5")  = t("events.show.departs_from")
-      dd.mb-3 = @event.departs_from
+      dt.mt-3.font-bold(role="heading" aria-level="5")
+        .inline-block.w-5
+          i.fa-car.fas.mr-1.text-lime-400
+        = t("events.show.departs_from")
+
+      dd = @event.departs_from
