@@ -123,26 +123,21 @@ class EventsController < UnitContextController
 
   # PATCH /:unit_id/events/:event_id
   def update
-    puts "events#update"
-
     authorize @event
     @event_view = EventView.new(@event)
     @event_view.assign_attributes(event_params)
-
-    ap @event_view
-
     return unless @event_view.save!
 
     redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
   end
 
-  # # DELETE /:unit_id/events/:event_id
-  # def destroy
-  #   puts "events#destroy"
-  #   authorize @event
-  #   @event.destroy!
-  #   redirect_to unit_events_path(@unit)
-  # end
+  # DELETE /:unit_id/events/:event_id
+  def destroy
+    byebug
+    authorize @event
+    @event.destroy!
+    redirect_to unit_events_path(@unit), notice: "#{@event.title} has been permanently deleted."
+  end
 
   def organize
     authorize @event

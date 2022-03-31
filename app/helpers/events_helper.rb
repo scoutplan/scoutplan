@@ -24,7 +24,7 @@ module EventsHelper
   # TODO: should we also prevent past events from being cancelled?
   def event_cancellable?(event, member)
     !@event.new_record? &&
-      !@event.cancelled? &&
+      @event.published? &&
       EventPolicy.new(event, member).cancel?
   end
 

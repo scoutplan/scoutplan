@@ -8,6 +8,10 @@
 .mx-auto.max-w-3xl
   = styled_header_tag @event.new_record? ? t("events.titles.new") : t("events.titles.edit")
 
+  - if @event.cancelled?
+    .inline-block.rounded.bg-red-500.text-white.px-4.px-2.text-sm.font-bold.mb-2.uppercase.tracking-wide
+      = "Cancelled"
+
   = form_with \
     model: @event_view,
     builder: ApplicationFormBuilder,
@@ -106,17 +110,17 @@
     - if event_deletable?(@current_member, @event)
       section.bg-red-100.py-2.px-4.md:px-8.md:py-4.mb-1.rounded
         = f.styled_label "", "Danger", { layout: :inline, class: "color-red-500" }
-        = button_to t("events.form.delete_caption"),
-          unit_event_path(@unit, @event),
-          method: :delete,
-          onclick: "return confirm('#{t("events.form.delete_confirm")}');",
-          class: "text-sm font-bold tracking-wider uppercase no-underline text-center \
-                  block md:inline-block px-4 py-3 md:py-2 \
-                  text-red-100 hover:text-red-200 \
-                  bg-red-500 hover:bg-red-600 \
-                  rounded",
-          data: { turbo_action: "advance" }
+        = content_tag(:button,
+            t("events.form.delete_caption"),
+            class: "text-sm font-bold tracking-wider uppercase no-underline text-center \
+            block md:inline-block px-4 py-3 md:py-2 \
+            text-red-100 hover:text-red-200 \
+            bg-red-500 hover:bg-red-600 \
+            rounded",
+            onclick: "if (confirm('#{t("events.form.delete_confirm")}')) { document.querySelector('#delete_event_form').submit(); } else { return false; }" \
+          )
 
+    // spacer at the bottom of the form
     .h-4
 
     // footer
@@ -146,6 +150,19 @@
                   border-brand-100 hover:border-brand-100 \
                   rounded border"
 
+- if event_deletable?(@current_member, @event)
+  .hidden
+    = button_to t("events.form.delete_caption"),
+      unit_event_path(@unit, @event),
+      method: :delete,
+      form: { id: "delete_event_form" },
+      onclick: "return confirm('#{t("events.form.delete_confirm")}');",
+      class: "text-sm font-bold tracking-wider uppercase no-underline text-center \
+              block md:inline-block px-4 py-3 md:py-2 \
+              text-red-100 hover:text-red-200 \
+              bg-red-500 hover:bg-red-600 \
+              rounded",
+      data: { turbo_action: "advance" }
 
 javascript:
   function toggleActivityFields(show) {

@@ -69,10 +69,9 @@ describe "events", type: :feature do
       it "updates an event" do
         visit edit_unit_event_path(@unit, @event)
         expect(page).to have_current_path(edit_unit_event_path(@unit, @event))
-        ap page.body
 
         fill_in :event_title, with: "New Event Title"
-        click_link_or_button I18n.t("global.save_changes")
+        click_button "Save Changes"
 
         expect(page).to have_current_path(unit_event_path(@unit, @event))
       end
