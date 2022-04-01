@@ -8,6 +8,7 @@ ruby "3.0.2"
 gem "scout_apm" # needs to be first
 
 gem "acts_as_list"
+gem "ahoy_matey"
 gem "awesome_print"
 gem "aws-sdk-s3", require: false
 gem "bootsnap", require: false
