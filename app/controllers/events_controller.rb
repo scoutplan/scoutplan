@@ -29,8 +29,8 @@ class EventsController < UnitContextController
 
     cookies[:event_index_variation] = variation
 
-    cookies[:calendar_display_month] = params[:m] if params[:m]
-    cookies[:calendar_display_year] = params[:y] if params[:y]
+    cookies[:calendar_display_month] = params[:month] if params[:month]
+    cookies[:calendar_display_year] = params[:year] if params[:year]
 
     @events = UnitEventQuery.new(current_member, current_unit).execute
     @event_drafts = @events.select(&:draft?)
