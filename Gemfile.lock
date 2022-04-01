@@ -70,6 +70,10 @@ GEM
       activerecord (>= 4.2)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
+    ahoy_matey (4.0.3)
+      activesupport (>= 5.2)
+      device_detector
+      safely_block (>= 0.2.1)
     apparition (0.6.0)
       capybara (~> 3.13, < 4)
       websocket-driver (>= 0.6.5)
@@ -109,6 +113,7 @@ GEM
     concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
     crass (1.0.6)
+    device_detector (1.0.7)
     devise (4.8.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -123,6 +128,7 @@ GEM
       dotenv (= 2.7.6)
       railties (>= 3.2)
     e2mmap (0.1.0)
+    errbase (0.2.2)
     erubi (1.10.0)
     et-orbi (1.2.7)
       tzinfo
@@ -326,6 +332,8 @@ GEM
     ruby2_keywords (0.0.5)
     rufus-scheduler (3.8.1)
       fugit (~> 1.1, >= 1.1.6)
+    safely_block (0.3.0)
+      errbase (>= 0.1.1)
     sanitize (6.0.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -425,6 +433,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_list
+  ahoy_matey
   apparition
   awesome_print
   aws-sdk-s3
