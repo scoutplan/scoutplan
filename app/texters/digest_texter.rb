@@ -2,11 +2,17 @@
 
 # a Texter for sending digests
 class DigestTexter < MemberTexter
+  include RsvpHelper
+
   def body_text
     renderer.render(
       template: "member_texter/digest",
       format: "text",
-      assigns: { member: @member, events: events }
+      assigns: {
+        member: @member,
+        events: events,
+        open_rsvps: open_rsvps(@member)
+      }
     )
   end
 

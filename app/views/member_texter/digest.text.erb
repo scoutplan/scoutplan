@@ -1,7 +1,11 @@
 Hi, <%= @member.display_first_name %>. Coming up at <%= @member.unit.name %>:
 
 <% @events.each do |event| %>
-<%= "* #{event.title} on #{event.starts_at.in_time_zone.strftime('%A')}" %>
+<%= "* #{event.title} on #{event.starts_at.in_time_zone.strftime('%A')}#{@open_rsvps.include?(event) ? ' (RSVP needed)' : ''}" %>
+<% end %>
+<% remaining_open_rsvps = @open_rsvps - @events.to_a %>
+<% if remaining_open_rsvps.count.positive? %>
 
 <% end %>
-Visit <%= url_without_scheme(magic_url_for(@member, unit_events_path(@member.unit))) %> to view the full calendar.
+
+Visit <%= url_without_scheme(magic_url_for(@member, unit_path(@member.unit))) %> to view the full calendar.
