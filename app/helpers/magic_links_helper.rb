@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "uri"
+
 # helpers for MagicLinks
 module MagicLinksHelper
   # returns a fully-qualified URL from a member and a path. Use in lieu of
@@ -33,4 +35,11 @@ module MagicLinksHelper
     uri = URI(url)
     uri.hostname + uri.path
   end
+
+  # def url_to_magic_link(member, url)
+  #   uri = URI(url)
+
+  #   path = uri.request_uri # everything after "https://go.scoutplan.org/"
+
+  # end
 end

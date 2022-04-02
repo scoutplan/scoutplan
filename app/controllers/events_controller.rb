@@ -140,11 +140,7 @@ class EventsController < UnitContextController
 
   def organize
     authorize @event
-
-    @unit = @event.unit
-    @next_event = @unit.events.published.future.rsvp_required.where("starts_at > ?", @event.starts_at)&.first
-    @previous_event = @unit.events.published.future.rsvp_required.where("starts_at < ?", @event.starts_at).order("starts_at DESC")&.first
-
+    find_next_and_previous_events
     @page_title = [@event.title, "Organize"]
     @non_invitees = @event.unit.members.status_registered - @event.rsvps.collect(&:member)
   end
@@ -306,6 +302,11 @@ class EventsController < UnitContextController
 
   def store_path
     cookies[:events_index_path] = request.original_fullpath
+  end
+
+  def find_next_and_previous_events
+    @next_event = @unit.events.published.future.rsvp_required.where("starts_at > ?", @event.starts_at)&.first
+    @previous_event = @unit.events.published.future.rsvp_required.where("starts_at < ?", @event.starts_at)&.last
   end
 end
 # rubocop:enable Metrics/ClassLength
