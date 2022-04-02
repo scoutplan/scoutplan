@@ -53,6 +53,7 @@ Rails.application.routes.draw do
         get  "my_rsvps",    to: "events#index", defaults: { variation: "rsvps" }
         get  "list",        to: "events#index", defaults: { variation: "event_table" }, as: "list"
         get  "calendar",    to: "events#index", defaults: { variation: "calendar" }
+        get  "calendar/:year/:month", to: "events#index", defaults: { variation: "calendar" }, as: "targeted_calendar"
         get  "public",      to: "events#public", as: "public"
         post "bulk_publish"
       end

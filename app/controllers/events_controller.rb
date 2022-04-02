@@ -29,8 +29,8 @@ class EventsController < UnitContextController
 
     cookies[:event_index_variation] = variation
 
-    cookies[:calendar_display_month] = params[:m] if params[:m]
-    cookies[:calendar_display_year] = params[:y] if params[:y]
+    cookies[:calendar_display_month] = params[:month] if params[:month]
+    cookies[:calendar_display_year] = params[:year] if params[:year]
 
     @events = UnitEventQuery.new(current_member, current_unit).execute
     @event_drafts = @events.select(&:draft?)
@@ -140,11 +140,7 @@ class EventsController < UnitContextController
 
   def organize
     authorize @event
-
-    @unit = @event.unit
-    @next_event = @unit.events.published.future.rsvp_required.where("starts_at > ?", @event.starts_at)&.first
-    @previous_event = @unit.events.published.future.rsvp_required.where("starts_at < ?", @event.starts_at).order("starts_at DESC")&.first
-
+    find_next_and_previous_events
     @page_title = [@event.title, "Organize"]
     @non_invitees = @event.unit.members.status_registered - @event.rsvps.collect(&:member)
   end
@@ -306,6 +302,11 @@ class EventsController < UnitContextController
 
   def store_path
     cookies[:events_index_path] = request.original_fullpath
+  end
+
+  def find_next_and_previous_events
+    @next_event = @unit.events.published.future.rsvp_required.where("starts_at > ?", @event.starts_at)&.first
+    @previous_event = @unit.events.published.future.rsvp_required.where("starts_at < ?", @event.starts_at)&.last
   end
 end
 # rubocop:enable Metrics/ClassLength

@@ -1,5 +1,5 @@
-- display_year = (params[:y] || cookies[:calendar_display_year] || Date.today.year).to_i
-- display_month = (params[:m] || cookies[:calendar_display_month] || Date.today.month).to_i
+- display_year = (params[:year] || cookies[:calendar_display_year] || Date.today.year).to_i
+- display_month = (params[:month] || cookies[:calendar_display_month] || Date.today.month).to_i
 - first_day_of_month = Date.new(display_year, display_month, 1)
 - first_day_of_last_month = first_day_of_month.last_month
 - days_in_month = first_day_of_month.end_of_month.day
@@ -7,31 +7,36 @@
 - display_day = - first_day_of_month.wday + 1
 - done = false
 
-header.flex.justify-between.pb-2.border-b
+header.flex.justify-between.py-2.border-b
   h2.px-2.font-bold.text-lg.text-brand-500
     = first_day_of_month.strftime("%B %Y")
   
   div
     // prev button
-    = link_to calendar_unit_events_path(@unit, m: (display_month > 1) ? display_month - 1 : 12, y: (display_month > 1) ? display_year : display_year - 1),
+    = link_to targeted_calendar_unit_events_path(@unit,
+        month: "%02i" % ((display_month > 1) ? display_month - 1 : 12),
+        year: (display_month > 1) ? display_year : display_year - 1),
       title: t("events.calendar_view.prev_month"),
       data: { turbo_action: "advance" },
-      class: "text-sm inline-block py-1 px-4 rounded-l border-t border-b border-l hover:bg-stone-100" do
-        i.fa-chevron-left.fas
-          = "Prev"
+      class: "uppercase text-sm font-bold inline-block py-1 px-4 rounded-l border hover:bg-stone-100" do
+        i.fa-chevron-left.fas.mr-1
+        = "Prev"
 
     // next button
-    = link_to calendar_unit_events_path(@unit, m: (display_month == 12) ? 1 : display_month + 1, y: (display_month == 12) ? display_year + 1 : display_year),
-      title: t("events.calendar_view.next_month"),
+    = link_to targeted_calendar_unit_events_path(@unit,
+        month: "%02i" % ((display_month == 12) ? 1 : display_month + 1),
+        year: (display_month == 12) ? display_year + 1 : display_year),
       data: { turbo_action: "advance" },
-      class: "uppercase text-sm font-bold inline-block py-1 px-4 rounded-r border hover:bg-stone-100" do
-        i.fa-chevron-right.fas
-          = "Next"
+      class: "uppercase text-sm font-bold inline-block py-1 px-4 rounded-r border hover:bg-stone-100 border-l-0" do
+        = "Next"
+        i.fa-chevron-right.fas.ml-1
 
     // today button
     = link_to "Today",
-      calendar_unit_events_path(@unit, m: Time.now.month, y: Time.now.year),
-      data: { turbo_action: "advance" },
+      targeted_calendar_unit_events_path(@unit,
+        month: "%02i" % Time.now.month,
+        year: Time.now.year),
+      data: { turb_action: "advance" },
       class: "inline-block uppercase font-bold text-sm tracking-wide hover:bg-stone-100 border rounded px-2 py-1 ml-2"
 
 .table.px-0.w-full.table-fixed
@@ -60,19 +65,21 @@ header.flex.justify-between.pb-2.border-b
         // now render the cell
         .table-cell.border-t.p-1.h-32.cal-cell.(class="#{cell_class}" data-cal-date="#{display_date}")
           - if display_date.today?
+            - if day_number == 1
+              .text-brand-500.font-bold
+                = display_date.strftime("%b")
             .cal-day-number.text-white.font-bold
               .inline-block.w-7.h-7.justify-center.items-center.flex.rounded-full.bg-brand-500
-                - if day_number == 1
-                  = display_date.strftime("%B %-d")
-                - else
-                  = display_date.strftime("%-d")
+
+                = display_date.strftime("%-d")
           - else
             .cal-day-number
+              - if day_number == 1
+                .text-brand-500.font-bold
+                  = display_date.strftime("%b")
+
               .inline-block.w-7.h-7.justify-center.items-center.flex.whitespace-nowrap
-                - if day_number == 1
-                  = display_date.strftime("%b %-d")
-                - else
-                  = display_date.strftime("%-d")
+                = display_date.strftime("%-d")
 
           - @events.each do |event|
             - css_classes = "event-cancelled" if event.cancelled?

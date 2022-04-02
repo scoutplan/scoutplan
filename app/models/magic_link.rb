@@ -4,7 +4,6 @@
 class MagicLink < ApplicationRecord
   belongs_to :unit_membership
   before_validation :generate_token, on: [:create]
-  before_validation :set_expiration, on: [:create]
   after_find :destroy_if_expired!
   validates_presence_of :unit_membership, :token
   alias_attribute :member, :unit_membership
@@ -42,11 +41,6 @@ class MagicLink < ApplicationRecord
 
   def generate_token
     self.token = SecureRandom.hex(6)
-  end
-
-  # for now we're just gonna hard-code links to last five (5) days
-  def set_expiration
-    self.expires_at = 120.hours.from_now unless expires_at.present?
   end
 
   def destroy_if_expired!
