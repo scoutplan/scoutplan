@@ -37,11 +37,12 @@
           <![endif]-->
           <table role="presentation" style="background:#E7E5E4;color:#78716C;width:460px;border:none;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;">
 
-            <% if attachments.inline['logo'] %>
+
+            <% if @unit&.logo&.attached? %>
               <tr>
                   <td style="padding:30px 30px 15px 30px;text-align:center;font-size:24px;font-weight:bold;">
                       <%= link_to root_url do %>
-                        <%= image_tag attachments.inline['logo'].url, style: "width:80%;max-width:150px;height:auto;border:none;text-decoration:none;color:rgb(255,255,255,1.0);"%>
+                        <%= image_tag "data:image/#{@unit&.logo.filename.extension};base64,#{Base64.encode64(@unit.logo.blob.download)}", style: "width:80%;max-width:150px;height:auto;border:none;text-decoration:none;color:rgb(255,255,255,1.0);" %>
                       <% end %>
                   </td>
               </tr>
