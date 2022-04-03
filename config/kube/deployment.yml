@@ -94,6 +94,11 @@ spec:
                 secretKeyRef:
                   name: scoutplan-production
                   key: TWILIO_TOKEN
+            - name: BLAZER_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: BLAZER_DATABASE_URL
           envFrom:
           - configMapRef:
               name: scoutplan-production-config
