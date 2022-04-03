@@ -1,16 +1,17 @@
 table
   tr
     td(style="padding:6px;") Rails version
-    td = Gem.loaded_specs['rails'].version.to_s
+    td = Gem.loaded_specs["rails"].version.to_s
 
   tr
     td(style="padding:6px;") CI run
-    td = ENV['GITHUB_RUN_NUMBER']
+    td = ENV["GITHUB_RUN_NUMBER"]
 
 ul
-  li = link_to 'Flipper', '/flipper'
-  li = link_to 'Sidekiq', '/sidekiq'
-  li = link_to 'Mailers', '/rails/mailers'
+  li = link_to "Flipper", "/flipper"
+  li = link_to "Sidekiq", "/sidekiq"
+  li = link_to "Mailers", "/rails/mailers"
+  li = link_to "Blazer",  "/blazer"
 
 table
   - ENV.each do |key, value|

@@ -5,7 +5,6 @@ Hi, <%= @member.display_first_name %>. Coming up at <%= @member.unit.name %>:
 <% end %>
 <% remaining_open_rsvps = @open_rsvps - @events.to_a %>
 <% if remaining_open_rsvps.count.positive? %>
-
 <% end %>
 
 Visit <%= url_without_scheme(magic_url_for(@member, unit_path(@member.unit))) %> to view the full calendar.
