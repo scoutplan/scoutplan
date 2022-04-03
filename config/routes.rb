@@ -94,6 +94,7 @@ Rails.application.routes.draw do
   constraints CanAccessFlipperUI do
     mount Sidekiq::Web => "/sidekiq"
     mount Flipper::UI.app(Flipper) => "/flipper"
+    mount Blazer::Engine, at: "blazer"
     get "a", to: "admin#index"
   end
 
