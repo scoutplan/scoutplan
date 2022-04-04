@@ -10,7 +10,7 @@ class UnitContextController < ApplicationController
   around_action :time_zone
 
   def configure_ahoy
-    Ahoy.user_method = ->(controller) { controller.responds_to(:current_member) ? controller.current_member : nil }
+    Ahoy.user_method = ->(controller) { controller.respond_to?(:current_member) ? controller.current_member : nil }
   end
 
   # analytics
