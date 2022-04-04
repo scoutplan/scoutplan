@@ -8,12 +8,12 @@
   <title></title>
   <!--[if mso]>
   <style>
-      table {border-collapse:collapse;border-spacing:0;border:none;margin:0;}
-      div, td {padding:0;color:#78716C;}
-      div {margin:0 !important;}
-      table, td, div, h1, p {
-        font-family: Arial, sans-serif;
-      }      
+    table {border-collapse:collapse;border-spacing:0;border:none;margin:0;}
+    div, td {padding:0;color:#57534E;}
+    div {margin:0 !important;}
+    table, td, div, h1, p {
+      font-family: proxima-nova, arial, sans-serif;
+    }
   </style>
   <noscript>
       <xml>
@@ -23,11 +23,18 @@
       </xml>
   </noscript>
   <![endif]-->
+  <style>
+    @import("https://use.typekit.net/<%= ENV['ADOBE_FONT_KIT_ID'] %>.css");
+
+    body, table, td, div, h1, p, a {
+      font-family: proxima-nova, arial, sans-serif;
+    }
+  </style>
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-rqn26AG5Pj86AF4SO72RK5fyefcQ/x32DNQfChxWvbXIyXFePlEktwD18fEz+kQU" crossorigin="anonymous">
 </head>
 <body style="margin:0;padding:0;word-spacing:normal;background-color:#fff;">
   <div role="article" aria-roledescription="email" lang="en" style="text-size-adjust:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#ffffff;">
-    <table role="presentation" style="color:#78716C;width:100%;border:none;border-spacing:0;">
+    <table role="presentation" style="color:#57534E;width:100%;border:none;border-spacing:0;">
       <tr>
         <td align="center" style="padding:0;">
           <!--[if mso]>
@@ -35,9 +42,10 @@
           <tr>
           <td>
           <![endif]-->
-          <table role="presentation" style="background:#E7E5E4;color:#78716C;width:460px;border:none;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;">
+          <table role="presentation" style="background:#F5F5F4;color:#57534E;width:460px;border:none;border-spacing:0;text-align:left;font-family:proxima-nova,arial,sans-serif;font-size:16px;line-height:22px;">
 
-
+<%# ---------------------------------------- %>
+<%# LOGO %>
             <% if @unit&.logo&.attached? %>
               <tr>
                   <td style="padding:30px 30px 15px 30px;text-align:center;font-size:24px;font-weight:bold;">
@@ -50,28 +58,43 @@
 
             <tr>
                 <td style="padding:15px 30px;">
-                  
-                  <p style="color:#57534E;font-weight:bold;text-transform:uppercase;letter-spacing:0.5px;margin-top:0;"><%= @unit.name %></p>
 
+
+<%# ---------------------------------------- %>
+<%# TITLE %>
                   <% if content_for?(:title) %>
-                    <h1 style="color:#57534E;font-weight:normal;margin-top:0;margin-bottom:1rem;font-size:3rem;line-height:110%;letter-spacing:-0.02em;"><%= yield :title %></h1>
+                    <h1 style="color:#57534E;font-weight:normal;margin-top:0;margin-bottom:1rem;font-size:2rem;line-height:110%;letter-spacing:-0.02em;">
+                      <%= yield :title %>
+                    </h1>
                   <% end %>
+
+<%# ---------------------------------------- %>
+<%# BLURB %>      
                   <% if content_for?(:blurb) %>
                     <p style="margin:0;"><%= yield :blurb %></p>
                   <% end %>
 
+<%# ---------------------------------------- %>
+<%# MAIN CONTENT %>
                   <%= yield :left_column %>
                 </td>
             </tr>
 
+<%# ---------------------------------------- %>
+<%# NEWS ITEMS %>
             <% if @news_items.present? %>
               <tr>
                 <td style="padding:30px;background:#FBBF24;">
-                  <h2 style="color:#78350F;font-weight:normal;">News</h2>
+                  <% @news_items.each do |news_item| %>
+                    <strong><%= news_item.title %></strong>
+                    <%= news_item.body %>
+                  <% end %>
                 </td>
               </tr>
             <% end %>
 
+<%# ---------------------------------------- %>
+<%# SECONDARY CONTENT %>
             <% if content_for(:right_column ) %>
               <tr class="secondary_content">
                 <td style="padding:30px;background:#BAE6FD;color:#0369A1;">
@@ -81,6 +104,8 @@
               </tr>
             <% end %>
 
+<%# ---------------------------------------- %>
+<%# FOOTER %>
             <tr class="footer">
               <td style="padding:30px;font-size:12px;background-color:#44403C;color:#E7E5E4;font-weight:800;">
                   Sent from Scoutplan

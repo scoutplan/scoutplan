@@ -1,40 +1,45 @@
-- content_for :title do
-  | Coming Up
-
 - content_for :blurb do
-  p(style="font-size: 125%; margin-bottom:2rem; color:#666;line-height:150%;")
-    | Good #{ Time.zone.now.time_of_day }, #{@member.display_first_name}. Here's what's going on:
-
-  - @news_items.each_with_index do |news_item, counter|
-    - if counter > 0
-      div(style="text-align:center;color:#aaa;") &#9679;
-
-    article(style="margin-bottom:1rem; color: #666;")
-      h3(style="margin-bottom:0.25rem; color:#000;") = news_item.title
-      == news_item.body
+  p(style="margin-bottom:1rem; color:#57534E;line-height:150%;")
+    | Good #{ Time.zone.now.time_of_day }, #{@member.display_first_name}. Here's what's coming up at #{@unit.name}:
 
 - content_for :left_column do
-  h2(style="color:#57534E;font-size:2rem;font-weight:normal;") Next Seven Days
 
+  - counter = 0
   - @this_week_events.each do |event|
+    - counter += 1
     - presenter = EventPresenter.new(event: event, current_member: @member)
-    h3(style="margin-bottom:0;line-height:150%;")
-      = magic_link_to \
-        @member,
-        event.title,
-        [event.unit, event],
-        style: "color:black;font-weight:normal;"
+    - style = "margin-bottom:1rem;color:#57534E;text-decoration:none;display:block;line-height:150%;font-size:90%;"
+    - style << "border-top:1px solid #D6D3D1;padding-top:1rem;" if counter > 1
 
-    p(style="margin-top:0;line-height:150%;")
-      = presenter.full_dates_to_s      
+    = magic_link_to \
+      @member,
+      [event.unit, event],
+      class: "imminent-event",
+      style: style do
 
-      - if event.location.present?
-        br
-        = event.location
+      div(style="font-weight:bold;font-size:120%;")
+        = event.title
 
-      - if event.short_description.present?
-        br
-        = event.short_description
+      table
+        tr
+          td
+            <svg xmlns="http://www.w3.org/2000/svg" style="height:1em;color:#7DD3FC;margin-right:0.5em;" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="currentColor" d="M96 32C96 14.33 110.3 0 128 0C145.7 0 160 14.33 160 32V64H288V32C288 14.33 302.3 0 320 0C337.7 0 352 14.33 352 32V64H400C426.5 64 448 85.49 448 112V160H0V112C0 85.49 21.49 64 48 64H96V32zM448 464C448 490.5 426.5 512 400 512H48C21.49 512 0 490.5 0 464V192H448V464z"/></svg>
+          td
+            = presenter.short_dates_to_s      
+
+        - if event.location.present?
+          tr
+            td
+              <svg xmlns="http://www.w3.org/2000/svg" style="height:1em;color:rgb(251, 113, 133);margin-right:0.5em;" viewBox="0 0 384 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="currentColor" d="M168.3 499.2C116.1 435 0 279.4 0 192C0 85.96 85.96 0 192 0C298 0 384 85.96 384 192C384 279.4 267 435 215.7 499.2C203.4 514.5 180.6 514.5 168.3 499.2H168.3zM192 256C227.3 256 256 227.3 256 192C256 156.7 227.3 128 192 128C156.7 128 128 156.7 128 192C128 227.3 156.7 256 192 256z"/></svg>
+            td
+              = event.location
+
+        - if event.short_description.present?
+          tr
+            td
+              <svg xmlns="http://www.w3.org/2000/svg" style="height:1em;color:rgb(251, 113, 133);margin-right:0.5em;" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="currentColor" d="M256 31.1c-141.4 0-255.1 93.13-255.1 208c0 49.62 21.35 94.98 56.97 130.7c-12.5 50.38-54.27 95.27-54.77 95.77c-2.25 2.25-2.875 5.734-1.5 8.734c1.25 3 4.021 4.766 7.271 4.766c66.25 0 115.1-31.76 140.6-51.39c32.63 12.25 69.02 19.39 107.4 19.39c141.4 0 255.1-93.13 255.1-207.1S397.4 31.1 256 31.1zM264 320h-112C138.8 320 128 309.3 128 296S138.8 272 152 272h112C277.3 272 288 282.8 288 296S277.3 320 264 320zM360 224h-208C138.8 224 128 213.3 128 200S138.8 176 152 176h208C373.3 176 384 186.8 384 200S373.3 224 360 224z"/></svg>
+            td
+              = event.short_description
 
       - next unless event.requires_rsvp
 
@@ -67,7 +72,7 @@
       @member,
       "View all #{ @unit.name} events",
       unit_events_url(@unit),
-      style: "display:block;text-align:center;border:1px solid #44403C;color:#44403C;text-decoration: none; padding: 1rem 3rem; border-radius:0.25rem;"
+      style: "text-transform:uppercase; letter-spacing:1px; font-weight: bold; color: black; text-decoration:none;"
 
 - content_for :right_column do
   h1(style="font-size:2rem;font-weight:normal;") Looking Further&#8230;
@@ -81,7 +86,7 @@
     @member,
     "View all #{ @unit.name} events",
     unit_events_url(@unit),
-    style: "display:block;text-align:center;border:1px solid #44403C;color:#44403C;text-decoration: none; padding: 1rem 3rem; border-radius:0.25rem;"
+    style: "font-weight:bold;color:black;"
 
 scss:
   .accepted {
