@@ -8,6 +8,7 @@ class MemberMailerPreview < ActionMailer::Preview
     member.unit.events.where(title: "Preview Test Event").destroy_all
     event = member.unit.events.new(
       title: "Preview Test Event",
+      short_description: "I can't believe it's not butter",
       starts_at: 24.hours.from_now,
       ends_at: 25.hours.from_now,
       status: :published,

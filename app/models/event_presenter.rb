@@ -53,7 +53,7 @@ class EventPresenter
   end
 
   def full_dates_to_s
-    return event.starts_at.strftime("%A, %d %b %Y").html_safe if single_day?
+    return event.starts_at.strftime("%A, %-d %b %Y").html_safe if single_day?
 
     result = event.starts_at.in_time_zone(current_member.time_zone).strftime("%A")
     result += "&ndash;"
@@ -71,6 +71,26 @@ class EventPresenter
 
     result.html_safe
   end
+
+  def short_dates_to_s
+    return event.starts_at.strftime("%A, %B %-d").html_safe if single_day?
+
+    result = event.starts_at.in_time_zone(current_member.time_zone).strftime("%A")
+    result += "&ndash;"
+    result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%A")
+    result += ", " + event.starts_at.in_time_zone(current_member.time_zone).strftime("%b")
+    result += " " + event.starts_at.in_time_zone(current_member.time_zone).strftime("%-d")
+    result += "&ndash;"
+    if single_month?
+      result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%-d")
+    else
+      result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%b")
+      result += " "
+      result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%-d")
+    end
+
+    result.html_safe
+  end  
 
   # does event span multiple days?
   def single_day?

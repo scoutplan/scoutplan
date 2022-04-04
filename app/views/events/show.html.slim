@@ -48,7 +48,7 @@
               do
                 i.fa-pencil.fas
 
-    = content_tag(:div, @event.short_description, class: 'mb-2 font-normal text-base text-gray-500') if @event.short_description.present?
+    = content_tag(:div, @event.short_description, class: "mb-2 font-normal text-base text-gray-500") if @event.short_description.present?
 
     // first row: RSVP panel
     - if @event.requires_rsvp

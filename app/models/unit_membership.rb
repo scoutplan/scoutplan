@@ -31,6 +31,7 @@ class UnitMembership < ApplicationRecord
   has_many :rsvp_tokens, dependent: :destroy
   has_many :event_rsvps, dependent: :destroy
   has_many :magic_links, dependent: :destroy
+  has_many :visits, class_name: "Ahoy::Visit"
 
   alias_attribute :member, :user
   alias_attribute :rsvps, :event_rsvps
