@@ -1,6 +1,14 @@
 - events.each do |event|
   dt(style="margin-top:15px;")
-    = magic_link_to @member, event.title, unit_event_url(event.unit, event)
+    = magic_link_to @member, unit_event_url(event.unit, event),
+      style: "color:#D97706;text-decoration:none;" do
+      span(style="font-weight:bold;")
+        = event.title
+      = " on "
+      = event.starts_at.strftime('%a %b %-d')
 
-  dd(style="margin-left:0;")
-    = event.starts_at.strftime('%a %b %-d')
+    - next unless event.requires_rsvp
+
+    = magic_link_to @member, unit_event_edit_rsvps_url(event.unit, event),
+      style: "font-size:80%;background:#D97706;color:#FEF3C7;padding:4px 8px;margin-left:1rem;text-decoration:none;font-weight:600;border-radius:4px;" do
+      = "RSVP"
