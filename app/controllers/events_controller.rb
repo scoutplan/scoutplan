@@ -15,7 +15,7 @@ class EventsController < UnitContextController
   # TODO: refactor this mess
   def index
     variation = params[:variation]
-    if variation.nil?
+    if variation.nil? && request.format.html?
       variation = cookies[:event_index_variation] || "event_table"
       case variation
       when "event_table"
@@ -28,7 +28,6 @@ class EventsController < UnitContextController
     end
 
     cookies[:event_index_variation] = variation
-
     cookies[:calendar_display_month] = params[:month] if params[:month]
     cookies[:calendar_display_year] = params[:year] if params[:year]
 
@@ -71,7 +70,15 @@ class EventsController < UnitContextController
   end
 
   def calendar_events
-    events = @unit.events.includes(:event_category).published
+    if params[:season] == "next"
+      events = @unit.events.includes(:event_category).where(
+        "starts_at BETWEEN ? AND ?",
+        @unit.next_season_starts_at,
+        @unit.next_season_ends_at
+      )
+    else
+      events = @unit.events.includes(:event_category).published
+    end
     events = events.reject { |e| e.category.name == "Troop Meeting" } # TODO: not hard-wire this
     events.group_by { |e| [e.starts_at.year, e.starts_at.month] }
   end
