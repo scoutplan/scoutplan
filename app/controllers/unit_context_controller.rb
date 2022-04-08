@@ -6,18 +6,10 @@ class UnitContextController < ApplicationController
   before_action :configure_ahoy
   before_action :find_unit_info
   before_action :set_unit_cookie
-  before_action :track_activity
   around_action :time_zone
 
   def configure_ahoy
     Ahoy.user_method = ->(controller) { controller.respond_to?(:current_member) ? controller.current_member : nil }
-  end
-
-  # analytics
-  def track_activity
-    event = [controller_name, action_name].join("#")
-    event << " " << request.format if request.format != "html"
-    Tracker.new(current_member).track_activity(event)
   end
 
   def current_unit

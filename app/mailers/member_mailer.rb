@@ -4,7 +4,6 @@
 class MemberMailer < ScoutplanMailer
   before_action :set_addresses
   before_action :time_zone
-  after_action :track_activity
   helper MagicLinksHelper
 
   def invitation_email
@@ -72,12 +71,5 @@ class MemberMailer < ScoutplanMailer
 
   def time_zone
     Time.zone = @unit.settings(:locale).time_zone
-  end
-
-  def track_activity
-    Tracker.new(@member).track_activity(
-      "member_mailer",
-      { "action" => action_name }
-    )
   end
 end

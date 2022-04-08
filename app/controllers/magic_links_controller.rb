@@ -17,7 +17,6 @@ class MagicLinksController < ApplicationController
     sign_in @magic_link.user
     session[:via_magic_link] = true
     flash[:notice] = t("magic_links.login_success", name: current_user.full_name)
-    track_activity
     redirect_to @magic_link.path
   end
 
@@ -27,12 +26,5 @@ class MagicLinksController < ApplicationController
     token = params[:token]
     @magic_link = MagicLink.find_by(token: token)
     Rails.logger.warn { "Resolved!" }
-  end
-
-  def track_activity
-    Tracker.new(@magic_link.member).track_activity(
-      "magic_link",
-      { "target" => @magic_link.path }
-    )
   end
 end
