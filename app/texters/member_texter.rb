@@ -13,14 +13,6 @@ class MemberTexter < ApplicationTexter
     @member.phone
   end
 
-  def send_message
-    super
-    Tracker.new(@member).track_activity(
-      "send_sms",
-      { "type" => self.class.name }
-    )
-  end
-
   def renderer
     ApplicationController.renderer.new(
       http_host: ENV["SCOUTPLAN_HOST"],
