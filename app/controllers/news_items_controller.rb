@@ -57,12 +57,17 @@ class NewsItemsController < UnitContextController
 
   def update_item_status(new_status)
     @news_item.update!(status: new_status)
-    path = new_status == :queued ? unit_newsletter_queued_path(@unit) : unit_newsletter_drafts_path(@unit)
+    # path = (new_status == :queued ? unit_newsletter_queued_path(@unit) : unit_newsletter_drafts_path(@unit))
 
-    respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@news_item) }
-      format.html { redirect_to path, notice: t("news_items.notices.status_update") }
-    end
+    # respond_to do |format|
+    #   format.turbo_stream { render turbo_stream: turbo_stream.remove(@news_item) }
+    #   format.html { redirect_to path, notice: t("news_items.notices.status_update") }
+    # end
+
+    render turbo_stream: [
+      turbo_stream.update("newsletter_nav", partial: "news_items/newsletter_nav"),
+      turbo_stream.remove(@news_item)
+    ]
   end
 
   def find_news_items

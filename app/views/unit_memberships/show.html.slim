@@ -10,6 +10,8 @@
     header.py-4.sticky.top-0.bg-white
       h3.m-0.font-bold.float-left.text-black.text-lg
         = @target_membership.full_display_name
+        = " / "
+        = @unit.name
 
       - if @target_membership.adult?
         span.ml-2.px-3.py-1.rounded.text-xs.font-bold.text-green-100.bg-green-700 Adult
