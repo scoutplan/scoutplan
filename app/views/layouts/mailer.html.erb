@@ -12,7 +12,7 @@
     div, td {padding:0;color:#57534E;}
     div {margin:0 !important;}
     table, td, div, h1, p {
-      font-family: proxima-nova, arial, sans-serif;
+      font-family: 'Proxima Nova', arial, sans-serif;
     }
   </style>
   <noscript>
@@ -25,12 +25,24 @@
   <![endif]-->
   <style>
     @import("https://use.typekit.net/<%= ENV['ADOBE_FONT_KIT_ID'] %>.css");
-
+  </style>
+  <style>
     body, table, td, div, h1, p, a {
-      font-family: proxima-nova, arial, sans-serif;
+      font-family: 'Proxima Nova', arial, sans-serif;
+    }
+
+    #this_week .item {
+      border-top:1px solid #E7E5E4;
+    }
+
+    #announcements .item {
+      border-top:1px solid #84CC16;
+    }
+
+    #coming_up .item {
+      border-top:1px solid #FCD34D;
     }
   </style>
-  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-rqn26AG5Pj86AF4SO72RK5fyefcQ/x32DNQfChxWvbXIyXFePlEktwD18fEz+kQU" crossorigin="anonymous">
 </head>
 <body style="margin:0;padding:0;word-spacing:normal;background-color:#fff;">
   <div role="article" aria-roledescription="email" lang="en" style="text-size-adjust:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#ffffff;">
@@ -42,7 +54,7 @@
           <tr>
           <td>
           <![endif]-->
-          <table role="presentation" style="background:#F5F5F4;color:#57534E;width:460px;border:none;border-spacing:0;text-align:left;font-family:proxima-nova,arial,sans-serif;font-size:16px;line-height:22px;">
+          <table role="presentation" style="background:#F5F5F4;color:#57534E;width:460px;border:none;border-spacing:0;text-align:left;font-family:'Proxima Nova',arial,sans-serif;font-size:16px;line-height:22px;">
 
 <%# ---------------------------------------- %>
 <%# LOGO %>
@@ -57,13 +69,12 @@
             <% end %>
 
             <tr>
-                <td style="padding:15px 30px;">
-
+                <td style="padding:15px 70px;">
 
 <%# ---------------------------------------- %>
 <%# TITLE %>
                   <% if content_for?(:title) %>
-                    <h1 style="color:#57534E;font-weight:normal;margin-top:0;margin-bottom:1rem;font-size:2rem;line-height:110%;letter-spacing:-0.02em;">
+                    <h1 style="color:#57534E;font-size:48px;line-height:100%;font-weight:700;font-style:normal;font-family:'Proxima Nova';margin-bottom:18px;margin-top:0;">
                       <%= yield :title %>
                     </h1>
                   <% end %>
@@ -84,18 +95,17 @@
 <%# NEWS ITEMS %>
             <% if @news_items.present? %>
               <tr>
-                <td style="padding:30px;background:#E66425;color:#F6F1E7;">
+                <td id="announcements" style="padding:40px 70px;background:#65A30D;color:#D9F99D;font-size:18px;line-height:140%;font-weight:500;">
 
-                  <h1 style="margin-top:0;margin-bottom:2rem;font-weight:normal;">
-                    <svg xmlns="http://www.w3.org/2000/svg" style="height:1em;color:#F6F1E7;margin-right:0.25em;" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="currentColor" d="M200.7 128C270.7 128 337.9 100.2 387.4 50.68L425.4 12.69C445.5-7.472 480 6.805 480 35.31V179.6C498.6 188.4 512 212.1 512 240C512 267.9 498.6 291.6 480 300.4V444.7C480 473.2 445.5 487.5 425.4 467.3L387.4 429.3C339.6 381.5 275.4 353.1 208 352.1V456C208 486.9 182.9 512 152 512H120C89.07 512 64 486.9 64 456V352C28.65 352 0 323.3 0 288V192C0 156.7 28.65 128 64 128L200.7 128zM432 73.94L421.3 84.62C364.5 141.4 288.1 174 208 175.9V304.1C288.1 305.1 364.5 338.6 421.3 395.4L432 406.1V73.94zM112 456C112 460.4 115.6 464 120 464H152C156.4 464 160 460.4 160 456V352H112V456zM48 192V288C48 296.8 55.16 303.1 64 303.1H160V176H64C55.16 176 48 183.2 48 192V192z"/></svg>
+                  <h1 style="margin-top:0;margin-bottom:2rem;font-weight:bold;">
                     Announcements
                   </h3>
 
-                  <% counter = 0 %>
                   <% @news_items.each do |news_item| %>
-                    <strong><%= news_item.title %></strong>
-                    <%= news_item.body %>
-                    <% counter += 1 %>
+                    <div class="item" style="padding:1rem 0;">
+                      <strong style="font-size:21px;"><%= news_item.title %></strong>
+                      <%= news_item.body %>
+                    </div>
                   <% end %>
                 </td>
               </tr>
@@ -105,7 +115,7 @@
 <%# SECONDARY CONTENT %>
             <% if content_for(:right_column ) %>
               <tr class="secondary_content">
-                <td style="padding:30px;background:#FEF3C7;color:#D97706;">
+                <td style="padding:30px 70px;background:#FEF3C7;color:#D97706;">
                   <p style="margin-bottom:1rem;"><%= yield :right_column %></p>
                   <p><%= yield :pre_footer %></p>
                 </td>
@@ -115,8 +125,8 @@
 <%# ---------------------------------------- %>
 <%# FOOTER %>
             <tr class="footer">
-              <td style="padding:30px;font-size:12px;background-color:#44403C;color:#E7E5E4;font-weight:800;">
-                  Sent from Scoutplan
+              <td style="padding:40px 70px;background-color:#44403C;color:#E7E5E4;font-weight:800;">
+                <%= yield :footer %>
               </td>
             </tr>
           </table>

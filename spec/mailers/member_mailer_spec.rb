@@ -25,7 +25,7 @@ RSpec.describe MemberMailer, type: :mailer do
       # ap @mail.body
       Time.zone = "UTC"
       expect(@mail.body).to include(@unit.name)
-      expect(@mail.body).to include(@member.display_first_name)
+      # expect(@mail.body).to include(@member.display_first_name)
       expect(@mail.body).to include(@event.title)
       # expect(@mail.body).to include(@event.starts_at.in_time_zone(@unit.time_zone).strftime("%A, %b %-d"))
       # expect(@mail.body).to include(@event.starts_at.in_time_zone(@unit.time_zone).strftime("%-I:%M %p"))

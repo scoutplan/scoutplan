@@ -58,6 +58,26 @@ class EventPresenter
     result = event.starts_at.in_time_zone(current_member.time_zone).strftime("%A")
     result += "&ndash;"
     result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%A")
+    result += ", " + event.starts_at.in_time_zone(current_member.time_zone).strftime("%B")
+    result += " " + event.starts_at.in_time_zone(current_member.time_zone).strftime("%-d")
+    result += "&ndash;"
+    if single_month?
+      result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%-d")
+    else
+      result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%B")
+      result += " "
+      result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%-d")
+    end
+
+    result.html_safe
+  end
+
+  def short_dates_to_s
+    return event.starts_at.strftime("%a, %b %-d").html_safe if single_day?
+
+    result = event.starts_at.in_time_zone(current_member.time_zone).strftime("%a")
+    result += "&ndash;"
+    result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%a")
     result += ", " + event.starts_at.in_time_zone(current_member.time_zone).strftime("%b")
     result += " " + event.starts_at.in_time_zone(current_member.time_zone).strftime("%-d")
     result += "&ndash;"
@@ -71,26 +91,6 @@ class EventPresenter
 
     result.html_safe
   end
-
-  def short_dates_to_s
-    return event.starts_at.strftime("%A, %B %-d").html_safe if single_day?
-
-    result = event.starts_at.in_time_zone(current_member.time_zone).strftime("%A")
-    result += "&ndash;"
-    result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%A")
-    result += ", " + event.starts_at.in_time_zone(current_member.time_zone).strftime("%b")
-    result += " " + event.starts_at.in_time_zone(current_member.time_zone).strftime("%-d")
-    result += "&ndash;"
-    if single_month?
-      result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%-d")
-    else
-      result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%b")
-      result += " "
-      result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%-d")
-    end
-
-    result.html_safe
-  end  
 
   # does event span multiple days?
   def single_day?
@@ -114,5 +114,21 @@ class EventPresenter
     classes += " event-rsvp" if event.requires_rsvp?
 
     classes
+  end
+
+  # grammatical_list("Garth") => "Garth"
+  # grammatical_list("Ebony", "Ivory") => "Ebony and Ivory"
+  # grammatical_list("Red", "White", "Blue") => "Red, White, and Blue"
+  # and, yes, we use Oxford commas. Accept it.
+  def grammatical_list(things)
+    return things unless things.is_a?(Array)
+    return "" if things.count.zero?
+    return things.first if things.count == 1
+
+    [things[0..-2].join(", "), "#{things.count > 2 ? ',' : ''}", " and ", things.last].join
+  end
+
+  def substantive_verb(things)
+    things.count == 1 ? (things.first.downcase == "you" ? "are" : "is") : "are"
   end
 end
