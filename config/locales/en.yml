@@ -51,6 +51,7 @@ en:
   rsvp_unknown: "No response"
   rsvp_posted: "Your RSVP has been received"
   passwordless_warning: "You're logged in using a password-less \"magic link.\"  This link is valid until x/x/xx."
+  see_below: "See below."
 
   global:
     cancel: "Cancel"
@@ -414,3 +415,7 @@ en:
     daily_reminder_description: "Daily Reminders"
     unit_digest_description:    "Unit Digest"
     rsvp_reminders:             "RSVP Reminders"
+
+  unanswered_rsvps:
+    one: "One event requires your RSVP."
+    other: "%{count} events require your RSVPs."
