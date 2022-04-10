@@ -7,6 +7,7 @@ class UnitContextController < ApplicationController
   before_action :find_unit_info
   before_action :set_unit_cookie
   around_action :time_zone
+  after_action  :track_action
 
   def configure_ahoy
     Ahoy.user_method = ->(controller) { controller.respond_to?(:current_member) ? controller.current_member : nil }
@@ -27,6 +28,12 @@ class UnitContextController < ApplicationController
 
   def pundit_user
     @membership
+  end
+
+  protected
+
+  def track_action
+    ahoy.track "Ran action", request.path_parameters
   end
 
   private
