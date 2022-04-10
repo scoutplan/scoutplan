@@ -25,22 +25,27 @@
         span(style="color:#78716C;")
           = event.short_description
 
+      div(style="color:blue;font-size:80%;")
+        = "Details"
+
+  // TODO: move all this into a service class
   - if event.requires_rsvp
     - family_member_ids = @member.family.map(&:id)
     - family_rsvps = event.rsvps.where("unit_membership_id IN (?)", family_member_ids)
     - if family_rsvps.count.positive?
       - family_rsvps.group_by(&:response).each do |response, rsvps|
         - members = rsvps.map(&:member)
-        - names = members.map{ |member| member == @member ? "You" : member.display_first_name }
+        - members.reject! { |member| !member.status_active? } if response == "declined"
+        - names = members.map{ |member| member == @member ? "you" : member.display_first_name }
         div(style="margin-bottom:0.5rem;")
-          - if response == "accepted"
+          - if response == "accepted" && names.present?
             div(style="font-weight:600;color:#0891B2;font-size:18px;")
               <img style="height:1rem;margin-right:0.3em;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAYAAABV7bNHAAAACXBIWXMAABYlAAAWJQFJUiTwAAAD8klEQVR4nOWczXniMBCG3/BsA04JpASnBFICKQFKMCXAcY+khHDdW1xCXEIoYV3C7kFSMIp/JHtsJPxdIATr52UkjTRjP/D7DxMrBVZAot+bzxLreyVQ6PeF/juvfDaJfk1QxxJYoyCsPa5LUCCpvBqdUKBOwHloA9v0MKIFbVBA7M5JK0eBehuj8IVweQmQAX+BI+PDQddx1HVm/ByqgyQJKAO+gD3CjXRUouv+0m0RkQSgFfDJ7cDYMqA+EbDgoYD2wAeX1Sgkpai27YcU0hfQEvULiZnyiMpQbV32ubgPoFRXGKLVNKl3m30BbXRFIcw1vkpQbd/4XOQDaINaTmPXEQ9IroDuBY6RMyQXQCn3BcfoiMOc1AVoiVoq71UfdKxuXYDeiXNCdlWC6mOj2gDtiWsp76uUFmeyCdCKOJxAKWU0bEuaAA1yzyNVbZ/rAGXMY2jZSqkZNTagpO5LM9KP8yQb0Mb+wsyUYDmQNqA5W4/RFYMqoLlbj9GVFVUB+UQcQtEJeAEe9OtJqNxvFgbQkmkO2CW1BV5RUQ306yuwEyh7hd6CGECxWc+W5jDPAZlY2RougGLye9rgGOUd/3dRCvFZkAscKX1bUCxzjw8cqT6lC+IYXj5wMnpGMGq0WhC+7+MDZ4PsRjsJ3YJ84UgfDafSyQsg57zdGg6g0l/+CZa3Q/khtnw7EAQcoJS0oDP1cEB1dutYTihwQM9BUuoaSi6QQoIDyCdQdakNUnBwQBaQqzdeBylIOCALaIn7gVsVUrBw0JO0xMbOaI97YsAb8Ey4cACKMeYgn+wJ15znmyVPLBgnMdsrxaRDt8wsKRaoDPYxJAHp1mk35VgWZDQE0q3hAOTSk3Sd+kAKAQ5UJmmpaECTfCCFAucEFz9oijtoXCCFAgc0k6ksyKgNUkhwwLKgM+PPRUZHVFZX9V6xd8KCk6NDR9X7xU5Md4C/JuxIyveIqnrSb4znE8Wkksr2x95qNB14zUlXDGxAc7eiK+uBn4BK5m1FBywDqdvNH5j4zuJAVFBjHE3HHRIpJLGpts9NgHLmNdQONPiBbQdmO+Yx1ApaRkzXieIr972qlag+NqoL0BkVPr5XvdCRjeZyJl3gHhWNSVscphDXQ3uf0HEMcg41+UQ17gWSVxqfb9jHxLJinLhL/OJwQL/IaqEriskF6N3mvoHDs64wBmfygGprr9zpoZHVHWqpDNGaClTbBm2bJELPOeoX2hHG3FSi2vKMwDGyZGz+ADxxO1AGzBOCQ186ecGcJz2iltMpAgG5ruuRmvOcoRrzGWZGfR/y1qbJHvI2xVPw7OTOFZfHAqaVz+pkLNA8JrBguvAUAP8BkCHayCBSg8QAAAAASUVORK5CYII=" />
-              = [presenter.grammatical_list(names), presenter.substantive_verb(names), "going"].join(" ")
-          - elsif response == "declined"
+              = [presenter.grammatical_list(names), presenter.substantive_verb(names), "going"].join(" ").upcase_first
+          - elsif response == "declined" && names.present?
             div(style="font-weight:600;color:#EF4444;font-size:18px;")
               <img style="height:1rem;margin-right:0.3em;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAYAAABV7bNHAAAACXBIWXMAABYlAAAWJQFJUiTwAAADc0lEQVR4nO2c3U3jQBRGT6I04BZCCXnnAYUSoISkBCgBSkhKWEpYStiUsLRgiQbYB/uKJPhnZnzvzNjeI1kiCI3NSTKe+91JFp93txhRAA/AFtgAa+XxP4AT8A68AaXy+AAsjAQ91UdhMXgDJfAMHLUHXmoPCByAF+LJoT7XoT5U0RRUAH+AneKYvuzqa1B7crQEFcBvqrkmNRuqa1GRpCEoJzmCmqShgnKUI6hIGiIoZznCYEmhgsYgRxgkKUTQmOQIwZJ8BY1RjhAkyUfQmOUI3pJcBU1BjrABfrn+sYugKckRtjiWJX2CpihH2OEgqUvQlOUIvZLaBM1BjtApqUnQnOQIrZKuBc1RjtAo6VrQXOUIPySdCzowbznChSQR9ETaJDA3dvXB4vPutgD+EjdDHgMlcLOias1YyympWjRQvY1Dz6c1jgsF8LCiWnZb8g488t23Cr1TvgF7hXF82C6NT1ByKUd+d8/3K8GFY8s4j0MvsIfNEv2O5zknmjuePpKOVK+cJj6oXqFWrC0ah664SOqSEwVrQX0TaZckFzlrjOdQa0EykfpKcpFT4BF8hbKyPgHfMec97TswRNJL/dhFTpSyaPF5d/tlfZKaE92SoPrH+7axRC2oY07SLoF5VnIgriAY1sRLEsWkuM2HSEqWU6VaB/lIShripVwotq2yrzkvUKOTSpDvCnmPwf5DF1IICi0fkkiKLWhobRVdUkxBruVDH89EnJNiCfKprQ6EF7jqxBAkSWAXcivfUoXlIQWuCdaCSsIKT9eyxDpRNBfUt9bpWgS6SLJOFJMuFF1WyKqbwkNYUj0LVrQlij7lQ5ck60TxY4ntRCcizhsDa/xrK5F0PY51onhaUb2HHwxPsqHq3MpcEfqMa43jw/v/1nM7JXCzrH94TXwxOfIMlHIXeyVRtZwpx/q4uM3vSZi7ZMRFWXS9DopW42TKj5rxWlDUQjAzGgvqppX0HCW1pg1tpcacJHVGMV212Bwk9eZUfcXqlCU5xb8u1fwUJTln465xx5QkeTUOfPIgkfTme0UZ4d1V8Q3MJOYcY1kS1HIKTRSTdToDCe7HDYlcxyJpULNyaCadu6TBu2Q1QvtcJalsIdbqauQmSW1/tWbbJxdJqpvPtftiqSWp78y3aBzuufxUTgykxa3+sQWrb8GDiXxN4D9/0uGRO7zCXwAAAABJRU5ErkJggg==" />
-              = [presenter.grammatical_list(names), presenter.substantive_verb(names), "not going"].join(" ")
+              = [presenter.grammatical_list(names), presenter.substantive_verb(names), "not going"].join(" ").upcase_first
 
     - if @member.adult?
       div(style="text-align:center;margin-top:1rem;margin-bottom:1.5rem;")

@@ -26,4 +26,8 @@ module RsvpHelper
 
     result
   end
+
+  def unresponded_events(member)
+    []
+  end
 end
