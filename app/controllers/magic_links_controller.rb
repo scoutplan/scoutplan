@@ -10,6 +10,10 @@ class MagicLinksController < ApplicationController
   skip_before_action :authenticate_user!
   before_action :find_magic_link
 
+  def configure_ahoy
+    Ahoy.user_method = ->(controller) { controller.respond_to?(:current_member) ? controller.current_member : nil }
+  end
+
   # GET /:token
   def resolve
     redirect_to root_path and return unless @magic_link
@@ -17,7 +21,12 @@ class MagicLinksController < ApplicationController
     sign_in @magic_link.user
     session[:via_magic_link] = true
     flash[:notice] = t("magic_links.login_success", name: current_user.full_name)
+    ahoy.track("Magic Link click", path: @magic_link.path)
     redirect_to @magic_link.path
+  end
+
+  def current_member
+    @magic_link.member
   end
 
   private

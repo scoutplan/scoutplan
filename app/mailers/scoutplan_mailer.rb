@@ -10,7 +10,7 @@ class ScoutplanMailer < ApplicationMailer
   def attach_logo
     return unless @unit&.logo&.attached?
 
-    attachments.inline['logo'] = @unit.logo.blob.download
+    attachments.inline["logo"] = @unit.logo.blob.download
   end
 
   def find_member
