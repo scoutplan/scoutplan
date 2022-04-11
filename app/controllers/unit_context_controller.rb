@@ -3,15 +3,10 @@
 # an abstract controller to be subclassed for instances
 # where a Unit is being manipulated (which is to say, most)
 class UnitContextController < ApplicationController
-  before_action :configure_ahoy
   before_action :find_unit_info
   before_action :set_unit_cookie
   around_action :time_zone
   after_action  :track_action
-
-  def configure_ahoy
-    Ahoy.user_method = ->(controller) { controller.respond_to?(:current_member) ? controller.current_member : nil }
-  end
 
   def current_unit
     @current_unit || (@current_unit = Unit.includes(

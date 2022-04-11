@@ -10,18 +10,14 @@ class MagicLinksController < ApplicationController
   skip_before_action :authenticate_user!
   before_action :find_magic_link
 
-  def configure_ahoy
-    Ahoy.user_method = ->(controller) { controller.respond_to?(:current_member) ? controller.current_member : nil }
-  end
-
   # GET /:token
   def resolve
-    redirect_to root_path and return unless @magic_link
+    raise ActionController::RoutingError, "Not Found" unless @magic_link
+    return unless @magic_link
 
     sign_in @magic_link.user
     session[:via_magic_link] = true
     flash[:notice] = t("magic_links.login_success", name: current_user.full_name)
-    ahoy.track("Magic Link click", path: @magic_link.path)
     redirect_to @magic_link.path
   end
 
@@ -34,6 +30,5 @@ class MagicLinksController < ApplicationController
   def find_magic_link
     token = params[:token]
     @magic_link = MagicLink.find_by(token: token)
-    Rails.logger.warn { "Resolved!" }
   end
 end
