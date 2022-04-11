@@ -98,6 +98,6 @@ Rails.application.routes.draw do
     get "a", to: "admin#index"
   end
 
-  get ":token", to: "magic_links#resolve", as: "magic_link"
+  get ":token", to: "magic_links#resolve", as: "magic_link", constraints: { token: /[0-9a-f]{12}/ }
 end
 # rubocop:enable Metrics/BlockLength
