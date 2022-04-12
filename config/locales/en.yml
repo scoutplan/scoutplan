@@ -75,63 +75,53 @@ en:
       third_person: "was"
 
   newsletter:
-    title: "Newsletter"
+    title: "Announcements"
     modal:
       status: "Status:"
       draft:  "Draft"
       queued: "Queued"
-    next_sends_at: "Scoutplan will automatically send the next %{unit_name} email newsletter on %{next_newsletter_datetime}."
-
-  news_items:
-    index:
-      write_one_now: "Write one now..."
-
-    titles:
-      new: "Write a News Item"
-
-    new:
-      submit_caption: "Add This News Item"
-
-    placeholders:
-      body: "Write your news item"
-
-    notices:
-      status_update: "Your news items has been updated"
+    next_sends_at: "Scoutplan will automatically send the next %{unit_name} email digest on %{next_newsletter_datetime}."
       
   messaging:
     title: "Messaging"
-    new_item_description: "News items appear in the %{unit_name} weekly digest once they're approved"
-    new_news_item: "Write a Newsletter Item"
+    new_item_description: "Announcements appear in the %{unit_name} weekly digest once they're approved"
+    new_news_item: "Write an Announcement"
     drafts: "Drafts"
     queued: "Queued"
     queued_long: "Queued for next newsletter"
-    news_item_create_title: "Add a News Item"
-    news_item_edit_title:   "Update a News Item"
+    news_item_create_title: "Add an Announcement"
+    news_item_edit_title:   "Update an Announcement"
     news_item_modal:
-      submit: "Add This News Item"
-    enqueue_draft: "Move this news item to the Queue to be sent with the next newsletter"
+      submit: "Add This Announcement"
+    enqueue_draft: "Promote this announcement to the Queue to be sent with the next newsletter"
     dequeue: "Move back to Drafts"
     delete_draft: "Delete this item"
     edit: "Edit this item"
 
   news_items:
+    index:
+      write_one_now: "Write one now..."
+
+    new:
+      submit_caption: "Add This Announcement"
+
+    placeholders:
+      body: "Type your news here..."
+      title: "News title"      
+
+    notices:
+      status_update: "Your announcements has been updated"
+
     titles:
-      enqueue: "Move this news item to the queue to be sent with the next newsletter"
-      new: "Write a News Item"
+      enqueue: "Move this announcement to the queue to be sent with the next newsletter"
+      new: "Write an Announcement"
 
     captions:
       enqueue: "Move to Newsletter Queue"
       delete:  "Move to Trash"
       edit:    "Edit Item"
-      new:     "Write a News Item"
+      new:     "Write an Announcement"
       submit_new: "Add This Item"
-
-    placeholders:
-      body: "Type your news here..."
-      title: "News title"
-    
-    index:
-      write_one_now: "Write one now..."
 
     labels:
       status: "Status"

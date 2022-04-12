@@ -31,16 +31,21 @@ Rails.application.routes.draw do
   get "units/:unit_id/settings", as: "edit_unit_settings", to: "unit_settings#edit"
   patch "units/:unit_id/settings", as: "update_unit_settings", to: "unit_settings#update"
 
-  get "units/:unit_id/newsletter/drafts", to: "news_items#index", as: "unit_newsletter_drafts", defaults: { mode: "drafts" }
-  get "units/:unit_id/newsletter/queued", to: "news_items#index", as: "unit_newsletter_queued", defaults: { mode: "queued" }
-  get "units/:unit_id/newsletter/sent",   to: "news_items#index", as: "unit_newsletter_sent",   defaults: { mode: "sent"}
-
   # begin units
   resources :units, only: %i[show index] do
     resources :plans, path: "planner"
     resources :event_categories
     resources :event_rsvps, only: [:destroy]
     resources :news_items do
+      post "enqueue", to: "news_items#enqueue", as: "enqueue"
+      post "dequeue", to: "news_items#dequeue", as: "dequeue"
+    end
+    resources :news_items, path: "announcements", as: "announcements" do
+      collection do
+        get "drafts", to: "news_items#index", as: "drafts", defaults: { mode: "drafts" }
+        get "queued", to: "news_items#index", as: "queued", defaults: { mode: "queued" }
+        get "sent", to: "news_items#index", as: "sent", defaults: { mode: "sent" }
+      end
       post "enqueue", to: "news_items#enqueue", as: "enqueue"
       post "dequeue", to: "news_items#dequeue", as: "dequeue"
     end

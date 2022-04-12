@@ -2,7 +2,7 @@ p.mt-12.text-center
   | No #{@view} news items.
   |&nbsp;
   = link_to \
-    new_unit_news_item_path(@unit),
+    new_unit_announcement_path(@unit),
     class: "no-underline text-red-500 hover:text-red-600",
     data: { turbo_action: "advance", turbo_frame: "main" } \
     do

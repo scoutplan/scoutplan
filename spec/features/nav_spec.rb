@@ -34,7 +34,7 @@ describe "events", type: :feature do
     end
 
     it "shows roster" do
-      expect(page).to have_content("Newsletter")
+      expect(page).to have_content("Announcements")
     end
 
     it "shows settings" do
