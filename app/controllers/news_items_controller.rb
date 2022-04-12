@@ -17,7 +17,7 @@ class NewsItemsController < UnitContextController
   def create
     @news_item = @current_unit.news_items.new(news_item_params)
     @news_item.save!
-    redirect_to unit_news_items_path(@unit)
+    redirect_to unit_announcements_path(@unit)
   end
 
   def edit
@@ -42,7 +42,7 @@ class NewsItemsController < UnitContextController
     @news_item = NewsItem.find(params[:id])
     authorize @news_item
     @news_item.destroy
-    redirect_to unit_news_items_path(@unit)
+    redirect_to unit_announcements_path(@unit)
   end
 
   def enqueue

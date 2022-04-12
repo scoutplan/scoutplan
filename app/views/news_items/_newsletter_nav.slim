@@ -1,6 +1,6 @@
 // drafts
 li.newsletter-child#main_nav_item_newsletter_drafts
-  = link_to unit_newsletter_drafts_path(@current_unit),
+  = link_to drafts_unit_announcements_path(@current_unit),
     class: "no-underline whitespace-nowrap pt-2 pb-2 pr-2 pl-8 block bg-stone-100 rounded",
     data: { turbo_frame: "_top", turbo_action: "advance" }
     do
@@ -14,7 +14,7 @@ li.newsletter-child#main_nav_item_newsletter_drafts
 
 // queued
 li.newsletter-child#main_nav_item_newsletter_queued
-  = link_to unit_newsletter_queued_path(@current_unit),
+  = link_to queued_unit_announcements_path(@current_unit),
     class: "no-underline whitespace-nowrap pt-2 pb-2 pr-2 pl-8 block rounded-md",
     data: { turbo_frame: "_top", turbo_action: "advance" }
     do
@@ -29,7 +29,7 @@ li.newsletter-child#main_nav_item_newsletter_queued
 
 // sent
 li.newsletter-child#main_nav_item_newsletter_sent
-  = link_to unit_newsletter_sent_path(@current_unit),
+  = link_to sent_unit_announcements_path(@current_unit),
     class: "no-underline whitespace-nowrap pt-2 pb-2 pr-2 pl-8 block rounded-md",
     data: { turbo_frame: "_top", turbo_action: "advance" }
     do

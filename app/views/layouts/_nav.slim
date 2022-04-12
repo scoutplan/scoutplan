@@ -13,7 +13,7 @@
     li#main_nav_item_events
       = link_to unit_events_path(@current_unit), class: "mb-px no-underline whitespace-nowrap p-2 block hover:bg-stone-100 rounded-md" do
         span.w-8.inline-block.text-center.text-yellow-500
-          i.fa-calendar.fad
+          i.fa-calendar.fas
           |&nbsp;&nbsp;
         span.text-black
           = t("main_nav.events")
@@ -23,7 +23,7 @@
       li#main_nav_item_members
         = link_to unit_members_path(@current_unit), class: "mb-px no-underline whitespace-nowrap p-2 block hover:bg-stone-100 rounded-md" do
           span.w-8.inline-block.text-center.text-indigo-500
-            i.fa-users.fad
+            i.fa-users.fas
             |&nbsp;&nbsp;
           span.text-black
             = t("main_nav.members")
@@ -33,7 +33,7 @@
       li#main_nav_item_planner
         = link_to unit_plans_path(@current_unit), class: "mb-px no-underline whitespace-nowrap p-2 block hover:bg-stone-100 rounded-md" do
           span.w-8.inline-block.text-center.text-green-500
-            i.fa-map.fad
+            i.fa-map.fas
             |&nbsp;&nbsp;
           span.text-black
             = t("main_nav.planner")
@@ -41,9 +41,9 @@
     // Newsletter
     - if policy(:news_item).edit?
       li#main_nav_item_newsletter
-        = link_to unit_newsletter_drafts_path(@current_unit), class: "mb-px no-underline whitespace-nowrap p-2 block hover:bg-stone-100 rounded-md" do
+        = link_to drafts_unit_announcements_path(@current_unit), class: "mb-px no-underline whitespace-nowrap p-2 block hover:bg-stone-100 rounded-md" do
           span.w-8.inline-block.text-center.text-purple-500
-            i.fa-newspaper.fad
+            i.fa-bullhorn.fas
             |&nbsp;&nbsp;
           span.text-black
             = t("newsletter.title")
@@ -56,7 +56,7 @@
       li.main_nav_item_unit_settings
         = link_to edit_unit_settings_path(@current_unit), class: "mb-px no-underline whitespace-nowrap p-2 block hover:bg-stone-100 rounded-md" do
           span.w-8.inline-block.text-center.text-stone-500
-            i.fa-sliders-h.fad
+            i.fa-sliders-h.fas
             |&nbsp;&nbsp;
           span.text-black
             = "#{@current_unit.name} Settings"
@@ -82,7 +82,7 @@
           data: { turbo: 'false' },
           class: "w-full no-underline whitespace-nowrap p-2 block hover:bg-stone-200 rounded-md text-left" do
           span.w-8.inline-block.text-center.text-stone-500
-            i.fa-sign-out.fad
+            i.fa-sign-out.fas
             |&nbsp;&nbsp;
           = t("global.sign_out")
 
