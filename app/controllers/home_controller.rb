@@ -7,7 +7,7 @@ class HomeController < ApplicationController
 
   # GET /
   def index
-    unit_id = cookies[:unit_id] || params[:unit_id] || params[:id] || current_user.unit_memberships.first.unit.id
+    unit_id = cookies[:current_unit_id] || current_user.unit_memberships.first.unit.id
     redirect_to Unit.find(unit_id)
   end
 

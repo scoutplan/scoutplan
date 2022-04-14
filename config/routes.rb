@@ -81,6 +81,8 @@ Rails.application.routes.draw do
   end
   # end units
 
+  resources :messages
+
   # begin members
   resources :unit_memberships, path: "members", as: "members", only: %i[show edit update destroy] do
     member do

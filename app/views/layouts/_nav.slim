@@ -48,6 +48,15 @@
           span.text-black
             = t("newsletter.title")
 
+    - if policy(:message).create?
+      li#main_nav_item_messages
+        = link_to messages_path, class: "mb-px no-underline whitespace-nowrap p-2 block hover:bg-stone-100 rounded-md" do
+          span.w-8.inline-block.text-center.text-sky-500
+            i.fa-envelope.fas
+            |&nbsp;&nbsp;
+          span.text-black
+            = "Messages"    
+
     / = turbo_frame_tag "newsletter_nav" do
     #newsletter_nav
       = render partial: "news_items/newsletter_nav"
