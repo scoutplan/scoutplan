@@ -1,7 +1,9 @@
+# encapsulates Message permission for a UnitMembership
 class MessagePolicy < UnitContextPolicy
   def initialize(membership, message)
     @membership = membership
     @message = message
+    super
   end
 
   def index?
@@ -9,5 +11,6 @@ class MessagePolicy < UnitContextPolicy
   end
 
   def create?
+    admin?
   end
 end
