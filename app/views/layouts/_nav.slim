@@ -48,18 +48,19 @@
           span.text-black
             = t("newsletter.title")
 
-    - if policy(:message).create?
+    // ANNOUNCEMENT SUB-NAV
+    #newsletter_nav
+      = render partial: "news_items/newsletter_nav"
+
+    // MESSAGES
+    - if policy(:message).index?
       li#main_nav_item_messages
-        = link_to messages_path, class: "mb-px no-underline whitespace-nowrap p-2 block hover:bg-stone-100 rounded-md" do
+        = link_to unit_messages_path(@current_unit), class: "mb-px no-underline whitespace-nowrap p-2 block hover:bg-stone-100 rounded-md" do
           span.w-8.inline-block.text-center.text-sky-500
             i.fa-envelope.fas
             |&nbsp;&nbsp;
           span.text-black
-            = "Messages"    
-
-    / = turbo_frame_tag "newsletter_nav" do
-    #newsletter_nav
-      = render partial: "news_items/newsletter_nav"
+            = "Messages"
 
     - if policy(:unit_settings).edit?
       li.main_nav_item_unit_settings
@@ -111,5 +112,9 @@ scss:
   }
 
   body.unit_memberships li#main_nav_item_members a {
+    background-color: #E7E5E4;
+  }
+
+  body.messages li#main_nav_item_messages a {
     background-color: #E7E5E4;
   }

@@ -9,9 +9,9 @@ gem "scout_apm" # needs to be first
 
 gem "acts_as_list"
 gem "ahoy_matey"
-gem "blazer"
 gem "awesome_print"
 gem "aws-sdk-s3", require: false
+gem "blazer"
 gem "bootsnap", require: false
 gem "devise"
 gem "faraday"
@@ -26,7 +26,7 @@ gem "importmap-rails"
 gem "ledermann-rails-settings"
 gem "lograge"
 gem "mixpanel-ruby"
-gem "nokogiri"
+gem "nokogiri", ">= 1.13.4"
 gem "pg"
 gem "puma", "~> 5.0"
 gem "pundit"
