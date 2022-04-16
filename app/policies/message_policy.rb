@@ -13,4 +13,8 @@ class MessagePolicy < UnitContextPolicy
   def create?
     admin?
   end
+
+  def new?
+    admin?
+  end
 end

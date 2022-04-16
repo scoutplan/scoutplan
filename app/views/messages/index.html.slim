@@ -1,0 +1,12 @@
+= turbo_frame_tag "main"
+  .max-w-3xl.mx-auto
+    header.pt-4
+      h1.font-bold.text-lg
+        = "Messages"
+
+      - if policy(:message).create?
+        = link_to "Write a Message", new_unit_message_path(@unit), data: { turbo_frame: "main", turbo_action: "advance" }
+
+    #message_list
+      = render partial: "message", collection: @messages
+

@@ -1,0 +1,36 @@
+.flex.flex-row.gap-3
+  // LEFT SIDE
+  div
+    = form_with model: @message, url: unit_messages_path(@unit) do |f|
+      div.pt-4
+        = f.label :to, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
+
+        ul
+          li
+            = check_box_tag :active, checked: "checked"
+            = label_tag "Active Members"
+
+          li
+            = check_box_tag :supporters
+            = label_tag "Supporters"
+
+          li
+            = check_box_tag :adults
+            = label_tag "Limit to adults"
+
+      div.pt-4
+        = f.label :subject, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
+        = f.text_field \
+          :title,
+          autocomplete: "off",
+          class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
+          placeholder: "Message subject"
+
+      div.pt-4
+        = f.label :description, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
+        = f.rich_text_area :body
+
+  // RIGHT SIDE
+  #effective_recipient_list
+    h2.font-bold
+      = "Effective recipients"    

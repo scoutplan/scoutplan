@@ -27,12 +27,13 @@ Rails.application.routes.draw do
   # end
 
   resources :event_activities, as: "activities"
-
+  
   get "units/:unit_id/settings", as: "edit_unit_settings", to: "unit_settings#edit"
   patch "units/:unit_id/settings", as: "update_unit_settings", to: "unit_settings#update"
-
+  
   # begin units
   resources :units, only: %i[show index] do
+    resources :messages
     resources :plans, path: "planner"
     resources :event_categories
     resources :event_rsvps, only: [:destroy]
@@ -81,7 +82,6 @@ Rails.application.routes.draw do
   end
   # end units
 
-  resources :messages
 
   # begin members
   resources :unit_memberships, path: "members", as: "members", only: %i[show edit update destroy] do
