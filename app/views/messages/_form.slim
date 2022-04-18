@@ -5,18 +5,25 @@
       div.pt-4
         = f.label :to, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
 
-        ul
-          li
+        ul.flex.flex-row.gap-3
+          li.inline-block
             = check_box_tag :active, checked: "checked"
             = label_tag "Active Members"
 
-          li
+          li.inline-block
             = check_box_tag :supporters
             = label_tag "Supporters"
 
-          li
+          li.inline-block
             = check_box_tag :adults
             = label_tag "Limit to adults"
+
+      div.pt-2
+        = label_tag "Additional individual recipients"
+        = text_field_tag :direct_recipients,
+          "",
+          placeholder: "Type member names",
+          class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200"
 
       div.pt-4
         = f.label :subject, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
