@@ -19,6 +19,7 @@ class MemberNotifier < ApplicationNotifier
   end
 
   def send_digest
+    puts @member.id
     return unless Flipper.enabled?(:digest, @member)
 
     send_email { |recipient| MemberMailer.with(member: recipient).digest_email.deliver_later }
