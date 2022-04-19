@@ -58,9 +58,9 @@ Rails.application.routes.draw do
         get  "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
         get  "my_rsvps",    to: "events#index", defaults: { variation: "rsvps" }
         get  "list",        to: "events#index", defaults: { variation: "event_table" }, as: "list"
-        get  "calendar",    to: "events#index", defaults: { variation: "calendar" }
+        get  "calendar", to: "events#index", defaults: { variation: "calendar" }
         get  "calendar/:year/:month", to: "events#index", defaults: { variation: "calendar" }, as: "targeted_calendar"
-        get  "public",      to: "events#public", as: "public"
+        get  "public", to: "events#public", as: "public"
         post "bulk_publish"
       end
       get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"
@@ -93,7 +93,7 @@ Rails.application.routes.draw do
   end
   # end members
 
-  post "units/:unit_id/members/:member_id/messages/:message_type", to: "messages#create", as: "create_unit_member_message"  
+  post "units/:unit_id/members/:member_id/test_communication/:message_type", to: "test_communications#create", as: "create_test_communication"
 
   resources :member_relationships, as: "relationships", path: "relationships", only: %i[destroy]
   resources :event_rsvps, except: [:index, :show, :edit, :update, :new]

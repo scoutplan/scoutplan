@@ -6,7 +6,7 @@
 
     // Digest button
     li.inline
-      = button_to create_unit_member_message_path(@unit, @target_membership, message_type: :digest),
+      = button_to create_test_communication_path(@unit, @target_membership, message_type: :digest),
         method: :post,
         remote: true,
         class: 'inline-block bg-gray-200 hover:bg-gray-300 text-black rounded border px-4 py-1 mr-2',
@@ -18,7 +18,7 @@
 
     // Daily reminder button
     li.inline
-      = button_to create_unit_member_message_path(@unit, @target_membership, message_type: :daily_reminder),
+      = button_to create_test_communication_path(@unit, @target_membership, message_type: :daily_reminder),
         method: :post,
         remote: true,
         class: 'inline-block bg-gray-200 hover:bg-gray-300 text-black rounded border px-4 py-1 mr-2',
@@ -30,7 +30,7 @@
 
     // test message button
     li.inline
-      = button_to create_unit_member_message_path(@unit, @target_membership, message_type: :test_message),
+      = button_to create_test_communication_path(@unit, @target_membership, message_type: :test_message),
         method: :post,
         remote: true,
         class: 'inline-block bg-gray-200 hover:bg-gray-300 text-black rounded border px-4 py-1 mr-2',
