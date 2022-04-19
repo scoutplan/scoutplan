@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# A MagicLink is a tokenized path associated with a particular UnitMembership
+# A MagicLink is a path associated with a particular UnitMembership, represented by a unique token that can be
+# used in an URL
 class MagicLink < ApplicationRecord
   belongs_to :unit_membership
   before_validation :generate_token, on: [:create]
@@ -34,7 +35,9 @@ class MagicLink < ApplicationRecord
   #
   def self.generate_link(member, path, expires_at = 120.hours.from_now)
     expires_at = nil unless expires_at.is_a?(Time)
-    MagicLink.create_with(expires_at: expires_at).find_or_create_by(member: member, path: path)
+    magic_link = MagicLink.create_with(expires_at: expires_at).find_or_create_by(member: member, path: path)
+    magic_link.update(expires_at: 120.hours.from_now) if expires_at.present?
+    magic_link
   end
 
   private
