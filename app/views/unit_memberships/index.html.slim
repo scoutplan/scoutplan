@@ -1,6 +1,6 @@
 = turbo_frame_tag("main")
   .max-w-5xl.mx-auto
-    = render partial: 'unit_memberships/partials/index/header'
+    = render partial: "unit_memberships/partials/index/header"
 
     - if flash[:notice]
       section.mt-2.max-w-6xl.mx-auto#notices
@@ -8,74 +8,75 @@
           i.fa-info-circle.fas.mr-2
           = flash[:notice]
 
-    = form_tag bulk_update_unit_members_path(@unit), id: 'bulk_edit_form'
+    = form_tag bulk_update_unit_members_path(@unit), id: "bulk_edit_form"
       table.w-full.mb-12
-        thead.sticky.relative
+        thead.sticky
           tr
             th.selection.text-left.text-black
-              = check_box_tag 'all_visible_events', 'on', false, class: 'form-check-input', id: 'select_all_members_checkbox'
-            th.text-left.px-2.py-2.text-black = t('members.name')
+              = check_box_tag "all_visible_events", "on", false, class: "form-check-input", id: "select_all_members_checkbox"
+            th.text-left.px-2.py-2.text-black = t("members.name")
             th.hidden.sm:table-cell.badges.text-left.px-2.py-2.text-black Status
             th.hidden.md:table-cell.px-2.py-2.text-black.text-left Family
 
         tbody
           = render @unit_memberships
 
-= render partial: 'events/partials/styles'
+  = render partial: "events/partials/styles"          
+
+  scss:
+    th.selection, td.selection {
+      display: none;
+    }    
+
+    #bulk_edit_options {
+      display: none;
+    }
+
+    body.bulk-edit {
+      th.selection, td.selection {
+        display: table-cell;
+      }
+
+      #regular_options {
+        display: none;
+      }
+
+      #bulk_edit_options {
+        display: inline-block;
+      }
+    }
+
+    td.fit-width {
+      width: 1%;
+      white-space: nowrap;
+    }
+
+    tr.member-inactive {
+      display: none;
+    }
+
+    th.status, td.status {
+      display: none;
+    }
+
+    body.showing-inactive-members {
+      tr.member-inactive {
+        display: table-row;
+      }
+
+      th.status, td.status {
+        display: table-cell;
+      }
+
+      #show_inactive_members_link .menu-glyph-wrapper {
+        display: inline;
+      }
+    }
 
 = content_for :head do
     = javascript_include_tag "events"
 
 scss:
-  th.selection, td.selection {
-    display: none;
-  }
-
-  #bulk_edit_options {
-    display: none;
-  }
-
-  body.bulk-edit {
-    th.selection, td.selection {
-      display: table-cell;
-    }
-
-    #regular_options {
-      display: none;
-    }
-
-    #bulk_edit_options {
-      display: inline-block;
-    }
-  }
-
-  td.fit-width {
-    width: 1%;
-    white-space: nowrap;
-  }
-
-  tr.member-inactive {
-    display: none;
-  }
-
-  th.status, td.status {
-    display: none;
-  }
-
-  body.showing-inactive-members {
-    tr.member-inactive {
-      display: table-row;
-    }
-
-    th.status, td.status {
-      display: table-cell;
-    }
-
-    #show_inactive_members_link .menu-glyph-wrapper {
-      display: inline;
-    }
-  }
-
  .collapse-anim-off {
     -webkit-transition: none;
     transition: none;
@@ -151,8 +152,6 @@ javascript:
     document.querySelectorAll('.letter-index').forEach(function(elem) {
       elem.style.display = 'none';
     });
-
-    console.log('All letter indices are now hidden');
 
     // ...then, iterate over all visible event rows, traverse backward until we
     // hit a month header, and reveal it. There's an inefficiency here in that

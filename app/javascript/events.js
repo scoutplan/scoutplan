@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // START BULK PUBLISH
 
   // wire up the bulk Publish button
-  document.querySelector('#bulk_publish_execute_button').addEventListener('click', function(event) {
+  document.querySelector('#bulk_publish_execute_button')?.addEventListener('click', function(event) {
     document.querySelector('#bulk_action_form').submit();
     event.preventDefault();
   });
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // capture the original caption of the execute button so we can restore it later
   var bulkPublishExecuteButton = document.querySelector('#bulk_publish_execute_button');
-  var originalBulkPublishExecuteButtonCaption = bulkPublishExecuteButton.value;
+  var originalBulkPublishExecuteButtonCaption = bulkPublishExecuteButton?.value;
 }); // end DOMContentLoaded
 
 // fired whenever a bulk update checkbox is clicked
@@ -70,20 +70,20 @@ function validateBulkPublishState() {
 
 /* SHOW/HIDE MONTH HEADERS */
 
-// find the first prior sibling matching a given selector
-function queryPreviousSiblingSelector(elem, selector) {
-  var currentElem = elem;
-  var done = false;
-  while(!done) {
-    currentElem = currentElem.previousSibling;
-    if (currentElem === null) {
-      return null;
-    }
-    done = currentElem.matches(selector);
-  }
+// // find the first prior sibling matching a given selector
+// function queryPreviousSiblingSelector(elem, selector) {
+//   var currentElem = elem;
+//   var done = false;
+//   while(!done) {
+//     currentElem = currentElem.previousSibling;
+//     if (currentElem === null) {
+//       return null;
+//     }
+//     done = currentElem.matches(selector);
+//   }
 
-  return currentElem;
-}
+//   return currentElem;
+// }
 
 // determine which months contain events and which don't. Only show those that do.
 function hideEmptyMonthHeaders() {
