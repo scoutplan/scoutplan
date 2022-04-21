@@ -43,10 +43,14 @@ tr.border-b.hover:bg-stone-100.hover:text-stone-800(id="#{dom_id(event)}" class=
         - if event.description.present?
           i.fas.fa-comment-alt-lines.mx-2.text-green-600(title="#{description_text}")
 
-      - if event.location.present?
+      - if event.location.present? || event.address.present?
         .text-gray-500.text-sm
-          i.fa-location-dot.fas.text-gray-300.mr-1
-          = event.location
+          - if event.address =~ /\A#{URI::regexp(['http', 'https'])}\z/
+            i.fa-desktop.fas.text-gray-300.mr-1
+            = event.location.presence || event.address
+          - else
+            i.fa-location-dot.fas.text-gray-300.mr-1
+            = event.location.presence || event.address
 
   // glyph + description
   td.event-glyph.hidden.sm:table-cell
@@ -64,7 +68,7 @@ tr.border-b.hover:bg-stone-100.hover:text-stone-800(id="#{dom_id(event)}" class=
   td.rsvps.hidden.sm:table-cell
     - if event.requires_rsvp? && Pundit.policy(@current_member, event).organize?
       = link_to unit_event_organize_path(@unit, event) do
-        .inline-block.bg-emerald-500.text-emerald-100.px-4.py-2.rounded.font-bold
+        .inline-block.bg-cyan-600.text-cyan-100.px-4.py-2.rounded.font-bold
           i.fa-hiking.fas.mr-2
           = event.rsvps.accepted.count
 
