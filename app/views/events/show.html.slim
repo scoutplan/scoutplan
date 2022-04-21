@@ -99,7 +99,10 @@
 
     - if @event.location.present? || @event.address.present? || @event.departs_from.present?
       section#location_card.bg-stone-100.rounded.px-6.py-4.mb-1.relative
-        = render partial: 'events/partials/show/location_card'
+        - if @event.address =~ /\A#{URI::regexp(['http', 'https'])}\z/
+          = render partial: 'events/partials/show/link_card'
+        - else
+          = render partial: 'events/partials/show/location_card'
 
     // third row: longform description, if present
     - if @event.description.present?
