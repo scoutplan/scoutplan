@@ -38,7 +38,7 @@ class EventsController < UnitContextController
     @current_year = @current_month = nil
 
     # kludge alert: we shouldn't generate this here, now
-    @ical_magic_link = MagicLink.generate_link(@current_member, "icalendar", :never) # create a MagicLink object
+    @ical_magic_link = MagicLink.generate_non_expiring_link(@current_member, "icalendar") # create a MagicLink object
     page_title @unit.name, t("events.index.title")
     respond_to do |format|
       format.html
