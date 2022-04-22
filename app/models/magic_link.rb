@@ -4,42 +4,46 @@
 class MagicLink < ApplicationRecord
   belongs_to :unit_membership
   before_validation :generate_token, on: [:create]
-  after_find :destroy_if_expired!
+  # after_find :destroy_if_expired!
   validates_presence_of :unit_membership, :token
+  validates_uniqueness_of :token
   alias_attribute :member, :unit_membership
   delegate :user, to: :unit_membership
 
+  # does this link expire?
+  def expires?
+    time_to_live.present?
+  end
+
+  # is this link expired?
   def expired?
-    return false unless expires_at.present?
+    return false unless expires?
 
     DateTime.now.after? expires_at
   end
 
-  # for a given Member and a given path, generate a unique token. Pass :never or nil
-  # to generate a non-expiring token (good for things like ical subscriptions). Otherwise
-  # it'll expire in 5 days.
-  #
-  # Usage:
-  #
-  # default expiration 120 hours:
-  # MagicLink.generate_link(@member, "/some/path")
-  #
-  # override with longer expiration period:
-  # MagicLink.generate_link(@member, "/some/path", 2.weeks.from_now)
-  #
-  # never expire:
-  # MagicLink.generate_link(@member, "/some/path", :never)
-  # or
-  # e.g. MagicLink.generate_link(@member, "/some/path", nil)
-  #
-  def self.generate_link(member, path, expires_at = 120.hours.from_now)
-    expires_at = nil unless expires_at.is_a?(Time)
-    MagicLink.create_with(expires_at: expires_at).find_or_create_by(member: member, path: path)
+  # when does this MagicLink expire? Returns nil for non-expiring tokens
+  def expires_at
+    return nil unless expires?
+
+    updated_at + time_to_live
+  end
+
+  # for a given Member and a given path, generate a unique token
+  def self.generate_link(member, path, ttl = 120.hours)
+    MagicLink.create_with(time_to_live: ttl).find_or_create_by(member: member, path: path)
+  end
+
+  def self.generate_non_expiring_link(member, path)
+    MagicLink.create_with(time_to_live: nil).find_or_create_by(member: member, path: path)
   end
 
   private
 
   def generate_token
+    # if you decide to change this to increase keyspace, you'll need to also
+    # adjust the regexp on the "magic_link" route in routes.rb as it's hard-wired
+    # to a specific token width
     self.token = SecureRandom.hex(6)
   end
 

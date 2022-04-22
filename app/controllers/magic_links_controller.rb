@@ -21,14 +21,12 @@ class MagicLinksController < ApplicationController
     redirect_to @magic_link.path
   end
 
-  def current_member
-    @magic_link.member
-  end
+  def current_member; end
 
   private
 
   def find_magic_link
-    token = params[:token]
-    @magic_link = MagicLink.find_by(token: token)
+    @magic_link = MagicLink.find_by(token: params[:token])
+    @magic_link = nil if @magic_link.expired?
   end
 end

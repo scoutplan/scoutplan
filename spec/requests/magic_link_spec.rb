@@ -8,11 +8,6 @@ describe "magic links", type: :request do
     expect { get path }.to raise_exception(ActionController::RoutingError)
   end
 
-  it "permits well-formed tokens" do
-    path = "/123456789abc" # a valid token
-    expect { get path }.to raise_exception(ActionController::RoutingError)
-  end
-
   it "permits valid tokens" do
     member = FactoryBot.create(:member)
     path = unit_path(member.unit)
