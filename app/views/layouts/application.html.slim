@@ -15,37 +15,16 @@ html
     = yield :head
 
   body(class="text-gray-600 #{controller_name} #{action_name} #{yield :body_classes}")
-    // = render partial: 'layouts/partials/notices'
+    nav#top_nav.sticky.top-0.bg-white/95.z-10
+      = render partial: "layouts/nav"
+        
+    // main
+    main.max-w-6xl.mx-auto.h-screen.flex-grow.p-0
+      = turbo_frame_tag "main"
+        = yield
 
-    .flex
-      #main_nav.hidden.lg:block
-        // transparent black overlay
-        .fixed.z-20.inset-0.bg-black.opacity-40.lg:hidden
-
-        // actual <nav> element declaration. There are lots of classes here
-        // so we take our time
-        nav(class="absolute
-          z-30
-          px-2
-          py-6
-          lg:px-8
-          w-5/6 flex-shrink-0
-          bg-white
-          lg:w-80 lg:block lg:h-screen lg:relative lg:z-0 lg:bg-stone-100
-          lg:pr-2
-          inset-0
-        ")
-
-          // content of the nav
-          = render partial: "layouts/nav"
-      
-      // main
-      main.relative.h-screen.flex-grow.px-3.md:px-6.p-0.overflow-y-scroll
-        = turbo_frame_tag "main"
-          = yield
-  
-  footer
-    /!  CI #{ENV["GITHUB_RUN_NUMBER"]}
+    footer
+      /!  CI #{ENV["GITHUB_RUN_NUMBER"]}
 
   javascript:
     function setElemDisplay(elem, show) {

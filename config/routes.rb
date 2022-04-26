@@ -27,10 +27,10 @@ Rails.application.routes.draw do
   # end
 
   resources :event_activities, as: "activities"
-  
+
   get "units/:unit_id/settings", as: "edit_unit_settings", to: "unit_settings#edit"
   patch "units/:unit_id/settings", as: "update_unit_settings", to: "unit_settings#update"
-  
+
   # begin units
   resources :units, only: %i[show index] do
     resources :messages
@@ -106,5 +106,6 @@ Rails.application.routes.draw do
   end
 
   get ":token", to: "magic_links#resolve", as: "magic_link", constraints: { token: /[0-9a-f]{12}/ }
+  get "link_expired", to: "magic_links#expired", as: "expired_magic_link"
 end
 # rubocop:enable Metrics/BlockLength

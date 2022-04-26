@@ -64,9 +64,10 @@ en:
     remember_me: "Stay signed in for two weeks"  
   
   main_nav:
-    events:  "Event Calendar"
-    members: "Member Roster"
-    planner: "Planner"
+    events:  "Schedule"
+    members: "Members"
+    planner: "Planning"
+    communication: "Communication"
   
   be_verb:
     present_tense:

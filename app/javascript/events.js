@@ -114,7 +114,6 @@ function hideEmptyMonthHeaders() {
 // visible & hidden month headers
 function bodyMutated(mutationsList, observer) {
   mutationsList.forEach(function(mutation) {
-    console.log(mutation.attributeName);
     if (mutation.attributeName === 'class') {
       hideEmptyMonthHeaders();
     }
