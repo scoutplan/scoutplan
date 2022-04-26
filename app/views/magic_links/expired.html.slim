@@ -1,0 +1,12 @@
+div.mx-auto.max-w-md.mt-12
+  h1.font-bold.text-lg.mb-2
+    i.fa-lock.fas.mr-2.text-amber-500
+    = "Link expired"
+
+  p.mb-4
+    = "For security purposes the links found in Scoutplan emails expire after five days. The link you clicked has expired; did you click a link in an old email?"
+    
+  p 
+    = "You can "
+    = link_to "sign in", new_user_session_path, class: "text-blue-500 underline"
+    = " or find a more recent email containing a newer link."

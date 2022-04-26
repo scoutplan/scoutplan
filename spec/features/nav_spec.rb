@@ -26,15 +26,15 @@ describe "events", type: :feature do
     end
 
     it "shows planner" do
-      expect(page).to have_content("Planner")
+      expect(page).to have_content(I18n.t("main_nav.planner"))
     end
 
     it "shows roster" do
-      expect(page).to have_content("Member Roster")
+      expect(page).to have_content(I18n.t("main_nav.members"))
     end
 
     it "shows roster" do
-      expect(page).to have_content("Announcements")
+      expect(page).to have_content(I18n.t("main_nav.communication"))
     end
 
     it "shows settings" do

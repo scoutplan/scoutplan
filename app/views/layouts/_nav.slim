@@ -1,120 +1,65 @@
-.max-w-4xl.mx-auto.lg:w-full
-  ul.p-0.mx-0.mb-12.list-none
+.flex.flex-row.justify-between
+  div
+    = link_to root_path, class: "block p-4" do
+      = image_tag "https://www.scoutplan.org/assets/scoutplan_logo_sm.png", style: "width:128px;height:64px;", alt: "Scoutplan Logo"
 
-    // X button
-    li#main_nav_item_close.pb-2.lg_hidden
-      div(data-controller='event')
-        button.p-2.lg:hidden(data-action="event#toggleSideNav")
-          span.w-8.inline-block.text-center.text-stone-600
-            i.fa-xmark.fa-solid
-            |&nbsp;&nbsp;
-
+  ul.list-none
     // Events
-    li#main_nav_item_events
-      = link_to unit_events_path(@current_unit), class: "mb-px no-underline whitespace-nowrap p-2 block hover:bg-stone-100 rounded-md" do
-        span.w-8.inline-block.text-center.text-yellow-500
-          i.fa-calendar.fas
-          |&nbsp;&nbsp;
-        span.text-black
-          = t("main_nav.events")
+    li#main_nav_item_events.inline-block
+      = link_to unit_events_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
+        i.fa-calendar.fas.mr-2
+        = t("main_nav.events")
 
     // Members
     - if policy(:unit_membership).index?
-      li#main_nav_item_members
-        = link_to unit_members_path(@current_unit), class: "mb-px no-underline whitespace-nowrap p-2 block hover:bg-stone-100 rounded-md" do
-          span.w-8.inline-block.text-center.text-indigo-500
-            i.fa-users.fas
-            |&nbsp;&nbsp;
-          span.text-black
-            = t("main_nav.members")
+      li#main_nav_item_members.inline-block
+        = link_to unit_members_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
+          i.fa-users.fas.mr-2
+          = t("main_nav.members")
 
     // Planner
     - if policy(:event).plan?
-      li#main_nav_item_planner
-        = link_to unit_plans_path(@current_unit), class: "mb-px no-underline whitespace-nowrap p-2 block hover:bg-stone-100 rounded-md" do
-          span.w-8.inline-block.text-center.text-green-500
-            i.fa-map.fas
-            |&nbsp;&nbsp;
-          span.text-black
-            = t("main_nav.planner")
+      li#main_nav_item_planner.inline-block
+        = link_to unit_plans_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
+          i.fa-clipboard-list.fas.mr-2
+          = t("main_nav.planner")
 
-    // Newsletter
-    - if policy(:news_item).edit?
-      li#main_nav_item_newsletter
-        = link_to drafts_unit_announcements_path(@current_unit), class: "mb-px no-underline whitespace-nowrap p-2 block hover:bg-stone-100 rounded-md" do
-          span.w-8.inline-block.text-center.text-purple-500
-            i.fa-bullhorn.fas
-            |&nbsp;&nbsp;
-          span.text-black
-            = t("newsletter.title")
+    li#main_nav_item_messages.inline-block
+      = link_to unit_messages_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
+        i.fa-tower-broadcast.fas.mr-2
+        = t("main_nav.communication")
 
-    // ANNOUNCEMENT SUB-NAV
-    #newsletter_nav
-      = render partial: "news_items/newsletter_nav"
 
-    // MESSAGES
-    - if policy(:message).index?
-      li#main_nav_item_messages
-        = link_to unit_messages_path(@current_unit), class: "mb-px no-underline whitespace-nowrap p-2 block hover:bg-stone-100 rounded-md" do
-          span.w-8.inline-block.text-center.text-sky-500
-            i.fa-envelope.fas
-            |&nbsp;&nbsp;
-          span.text-black
-            = "Messages"
+    / // Newsletter
+    / - if policy(:news_item).edit?
+    /   li#main_nav_item_newsletter.inline-block
+    /     = link_to drafts_unit_announcements_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
+    /       i.fa-bullhorn.fas.mr-2
+    /       = t("newsletter.title")
+
+    / // MESSAGES
+    / - if policy(:message).index?
+    /   li#main_nav_item_messages.inline-block
+    /     = link_to unit_messages_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
+    /       i.fa-envelope.fas.mr-2
+    /       = "Messages"
 
     - if policy(:unit_settings).edit?
-      li.main_nav_item_unit_settings
-        = link_to edit_unit_settings_path(@current_unit), class: "mb-px no-underline whitespace-nowrap p-2 block hover:bg-stone-100 rounded-md" do
-          span.w-8.inline-block.text-center.text-stone-500
-            i.fa-sliders-h.fas
-            |&nbsp;&nbsp;
-          span.text-black
-            = "#{@current_unit.name} Settings"
+      li.main_nav_item_unit_settings.inline-block
+        = link_to edit_unit_settings_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
+          i.fa-sliders-h.fas.mr-2
+          = "#{@current_unit.name} Settings"
+  div
+    = button_to destroy_user_session_path,
+      method: :delete,
+      data: { turbo: 'false' },
+      class: "w-full no-underline whitespace-nowrap px-4 py-3 block hover:bg-stone-200 rounded-md text-left" do
+      span.inline-block.text-center.text-stone-500
+        i.fa-sign-out.fas.mr-2
+      = t("global.sign_out")
 
-  .absolute.bottom-0.right-0.left-0.py-5.lg:py-10.pl-8.pr-2
-    ul.p-0.list-none
-
-      - if current_user.unit_memberships.count > 1
-        li
-          .p-2.font-bold.uppercase.tracking-wider.text-sm
-            | Switch to
-
-        - current_user.unit_memberships.each do |member|
-          - next if member.unit == @unit
-          li
-            = link_to member.unit.name,
-              unit_path(member.unit),
-              class: "w-full no-underline whitespace-nowrap p-2 block hover:bg-stone-200 rounded-md text-left"
-
-      li.main_nav_item_signout
-        = button_to destroy_user_session_path,
-          method: :delete,
-          data: { turbo: 'false' },
-          class: "w-full no-underline whitespace-nowrap p-2 block hover:bg-stone-200 rounded-md text-left" do
-          span.w-8.inline-block.text-center.text-stone-500
-            i.fa-sign-out.fas
-            |&nbsp;&nbsp;
-          = t("global.sign_out")
-
-scss:
-  .newsletter-child {
-    display: none;
-  }
-
-  body.news_items.index {
-    .newsletter-child {
-      display: block;
-    }
-  }
-
-  body.events li#main_nav_item_events a {
-    background-color: #E7E5E4;
-  }
-
-  body.unit_memberships li#main_nav_item_members a {
-    background-color: #E7E5E4;
-  }
-
-  body.messages li#main_nav_item_messages a {
-    background-color: #E7E5E4;
+css:
+  body.scrolled nav#top_nav {
+    border-bottom: 1px solid #E7E5E4;
+    filter: drop-shadow(0 6px 6px rgb(0 0 0 / 0.05));
   }

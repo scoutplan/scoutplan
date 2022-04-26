@@ -9,11 +9,13 @@
 class MagicLinksController < ApplicationController
   skip_before_action :authenticate_user!
   before_action :find_magic_link
+  layout "public"
 
   # GET /:token
   def resolve
-    raise ActionController::RoutingError, "Not Found" unless @magic_link
-    return unless @magic_link
+    raise ActionController::RoutingError, "Not Found" unless @magic_link.present?
+    redirect_to @magic_link.path and return if user_signed_in?
+    redirect_to expired_magic_link_path and return if @magic_link.expired?
 
     sign_in @magic_link.user
     session[:via_magic_link] = true
@@ -21,12 +23,13 @@ class MagicLinksController < ApplicationController
     redirect_to @magic_link.path
   end
 
+  def expired; end
+
   def current_member; end
 
   private
 
   def find_magic_link
     @magic_link = MagicLink.find_by(token: params[:token])
-    @magic_link = nil if @magic_link.expired?
   end
 end
