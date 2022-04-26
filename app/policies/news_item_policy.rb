@@ -23,4 +23,8 @@ class NewsItemPolicy < UnitContextPolicy
   def update?
     admin?
   end
+
+  def create?
+    admin?
+  end
 end

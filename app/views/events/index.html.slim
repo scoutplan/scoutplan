@@ -1,18 +1,13 @@
 - variation = params[:variation] || "event_table"
 
-// kludge alert
-- wrapper_class = (variation == "calendar") ? "max-w-full" : "max-w-5xl"
-
 = turbo_frame_tag "main"
-  div(data-controller="event" class="#{wrapper_class}")
+  div(data-controller="event" class="w-full")
     = render partial: "events/partials/index/header"
     = render partial: "events/partials/index/no_events" if @events.count.zero?
     = render partial: "events/partials/index/#{variation}" if @events.count.positive?
 
   - content_for :body_classes do
     = "showing-only-rsvp-events showing-future-events" if params[:mode] == 'rsvps'
-
-  = render partial: "events/partials/styles"
 
   = content_for :head do
     = javascript_include_tag "events"

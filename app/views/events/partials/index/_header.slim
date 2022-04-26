@@ -30,7 +30,7 @@ header#page_header.w-full.px-0.bg-white.pb-4.z-10.items-center.border-b
 
         // Options dropdown button
         .inline-block.relative.dropdown
-          button.text-sm.uppercase.tracking-wider.font-bold.rounded.bg-stone-200.hover:bg-stone-300.no-underline.text-black.px-4.py-2(type="button" onclick="this.parentElement.classList.toggle('menu-open');")
+          button.text-sm.uppercase.tracking-wider.font-bold.rounded.bg-stone-200.hover:bg-stone-300.no-underline.text-black.px-4.py-2(type="button" onclick="this.parentElement.classList.toggle('menu-open');return false;")
             .hidden.md:inline.mr-3
               = t('events.index.view.dropdown')
             i.far.fa-chevron-down

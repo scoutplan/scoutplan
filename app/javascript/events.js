@@ -119,32 +119,3 @@ function bodyMutated(mutationsList, observer) {
     }
   });
 }
-
-// dropdown menu handlers
-document.addEventListener("turbo:load", function() {
-
-  // close a dropdown menu when one of its links is clicked
-  document.querySelectorAll('.dropdown a').forEach(function(linkElem) {
-    linkElem.addEventListener('click', function(event) {
-      document.querySelectorAll('.dropdown').forEach(function(elem) {
-        elem.classList.remove('menu-open');
-      })
-    });
-  });
-
-
-  // close any open menus and dropdowns upon clicking anywhere on the page
-  document.addEventListener('click', function(event) {
-    var openMenus = document.querySelectorAll('.menu-open');
-    if (openMenus.length == 0) {
-      return;
-    }
-    openMenus.forEach(function(elem) {
-      if (elem.contains(event.target)) {
-        // clicked in the menu
-      } else {
-        elem.classList.remove('menu-open');
-      }
-    });
-  });  
-})
