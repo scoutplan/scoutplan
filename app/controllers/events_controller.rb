@@ -59,7 +59,7 @@ class EventsController < UnitContextController
   def render_printable_calendar
     render(
       locals: { events_by_month: calendar_events },
-      pdf: "#{@unit.name} Event Schedule",
+      pdf: "#{@unit.name} Schedule",
       layout: "pdf",
       encoding: "utf8",
       orientation: "landscape",

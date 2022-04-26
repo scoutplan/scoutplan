@@ -44,6 +44,7 @@ class UnitMembership < ApplicationRecord
   scope :contactable, -> { includes(:user).where("email NOT LIKE 'anonymous-member-%@scoutplan.org'") }
 
   delegate :time_zone, to: :unit
+  delegate :name, to: :unit, prefix: :unit
   delegate_missing_to :user
 
   accepts_nested_attributes_for :user

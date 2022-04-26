@@ -286,7 +286,7 @@ scss:
     }
   }
 
-  .dropdown button svg {
+  .dropdown-button svg {
     transform: rotate(0deg);
     transition: transform 150ms ease;    
   }
@@ -297,12 +297,7 @@ scss:
   }
 
   .dropdown.menu-open {
-    button {
-      color: #fff;
-      background: rgb(17, 24, 39);
-    }
-
-    button i {
+    .dropdown-button svg {
       transform: rotate(180deg);
       transition: transform 150ms ease;
     }
@@ -310,7 +305,7 @@ scss:
     .dropdown-menu {
       display: block;
     }
-  } 
+  }
 
   /* lil' arrow on bottom of tooltips */
   .tooltip::after {
