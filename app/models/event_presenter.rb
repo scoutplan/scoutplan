@@ -48,8 +48,33 @@ class EventPresenter
     event.starts_at.strftime("%B")
   end
 
+  def months_and_dates
+    return event.starts_at.strftime("%-d %b %Y").html_safe if single_day?
+
+    result = ""
+    result += event.starts_at.in_time_zone(current_member.time_zone).strftime("%B")
+    result += " " + event.starts_at.in_time_zone(current_member.time_zone).strftime("%-d")
+    result += "&ndash;"
+    if single_month?
+      result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%-d")
+    else
+      result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%B")
+      result += " "
+      result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%-d")
+    end
+
+    result.html_safe
+  end
+
+  def days
+    result = event.starts_at.in_time_zone(current_member.time_zone).strftime("%a")
+    result += "&ndash;"
+    result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%a")
+    result.html_safe
+  end
+
   def location
-    event.location
+    event.location || event.address
   end
 
   def full_dates_to_s

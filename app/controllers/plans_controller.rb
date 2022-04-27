@@ -2,8 +2,6 @@
 
 # manage Unit Plans
 class PlansController < UnitContextController
-  layout "application_full_width"
-
   def index
     @category_names = ['Troop Meeting', 'No Meeting', 'Camping Trip', 'Court of Honor'].freeze
     @event_categories = @current_unit.event_categories.where('name IN (?)', @category_names)

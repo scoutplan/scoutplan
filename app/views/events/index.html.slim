@@ -1,7 +1,10 @@
 - variation = params[:variation] || "event_table"
+- rsvp_service = RsvpService.new(@current_member)
 
 = turbo_frame_tag "main"
-  div(data-controller="event" class="w-full")
+  div.max-w-6xl.mx-auto(data-controller="event" class="w-full")
+    = render partial: "events/partials/index/outstanding_rsvps", locals: { rsvp_service: rsvp_service } if rsvp_service.unresponded_events.count.positive?
+    = render partial: "events/partials/index/actions", locals: { current_variation: variation }
     = render partial: "events/partials/index/header"
     = render partial: "events/partials/index/no_events" if @events.count.zero?
     = render partial: "events/partials/index/#{variation}" if @events.count.positive?

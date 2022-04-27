@@ -1,4 +1,4 @@
-header#page_header.w-full.px-0.bg-white.pb-4.z-10.items-center.border-b
+header#page_header.w-full.px-0.bg-white.z-10.items-center
   .flex
     // left side
     .flex.flex-grow
@@ -37,16 +37,10 @@ header#page_header.w-full.px-0.bg-white.pb-4.z-10.items-center.border-b
 
           .dropdown-menu.origin-top-right.absolute.right-0.py-2.mt-px.min-w-max.rounded-md.shadow-lg.bg-stone-800.text-white.ring-1.ring-black.ring-opacity-5.divide-y.divide-stone-100.focus:outline-none
             .table
-              = render partial: "events/partials/index/dropdown_items/list_variation"
-              = render partial: "events/partials/index/dropdown_items/calendar_variation"
-              = render partial: "events/partials/index/dropdown_items/divider"
               = render partial: 'events/partials/index/dropdown_items/bulk_publish'   if @current_member.admin?
               = render partial: 'events/partials/index/dropdown_items/show_cancelled' if @current_member.admin?
               = render partial: 'events/partials/index/dropdown_items/show_only_rsvps'
               = render partial: 'events/partials/index/dropdown_items/show_past_events'
-              = render partial: "events/partials/index/dropdown_items/divider"
-              = render partial: 'events/partials/index/dropdown_items/pdf_export'
-              = render partial: "events/partials/index/dropdown_items/calendar_subscribe"
 
       span#bulk_publish_button_wrapper
         = button_to t('events.index.bulk_publish.execute_caption'),
@@ -77,5 +71,3 @@ div.filter-status.pl-2.mt-5
     .filter-status.filter-status-cancelled.inline-block.rounded.px-4.py-2.mt-6.bg-sky-100.text-sky-600
         i.fa-times-hexagon.fas.mr-3
         = t('events.index.showing_cancelled')
-
-div#things_you_can_do
