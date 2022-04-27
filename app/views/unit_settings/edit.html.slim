@@ -1,125 +1,126 @@
-header.mt-5
-  h1.font-bold.text-lg
-    = t('unit_settings.title')
+.max-w-6xl.mx-auto
+  header.mt-5
+    h1.font-bold.text-lg
+      = t('unit_settings.title')
 
-  .flex.gap-x-8.gap-y-12.flex-wrap
+    .flex.gap-x-8.gap-y-12.flex-wrap
 
-    // logo
-    div
-      h2.font-bold = t('unit_settings.logo')
+      // logo
+      div
+        h2.font-bold = t('unit_settings.logo')
 
-      - if @unit.logo.attached?
-        .bg-gray-100.p-8
-          = image_tag @unit.logo, class: 'mx-auto'
+        - if @unit.logo.attached?
+          .bg-gray-100.p-8
+            = image_tag @unit.logo, class: 'mx-auto'
 
-      br
-
-      = form_for @unit, url: update_unit_settings_path(@unit) do |f|
-        = f.file_field :logo, class: 'px-4 py-2 rounded bg-gray-100 uppercase font-bold text-sm'
         br
-        br
-        = f.submit 'Save', class: 'px-4 py-2 rounded bg-gray-100 uppercase font-bold text-sm'
 
-    div
-      h2.font-bold
-        = t('unit_settings.event_categories')
-
-      table
-        - @unit.event_categories.each do |category|
-          tr
-            td(style="padding-right: 0.5rem;")
-              i.fas(class="fa-#{ category.glyph }" style="color: #{ category.color }")
-            td = category.name
-      br
-      = link_to 'Add an Event Category',
-        new_unit_event_category_path(@unit),
-        class: 'px-4 py-2 rounded bg-gray-100 uppercase font-bold text-sm'
-
-    // unit name & location
-    div.w-72
-      h2.font-bold
-        = t('unit_settings.utilities')
-
-      = form_for @unit, url: update_unit_settings_path(@unit), class: 'w-full' do |f|
-        .mb-3
-          = f.label :name
-          = f.text_field :name, class: 'block w-full rounded border px-2 py-1'
-
-        .mb-3
-          = f.label :location
-          = f.text_field :location, class: 'block w-full rounded border px-2 py-1', placeholder: t('unit_settings.placeholders.location')
-
-        .mb-3 
-          = f.label :meeting_location
-          = text_field_tag "settings[locale][meeting_location]", @unit.settings(:locale).meeting_location
-
-        .mb-3 
-          = f.label :meeting_address
-          = text_field_tag "settings[locale][meeting_address]", @unit.settings(:locale).meeting_address
-
-        .mb-3
+        = form_for @unit, url: update_unit_settings_path(@unit) do |f|
+          = f.file_field :logo, class: 'px-4 py-2 rounded bg-gray-100 uppercase font-bold text-sm'
+          br
+          br
           = f.submit 'Save', class: 'px-4 py-2 rounded bg-gray-100 uppercase font-bold text-sm'
 
-    // digest scheduled task
-    div.w-96.shrink-0
-      h2.font-bold.text-lg = 'Digest'
+      div
+        h2.font-bold
+          = t('unit_settings.event_categories')
 
-      = form_for @unit, url: update_unit_settings_path(@unit), class: 'w-full' do |f|
-        - digest_task = @unit.tasks.find_by(key: "digest")
-        - reminder_task = @unit.tasks.find_by(key: "daily_reminder")
-        - last_sent_at = @unit.settings(:communication).digest_last_sent_at
-        - day_of_week = digest_task.schedule.recurrence_rules.first.validations[:day]&.first&.value if digest_task&.schedule&.recurrence_rules&.first
-        - hour_of_day = digest_task.schedule.recurrence_rules.first.validations[:hour_of_day]&.first&.value if digest_task&.schedule&.recurrence_rules&.first
+        table
+          - @unit.event_categories.each do |category|
+            tr
+              td(style="padding-right: 0.5rem;")
+                i.fas(class="fa-#{ category.glyph }" style="color: #{ category.color }")
+              td = category.name
+        br
+        = link_to 'Add an Event Category',
+          new_unit_event_category_path(@unit),
+          class: 'px-4 py-2 rounded bg-gray-100 uppercase font-bold text-sm'
 
-        .mb-3
-          dl
-            dt.font-bold Unit time zone
-            dd.mb-2 = @unit.settings(:locale).time_zone
-            dt.font-bold Digest Schedule
-            dd.mb-2 = digest_task&.schedule
+      // unit name & location
+      div.w-72
+        h2.font-bold
+          = t('unit_settings.utilities')
 
-            dt.font-bold Last sent
-            dd.mb-2
-              - if digest_task&.last_ran_at
-                = distance_of_time_in_words_to_now(digest_task.last_ran_at.in_time_zone(@unit.settings(:locale).time_zone))
-                | &nbsp;ago
-              - else
-                | Never
+        = form_for @unit, url: update_unit_settings_path(@unit), class: 'w-full' do |f|
+          .mb-3
+            = f.label :name
+            = f.text_field :name, class: 'block w-full rounded border px-2 py-1'
 
-            dt.font-bold Next send at
-            dd.mb-2
-              - if digest_task&.next_runs_at
-                = distance_of_time_in_words_to_now(digest_task.next_runs_at.in_time_zone(@unit.settings(:locale).time_zone))
-                | &nbsp;from now
+          .mb-3
+            = f.label :location
+            = f.text_field :location, class: 'block w-full rounded border px-2 py-1', placeholder: t('unit_settings.placeholders.location')
 
-            dt.font-bold Reminder Schedule
-            dd.mb-2 = reminder_task&.schedule
+          .mb-3 
+            = f.label :meeting_location
+            = text_field_tag "settings[locale][meeting_location]", @unit.settings(:locale).meeting_location
 
-        .mb-3
-          = label_tag "Day of week", nil, class: "block font-bold"
-          = select "settings",
-            "communication[digest_schedule][day_of_week]",
-            (0..6).map { |x| [Date::DAYNAMES[x], x] },
-            selected: day_of_week
+          .mb-3 
+            = f.label :meeting_address
+            = text_field_tag "settings[locale][meeting_address]", @unit.settings(:locale).meeting_address
 
-          span.mx-3 = "at"
+          .mb-3
+            = f.submit 'Save', class: 'px-4 py-2 rounded bg-gray-100 uppercase font-bold text-sm'
 
-          = select "settings",
-            "communication[digest_schedule][hour_of_day]",
-            (0..23).map { |x| [x < 13 ? "#{x.to_s} AM" : "#{x - 12} PM", x] },
-            selected: hour_of_day
+      // digest scheduled task
+      div.w-96.shrink-0
+        h2.font-bold.text-lg = 'Digest'
 
-        .mb-3
-          = check_box "settings", "communication[digest_schedule][every_hour]", {}, "yes", "no"
-          = label_tag nil, "Every hour, too", class: 'ml-2'
+        = form_for @unit, url: update_unit_settings_path(@unit), class: 'w-full' do |f|
+          - digest_task = @unit.tasks.find_by(key: "digest")
+          - reminder_task = @unit.tasks.find_by(key: "daily_reminder")
+          - last_sent_at = @unit.settings(:communication).digest_last_sent_at
+          - day_of_week = digest_task.schedule.recurrence_rules.first.validations[:day]&.first&.value if digest_task&.schedule&.recurrence_rules&.first
+          - hour_of_day = digest_task.schedule.recurrence_rules.first.validations[:hour_of_day]&.first&.value if digest_task&.schedule&.recurrence_rules&.first
 
-        .mb-3
-          = check_box_tag 'settings[utilities][fire_scheduled_tasks]', class: 'w-4 h-4'
-          = label_tag nil, 'Run scheduled tasks now', class: 'ml-2'
+          .mb-3
+            dl
+              dt.font-bold Unit time zone
+              dd.mb-2 = @unit.settings(:locale).time_zone
+              dt.font-bold Digest Schedule
+              dd.mb-2 = digest_task&.schedule
 
-        .mb-3
-          = check_box "settings", "communication[daily_reminder]", {}, "yes", "no"
-          = label_tag nil, "Enable daily reminders", class: "ml-2"
+              dt.font-bold Last sent
+              dd.mb-2
+                - if digest_task&.last_ran_at
+                  = distance_of_time_in_words_to_now(digest_task.last_ran_at.in_time_zone(@unit.settings(:locale).time_zone))
+                  | &nbsp;ago
+                - else
+                  | Never
 
-        .mb-3
-          = f.submit 'Save', class: 'px-8 py-2 rounded bg-red-500 text-white uppercase font-bold text-sm', data: { disable_with: false }
+              dt.font-bold Next send at
+              dd.mb-2
+                - if digest_task&.next_runs_at
+                  = distance_of_time_in_words_to_now(digest_task.next_runs_at.in_time_zone(@unit.settings(:locale).time_zone))
+                  | &nbsp;from now
+
+              dt.font-bold Reminder Schedule
+              dd.mb-2 = reminder_task&.schedule
+
+          .mb-3
+            = label_tag "Day of week", nil, class: "block font-bold"
+            = select "settings",
+              "communication[digest_schedule][day_of_week]",
+              (0..6).map { |x| [Date::DAYNAMES[x], x] },
+              selected: day_of_week
+
+            span.mx-3 = "at"
+
+            = select "settings",
+              "communication[digest_schedule][hour_of_day]",
+              (0..23).map { |x| [x < 13 ? "#{x.to_s} AM" : "#{x - 12} PM", x] },
+              selected: hour_of_day
+
+          .mb-3
+            = check_box "settings", "communication[digest_schedule][every_hour]", {}, "yes", "no"
+            = label_tag nil, "Every hour, too", class: 'ml-2'
+
+          .mb-3
+            = check_box_tag 'settings[utilities][fire_scheduled_tasks]', class: 'w-4 h-4'
+            = label_tag nil, 'Run scheduled tasks now', class: 'ml-2'
+
+          .mb-3
+            = check_box "settings", "communication[daily_reminder]", {}, "yes", "no"
+            = label_tag nil, "Enable daily reminders", class: "ml-2"
+
+          .mb-3
+            = f.submit 'Save', class: 'px-8 py-2 rounded bg-red-500 text-white uppercase font-bold text-sm', data: { disable_with: false }

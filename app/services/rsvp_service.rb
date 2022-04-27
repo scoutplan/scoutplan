@@ -4,11 +4,14 @@
 class RsvpService < ApplicationService
   def initialize(member)
     @member = member
+    super()
   end
 
   # given a UnitMembership, return a list of
   # events without RSVPs for the member's family
   def unresponded_events
+    return @unresponded_events if @unresponded_events.present?
+
     res = []
     family = @member.family
     family_member_ids = family.map(&:id)
@@ -16,7 +19,7 @@ class RsvpService < ApplicationService
       rsvps = event.rsvps.where("unit_membership_id IN (?)", family_member_ids)
       res << event unless rsvps.count.positive?
     end
-    res
+    @unresponded_events = res
   end
 
   private

@@ -1,26 +1,27 @@
 = turbo_frame_tag("main")
-  = render partial: "unit_memberships/partials/index/header"
+  .max-w-6xl.mx-auto
+    = render partial: "unit_memberships/partials/index/header"
 
-  - if flash[:notice]
-    section.mt-2.max-w-6xl.mx-auto#notices
-      p.p-4.m-0.bg-amber-100.text-amber-700.rounded
-        i.fa-info-circle.fas.mr-2
-        = flash[:notice]
+    - if flash[:notice]
+      section.mt-2.max-w-6xl.mx-auto#notices
+        p.p-4.m-0.bg-amber-100.text-amber-700.rounded
+          i.fa-info-circle.fas.mr-2
+          = flash[:notice]
 
-  = form_tag bulk_update_unit_members_path(@unit), id: "bulk_edit_form"
-    table.w-full.mb-12
-      thead.sticky
-        tr
-          th.selection.text-left.text-black
-            = check_box_tag "all_visible_events", "on", false, class: "form-check-input", id: "select_all_members_checkbox"
-          th.text-left.px-2.py-2.text-black = t("members.name")
-          th.hidden.sm:table-cell.badges.text-left.px-2.py-2.text-black Status
-          th.hidden.md:table-cell.px-2.py-2.text-black.text-left Family
+    = form_tag bulk_update_unit_members_path(@unit), id: "bulk_edit_form"
+      table.w-full.mb-12
+        thead.sticky
+          tr
+            th.selection.text-left.text-black
+              = check_box_tag "all_visible_events", "on", false, class: "form-check-input", id: "select_all_members_checkbox"
+            th.text-left.px-2.py-2.text-black = t("members.name")
+            th.hidden.sm:table-cell.badges.text-left.px-2.py-2.text-black Status
+            th.hidden.md:table-cell.px-2.py-2.text-black.text-left Family
 
-      tbody
-        = render @unit_memberships
+        tbody
+          = render @unit_memberships
 
-  = render partial: "events/partials/styles"          
+    = render partial: "events/partials/styles"          
 
   scss:
     th.selection, td.selection {

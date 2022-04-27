@@ -409,4 +409,4 @@ en:
 
   unanswered_rsvps:
     one: "One event requires your RSVP."
-    other: "%{count} events require your RSVPs."
+    other: "%{count} events require your attention"

@@ -1,0 +1,49 @@
+.flex.justify-center.flex-col.md:flex-row.px-2.gap-0.md:gap-10.rounded.bg-sky-100.text-sky-600.mb-4
+  span.text-sm.py-3
+    = "You can:"
+
+  - if current_variation == "event_table"
+    // VIEW AS CALENDAR
+    = link_to calendar_unit_events_path(@unit),
+              class: "inline-block py-3 text-sky-600 hover:text-sky-800 text-sm font-bold",
+              data: { turbo_action: "advance" },
+              id: "show_as_calendar" do
+      i.fas.fa-calendar-days.mr-2
+      = "View as a calendar"
+
+  - if current_variation == "calendar"
+    // VIEW AS CALENDAR
+    = link_to list_unit_events_path(@unit),
+              class: "inline-block py-3 text-sky-600 hover:text-sky-800 text-sm font-bold",
+              data: { turbo_action: "advance" },
+              id: "show_as_calendar" do
+      i.far.fa-list.mr-2
+      = "View as a list"
+
+  // PDF DOWNLOAD
+  = link_to list_unit_events_path(@unit, format: :pdf),
+            class: "inline-block py-3 text-sky-600 hover:text-sky-800 text-sm font-bold",
+            data: { turbo_action: "advance" },
+            id: "show_as_calendar" do
+
+    i.far.fa-print.mr-2
+    = "Download a printable schedule"
+
+  // ICAL SUBSCRIBE
+  - ics_url = calendar_feed_unit_events_url( \
+      token: @ical_magic_link.token,
+      unit_id: @unit.to_param,
+      format: :ics,
+      only_path: false,
+      protocol: "webcal" \
+    )
+  = link_to ics_url,
+            class: "inline-block py-3 text-sky-600 hover:text-sky-800 text-sm font-bold",
+            data: { turbo_action: "advance" },
+            id: "show_as_calendar"
+            do
+              i.far.fa-mobile.mr-2
+              .hidden.md:inline
+                = "Add this Schedule to your Google Calendar, Outlook, or iCal"
+              .inline.md:hidden
+                = "Add this Schedule to your calendar"

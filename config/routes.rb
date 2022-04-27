@@ -51,7 +51,7 @@ Rails.application.routes.draw do
       post "dequeue", to: "news_items#dequeue", as: "dequeue"
     end
 
-    resources :events do
+    resources :events, path: "schedule" do
       resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
       resources :event_activities
       collection do

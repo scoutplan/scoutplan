@@ -68,17 +68,17 @@ header.flex.justify-between.py-2.border-b
             - if day_number == 1
               .text-brand-500.font-bold
                 = display_date.strftime("%b")
-            .cal-day-number.text-white.font-bold
-              .inline-block.w-7.h-7.justify-center.items-center.flex.rounded-full.bg-brand-500
+              .cal-day-number.text-white.font-bold
+                .inline-block.w-7.h-7.justify-center.items-center.flex.rounded-full.bg-brand-500
 
                 = display_date.strftime("%-d")
           - else
             .cal-day-number
               - if day_number == 1
-                .text-brand-500.font-bold
+                span.text-brand-500.font-bold
                   = display_date.strftime("%b")
 
-              .inline-block.w-7.h-7.justify-center.items-center.flex.whitespace-nowrap
+              .inline-block.w-7.h-7.justify-center.items-center.whitespace-nowrap.ml-1
                 = display_date.strftime("%-d")
 
           - @events.each do |event|
@@ -97,44 +97,6 @@ header.flex.justify-between.py-2.border-b
 
     // end of 7-day loop
   // end of until loop
-
-.flex.flex-col.md:flex-row.px-2.py-4.md:gap-10
-  // VIEW AS CALENDAR
-  = link_to list_unit_events_path(@unit),
-            class: "inline-block py-2 text-sky-500 hover:text-sky-600 text-sm font-bold",
-            data: { turbo_action: "advance" },
-            id: "show_as_calendar" do
-
-    i.far.fa-list.mr-2
-    = "View as a list"
-
-  // PDF DOWNLOAD
-  = link_to list_unit_events_path(@unit, format: :pdf),
-            class: "inline-block py-2 text-sky-500 hover:text-sky-600 text-sm font-bold",
-            data: { turbo_action: "advance" },
-            id: "show_as_calendar" do
-
-    i.far.fa-print.mr-2
-    = "Download a printable schedule"
-
-  // ICAL SUBSCRIBE
-  - ics_url = calendar_feed_unit_events_url( \
-      token: @ical_magic_link.token,
-      unit_id: @unit.to_param,
-      format: :ics,
-      only_path: false,
-      protocol: "webcal" \
-    )
-  = link_to ics_url,
-            class: "inline-block py-2 text-sky-500 hover:text-sky-600 text-sm font-bold",
-            data: { turbo_action: "advance" },
-            id: "show_as_calendar"
-            do
-              i.far.fa-mobile.mr-2
-              .hidden.md:inline
-                = "Add this Schedule to your Google Calendar, Outlook, or iCal"
-              .inline.md:hidden
-                = "Add this Schedule to your calendar"
 
 javascript:
   document.addEventListener("turbo:load", function() {
