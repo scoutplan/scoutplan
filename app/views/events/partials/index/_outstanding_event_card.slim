@@ -1,6 +1,6 @@
 - presenter.event = event
 
-.rounded.border.px-4.py-2.bg-yellow-50.border-yellow-200.drop-shadow-md
+li.px-5.py-4
   p.text-xs.uppercase.tracking-wide.text-yellow-600 = "RSVP Needed"
   h3.font-bold = event.title
   p.text-sm
@@ -11,7 +11,6 @@
 
   p.text-sm
     = presenter.location
-    |&nbsp;
 
   .flex.flex-row.gap-2.mt-2
     / = link_to "Going", "#", class: "py-1 px-2 border rounded text-sm font-bold"
