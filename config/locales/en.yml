@@ -408,5 +408,5 @@ en:
     rsvp_reminders:             "RSVP Reminders"
 
   unanswered_rsvps:
-    one: "One event requires your RSVP."
+    one: "One event requires your attention"
     other: "%{count} events require your attention"

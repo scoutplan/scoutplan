@@ -19,10 +19,16 @@ ul.whitespace-nowrap.w-full.mb-0.hidden.md:inline-block
   - if event.rsvp_open?
     - if policy(event).rsvp?
       li.ml-3.hidden.xl:inline-block
-        = link_to unit_event_edit_rsvps_path(@unit, event),
-          class: 'event-rsvp-link text-sm py-1 px-4 font-bold tracking-wider rounded text-yellow-800 bg-yellow-400 hover:bg-yellow-500 hover:text-yellow-900 no-underline uppercase',
-          data: { turbo_frame: 'event', turbo_action: 'advance' } do
-          = family_rsvps ? t('events.index.event_row.rsvp_change') : t('events.index.event_row.rsvp_respond')
+        - if family_rsvps
+          = link_to unit_event_edit_rsvps_path(@unit, event),
+            class: "event-rsvp-link text-sm py-1 px-4 font-bold tracking-wider rounded border border-yellow-600 text-yellow-600 hover:text-yellow-700 no-underline uppercase",
+            data: { turbo_frame: "event", turbo_action: "advance" } do
+            = t("events.index.event_row.rsvp_change")        
+        - else
+          = link_to unit_event_edit_rsvps_path(@unit, event),
+            class: "event-rsvp-link text-sm py-1 px-4 font-bold tracking-wider rounded text-yellow-800 bg-yellow-400 hover:bg-yellow-500 hover:text-yellow-900 no-underline uppercase",
+            data: { turbo_frame: "event", turbo_action: "advance" } do
+            = t("events.index.event_row.rsvp_respond")
 
 // yellow dot for mobile screens
 span.md:hidden
