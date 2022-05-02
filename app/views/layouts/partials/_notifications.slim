@@ -1,0 +1,37 @@
+- presenter = EventPresenter.new(current_member: @current_member)
+- rsvp_service = RsvpService.new(@current_member)
+
+.inline-block#notifications_wrapper
+  - if (notification_count = rsvp_service.unresponded_events.count).positive?
+    .dropdown#notifications_dropdown
+      = link_to "#",
+        id: "notification_button",
+        class: "block px-3 py-2 mt-1 rounded hover:bg-stone-100 dropdown-button",
+        title: "You have #{pluralize(notification_count, 'notification')}",
+        type: "button" \
+        do
+        i.fa-bell.fas.text-rose-500(style="animation: tilt-shaking 5s linear infinite;")
+      
+      .dropdown-menu.rounded.absolute.bg-white.drop-shadow-lg.border.border-stone-200.-translate-x-1/2.w-96
+        ul
+          - rsvp_service.unresponded_events.each do |event|
+            = render partial: "events/partials/index/outstanding_event_card", locals: { event: event, presenter: presenter }
+
+  - else
+    .dropdown#notifications_dropdown
+      = link_to "#",
+        id: "notification_button",
+        class: "block px-3 py-2 mt-1 rounded dropdown-button cursor-default",
+        title: "No notifications right now",
+        type: "button" \
+        do
+        i.fa-bell.fas.text-stone-300 
+
+css:
+  #notifications_dropdown li {
+    border-top: 1px solid #E7E5E4;
+  }
+
+  #notifications_dropdown li:first-child {
+    border-top: none;
+  }

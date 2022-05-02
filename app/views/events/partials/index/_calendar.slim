@@ -97,10 +97,11 @@ header.flex.justify-between.py-2.border-b
             - if day_number == 1
               .text-brand-500.font-bold
                 = display_date.strftime("%b")
-              .cal-day-number.text-white.font-bold
-                .inline-block.w-7.h-7.justify-center.items-center.flex.rounded-full.bg-brand-500
 
+            .cal-day-number.text-white.font-bold
+              .inline-block.w-7.h-7.justify-center.items-center.flex.rounded-full.bg-brand-500
                 = display_date.strftime("%-d")
+
           - else
             .cal-day-number
               - if day_number == 1
