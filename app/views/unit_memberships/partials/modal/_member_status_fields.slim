@@ -3,12 +3,12 @@
 .block.md:inline-block.md:w-3/4
   span.mr-4
     = f.radio_button :status, :active, class: "mr-2"
-    = f.label :status, "Active", value: "active", class: ""
+    = f.label :status, t("members.statuses.active"), value: "active", class: ""
 
   span.mr-4
     = f.radio_button :status, :registered, class: "mr-2"
-    = f.label :status, "Registered", value: "registered", class: ""
+    = f.label :status, t("members.statuses.registered"), value: "registered", class: ""
 
   span.mr-4
     = f.radio_button :status, :inactive, class: "mr-2"
-    = f.label :status, "Inactive", value: "inactive", class: ""
+    = f.label :status, t("members.statuses.inactive"), value: "inactive", class: ""

@@ -285,7 +285,6 @@ en:
       no_responses: "No response, active"
       no_invites:   "No response, inactive"
       non_respondents:  "No response yet"
-      non_invitees:     "Family & Friends"
       update_toast:     "%{user_name}'s RSVP for %{event_title} has been updated."
       invite_toast:     "An invitation to %{event_title} was sent to %{recipient}"
       next:             "Next: %{title} on %{date}"
@@ -317,6 +316,11 @@ en:
     status:           "Status"
     member_type:      "Youth/Adult"
     search_by_name:   "Search by name"
+
+    statuses:
+      active: "Active"
+      registered: "Family & Friends"
+      inactive: "Inactive"
 
     types:
       youth: "Youth member"
