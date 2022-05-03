@@ -12,7 +12,7 @@
     div, td {padding:0;color:#57534E;}
     div {margin:0 !important;}
     table, td, div, h1, p {
-      font-family: 'Proxima Nova', arial, sans-serif;
+      font-family: 'Proxima Nova', helvetica, arial, sans-serif;
     }
   </style>
   <noscript>
@@ -25,10 +25,9 @@
   <![endif]-->
   <style>
     @import("https://use.typekit.net/<%= ENV['ADOBE_FONT_KIT_ID'] %>.css");
-  </style>
-  <style>
+
     body, table, td, div, h1, p, a {
-      font-family: 'Proxima Nova', arial, sans-serif;
+      font-family: 'Proxima Nova', helvetica, arial, sans-serif;
     }
 
     #this_week .item {
@@ -54,7 +53,7 @@
           <tr>
           <td>
           <![endif]-->
-          <table role="presentation" style="background:#F5F5F4;color:#57534E;width:460px;border:none;border-spacing:0;text-align:left;font-family:'Proxima Nova',arial,sans-serif;font-size:16px;line-height:22px;">
+          <table role="presentation" style="background:#F5F5F4;color:#57534E;width:460px;border:none;border-spacing:0;text-align:left;font-family:'Proxima Nova',helvetica, arial,sans-serif;font-size:16px;line-height:22px;">
 
 <%# ---------------------------------------- %>
 <%# LOGO %>
@@ -74,7 +73,7 @@
 <%# ---------------------------------------- %>
 <%# TITLE %>
                   <% if content_for?(:title) %>
-                    <h1 style="color:#57534E;font-size:48px;line-height:100%;font-weight:700;font-style:normal;font-family:'Proxima Nova';margin-bottom:18px;margin-top:0;">
+                    <h1 style="color:#57534E;font-size:48px;line-height:100%;font-weight:700;font-style:normal;font-family:'Proxima Nova', helvetica, arial, sans-serif;margin-bottom:18px;margin-top:0;">
                       <%= yield :title %>
                     </h1>
                   <% end %>
@@ -97,7 +96,7 @@
               <tr>
                 <td id="announcements" style="padding:40px 70px;background:#65A30D;color:#D9F99D;font-size:18px;line-height:140%;font-weight:500;">
 
-                  <h1 style="margin-top:0;margin-bottom:2rem;font-weight:bold;">
+                  <h1 style="margin-top:0;margin-bottom:1rem;font-weight:bold;">
                     Announcements
                   </h3>
 
