@@ -41,9 +41,8 @@ class ApplicationController < ActionController::Base
 
   # devise redirect after signout
   def after_sign_out_path_for(_resource_or_scope)
-    root_path
+    new_user_session_path
   end
 
-  def current_member
-  end
+  def current_member; end
 end

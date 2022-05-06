@@ -14,18 +14,19 @@ html
 
   body(class="bg-stone-100 text-gray-600 #{controller_name} #{action_name}")
     .text-center.mt-12.min-w-lg.max-w-sm.mx-auto
-      .mb-6
-        = image_tag "https://www.scoutplan.org/assets/scoutplan_logo_sm.png", width: "40%", class: "mx-auto"
+        = image_tag "https://www.scoutplan.org/assets/scoutplan_logo_sm.png", width: "40%", class: "mx-auto mb-6"
+        
+        - if flash[:notice]
+          p.py-6.mx-2.font-bold.text-left
+            i.fa-info-circle.fas.mr-2.text-orange-600
+            = flash[:notice]
 
         - if flash[:alert]
-          p.p-6.mx-2
-            i.fa-exclamation-circle.fas.mr-2.text-orange-600
+          p.py-6.mx-2.font-bold.text-left
+            i.fa-exclamation-triangle.fas.mr-2.text-orange-600
             = flash[:alert]
-
+            
         = yield
-
-    p = flash[:notice]
-
 
     .absolute.bottom-0.left-0.right-0.p-4.text-center.text-gray-400
       | &copy; 2021–2022 Scoutplan. All rights reserved.
