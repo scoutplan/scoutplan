@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_27_161317) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_06_113919) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -168,6 +168,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_27_161317) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "event_organizers", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "unit_membership_id"
+    t.string "role", default: "organizer", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "event_rsvps", force: :cascade do |t|
     t.integer "event_id"
     t.integer "response"
@@ -202,6 +210,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_27_161317) do
     t.boolean "includes_activity", default: false, null: false
     t.string "activity_name"
     t.datetime "rsvp_closes_at"
+    t.boolean "send_reminder", default: true, null: false
   end
 
   create_table "flipper_features", force: :cascade do |t|

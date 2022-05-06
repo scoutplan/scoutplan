@@ -5,6 +5,7 @@ module EventsHelper
   require 'cgi'
   RSVP_GLYPH_CLASSES = { nil => 'ghost', 'accepted' => 'hiking', 'declined' => 'couch' }.freeze
   RSVP_GLYPH_COLORS = { nil => 'text-gray-100', 'accepted' => 'text-green-500', 'declined' => 'text-red-500'}.freeze
+  MAP_BASE_URL = "https://www.google.com/maps/"
 
   def glyph_tag(event)
     content_tag(:span, class: 'event-category-glyph') do
@@ -55,7 +56,7 @@ module EventsHelper
   end
 
   def event_badge(event)
-    common_classes = "rounded px-2 py-1 text-xs tracking-wide font-bold text-white ml-2"  
+    common_classes = "rounded px-2 py-1 text-xs tracking-wide font-bold text-white ml-2"
     title = "Only visible to #{event.unit.name} administrators, like you."
     if event.cancelled?
       pill_tag("Cancelled", "bg-red-500 text-white font-bold uppercase tracking-wider")
@@ -67,9 +68,14 @@ module EventsHelper
   # given an Event, generate a Google Maps URL. Assumes the Event has
   # at least a destination
   def event_map_url(event)
-    base_url = 'https://www.google.com/maps/'
-    parts = event.departs_from.present? ? ['dir', event.departs_from, event.destination] : ['search', event.destination]
-    search_path = parts.map { |m| CGI.escape(m.gsub(',', '')) }.join('/')
-    [base_url, search_path].join
+    parts = event.departs_from.present? ? ["dir", event.departs_from, event.destination] : ["search", event.destination]
+    search_path = parts.map { |m| CGI.escape(m.gsub(",", "")) }.join("/")
+    [MAP_BASE_URL, search_path].join
+  end
+
+  def location_address_string(event, prepend = "")
+    res = [event.location, event.address].join(" ").strip
+    res = "#{prepend}#{res}" if res.present?
+    res
   end
 end

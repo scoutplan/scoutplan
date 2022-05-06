@@ -33,6 +33,7 @@ class UnitMembership < ApplicationRecord
   has_many :magic_links, dependent: :destroy
   has_many :messages
   has_many :visits, class_name: "Ahoy::Visit"
+  has_many :event_organizers
 
   alias_attribute :member, :user
   alias_attribute :rsvps, :event_rsvps

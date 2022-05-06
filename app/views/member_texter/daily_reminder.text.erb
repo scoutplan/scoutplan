@@ -1,11 +1,11 @@
 <% if @events.count == 1 %>
 <% event = @events.first %>
-Hi, <%= @member.display_first_name %>. As a reminder, the <%= event.title %> is <%= deictic_string_for_time_interval_from_day(event.starts_at) %> at <%= event.starts_at.in_time_zone.strftime("%-I:%M %p") %>.
+Hi, <%= @member.display_first_name %>. As a reminder, <%= event.title %> is <%= deictic_string_for_time_interval_from_day(event.starts_at) %> at <%= event.starts_at.in_time_zone.strftime("%-I:%M %p") %><%= location_address_string(event, " at ") %>.
 <% else %>
 Hi, <%= @member.display_first_name %>. Today at <%= @member.unit.name %>:
 
 <% @events.each do |event| %>
-<%= "* #{event.title} at #{event.starts_at.in_time_zone.strftime('%-I:%M %p')}\n" %>
+<%= "* #{event.title} at #{event.starts_at.in_time_zone.strftime('%-I:%M %p')}\n" %><%= location_address_string(event, " at ") %>.
 <% end %>
 <% end %>
 
