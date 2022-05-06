@@ -10,11 +10,13 @@ describe "events", type: :feature do
 
     @admin_user  = FactoryBot.create(:user, email: "test_admin@scoutplan.org")
     @normal_user = FactoryBot.create(:user, email: "test_normal@scoutplan.org")
+    @organizer_user = FactoryBot.create(:user, email: "test_organizer@scoutplan.org")
 
     @unit  = FactoryBot.create(:unit)
     @event = FactoryBot.create(:event, :draft, unit: @unit, title: "Draft Event")
 
     @admin_member = @unit.memberships.create(user: @admin_user, role: "admin", status: :active)
+    @organizer_member = @unit.memberships.create(user: @organizer_user, role: "event_organizer", status: :active)
     @normal_member = @unit.memberships.create(user: @normal_user, role: "member", status: :active)
     login_as(@admin_user, scope: :user)
   end
@@ -40,16 +42,25 @@ describe "events", type: :feature do
       )
     end
 
-    it "prevents access to non-organizers" do
-      login_as(@normal_user, scope: :user)
-      path = unit_event_organize_path(@unit, @rsvp_event1)
-      expect { visit path }.to raise_exception Pundit::NotAuthorizedError
-    end
+    describe "access" do
+      it "prevents access to non-organizers" do
+        login_as(@normal_user, scope: :user)
+        path = unit_event_organize_path(@unit, @rsvp_event1)
+        expect { visit path }.to raise_exception Pundit::NotAuthorizedError
+      end
 
-    it "accesses the page" do
-      path = unit_event_organize_path(@unit, @rsvp_event1)
-      visit path
-      expect(page).to have_current_path(path)
+      it "allows access to admins" do
+        login_as(@organizer_user, scope: :user)
+        path = unit_event_organize_path(@unit, @rsvp_event1)
+        visit path
+        expect(page).to have_current_path(path)
+      end
+
+      it "allows access to admins" do
+        path = unit_event_organize_path(@unit, @rsvp_event1)
+        visit path
+        expect(page).to have_current_path(path)
+      end
     end
 
     it "next & previous link works" do

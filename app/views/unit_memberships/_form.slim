@@ -3,25 +3,28 @@
     h3.text-2xl.font-bold
       = t("members.titles.#{@target_membership.new_record? ? "new" : "edit"}")
 
-  = form_with model: [@unit, @target_membership], id: 'member_info_form' do |f|
+  = form_with model: [@unit, @target_membership], id: "member_info_form" do |f|
 
     // guts of the modal
     section
       .bg-stone-100.rounded.px-2.md:px-6.py-0.mb-2
-        = render partial: 'unit_memberships/partials/modal/user_fields', locals: { f: f }
+        = render partial: "unit_memberships/partials/modal/user_fields", locals: { f: f }
 
       .bg-stone-100.rounded.px-2.md:px-6.py-2.mb-2
         .py-4.border-b
-          = render partial: 'unit_memberships/partials/modal/member_type_fields', locals: { f: f }
+          = render partial: "unit_memberships/partials/modal/member_type_fields", locals: { f: f }
 
         .py-4.border-b
-          = render partial: 'unit_memberships/partials/modal/member_status_fields', locals: { f: f }
+          = render partial: "unit_memberships/partials/modal/member_role_fields", locals: { f: f }
+
+        .py-4.border-b
+          = render partial: "unit_memberships/partials/modal/member_status_fields", locals: { f: f }
 
         .py-4
-          = render partial: 'unit_memberships/partials/modal/communication_settings_fields', locals: { f: f }
+          = render partial: "unit_memberships/partials/modal/communication_settings_fields", locals: { f: f }
 
       .bg-stone-100.rounded.px-2.md:px-6.py-2
-        = render partial: 'unit_memberships/partials/modal/relationships', locals: { f: f }
+        = render partial: "unit_memberships/partials/modal/relationships", locals: { f: f }
 
 
     // footer, containing right-justified buttons
@@ -41,11 +44,11 @@
                   bg-brand-100 hover:bg-brand-200 \
                   border border-brand-100 hover:border-brand-200 \
                   rounded",
-          data: { turbo_action: 'advance' } do
-          = t('helpers.label.event.cancel_update')
+          data: { turbo_action: "advance" } do
+          = t("helpers.label.event.cancel_update")
 
         // save
-        = f.submit @target_membership.new_record? ? 'Add This Member' : 'Save These Changes',
+        = f.submit @target_membership.new_record? ? "Add This Member" : "Save These Changes",
           class: "bg-brand-500 inline-block px-4 py-2 no-underline rounded text-white text-sm font-bold tracking-wider uppercase"
 
 scss:

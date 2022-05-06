@@ -312,8 +312,8 @@ class EventsController < UnitContextController
   end
 
   def find_next_and_previous_events
-    @next_event = @unit.events.published.future.rsvp_required.where("starts_at > ?", @event.starts_at)&.first
-    @previous_event = @unit.events.published.future.rsvp_required.where("starts_at < ?", @event.starts_at)&.last
+    @next_event = @unit.events.published.rsvp_required.where("starts_at > ?", @event.starts_at)&.first
+    @previous_event = @unit.events.published.rsvp_required.where("starts_at < ?", @event.starts_at)&.last
   end
 end
 # rubocop:enable Metrics/ClassLength
