@@ -41,6 +41,7 @@ tr.border-b.hover:bg-gray-100.member.member-row(class="#{ row_classes }" id="mem
           i.fa-phone.fas.ml-5.mr-1.text-gray-300
           = number_to_phone unit_membership.phone
 
+  // ROLES
   td.role.w-1.hidden.md:table-cell
     = link_to unit_member_path(@unit, unit_membership),
               class: 'inline-block px-2 py-2 whitespace-nowrap',
@@ -57,10 +58,19 @@ tr.border-b.hover:bg-gray-100.member.member-row(class="#{ row_classes }" id="mem
                 - when "active"
                   .inline-block.bg-cyan-100.text-cyan-700.px-2.py-1.rounded-md Active
                 - when "registered"
-                  .inline-block.bg-purple-100.text-purple-700.px-2.py-1.rounded-md Registered                  
+                  .inline-block.bg-purple-100.text-purple-700.px-2.py-1.rounded-md Family &amp; Friends                  
                 - when "inactive"
                   .inline-block.bg-rose-100.text-rose-700.px-2.py-1.rounded-md Inactive
 
+                - if unit_membership.admin?
+                  span(title="#{@unit.name} Administrator")
+                    i.fas.fa-user-crown.py-2.ml-2
+
+                - elsif unit_membership.event_organizer?
+                  span(title="#{@unit.name} Event Organizer")
+                    i.fas.fa-calendar-star.py-1.ml-2
+
+  // FAMILY
   td.family-members.w-1.px-2.hidden.sm:table-cell
     .flex.gap-4.whitespace-nowrap
       - unit_membership.family(include_self: false).map do |m|

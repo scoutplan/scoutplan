@@ -39,6 +39,7 @@ class UnitMembership < ApplicationRecord
   alias_attribute :rsvps, :event_rsvps
 
   enum status: { inactive: 0, active: 1, registered: 2 }, _prefix: true
+  enum role: { member: "member", admin: "admin", event_organizer: "event_organizer" }
   enum member_type: { unknown: 0, youth: 1, adult: 2 }
 
   scope :status_active_and_registered, -> { where(status: %i[active registered]) } # everyone except inactives
