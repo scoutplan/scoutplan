@@ -1,0 +1,67 @@
+.max-w-xl.mx-auto
+  = form_with \
+    model: @user,
+    url: update_profile_path,
+    data: { turbo: false },
+    builder: ApplicationFormBuilder do |f|
+
+    h2.font-bold.text-lg.mb-2 Your personal information
+
+    section.bg-stone-100.px-4.py-2.md:px-8.md:py-0.rounded
+      .flex.flex-col.md:flex-row.gap-0.border-b.pt-2.pb-4.md:pt-4
+        div.basis-1/4
+          = f.label :name, class: "inline-block text-sm font-bold uppercase tracking-wide my-2"
+
+        div.basis-3/4.flex.flex-col.gap-2
+          = f.text_field :first_name, class: "rounded border p-2 border-0 w-full placeholder-stone-400", autocomplete: "off", placeholder: "First"
+          = f.text_field :last_name, class: "rounded border p-2 border-0 w-full placeholder-stone-400", autocomplete: "off", placeholder: "Last"
+          = f.text_field :nickname, class: "rounded border p-2 border-0 w-full placeholder-stone-400", autocomplete: "off", placeholder: "Nickname"
+
+      .pt-2.md:pt-4.pb-4.border-b
+        = f.label :email, class: "block md:inline-block text-sm mb-1 py-2 font-bold uppercase tracking-wide md:w-[25%]"
+        = f.email_field \
+          :email,
+          class: "block md:inline-block rounded border-0 p-2 placeholder-stone-400 w-full md:w-[75%]",
+          autocomplete: 'off',
+          placeholder: t("members.placeholders.email")
+
+      .pt-2.md:pt-4.pb-4.border-0
+        = f.label :phone, class: "block md:inline-block text-sm mb-1 py-2 font-bold uppercase tracking-wide md:w-[25%]"
+        = f.phone_field \
+          :phone,
+          class: "block md:inline-block rounded border-0 p-2 placeholder-stone-400 w-full md:w-[75%]",
+          autocomplete: 'off',
+          placeholder: t("members.placeholders.phone")
+
+    section.px-4.md:px-8.text-center
+      .flex.flex-col.md:flex-row.gap-0.md:pt-4
+        .basis-1/4
+
+        .basis-3/4.flex.flex-col.gap-2        
+          = link_to "Change your password", edit_password_path, class: "inline-block rounded border border-stone-300 hover:bg-stone-100 px-4 py-2 text-sm font-bold uppercase tracking-wider"
+
+    footer.bg-white.pb-2.md:py-4.px-0.sticky.bottom-0.flex.flex-col.md:flex-row.md:justify-between.gap-2.border-t.mt-4
+
+      // LEFT SIDE
+      div
+
+      // RIGHT SIDE
+      .flex.flex-col.md:flex-row.md:justify-end.gap-2
+        // Save Changes
+        = f.submit t("global.save_changes"),
+          class: "text-white text-sm font-bold tracking-wider uppercase \
+                  inline-block w-full md:w-fit px-4 py-3 md:py-2 \
+                  bg-brand-500 hover:bg-brand-600 \
+                  border-brand-500 hover:border-brand-600 \
+                  border rounded cursor-pointer"                  
+        
+        // Discard Changes
+        = link_to t("global.discard_changes"),
+          root_path,
+          data: { turbo_action: "advance", turbo_frame: "main" },
+          class: "text-center text-sm font-bold tracking-wider uppercase no-underline \
+                  inline-block w-full md:w-fit px-4 py-3 md:py-2 \
+                  bg-brand-100 hover:bg-brand-200 \
+                  text-brand-500 hover:text-brand-600 \
+                  border-brand-100 hover:border-brand-100 \
+                  rounded border"          

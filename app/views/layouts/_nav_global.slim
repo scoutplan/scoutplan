@@ -1,0 +1,34 @@
+.flex.flex-row.justify-between
+  // LEFT SIDE LOGO
+  div
+    = link_to root_path, class: "block p-4" do
+      = image_tag "https://www.scoutplan.org/assets/scoutplan_logo_sm.png", style: "width:128px;height:64px;", alt: "Scoutplan Logo"
+
+  div
+
+  // RIGHT SIDE NAME / UNIT
+  div
+
+css:
+  /* when page is scrolled down, show a bottom border & drop shadow on the top nav */
+  body.scrolled nav#top_nav {
+    border-bottom: 1px solid #E7E5E4;
+    filter: drop-shadow(0 6px 6px rgb(0 0 0 / 0.05));
+  }
+
+  .dropdown-menu {
+    display: none;
+  }
+
+  .dropdown.menu-open .dropdown-menu {
+    display: block;
+  }
+
+  @keyframes tilt-shaking {
+    0% { transform: rotate(0deg); }
+    2% { transform: rotate(30deg); }
+    4% { transform: rotate(-30deg); }
+    6% { transform: rotate(30deg); }
+    8% { transform: rotate(-30deg); }    
+    10% { transform: rotate(0deg); }
+  }

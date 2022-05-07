@@ -4,47 +4,48 @@
     = link_to root_path, class: "block p-4" do
       = image_tag "https://www.scoutplan.org/assets/scoutplan_logo_sm.png", style: "width:128px;height:64px;", alt: "Scoutplan Logo"
 
-  // CENTER NAV
-  ul.list-none
-    - if @current_member.admin?
+  - if @current_member
+    // CENTER NAV
+    ul.list-none
+      - if @current_member&.admin?
 
-      // Events
-      li#main_nav_item_events.inline-block
-        = link_to unit_events_path(@current_unit),
-          class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600",
-          data: { turbo_frame: "main", turbo_action: "advance" } \
-          do
-            i.fa-calendar.fas.mr-2
-            = t("main_nav.events")
-
-      // Members
-      - if policy(:unit_membership).index?
-        li#main_nav_item_members.inline-block
-          = link_to unit_members_path(@current_unit),
+        // Events
+        li#main_nav_item_events.inline-block
+          = link_to unit_events_path(@current_unit),
             class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600",
             data: { turbo_frame: "main", turbo_action: "advance" } \
             do
-            i.fa-users.fas.mr-2
-            = t("main_nav.members")
+              i.fa-calendar.fas.mr-2
+              = t("main_nav.events")
 
-      // Planner
-      - if policy(:event).plan?
-        li#main_nav_item_planner.inline-block
-          = link_to unit_plans_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
-            i.fa-clipboard-list.fas.mr-2
-            = t("main_nav.planner")
+        // Members
+        - if policy(:unit_membership).index?
+          li#main_nav_item_members.inline-block
+            = link_to unit_members_path(@current_unit),
+              class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600",
+              data: { turbo_frame: "main", turbo_action: "advance" } \
+              do
+              i.fa-users.fas.mr-2
+              = t("main_nav.members")
 
-      - if policy(:news_item).create?
-        li#main_nav_item_messages.inline-block
-          = link_to unit_news_items_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
-            i.fa-tower-broadcast.fas.mr-2
-            = t("main_nav.communication")
+        // Planner
+        - if policy(:event).plan?
+          li#main_nav_item_planner.inline-block
+            = link_to unit_plans_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
+              i.fa-clipboard-list.fas.mr-2
+              = t("main_nav.planner")
 
-    - if policy(:unit_settings).edit?
-      li.main_nav_item_unit_settings.inline-block
-        = link_to edit_unit_settings_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
-          i.fa-sliders-h.fas.mr-2
-          = "#{@current_unit.name} Settings"
+        - if policy(:news_item).create?
+          li#main_nav_item_messages.inline-block
+            = link_to unit_news_items_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
+              i.fa-tower-broadcast.fas.mr-2
+              = t("main_nav.communication")
+
+      - if policy(:unit_settings).edit?
+        li.main_nav_item_unit_settings.inline-block
+          = link_to edit_unit_settings_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
+            i.fa-sliders-h.fas.mr-2
+            = "#{@current_unit.name} Settings"
 
   // RIGHT SIDE NAME / UNIT
   div.flex

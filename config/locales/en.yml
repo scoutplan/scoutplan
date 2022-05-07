@@ -68,6 +68,14 @@ en:
     members: "Members"
     planner: "Planning"
     communication: "Communication"
+
+  profile:
+    edit: "Settings"
+    first_name: "First name"
+    last_name: "Last name"
+    nickname: "Nickname"
+    update_confirmation: "Your settings have been updated"
+    change_password_prompt: "Upon changing your password you will be signed out and will need to sign back in with your new password. Proceed?"
   
   be_verb:
     present_tense:
