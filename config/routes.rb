@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   # end
 
   resources :event_activities, as: "activities"
+  resources :users
 
   get "units/:unit_id/settings", as: "edit_unit_settings", to: "unit_settings#edit"
   patch "units/:unit_id/settings", as: "update_unit_settings", to: "unit_settings#update"
@@ -91,6 +92,12 @@ Rails.application.routes.draw do
     resources :member_relationships, as: "relationships", path: "relationships", only: %i[new create destroy]
   end
   # end members
+
+  # Profile editing
+  get   "profile/edit", to: "profile#edit",   as: "edit_profile"
+  patch "profile/save", to: "profile#update", as: "update_profile"
+  get   "profile/change_password", to: "profile#edit_password", as: "edit_password"
+  patch "profile/save_password", to: "profile#update_password", as: "update_password"
 
   post "units/:unit_id/members/:member_id/test_communication/:message_type", to: "test_communications#create", as: "create_test_communication"
 
