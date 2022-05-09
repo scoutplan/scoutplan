@@ -1,0 +1,41 @@
+nav#top_nav_mobile.sticky.top-0.bg-white/95.z-20.lg:hidden
+  header
+    = link_to "#", class: "toggle-mobile-menu block px-4 py-3 flex justify-between" do
+
+      // left
+      .align-middle.text-xl
+        i.fas.fa-bars.inline-block.align-middle.mr-3
+        = image_tag "scoutplan-logo-word", style: "height:0.60rem;", class: "inline-block align-middle"
+
+      // right
+      .align-middle.text-sm.font-bold.leading-none.py-2
+        = current_user.full_display_name
+        i.fas.fa-chevron-down.ml-1
+
+nav#mobile_menu.fixed.inset-0.p-4.bg-white/95.z-30
+  = link_to "#", class: "toggle-mobile-menu block text-right text-xl p-4" do
+    i.fas.fa-times
+
+  = render partial: "layouts/partials/main_menu"
+
+  hr
+
+  = render partial: "layouts/partials/user_menu_items"
+
+javascript:
+  document.querySelectorAll(".toggle-mobile-menu").forEach(function(elem) {
+    elem.addEventListener("click", function(event) {
+      console.log("Mobile menu!");
+      document.body.classList.toggle("showing-mobile-menu");
+      event.preventDefault();
+    });
+  });
+
+css:
+  body.showing-mobile-menu #mobile_menu {
+    display: block;
+  }
+
+  #mobile_menu {
+    display: none;
+  }

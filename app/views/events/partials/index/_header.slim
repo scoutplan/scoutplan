@@ -2,11 +2,8 @@ header#page_header.w-full.px-0.bg-white.z-10.items-center
   .flex
     // left side
     .flex.flex-grow
-      // hamburger button
-      = render partial: "layouts/partials/hamburger_button"
-
       // title
-      h1.px-2.text-xl.font-bold.leading-0
+      h1.px-2.md:text-xl.font-bold.leading-0
         = @unit.name
         |&nbsp;
         = t("events.index.title")
