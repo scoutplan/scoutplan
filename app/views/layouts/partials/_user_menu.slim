@@ -10,32 +10,4 @@
       i.fa-chevron-down.fas.ml-2
 
   .dropdown-menu.rounded.bg-stone-700.block.absolute.right-0.mr-2.py-2.color-stone-100.w-64
-    ul
-      - if current_user.unit_memberships.count > 1
-        - current_user.unit_memberships.each do |membership|
-          li
-            = link_to membership.unit, class: "block px-8 py-2 text-stone-100 hover:bg-stone-600" do
-              span.inline-block.w-8.text-center
-                - if membership.unit == @current_unit
-                  i.fa-check.fas
-              = membership.unit_name
-
-        li
-          hr.border-stone-500
-
-      = link_to edit_profile_path, class: "block px-8 py-2 text-stone-100 hover:bg-stone-600" do
-        span.inline-block.w-8.text-center
-          i.fas.fa-gear
-        = t("profile.settings")
-
-      li
-        hr.border-stone-500
-
-      = button_to destroy_user_session_path,
-        method: :delete,
-        data: { turbo: 'false' },
-        class: "w-full text-stone-100 px-8 py-2 block hover:bg-stone-600 text-left" \
-        do
-          span.inline-block.w-8.text-center
-            i.fa-sign-out.fas.mr-2
-          = t("global.sign_out")
+    = render partial: "layouts/partials/user_menu_items"

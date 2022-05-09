@@ -9,7 +9,7 @@
 
 header.flex.justify-between.py-2.border-b
   div
-    h2.px-2.font-bold.text-lg.text-brand-500.w-40.inline-block
+    h2.px-2.font-bold.text-sm.md:text-lg.text-brand-500.md:w-40.inline-block
       = first_day_of_month.strftime("%B %Y")
 
     // prev button
@@ -18,17 +18,19 @@ header.flex.justify-between.py-2.border-b
         year: (display_month > 1) ? display_year : display_year - 1),
       title: t("events.calendar_view.prev_month"),
       data: { turbo_action: "advance" },
-      class: "uppercase text-sm font-bold inline-block py-1 px-4 rounded-l border hover:bg-stone-100" do
+      class: "uppercase text-sm font-bold inline-block py-1 px-2 md:px-4 rounded-l border hover:bg-stone-100" do
         i.fa-chevron-left.fas.mr-1
-        = "Prev"
+        .hidden.md:inline
+          = "Prev"
 
     // next button
     = link_to targeted_calendar_unit_events_path(@unit,
         month: "%02i" % ((display_month == 12) ? 1 : display_month + 1),
         year: (display_month == 12) ? display_year + 1 : display_year),
       data: { turbo_action: "advance" },
-      class: "uppercase text-sm font-bold inline-block py-1 px-4 rounded-r border hover:bg-stone-100 border-l-0" do
-        = "Next"
+      class: "uppercase text-sm font-bold inline-block py-1 px-2 md:px-4 rounded-r border hover:bg-stone-100 border-l-0" do
+        .hidden.md:inline
+          = "Next"
         i.fa-chevron-right.fas.ml-1
 
     // today button

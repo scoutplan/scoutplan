@@ -18,6 +18,8 @@ css:
   .fixed.w-96.h-24#nav_logo.overflow-y-hidden.transition-all.duration-100
     = image_tag "scoutplan-logo-word", style: "width:128px;height:10.65px;top:20px;left:16px;", class: "block absolute"
     = image_tag "scoutplan-logo-needle", style: "height:48px;top:35px;left:135px;animation:find-center 5s cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;", class: "absolute", id: "needle"
+    // see https://matthewlein.com/tools/ceaser for timing curves
+
 
 /  .flex.flex-row
 .grid.grid-cols-5
@@ -25,47 +27,7 @@ css:
 
   div.col-span-3.justify-self-center#nav_center
     - if @current_member
-      // CENTER NAV
-      ul.list-none
-        - if @current_member&.admin?
-
-          // Events
-          li#main_nav_item_events.inline-block
-            = link_to unit_events_path(@current_unit),
-              class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600",
-              data: { turbo_frame: "main", turbo_action: "advance" } \
-              do
-                i.fa-calendar.fas.mr-2
-                = t("main_nav.events")
-
-          // Members
-          - if policy(:unit_membership).index?
-            li#main_nav_item_members.inline-block
-              = link_to unit_members_path(@current_unit),
-                class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600",
-                data: { turbo_frame: "main", turbo_action: "advance" } \
-                do
-                i.fa-users.fas.mr-2
-                = t("main_nav.members")
-
-          // Planner
-          - if policy(:event).plan?
-            li#main_nav_item_planner.inline-block
-              = link_to unit_plans_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
-                i.fa-clipboard-list.fas.mr-2
-                = t("main_nav.planner")
-
-          - if policy(:news_item).create?
-            li#main_nav_item_messages.inline-block
-              = link_to unit_news_items_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
-                i.fa-tower-broadcast.fas.mr-2
-                = t("main_nav.communication")
-
-        - if policy(:unit_settings).edit?
-          li.main_nav_item_unit_settings.inline-block
-            = link_to edit_unit_settings_path(@current_unit), class: "text-brand-500 font-bold mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
-              i.fa-sliders-h.fas.mr-2
-              = "#{@current_unit.name} Settings"
+      = render partial: "layouts/partials/main_menu"
 
   // RIGHT SIDE NAME / UNIT
   div.justify-self-end#nav_right

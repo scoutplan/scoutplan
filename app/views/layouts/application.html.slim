@@ -15,8 +15,10 @@ html
     = yield :head
 
   body(class="text-gray-600 #{controller_name} #{action_name} #{yield :body_classes}")
-    nav#top_nav.sticky.top-0.bg-white/95.z-10
+    nav#top_nav.sticky.top-0.bg-white/95.z-10.hidden.lg:block
       = render partial: "layouts/nav"
+
+    = render partial: "layouts/nav_mobile"
         
     main.h-screen.flex-grow.px-4.py-0
       = turbo_frame_tag "main"
@@ -32,6 +34,10 @@ html
       var elem = document.querySelector(elem);
       elem.style.display = show ? 'block' : 'none';
     }
+
+    document.documentElement.addEventListener("turbo:load", function(event) {
+      document.body.classList.remove("showing-mobile-menu");
+    });
 
   scss:
     .submit-conjunction {
