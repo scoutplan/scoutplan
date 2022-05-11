@@ -27,6 +27,7 @@ tr.border-b.hover:bg-gray-100.member.member-row(class="#{ row_classes }" id="mem
       data: { turbo_frame: "main", turbo_action: "advance" } do
         = unit_membership.full_display_name
 
+
     // contact info below name
     .text-sm.text-gray-500.px-2.min-h-4.whitespace-nowrap
       - if unit_membership.emailable?
@@ -47,7 +48,15 @@ tr.border-b.hover:bg-gray-100.member.member-row(class="#{ row_classes }" id="mem
               class: 'inline-block px-2 py-2 whitespace-nowrap',
               data: { turbo_action: 'advance' } do
 
-              .text-xs.font-bold.mt-1.flex.gap-1.whitespace-nowrap
+              span.text-xs.font-bold.flex.gap-1.whitespace-nowrap
+                - if unit_membership.admin?
+                  span(title="#{@unit.name} Administrator")
+                    i.fas.fa-user-crown.mr-2.py-1.text-emerald-500.text-base
+
+                - elsif unit_membership.event_organizer?
+                  span(title="#{@unit.name} Event Organizer")
+                    i.fas.fa-clipboard-user.mr-2.py-1.text-fuchsia-500.text-base
+
                 - case unit_membership.member_type
                 - when "adult"
                   .inline-block.bg-pink-100.text-pink-700.px-2.py-1.rounded-md Adult
@@ -61,14 +70,6 @@ tr.border-b.hover:bg-gray-100.member.member-row(class="#{ row_classes }" id="mem
                   .inline-block.bg-purple-100.text-purple-700.px-2.py-1.rounded-md Family &amp; Friends                  
                 - when "inactive"
                   .inline-block.bg-rose-100.text-rose-700.px-2.py-1.rounded-md Inactive
-
-                - if unit_membership.admin?
-                  span(title="#{@unit.name} Administrator")
-                    i.fas.fa-user-crown.py-2.ml-2
-
-                - elsif unit_membership.event_organizer?
-                  span(title="#{@unit.name} Event Organizer")
-                    i.fas.fa-calendar-star.py-1.ml-2
 
   // FAMILY
   td.family-members.w-1.px-2.hidden.sm:table-cell

@@ -5,7 +5,7 @@ ul.list-none
     // Events
     li#main_nav_item_events.md:inline-block
       = link_to unit_events_path(@current_unit),
-        class: "text-brand-500 font-bold md:text-s lg:text-m mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600",
+        class: "text-brand-500 font-bold text-sm xl:text-base mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block hover:text-brand-600",
         data: { turbo_frame: "main", turbo_action: "advance" } \
         do
           i.fa-calendar.fas.w-8
@@ -15,7 +15,7 @@ ul.list-none
   - if policy(:unit_membership).index?
     li#main_nav_item_members.md:inline-block
       = link_to unit_members_path(@current_unit),
-        class: "text-brand-500 font-bold md:text-s lg:text-m mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600",
+        class: "text-brand-500 font-bold text-sm xl:text-base mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block hover:text-brand-600",
         data: { turbo_frame: "main", turbo_action: "advance" } \
         do
         i.fa-users.fas.w-8
@@ -24,20 +24,20 @@ ul.list-none
   // Planner
   - if policy(:event).plan?
     li#main_nav_item_planner.md:inline-block
-      = link_to unit_plans_path(@current_unit), class: "text-brand-500 font-bold md:text-s lg:text-m mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
+      = link_to unit_plans_path(@current_unit), class: "text-brand-500 font-bold text-sm xl:text-base mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block hover:text-brand-600" do
         i.fa-clipboard-list.fas.w-8
         = t("main_nav.planner")
 
   // Communication
   - if policy(:news_item).create?
     li#main_nav_item_messages.md:inline-block
-      = link_to unit_news_items_path(@current_unit), class: "text-brand-500 font-bold md:text-s lg:text-m mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
+      = link_to unit_news_items_path(@current_unit), class: "text-brand-500 font-bold text-sm xl:text-base mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block hover:text-brand-600" do
         i.fa-tower-broadcast.fas.w-8
         = t("main_nav.communication")
 
   // Unit settings
   - if policy(:unit_settings).edit?
     li.main_nav_item_unit_settings.md:inline-block
-      = link_to edit_unit_settings_path(@current_unit), class: "text-brand-500 font-bold md:text-s lg:text-m mb-px no-underline whitespace-nowrap px-4 py-3 block hover:text-brand-600" do
+      = link_to edit_unit_settings_path(@current_unit), class: "text-brand-500 font-bold text-sm xl:text-base mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block hover:text-brand-600" do
         i.fa-sliders-h.fas.w-8
         = "#{@current_unit.name} Settings"

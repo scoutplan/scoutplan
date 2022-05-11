@@ -1,39 +1,24 @@
-css:
-  body.scrolled #nav_logo {
-    height: 49px;
-  }
-
-  @keyframes find-center {
-    0% { transform: rotate(0deg); }
-    10% { transform: rotate(-30deg); }
-    20% { transform: rotate(30deg); }
-    30% { transform: rotate(-20deg); }
-    40% { transform: rotate(20deg); }
-    60% { transform: rotate(-10deg); }    
-    80% { transform: rotate(10deg); }    
-    100% { transform: rotate(0deg); }
-  }
-
-= link_to root_path, class: "block" do
-  .fixed.w-96.h-24#nav_logo.overflow-y-hidden.transition-all.duration-100
-    = image_tag "scoutplan-logo-word", style: "width:128px;height:10.65px;top:20px;left:16px;", class: "block absolute"
-    = image_tag "scoutplan-logo-needle", style: "height:48px;top:35px;left:135px;animation:find-center 5s cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;", class: "absolute", id: "needle"
-    // see https://matthewlein.com/tools/ceaser for timing curves
+nav#top_nav.sticky.top-0.bg-white/95.z-10.hidden.lg:block.mb-1
+  = link_to root_path, class: "block" do
+    .fixed.w-96.h-24#nav_logo.overflow-y-hidden.transition-all.duration-100
+      = image_tag "scoutplan-logo-word", style: "width:128px;height:10.65px;top:20px;left:16px;", class: "block absolute"
+      = image_tag "scoutplan-logo-needle", style: "height:48px;top:35px;left:135px;animation:find-center 5s cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;", class: "absolute", id: "needle"
+      // see https://matthewlein.com/tools/ceaser for timing curves
 
 
-/  .flex.flex-row
-.grid.grid-cols-5
-  div#nav_left
+  /  .flex.flex-row
+  .grid.grid-cols-5
+    div#nav_left
 
-  div.col-span-3.justify-self-center#nav_center
-    - if @current_member
-      = render partial: "layouts/partials/main_menu"
+    div.col-span-3.justify-self-center#nav_center
+      - if @current_member
+        = render partial: "layouts/partials/main_menu"
 
-  // RIGHT SIDE NAME / UNIT
-  div.justify-self-end#nav_right
-    .flex
-      = render partial: "layouts/partials/notifications"
-      = render partial: "layouts/partials/user_menu"
+    // RIGHT SIDE NAME / UNIT
+    div.justify-self-end#nav_right
+      .flex
+        = render partial: "layouts/partials/notifications"
+        = render partial: "layouts/partials/user_menu"
 
 css:
   /* when page is scrolled down, show a bottom border & drop shadow on the top nav */
@@ -41,6 +26,10 @@ css:
     border-bottom: 1px solid #E7E5E4;
     filter: drop-shadow(0 6px 6px rgb(0 0 0 / 0.05));
   }
+
+  body.scrolled #nav_logo {
+    height: 49px;
+  }  
 
   .dropdown-menu {
     display: none;
@@ -58,3 +47,14 @@ css:
     8% { transform: rotate(-30deg); }    
     10% { transform: rotate(0deg); }
   }
+
+  @keyframes find-center {
+    0% { transform: rotate(0deg); }
+    10% { transform: rotate(-30deg); }
+    20% { transform: rotate(30deg); }
+    30% { transform: rotate(-20deg); }
+    40% { transform: rotate(20deg); }
+    60% { transform: rotate(-10deg); }    
+    80% { transform: rotate(10deg); }    
+    100% { transform: rotate(0deg); }
+  }  
