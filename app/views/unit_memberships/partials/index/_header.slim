@@ -1,8 +1,6 @@
 header.flex.px-0.pb-8.items-center
   .flex-auto
-    = render partial: "layouts/partials/hamburger_button"
-
-    h1.px-2.py-2.font-bold.text-black.text-xl
+    h1.px-2.py-2.font-bold.text-black.text-sm.xl:text-lg
       = @unit.name
       |&nbsp;
       = t("members.titles.index")

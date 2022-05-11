@@ -71,6 +71,9 @@ Rails.application.routes.draw do
       patch "rsvp", as: "send_rsvps", to: "events#create_or_update_rsvps"
     end
 
+    # https://stackoverflow.com/questions/38509769/rails-routes-redirect-a-wild-card-route
+    get "/events/*after", to: redirect("/units/%{unit_id}/schedule/%{after}")
+
     resources :unit_memberships
 
     resources :unit_memberships, path: "members", as: "members" do
