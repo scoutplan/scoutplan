@@ -114,6 +114,10 @@ docker tag scoutplan_app registry.digitalocean.com/scoutplan/scoutplan_app
 docker push registry.digitalocean.com/scoutplan/scoutplan_app
 ```
 
+## Tailwind build
+
+In a separate terminal, run `rails tailwindcss:watch`
+
 ## Email in development
 
 The Docker Compose stack includes mailcatcher. Once the stack's up, visit http://localhost:1080 to see your mail
