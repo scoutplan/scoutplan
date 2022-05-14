@@ -59,5 +59,33 @@ document.addEventListener("turbo:load", function() {
         elem.classList.remove('menu-open');
       }
     });
-  });  
+  });
+
+  document.querySelectorAll(".tab-menu a").forEach(function(elem) {
+    elem.addEventListener("click", function(event) {
+      var tabbedSectionElem = event.target.closest(".tabbed");
+
+      // hide all tabs
+      tabbedSectionElem.querySelectorAll(".tab").forEach(function(elem) {
+        elem.classList.add("hidden");
+      });
+
+      // all tab links to deselected
+      tabbedSectionElem.querySelectorAll(".tab-link").forEach(function(elem) {
+        elem.classList.remove("border-brand-500");
+        elem.classList.add("border-brand-100");
+      });
+
+      // current tab to selected
+      event.target.classList.remove("border-brand-100");
+      event.target.classList.add("border-brand-500");
+
+      // reveal target tab
+      targetTabElemId = event.target.dataset.tabTarget;
+      targetTabElem = document.querySelector(targetTabElemId);
+      targetTabElem.classList.remove("hidden");
+
+      event.preventDefault();
+    });
+  });
 });
