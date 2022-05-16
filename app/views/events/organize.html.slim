@@ -91,6 +91,25 @@
           = flash[:notice]
 
     section.max-w-6xl.mx-auto.grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-2.xl:grid-cols-4.gap-2.mt-2
+
+      // NO RESPONSE
+      .bg-orange-50.rounded.p-4
+        header.flex.justify-between
+          h2.text-lg.font-bold.text-orange-700
+            i.fa-ghost.fas.text-orange-500.mr-2
+            = t("events.organize.non_respondents")
+
+          .font-bold.tracking-wide.text-sm.pt-1
+            span.px-2.py-1.bg-orange-500.text-orange-100.rounded
+              = @non_respondents.count           
+
+        ul.mt-2.empty:mt-0
+          = render \
+            partial:    "events/partials/organize/member",
+            collection: @non_respondents,
+            as:         :member,
+            layout:     "events/partials/organize/organize_entry"
+
       // ACCEPTED
       .bg-green-50.rounded.p-4#accepted_rsvp_container
         header.flex.justify-between
@@ -126,24 +145,6 @@
             partial:    "events/partials/organize/declined_rsvp",
             collection: @event.rsvps.declined.ordered,
             as:         :rsvp,
-            layout:     "events/partials/organize/organize_entry"          
-
-      // NO RESPONSE
-      .bg-orange-50.rounded.p-4
-        header.flex.justify-between
-          h2.text-lg.font-bold.text-orange-700
-            i.fa-ghost.fas.text-orange-500.mr-2
-            = t("events.organize.non_respondents")
-
-          .font-bold.tracking-wide.text-sm.pt-1
-            span.px-2.py-1.bg-orange-500.text-orange-100.rounded
-              = @non_respondents.count           
-
-        ul.mt-2.empty:mt-0
-          = render \
-            partial:    "events/partials/organize/member",
-            collection: @non_respondents,
-            as:         :member,
             layout:     "events/partials/organize/organize_entry"
 
       // NON-INVITEES

@@ -73,11 +73,11 @@ document.addEventListener("turbo:load", function() {
       // all tab links to deselected
       tabbedSectionElem.querySelectorAll(".tab-link").forEach(function(elem) {
         elem.classList.remove("border-brand-500");
-        elem.classList.add("border-brand-100");
+        elem.classList.add("border-brand-200");
       });
 
       // current tab to selected
-      event.target.classList.remove("border-brand-100");
+      event.target.classList.remove("border-brand-200");
       event.target.classList.add("border-brand-500");
 
       // reveal target tab

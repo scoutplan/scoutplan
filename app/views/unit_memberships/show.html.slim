@@ -31,10 +31,20 @@
         .tab#member_info
           - if @target_membership.email.present? || @target_membership.phone.present?
             .rounded.bg-stone-100.p-4.mb-1
-              - if @target_membership.email.present?
-                p.block.mb-2
+              - if @target_membership.emailable?
+                .mb-2
                   i.fas.fa-envelope.mr-2
                   = link_to @target_membership.email, "mailto:#{@target_membership.email}"
+
+                  - if @target_membership.invitation_accepted_at
+                  - else
+                    .inline
+                      = button_to "Send Invitation", unit_member_invite_path(@unit, @target_membership),
+                        class: "inline-block border rounded uppercase text-sm font-bold tracking-wider px-2 py-1 ml-4",
+                        form_class: "inline"
+
+              - else
+                p.block.mb-2 = "No email address"
 
               - if @target_membership.phone.present?
                 p.block

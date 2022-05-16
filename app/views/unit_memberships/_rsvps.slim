@@ -4,7 +4,7 @@
 .bg-stone-100.rounded.p-4
   section
     - @rsvp_events.each do |event|
-      dl.w-full.mb-4
+      dl.w-full.mb-4.border-t.first:border-0
         - existing_rsvp = event.rsvps.find_by(unit_membership: @target_membership)
         - rsvp = event.rsvps.build \
           unit_membership: @target_membership,
@@ -19,8 +19,7 @@
 
           = f.fields_for "members[]", @target_membership do |member_fields|
             = member_fields.fields_for "event_rsvp", rsvp do |rsvp_fields|
-
-              dt.py-2.font-bold.border-t
+              dt.py-2.font-bold
                 = link_to unit_event_path(@unit, event) do
                   = event.starts_at.strftime("%-d %b")
                   = " "
