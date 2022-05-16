@@ -26,4 +26,8 @@ class UnitMembershipPolicy < UnitContextPolicy
   def new?
     admin?
   end
+
+  def invite?
+    admin?
+  end
 end

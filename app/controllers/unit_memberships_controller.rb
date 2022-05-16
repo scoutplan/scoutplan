@@ -2,7 +2,7 @@
 
 # responsible for Unit <> User relationships
 class UnitMembershipsController < ApplicationController
-  before_action :find_unit, only: %i[index new create bulk_update]
+  before_action :find_unit, only: %i[index new create bulk_update invite]
   before_action :find_membership, except: %i[index new create bulk_update]
 
   def index
@@ -55,6 +55,12 @@ class UnitMembershipsController < ApplicationController
     redirect_to unit_members_path(@current_unit)
   end
 
+  def invite
+    authorize @target_membership
+    @target_membership.user.invite!(current_user)
+    redirect_to unit_member_path(@unit, @target_membership), notice: "Invitation sent"
+  end
+
   def update_settings_params
     return unless settings_params
 
@@ -79,7 +85,7 @@ class UnitMembershipsController < ApplicationController
       member.save!
     end
 
-    flash[:notice] = t('members.bulk_update.success_message')
+    flash[:notice] = t("members.bulk_update.success_message")
     redirect_to unit_members_path(@unit)
   end
 
@@ -96,7 +102,7 @@ class UnitMembershipsController < ApplicationController
   end
 
   def find_membership
-    @target_membership = UnitMembership.includes(:parent_relationships, :child_relationships).find(params[:id])
+    @target_membership = UnitMembership.includes(:parent_relationships, :child_relationships).find(params[:id] || params[:member_id])
     @target_user = @target_membership.user
     @current_unit = @unit = @target_membership.unit
     @current_member = @unit.membership_for(current_user)

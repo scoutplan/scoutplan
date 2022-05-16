@@ -1,0 +1,29 @@
+- @page_title = ["Get Started With Scoutplan"]
+
+.text-center.mt-4.min-w-lg.max-w-sm.mx-auto
+  .text-left
+    h2.text-xl.font-bold.mb-3.text-center = "Set Your Scoutplan Password"
+
+    .p-6.bg-stone-200/40.rounded.mx-2
+      = form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put }, data: { turbo: false }) do |f|
+        = f.hidden_field :invitation_token, readonly: true
+
+        .mb-4
+          = f.label :password, class: "block uppercase text-sm font-bold tracking-wide mb-1"
+          = f.password_field :password, autofocus: true, autocomplete: "email", class: "w-full bg-white border border-stone-300 rounded px-3 py-2"
+
+        .mb-3
+          = f.label :password_confirmation, class: "block uppercase text-sm font-bold tracking-wide mb-1"
+          = f.password_field :password_confirmation, autocomplete: "current-password", class: "w-full bg-white border border-stone-300 rounded px-3 py-2"
+
+        .pt-3.overflow-auto
+          = f.submit t("devise.invitations.edit.submit_button"),
+            class: "block w-full rounded bg-brand-500 hover:bg-brand-600 font-bold uppercase tracking-wide px-8 py-2 text-white"
+
+    .p-6.mx-2
+      p.text-center
+        = "Already have an account? "
+        = link_to "Sign in", "#", class: "font-bold text-brand-500 hover:text-brand-700"
+
+    .absolute.bottom-0.left-0.right-0.p-4.text-center.text-gray-400
+      | &copy; 2021–2022 Scoutplan. All rights reserved.

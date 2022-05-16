@@ -14,6 +14,7 @@ gem "aws-sdk-s3", require: false
 gem "blazer"
 gem "bootsnap", require: false
 gem "devise"
+gem "devise_invitable"
 gem "faraday"
 gem "flipper"
 gem "flipper-active_record"
