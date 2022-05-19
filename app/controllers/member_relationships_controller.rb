@@ -8,7 +8,7 @@ class MemberRelationshipsController < ApplicationController
     relationship = parent_member.child_relationships.new(child_member: child_member)
     return unless relationship.save!
 
-    flash[:notice] = t('members.relationships.success_message',
+    flash[:notice] = t("members.relationships.success_message",
                        first_name: parent_member.full_name,
                        second_name: child_member.full_name)
     redirect_to member_path(parent_member)
@@ -19,7 +19,7 @@ class MemberRelationshipsController < ApplicationController
     member = relationship.parent_member
     return unless relationship.destroy!
 
-    flash[:notice] = 'Member relationship was removed'
+    flash[:notice] = "Member relationship was removed"
     redirect_to member_path(member)
   end
 
