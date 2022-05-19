@@ -4,9 +4,10 @@
       .flex.justify-between
         // left side
         div
-          h1.text-xl.font-bold
-            = t("events.organize.title", event_title: @event.title)
-            .inline.ml-2.text-base = glyph_tag(@event)
+          h1
+            = link_to unit_event_path(@unit, @event), data: { turbo_action: "advance" }, class: "text-xl font-bold" do
+              = t("events.organize.title", event_title: @event.title)
+              .inline.ml-2.text-base = glyph_tag(@event)
 
         // right side
         .flex.flex-row.gap-2
