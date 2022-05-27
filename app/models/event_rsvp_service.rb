@@ -2,7 +2,7 @@
 
 # business logic wrapper for event RSVPs
 class EventRsvpService
-  attr_accessor :target_member
+  attr_accessor :target_member, :event
 
   def initialize(member)
     @member = member
@@ -29,6 +29,20 @@ class EventRsvpService
     find_event_responses
 
     @rsvp
+  end
+
+  def non_respondents
+    raise ArgumentError, "Event attribute must be set" unless @event.present?
+
+    @event.unit.members.status_active - @event.rsvps.collect(&:member)
+  end
+
+  def accepted_responders
+    @event.rsvps.accepted
+  end
+
+  def declined_responders
+    @event.rsvps.declined
   end
 
   private

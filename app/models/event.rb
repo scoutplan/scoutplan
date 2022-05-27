@@ -95,6 +95,15 @@ class Event < ApplicationRecord
     address || location
   end
 
+  # members who haven't RSVP'ed
+  def non_respondents
+    unit.members.status_active - rsvps.collect(&:member)
+  end
+
+  def non_invitees
+    unit.members.status_registered - rsvps.collect(&:member)
+  end
+
   private
 
   # create a weekly series based on @event

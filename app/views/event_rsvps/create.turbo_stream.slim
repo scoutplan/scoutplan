@@ -1,0 +1,38 @@
+// Stream out fresh HTML for each of the four columns
+// TODO: based on RSVP logic, only stream out necessary HTML instead of all
+
+= turbo_stream.update "organize_category_no_response" do
+  = render partial:    "events/partials/organize/member",
+           collection: @event.non_respondents,
+           as:         :member,
+           layout:     "events/partials/organize/organize_entry"
+
+= turbo_stream.update "organize_category_accepted" do
+  = render partial:    "events/partials/organize/accepted_rsvp",
+           collection: @event.rsvps.accepted.ordered,
+           as:         :rsvp,
+           layout:     "events/partials/organize/organize_entry"
+
+= turbo_stream.update "organize_category_declined" do
+  = render partial:    "events/partials/organize/declined_rsvp",
+           collection: @event.rsvps.declined.ordered,
+           as:         :rsvp,
+           layout:     "events/partials/organize/organize_entry"
+
+= turbo_stream.update "organize_category_family_and_friends" do
+  = render partial:    "events/partials/organize/member",
+           collection: @event.non_invitees,
+           as:         :member,
+           layout:     "events/partials/organize/organize_entry"
+
+= turbo_stream.update "organize_count_no_response" do
+  = @event.non_respondents.count
+
+= turbo_stream.replace "organize_count_accepted" do
+  = render partial: "events/partials/organize/attendance_badges", locals: { event: @event }
+
+= turbo_stream.update "organize_count_declined" do
+  = @event.rsvps.declined.count
+
+= turbo_stream.update "organize_count_family_and_friends" do
+  = @event.non_invitees.count
