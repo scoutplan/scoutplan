@@ -2,6 +2,8 @@
 
 # Service for dealing with event RSVPs
 class RsvpService < ApplicationService
+  attr_accessor :event
+
   def initialize(member)
     @member = member
     super()
@@ -20,6 +22,12 @@ class RsvpService < ApplicationService
       res << event unless rsvps.count.positive?
     end
     @unresponded_events = res
+  end
+
+  def non_respondents
+    raise ArgumentError, "Event attribute must be set" unless @event.present?
+
+    @event.unit.members.status_active - @event.rsvps.collect(&:member)
   end
 
   private

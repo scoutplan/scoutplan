@@ -3,12 +3,17 @@
 # only intended to be called via XHR...no HTML view exists for this controller
 class EventRsvpsController < UnitContextController
   before_action :find_rsvp, only: [:destroy]
+  before_action :find_event
 
   def create
-    service = EventRsvpService.new(current_member)
-    rsvp = service.create_or_update(params)
-    flash[:notice] = I18n.t("events.organize.confirmations.updated_html", name: rsvp.member.full_display_name)
-    redirect_to unit_event_organize_path(@unit, rsvp.event)
+    @service = EventRsvpService.new(current_member)
+    @rsvp = @service.create_or_update(params)
+    flash[:notice] = I18n.t("events.organize.confirmations.updated_html", name: @rsvp.member.full_display_name)
+    # @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
+    respond_to do |format|
+      format.html { redirect_to unit_event_organize_path(@unit, @rsvp.event) }
+      format.turbo_stream
+    end
   end
 
   # send or re-send an invitation
@@ -34,6 +39,10 @@ class EventRsvpsController < UnitContextController
 
   def find_rsvp
     @rsvp = EventRsvp.find(params[:id])
+  end
+
+  def find_event
+    @event = Event.find(params[:event_id])
   end
 
   def find_event_responses
