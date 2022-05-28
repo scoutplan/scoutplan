@@ -9,8 +9,14 @@
 
 header.flex.justify-between.py-2.border-b
   div
-    h2.px-2.font-bold.text-sm.md:text-lg.text-brand-500.md:w-40.inline-block
-      = first_day_of_month.strftime("%B %Y")
+    .inline-block.dropdown
+      a.dropdown-button(href="#")
+        h2.px-2.font-bold.text-sm.md:text-lg.text-brand-500.md:w-40.inline-block
+          = first_day_of_month.strftime("%B %Y")
+          i.fa-chevron-down.fas.ml-2
+      
+      .dropdown-menu.absolute.bg-stone-800.text-stone-50.p-2.rounded
+        = render partial: "events/partials/index/month_picker", locals: { display_date: first_day_of_month }
 
     // prev button
     = link_to targeted_calendar_unit_events_path(@unit,
