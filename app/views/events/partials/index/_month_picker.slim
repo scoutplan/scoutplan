@@ -1,4 +1,4 @@
-- current_year = display_date.year
+- current_year = Time.now.year
 
 .flex.flex-row.gap-3
   - (-1..1).each do |offset|
@@ -8,6 +8,10 @@
       ul
         - (1..12).each do |month|
           li
-            = link_to Date::MONTHNAMES[month],
-              targeted_calendar_unit_events_path(@unit, month: "%02i" % month, year: year),
-              data: { turbo_action: "advance" }
+            = link_to targeted_calendar_unit_events_path(@unit, month: "%02i" % month, year: year),
+              data: { turbo_action: "advance" } do
+              - if year == display_date.year && month == display_date.month
+                .text-brand-500
+                  = Date::MONTHNAMES[month]
+              - else
+                = Date::MONTHNAMES[month]
