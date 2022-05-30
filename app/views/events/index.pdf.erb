@@ -37,7 +37,12 @@
               </td>
 
               <td valign="top" style="padding: 0.5rem 1rem 0.5rem 0;">
-                <div style="font-weight:bold; margin-bottom:0.25rem;"><%= event.title %></div>
+                <div style="font-weight:bold; margin-bottom:0.25rem;">
+                  <%= event.title %>
+                  <% if event.draft? %>
+                    <%= " — DRAFT" %>
+                  <% end %>
+                </div>
                 <div><%= event.location %></div>
               </td>
             </tr>
