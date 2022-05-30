@@ -245,8 +245,29 @@ class EventsController < UnitContextController
       ends_at: 28.days.from_now.next_occurring(:saturday).change({ hour: 16 }),
       rsvp_closes_at: 21.days.from_now.next_occurring(:saturday).change({ hour: 10 })
     )
+    if (date_s = params[:date]).present?
+      @event.starts_at = date_s.to_date
+      @event.ends_at = date_s.to_date
+    end
+    set_default_times
     @event_view = EventView.new(@event)
     @member_rsvps = current_member.event_rsvps
+  end
+
+  # set sensible default start and end times based on the day of the week
+  def set_default_times
+    case @event.starts_at.wday
+    when 0, 6 # saturday or sunday
+      @event.starts_at = @event.starts_at.change({ hour: 10 })
+      @event.ends_at = @event.ends_at.change({ hour: 16 })
+    when 5 # friday
+      @event.starts_at = @event.starts_at.change({ hour: 17 })
+      @event.ends_at = @event.starts_at + 2.days
+      @event.ends_at = @event.ends_at.change({ hour: 10 })
+    else # mon-thurs
+      @event.starts_at = @event.starts_at.change({ hour: 19 })
+      @event.ends_at = @event.ends_at.change({ hour: 20, min: 30 })
+    end
   end
 
   def find_event
