@@ -1,0 +1,12 @@
+div.rounded.p-4.bg-stone-100.mt-8
+  = form_for @event.organizers.new, url: unit_event_organizers_path do |f|
+    label.uppercase.tracking-wider.font-bold.text-sm.inline-block.w-1/4
+      = "Add an organizer"
+
+    = f.select :unit_membership_id,
+      options_from_collection_for_select(@unit.members.adult.status_active, :id, :full_display_name),
+      { include_blank: "Select a member" },
+      { class: "rounded border-stone-200" }
+
+    = f.submit "Add As Organizer",
+      class: "bg-stone-500 text-white rounded px-4 py-2 uppercase tracking-wider font-bold text-sm ml-4"

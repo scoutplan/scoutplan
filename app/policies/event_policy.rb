@@ -29,7 +29,7 @@ class EventPolicy < UnitContextPolicy
   end
 
   def organize?
-    admin? || @membership.event_organizer?
+    admin? || @membership.event_organizer? || @event.organizers.include?(@membership)
   end
 
   def publish?
