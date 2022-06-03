@@ -51,6 +51,22 @@
           autocomplete: "off",
           placeholder: t("events.edit.short_description_placeholder")
     
+    // Organizers
+    section.bg-stone-100.py-4.px-4.md:px-8.mb-1.rounded
+      .py-2.md:py-2
+        = f.styled_label :organizers, layout: :inline
+        - @event.organizers.each do |organizer|
+          .inline-block.mr-2
+            i.fa-user.fas.mr-2
+            = organizer.full_display_name
+        - if @event.organizers.empty?
+          .inline-block.mr-4
+            = "None"
+        = link_to "Add & Remove",
+          unit_event_organizers_path(@unit, @event),
+          data: { turbo_action: "advance" },
+          class: "border rounded px-4 py-2 text-sm font-bold tracking-wider uppercase text-brand-500 border-brand-500 ml-4"
+
     // RSVP
     section.bg-stone-100.py-4.px-4.md:px-8.mb-1.rounded
       .form-check

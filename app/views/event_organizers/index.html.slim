@@ -1,0 +1,14 @@
+= turbo_frame_tag "main"
+  .mx-auto.max-w-2xl
+    h2.font-bold.text-lg.mb-4
+      = @event.title
+      = " "
+      = "Event Organizers"
+    = render partial: "event_organizer", collection: @event.organizers
+    = render partial: "empty" if @event.organizers.empty?
+    = render partial: "form"
+    footer.mt-4
+      .text-right
+        = link_to "Done",
+          edit_unit_event_path(@unit, @event),
+          class: "rounded bg-brand-500 text-white px-4 py-2 uppercase text-sm font-bold tracking-wider"
