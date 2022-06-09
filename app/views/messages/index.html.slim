@@ -1,12 +1,34 @@
 = turbo_frame_tag "main"
   .max-w-3xl.mx-auto
-    header.pt-4
+    header.pt-4.mb-4.flex.flex-row.justify-between
       h1.font-bold.text-lg
         = "Messages"
 
-      - if policy(:message).create?
-        = link_to "Write a Message", new_unit_message_path(@unit), data: { turbo_frame: "main", turbo_action: "advance" }
+      div
+        - if policy(:message).create?
+          = link_to "Write a Message",
+            new_unit_message_path(@unit),
+            class: "rounded bg-brand-500 uppercase text-sm font-bold tracking-wider text-white px-4 py-2",
+            data: { turbo_frame: "main", turbo_action: "advance" }
 
-    #message_list
-      = render partial: "message", collection: @messages
+    section.tabbed
+      nav.tab-menu.mb-4
+        ul
+          li.inline-block
+            = link_to "Drafts", "#",
+              data: { tab_target: "#messages_drafts" },
+              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-500 hover:border-brand-500 uppercase font-bold text-sm tracking-wider"
 
+          li.inline-block
+            = link_to "Sent", "#",
+              data: { tab_target: "#messages_sent" },
+              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider"
+
+      .tabs
+        .tab#messages_drafts
+          = render partial: "message", collection: @draft_messages
+          = render partial: "empty" unless @draft_messages.present?
+
+        .tab#messages_sent.hidden
+          = render partial: "message", collection: @sent_messages
+          = render partial: "empty" unless @sent_messages.present?

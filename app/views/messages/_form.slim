@@ -1,43 +1,54 @@
-.flex.flex-row.gap-3
-  // LEFT SIDE
-  div
-    = form_with model: @message, url: unit_messages_path(@unit) do |f|
-      div.pt-4
-        = f.label :to, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
+= form_with model: @message, url: unit_messages_path(@unit) do |f|
+  section.bg-stone-100.py-4.px-4.md:px-8.mb-1.rounded
+    // FROM
+    .mb-2
+      = f.label :from, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
+      = text_field_tag :from_address,
+        @unit.settings(:communication).from_email,
+        disabled: true,
+        class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-400 disabled:text-stone-400 disabled:placeholder-stone-200"
 
-        ul.flex.flex-row.gap-3
-          li.inline-block
-            = check_box_tag :active, checked: "checked"
-            = label_tag "Active Members"
+    // TO
+    .hidden
+      = radio_button_tag :recipient_group, :active_youth_and_adults, true
+      = radio_button_tag :recipient_group, :active_adults
+      = radio_button_tag :recipient_group, :all_unit_members
 
-          li.inline-block
-            = check_box_tag :supporters
-            = label_tag "Supporters"
+    = f.label :to, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
+    .dropdown.relative
+      = text_field_tag :direct_recipients,
+        "All Active Youth & Adults (#{@unit.members.status_active.count} members), ",
+        placeholder: "Type member names",
+        class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200"
 
-          li.inline-block
-            = check_box_tag :adults
-            = label_tag "Limit to adults"
+      // DROPDOWN GLYPH
+      .absolute.right-0.top-0.px-4.py-2.cursor-pointer.dropdown-button
+        .dropdown-button-chevron
+          i.fa-chevron-down.fas
 
-      div.pt-2
-        = label_tag "Additional individual recipients"
-        = text_field_tag :direct_recipients,
-          "",
-          placeholder: "Type member names",
-          class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200"
+      // DROPDOWN MENU
+      #search_results.dropdown-menu.absolute.bg-white.w-full.z-10.drop-shadow-lg.border.border-stone-100.overflow-auto
+        = render partial: "search_results"
 
-      div.pt-4
-        = f.label :subject, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
-        = f.text_field \
-          :title,
-          autocomplete: "off",
-          class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
-          placeholder: "Message subject"
+    .mt-4
+      = f.label :subject, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
+      = f.text_field \
+        :title,
+        autofocus: true,
+        autocomplete: "off",
+        class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
+        placeholder: "Message subject"
 
-      div.pt-4
-        = f.label :description, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
-        = f.rich_text_area :body
+    .mt-4
+      = f.label :message, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
+      = f.rich_text_area :body, class: "bg-white overflow-auto h-48"
 
-  // RIGHT SIDE
-  #effective_recipient_list
-    h2.font-bold
-      = "Effective recipients"    
+  footer.flex.md:flex-row.mt-4.justify-between
+    // LEFT SIDE
+    div
+      = f.submit "Save Draft", class: "w-full md:w-fit pr-4 py-2 rounded uppercase text-brand-500 text-sm font-bold tracking-wider cursor-pointer"
+
+    div
+    .flex.md:flex-row.gap-2
+      = link_to "Cancel", unit_messages_path(@unit), class: "w-full md:w-fit px-4 py-2 rounded bg-stone-100 text-stone-500 uppercase text-sm font-bold tracking-wider"
+      = f.submit "Post Message", class: "w-full md:w-fit px-4 py-2 bg-brand-500 text-white rounded uppercase text-sm font-bold tracking-wider"
