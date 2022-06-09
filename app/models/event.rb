@@ -27,6 +27,7 @@ class Event < ApplicationRecord
 
   scope :past,          -> { where("starts_at < ?", Date.today) }
   scope :future,        -> { where("starts_at > ?", Date.today) }
+  scope :recent_and_future, -> { where("starts_at > ?", 4.weeks.ago) }
   scope :this_week,     -> { where("starts_at BETWEEN ? AND ?", Time.now, 7.days.from_now) }
   scope :upcoming,      -> { where("starts_at BETWEEN ? AND ?", 7.days.from_now, 28.days.from_now) }
   scope :rsvp_required, -> { where(requires_rsvp: true) }

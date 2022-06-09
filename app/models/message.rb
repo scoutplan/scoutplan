@@ -6,8 +6,10 @@ class Message < ApplicationRecord
   attr_accessor :target_active_members, :target_supporters, :target_adults_only, :target_member_ids
 
   belongs_to :author, class_name: "UnitMembership"
-  alias_attribute :member, :unit_membership
+  has_one :unit, through: :author
   has_many :message_recipients
+  alias_attribute :member, :unit_membership
+  enum status: { draft: 0, sent: 1, archived: 2 }
 
   # generate a list of actual members who'll receive this message
   def resolve_recipients

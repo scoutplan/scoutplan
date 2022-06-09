@@ -1,0 +1,39 @@
+ul
+  li
+    = link_to "#",
+      class: "block px-4 py-2 hover:bg-stone-200 cursor-pointer" do
+      .inline-block.w-8.text-center.mr-2
+        i.fa-check.fas.text-green-500
+      = "Active Youth & Adults (#{@unit.members.status_active.count} members)"
+
+  li
+    = link_to "#",
+      class: "block px-4 py-2 hover:bg-stone-200 cursor-pointer" do
+      .inline-block.w-8.text-center.mr-2
+        i.fa-users.fas.text-brand-400
+      = "Active Adults (#{@unit.members.adult.status_active.count} members)"
+
+  li
+    = link_to "#",
+      class: "block px-4 py-2 hover:bg-stone-200 cursor-pointer" do
+      .inline-block.w-8.text-center.mr-2
+        i.fa-users.fas.text-brand-400              
+      = "Active Youth, Active Adults, Family & Friends (#{@unit.members.status_active.count + @unit.members.status_registered.count} members)"              
+
+  hr
+
+  - @unit.events.published.recent_and_future.rsvp_required.each do |event|
+    li
+      = link_to "#",
+        class: "block px-4 py-2 hover:bg-stone-200 cursor-pointer" do
+        .inline-block.w-8.text-center.mr-2
+          i.fa-calendar.fas.text-brand-400                
+        = "#{event.title} Attendees (#{event.rsvps.accepted.count} Members)"
+
+  - 0.times do |i|
+    li
+      = link_to "#",
+        class: "block px-4 py-2 hover:bg-stone-200 cursor-pointer" do
+        .inline-block.w-8.text-center.mr-2
+          i.fa-user.fas.text-brand-400              
+        = "Search result #{i + 1}"
