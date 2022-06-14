@@ -87,7 +87,7 @@
             = render partial: "messages"
 
         - if @current_member.admin?
-          .tab#member_rsvps
+          .hidden.tab#member_rsvps
             = render partial: "rsvps" if @rsvp_events.present?
 
     // footer, containing right-justified buttons

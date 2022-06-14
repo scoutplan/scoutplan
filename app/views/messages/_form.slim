@@ -9,15 +9,23 @@
         class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-400 disabled:text-stone-400 disabled:placeholder-stone-200"
 
     // TO
+    // these are form inputs corresponding to what's seen in the #search_results dropdown
     .hidden
-      = radio_button_tag :recipient_group, :active_youth_and_adults, true
-      = radio_button_tag :recipient_group, :active_adults
-      = radio_button_tag :recipient_group, :all_unit_members
+      = radio_button_tag :cohort, :demographic, data: { item_class: ".demographic-cohort-item" }
+      = radio_button_tag :cohort, :event_attendees, data: { item_class: ".event-attendee-cohort-item" }
+
+      = check_box_tag :active_youth_cohort,       true,  class: "cohort-selection demographic-cohort-item", data: { cohort_type: "demographic" }
+      = check_box_tag :active_adults_cohort,      true,  class: "cohort-selection demographic-cohort-item", data: { cohort_type: "demographic" }
+      = check_box_tag :family_and_friends_cohort, false, class: "cohort-selection demographic-cohort-item", data: { cohort_type: "demographic" }
+      = check_box_tag :include_digest,            true,  class: "cohort-selection demographic-cohort-item", data: { cohort_type: "demographic" }
+
+      - @unit.events.published.recent_and_future.rsvp_required.each do |event|
+        = radio_button_tag :event_cohort, "event_#{event.id}", class: "event-attendee-cohort-item", data: { cohort_type: "event_attendees" }
 
     = f.label :to, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
     .dropdown.relative
       = text_field_tag :direct_recipients,
-        "All Active Youth & Adults (#{@unit.members.status_active.count} members), ",
+        "Active Youth, Active Adults, Weekly Digest",
         placeholder: "Type member names",
         class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200"
 
@@ -30,6 +38,19 @@
       #search_results.dropdown-menu.absolute.bg-white.w-full.z-10.drop-shadow-lg.border.border-stone-100.overflow-auto
         = render partial: "search_results"
 
+    .mt-4.flex.flex-row.hidden
+      = label_tag :deliver_via, nil, class: "inline-block w-1/4"
+
+      .inline-block.w-3/4.flex.flex-row.gap-6
+        div      
+          = check_box_tag :email_and_text
+          = label_tag :email_and_text, nil, class: "ml-1"
+
+        div
+          = check_box_tag :newsletter
+          = label_tag :newsletter, nil, class: "ml-1"
+
+    // SUBJECT
     .mt-4
       = f.label :subject, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
       = f.text_field \
@@ -41,7 +62,7 @@
 
     .mt-4
       = f.label :message, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
-      = f.rich_text_area :body, class: "bg-white overflow-auto h-48"
+      = f.rich_text_area :body, class: "bg-white overflow-auto h-48 border border-stone-200"
 
   footer.flex.md:flex-row.mt-4.justify-between
     // LEFT SIDE
@@ -50,5 +71,5 @@
 
     div
     .flex.md:flex-row.gap-2
-      = link_to "Cancel", unit_messages_path(@unit), class: "w-full md:w-fit px-4 py-2 rounded bg-stone-100 text-stone-500 uppercase text-sm font-bold tracking-wider"
+      = link_to "Cancel", unit_messages_path(@unit), class: "w-full md:w-fit px-4 py-2 rounded bg-brand-100 text-brand-500 uppercase text-sm font-bold tracking-wider"
       = f.submit "Post Message", class: "w-full md:w-fit px-4 py-2 bg-brand-500 text-white rounded uppercase text-sm font-bold tracking-wider"

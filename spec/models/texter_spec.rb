@@ -28,6 +28,8 @@ RSpec.describe DigestTexter, type: :model do
     it "renders digest from template" do
       User.destroy_all
       member = FactoryBot.create(:unit_membership)
+      unit = member.unit
+      FactoryBot.create(:event, unit: unit, starts_at: 3.days.from_now, status: :published)
       FactoryBot.create(:event, unit: member.unit)
       texter = DigestTexter.new(member)
       body = texter.body
@@ -38,6 +40,8 @@ RSpec.describe DigestTexter, type: :model do
     it "sends" do
       User.destroy_all
       member = FactoryBot.create(:unit_membership)
+      unit = member.unit
+      FactoryBot.create(:event, unit: unit, starts_at: 3.days.from_now, status: :published)
       FactoryBot.create(:event, unit: member.unit)
       texter = DigestTexter.new(member)
       expect { texter.send_message }.not_to raise_exception
