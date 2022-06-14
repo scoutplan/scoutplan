@@ -27,10 +27,10 @@
       = text_field_tag :direct_recipients,
         "Active Youth, Active Adults, Weekly Digest",
         placeholder: "Type member names",
-        class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200"
+        class: "text-sm md:text-base w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200"
 
       // DROPDOWN GLYPH
-      .absolute.right-0.top-0.px-4.py-2.cursor-pointer.dropdown-button
+      .absolute.right-1.top-1.px-4.py-1.cursor-pointer.dropdown-button.bg-white
         .dropdown-button-chevron
           i.fa-chevron-down.fas
 
@@ -64,12 +64,12 @@
       = f.label :message, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
       = f.rich_text_area :body, class: "bg-white overflow-auto h-48 border border-stone-200"
 
-  footer.flex.md:flex-row.mt-4.justify-between
+  footer.flex.flex-col.md:flex-row.mt-4.justify-between.mb-2
     // LEFT SIDE
     div
-      = f.submit "Save Draft", class: "w-full md:w-fit pr-4 py-2 rounded uppercase text-brand-500 text-sm font-bold tracking-wider cursor-pointer"
+      = f.submit "Save Draft", class: "w-full md:w-fit pr-4 py-3 md:py-2 rounded uppercase text-brand-500 text-sm font-bold tracking-wider cursor-pointer"
 
     div
-    .flex.md:flex-row.gap-2
-      = link_to "Cancel", unit_messages_path(@unit), class: "w-full md:w-fit px-4 py-2 rounded bg-brand-100 text-brand-500 uppercase text-sm font-bold tracking-wider"
-      = f.submit "Post Message", class: "w-full md:w-fit px-4 py-2 bg-brand-500 text-white rounded uppercase text-sm font-bold tracking-wider"
+    .flex.flex-col.md:flex-row.gap-2
+      = link_to "Cancel", unit_messages_path(@unit), class: "text-center w-full md:w-fit px-4 py-3 md:py-2 rounded bg-brand-100 text-brand-500 uppercase text-sm font-bold tracking-wider"
+      = f.submit "Post Message", class: "w-full md:w-fit px-4 py-3 md:py-2 bg-brand-500 text-white rounded uppercase text-sm font-bold tracking-wider"
