@@ -73,5 +73,26 @@ describe "unit_memberships", type: :feature do
     # flash message
     # expect(page).to have_content(I18n.t("members.confirmations.create", member_name: member.full_display_name, unit_name: @unit.name))
   end
+
+  it "creates a member with an existing user" do
+    member = FactoryBot.create(:member)
+
+    visit unit_members_path(@unit)
+    click_link_or_button I18n.t("members.index.new_button_caption")
+
+    # fill in the new member form
+    fill_in "unit_membership_user_attributes_first_name", with: member.first_name
+    fill_in "unit_membership_user_attributes_last_name", with: member.last_name
+    fill_in "unit_membership_user_attributes_nickname", with: member.first_name
+    fill_in "unit_membership_user_attributes_email", with: member.email
+    choose "unit_membership_member_type_youth"
+    choose "unit_membership_status_active"
+    check "settings_communication_via_email"
+    check "settings_communication_via_sms"
+
+    # click the button
+    expect { click_link_or_button "Add This Member" }.to change { UnitMembership.all.count }.by 1
+    expect(page).to have_current_path unit_members_path(@unit)
+  end
 end
 # rubocop:enable Metrics/BlockLength
