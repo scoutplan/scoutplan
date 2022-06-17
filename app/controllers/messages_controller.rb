@@ -18,14 +18,17 @@ class MessagesController < UnitContextController
   def create
     @message = @unit.messages.new(message_params)
     @message.author = current_member
-    @message.status = "draft" if params[:commit] == "Save Draft" # < this is bogus
-    if @message.save!
-      redirect_to unit_messages_path(@unit), notice: "Message created"
+    case params[:commit]
+    when "Save Draft"
+      @message.status = "draft"
+    when "Post Message"
+      @message.status = "sent"
     end
+
+    redirect_to unit_messages_path(@unit), notice: "Message created" if @message.save!
   end
 
-  def edit
-  end
+  def edit; end
 
   private
 
