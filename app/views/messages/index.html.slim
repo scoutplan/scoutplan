@@ -15,20 +15,22 @@
       nav.tab-menu.mb-4
         ul
           li.inline-block
-            = link_to "Drafts", "#",
+            = link_to "Drafts", "#drafts",
               data: { tab_target: "#messages_drafts" },
               class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-500 hover:border-brand-500 uppercase font-bold text-sm tracking-wider"
 
           li.inline-block
-            = link_to "Sent", "#",
+            = link_to "Sent", "#sent",
               data: { tab_target: "#messages_sent" },
               class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider"
 
       .tabs
         .tab#messages_drafts
-          = render partial: "message", collection: @draft_messages
+          ul.divide-y.divide-stone-200
+            = render partial: "message", collection: @draft_messages
           = render partial: "empty" unless @draft_messages.present?
 
         .tab#messages_sent.hidden
-          = render partial: "message", collection: @sent_messages
+          ul
+            = render partial: "message", collection: @sent_messages
           = render partial: "empty" unless @sent_messages.present?

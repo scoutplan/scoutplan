@@ -1,0 +1,10 @@
+= link_to edit_unit_message_path(@unit, message),
+  class: "block p-2 hover:bg-stone-100",
+  data: { turbo_action: "advance" } do
+
+  .flex.flex-row.justify-between
+    div
+      = message.title
+
+    div
+      = t("time_ago", value: distance_of_time_in_words_to_now(message.updated_at))

@@ -22,6 +22,9 @@ class User < ApplicationRecord
             dependent: :destroy
 
   before_validation :check_email
+  before_validation :check_password
+
+  validates_presence_of :first_name, :last_name
 
   self.inheritance_column = nil
   enum type: { unknown: 0, youth: 1, adult: 2 }
@@ -66,5 +69,13 @@ class User < ApplicationRecord
 
   def self.generate_anonymous_email
     "anonymous-member-#{SecureRandom.hex(6)}@scoutplan.org"
+  end
+
+  def check_password
+    return if encrypted_password.present?
+
+    generated_password = Devise.friendly_token.first(8)
+    self.password = generated_password
+    self.password_confirmation = generated_password
   end
 end

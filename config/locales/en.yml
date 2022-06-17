@@ -52,6 +52,7 @@ en:
   rsvp_posted: "Your RSVP has been received"
   passwordless_warning: "You're logged in using a password-less \"magic link.\"  This link is valid until x/x/xx."
   see_below: "See below."
+  time_ago: "%{value} ago"
 
   global:
     cancel: "Cancel"

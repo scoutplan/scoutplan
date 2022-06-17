@@ -36,14 +36,23 @@ class UnitMembershipsController < ApplicationController
   end
 
   def create
-    generated_password = Devise.friendly_token.first(8)
+    find_or_create_user
+
     @member = @unit.memberships.new(member_params)
-    @member.status = :active
-    @member.user.password = @member.user.password_confirmation = generated_password
+    @member.user_id = @user.id
     return unless @member.save!
 
     flash[:notice] = t("members.confirmations.create", member_name: @member.full_display_name, unit_name: @unit.name)
     redirect_to unit_members_path(@unit)
+  end
+
+  def find_or_create_user
+    @user = User.create_with(
+      first_name: user_params[:first_name],
+      last_name: user_params[:last_name],
+      nickname: user_params[:nickname],
+      phone: user_params[:phone]
+    ).find_or_create_by!(email: user_params[:email])
   end
 
   def update
@@ -113,14 +122,18 @@ class UnitMembershipsController < ApplicationController
     @current_member = @unit.membership_for(current_user)
   end
 
-  # rubocop:disable Style/SymbolArray
   def member_params
     params.require(:unit_membership).permit(
       :status, :role, :member_type,
-      user_attributes: [:id, :first_name, :nickname, :last_name, :email, :phone],
       child_relationships_attributes: [:id, :child_unit_membership_id, :_destroy],
       parent_relationships_attributes: [:id, :_destroy]
     )
+  end
+
+  def user_params
+    params.require(:unit_membership).permit(
+      user_attributes: [:id, :first_name, :nickname, :last_name, :email, :phone]
+    )[:user_attributes]
   end
 
   def settings_params
@@ -128,5 +141,4 @@ class UnitMembershipsController < ApplicationController
       communication: [:via_email, :via_sms]
     )
   end
-  # rubocop:enable Style/SymbolArray
 end
