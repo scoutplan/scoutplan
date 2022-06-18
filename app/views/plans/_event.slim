@@ -14,6 +14,10 @@
   
   h3.font-bold.text-lg
     = event.title
+
+    - if event.draft?
+      .inline-block.px-2.py-1.text-xs.font-semibold.bg-sky-500.text-white.uppercase.tracking-wider.rounded.ml-2
+        = "Draft"
   
   = content_tag :p, event.short_description if event.short_description.present?
 
