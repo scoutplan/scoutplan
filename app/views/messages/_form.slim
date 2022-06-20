@@ -9,19 +9,6 @@
         class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-400 disabled:text-stone-400 disabled:placeholder-stone-200"
 
     // TO
-    // these are form inputs corresponding to what's seen in the #search_results dropdown
-    .hidden
-      = radio_button_tag :cohort, :demographic, data: { item_class: ".demographic-cohort-item" }
-      = radio_button_tag :cohort, :event_attendees, data: { item_class: ".event-attendee-cohort-item" }
-
-      = check_box_tag :active_youth_cohort,       true,  class: "cohort-selection demographic-cohort-item", data: { cohort_type: "demographic" }
-      = check_box_tag :active_adults_cohort,      true,  class: "cohort-selection demographic-cohort-item", data: { cohort_type: "demographic" }
-      = check_box_tag :family_and_friends_cohort, false, class: "cohort-selection demographic-cohort-item", data: { cohort_type: "demographic" }
-      = check_box_tag :include_digest,            true,  class: "cohort-selection demographic-cohort-item", data: { cohort_type: "demographic" }
-
-      - @unit.events.published.recent_and_future.rsvp_required.each do |event|
-        = radio_button_tag :event_cohort, "event_#{event.id}", class: "event-attendee-cohort-item", data: { cohort_type: "event_attendees" }
-
     = f.label :to, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
     .dropdown.relative
       = text_field_tag :direct_recipients,
@@ -35,7 +22,7 @@
           i.fa-chevron-down.fas
 
       // DROPDOWN MENU
-      #search_results.dropdown-menu.absolute.bg-white.w-full.z-10.drop-shadow-lg.border.border-stone-100.overflow-auto
+      .dropdown-menu.absolute.bg-white.w-full.z-10.drop-shadow-lg.border.border-stone-100.overflow-auto
         = render partial: "search_results"
 
     .mt-4.flex.flex-row.hidden
