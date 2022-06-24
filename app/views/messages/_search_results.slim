@@ -1,27 +1,50 @@
-div#recipient_groups
+div#recipient_groups.hidden
   = radio_button_tag :cohort, :demographic, true, data: { child_class: ".demographic-group-item" }
   = label_tag :cohort_demographic, "Demographic Groups"
 
   div.ml-6
-    = check_box_tag "demographic_cohorts[active_youth]", "active_youth", true, class: "displayable cohort-selection demographic-group-item", data: { cohort: "demographic", depends_on: "#cohort_demographic" }
-    = label_tag :demographic_cohorts_active_youth, "Active Youth"
+    = check_box_tag "demographic_cohorts[active_members]",
+      "active_members",
+      true,
+      class: "displayable cohort-selection demographic-group-item",
+      data: { cohort: "demographic",
+              depends_on: "#cohort_demographic",
+              adult_count: @unit.members.status_active.adult.count,
+              youth_count: @unit.members.status_active.youth.count }
+
+    = label_tag :demographic_cohorts_active_members, "Active Members"
 
     br
-    = check_box_tag "demographic_cohorts[active_adults]", "active_adults", true, class: "displayable cohort-selection demographic-group-item", data: { cohort: "demographic", depends_on: "#cohort_demographic" }
-    = label_tag :demographic_cohorts_active_adults, "Active Adults"
+    = check_box_tag "demographic_cohorts[family_and_friends]",
+      "family_and_friends",
+      false,
+      class: "displayable cohort-selection demographic-group-item",
+      data: { cohort: "demographic",
+              depends_on: "#cohort_demographic",
+              adult_count: @unit.members.status_registered.adult.count,
+              youth_count: @unit.members.status_registered.youth.count }
 
-    br
-    = check_box_tag "demographic_cohorts[family_and_friends]", "family_and_friends", false, class: "displayable cohort-selection demographic-group-item", data: { cohort: "demographic", depends_on: "#cohort_demographic" }
     = label_tag :demographic_cohorts_family_and_friends, "Family & Friends"
 
     br
-    = check_box_tag "demographic_cohorts[digest]", "digest", true, class: "displayable cohort-selection demographic-group-item", data: { cohort: "demographic", depends_on: "#cohort_demographic" }
+    = check_box_tag "demographic_cohorts[digest]",
+      "digest",
+      true,
+      class: "displayable cohort-selection demographic-group-item",
+      data: { cohort: "demographic",
+              depends_on: "#cohort_demographic" }
+
     = label_tag :demographic_cohorts_digest, "Weekly Digest"
 
   hr
 
   - @unit.events.published.recent_and_future.rsvp_required.each do |event|
-    = radio_button_tag :cohort, "event_#{event.id}", false, class: "displayable event-cohort-item"
+    = radio_button_tag :cohort, "event_#{event.id}",
+      false,
+      class: "displayable event-cohort-item",
+      data: { adult_count: event.rsvps.accepted.select { |r| r.member.adult? }.count,
+              youth_count: event.rsvps.accepted.select { |r| r.member.youth? }.count }
+
     = label_tag "cohort_event_#{event.id}", "#{event.title} Attendees"
     br
 
@@ -30,32 +53,17 @@ ul#search_results
   li
     = link_to "#",
       class: "demographic-cohort block px-4 py-2 hover:bg-stone-200 cursor-pointer",
-      data: { form_target: "#demographic_cohorts_active_youth" } do
+      data: { form_target: "#demographic_cohorts_active_members" } do
 
       .flex.flex-row.justify-between
         div
           .inline-block.w-8.text-center.mr-2
             i.fa-check.fas.text-green-500.selected-icon
             i.fa-users.fas.text-brand-400.deselected-icon.hidden
-          = "Active Youth"
+          = "Active Members"
 
         div.rounded.bg-stone-100.text-stone-700.p-1.text-xs.font-bold.tracking-wider
-          = "#{@unit.members.youth.status_active.count}"
-
-  li
-    = link_to "#",
-      class: "demographic-cohort block px-4 py-2 hover:bg-stone-200 cursor-pointer",
-      data: { form_target: "#demographic_cohorts_active_adults" } do
-
-      .flex.flex-row.justify-between
-        div
-          .inline-block.w-8.text-center.mr-2
-            i.fa-check.fas.text-green-500.selected-icon
-            i.fa-users.fas.text-brand-400.deselected-icon.hidden
-          = "Active Adults"
-
-        div.rounded.bg-stone-100.text-stone-700.p-1.text-xs.font-bold.tracking-wider
-          = "#{@unit.members.adult.status_active.count}"
+          = "#{@unit.members.status_active.count}"
 
   li
     = link_to "#",
@@ -121,11 +129,22 @@ ul#search_results
         = "Search result #{i + 1}"
 
 javascript:
-  document.querySelectorAll("#search_results a").forEach(function(elem) {
-    elem.addEventListener("click", function(event) {
-      searchResultClick(event);
-      event.preventDefault();
+  window.addEventListener("load", function() {
+    document.querySelectorAll("#search_results a").forEach(function(elem) {
+      elem.addEventListener("click", function(event) {
+        searchResultClick(event);
+        event.preventDefault();
+      });
     });
+
+    document.querySelectorAll(`input[name="member_type"]`).forEach(function(elem) {
+      elem.addEventListener("click", function(event) {
+        renderRecipientCount();
+      });
+    });
+
+    renderRecipientList();
+    renderRecipientCount();
   });
 
   // when the user clicks an item in the dropdown, we map that onto
@@ -153,13 +172,26 @@ javascript:
     // uncheck dependent items if needed
     document.querySelectorAll("input[data-depends-on").forEach(function(elem) {
       var dependedElem = document.querySelector(elem.dataset.dependsOn);
-      if (dependedElem.checked) { return; }
-      
-      elem.checked = false;
+      if (!dependedElem.checked) { elem.checked = false; }
     });
 
     renderRecipientList();
+    renderRecipientCount();
     syncMenuState();
+  }
+
+  function renderRecipientCount() {
+    var countElem = document.querySelector("#recipient_count");
+    var memberType = document.querySelector("input[name='member_type']:checked").value;
+    var count = 0;
+    document.querySelectorAll("#recipient_groups input:checked").forEach(function(elem) {
+      count = count + (parseInt(elem?.dataset?.adultCount) || 0);
+      if (memberType == "youth_and_adults") {
+        count = count + (parseInt(elem?.dataset?.youthCount) || 0);
+      }
+    });
+
+    countElem.innerText = `${count} recipient(s)`;
   }
 
   // make the dropdown menu reflect the form inputs
