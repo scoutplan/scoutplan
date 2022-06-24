@@ -1,46 +1,42 @@
 div#recipient_groups
-  = radio_button_tag :cohort_group, :demographic, true, data: { child_class: ".demographic-cohort-item" }
-  = label_tag :cohort_group_demographic, "Demographic Cohorts"
+  = radio_button_tag :cohort, :demographic, true, data: { child_class: ".demographic-group-item" }
+  = label_tag :cohort_demographic, "Demographic Groups"
 
   div.ml-6
-    = check_box_tag "demographic_cohorts[active_youth]", "active_youth", true, class: "displayable cohort-selection demographic-cohort-item", data: { cohort_type: "demographic" }
+    = check_box_tag "demographic_cohorts[active_youth]", "active_youth", true, class: "displayable cohort-selection demographic-group-item", data: { cohort: "demographic", depends_on: "#cohort_demographic" }
     = label_tag :demographic_cohorts_active_youth, "Active Youth"
 
     br
-    = check_box_tag "demographic_cohorts[active_adults]", "active_adults", true, class: "displayable cohort-selection demographic-cohort-item", data: { cohort_type: "demographic" }
+    = check_box_tag "demographic_cohorts[active_adults]", "active_adults", true, class: "displayable cohort-selection demographic-group-item", data: { cohort: "demographic", depends_on: "#cohort_demographic" }
     = label_tag :demographic_cohorts_active_adults, "Active Adults"
 
     br
-    = check_box_tag "demographic_cohorts[friends_and_family]", "friends_and_family", false, class: "displayable cohort-selection demographic-cohort-item", data: { cohort_type: "demographic" }
-    = label_tag :demographic_cohorts_family_and_friends, "Friends & Family"
+    = check_box_tag "demographic_cohorts[family_and_friends]", "family_and_friends", false, class: "displayable cohort-selection demographic-group-item", data: { cohort: "demographic", depends_on: "#cohort_demographic" }
+    = label_tag :demographic_cohorts_family_and_friends, "Family & Friends"
 
     br
-    = check_box_tag "demographic_cohorts[digest]", "digest", true, class: "displayable cohort-selection demographic-cohort-item", data: { cohort_type: "demographic" }
+    = check_box_tag "demographic_cohorts[digest]", "digest", true, class: "displayable cohort-selection demographic-group-item", data: { cohort: "demographic", depends_on: "#cohort_demographic" }
     = label_tag :demographic_cohorts_digest, "Weekly Digest"
 
   hr
 
-  br
-  = radio_button_tag :cohort_group, :event, false, data: { child_class: ".event-cohort-item" }
-  = label_tag :cohort_group_event, "Event Cohorts"
-
-  div.ml-6
-    - @unit.events.published.recent_and_future.rsvp_required.each do |event|
-      = radio_button_tag :event_cohort, "event_#{event.id}", false, class: "displayable event-cohort-item"
-      = label_tag "event_cohort_event_#{event.id}", "#{event.title} Attendees"
-      br
+  - @unit.events.published.recent_and_future.rsvp_required.each do |event|
+    = radio_button_tag :cohort, "event_#{event.id}", false, class: "displayable event-cohort-item"
+    = label_tag "cohort_event_#{event.id}", "#{event.title} Attendees"
+    br
 
 
 ul#search_results
   li
     = link_to "#",
       class: "demographic-cohort block px-4 py-2 hover:bg-stone-200 cursor-pointer",
-      data: { form_targets: "#demographic_cohorts_active_youth,#cohort_group_demographic" } do
+      data: { form_target: "#demographic_cohorts_active_youth" } do
 
       .flex.flex-row.justify-between
         div
           .inline-block.w-8.text-center.mr-2
-            i.fa-check.fas.text-green-500
+            i.fa-check.fas.text-green-500.selected-icon
+            i.fa-users.fas.text-brand-400.deselected-icon.hidden
           = "Active Youth"
 
         div.rounded.bg-stone-100.text-stone-700.p-1.text-xs.font-bold.tracking-wider
@@ -49,12 +45,13 @@ ul#search_results
   li
     = link_to "#",
       class: "demographic-cohort block px-4 py-2 hover:bg-stone-200 cursor-pointer",
-      data: { form_targets: "#demographic_cohorts_active_adults,#cohort_group_demographic" } do
+      data: { form_target: "#demographic_cohorts_active_adults" } do
 
       .flex.flex-row.justify-between
         div
           .inline-block.w-8.text-center.mr-2
-            i.fa-check.fas.text-green-500
+            i.fa-check.fas.text-green-500.selected-icon
+            i.fa-users.fas.text-brand-400.deselected-icon.hidden
           = "Active Adults"
 
         div.rounded.bg-stone-100.text-stone-700.p-1.text-xs.font-bold.tracking-wider
@@ -63,12 +60,13 @@ ul#search_results
   li
     = link_to "#",
       class: "demographic-cohort block px-4 py-2 hover:bg-stone-200 cursor-pointer",
-      data: { form_targets: "#demographic_cohorts_family_and_friends,#cohort_group_demographic" } do
+      data: { form_target: "#demographic_cohorts_family_and_friends" } do
 
       .flex.flex-row.justify-between
         div
           .inline-block.w-8.text-center.mr-2
-            i.fa-users.fas.text-brand-400              
+            i.fa-check.fas.text-green-500.selected-icon.hidden
+            i.fa-users.fas.text-brand-400.deselected-icon
           = "Family & Friends"              
 
         div.rounded.bg-stone-100.text-stone-700.p-1.text-xs.font-bold.tracking-wider
@@ -79,12 +77,13 @@ ul#search_results
   li
     = link_to "#",
       class: "block px-4 py-2 hover:bg-stone-200 cursor-pointer",
-      data: { form_targets: "#demographic_cohorts_digest,#cohort_group_demographic" } do
+      data: { form_target: "#demographic_cohorts_digest" } do
 
       .flex.flex-row.justify-between
         div
           .inline-block.w-8.text-center.mr-2
-            i.fa-check.fas.text-green-500           
+            i.fa-check.fas.text-green-500.selected-icon
+            i.fa-newspaper.fas.text-brand-400.deselected-icon.hidden
           = "Weekly Digest"
 
   hr
@@ -94,12 +93,13 @@ ul#search_results
     li
       = link_to "#",
         class: "block px-4 py-2 hover:bg-stone-200 cursor-pointer",
-        data: { form_targets: "#cohort_group_event,#event_cohort_event_#{event.id}" } do
+        data: { form_target: "#cohort_event_#{event.id}" } do
 
         .flex.flex-row.justify-between
           div
             .inline-block.w-8.text-center.mr-2
-              i.fa-calendar.fas.text-brand-400                
+              i.fa-check.fas.text-green-500.selected-icon.hidden
+              i.fa-calendar.fas.text-brand-400.deselected-icon
             = "#{event.title} Attendees"
 
           div
@@ -131,29 +131,58 @@ javascript:
   // when the user clicks an item in the dropdown, we map that onto
   // the hidden fields that'll actually get submitted
   function searchResultClick(event) {
-    var targetIds = event.currentTarget.dataset.formTargets.split(",");
-    targetIds.forEach(function(targetId) {
-      var targetElem = document.querySelector(targetId);
+    var formElemId = event.currentTarget.dataset?.formTarget;
+    var formElem = document.querySelector(formElemId);
 
-      switch(targetElem.type) {
-        case "checkbox":
-          targetElem.checked = !targetElem.checked;
-          break;
-        case "radio":
-          targetElem.checked = true;
-          break;
-        default:
-          break;
-      }
+    switch(formElem?.type) {
+      case "checkbox":
+        formElem.checked = !formElem.checked;
+        break;
+      case "radio":
+        formElem.checked = true;
+        break;
+      default:
+        break;
+    }
+
+    if (dependsOnId = formElem.dataset?.dependsOn) {
+      dependsOnElem = document.querySelector(dependsOnId);
+      dependsOnElem.checked = true;
+    }
+
+    // uncheck dependent items if needed
+    document.querySelectorAll("input[data-depends-on").forEach(function(elem) {
+      var dependedElem = document.querySelector(elem.dataset.dependsOn);
+      if (dependedElem.checked) { return; }
+      
+      elem.checked = false;
     });
 
     renderRecipientList();
+    syncMenuState();
+  }
+
+  // make the dropdown menu reflect the form inputs
+  function syncMenuState() {
+    document.querySelectorAll("*[data-form-target]").forEach(function(elem) {
+      var formTargetId = elem?.dataset?.formTarget;
+      var formTargetElem = document.querySelector(formTargetId);
+      var selectedIcon = elem.querySelector(".selected-icon");
+      var deselectedIcon = elem.querySelector(".deselected-icon");
+
+      if (formTargetElem?.checked) {
+        selectedIcon.classList.remove("hidden");
+        deselectedIcon.classList.add("hidden");
+      } else {
+        selectedIcon.classList.add("hidden");
+        deselectedIcon.classList.remove("hidden");
+      }
+    });
   }
 
   function renderRecipientList() {
-    var selectedDemographicGroupElem = document.querySelector("input[name='cohort_group']:checked");
-    var childSelectorClass = selectedDemographicGroupElem.dataset.childClass;
-    var childSelector = ".displayable" + childSelectorClass;
+    var selectedDemographicGroupElem = document.querySelector("input[name='cohort']:checked");
+    var childSelector = ".displayable";
     var textFieldElem = document.querySelector("#direct_recipients");
     var results = [];
     document.querySelectorAll(childSelector).forEach(function(elem) {
