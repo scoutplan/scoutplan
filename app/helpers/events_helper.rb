@@ -61,7 +61,7 @@ module EventsHelper
     if event.cancelled?
       pill_tag("Cancelled", "bg-red-500 text-white font-bold uppercase tracking-wider")
     elsif event.draft?
-      pill_tag("Draft", "bg-sky-500 text-white font-bold uppercase tracking-wider")
+      pill_tag("Draft", "bg-white text-sky-500 border border-sky-500 font-bold uppercase tracking-wider")
     end
   end
 
