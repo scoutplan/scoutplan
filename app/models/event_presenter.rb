@@ -77,7 +77,7 @@ class EventPresenter
     event.location || event.address
   end
 
-  def full_dates_to_s
+  def full_dates_to_s(show_year: false)
     return event.starts_at.strftime("%A, %-d %b %Y").html_safe if single_day?
 
     result = event.starts_at.in_time_zone(current_member.time_zone).strftime("%A")
@@ -93,6 +93,8 @@ class EventPresenter
       result += " "
       result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%-d")
     end
+
+    result += ", #{event.starts_at.strftime("%Y")}" if show_year
 
     result.html_safe
   end

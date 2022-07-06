@@ -4,5 +4,5 @@ class EventOrganizer < ApplicationRecord
   has_one :user, through: :unit_membership
   enum role: { organizer: "organizer", money: "money" }
   alias_attribute :member, :unit_membership
-  delegate :full_display_name, to: :user
+  delegate_missing_to :user
 end

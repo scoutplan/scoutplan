@@ -18,3 +18,8 @@
  trix-editor:empty:not(:focus)::before {
   color: #E7E5E4;
 }
+
+.trix-content a {
+  text-decoration: underline;
+  color: rgb(230, 100, 37);
+}
