@@ -69,6 +69,17 @@ class EventsController < UnitContextController
     )
   end
 
+  def render_event_brief
+    render(
+      locals: { },
+      pdf: "#{@event.title} Brief",
+      layout: "pdf",
+      encoding: "utf8",
+      orientation: "portrait",
+      margin: { top: 20, bottom: 20 }
+    )
+  end
+
   def calendar_events
     if params[:season] == "next"
       events = @unit.events.includes(:event_category).where(
@@ -90,6 +101,12 @@ class EventsController < UnitContextController
     @can_organize = policy(@event).organize?
     @current_family = @current_member.family
     page_title @event.unit.name, @event.title
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render_event_brief
+      end
+    end
   end
 
   # GET /units/:unit_id/events/:id/rsvp
