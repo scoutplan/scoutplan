@@ -1,5 +1,6 @@
 - family_member_ids = @current_member.family.map(&:id)
 - rsvps = @event.rsvps.where(unit_membership_id: family_member_ids)
+- @rsvps = rsvps
 - notes = rsvps.map(&:note).uniq.join(", ")
 
 .table.w-full
@@ -13,22 +14,23 @@
         = member_fields.fields_for "event_rsvp", rsvp do |rsvp_fields|
 
           // family member name
-          .table-cell.border-0.px-3.py-2.font-bold
+          .table-cell.border-0.pr-2.py-2.font-bold
             i.fa-user.fad.text-yellow-500
             |&nbsp;&nbsp;
             = @presenter.family_context_name(family_member)
+            = " (you)" if family_member == @current_member
 
           // two radio buttons (going/not going)
           .table-cell.px-3.py-2.border-0
             .inline.mr-6
-              = rsvp_fields.radio_button :response, :accepted, class: 'mr-1'
-              = rsvp_fields.label :response, :accepted, value: :accepted, class: 'inline' do
-                = t('rsvp_accepted')
+              = rsvp_fields.radio_button :response, :accepted, class: "mr-1 rsvp-option"
+              = rsvp_fields.label :response, :accepted, value: :accepted, class: "inline" do
+                = t("rsvp_accepted")
 
             .inline
-              = rsvp_fields.radio_button :response, :declined, class: 'mr-1'
-              = rsvp_fields.label :response, :declined, value: :declined, class: 'inline' do
-                = t('rsvp_declined')     
+              = rsvp_fields.radio_button :response, :declined, class: "mr-1 rsvp-option"
+              = rsvp_fields.label :response, :declined, value: :declined, class: "inline" do
+                = t("rsvp_declined")     
 
           - if @event.includes_activity
             .table-cell.px-3.py-2.border-0
@@ -40,5 +42,13 @@
   = text_field_tag :note,
     notes,
     class: "rounded p-2 block w-full placeholder-stone-300 text-sm border border-stone-200",
-    placeholder: t('events.rsvp.note_placeholder'),
-    autocomplete: 'off'
+    placeholder: t("events.rsvp.note_placeholder"),
+    autocomplete: "off"
+
+javascript:
+  document.querySelectorAll(".rsvp-option").forEach(function(elem) {
+    elem.addEventListener("click", function(event) {
+      var submitElem = document.querySelector("#accept");
+      submitElem.disabled = false;
+    });
+  });

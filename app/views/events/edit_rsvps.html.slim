@@ -32,7 +32,7 @@
 
       // first row: RSVP panel
       - if @event.requires_rsvp
-        section.bg-stone-100.rounded.p-4.mb-2
+        section.bg-stone-100.rounded.p-4.mb-2.mt-2.attention.border.border-yellow-200
           = render partial: "edit_rsvp_form", locals: { f: f }
 
       // date panel
@@ -45,38 +45,45 @@
 
       // third row: longform description, if present
       - if @event.description.present?
-        .flex.md:overflow-y-scroll.mt-4
+        section#long_description.bg-stone-100.p-4.mb-2.rounded
+          h4.mb-2.font-bold Notes
+          // .flex.md:overflow-y-scroll.mt-4
           == @event.description
 
       // footer, containing right-justified buttons
-      footer.pt-2.md:pt-4.pb-4.rounded.w-full.bg-white.sticky.bottom-0
+      footer.pt-2.md:pt-4.pb-4.rounded.w-full.bg-white.sticky.bottom-0.border-t.mt-4
         .flex.flex-col.md:flex-row.md:justify-between
 
           // left side (on desktop)
           .block
 
-
           // right side (on desktop)
           div.flex-auto.md:flex-none
 
             // Cancel button
-            = link_to t("global.cancel"),
+            = button_to t("global.nevermind"),
               unit_event_path(@event.unit, @event),
               class:  " text-sm font-bold no-underline tracking-wider uppercase text-center " \
                       " block md:inline-block" \
                       " px-4 py-2 mr-0 md:mr-2 mb-2 md:mb-0" \
-                      " bg-yellow-200 hover:bg-yellow-300" \
+                      " border border-yellow-600" \
                       " text-yellow-600 hover:text-yellow-700" \
-                      " rounded border border-yellow-200 hover:border-yellow-300" \
+                      " rounded" \
                       "",
               data: { turbo_action: "advance", turbo_frame: "main" }
 
+            - done_caption = @rsvps.present? ? "Update Your RSVPs" : t("events.edit_rsvps.captions.submit")
+
             // Done button
-            = f.submit t("events.edit_rsvps.captions.submit"),
+            = f.submit done_caption,
+              id: "accept",
               class: "text-sm font-bold no-underline tracking-wider uppercase text-center \
                       block md:inline-block \
                       w-full md:w-min \
                       px-4 py-2 \
                       bg-yellow-400 hover:bg-yellow-500 text-yellow-800 hover:text-yellow-900 \
+                      border border-yellow-400 \
+                      disabled:border-gray-100 disabled:bg-gray-100 disabled:text-gray-200 \
                       rounded",
-              data: { turbo_frame: "main", turbo_action: "restore" }
+              data: { turbo_frame: "main", turbo_action: "restore" },
+              disabled: true

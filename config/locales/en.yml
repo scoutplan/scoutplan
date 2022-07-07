@@ -62,7 +62,8 @@ en:
     done:   "Done"
     sign_in: "Sign In"
     sign_out: "Sign Out"
-    remember_me: "Stay signed in for two weeks"  
+    remember_me: "Stay signed in for two weeks"
+    nevermind: "Never Mind"
   
   main_nav:
     events:  "Schedule"
