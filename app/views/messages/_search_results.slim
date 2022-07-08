@@ -1,190 +1,110 @@
-div#recipient_groups.hidden
-  = radio_button_tag :cohort, :demographic, true, data: { child_class: ".demographic-group-item" }
-  = label_tag :cohort_demographic, "Demographic Groups"
+#search_results
+  div
+    .flex.flex-row.justify-between.p-2.hidden
+      div
+        = f.radio_button :recipients, :member_cohort
+        = f.label :recipient_member_cohort, "Members", class: "ml-2"
 
-  div.ml-6
-    = check_box_tag "demographic_cohorts[active_members]",
-      "active_members",
-      true,
-      class: "displayable cohort-selection demographic-group-item",
-      data: { cohort: "demographic",
-              depends_on: "#cohort_demographic",
-              adult_count: @unit.members.status_active.adult.count,
-              youth_count: @unit.members.status_active.youth.count }
+      div
 
-    = label_tag :demographic_cohorts_active_members, "Active Members"
-
-    br
-    = check_box_tag "demographic_cohorts[family_and_friends]",
-      "family_and_friends",
-      false,
-      class: "displayable cohort-selection demographic-group-item",
-      data: { cohort: "demographic",
-              depends_on: "#cohort_demographic",
-              adult_count: @unit.members.status_registered.adult.count,
-              youth_count: @unit.members.status_registered.youth.count }
-
-    = label_tag :demographic_cohorts_family_and_friends, "Family & Friends"
-
-    br
-    = check_box_tag "demographic_cohorts[digest]",
-      "digest",
-      true,
-      class: "displayable cohort-selection demographic-group-item",
-      data: { cohort: "demographic",
-              depends_on: "#cohort_demographic" }
-
-    = label_tag :demographic_cohorts_digest, "Weekly Digest"
-
-  hr
-
-  - @unit.events.published.recent_and_future.rsvp_required.each do |event|
-    = radio_button_tag :cohort, "event_#{event.id}",
-      false,
-      class: "displayable event-cohort-item",
-      data: { adult_count: event.rsvps.accepted.select { |r| r.member.adult? }.count,
-              youth_count: event.rsvps.accepted.select { |r| r.member.youth? }.count }
-
-    = label_tag "cohort_event_#{event.id}", "#{event.title} Attendees"
-    br
-
-
-ul#search_results
-  li
-    = link_to "#",
-      class: "demographic-cohort block px-4 py-2 hover:bg-stone-200 cursor-pointer",
-      data: { form_target: "#demographic_cohorts_active_members" } do
-
-      .flex.flex-row.justify-between
+    fieldset.dependent-fieldset(data-dependee-id="#message_recipients_member_cohort")
+      // ACTIVE MEMBERS
+      .flex.flex-row.justify-between.p-2
         div
-          .inline-block.w-8.text-center.mr-2
-            i.fa-check.fas.text-green-500.selected-icon
-            i.fa-users.fas.text-brand-400.deselected-icon.hidden
-          = "Active Members"
+          = check_box_tag "member_cohort[active]",
+            :active,
+            true,
+            data: { adult_count: @unit.members.status_active.adult.count,
+                    youth_count: @unit.members.status_active.youth.count },
+            class: "countable"
+
+          = label_tag :member_cohort_active, "Active Members", class: "ml-2"
 
         div.rounded.bg-stone-100.text-stone-700.p-1.text-xs.font-bold.tracking-wider
-          = "#{@unit.members.status_active.count}"
+            = "#{@unit.members.status_active.count}"
 
-  li
-    = link_to "#",
-      class: "demographic-cohort block px-4 py-2 hover:bg-stone-200 cursor-pointer",
-      data: { form_target: "#demographic_cohorts_family_and_friends" } do
-
-      .flex.flex-row.justify-between
+      // FRIENDS & FAMILY
+      .flex.flex-row.justify-between.p-2
         div
-          .inline-block.w-8.text-center.mr-2
-            i.fa-check.fas.text-green-500.selected-icon.hidden
-            i.fa-users.fas.text-brand-400.deselected-icon
-          = "Family & Friends"              
+          = check_box_tag "member_cohort[family_and_friends]",
+            :family_and_friends,
+            false,
+            data: { adult_count: @unit.members.status_registered.adult.count,
+                    youth_count: @unit.members.status_registered.youth.count },
+            class: "countable"
+
+          = label_tag :member_cohort_family_and_friends, "Family & Friends", class: "ml-2"
 
         div.rounded.bg-stone-100.text-stone-700.p-1.text-xs.font-bold.tracking-wider
           = "#{@unit.members.status_registered.count}"
-  
-  hr
 
-  li
-    = link_to "#",
-      class: "block px-4 py-2 hover:bg-stone-200 cursor-pointer",
-      data: { form_target: "#demographic_cohorts_digest" } do
+    hr
 
-      .flex.flex-row.justify-between
+    // EVENTS
+    - @unit.events.published.recent_and_future.rsvp_required.each do |event|
+      .flex.flex-row.justify-between.p-2
         div
-          .inline-block.w-8.text-center.mr-2
-            i.fa-check.fas.text-green-500.selected-icon
-            i.fa-newspaper.fas.text-brand-400.deselected-icon.hidden
-          = "Weekly Digest"
+          = f.radio_button :recipients,
+            "event_#{event.id}_attendees",
+            data: { adult_count: event.rsvps.accepted.select { |r| r.member.adult? }.count,
+                    youth_count: event.rsvps.accepted.select { |r| r.member.youth? }.count },
+            class: "countable"                
 
-  hr
+          = f.label "recipients_event_#{event.id}_attendees", "#{event.title} Attendees", class: "ml-2"
 
-  // EVENTS
-  - @unit.events.published.recent_and_future.rsvp_required.each do |event|
-    li
-      = link_to "#",
-        class: "block px-4 py-2 hover:bg-stone-200 cursor-pointer",
-        data: { form_target: "#cohort_event_#{event.id}" } do
+        div
+          .inline-block.text-xs
+            - if event.starts_at.future?
+              = " (#{distance_of_time_in_words_to_now(event.starts_at)} from now)"
+            - else
+              = " (#{distance_of_time_in_words_to_now(event.starts_at)} ago)"
 
-        .flex.flex-row.justify-between
-          div
-            .inline-block.w-8.text-center.mr-2
-              i.fa-check.fas.text-green-500.selected-icon.hidden
-              i.fa-calendar.fas.text-brand-400.deselected-icon
-            = "#{event.title} Attendees"
-
-          div
-            .inline-block.text-xs
-              - if event.starts_at.future?
-                = " (#{distance_of_time_in_words_to_now(event.starts_at)} from now)"
-              - else
-                = " (#{distance_of_time_in_words_to_now(event.starts_at)} ago)"
-
-            .inline-block.rounded.bg-stone-100.text-stone-700.p-1.text-xs.font-bold.tracking-wider.ml-2
-              = "#{event.rsvps.accepted.count}"
-
-  - 0.times do |i|
-    li
-      = link_to "#",
-        class: "block px-4 py-2 hover:bg-stone-200 cursor-pointer" do
-        .inline-block.w-8.text-center.mr-2
-          i.fa-user.fas.text-brand-400              
-        = "Search result #{i + 1}"
+          .inline-block.rounded.bg-stone-100.text-stone-700.p-1.text-xs.font-bold.tracking-wider.ml-2
+            = "#{event.rsvps.accepted.count}"
 
 javascript:
-  window.addEventListener("load", function() {
-    document.querySelectorAll("#search_results a").forEach(function(elem) {
-      elem.addEventListener("click", function(event) {
-        searchResultClick(event);
-        event.preventDefault();
-      });
+
+
+
+  // Iterate over all dependent fieldsets and see if their corresponding dependee elements
+  // are selected. If not, then deselect all inputs in the fieldset
+  function deselectDependentFieldsets() {
+    document.querySelectorAll(".dependent-fieldset").forEach(function(fieldsetElem) {
+      var dependeeElem = findFieldsetDependee(fieldsetElem);
+      if (dependeeElem.checked) { return; }
+
+      deselectFieldset(fieldsetElem);
     });
+  }  
 
-    document.querySelectorAll(`input[name="member_type"]`).forEach(function(elem) {
-      elem.addEventListener("click", function(event) {
-        renderRecipientCount();
-      });
-    });
-
-    renderRecipientList();
-    renderRecipientCount();
-  });
-
-  // when the user clicks an item in the dropdown, we map that onto
-  // the hidden fields that'll actually get submitted
-  function searchResultClick(event) {
-    var formElemId = event.currentTarget.dataset?.formTarget;
-    var formElem = document.querySelector(formElemId);
-
-    switch(formElem?.type) {
-      case "checkbox":
-        formElem.checked = !formElem.checked;
-        break;
-      case "radio":
-        formElem.checked = true;
-        break;
-      default:
-        break;
-    }
-
-    if (dependsOnId = formElem.dataset?.dependsOn) {
-      dependsOnElem = document.querySelector(dependsOnId);
-      dependsOnElem.checked = true;
-    }
-
-    // uncheck dependent items if needed
-    document.querySelectorAll("input[data-depends-on").forEach(function(elem) {
-      var dependedElem = document.querySelector(elem.dataset.dependsOn);
-      if (!dependedElem.checked) { elem.checked = false; }
-    });
-
-    renderRecipientList();
-    renderRecipientCount();
-    syncMenuState();
+  // given a fieldset, return the input it depends on
+  function findFieldsetDependee(fieldsetElem) {
+    var dependeeId = fieldsetElem.dataset.dependeeId;
+    return document.querySelector(dependeeId);
   }
+
+  // deselect all checkboxes in a given fieldset
+  function deselectFieldset(fieldsetElem) {
+    fieldsetElem.querySelectorAll("input").forEach(function(elem) {
+      elem.checked = false;
+    });
+  }
+
+  // dependent fieldsets contain inputs whose values are linked to another "parent" input value,
+  // forming nested input structures. This block sets up the event handlers for them.
+  function selectDependee(event) {
+    if (!event.target.checked) { return; }
+
+    var fieldsetElem = event.target.closest(".dependent-fieldset");
+    var dependeeElem = findFieldsetDependee(fieldsetElem);
+    dependeeElem.checked = true;
+  }  
 
   function renderRecipientCount() {
     var countElem = document.querySelector("#recipient_count");
     var memberType = document.querySelector("input[name='member_type']:checked").value;
     var count = 0;
-    document.querySelectorAll("#recipient_groups input:checked").forEach(function(elem) {
+    document.querySelectorAll("input.countable:checked").forEach(function(elem) {
       count = count + (parseInt(elem?.dataset?.adultCount) || 0);
       if (memberType == "youth_and_adults") {
         count = count + (parseInt(elem?.dataset?.youthCount) || 0);
@@ -194,33 +114,49 @@ javascript:
     countElem.innerText = `${count} recipient(s)`;
   }
 
-  // make the dropdown menu reflect the form inputs
-  function syncMenuState() {
-    document.querySelectorAll("*[data-form-target]").forEach(function(elem) {
-      var formTargetId = elem?.dataset?.formTarget;
-      var formTargetElem = document.querySelector(formTargetId);
-      var selectedIcon = elem.querySelector(".selected-icon");
-      var deselectedIcon = elem.querySelector(".deselected-icon");
-
-      if (formTargetElem?.checked) {
-        selectedIcon.classList.remove("hidden");
-        deselectedIcon.classList.add("hidden");
-      } else {
-        selectedIcon.classList.add("hidden");
-        deselectedIcon.classList.remove("hidden");
-      }
-    });
+  // called whenever a recipient <input> is clicked
+  function searchResultClick(event) {
+    var inputElem = event.target;
+    if (inputElem.closest(".dependent-fieldset")) {
+      selectDependee(event);
+    } else {
+      deselectDependentFieldsets();
+    }
+    renderRecipientList();
+    renderRecipientCount();
+    hideSearchResults();
   }
 
+  function hideSearchResults() {
+    document.querySelector("#search_results").closest(".dropdown").classList.remove("menu-open");
+  }
+
+  // given an input, find its corresponding label
+  function labelForInput(inputElem) {
+    var inputElemId = inputElem.id;
+    var selector = `label[for="${inputElemId}"]`;
+    var labelElem = document.querySelector(selector);
+    return labelElem;
+  }
+
+  // given an input, return the text of its corresponding label
+  function labelTextForInput(inputElem) {
+    var labelElem = labelForInput(inputElem);
+    var result = labelElem?.innerText;
+    return result;
+  }
+
+  // figure out who's selected and display it in the text field
   function renderRecipientList() {
     var selectedDemographicGroupElem = document.querySelector("input[name='cohort']:checked");
-    var childSelector = ".displayable";
+    var childSelector = "input.countable:checked";
     var textFieldElem = document.querySelector("#direct_recipients");
     var results = [];
+    
     document.querySelectorAll(childSelector).forEach(function(elem) {
-      if (elem.checked) {
+      // if (elem.checked) {
         results.push(labelTextForInput(elem));
-      }
+      // }
     });
     
     resultText = results.join(", ");
@@ -232,17 +168,24 @@ javascript:
       textFieldElem.value = "Select one or more recipient groups";
       gValidRecipient = false;
     }
-  }
+  }  
 
-  function labelForInput(inputElem) {
-    var inputElemId = inputElem.id;
-    var selector = `label[for="${inputElemId}"]`;
-    var labelElem = document.querySelector(selector);
-    return labelElem;
-  }
+  window.addEventListener("load", function() {
+    // set up listeners on all <input> tags
+    document.querySelectorAll("#search_results input").forEach(function(elem) {
+      elem.addEventListener("click", function(event) {
+        searchResultClick(event);
+      });
+    });
 
-  function labelTextForInput(inputElem) {
-    var labelElem = labelForInput(inputElem);
-    var result = labelElem?.innerText;
-    return result;
-  }
+    // set up listener on All/Adults Only radios
+    document.querySelectorAll("input[name='member_type']").forEach(function(elem) {
+      elem.addEventListener("click", function(event) {
+        renderRecipientCount();
+      })
+    });
+
+    // populate the UI
+    renderRecipientCount();
+    renderRecipientList();
+  });

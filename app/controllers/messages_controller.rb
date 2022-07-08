@@ -3,7 +3,8 @@
 # Controller for sending messages. Interfaces between
 # UI and *Notifier classes (e.g. MemberNotifier)
 class MessagesController < UnitContextController
-  before_action :find_message, except: [ :index, :new, :create ]
+  before_action :find_message, except: [:index, :new, :create]
+  after_action :send_message, only: [:create, :update]
 
   def index
     @draft_messages = current_member.messages.draft
@@ -12,7 +13,7 @@ class MessagesController < UnitContextController
 
   def new
     authorize current_member.messages.new
-    @message = current_member.messages.new
+    @message = current_member.messages.new(recipients: "member_cohort")
   end
 
   def create
@@ -22,7 +23,7 @@ class MessagesController < UnitContextController
     when "Save Draft"
       @message.status = "draft"
     when "Post Message"
-      @message.status = "sent"
+      @message.status = "queued"
     end
 
     redirect_to unit_messages_path(@unit), notice: "Message created" if @message.save!
@@ -31,6 +32,12 @@ class MessagesController < UnitContextController
   def edit; end
 
   private
+
+  def send_message
+    return unless @message.queued?
+
+    SendMessageJob.perform_later(@message)
+  end
 
   def message_params
     params.require(:message).permit(:title, :body)

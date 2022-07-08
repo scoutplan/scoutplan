@@ -9,7 +9,8 @@ class Message < ApplicationRecord
   has_one :unit, through: :author
   # has_many :message_recipients
   alias_attribute :member, :unit_membership
-  enum status: { draft: 0, sent: 1, archived: 2 }
+  enum status: { draft: 0, queued: 1, sent: 2 }
+  validates_presence_of :title
 
   # # generate a list of actual members who'll receive this message
   # def resolve_recipients
