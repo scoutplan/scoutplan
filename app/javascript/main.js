@@ -40,7 +40,7 @@ document.addEventListener("turbo:load", function() {
   document.querySelectorAll('.dropdown-menu a').forEach(function(linkElem) {
     linkElem.addEventListener('click', function(event) {
       document.querySelectorAll('.dropdown').forEach(function(elem) {
-        elem.classList.remove(`menu-open`);
+        elem.classList.remove("menu-open");
       })
     });
   });

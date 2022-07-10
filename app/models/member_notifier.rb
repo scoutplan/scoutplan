@@ -33,6 +33,9 @@ class MemberNotifier < ApplicationNotifier
     send_text  { |recipient| DailyReminderTexter.new(recipient).send_message }
   end
 
+  def send_message(message)
+  end
+
   private
 
   # should member receive daily reminders?

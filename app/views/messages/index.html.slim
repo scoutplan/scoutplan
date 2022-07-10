@@ -15,9 +15,11 @@
       nav.tab-menu.mb-4
         ul
           li.inline-block
-            = link_to "Drafts", "#drafts",
+            = link_to "#drafts",
               data: { tab_target: "#messages_drafts" },
-              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-500 hover:border-brand-500 uppercase font-bold text-sm tracking-wider"
+              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-500 hover:border-brand-500 uppercase font-bold text-sm tracking-wider" do
+
+              = "Drafts (#{@draft_messages.count})"
 
           li.inline-block
             = link_to "Sent", "#sent",
@@ -26,11 +28,11 @@
 
       .tabs
         .tab#messages_drafts
-          ul.divide-y.divide-stone-200
+          table.w-full
             = render partial: "message", collection: @draft_messages
           = render partial: "empty" unless @draft_messages.present?
 
         .tab#messages_sent.hidden
-          ul
+          table.w-full
             = render partial: "message", collection: @sent_messages
           = render partial: "empty" unless @sent_messages.present?

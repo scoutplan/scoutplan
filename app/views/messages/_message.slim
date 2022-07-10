@@ -1,10 +1,23 @@
-= link_to edit_unit_message_path(@unit, message),
-  class: "block p-2 hover:bg-stone-100",
-  data: { turbo_action: "advance" } do
-
-  .flex.flex-row.justify-between
-    div
+tr.hover:bg-stone-100
+  td
+    = link_to edit_unit_message_path(@unit, message),
+      class: "block p-2",
+      data: { turbo_action: "advance" } do
       = message.title
+  td
+    = link_to edit_unit_message_path(@unit, message),
+      class: "block p-2",
+      data: { turbo_action: "advance" } do
+      = recipients_to_s(message)
 
-    div
+  td
+    = link_to edit_unit_message_path(@unit, message),
+      class: "block p-2",
+      data: { turbo_action: "advance" } do
+      = message.member_type == "adults_only" ? "Only Adults" : "Youth & Adults"
+
+  td
+    = link_to edit_unit_message_path(@unit, message),
+      class: "block p-2",
+      data: { turbo_action: "advance" } do
       = t("time_ago", value: distance_of_time_in_words_to_now(message.updated_at))
