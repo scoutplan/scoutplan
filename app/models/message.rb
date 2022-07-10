@@ -2,39 +2,24 @@
 
 # represents a communication from a person to one or more recipients
 class Message < ApplicationRecord
-  # presentation attributes
-  attr_accessor :recipients
-
   belongs_to :author, class_name: "UnitMembership"
   has_one :unit, through: :author
-  # has_many :message_recipients
-  alias_attribute :member, :unit_membership
-  enum status: { draft: 0, queued: 1, sent: 2 }
+
   validates_presence_of :title
 
-  # # generate a list of actual members who'll receive this message
-  # def resolve_recipients
-  #   find_unit
-  #   recipients = []
-  #   recipients << @unit.members.status_active if target_active_members
-  #   recipients << @unit.members.status_registered if target_supporters
-  #   recipients = recipients.select(&:adult?) if target_adults_only
-  #   recipients << @unit.members.where("id IN ?", target_member_ids)
+  alias_attribute :member, :unit_membership
 
-  #   # make sure active parent(s) are copied when addressing youths
-  #   recipients.each do |recipient|
-  #     next unless recipient.youth?
+  enum status: { draft: 0, queued: 1, sent: 2 }
 
-  #     recipient.parent_relationships.each do |parent|
-  #       next unless parent.active?
+  serialize :recipient_details, Array
 
-  #       recipients << parent
-  #     end
-  #   end
+  def event_cohort?
+    recipients =~ /event_([0-9]+)_attendees/
+  end
 
-  #   # finally, de-dupe the list and return it
-  #   recipients.uniq
-  # end
+  def member_cohort?
+    !event_cohort?
+  end
 
   private
 

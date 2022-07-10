@@ -1,4 +1,8 @@
-= form_with model: @message, url: unit_messages_path(@unit) do |f|
+= form_with model: @message,
+            url: @message.new_record? ? unit_messages_path(@unit) : unit_message_path(@unit, @message),
+            method: @message.new_record? ? "post" : "patch",
+            data: { turbo_action: "advance" } do |f|
+
   section.bg-stone-100.py-4.px-4.md:px-8.mb-1.rounded
     // FROM
     .mb-4
@@ -6,44 +10,43 @@
       = text_field_tag :from_address,
         @unit.settings(:communication).from_email,
         disabled: true,
-        class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-400 disabled:text-stone-400 disabled:placeholder-stone-200"
+        class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-400 disabled:text-stone-400 disabled:placeholder-stone-200"      
 
     // TO
-    = f.label :groups, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
-    .dropdown.relative
-      = text_field_tag :direct_recipients,
-        "Loading...",
-        placeholder: "Type member names",
-        class: "text-sm md:text-base w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200"
+    .mb-4
+      = f.label :groups, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
+      .dropdown.relative
+        = text_field_tag :direct_recipients,
+          "Loading...",
+          placeholder: "Type member names",
+          class: "text-sm md:text-base w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200"
 
-      // DROPDOWN GLYPH
-      .absolute.right-1.top-1.px-4.py-1.cursor-pointer.dropdown-button.bg-white
-        .dropdown-button-chevron
-          i.fa-chevron-down.fas
+        // DROPDOWN GLYPH
+        .absolute.right-1.top-1.px-4.py-1.cursor-pointer.dropdown-button.bg-white
+          .dropdown-button-chevron
+            i.fa-chevron-down.fas
 
-      // DROPDOWN MENU
-      .dropdown-menu.absolute.bg-white.w-full.z-10.drop-shadow-lg.border.border-stone-100.overflow-auto
-        = render partial: "search_results", locals: { f: f }
+        // DROPDOWN MENU
+        .dropdown-menu.absolute.bg-white.w-full.z-10.drop-shadow-lg.border.border-stone-100.overflow-auto
+          = render partial: "search_results", locals: { f: f }
+
+      #recipient_count.text-sm.mt-1.text-stone-400
 
     // MEMBER TYPES
-    .mt-4
+    .mb-4
       .flex.flex-col.md:flex-row.justify-between
         div
           = label_tag :member_types, "Send to", class: "inline-block uppercase font-bold text-sm tracking-wider"
           .inline-block.flex.flex-row.gap-6
             div      
-              = radio_button_tag :member_type, :youth_and_adults, true
-              = label_tag :member_type_youth_and_adults, "Youth & Adults", class: "ml-2"
+              = f.radio_button :member_type, :youth_and_adults
+              = label_tag :message_member_type_youth_and_adults, "Youth & Adults", class: "ml-2"
 
             div      
-              = radio_button_tag :member_type, :adults_only
-              = label_tag :member_type_adults_only, "Only Adults", class: "ml-2"
+              = f.radio_button :member_type, :adults_only
+              = label_tag :message_member_type_adults_only, "Only Adults", class: "ml-2"
 
-        div.pt-6
-          #recipient_count
-            = ""
-
-    .mt-4.flex.flex-row.hidden
+    .mb-4.flex.flex-row.hidden
       = label_tag :deliver_via, nil, class: "inline-block w-1/4"
 
       .inline-block.w-3/4.flex.flex-row.gap-6
@@ -53,7 +56,7 @@
 
         div
           = check_box_tag :newsletter
-          = label_tag :newsletter, nil, class: "ml-1"
+          = label_tag :newsletter, nil, class: "ml-1"      
 
     // SUBJECT
     .mt-4
@@ -69,7 +72,7 @@
       = f.label :message, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
       = f.rich_text_area :body, class: "bg-white overflow-auto h-48 border border-stone-200"
 
-  footer.flex.flex-col.md:flex-row.mt-4.justify-between.mb-2
+  footer.flex.flex-col.md:flex-row.mt-4.justify-between.mb-2.bottom-0.sticky.bg-white.border-t.py-4
     // LEFT SIDE
     div
       = f.submit "Save Draft", class: "w-full md:w-fit pr-4 py-3 md:py-2 rounded uppercase text-brand-500 text-sm font-bold tracking-wider cursor-pointer"
@@ -82,3 +85,10 @@
         data: { turbo_action: "advance" }
 
       = f.submit "Send Message", class: "w-full md:w-fit px-4 py-3 md:py-2 bg-brand-500 text-white rounded uppercase text-sm font-bold tracking-wider"
+
+- if !@message.new_record?
+  - service = MessageService.new(@message)
+  h3.font-bold Recipients
+  ol
+    - service.resolve_members.each do |member|
+      li = member.full_display_name
