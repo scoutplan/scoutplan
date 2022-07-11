@@ -2,22 +2,23 @@ li.hover:bg-stone-100
   = link_to edit_unit_message_path(@unit, message),
       class: "block p-2",
       data: { turbo_action: "advance" } do
-    .flex.flex-row.justify-between.w-full
-      // LEFT
-      div.truncate
-        div
-          = recipients_to_s(message)
-          | &nbsp;
-          - if message.member_type == "adults_only"
-            .inline-block.text-xs.rounded.p-1.bg-pink-500.text-white.uppercase.tracking-wider.font-bold
-              | Adults           
 
-        div.font-bold
-          = message.title
+      .flex.flex-row.justify-between.w-full
+        // LEFT
+        div.truncate
+          div
+            = recipients_to_s(message)
+            | &nbsp;
+            - if message.member_type == "adults_only"
+              .inline-block.text-xs.rounded.p-1.bg-pink-500.text-white.uppercase.tracking-wider.font-bold
+                | Adults           
 
-        div.text-stone-400.truncate.line-clamp-1
-          == message.body
+          div.font-bold
+            = message.title
 
-      // RIGHT
-      div.whitespace-nowrap
-        = t("time_ago", value: distance_of_time_in_words_to_now(message.updated_at))
+          div.text-stone-400.truncate.line-clamp-1
+            = strip_tags(message.body)
+
+        // RIGHT
+        div.whitespace-nowrap
+          = t("time_ago", value: distance_of_time_in_words_to_now(message.updated_at))
