@@ -34,6 +34,7 @@ gem "pundit"
 gem "rack-attack"
 gem "rack-cors"
 gem "rails", "~> 7.0.0"
+gem "rails-html-sanitizer", ">= 1.4.3"
 gem "remote_syslog_logger"
 gem "rexml"
 gem "rubocop", require: false

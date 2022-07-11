@@ -34,6 +34,7 @@ class MemberNotifier < ApplicationNotifier
   end
 
   def send_message(message)
+    send_email { |recipient| MemberMailer.with(member: recipient, message_id: message.id).message_email.deliver_later }
   end
 
   private

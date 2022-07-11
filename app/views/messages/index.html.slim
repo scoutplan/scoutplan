@@ -28,11 +28,11 @@
 
       .tabs
         .tab#messages_drafts
-          table.w-full
+          ul.divide-y
             = render partial: "message", collection: @draft_messages
           = render partial: "empty" unless @draft_messages.present?
 
         .tab#messages_sent.hidden
-          table.w-full
+          ul.divide-y
             = render partial: "message", collection: @sent_messages
           = render partial: "empty" unless @sent_messages.present?

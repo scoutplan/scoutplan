@@ -283,7 +283,7 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.4.2)
+    rails-html-sanitizer (1.4.3)
       loofah (~> 2.3)
     railties (7.0.3)
       actionpack (= 7.0.3)
@@ -475,6 +475,7 @@ DEPENDENCIES
   rack-cors
   rack-mini-profiler (~> 2.3)
   rails (~> 7.0.0)
+  rails-html-sanitizer (>= 1.4.3)
   remote_syslog_logger
   rexml
   rspec-rails (~> 5.0)
