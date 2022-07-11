@@ -20,6 +20,8 @@ class SendMessageJob < ApplicationJob
   end
 
   def send_to_member(member)
+    return unless Flipper.enabled? :messages, member
+
     MemberNotifier.new(member).send_message(@message)
   end
 
