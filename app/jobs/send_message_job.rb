@@ -5,6 +5,8 @@ class SendMessageJob < ApplicationJob
   queue_as :default
 
   def perform(message)
+    return unless message.send_now?
+
     @message = message
     @members = MessageService.new(@message).resolve_members
     send_to_members

@@ -11,7 +11,7 @@ li.hover:bg-stone-100
             | &nbsp;
             - if message.member_type == "adults_only"
               .inline-block.text-xs.rounded.p-1.bg-pink-500.text-white.uppercase.tracking-wider.font-bold
-                | Adults           
+                | Adults
 
           div.font-bold
             = message.title
@@ -21,4 +21,9 @@ li.hover:bg-stone-100
 
         // RIGHT
         div.whitespace-nowrap
-          = t("time_ago", value: distance_of_time_in_words_to_now(message.updated_at))
+          - if message.send_at&.future?
+            i.fa-clock.fas.text-stone-500
+            | &nbsp;
+            = "Will send on #{message.send_at.strftime('%b %d')}"
+          - else
+            = t("time_ago", value: distance_of_time_in_words_to_now(message.updated_at))
