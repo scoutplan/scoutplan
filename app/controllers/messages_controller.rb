@@ -7,7 +7,7 @@ class MessagesController < UnitContextController
 
   def index
     @draft_messages  = current_member.messages.draft
-    @sent_messages   = current_member.messages.sent
+    @sent_messages   = current_member.messages.sent.order("updated_at DESC")
     @queued_messages = current_member.messages.queued
   end
 

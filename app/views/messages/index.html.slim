@@ -39,14 +39,19 @@
         .tab#messages_drafts
           ul.divide-y
             = render partial: "message", collection: @draft_messages
-          = render partial: "empty" unless @draft_messages.present?
+          = render partial: "empty", locals: { message_type: "draft" } unless @draft_messages.present?
 
         .tab#messages_queued.hidden
           ul.divide-y
             = render partial: "message", collection: @queued_messages
-          = render partial: "empty" unless @queued_messages.present?
+          = render partial: "empty", locals: { message_type: "queued" } unless @queued_messages.present?
 
         .tab#messages_sent.hidden
           ul.divide-y
             = render partial: "message", collection: @sent_messages
-          = render partial: "empty" unless @sent_messages.present?
+          = render partial: "empty", locals: { message_type: "sent" } unless @sent_messages.present?
+
+css:
+  .message.older {
+    display: none;
+  }
