@@ -50,7 +50,7 @@ describe "events", type: :feature do
       expect(cal_event.url.to_s).not_to be_empty
     end
 
-    it "excludes cancelled and draft events for admins" do
+    it "includes cancelled and draft events for admins" do
       @unit.events.destroy_all
       FactoryBot.create( \
         :event,
@@ -84,7 +84,7 @@ describe "events", type: :feature do
       visit(calendar_feed_unit_events_path(@unit, magic_link.token))
       cals = Icalendar::Calendar.parse(page.body)
       cal = cals.first
-      expect(cal.events.count).to eq(1)
+      expect(cal.events.count).to eq(3)
     end
   end
 end
