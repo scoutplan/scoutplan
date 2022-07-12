@@ -33,8 +33,8 @@ class MemberNotifier < ApplicationNotifier
     send_text  { |recipient| DailyReminderTexter.new(recipient).send_message }
   end
 
-  def send_message(message)
-    send_email { |recipient| MemberMailer.with(member: recipient, message_id: message.id).message_email.deliver_later }
+  def send_message(message, preview: false)
+    send_email { |recipient| MemberMailer.with(member: recipient, message_id: message.id, preview: preview).message_email.deliver_later }
   end
 
   private
