@@ -42,12 +42,19 @@ class MessagesController < UnitContextController
     when "Save Draft"
       @message.update(status: :draft)
       @notice = "Draft message saved"
+    when "Send Preview"
+      send_preview
+      @notice = "Preview sent"
     when "Send Message"
       @message.update(status: :queued)
       @notice = @message.send_now? ? "Message sent" : "Message queued to send later"
     end
 
     SendMessageJob.perform_later(@message) if @message.queued?
+  end
+
+  def send_preview
+    MemberNotifier.new(@current_member).send_message(@message, preview: true)
   end
 
   def message_params
