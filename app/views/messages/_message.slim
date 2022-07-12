@@ -1,29 +1,29 @@
 li.hover:bg-stone-100
   = link_to edit_unit_message_path(@unit, message),
-      class: "block p-2",
-      data: { turbo_action: "advance" } do
+    class: "block p-2 message #{message.updated_at < 4.weeks.ago ? 'older' : 'current' }",
+    data: { turbo_action: "advance" } do
 
-      .flex.flex-row.justify-between.w-full
-        // LEFT
-        div.truncate
-          div
-            = recipients_to_s(message)
-            | &nbsp;
-            - if message.member_type == "adults_only"
-              .inline-block.text-xs.rounded.p-1.bg-pink-500.text-white.uppercase.tracking-wider.font-bold
-                | Adults
+    .flex.flex-row.justify-between.w-full
+      // LEFT
+      div.truncate
+        div
+          = recipients_to_s(message)
+          | &nbsp;
+          - if message.member_type == "adults_only"
+            .inline-block.text-xs.rounded.p-1.bg-pink-500.text-white.uppercase.tracking-wider.font-bold
+              | Adults
 
-          div.font-bold
-            = message.title
+        div.font-bold
+          = message.title
 
-          div.text-stone-400.truncate.line-clamp-1
-            = strip_tags(message.body)
+        div.text-stone-400.truncate.line-clamp-1
+          = strip_tags(message.body)
 
-        // RIGHT
-        div.whitespace-nowrap
-          - if message.send_at&.future?
-            i.fa-clock.fas.text-stone-500
-            | &nbsp;
-            = "Will send on #{message.send_at.strftime('%b %d')}"
-          - else
-            = t("time_ago", value: distance_of_time_in_words_to_now(message.updated_at))
+      // RIGHT
+      div.whitespace-nowrap
+        - if message.send_at&.future?
+          i.fa-clock.fas.text-stone-500
+          | &nbsp;
+          = "Will send on #{message.send_at.strftime('%b %d')}"
+        - else
+          = t("time_ago", value: distance_of_time_in_words_to_now(message.updated_at))
