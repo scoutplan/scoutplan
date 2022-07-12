@@ -20,7 +20,7 @@ class CalendarController < ApplicationController
     exporter = IcalExporter.new(member)
     events.each do |event|
       exporter.event = event
-      next unless event.published?
+      # next unless event.published?
 
       cal.add_event(exporter.to_ical)
     end
