@@ -23,6 +23,14 @@
               = " (#{@draft_messages.count})" if @draft_messages.count.positive?
 
           li.inline-block
+            = link_to "#queued",
+              data: { tab_target: "#messages_queued" },
+              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider" do
+
+              = "Queued"
+              = " (#{@queued_messages.count})" if @queued_messages.count.positive?
+
+          li.inline-block
             = link_to "Sent", "#sent",
               data: { tab_target: "#messages_sent" },
               class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider"
@@ -32,6 +40,11 @@
           ul.divide-y
             = render partial: "message", collection: @draft_messages
           = render partial: "empty" unless @draft_messages.present?
+
+        .tab#messages_queued.hidden
+          ul.divide-y
+            = render partial: "message", collection: @queued_messages
+          = render partial: "empty" unless @queued_messages.present?
 
         .tab#messages_sent.hidden
           ul.divide-y

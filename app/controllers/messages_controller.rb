@@ -6,15 +6,17 @@ class MessagesController < UnitContextController
   before_action :find_message, except: [:index, :new, :create]
 
   def index
-    @draft_messages = current_member.messages.draft
-    @sent_messages = current_member.messages.sent
+    @draft_messages  = current_member.messages.draft
+    @sent_messages   = current_member.messages.sent
+    @queued_messages = current_member.messages.queued
   end
 
   def new
     authorize current_member.messages.new
     @message = current_member.messages.new(recipients: "member_cohort",
                                            member_type: "youth_and_adults",
-                                           recipient_details: ["active"])
+                                           recipient_details: ["active"],
+                                           send_at: Date.today)
   end
 
   def create
@@ -42,14 +44,14 @@ class MessagesController < UnitContextController
       @notice = "Draft message saved"
     when "Send Message"
       @message.update(status: :queued)
-      @notice = "Message sent"
+      @notice = @message.send_now? ? "Message sent" : "Message queued to send later"
     end
 
     SendMessageJob.perform_later(@message) if @message.queued?
   end
 
   def message_params
-    params.require(:message).permit(:title, :body, :recipients, :member_type, recipient_details: [])
+    params.require(:message).permit(:title, :body, :recipients, :member_type, :send_at, recipient_details: [])
   end
 
   def find_message

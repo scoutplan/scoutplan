@@ -21,6 +21,10 @@ class Message < ApplicationRecord
     !event_cohort?
   end
 
+  def send_now?
+    !send_at&.future?
+  end
+
   private
 
   def find_unit
