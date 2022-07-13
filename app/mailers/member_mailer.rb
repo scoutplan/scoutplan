@@ -26,10 +26,12 @@ class MemberMailer < ScoutplanMailer
 
   def message_email
     @message = Message.find(params[:message_id])
+    subject = params[:preview] ? "[PREVIEW] " : ""
+    subject += "#{@unit.name} — #{@message.title}"
     mail(
       to: @to_address,
       from: @from_address,
-      subject: @message.title
+      subject: subject
     )
   end
 
