@@ -29,28 +29,29 @@ header#page_header.w-full.px-0.bg-white.z-10.items-center
         .inline-block.relative.dropdown
           button.text-sm.uppercase.tracking-wider.font-bold.rounded.bg-stone-200.hover:bg-stone-300.no-underline.text-black.px-4.py-2(type="button" onclick="this.parentElement.classList.toggle('menu-open');return false;")
             .hidden.md:inline.mr-3
-              = t('events.index.view.dropdown')
+              = t("events.index.view.dropdown")
             i.far.fa-chevron-down
 
           .dropdown-menu.origin-top-right.absolute.right-0.py-2.mt-px.min-w-max.rounded-md.shadow-lg.bg-stone-800.text-white.ring-1.ring-black.ring-opacity-5.divide-y.divide-stone-100.focus:outline-none
             .table
-              = render partial: 'events/partials/index/dropdown_items/bulk_publish'   if @current_member.admin?
-              = render partial: 'events/partials/index/dropdown_items/show_cancelled' if @current_member.admin?
-              = render partial: 'events/partials/index/dropdown_items/show_only_rsvps'
-              = render partial: 'events/partials/index/dropdown_items/show_past_events'
+              = render partial: "events/partials/index/dropdown_items/bulk_publish"   if @current_member.admin?
+              = render partial: "events/partials/index/dropdown_items/show_cancelled" if @current_member.admin?
+              = render partial: "events/partials/index/dropdown_items/show_only_rsvps"
+              = render partial: "events/partials/index/dropdown_items/show_past_events"
 
       span#bulk_publish_button_wrapper
-        = button_to t('events.index.bulk_publish.execute_caption'),
-          '#',
-          class: 'bg-purple-300 ml-3 uppercase font-bold text-sm px-4 py-2 text-purple-800 rounded',
+        = button_to t("events.index.bulk_publish.execute_caption"),
+          "#",
+          class:  " bg-purple-300 ml-3 uppercase font-bold text-sm px-4 py-2 text-purple-800 rounded" \
+                  " disabled:bg-purple-50 disabled:text-purple-100",
           disabled: true,
-          form: { style: 'display: inline-block;' },
-          id: 'bulk_publish_execute_button'
+          form: { style: "display: inline-block;" },
+          id: "bulk_publish_execute_button"
 
-        = link_to t('events.index.bulk_publish.cancel_caption'),
-          '#',
-          class: 'ml-3 text-sm font-bold rounded bg-gray-100 text-black no-underline px-4 py-2 uppercase',
-          id: 'cancel_bulk_publish'
+        = link_to t("events.index.bulk_publish.cancel_caption"),
+          "#",
+          class: "ml-3 text-sm font-bold rounded bg-gray-100 text-black no-underline px-4 py-2 uppercase",
+          id: "cancel_bulk_publish"
 
 - if flash[:notice]
   p = flash[:notice]
@@ -59,12 +60,12 @@ div.filter-status.pl-2.mt-5
   .flex.gap-3
     .filter-status.filter-status-only-rsvps.inline-block.rounded.px-4.py-2.mt-6.bg-sky-100.text-sky-600
         i.fa-thumbs-up.fas.mr-3
-        = t('events.index.showing_rsvps')
+        = t("events.index.showing_rsvps")
 
     .filter-status.filter-status-past-events.inline-block.rounded.px-4.py-2.mt-6.bg-sky-100.text-sky-600
         i.fa-clock-rotate-left.fas.mr-3
-        = t('events.index.showing_past')
+        = t("events.index.showing_past")
 
     .filter-status.filter-status-cancelled.inline-block.rounded.px-4.py-2.mt-6.bg-sky-100.text-sky-600
         i.fa-times-hexagon.fas.mr-3
-        = t('events.index.showing_cancelled')
+        = t("events.index.showing_cancelled")

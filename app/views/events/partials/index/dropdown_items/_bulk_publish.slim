@@ -1,4 +1,4 @@
-= link_to '#',
+= link_to "#",
           class: "table-row hover:bg-gray-700 inline-block px-4 py-2 w-full toggle-body-class #{@event_drafts.length.zero? ? 'disabled' : ''}",
           data: { action: 'event#toggleBulkPublish' },
           id: "show-only-draft-events-link" do
@@ -8,7 +8,7 @@
       i.far.fa-check.text-cyan-500
 
   .table-cell.p-2
-      = t 'events.index.view.drafts'
+      = t("events.index.view.drafts")
 
   .table-cell.p-2.text-right
     = pill_tag_if @event_drafts.count.positive?, @event_drafts.count

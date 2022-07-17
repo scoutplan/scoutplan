@@ -32,7 +32,7 @@ class EventsController < UnitContextController
     cookies[:calendar_display_year] = params[:year] if params[:year]
 
     @events = UnitEventQuery.new(current_member, current_unit).execute
-    @event_drafts = @events.select(&:draft?)
+    @event_drafts = @events.select(&:draft?).select{ |e| e.ends_at.future? }
     @presenter = EventPresenter.new
     @current_family = @current_member.family
     @current_year = @current_month = nil

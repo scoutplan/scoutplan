@@ -5,86 +5,6 @@
 //   document.querySelector('#page_header').classList.add('border-b', div.offsetTop > 500);
 // });
 
-document.addEventListener("DOMContentLoaded", function() {
-  // START BULK PUBLISH
-
-  // wire up the bulk Publish button
-  document.querySelector('#bulk_publish_execute_button')?.addEventListener('click', function(event) {
-    document.querySelector('#bulk_action_form').submit();
-    event.preventDefault();
-  });
-
-  // wire up the check/uncheck all box
-  document.querySelector('#select_all_events_checkbox')?.addEventListener('click', function(event) {
-    const checked = this.checked;
-    document.querySelectorAll('.bulk-publish-checkbox').forEach(function (elem) {
-        elem.checked = checked && elem.offsetParent !== null;
-    });
-    validateBulkPublishState();
-  });
-
-  // wire up event row checkboxes
-  document.querySelectorAll('.bulk-publish-checkbox').forEach(function(elem) {
-    elem.addEventListener('click', function(event) {
-      validateBulkPublishState();
-    });
-  });
-
-  // wire up Cancel bulk publish button
-  document.querySelector('#cancel_bulk_publish')?.addEventListener('click', function(event) {
-    document.body.classList.toggle('showing-only-draft-events');
-    document.body.classList.toggle('events-filtered');
-    event.preventDefault();
-  });
-
-  // END BULK PUBLISH  
-
-  // As the user changes visibility options (e.g. show/hide cancelled), we need to
-  // recalculate which month headers should be shown or hidden. Months containing
-  // zero visible events should be hidden, whereas months containing events should be
-  // shown. To accomplish this, we establish a mutation observer on the <body> element,
-  // looking for changes to the body CSS classes. Those class changes correspond to
-  // visibliity changes
-  const mutationObserver = new MutationObserver(bodyMutated);
-  mutationObserver.observe(document.body, { attributes: true });  
-
-  // ...and then run the show/hide algorithm once to kick us off
-  hideEmptyMonthHeaders();
-
-  // capture the original caption of the execute button so we can restore it later
-  var bulkPublishExecuteButton = document.querySelector('#bulk_publish_execute_button');
-  var originalBulkPublishExecuteButtonCaption = bulkPublishExecuteButton?.value;
-}); // end DOMContentLoaded
-
-// fired whenever a bulk update checkbox is clicked
-function validateBulkPublishState() {
-  // tally up checked count
-  const checkedCount = document.querySelectorAll('.event-row .bulk-selection input:checked').length;
-
-  // enable execute button
-  bulkPublishExecuteButton.disabled = (checkedCount == 0);
-
-  // update execute button caption
-  bulkPublishExecuteButton.value = originalBulkPublishExecuteButtonCaption + (checkedCount == 0 ? '' : ' (' + checkedCount + ')');
-}
-
-/* SHOW/HIDE MONTH HEADERS */
-
-// // find the first prior sibling matching a given selector
-// function queryPreviousSiblingSelector(elem, selector) {
-//   var currentElem = elem;
-//   var done = false;
-//   while(!done) {
-//     currentElem = currentElem.previousSibling;
-//     if (currentElem === null) {
-//       return null;
-//     }
-//     done = currentElem.matches(selector);
-//   }
-
-//   return currentElem;
-// }
-
 // determine which months contain events and which don't. Only show those that do.
 function hideEmptyMonthHeaders() {
   // first, iterate over all month rows and hide them...
@@ -109,6 +29,88 @@ function hideEmptyMonthHeaders() {
     monthHeader.style.display = 'table-row';
   });    
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+  // START BULK PUBLISH
+
+  // wire up the bulk Publish button
+  document.querySelector('#bulk_publish_execute_button')?.addEventListener('click', function(event) {
+    document.querySelector('#bulk_action_form').submit();
+    event.preventDefault();
+  });
+
+  // wire up the check/uncheck all box
+  document.querySelector('#select_all_events_checkbox')?.addEventListener('click', function(event) {
+    const checked = this.checked;
+    document.querySelectorAll('.bulk-publish-checkbox').forEach(function (elem) {
+        elem.checked = checked && elem.offsetParent !== null;
+    });
+    validateBulkPublishState();
+  });
+
+  // wire up event row checkboxes
+  document.querySelectorAll(".bulk-publish-checkbox").forEach(function(elem) {
+    elem.addEventListener("click", function(event) {
+      validateBulkPublishState();
+    });
+  });
+
+  // wire up Cancel bulk publish button
+  document.querySelector('#cancel_bulk_publish')?.addEventListener('click', function(event) {
+    document.body.classList.toggle('showing-only-draft-events');
+    document.body.classList.toggle('events-filtered');
+    event.preventDefault();
+  });
+
+  // END BULK PUBLISH  
+
+  // As the user changes visibility options (e.g. show/hide cancelled), we need to
+  // recalculate which month headers should be shown or hidden. Months containing
+  // zero visible events should be hidden, whereas months containing events should be
+  // shown. To accomplish this, we establish a mutation observer on the <body> element,
+  // looking for changes to the body CSS classes. Those class changes correspond to
+  // visibliity changes
+  const mutationObserver = new MutationObserver(bodyMutated);
+  mutationObserver.observe(document.body, { attributes: true });  
+
+  // ...and then run the show/hide algorithm once to kick us off
+  hideEmptyMonthHeaders();
+}); // end DOMContentLoaded
+
+var gOriginalBulkPublishExecuteButtonCaption;
+
+// fired whenever a bulk update checkbox is clicked
+function validateBulkPublishState() {
+  // tally up checked count
+  const checkedCount = document.querySelectorAll(".event-row .bulk-selection input:checked").length;
+
+  // enable execute button
+  var bulkPublishExecuteButton = document.querySelector("#bulk_publish_execute_button");
+  bulkPublishExecuteButton.disabled = (checkedCount == 0);
+
+  // store the original caption, if needed
+  gOriginalBulkPublishExecuteButtonCaption = gOriginalBulkPublishExecuteButtonCaption ?? bulkPublishExecuteButton?.textContent;
+
+  // update execute button caption
+  bulkPublishExecuteButton.textContent = gOriginalBulkPublishExecuteButtonCaption + (checkedCount == 0 ? '' : ' (' + checkedCount + ')');
+}
+
+/* SHOW/HIDE MONTH HEADERS */
+
+// // find the first prior sibling matching a given selector
+// function queryPreviousSiblingSelector(elem, selector) {
+//   var currentElem = elem;
+//   var done = false;
+//   while(!done) {
+//     currentElem = currentElem.previousSibling;
+//     if (currentElem === null) {
+//       return null;
+//     }
+//     done = currentElem.matches(selector);
+//   }
+
+//   return currentElem;
+// }
 
 // callback when <body> classes change so we can recalculate
 // visible & hidden month headers

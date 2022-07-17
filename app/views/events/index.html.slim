@@ -1,15 +1,15 @@
 - variation = params[:variation] || "event_table"
 
 = turbo_frame_tag "main"
+  = stylesheet_link_tag "events"
+  = javascript_include_tag "events"
+
   div.max-w-6xl.mx-auto(data-controller="event" class="w-full")
     = render partial: "events/partials/index/actions", locals: { current_variation: variation }
     = render partial: "events/partials/index/no_events" if @events.count.zero?
     = render partial: "events/partials/index/#{variation}" if @events.count.positive?
 
   - content_for :body_classes do
-    = "showing-only-rsvp-events showing-future-events" if params[:mode] == 'rsvps'
-
-  = content_for :head do
-    = javascript_include_tag "events"
+    = "showing-only-rsvp-events showing-future-events" if params[:mode] == 'rsvps'    
 
   footer.h-4

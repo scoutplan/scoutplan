@@ -2,12 +2,10 @@
 
 #event_table_container.max-w-full
   = form_tag bulk_publish_unit_events_path(@unit), id: "bulk_action_form"
-    .table.bulk-selection
-      .table-row-group
-        .table-row
-          .table-cell
-            = check_box_tag "all_visible_events", "on", false, class: "form-check-input", id: "select_all_events_checkbox"
-            = label_tag :select_all_events_checkbox, "Select all", class: "ml-2"
+
+    #bulk_select_all_wrapper.bulk-selection.block.px-2.py-4
+      = check_box_tag "all_visible_events", "on", false, class: "form-check-input", id: "select_all_events_checkbox"
+      = label_tag :select_all_events_checkbox, "Select all", class: "ml-2 font-bold"
 
     table.w-full.max-w-full
       tbody
@@ -31,5 +29,5 @@ javascript:
   document.addEventListener("turbo:load", function() {
     document.body.classList.add("showing-as-list");
     document.body.classList.remove("showing-as-calendar");
-    hideEmptyMonthHeaders();
+    // hideEmptyMonthHeaders();
   });
