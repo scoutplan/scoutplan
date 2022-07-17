@@ -1,20 +1,51 @@
-h1 New Event Category
+= turbo_frame_tag "main"
+  .max-w-2xl.mx-auto
+    h1.font-bold.text-lg
+      = "New Event Category"
 
-= form_for [@unit, @category] do |f|
-  .mb-3
-    = f.label :name, class: 'form-label'
-    = f.text_field :name, class: 'form-control', autocomplete: :off, autofocus: true
+    = form_for [@unit, @category], builder: ApplicationFormBuilder do |f|
+      section.bg-stone-100.px-4.py-2.md:px-8.md:py-0.my-4.rounded
 
-  .mb-3
-    = f.label :glyph, class: 'form-label'
-    .input-group
-      span.input-group-text fa-
-      = f.text_field :glyph, class: 'form-control', autocomplete: :off
-    .form-text See <a href="https://fontawesome.com/v6.0/icons" target="_blank">Font Awesome</a> for options
+        // title
+        .md:border-b.py-2.md:py-4
+          = f.styled_label :name, "Category Name", layout: :inline
+          = f.text_field :name,
+            class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300",
+            autocomplete: "off",
+            autofocus: true,
+            placeholder: "Name your event category (e.g. \"Training\")"
 
-  .mb-3
-    = f.label :color, class: 'form-label'
-    = f.text_field :color, class: 'form-control', autocomplete: :off
+        // glyph
+        .md:border-b.py-2.md:py-4
+          = f.styled_label :glyph, "Icon", layout: :inline
+          = "fa-"
+          = f.text_field :glyph,
+            class: "bg-white border border-stone-200 rounded p-2 w-full md:w-1/2 hover:ring-brand-500 placeholder-stone-300",
+            autocomplete: "off",
+            autofocus: true,
+            placeholder: "FontAwesome identifier (e.g. \"tent\")"
+          p.text-xs
+            | See <a href="https://fontawesome.com/icons" target="_blank" class="underline">Font Awesome</a> for options  
 
-  .mb-3
-    = f.submit 'Add This Event Category', class: 'btn btn-primary'
+
+        // glyph
+        .py-2.md:py-4
+          = f.styled_label :color, layout: :inline
+          = f.text_field :color,
+            class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300",
+            autocomplete: "off",
+            autofocus: true,
+            placeholder: "Named color (e.g. \"Periwinkle\") or hex value (e.g. \"#44AA22\")"
+
+      .flex.flex-col.md:flex-row.md:justify-between.mt-4
+        // left
+        div
+
+        // right
+        .flex.gap-2
+          = link_to "Cancel", edit_unit_settings_path(@unit),
+            class: "rounded bg-stone-200 text-stone-700 px-4 py-2 font-bold uppercase tracking-wider text-sm cursor-pointer",
+            data: { turbo_action: "advance" }
+
+          = f.submit "Add This Event Category",
+            class: "rounded bg-brand-500 text-white px-4 py-2 font-bold uppercase tracking-wider text-sm cursor-pointer"

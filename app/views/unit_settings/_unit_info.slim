@@ -1,0 +1,36 @@
+ = form_for @unit, url: update_unit_settings_path(@unit), class: 'w-full', builder: ApplicationFormBuilder do |f|
+
+  section.bg-stone-100.px-4.py-2.md:px-8.md:py-0.my-4.rounded.divide-y
+    .py-2.md:py-4
+      = f.styled_label :name, layout: :inline
+      = f.text_field :name,
+        class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300",
+        autocomplete: "off",
+        autofocus: true,
+        placeholder: "e.g. Troop 123"
+
+    .py-2.md:py-4
+      = f.styled_label :location, layout: :inline
+      = f.text_field :location,
+        class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300",
+        autocomplete: "off",
+        autofocus: true,
+        placeholder: "City name"     
+
+    .py-2.md:py-4
+      = f.styled_label :meeting_location, layout: :inline
+      = text_field_tag "settings[locale][meeting_location]",
+        @unit.settings(:locale).meeting_location,
+        class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300"
+
+    .py-2.md:py-4
+      = f.styled_label :meeting_address, layout: :inline
+      = text_field_tag "settings[locale][meeting_address]",
+        @unit.settings(:locale).meeting_address,
+        class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300"
+
+  .flex.flex-row.justify-between
+    div
+
+    div
+      = f.submit "Save", class: "px-4 py-2 rounded bg-brand-500 text-white uppercase font-bold text-sm"
