@@ -15,8 +15,8 @@
 
 tr.border-b.hover:bg-stone-100.hover:text-stone-800(id="#{dom_id(event)}" class="#{row_class}")
   // bulk selection checkbox
-  td.bulk-selection
-    = check_box_tag "event_ids[]", event.id, false, class: 'form-check-input bulk-publish-checkbox'
+  td.bulk-selection.px-2.w-0
+    = check_box_tag "event_ids[]", event.id, false, class: "bulk-publish-checkbox"
 
   // dates & days
   td.event-dates.w-px
