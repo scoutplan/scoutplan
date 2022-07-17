@@ -25,7 +25,7 @@ WORKDIR /app
 COPY Gemfile Gemfile.lock /app/
 RUN gem update bundler && bundle install
 COPY . /app
-RUN rake assets:precompile
+# RUN rake assets:precompile
 
 # pull over an Alpine-friendly wkhtmltopdf binary, as described here:
 # https://github.com/mileszs/wicked_pdf/issues/841#issuecomment-507759176

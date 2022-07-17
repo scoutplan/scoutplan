@@ -38,7 +38,6 @@ gem "rails-html-sanitizer", ">= 1.4.3"
 gem "remote_syslog_logger"
 gem "rexml"
 gem "rubocop", require: false
-gem "sass-rails"
 gem "seedbank"
 gem "sentry-ruby"
 gem "sidekiq"
@@ -82,3 +81,5 @@ group :test do
   # gem "webdrivers"
   gem "apparition"
 end
+
+gem "sass-rails", "~> 6.0"
