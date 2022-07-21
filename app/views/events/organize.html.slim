@@ -125,11 +125,10 @@
         // list of "not going" members
         ul.mt-2.empty:mt-0
           #organize_category_declined
-            = render \
-              partial:    "events/partials/organize/declined_rsvp",
-              collection: @event.rsvps.declined.ordered,
-              as:         :rsvp,
-              layout:     "events/partials/organize/organize_entry"
+            = render partial:    "events/partials/organize/declined_rsvp",
+                     layout:     "events/partials/organize/organize_entry",
+                     collection: @event.rsvps.declined.ordered,
+                     as:         :rsvp
 
       // NO RESPONSE
       .bg-orange-50.rounded.p-4
@@ -144,11 +143,10 @@
 
         ul.mt-2.empty:mt-0
           #organize_category_no_response
-            = render \
-              partial:    "events/partials/organize/member",
-              collection: @non_respondents,
-              as:         :member,
-              layout:     "events/partials/organize/organize_entry"              
+            = render partial:    "events/partials/organize/member",
+                     layout:     "events/partials/organize/organize_entry",
+                     collection: @non_respondents,
+                     as:         :member
 
       // NON-INVITEES
       .bg-zinc-100.rounded.p-4
@@ -163,11 +161,10 @@
 
         ul.mt-2.empty:mt-0
           #organize_category_family_and_friends
-            = render \
-              partial:    "events/partials/organize/member",
-              collection: @non_invitees,
-              as:         :member,
-              layout:     "events/partials/organize/organize_entry"
+            = render partial:    "events/partials/organize/member",
+                     layout:     "events/partials/organize/organize_entry",
+                     collection: @non_invitees,
+                     as:         :member
 
     footer.h-4
 

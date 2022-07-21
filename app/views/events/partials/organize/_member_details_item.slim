@@ -1,10 +1,9 @@
 li
-  = link_to \
-    unit_member_path(member.unit, member),
-    class: "member-details-link block py-2",
-    id: "member_#{member.id}_details_link",
-    data: { turbo_action: "advance", turbo_frame: "main" } \
-    do
+  = link_to unit_member_path(member.unit, member),
+            class: "member-details-link block py-2",
+            id: "member_#{member.id}_details_link",
+            data: { turbo_action: "advance", turbo_frame: "main" } do
+            
     span.w-7.text-center.inline-block
       i.fas.fa-address-card.text-stone-500.inline-block
     = "Member details"
