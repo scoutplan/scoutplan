@@ -2,10 +2,10 @@
 // It's intended to be used by the two partials found in /views/events/partials/organize
 
 li.member(id="unit_membership_#{@member.id}")
+  - rsvp = @event.rsvp_for(@member)
   = link_to "#",
-    class: "leading-none block w-full py-2 md:py-2", \
-    onclick: "this.closest('.member').classList.toggle('open'); return false;" \
-    do
+            class: "leading-none block w-full py-2 md:py-2", \
+            onclick: "this.closest('.member').classList.toggle('open'); return false;" do
 
     .flex.justify-between
       // this is cheating...we shouldn't have had to use an instance variable,
@@ -20,7 +20,7 @@ li.member(id="unit_membership_#{@member.id}")
         - if @event.includes_activity && @rsvp&.includes_activity
           i.fa-check-circle.fas.text-emerald-900.ml-1(title="Will be #{@event.activity_name}")
 
-        - if @rsvp&.paid
+        - if rsvp&.paid
           i.fa-badge-dollar.fas.text-emerald-500.ml-1(title="Paid")
 
       .little-buttons

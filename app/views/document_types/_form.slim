@@ -1,0 +1,20 @@
+= form_with model: [@unit, @event, @document_type],
+  data: { turbo_action: "advance" } do |f|
+  
+  .flex.flex-col.divide-y
+    div
+      = f.label :description
+      = f.text_field :description
+
+    div
+      = f.check_box :required
+      = f.label :required
+  
+  .flex.flex-row.justify-between
+    div#left_side
+    div#right_side
+      = f.submit "Add Document Type",
+        class: "rounded bg-brand-500 text-white px-4 py-2"
+
+
+/ = form_with model: [@event.unit, @event, @activity], data: { turbo_frame: "event_#{@event.id}_activities" } do |f|

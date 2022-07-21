@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_08_235217) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_19_114625) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -148,6 +148,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_08_235217) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["creator_id"], name: "index_blazer_queries_on_creator_id"
+  end
+
+  create_table "document_types", force: :cascade do |t|
+    t.string "documentable_type", null: false
+    t.integer "documentable_id", null: false
+    t.string "description", null: false
+    t.boolean "required", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "event_activities", force: :cascade do |t|
