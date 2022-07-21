@@ -7,11 +7,13 @@ class Event < ApplicationRecord
   belongs_to :unit
   belongs_to :series_parent, class_name: "Event", optional: true
   belongs_to :event_category
-  has_many   :event_rsvps, dependent: :destroy
-  has_many   :members, through: :event_rsvps
-  has_many   :rsvp_tokens, dependent: :destroy
-  has_many   :event_activities, dependent: :destroy
-  has_many   :event_organizers, dependent: :destroy
+
+  has_many :members, through: :event_rsvps
+  has_many :event_rsvps, dependent: :destroy
+  has_many :rsvp_tokens, dependent: :destroy
+  has_many :event_activities, dependent: :destroy
+  has_many :event_organizers, dependent: :destroy
+  has_many :document_types, as: :documentable, dependent: :destroy
 
   has_rich_text :description
 
