@@ -1,0 +1,5 @@
+= turbo_stream.update "organize_category_accepted" do
+  = render partial:    "events/partials/organize/accepted_rsvp",
+           collection: @event.rsvps.accepted.ordered,
+           as:         :rsvp,
+           layout:     "events/partials/organize/organize_entry"

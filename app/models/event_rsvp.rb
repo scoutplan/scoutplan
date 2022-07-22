@@ -6,6 +6,8 @@ class EventRsvp < ApplicationRecord
   belongs_to :unit_membership
   belongs_to :respondent, class_name: "UnitMembership"
 
+  has_many :documents, as: :documentable, dependent: :destroy
+
   validates_uniqueness_of :event, scope: :unit_membership
   validates_presence_of :response
   validate :common_unit?
@@ -22,5 +24,9 @@ class EventRsvp < ApplicationRecord
   # if not, something's wrong
   def common_unit?
     errors.add(:event, "and Member must belong to the same Unit") unless event.unit == member.unit
+  end
+
+  def document?(document_type)
+    documents.find_by(document_type: document_type)
   end
 end

@@ -100,6 +100,10 @@ Rails.application.routes.draw do
   end
   # end members
 
+  resources :event_rsvps do
+    resources :documents
+  end
+
   # Profile editing
   get   "profile/edit", to: "profile#edit",   as: "edit_profile"
   patch "profile/save", to: "profile#update", as: "update_profile"
