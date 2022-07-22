@@ -23,6 +23,9 @@ li.member(id="unit_membership_#{@member.id}")
         - if rsvp&.paid
           i.fa-badge-dollar.fas.text-emerald-500.ml-1(title="Paid")
 
+        - if rsvp&.documents_received?
+          i.fa-file-check.fas.text-indigo-500.ml-1(title="Documents Received")
+
       .little-buttons
         .disclosure-button.hidden
           i.fa-chevron-right.fas.text-sm.text-black.opacity-30
