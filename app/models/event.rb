@@ -13,7 +13,7 @@ class Event < ApplicationRecord
   has_many :rsvp_tokens, dependent: :destroy
   has_many :event_activities, dependent: :destroy
   has_many :event_organizers, dependent: :destroy
-  has_many :document_types, as: :documentable, dependent: :destroy
+  has_many :document_types, as: :document_typeable, dependent: :destroy
 
   has_rich_text :description
 

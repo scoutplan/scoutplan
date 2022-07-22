@@ -60,14 +60,13 @@ ul.m-0
   // Mark as paid
   - if !rsvp.paid
     li
-      = button_to \
-        unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.member.id, payment: "full"),
-        onclick: "this.classList.add('processing');",
-        method: :post,
-        form: { "data-type": "turbo_stream" },
-        class: "rsvp-action-button pay-rsvp-button block py-2 font-normal",
-        id: "pay_rsvp_#{rsvp.id}_button" \
-        do
+      = button_to unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.member.id, payment: "full"),
+                  onclick: "this.classList.add('processing');",
+                  method:  :post,
+                  form:    { "data-type": "turbo_stream" },
+                  class:   "rsvp-action-button pay-rsvp-button block py-2 font-normal",
+                  id:      "pay_rsvp_#{rsvp.id}_button" do
+
         span.w-7.text-center.inline-block.glyph
           i.fas.fa-money-bill.text-emerald-500.inline-block.hover:text-black
         span.pl-1.w-7.text-center.inline-block.hidden.processing-glyph
@@ -77,29 +76,57 @@ ul.m-0
   // Mark as unpaid
   - if rsvp.paid
     li
-      = button_to \
-        unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.member.id, payment: "none"),
-        onclick: "this.classList.add('processing');",
-        method: :post,
-        form: { "data-type": "turbo_stream" },
-        class: "rsvp-action-button unpay-rsvp-button block py-2 font-normal",
-        id: "unpay_rsvp_#{rsvp.id}_button" \
-        do
+      = button_to unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.member.id, payment: "none"),
+                  class:    "rsvp-action-button unpay-rsvp-button block py-2 font-normal",
+                  onclick:  "this.classList.add('processing');",
+                  method:   :post,
+                  form:     { "data-type": "turbo_stream" },
+                  id:       "unpay_rsvp_#{rsvp.id}_button" do
+
         span.w-7.text-center.inline-block.glyph
           i.fas.fa-hand-holding-dollar.text-amber-700.inline-block.hover:text-black
         span.pl-1.w-7.text-center.inline-block.hidden.processing-glyph
           i.fa-refresh.fas.fa-spin.inline-block.mr-2
-        = t("events.organize.actions.mark_as_unpaid")  
+        = t("events.organize.actions.mark_as_unpaid")
+
+  - @event.document_types.required.each do |doc_type|
+    li
+      - if rsvp.document?(doc_type)
+        = button_to event_rsvp_documents_path(rsvp, document_type_id: doc_type.id, received: false),
+                    id:      "rsvp_#{rsvp.id}_document_type_#{doc_type.id}_button",
+                    class:   "block py-2 font-normal",
+                    onclick: "this.classList.add('processing');",
+                    method:  :post,
+                    form:    { "data-type": "turbo_stream" } do
+        
+          span.w-7.text-center.inline-block.glyph
+            i.far.fa-square-check.text-stone-700.inline-block.hover:text-black
+          span.pl-1.w-7.text-center.inline-block.hidden.processing-glyph
+            i.fa-refresh.fas.fa-spin.inline-block.mr-2        
+          = doc_type.description 
+
+      - else
+        = button_to event_rsvp_documents_path(rsvp, document_type_id: doc_type.id, received: true),
+                    id:      "rsvp_#{rsvp.id}_document_type_#{doc_type.id}_button",
+                    class:   "block py-2 font-normal",
+                    onclick: "this.classList.add('processing');",
+                    method:  :post,
+                    form:    { "data-type": "turbo_stream" } do
+
+          span.w-7.text-center.inline-block.glyph
+            i.far.fa-square.text-stone-700.inline-block.hover:text-black
+          span.pl-1.w-7.text-center.inline-block.hidden.processing-glyph
+            i.fa-refresh.fas.fa-spin.inline-block.mr-2        
+          = doc_type.description
 
   // Delete RSVP
   li
-    = button_to \
-      unit_event_rsvp_path(@event.unit, rsvp),
-      onclick: "this.classList.add('processing');",
-      method: :delete,
-      form: { "data-type": "turbo_stream" },
-      class: "delete-rsvp-button rsvp-action-button block py-2 font-normal" \
-      do
+    = button_to unit_event_rsvp_path(@event.unit, rsvp),
+                onclick: "this.classList.add('processing');",
+                method: :delete,
+                form: { "data-type": "turbo_stream" },
+                class: "delete-rsvp-button rsvp-action-button block py-2 font-normal" do
+
         span.w-7.text-center.inline-block.glyph
           i.fas.fa-trash.text-black.text-orange-600
         span.w-7.text-center.inline-block.hidden

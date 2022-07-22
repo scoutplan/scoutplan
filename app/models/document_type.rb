@@ -2,5 +2,6 @@
 
 # represents an abstract document (e.g. "BSA Health Form")
 class DocumentType < ApplicationRecord
-  belongs_to :documentable, polymorphic: true
+  scope :required, -> { where(required: true) }
+  belongs_to :document_typeable, polymorphic: true
 end
