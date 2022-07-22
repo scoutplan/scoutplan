@@ -29,4 +29,8 @@ class EventRsvp < ApplicationRecord
   def document?(document_type)
     documents.find_by(document_type: document_type)
   end
+
+  def documents_received?
+    (event.document_types.required - documents.collect(&:document_type)).blank?
+  end
 end
