@@ -1,0 +1,38 @@
+// This is a small layout for displaying an entry on the Events#organize page.
+// It's intended to be used by the two partials found in /views/events/partials/rsvps
+
+li.member(id="unit_membership_#{@member.id}")
+  - rsvp = @event.rsvp_for(@member)
+  = link_to "#",
+            class: "leading-none block w-full py-2 md:py-2", \
+            onclick: "this.closest('.member').classList.toggle('open'); return false;" do
+
+    .flex.justify-between
+      // this is cheating...we shouldn't have had to use an instance variable,
+      // but yielding here wasn't working
+
+      // left side (glyph + name)
+      .hover:text-black
+        = raw member_glyph_tag(@member)
+
+        span.member-name.inline-block
+          = @member.full_display_name
+
+      // right
+      div
+        .inline-block
+          - if @event.includes_activity && @rsvp&.includes_activity
+            i.fa-check-circle.fas.text-emerald-900.ml-1(title="Will be #{@event.activity_name}")
+
+          - if rsvp&.action_pending?
+            i.fa-triangle-exclamation.fas.text-red-500(title="Payment and/or documentation hasn't yet been received")
+
+        .little-buttons.w-6.inline-block.text-right
+          .disclosure-button.hidden.text-right
+            i.fa-chevron-right.fas.text-sm.text-black.opacity-30
+
+          .close-button.hidden.text-right
+            i.fa-chevron-up.fas.text-sm.text-black.opacity-30
+
+  .member-actions.hidden.rsvp-action.text-sm.bg-black/5.rounded.p-2.mt-1/2.mb-2
+    = yield

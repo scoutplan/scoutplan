@@ -11,7 +11,7 @@ class EventRsvpsController < UnitContextController
     flash[:notice] = I18n.t("events.organize.confirmations.updated_html", name: @rsvp.member.full_display_name)
     # @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
     respond_to do |format|
-      format.html { redirect_to unit_event_organize_path(@unit, @rsvp.event) }
+      format.html { redirect_to unit_event_rsvps_path(@unit, @rsvp.event) }
       format.turbo_stream
     end
   end
@@ -31,7 +31,7 @@ class EventRsvpsController < UnitContextController
     event = @rsvp.event
     display_name = @rsvp.full_display_name
     @rsvp.destroy
-    redirect_to unit_event_organize_path(@unit, event),
+    redirect_to unit_event_rsvps_path(@unit, event),
                 notice: I18n.t("events.organize.confirmations.delete", name: display_name)
   end
 

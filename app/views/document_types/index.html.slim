@@ -12,7 +12,7 @@
         data: { turbo_action: "advance" } do
         = "Add a Document Type"
 
-      = link_to unit_event_organize_path(@unit, @event),
+      = link_to unit_event_rsvps_path(@unit, @event),
         class: "inline-block w-full md:w-fit bg-stone-200 text-stone-600 uppercase text-sm font-bold tracking-wider rounded px-4 py-2",
         data: { turbo_action: "advance" } do
         = "Done"      

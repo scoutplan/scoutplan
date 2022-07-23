@@ -28,8 +28,12 @@ class EventPolicy < UnitContextPolicy
     admin?
   end
 
-  def organize?
+  def rsvps?
     admin? || @membership.event_organizer? || @event.organizers.include?(@membership)
+  end
+
+  def organize?
+    rsvps?
   end
 
   def publish?

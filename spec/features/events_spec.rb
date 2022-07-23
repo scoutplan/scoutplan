@@ -90,7 +90,7 @@ describe "events", type: :feature do
     end
 
     it "prevents access to the Organize page" do
-      expect { visit unit_event_organize_path(@unit, @event) }.to raise_error Pundit::NotAuthorizedError
+      expect { visit unit_event_rsvps_path(@unit, @event) }.to raise_error Pundit::NotAuthorizedError
     end
 
     it "hides the add event button on the Index page" do

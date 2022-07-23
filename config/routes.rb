@@ -67,8 +67,9 @@ Rails.application.routes.draw do
         post "bulk_publish"
       end
       get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"
-      get   "organize", as: "organize"
+      get   "rsvps"
       get   "cancel"
+      get   "organize"
       post  "cancel", to: "events#perform_cancellation"
       patch "rsvp", as: "send_rsvps", to: "events#create_or_update_rsvps"
     end
