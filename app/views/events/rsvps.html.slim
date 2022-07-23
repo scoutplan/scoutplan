@@ -1,0 +1,263 @@
+= turbo_frame_tag "main"
+  .max-w-6xl.mx-auto
+    header.sticky.top-0.bg-white.pt-4.pb-2.border-b
+      .flex.justify-between
+        // left side
+        div
+          h1
+            = link_to unit_event_path(@unit, @event), data: { turbo_action: "advance" }, class: "text-xl font-bold" do
+              = t("events.organize.title", event_title: @event.title)
+              .inline.ml-2.text-base = glyph_tag(@event)
+
+        // right side
+        .flex.flex-row.gap-2
+          .hidden.md:flex.flex-row.gap-2
+            - if @previous_event.present?
+              = link_to unit_event_rsvps_path(@unit, @previous_event),
+                class: "inline-block font-bold text-sm text-cyan-500 hover:text-cyan-600 px-4 py-2 uppercase tracking-wide border border-cyan-500 hover:border-cyan-600 rounded",
+                title: "#{@previous_event&.title} on #{@previous_event&.starts_at&.strftime("%-d %b")}",
+                disabled: @previous_event.blank?,
+                data: { turbo_action: "advance" } do
+                  i.fas.fa-chevron-left.mr-1
+                  = t("events.organize.previous_short")
+
+            - else
+              = link_to "#",
+                class: "inline-block font-bold text-sm text-stone-300 px-4 py-2 uppercase tracking-wide border border-stone-300 rounded pointer-events-none" do
+                  i.fas.fa-chevron-left.mr-1
+                  = t("events.organize.previous_short")
+
+            - if @next_event.present?
+              = link_to unit_event_rsvps_path(@unit, @next_event),
+                class: "inline-block font-bold text-sm text-cyan-500 hover:text-cyan-600 px-4 py-2 uppercase tracking-wide border border-cyan-500 hover:border-cyan-600 rounded",
+                title: "#{@next_event&.title} on #{@next_event&.starts_at&.strftime("%-d %b")}",
+                disabled: @next_event.blank?,
+                data: { turbo_action: "advance" } do
+                  = t("events.organize.next_short")
+                  i.fas.fa-chevron-right.ml-1
+
+            - else
+              = link_to "#",
+                class: "inline-block font-bold text-sm text-stone-300 px-4 py-2 uppercase tracking-wide border border-stone-300 rounded pointer-events-none" do
+                  = t("events.organize.next_short")
+                  i.fas.fa-chevron-right.ml-1             
+
+          = link_to unit_event_path(@event.unit, @event),
+            class: "text-sm font-bold text-white uppercase tracking-wider \
+                    inline-block px-4 md:px-6 py-2 \
+                    bg-cyan-600 hover:bg-cyan-700 \
+                    border border-cyan-600 hover:border-cyan-700 \
+                    text-cyan-100 bg:text-cyan-200 \
+                    rounded",
+            data: { turbo_action: "advance" }
+            do
+              .hidden.md:inline
+                = "Done"
+              .inline.md:hidden
+                i.fa-times.fas
+    
+    header
+      .flex.flex-col.md:flex-row.justify-between
+        // left
+        div
+          p.mb-0.text-sm.font-semibold.py-1.leading-relaxed
+            span.inline-block.w-5
+              i.fa-calendar.fas.mr-1.text-rose-400
+            = @event.starts_at.strftime("%-d %B %Y")
+
+            - if @event.location.present?
+              br
+              span.inline-block.w-5
+                i.fa-location-dot.fas.mr-1.text-indigo-400
+              = @event.location
+
+        // search
+        div     
+          .relative.py-2
+            = text_field_tag \
+              :search,
+              "",
+              placeholder: t("events.organize.placeholders.search"),
+              id: "search_term",
+              autocomplete: :off,
+              class: "max-w-full w-96 rounded border border-stone-200 bg-stone-100 focus:ring-brand-500 placeholder-stone-400",
+              onkeyup: "performNameSearch();"
+
+            i.fa-magnifying-glass.fas.absolute.right-4(style="top:50%;transform:translateY(-50%);") 
+
+    - if flash[:notice]
+      section.mt-2.max-w-6xl.mx-auto#notices
+        p.p-4.m-0.bg-amber-100.text-amber-700.rounded
+          i.fa-info-circle.fas.mr-2
+          = flash[:notice]
+
+    section.max-w-6xl.mx-auto.grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-2.xl:grid-cols-4.gap-2.mt-2
+      // ACCEPTED
+      .bg-green-50.rounded.p-4#accepted_rsvp_container
+        header
+          = link_to unit_event_organize_path(@unit, @event),
+                    class: "inline-block flex justify-between",
+                    data: { turbo_action: "advance" } do
+                    
+            h2.text-lg.font-bold.text-green-700
+              i.fa-person-hiking.fas.text-green-600.mr-2
+              = t("events.organize.accepts")
+              i.fa-chevron-right.fas.text-stone-500.ml-2
+
+            = render partial: "events/partials/rsvps/attendance_badges", locals: { event: @event }
+
+
+        // list of "going" members
+        ul.mt-2.empty:mt-0
+          #organize_category_accepted
+            = render \
+              partial:    "events/partials/rsvps/accepted_rsvp",
+              collection: @event.rsvps.accepted.ordered,
+              as:         :rsvp,
+              layout:     "events/partials/rsvps/organize_entry"
+
+      // DECLINED
+      .bg-red-50.rounded.p-4#declined_rsvp_container
+        header.flex.justify-between
+          h2.text-lg.font-bold.text-red-700
+            i.fa-couch.fas.text-red-500.mr-2
+            = t("events.organize.declines")
+
+          .font-bold.tracking-wide.text-sm.pt-1
+            span.px-2.py-1.rounded.bg-red-500.text-red-100#organize_count_declined
+              = @event.rsvps.declined.count     
+
+        // list of "not going" members
+        ul.mt-2.empty:mt-0
+          #organize_category_declined
+            = render partial:    "events/partials/rsvps/declined_rsvp",
+                     layout:     "events/partials/rsvps/organize_entry",
+                     collection: @event.rsvps.declined.ordered,
+                     as:         :rsvp
+
+      // NO RESPONSE
+      .bg-orange-50.rounded.p-4
+        header.flex.justify-between
+          h2.text-lg.font-bold.text-orange-700
+            i.fa-ghost.fas.text-orange-500.mr-2
+            = t("events.organize.non_respondents")
+
+          .font-bold.tracking-wide.text-sm.pt-1
+            span.px-2.py-1.bg-orange-500.text-orange-100.rounded#organize_count_no_response
+              = @non_respondents.count
+
+        ul.mt-2.empty:mt-0
+          #organize_category_no_response
+            = render partial:    "events/partials/rsvps/member",
+                     layout:     "events/partials/rsvps/organize_entry",
+                     collection: @non_respondents,
+                     as:         :member
+
+      // NON-INVITEES
+      .bg-zinc-100.rounded.p-4
+        header.flex.justify-between
+          h2.text-lg.font-bold
+            i.fa-hand-wave.fas.text-stone-500.mr-2
+            = t("members.statuses.registered")
+
+          .font-bold.tracking-wide.text-sm.mt-1
+            span.px-2.py-1.bg-zinc-500.text-zinc-100.rounded#organize_count_family_and_friends
+              = @non_invitees.count   
+
+        ul.mt-2.empty:mt-0
+          #organize_category_family_and_friends
+            = render partial:    "events/partials/rsvps/member",
+                     layout:     "events/partials/rsvps/organize_entry",
+                     collection: @non_invitees,
+                     as:         :member
+
+    footer.h-4
+
+  css:
+    .rsvp-action-button.processing .glyph {
+      display: none;
+    }
+
+    .rsvp-action-button.processing .processing-glyph {
+      display: inline-block;
+    }
+
+    .member.open .member-actions {
+      display: block;
+    }
+
+    .member.open .close-button {
+      display: inline;
+    }
+
+    .member:not(.open):hover .disclosure-button {
+      display: inline;
+    }
+
+
+  scss:
+    .actions {
+      display: none;
+      margin-left: 1rem;
+    }
+
+    tr {
+      cursor: pointer;
+      &:hover {
+        .actions {
+          display: inline-block;
+        }
+      }
+    }
+
+    .headcount {
+      color: #aaa;
+    }
+
+    .subtitle {
+      font-size: 75%;
+    }
+  
+  .text-pink-500
+
+  javascript:
+    var tooltipList = [];
+
+    function setupHoverLinks() {
+      // tooltipList.map(function(elem) {
+      //   elem.hide();
+      // });
+
+      var clipboardLinks = [].slice.call(document.querySelectorAll('a[data-href]:not([data-href=""])'));
+      clipboardLinks.map(function (clipboardLink) {
+        clipboardLink.addEventListener('click', function(event) {
+          var href = this.dataset.href;
+          navigator.clipboard.writeText(href);
+
+          var toastBody = document.querySelector('#toast_body');
+          toastBody.innerHTML = 'Invitation link has been copied to the clipboard.';
+          toast.show();
+
+          event.preventDefault();
+          return false;
+        });
+      });
+    }
+
+    setupHoverLinks();
+
+    function performNameSearch() {
+      var searchTermElem = document.querySelector("#search_term");
+      var searchTerm = searchTermElem.value.toUpperCase();
+
+      var memberItems = document.querySelectorAll("li.member");
+      memberItems.forEach(function(elem) {
+        var nameElem = elem.querySelector(".member-name");
+        var name = nameElem.innerText;
+        if (searchTerm.length < 0 || name.toUpperCase().indexOf(searchTerm) > -1) {
+          elem.classList.remove("hidden");
+        } else {
+          elem.classList.add("hidden");
+        }        
+      });
+    }

@@ -33,4 +33,12 @@ class EventRsvp < ApplicationRecord
   def documents_received?
     (event.document_types.required - documents.collect(&:document_type)).blank?
   end
+
+  def done?
+    (response != "accepted") || (paid && documents_received?)
+  end
+
+  def action_pending?
+    !done?
+  end
 end

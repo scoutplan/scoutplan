@@ -55,7 +55,7 @@
       section.bg-stone-100.rounded.px-6.py-4.mb-1
         = render partial: 'rsvp_card'
 
-    - if @event.organizable? && policy(@event).organize?
+    - if @event.organizable? && policy(@event).rsvps?
       section#manage_rsvps_card.bg-stone-100.rounded.px-6.py-4.mb-1
         .flex.md:flex-row.flex-col.justify-between
           // left side
@@ -84,7 +84,7 @@
           div
             // right side
             = link_to t("events.show.organize_button_caption"),
-              unit_event_organize_path(@event.unit, @event),
+              unit_event_rsvps_path(@event.unit, @event),
               class:  "text-sm font-bold no-underline tracking-wider uppercase text-center" \
                       " px-4 py-3 md:py-2" \
                       " block" \

@@ -10,7 +10,7 @@ class EventsController < UnitContextController
   # before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish public]
   # before_action :find_member, only: %i[index create new edit edit_rsvps bulk_publish]
   before_action :find_event, except: %i[index create new bulk_publish public]
-  before_action :collate_rsvps, only: [:show, :organize]
+  before_action :collate_rsvps, only: [:show, :rsvps]
 
   # TODO: refactor this mess
   def index
@@ -98,7 +98,7 @@ class EventsController < UnitContextController
     authorize @event
     @event_view = EventView.new(@event)
     @can_edit = policy(@event).edit?
-    @can_organize = policy(@event).organize?
+    @can_organize = policy(@event).rsvps?
     @current_family = @current_member.family
     page_title @event.unit.name, @event.title
     respond_to do |format|
@@ -107,6 +107,10 @@ class EventsController < UnitContextController
         render_event_brief
       end
     end
+  end
+
+  def organize
+    @attendees = @event.rsvps.accepted
   end
 
   # GET /units/:unit_id/events/:id/rsvp
@@ -162,7 +166,7 @@ class EventsController < UnitContextController
     redirect_to unit_events_path(@unit), notice: "#{@event.title} has been permanently deleted."
   end
 
-  def organize
+  def rsvps
     authorize @event
     find_next_and_previous_events
     @page_title = [@event.title, "Organize"]

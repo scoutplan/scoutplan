@@ -14,7 +14,7 @@ class DocumentsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to unit_event_organize_path(@unit, @rsvp.event) }
+      format.html { redirect_to unit_event_rsvps_path(@unit, @rsvp.event) }
       format.turbo_stream
     end
   end

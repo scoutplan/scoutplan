@@ -12,17 +12,17 @@ describe "events", type: :feature do
   end
 
   it "navigates to the organize page" do
-    visit(unit_event_organize_path(@unit, @event))
-    expect(page).to have_current_path(unit_event_organize_path(@unit, @event))
+    visit(unit_event_rsvps_path(@unit, @event))
+    expect(page).to have_current_path(unit_event_rsvps_path(@unit, @event))
   end
 
   it "prevents non-admin from accessing the organize page" do
     login_as(@unit.members.first.user, scope: :user)
-    expect { visit(unit_event_organize_path(@unit, @event)) }.to raise_error Pundit::NotAuthorizedError
+    expect { visit(unit_event_rsvps_path(@unit, @event)) }.to raise_error Pundit::NotAuthorizedError
   end
 
   it "contains all members without dupes" do
-    visit(unit_event_organize_path(@unit, @event))
+    visit(unit_event_rsvps_path(@unit, @event))
     @unit.members.each do |member|
       expect(page).to have_content(member.full_display_name, count: 1)
     end
@@ -32,7 +32,7 @@ describe "events", type: :feature do
     before do
       @other_member = @unit.members.first
       @rsvp = @event.rsvps.create(unit_membership: @other_member, response: :accepted, respondent: @member)
-      visit(unit_event_organize_path(@unit, @event))
+      visit(unit_event_rsvps_path(@unit, @event))
     end
 
     it "displays accepted members in the 'Going' section" do
@@ -54,7 +54,7 @@ describe "events", type: :feature do
     before do
       @other_member = @unit.members.first
       @rsvp = @event.rsvps.create(unit_membership: @other_member, response: :declined, respondent: @member)
-      visit(unit_event_organize_path(@unit, @event))
+      visit(unit_event_rsvps_path(@unit, @event))
     end
 
     it "displays accepted members in the 'Not Going' section" do
