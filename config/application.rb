@@ -13,7 +13,7 @@ module Scoutplan
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
     config.exceptions_app = self.routes # tee up custom errors
-    config.active_record.yaml_column_permitted_classes = [DateTime]
+    config.active_record.yaml_column_permitted_classes = [DateTime, Date, Time]
 
     # Configuration for the application, engines, and railties goes here.
     #
