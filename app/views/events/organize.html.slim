@@ -7,16 +7,24 @@
         .flex.flex-row.gap-1
           = link_to unit_event_rsvps_path(@unit, @event),
                     title: "All #{@event.title} RSVPs",
+                    data: { turbo_action: "advance" },
                     class: "inline-block w-10 text-center py-1 rounded border hover:bg-stone-100" do
             i.fa-clipboard.fas
 
           = link_to unit_events_path(@unit),
                     title: "#{@unit.name} Event Schedule",
+                    data: { turbo_action: "advance" },
                     class: "inline-block w-10 text-center py-1 rounded border hover:bg-stone-100" do
             i.fa-calendar.fas
 
+          = link_to unit_event_document_types_path(@unit),
+                    title: "#{@event.title} Documentation",
+                    data: { turbo_action: "advance" },
+                    class: "inline-block w-10 text-center py-1 rounded border hover:bg-stone-100" do
+            i.fa-file-lines.fas
+
     table.w-full
-      tr
+      tr.sticky
         th.px-4.py-2.text-left = "Name"
         th.px-4.py-2 = "Paid"
         - @event.document_types.each do |doc_type|
@@ -24,7 +32,8 @@
 
       - @attendees.each do |rsvp|
         tr.hover:bg-stone-100
-          td.border-t.px-4.py-2
+          // NAME
+          td.border-t.px-4.py-2.whitespace-nowrap
             - if rsvp.done?
               i.fa-check-circle.fas.text-green-500.mr-2
             - else
@@ -32,9 +41,46 @@
 
             = rsvp.full_display_name
 
+          // PAID
           td.border-t.px-4.py-2.text-center
-            = check_box_tag "event_rsvp[#{rsvp.id}]_paid", "paid", rsvp.paid?, class: "mr-2", title: "Paid"
-          
+            - if rsvp.paid
+              = button_to unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.member.id, payment: "none"),
+                          class:    "rsvp-action-button unpay-rsvp-button block py-2 font-normal",
+                          onclick:  "this.classList.add('processing');",
+                          method:   :post,
+                          form:     { "data-type": "turbo_stream" },
+                          id:       "unpay_rsvp_#{rsvp.id}_button" do
+
+                span.w-7.text-center.inline-block.glyph
+                  i.fas.fa-check-square.text-green-500.inline-block.hover:text-black
+                span.pl-1.w-7.text-center.inline-block.hidden.processing-glyph
+                  i.fa-refresh.fas.fa-spin.inline-block.mr-2
+
+            - else
+              = button_to unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.member.id, payment: "full"),
+                          onclick: "this.classList.add('processing');",
+                          method:  :post,
+                          form:    { "data-type": "turbo_stream" },
+                          class:   "rsvp-action-button pay-rsvp-button block py-2 font-normal",
+                          id:      "pay_rsvp_#{rsvp.id}_button" do
+
+                span.w-7.text-center.inline-block.glyph
+                  i.far.fa-square
+                span.pl-1.w-7.text-center.inline-block.hidden.processing-glyph
+                  i.fa-refresh.fas.fa-spin.inline-block.mr-2
+
+
+
+          // DOCUMENTS
           - @event.document_types.each do |doc_type|
-            td.border-t.px-4.py-2.text-center(title="#{doc_type.description}")
-              = check_box_tag "event_rsvp[#{rsvp.id}]_document_type[#{doc_type.id}]", "received", rsvp.document?(doc_type), class: "mr-2"
+            td.border-t.px-4.py-2.text-center
+
+
+javascript:
+  document.querySelectorAll(".doc-type-control").forEach(elem) {
+    elem.addEventListener("click", processDocTypeClick(event));
+  }
+
+  document.querySelectorAll(".doc-type-control").forEach(elem) {
+    elem.addEventListener("click", processDocTypeClick(event));
+  }  
