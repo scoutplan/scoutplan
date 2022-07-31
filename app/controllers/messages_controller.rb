@@ -44,6 +44,7 @@ class MessagesController < UnitContextController
       @notice = "Draft message saved"
     when "Send Preview"
       send_preview
+      @message.update(status: :draft) if @message.status.nil?
       @notice = "Preview sent"
     when "Send Message"
       @message.update(status: :queued)
