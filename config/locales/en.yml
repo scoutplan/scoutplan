@@ -426,3 +426,7 @@ en:
   unanswered_rsvps:
     one: "One event requires your attention"
     other: "%{count} events require your attention"
+
+  messages:
+    index:
+      will_send_on: "Will send on %{send_date}"
