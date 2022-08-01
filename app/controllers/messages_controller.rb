@@ -39,16 +39,16 @@ class MessagesController < UnitContextController
 
   def handle_commit
     case params[:commit]
-    when "Save Draft"
+    when t("messages.captions.save_draft")
       @message.update(status: :draft)
-      @notice = "Draft message saved"
-    when "Send Preview"
+      @notice = t("messages.notices.draft_saved")
+    when t("messages.captions.send_preview")
       send_preview
       @message.update(status: :draft) if @message.status.nil?
-      @notice = "Preview sent"
-    when "Send Message"
+      @notice = t("messages.notices.preview_sent")
+    when t("messages.captions.send_message")
       @message.update(status: :queued)
-      @notice = @message.send_now? ? "Message sent" : "Message queued to send later"
+      @notice = t("messages.notices.#{@message.send_now? ? 'message_sent' : 'message_queued'}")
     end
 
     SendMessageJob.perform_later(@message) if @message.queued?

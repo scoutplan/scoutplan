@@ -430,3 +430,33 @@ en:
   messages:
     index:
       will_send_on: "Will send on %{send_date}"
+    
+    captions:
+      save_draft:   "Save Draft"
+      send_preview: "Send Preview"
+      send_message: "Send Message"
+
+    form:
+      labels:
+        dont_sent_until:    "Don't send until"
+        youth_and_adults:   "Youth & adults"
+        adults_only:        "Only adults"
+        member_types:       "Send to"
+        members:            "Members"
+        active_members:     "Active Members"
+        family_and_friends: "Family & Friends"
+        event_attendees:    "%{event_title} Attendees"
+      
+      placeholders:
+        subject:    "Message subject"
+        recipients: "Type member names"
+
+      titles:
+        edit: "Edit Message"
+        new:  "New Message"
+
+    notices:
+      draft_saved:  "Draft message saved"
+      preview_sent: "Preview sent"
+      message_sent: "Message sent"
+      message_queued: "Message queued to send later"
