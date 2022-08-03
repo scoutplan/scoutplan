@@ -6,14 +6,14 @@ class MessagesController < UnitContextController
   before_action :find_message, except: [:index, :new, :create]
 
   def index
-    @draft_messages  = current_member.messages.draft
-    @sent_messages   = current_member.messages.sent.order("updated_at DESC")
-    @queued_messages = current_member.messages.queued
+    @draft_messages  = @unit.messages.draft
+    @queued_messages = @unit.messages.queued
+    @sent_messages   = @unit.messages.sent.order("updated_at DESC")
   end
 
   def new
     authorize current_member.messages.new
-    @message = current_member.messages.new(recipients: "member_cohort",
+    @message = current_member.messages.new(recipients: "active_members",
                                            member_type: "youth_and_adults",
                                            recipient_details: ["active"],
                                            send_at: Date.today)
@@ -39,16 +39,16 @@ class MessagesController < UnitContextController
 
   def handle_commit
     case params[:commit]
-    when "Save Draft"
+    when t("messages.captions.save_draft")
       @message.update(status: :draft)
-      @notice = "Draft message saved"
-    when "Send Preview"
+      @notice = t("messages.notices.draft_saved")
+    when t("messages.captions.send_preview")
       send_preview
       @message.update(status: :draft) if @message.status.nil?
-      @notice = "Preview sent"
-    when "Send Message"
+      @notice = t("messages.notices.preview_sent")
+    when t("messages.captions.send_message")
       @message.update(status: :queued)
-      @notice = @message.send_now? ? "Message sent" : "Message queued to send later"
+      @notice = t("messages.notices.#{@message.send_now? ? 'message_sent' : 'message_queued'}")
     end
 
     SendMessageJob.perform_later(@message) if @message.queued?
@@ -59,7 +59,9 @@ class MessagesController < UnitContextController
   end
 
   def message_params
-    params.require(:message).permit(:title, :body, :recipients, :member_type, :send_at, recipient_details: [])
+    params.require(:message).permit(:title, :body, :recipients, :member_type, :send_at,
+                                    :pin_until, :deliver_via_notification, :deliver_via_digest,
+                                    recipient_details: [])
   end
 
   def find_message

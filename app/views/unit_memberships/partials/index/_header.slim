@@ -1,25 +1,21 @@
-header.flex.px-0.pb-8.items-center
-  .flex-auto
-    h1.px-2.py-2.font-bold.text-black.text-sm.xl:text-lg
-      = @unit.name
-      |&nbsp;
-      = t("members.titles.index")
+header
+  .flex.flex-row.justify-between
+    div.left-side
+      // search field
+      - if true
+        .relative.inline-block
+          = search_field_tag(:search, 
+            "",
+            class: "rounded text-sm px-3 py-2 bg-gray-100 mr-2 md:w-60 lg:w-48 xl:w-72 border-0 focus:ring-1 focus:ring-inset focus:ring-brand-500",
+            autofocus: true,
+            autocomplete: 'off',
+            placeholder: raw(t('members.search_by_name')),
+            onkeyup: 'performNameSearch();')
 
-  // right side
-  .flex-auto.text-right
+          i.fa-magnifying-glass.fas.absolute.right-6(style="top:50%;transform:translateY(-50%);")
 
-    // search field
-    - if true
-      .relative.inline-block
-        = search_field_tag(:search, 
-          "",
-          class: "rounded text-sm px-3 py-2 bg-gray-100 mr-2 md:w-60 lg:w-48 xl:w-72 border-0 focus:ring-1 focus:ring-inset focus:ring-brand-500",
-          autofocus: true,
-          autocomplete: 'off',
-          placeholder: raw(t('members.search_by_name')),
-          onkeyup: 'performNameSearch();')
+    div.right-side
 
-        i.fa-magnifying-glass.fas.absolute.right-6(style="top:50%;transform:translateY(-50%);")
 
     // regularly-displayed controls (hidden under some circumstances)
     span#regular_options
@@ -102,6 +98,9 @@ header.flex.px-0.pb-8.items-center
       button.btn.btn-warning#execute_bulk_edit_button(disabled="disabled") Update Selected Members
       |&nbsp;
       button.btn.btn-secondary#cancel_bulk_edit = t("global.cancel")
+
+  h1.font-bold.text-xl.text-center.py-4
+    = t("members.titles.index", unit_name: @unit.name)
 
 javascript:
   // search functionality

@@ -34,7 +34,7 @@ Rails.application.routes.draw do
 
   # begin units
   resources :units, only: %i[show index] do
-    resources :messages
+    resources :messages, path: "announcements"
     resources :plans, path: "planner"
     resources :event_categories
     resources :event_rsvps, only: [:destroy]
@@ -42,15 +42,15 @@ Rails.application.routes.draw do
       post "enqueue", to: "news_items#enqueue", as: "enqueue"
       post "dequeue", to: "news_items#dequeue", as: "dequeue"
     end
-    resources :news_items, path: "announcements", as: "announcements" do
-      collection do
-        get "drafts", to: "news_items#index", as: "drafts", defaults: { mode: "drafts" }
-        get "queued", to: "news_items#index", as: "queued", defaults: { mode: "queued" }
-        get "sent", to: "news_items#index", as: "sent", defaults: { mode: "sent" }
-      end
-      post "enqueue", to: "news_items#enqueue", as: "enqueue"
-      post "dequeue", to: "news_items#dequeue", as: "dequeue"
-    end
+    # resources :news_items, path: "announcements", as: "announcements" do
+    #   collection do
+    #     get "drafts", to: "news_items#index", as: "drafts", defaults: { mode: "drafts" }
+    #     get "queued", to: "news_items#index", as: "queued", defaults: { mode: "queued" }
+    #     get "sent", to: "news_items#index", as: "sent", defaults: { mode: "sent" }
+    #   end
+    #   post "enqueue", to: "news_items#enqueue", as: "enqueue"
+    #   post "dequeue", to: "news_items#dequeue", as: "dequeue"
+    # end
 
     resources :events, path: "schedule" do
       resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]

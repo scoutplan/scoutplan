@@ -1,7 +1,7 @@
 = turbo_frame_tag "main"
   .min-w-4xl.max-w-3xl.mx-auto
-    header.pt-4
-      h1.font-bold.text-lg.mb-2
-        = "New Message"
+    header.pt-8.pb-4
+      h1.font-bold.text-xl.mb-2.text-center
+        = t("messages.form.titles.new")
 
     = render partial: "form"

@@ -106,7 +106,7 @@
                   <% @news_items.each do |news_item| %>
                     <div class="item" style="padding:1rem 0;">
                       <strong style="display:block;font-size:21px;margin-bottom:0.3rem;"><%= news_item.title %></strong>
-                      <%= news_item.body %>
+                      <%= raw(news_item.body) %>
                     </div>
                   <% end %>
                 </td>

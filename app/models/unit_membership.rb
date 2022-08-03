@@ -43,7 +43,7 @@ class UnitMembership < ApplicationRecord
   enum member_type: { unknown: 0, youth: 1, adult: 2 }
 
   scope :status_active_and_registered, -> { where(status: %i[active registered]) } # everyone except inactives
-  scope :contactable, -> { includes(:user).where("email NOT LIKE 'anonymous-member-%@scoutplan.org'") }
+  scope :contactable, -> { joins(:user).where("email NOT LIKE 'anonymous-member-%@scoutplan.org'") }
 
   delegate :time_zone, to: :unit
   delegate :name, to: :unit, prefix: :unit

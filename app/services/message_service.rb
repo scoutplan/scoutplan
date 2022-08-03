@@ -28,8 +28,7 @@ class MessageService < ApplicationService
 
   def resolve_member_cohort
     @message.author.unit.members.select do |member|
-      (member.status_active? && Array(@message.recipient_details.include?("active"))) || \
-        (member.status_registered? && Array(@message.recipient_details.include?("family_and_friends")))
+      member.status_active? || (!member.status_inactive? && @message.recipients == "all_members")
     end
   end
 

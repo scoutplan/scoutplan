@@ -3,7 +3,7 @@
     .flex.flex-row.justify-between.p-2.hidden
       div
         = f.radio_button :recipients, :member_cohort
-        = f.label :recipient_member_cohort, "Members", class: "ml-2"
+        = f.label :recipient_member_cohort, t("messages.form.labels.members"), class: "ml-2"
 
       div
 
@@ -19,7 +19,7 @@
               checked: @message.recipient_details.include?("active") },
             :active, nil
 
-          = label_tag :message_recipient_details_active, "Active Members", class: "ml-2"
+          = label_tag :message_recipient_details_active, t("messages.form.labels.active_members"), class: "ml-2"
 
         div.rounded.bg-stone-100.text-stone-700.p-1.text-xs.font-bold.tracking-wider
             = "#{@unit.members.status_active.count}"
@@ -29,13 +29,13 @@
         div
           = f.check_box :recipient_details,
             { multiple: true,
-              data: { adult_count: @unit.members.status_active.adult.count,
-                      youth_count: @unit.members.status_active.youth.count },
+              data: { adult_count: @unit.members.status_registered.adult.count,
+                      youth_count: @unit.members.status_registered.youth.count },
               class: "countable member-cohort",
               checked: @message.recipient_details.include?("family_and_friends") },
             :family_and_friends, nil
 
-          = label_tag :message_recipient_details_family_and_friends, "Family & Friends", class: "ml-2"
+          = label_tag :message_recipient_details_family_and_friends, t("messages.form.labels.family_and_friends"), class: "ml-2"
 
         div.rounded.bg-stone-100.text-stone-700.p-1.text-xs.font-bold.tracking-wider
           = "#{@unit.members.status_registered.count}"
@@ -44,7 +44,7 @@
 
     // EVENTS
     - @unit.events.published.recent_and_future.rsvp_required.each do |event|
-      .flex.flex-row.justify-between.p-2
+      fieldset.flex.flex-row.justify-between.p-2
         div
           = f.radio_button :recipients,
             "event_#{event.id}_attendees",
@@ -52,7 +52,7 @@
                     youth_count: event.rsvps.accepted.select { |r| r.member.youth? }.count },
             class: "countable event-cohort"                
 
-          = f.label "recipients_event_#{event.id}_attendees", "#{event.title} Attendees", class: "ml-2"
+          = f.label "recipients_event_#{event.id}_attendees", t("messages.form.labels.event_attendees", event_title: event.title), class: "ml-2"
 
         div
           .inline-block.text-xs

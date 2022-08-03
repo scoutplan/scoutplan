@@ -8,7 +8,7 @@ class Unit < ApplicationRecord
   has_many :event_categories
   has_many :unit_memberships
   has_many :users, through: :unit_memberships
-  has_many :messages, through: :unit_memberships
+  # has_many :messages, through: :unit_memberships
   has_many :news_items
   has_many :tasks, as: :taskable
   has_one_attached :logo
@@ -33,6 +33,11 @@ class Unit < ApplicationRecord
       meeting_address: nil
     }
     s.key :utilities, defaults: { fire_scheduled_tasks: false }
+  end
+
+  def messages
+    # members.collect(&:messages)
+    Message.where(author_id: members.collect(&:id))
   end
 
   def to_param
