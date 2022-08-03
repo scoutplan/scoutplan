@@ -11,8 +11,8 @@ class UnitMembershipsController < ApplicationController
       :user,
       { parent_relationships: { parent_unit_membership: :user } },
       { child_relationships: { child_unit_membership: :user } }
-    )
-    @page_title = @unit.name, t("members.titles.index")
+    ).order("users.first_name, users.last_name ASC")
+    @page_title = @unit.name, t("members.titles.index", unit_name: "")
     @membership = @unit.memberships.build
     @membership.build_user
   end

@@ -4,14 +4,24 @@
 class Message < ApplicationRecord
   belongs_to :author, class_name: "UnitMembership"
   has_one :unit, through: :author
+  after_initialize :set_defaults
 
-  validates_presence_of :title
+  # validates_presence_of :title
 
   alias_attribute :member, :unit_membership
 
   enum status: { draft: 0, queued: 1, sent: 2 }
 
-  serialize :recipient_details, Array
+  # serialize :recipient_details, Array
+
+  # def author
+  #   UnitMembership.unscoped { super }
+  # end
+
+  # https://stackoverflow.com/a/56437977/6756943
+  def set_defaults
+    self&.pin_until ||= 1.week.from_now
+  end
 
   def event_cohort?
     recipients =~ /event_([0-9]+)_attendees/
@@ -25,9 +35,13 @@ class Message < ApplicationRecord
     !send_at&.future?
   end
 
-  private
-
-  def find_unit
-    @unit = author.unit
+  def active?
+    sent? && deliver_via_digest && pin_until > Time.now
   end
+
+  # private
+
+  # def find_unit
+  #   @unit = author.unit
+  # end
 end

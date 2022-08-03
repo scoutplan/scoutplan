@@ -1,20 +1,52 @@
-- schedule_format = "%A, %d %b %Y at %l:%M %p"
-
-- content_for :body_classes do
-  = @view
-
 = turbo_frame_tag("main")
   .max-w-3xl.mx-auto
-    .px-2
-      = styled_header_tag @view.titleize do
-        = styled_link_to \
-          new_unit_announcement_path(@unit),
-          button_style: :primary,
-          class: "ml-2",
-          data: { turbo_action: "advance" } do
+    header.pt-4.mb-4.flex.flex-row.justify-between
+      h1.font-bold.text-lg
+        = t("announcements.titles.index")
 
-          i.fa-square-plus.fas.mr-0.md:mr-2
-          .hidden.md:inline
-            = t("news_items.captions.new")
-      section
-        = render partial: "news_items"
+      div
+        - if policy(:message).create?
+          = link_to "Write an Announcement",
+            new_unit_news_item_path(@unit),
+            class: "rounded bg-brand-500 uppercase text-sm font-bold tracking-wider text-white px-4 py-2",
+            data: { turbo_frame: "main", turbo_action: "advance" }
+
+    section.tabbed
+      nav.tab-menu.mb-4
+        ul
+          li.inline-block
+            = link_to "#drafts",
+              data: { tab_target: "#messages_drafts" },
+              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-500 hover:border-brand-500 uppercase font-bold text-sm tracking-wider" do
+
+              = "Drafts"
+              = " (#{@draft_messages.count})" if @draft_messages.count.positive?
+
+          li.inline-block
+            = link_to "#queued",
+              data: { tab_target: "#messages_queued" },
+              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider" do
+
+              = "Queued"
+              = " (#{@queued_messages.count})" if @queued_messages.count.positive?
+
+          li.inline-block
+            = link_to "Posted", "#posted",
+              data: { tab_target: "#messages_sent" },
+              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider"
+
+      .tabs
+        .tab#messages_drafts
+          ul.divide-y
+            = render partial: "message", collection: @draft_messages
+          = render partial: "empty", locals: { message_type: "draft" } unless @draft_messages.present?
+
+        .tab#messages_queued.hidden
+          ul.divide-y
+            = render partial: "message", collection: @queued_messages
+          = render partial: "empty", locals: { message_type: "queued" } unless @queued_messages.present?
+
+        .tab#messages_sent.hidden
+          ul.divide-y
+            = render partial: "message", collection: @sent_messages
+          = render partial: "empty", locals: { message_type: "sent" } unless @sent_messages.present?

@@ -66,10 +66,10 @@ en:
     nevermind: "Never Mind"
   
   main_nav:
-    events:  "Schedule"
-    members: "Members"
-    planner: "Planning"
-    communication: "Communication"
+    events:        "Schedule"
+    members:       "Members"
+    planner:       "Planning"
+    communication: "Announcements"
 
   profile:
     edit: "Settings"
@@ -92,6 +92,10 @@ en:
       draft:  "Draft"
       queued: "Queued"
     next_sends_at: "Scoutplan will automatically send the next %{unit_name} email digest on %{next_newsletter_datetime}."
+
+  announcements:
+    titles:
+      index: "Announcements"
       
   messaging:
     title: "Messaging"
@@ -341,7 +345,7 @@ en:
     titles:
       new:     "Add a Member"
       edit:    "Update Member Details"
-      index:   "Member Roster"
+      index:   "%{unit_name} Member Roster"
 
     confirmations:
       create: "%{member_name} was added to %{unit_name}"
@@ -430,30 +434,38 @@ en:
   messages:
     index:
       will_send_on: "Will send on %{send_date}"
+      sent_tab:     "Actively Posted"
+      done_tab:     "Completed"
+      title:        "Announcements"
     
     captions:
       save_draft:   "Save Draft"
       send_preview: "Send Preview"
-      send_message: "Send Message"
+      send_message: "Post Announcement"
+      new_message:  "Post an Announcement"
 
     form:
       labels:
-        dont_sent_until:    "Don't send until"
-        youth_and_adults:   "Youth & adults"
-        adults_only:        "Only adults"
-        member_types:       "Send to"
-        members:            "Members"
-        active_members:     "Active Members"
-        family_and_friends: "Family & Friends"
-        event_attendees:    "%{event_title} Attendees"
+        dont_sent_until:         "Don't send until"
+        youth_and_adults:        "Youth & adults"
+        adults_only:             "Only adults"
+        member_types:            "Send to"
+        members:                 "Members"
+        active_members:          "Active Members"
+        family_and_friends:      "Family & Friends"
+        event_attendees:         "%{event_title} Attendees"
+        include_in_digest:       "Weekly newsletter"
+        notify_members_directly: "Email notification"
+        groups:                  "Send to"
+        subject:                 "Subject"
       
       placeholders:
         subject:    "Message subject"
         recipients: "Type member names"
 
       titles:
-        edit: "Edit Message"
-        new:  "New Message"
+        edit: "Edit Announcement"
+        new:  "New Announcement"
 
     notices:
       draft_saved:  "Draft message saved"

@@ -3,19 +3,20 @@
 # helpers for displaying Messages
 module MessagesHelper
   def recipients_to_s(message)
-    result = member_cohort_to_s(message) if message.recipients == "member_cohort"
+    result = member_cohort_to_s(message) if message.member_cohort?
     result = event_cohort_to_s(message) if message.event_cohort?
     result
   end
 
   def member_cohort_to_s(message)
-    cohort_names = { "active" => "Active Members",
-                     "family_and_friends" => "Family & Friends" }
-    result = []
-    Array(message.recipient_details).each do |r|
-      result << cohort_names[r]
+    case message.recipients
+    when "all_members"
+      "Active + Family & Friends"
+    when "active_members"
+      "Active Members"
+    else
+      "Unknown"
     end
-    result.join(", ")
   end
 
   # Returns a string description of an event cohort

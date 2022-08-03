@@ -1,18 +1,18 @@
 = turbo_frame_tag "main"
-  .max-w-3xl.mx-auto
-    header.pt-4.mb-4.flex.flex-row.justify-between
-      h1.font-bold.text-lg
-        = "Messages"
+  .max-w-4xl.mx-auto
+    header.flex.flex-row.justify-between.my-12
+      h1.font-bold.text-xl
+        = t("messages.index.title", unit_name: @unit.name)
 
       div
         - if policy(:message).create?
-          = link_to "Write a Message",
+          = link_to t("messages.captions.new_message"),
             new_unit_message_path(@unit),
             class: "rounded bg-brand-500 uppercase text-sm font-bold tracking-wider text-white px-4 py-2",
             data: { turbo_frame: "main", turbo_action: "advance" }
 
     section.tabbed
-      nav.tab-menu.mb-4
+      nav.tab-menu.mb-4.text-center
         ul
           li.inline-block
             = link_to "#drafts",
@@ -31,8 +31,13 @@
               = " (#{@queued_messages.count})" if @queued_messages.count.positive?
 
           li.inline-block
-            = link_to "Sent", "#sent",
+            = link_to "#{t("messages.index.sent_tab")} (#{@sent_messages.select(&:active?).count})", "#sent",
               data: { tab_target: "#messages_sent" },
+              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider"
+
+          li.inline-block
+            = link_to "#{t("messages.index.done_tab")} (#{@sent_messages.select { |m| !m.active? }.count })", "#done",
+              data: { tab_target: "#messages_done" },
               class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider"
 
       .tabs
@@ -47,9 +52,17 @@
           = render partial: "empty", locals: { message_type: "queued" } unless @queued_messages.present?
 
         .tab#messages_sent.hidden
+
+          p These active announcements will appear in the weekly email newsletter
+
           ul.divide-y
-            = render partial: "message", collection: @sent_messages
+            = render partial: "message", collection: @sent_messages.select(&:active?)
           = render partial: "empty", locals: { message_type: "sent" } unless @sent_messages.present?
+
+        .tab#messages_done.hidden
+          ul.divide-y
+            = render partial: "message", collection: @sent_messages.select { |m| !m.active? }
+          = render partial: "empty", locals: { message_type: "sent" } unless @sent_messages.present?          
 
 css:
   .message.older {
