@@ -434,7 +434,7 @@ en:
   messages:
     index:
       will_send_on: "Will send on %{send_date}"
-      sent_tab:     "Actively Posted"
+      sent_tab:     "Active Posts"
       done_tab:     "Completed"
       title:        "Announcements"
     
