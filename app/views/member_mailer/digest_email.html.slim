@@ -22,11 +22,12 @@
      = render partial: "digest_event", locals: { event: event }
 
 - content_for :right_column do
-  h1(style="margin-bottom:1rem;") Coming Up
+  - if @upcoming_events.present?
+    h1(style="margin-bottom:1rem;") Coming Up
 
-  - @upcoming_events.each do |event|
-    #coming_up
-      = render partial: "digest_event", locals: { event: event }
+    - @upcoming_events.each do |event|
+      #coming_up
+        = render partial: "digest_event", locals: { event: event }
 
 - content_for :footer do
   div(style="text-align:center;")

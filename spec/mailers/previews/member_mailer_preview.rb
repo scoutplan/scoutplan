@@ -19,6 +19,12 @@ class MemberMailerPreview < ActionMailer::Preview
     MemberMailer.with(member: member, news_items: news_items).digest_email
   end
 
+  def digest_email_without_upcoming_events
+    member = Unit.first.members.first
+    member.unit.events.where(title: "Preview Test Event").destroy_all
+    MemberMailer.with(member: member, news_items: nil).digest_email
+  end
+
   def daily_reminder_email
     member = Unit.first.members.first
     member.unit.events.where(title: "Preview Test Event").destroy_all
