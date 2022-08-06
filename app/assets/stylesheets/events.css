@@ -15,8 +15,24 @@
     display: inline-block;
     width: 100%; }
 
-.event-past, .event-cancelled, .event-future {
+.event-past, .event-cancelled {
   display: none; }
+
+.event-draft .event-title:after {
+  content: "Draft";
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: rgb(14, 165, 233);
+  margin-left: 0.75rem;
+  line-height: 1.0;
+  padding: 3px 6px;
+  border: 1px solid rgb(14, 165, 233);
+  border-radius: 5px;
+  text-align: center;
+  display: inline-block;
+  letter-spacing: 1px;
+}
 
 .menu-glyph {
   display: inline-block;
@@ -51,9 +67,6 @@ body.showing-only-rsvp-events #show-only-rsvp-events-link .menu-glyph-wrapper {
 body.showing-only-rsvp-events .filter-status-only-rsvps {
   display: inline-block; }
 
-body.showing-past-events .filter-status-past-events {
-  display: inline-block; }
-
 body.showing-cancelled-events .filter-status-cancelled {
   display: inline-block; }
 
@@ -67,7 +80,7 @@ body.showing-only-draft-events .event-row:not(.event-draft) {
   display: none; }
 
 body.showing-only-draft-events .event-row.event-draft {
-  display: table-row; }  
+  display: block; }  
 
 body.showing-only-draft-events .event-row.event-draft.event-past {
   display: none; }  
@@ -84,14 +97,50 @@ body.showing-only-draft-events #bulk_publish_button_wrapper {
 body.showing-only-draft-events #regular_options {
   display: none; }
 
+/* showing past events */
+section.event-month-past {
+  display: none;
+}
+
+section.event-month .event-year {
+  display: none;
+}
+
+section.event-month:first-of-type .event-year {
+  display: block;
+}
+
+section.event-month.event-month-current-0 .event-year {
+  display: block;
+}
+
+section.event-month.month_1 .event-year {
+  display: block;
+}
+
+body.showing-past-events section.event-month-past {
+  display: block;
+}
+
+body.showing-past-events section.event-month.event-month-current-0 .event-year {
+  display: none;
+}
+
+body.showing-past-events .filter-status-past-events {
+  display: inline-block;
+}
+
 body.showing-past-events.showing-cancelled-events .event-past.event-cancelled {
-  display: table-row; }
+  display: block;
+}
 
 body.showing-past-events .event-past:not(.event-cancelled) {
-  display: table-row; }
+  display: block;
+}
 
-body.showing-past-events #show-past-events-link .menu-glyph-wrapper {
-  display: inline-block; }
+body.showing-past-events #show_past_events_link {
+  display: none;
+}
 
 body.showing-future-events .event-future {
   display: table-row; }

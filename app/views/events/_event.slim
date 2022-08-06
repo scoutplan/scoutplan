@@ -1,78 +1,85 @@
 - @presenter.event = event
 - rsvps = event.rsvps
-- row_class = 'event-row'
 
-// TODO: this logic needs to move
-- row_class += ' event-past'   if event.ends_at.localtime.past?
-- row_class += ' event-future' if event.starts_at > 3.months.from_now
-- row_class += ' event-rsvp'   if event.requires_rsvp
-- row_class += ' event-draft'  if event.draft?
-- row_class += ' event-cancelled' if event.cancelled?
-- mode ||= 'append'
 
-- if mode == 'append'
-  = render partial: 'month_header', locals: { event: event }
+- if @current_month.nil? || @current_month != event.starts_at.month
+  section.event-month-boundary(id="month_header_#{event.starts_at.strftime('%Y')}_#{event.starts_at.strftime('%m')}")
+    h3(class= "text-brand-500 leading-none base font-bold text-base mb-0 w-full pl-0 py-2 uppercase tracking-wider", role="heading", aria-level="3")
+      = event.starts_at.strftime('%B')
+      - if @current_year.nil? || @current_year != event.starts_at.year
+        = event.starts_at.strftime(' %Y')
 
-tr.border-b.hover:bg-stone-100.hover:text-stone-800(id="#{dom_id(event)}" class="#{row_class}")
-  // bulk selection checkbox
-  td.bulk-selection.px-2.w-0
-    = check_box_tag "event_ids[]", event.id, false, class: "bulk-publish-checkbox"
+    .flex.flex-col.divide-y
 
-  // dates & days
-  td.event-dates.w-px
-    = link_to unit_event_path(@unit, event),
-      class: "row-link cursor-pointer no-underline whitespace-nowrap start-day px-2",
-      data: { turbo_frame: "main", turbo_action: "advance" } do
-      .text-base.font-bold.py-1
-        = raw(@presenter.dates_to_s)
-      
-      .text-sm.text-gray-500.font-semibold.uppercase
-        = raw(@presenter.days_to_s)
-      
-  // title
-  td.event-title
-    = link_to unit_event_path(@unit, event),
-      class: "row-link cursor-pointer no-underline px-1 py-2",
-      data: { turbo_frame: "main", turbo_action: "advance" } do
-      .font-bold.py-1.w-full.whitespace-nowrap
-        = event.title
-        = event_badge(event)
-        - description_text = event.description.to_plain_text
-        - description_text = description_text[0, 100] + (description_text.length > 100 ? "..." : "")
-        - description_text = '"' + description_text + '"'
-        - if event.description.present?
-          i.fas.fa-comment-alt-lines.mx-2.text-green-600(title="#{description_text}")
+    - @current_month = event.starts_at.month
+    - @current_year = event.starts_at.year
 
-      - if event.location.present? || event.address.present?
-        .text-gray-500.text-sm
-          - if event.address =~ /\A#{URI::regexp(['http', 'https'])}\z/
-            i.fa-desktop.fas.text-gray-300.mr-1
-            = event.location.presence || event.address
-          - else
-            i.fa-location-dot.fas.text-gray-300.mr-1
-            = event.location.presence || event.address
 
-  // glyph + description
-  td.event-glyph.hidden.sm:table-cell
-    = link_to unit_event_path(@unit, event),
-      class: "row-link cursor-pointer no-underline px-1 py-3 glyph",
-      data: { turbo_frame: "main", turbo_action: "advance" } do
-        span.mr-2
-          = glyph_tag(event)
-        = event.category.name
+    article(id="#{dom_id(event)}" class="event-row #{row_classes(event)}")
 
-        .text-sm.text-gray-500.text-ellipsis
-          = event.short_description
+      = link_to unit_event_path(@unit, event),
+                class: "hover:bg-stone-100 hover:text-stone-800" do
 
-  // RSVP info
-  td.rsvps.hidden.sm:table-cell
-    - if event.requires_rsvp? && Pundit.policy(@current_member, event).organize?
-      = link_to unit_event_rsvps_path(@unit, event),
-        data: { turbo_action: "advance"} \
-        do
-        .inline-block.bg-cyan-600.text-cyan-100.px-4.py-2.rounded.font-bold.whitespace-nowrap
-          i.fa-hiking.fas.mr-2
-          = event.rsvps.accepted.count
 
-  td.event-actions.text-right.pr-2.w-px
-    = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps } if event.requires_rsvp
+        // bulk selection checkbox
+        .bulk-selection.px-2.w-0
+          = check_box_tag "event_ids[]", event.id, false, class: "bulk-publish-checkbox"
+
+        // dates & days
+        .event-dates.w-px
+          = link_to unit_event_path(@unit, event),
+            class: "row-link cursor-pointer no-underline whitespace-nowrap start-day px-2",
+            data: { turbo_frame: "main", turbo_action: "advance" } do
+            .text-base.font-bold.py-1
+              = raw(@presenter.dates_to_s)
+            
+            .text-sm.text-gray-500.font-semibold.uppercase
+              = raw(@presenter.days_to_s)
+          
+        // title
+        .event-title
+          = link_to unit_event_path(@unit, event),
+            class: "row-link cursor-pointer no-underline px-1 py-2",
+            data: { turbo_frame: "main", turbo_action: "advance" } do
+            .font-bold.py-1.w-full.whitespace-nowrap
+              = event.title
+              = event_badge(event)
+              - description_text = event.description.to_plain_text
+              - description_text = description_text[0, 100] + (description_text.length > 100 ? "..." : "")
+              - description_text = '"' + description_text + '"'
+              - if event.description.present?
+                i.fas.fa-comment-alt-lines.mx-2.text-green-600(title="#{description_text}")
+
+            - if event.location.present? || event.address.present?
+              .text-gray-500.text-sm
+                - if event.address =~ /\A#{URI::regexp(['http', 'https'])}\z/
+                  i.fa-desktop.fas.text-gray-300.mr-1
+                  = event.location.presence || event.address
+                - else
+                  i.fa-location-dot.fas.text-gray-300.mr-1
+                  = event.location.presence || event.address
+
+        // glyph + description
+        .event-glyph.hidden.sm:table-cell
+          = link_to unit_event_path(@unit, event),
+            class: "row-link cursor-pointer no-underline px-1 py-3 glyph",
+            data: { turbo_frame: "main", turbo_action: "advance" } do
+              span.mr-2
+                = glyph_tag(event)
+              = event.category.name
+
+              .text-sm.text-gray-500.text-ellipsis
+                = event.short_description
+
+        // RSVP info
+        .rsvps.hidden.sm:table-cell
+          - if event.requires_rsvp? && Pundit.policy(@current_member, event).organize?
+            = link_to unit_event_rsvps_path(@unit, event),
+              data: { turbo_action: "advance"} \
+              do
+              .inline-block.bg-cyan-600.text-cyan-100.px-4.py-2.rounded.font-bold.whitespace-nowrap
+                i.fa-hiking.fas.mr-2
+                = event.rsvps.accepted.count
+
+        .event-actions.text-right.pr-2.w-px
+          = render partial: 'events/partials/event_row/action_cell', locals: { event: event, rsvps: rsvps } if event.requires_rsvp

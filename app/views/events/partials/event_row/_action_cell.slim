@@ -1,40 +1,32 @@
-- family_rsvps = false
+- family_has_rsvps = false
 - family_fully_responded = true
+- @current_family.each do |member|
+  - rsvp = event.rsvps.select { |r| r.unit_membership == member }&.first
+  - family_has_rsvps = family_has_rsvps || rsvp.present?
+  - family_fully_responded = family_fully_responded && rsvp.present?
+/  - next unless member.status_active? || rsvp&.accepted?
 
-ul.whitespace-nowrap.w-full.mb-0.hidden.md:inline-block
-  - @current_family.each do |member|
-    - rsvp = rsvps.select { |r| r.unit_membership == member }&.first
-    - family_rsvps = family_rsvps || rsvp.present?
-    - family_fully_responded = family_fully_responded && rsvp.present?
-    - next unless member.status_active? || rsvp&.accepted?
-
-    li.inline-block.ml-3
-      = raw(rsvp_glyph_tag(member, rsvp))
-
-      .inline-block.ml-1
-        = member.display_first_name
-        = " (you)" if member == @current_member
-
-  // "Change" RSVP button, if user's allowed to
+.block.absolute.right-2.top-1/2.-translate-y-2/4.z-10.flex.flex-row.gap-2
+  // RSVPs
   - if event.rsvp_open?
     - if policy(event).rsvp?
-      li.ml-3.hidden.xl:inline-block
-        - if family_rsvps
-          = link_to unit_event_edit_rsvps_path(@unit, event),
-            class: "event-rsvp-link text-sm py-1 px-4 font-bold tracking-wider rounded border border-yellow-600 text-yellow-600 hover:text-yellow-700 no-underline uppercase",
-            data: { turbo_frame: "event", turbo_action: "advance" } do
-            = t("events.index.event_row.rsvp_change")        
-        - else
-          = link_to unit_event_edit_rsvps_path(@unit, event),
-            class: "event-rsvp-link text-sm py-1 px-4 font-bold tracking-wider rounded text-yellow-800 bg-yellow-400 hover:bg-yellow-500 hover:text-yellow-900 no-underline uppercase",
-            data: { turbo_frame: "event", turbo_action: "advance" } do
-            = t("events.index.event_row.rsvp_respond")
+      - if family_fully_responded
+        = "You have responded"
 
-// yellow dot for mobile screens
-span.md:hidden
-  - if family_fully_responded
-    i.fa-circle.fas.text-yellow-500 title=t("events.index.rsvp.full_response")
-  - elsif family_rsvps
-    i.fa-circle-half-stroke.far.text-yellow-500 title=t("events.index.rsvp.partial_response")
-  - else
-    i.fa-circle.far.text-yellow-500 title=t("events.index.rsvp.no_response")
+      - elsif family_has_rsvps
+        = link_to t("events.index.event_row.rsvp_complete"), unit_event_edit_rsvps_path(@unit, event),
+                  class: "inline-block bg-yellow-600 px-2 py-1 text-sm uppercase tracking-wider font-bold rounded text-yellow-100"
+
+      - else
+        = link_to t("events.index.event_row.rsvp_respond"), unit_event_edit_rsvps_path(@unit, event),
+                  class: "inline-block bg-yellow-600 px-2 py-1 text-sm uppercase tracking-wider font-bold rounded text-yellow-100"
+
+    - else
+      = "RSVPs are closed"
+
+  // ORGANIZE BUTTON
+  - if policy(event).organize?
+    = link_to unit_event_organize_path(@unit, event),
+              class: "inline-block bg-cyan-600 px-2 py-1 text-sm uppercase tracking-wider font-bold rounded text-cyan-100",
+              title: "Organize this event"
+      i.fa-clipboard.fas      

@@ -1,0 +1,76 @@
+/ = render partial: "events/partials/index/header"
+#event_table_container.max-w-full
+  = form_tag bulk_publish_unit_events_path(@unit), id: "bulk_action_form"
+
+    #bulk_select_all_wrapper.bulk-selection.block.px-2.py-4
+      = check_box_tag "all_visible_events", "on", false, class: "form-check-input", id: "select_all_events_checkbox"
+      = label_tag :select_all_events_checkbox, "Select all", class: "ml-2 font-bold"
+
+    header.max-w-4xl.mx-auto
+      .flex.flex-row.justify-between
+        // LEFT SIDE
+        div
+
+        // RIGHT SIDE
+        - if policy(:event).create?
+          = link_to new_unit_event_path(@unit),
+                    class: "rounded border border-brand-500 text-brand-500 hover:border-brand-600 hover:text-brand-600 px-4 py-2 uppercase text-sm font-bold tracking-wider" do
+            i.fa-plus.fas.mr-2
+            = t("events.titles.new")
+
+      h1.text-center.text-4xl.font-bold.mb-2
+        = t("events.index.page_title", unit_name: @unit.name)
+
+    // LIST WRAPPER
+    .max-w-3xl.mx-auto
+      // iterate by month
+      - @event_month_count = 0
+      - @current_event_month_count = 0
+      .divide-y.divide-stone-300
+        = link_to "#",
+                  class: "inline-block px-4 py-2 w-full toggle-body-class text-sm text-center text-stone-400 hover:text-stone-600",
+                  data: { action: "event#togglePastEvents" },
+                  id: "show_past_events_link" do
+
+            = "Show past events"
+
+        - @events_by_year.each do |year, yearly_events|
+          - monthly_events = yearly_events.group_by { |e| e.starts_at.month }
+          = render partial: "event_month", locals: { event_month: monthly_events, year: year }
+
+javascript:
+  document.addEventListener("turbo:load", function() {
+    document.body.classList.add("showing-as-list");
+    document.body.classList.remove("showing-as-calendar");
+    // hideEmptyMonthHeaders();
+    // toggleMonthSections(".event-month", ".event");
+  });
+
+  function toggleMonthSections(parentClass, childClass) {
+    var visibleParents = 0;
+
+    document.querySelectorAll(parentClass).forEach(function(elem) {
+      elem.style.display = "none";
+
+      // ...then, iterate over all visible event rows, traverse backward until we
+      // hit a month header, and reveal it. There's an inefficiency here in that
+      // we're iterating on every visible event row, meaning we'll repeatedly
+      // unhide the same month headers.
+      // TODO: traverse forward to next month header, then traverse from there to the next visible event row
+      var visibleCount = 0;
+
+      elem.querySelectorAll(childClass).forEach(function(elem) {
+        var compStyles = window.getComputedStyle(elem);
+        var compDisplay = compStyles.getPropertyValue('display');
+        if(compDisplay == "none") {
+          return; // nothing to see here...move on
+        }
+        visibleCount++;
+      });
+
+      if (visibleCount > 0) {
+        elem.style.display = "block";
+        visibleParents++;
+      }
+    });
+  }

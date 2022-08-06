@@ -32,10 +32,13 @@ class EventsController < UnitContextController
     cookies[:calendar_display_year] = params[:year] if params[:year]
 
     @events = UnitEventQuery.new(current_member, current_unit).execute
+
+    @events_by_year = @events.group_by { |e| e.starts_at.year }
+
     @event_drafts = @events.select(&:draft?).select{ |e| e.ends_at.future? }
     @presenter = EventPresenter.new
     @current_family = @current_member.family
-    @current_year = @current_month = nil
+    # @current_year = @current_month = nil
 
     # kludge alert: we shouldn't generate this here, now
     @ical_magic_link = MagicLink.generate_non_expiring_link(@current_member, "icalendar") # create a MagicLink object
@@ -90,7 +93,7 @@ class EventsController < UnitContextController
     else
       events = @unit.events.includes(:event_category).published
     end
-    events = events.reject { |e| e.category.name == "Troop Meeting" } # TODO: not hard-wire this
+    # events = events.reject { |e| e.category.name == "Troop Meeting" } # TODO: not hard-wire this
     events.group_by { |e| [e.starts_at.year, e.starts_at.month] }
   end
 

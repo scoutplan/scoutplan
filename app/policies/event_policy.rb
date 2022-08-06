@@ -41,7 +41,7 @@ class EventPolicy < UnitContextPolicy
   end
 
   def rsvp?
-    @event.published? && @membership.adult?
+    @membership.adult?
   end
 
   def plan?

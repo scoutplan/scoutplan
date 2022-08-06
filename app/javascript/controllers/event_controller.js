@@ -6,10 +6,12 @@ export default class extends Controller {
 
   toggleFutureEvents(event) {
     this.toggleBodyClass(event, "showing-future-events");
+    toggleMonthSections(".event-month", ".event");
   }
 
   togglePastEvents(event) {
     this.toggleBodyClass(event, "showing-past-events");
+    document.getElementById("event_month_current_0").scrollIntoView();
   }
 
   toggleCancelledEvents(event) {

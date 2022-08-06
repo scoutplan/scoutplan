@@ -2,13 +2,15 @@
 
 # helpers for Event views
 module EventsHelper
-  require 'cgi'
-  RSVP_GLYPH_CLASSES = { nil => 'ghost', 'accepted' => 'hiking', 'declined' => 'couch' }.freeze
-  RSVP_GLYPH_COLORS = { nil => 'text-gray-100', 'accepted' => 'text-green-500', 'declined' => 'text-red-500'}.freeze
+  require "cgi"
+  RSVP_GLYPH_CLASSES = { nil => "ghost", "accepted" => "hiking", "declined" => "couch" }.freeze
+  RSVP_GLYPH_COLORS = { nil => "text-gray-100", "accepted" => "text-green-500", "declined" => "text-red-500"}.freeze
   MAP_BASE_URL = "https://www.google.com/maps/"
 
+  # given an Event, return a FontAwesome-formatted <i> tag corresponding to
+  # the associated EventCategory
   def glyph_tag(event)
-    content_tag(:span, class: 'event-category-glyph') do
+    content_tag(:span, class: "event-category-glyph") do
       content_tag(
         :i,
         nil,
@@ -19,8 +21,24 @@ module EventsHelper
     end
   end
 
+  # given an Event, return a space-delimited string of classes to apply to a table row
+  # in the Events#index view
+  def row_classes(event)
+    result = []
+    result << "event-past" if event.ends_at.localtime.past?
+    result << "event-future" if event.starts_at > 3.months.from_now
+    result << "event-rsvp"   if event.requires_rsvp
+    result << "event-draft"  if event.draft?
+    result << "event-cancelled" if event.cancelled?
+
+    result.join(" ")
+  end
+
+  # TODO: shouldn't this whole thing just move to EventPolicy?
   # can a given member cancel a given event?
-  # Three things have to be true: (a) event is persisted, (b) event isn't in a cancelled state already,
+  # Three things have to be true:
+  # (a) event is persisted,
+  # (b) event isn't in a cancelled state already,
   # (c) member is authorized
   # TODO: should we also prevent past events from being cancelled?
   def event_cancellable?(event, member)
@@ -29,6 +47,7 @@ module EventsHelper
       EventPolicy.new(event, member).cancel?
   end
 
+  # TODO: shouldn't this whole thing just move to EventPolicy?
   # can a given member cancel a given event?
   # Three things have to be true: (a) event is persisted, (b) event is cancelled or draft, (c) member is authorized
   # TODO: should we also prevent past events from being cancelled?
@@ -55,9 +74,8 @@ module EventsHelper
     end
   end
 
+  # given an Event, return an appropriate pill_tag, if needed
   def event_badge(event)
-    common_classes = "rounded px-2 py-1 text-xs tracking-wide font-bold text-white ml-2"
-    title = "Only visible to #{event.unit.name} administrators, like you."
     if event.cancelled?
       pill_tag("Cancelled", "bg-red-500 text-white font-bold uppercase tracking-wider")
     elsif event.draft?

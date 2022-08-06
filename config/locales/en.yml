@@ -35,7 +35,7 @@ en:
   administration: "Administration"
   rsvps: "Your RSVPs"
   hello: "Hello world"
-  event_add: "Add a Calendar Event"
+  event_add: "Add an Event"
   event_update: "Change a Calendar Event"
   event_edit: "Change Event Details"
   description_edit: "Edit Event Description"
@@ -68,7 +68,7 @@ en:
   main_nav:
     events:        "Schedule"
     members:       "Members"
-    planner:       "Planning"
+    planner:       "Planner"
     communication: "Announcements"
 
   profile:
@@ -201,7 +201,7 @@ en:
 
     index:
       title:                "Event Schedule"
-      page_title:           "Event Schedule"
+      page_title:           "%{unit_name} Schedule"
       showing_some:         "Showing events for the upcoming 3 months. "
       showing_rsvps:        "Showing only events requiring an RSVP"
       showing_past:         "Showing past events"
@@ -237,6 +237,7 @@ en:
       event_row:
         rsvp_respond: "Respond"
         rsvp_change:  "Change"
+        rsvp_complete: "Complete Your RSVP"
 
       rsvp:   
         no_response:      "RSVP is open. Your family hasn't responded yet. You can still change your response."
@@ -321,7 +322,7 @@ en:
         search: "Search for members by name"
 
     titles:
-      new:  "Add a Calendar Event"
+      new:  "Add an Event"
       edit: "Change Event Details"
         
   members:
@@ -434,7 +435,7 @@ en:
   messages:
     index:
       will_send_on: "Will send on %{send_date}"
-      sent_tab:     "Actively Posted"
+      sent_tab:     "Active Posts"
       done_tab:     "Completed"
       title:        "Announcements"
     
