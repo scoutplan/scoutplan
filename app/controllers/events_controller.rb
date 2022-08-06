@@ -93,7 +93,7 @@ class EventsController < UnitContextController
     else
       events = @unit.events.includes(:event_category).published
     end
-    events = events.reject { |e| e.category.name == "Troop Meeting" } # TODO: not hard-wire this
+    # events = events.reject { |e| e.category.name == "Troop Meeting" } # TODO: not hard-wire this
     events.group_by { |e| [e.starts_at.year, e.starts_at.month] }
   end
 
