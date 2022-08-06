@@ -109,6 +109,10 @@ class Event < ApplicationRecord
     unit.members.status_registered - rsvps.collect(&:member)
   end
 
+  def online?
+    address =~ /\A#{URI::regexp(['http', 'https'])}\z/
+  end
+
   private
 
   # create a weekly series based on @event

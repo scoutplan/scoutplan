@@ -1,0 +1,24 @@
+- event_month.each do |month, events|
+  - if year < Date.today.year
+    - css_class = "event-month event-month-past"
+  - elsif year == Date.today.year && month < Date.today.month
+    - css_class = "event-month event-month-past"
+  - else
+    - css_class = "event-month event-month-current"
+    - css_class += " event-month-current-#{@current_event_month_count}"
+    - @current_event_month_count += 1
+
+  - css_class += " " + "month_#{month}"
+
+  section(class="#{css_class}" id="event_month_current_#{@current_event_month_count - 1}")
+    h2.text-brand-700.text-3xl.px-2.pt-4.event-year
+      = year
+
+    h3.text-brand-500.font-bold.uppercase.tracking-wider.px-2.py-4
+      = Date::MONTHNAMES[month]
+    
+    .divide-y
+      - events.each do |event|
+        = render partial: "new_event", locals: { event: event }
+
+  - @event_month_count += 1

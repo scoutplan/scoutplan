@@ -10,7 +10,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['proxima-nova', ...defaultTheme.fontFamily.sans],
-        serif: ['bressay', ...defaultTheme.fontFamily.serif],
+        serif: [...defaultTheme.fontFamily.serif],
       },
       colors: {
         brand: {

@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
   mutationObserver.observe(document.body, { attributes: true });  
 
   // ...and then run the show/hide algorithm once to kick us off
-  hideEmptyMonthHeaders();
+  // hideEmptyMonthHeaders();
 }); // end DOMContentLoaded
 
 var gOriginalBulkPublishExecuteButtonCaption;
@@ -117,7 +117,7 @@ function validateBulkPublishState() {
 function bodyMutated(mutationsList, observer) {
   mutationsList.forEach(function(mutation) {
     if (mutation.attributeName === 'class') {
-      hideEmptyMonthHeaders();
+      // hideEmptyMonthHeaders();
     }
   });
 }

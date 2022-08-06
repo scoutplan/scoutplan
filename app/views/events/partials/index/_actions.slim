@@ -1,11 +1,9 @@
-.flex.justify-center.flex-col.md:flex-row.px-2.gap-0.md:gap-10.rounded.bg-sky-100.text-sky-600.mb-4
-  span.text-sm.py-3
-    = "You can:"
+.flex.justify-center.flex-col.md:flex-row.px-2.gap-0.md:gap-10.text-sky-600.mb-4
 
-  - if current_variation == "event_table"
+  - if current_variation == "list"
     // VIEW AS CALENDAR
     = link_to calendar_unit_events_path(@unit),
-              class: "inline-block py-3 text-sky-600 hover:text-sky-800 text-sm font-bold",
+              class: "inline-block py-3 text-stone-500 hover:text-stone-600 text-sm font-bold",
               data: { turbo_action: "advance" },
               id: "show_as_calendar" do
       i.fas.fa-calendar-days.mr-2
@@ -14,7 +12,7 @@
   - if current_variation == "calendar"
     // VIEW AS CALENDAR
     = link_to list_unit_events_path(@unit),
-              class: "inline-block py-3 text-sky-600 hover:text-sky-800 text-sm font-bold",
+              class: "inline-block py-3 text-stone-500 hover:text-stone-600 text-sm font-bold",
               data: { turbo_action: "advance" },
               id: "show_as_calendar" do
       i.far.fa-list.mr-2
@@ -22,7 +20,7 @@
 
   // PDF DOWNLOAD
   = link_to list_unit_events_path(@unit, format: :pdf),
-            class: "inline-block py-3 text-sky-600 hover:text-sky-800 text-sm font-bold",
+            class: "inline-block py-3 text-stone-500 hover:text-stone-600 text-sm font-bold",
             data: { turbo_action: "advance" },
             id: "show_as_calendar" do
 
@@ -38,7 +36,7 @@
       protocol: "webcal" \
     )
   = link_to ics_url,
-            class: "inline-block py-3 text-sky-600 hover:text-sky-800 text-sm font-bold",
+            class: "inline-block py-3 text-stone-500 hover:text-stone-600 text-sm font-bold",
             data: { turbo_action: "advance" },
             id: "show_as_calendar"
             do
