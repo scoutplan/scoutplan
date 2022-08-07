@@ -58,6 +58,7 @@ Rails.application.routes.draw do
       resources :event_organizers, as: "organizers", path: "organizers"
       resources :document_types
       collection do
+        get "/", to: redirect("/units/%{unit_id}/schedule/list")
         get  "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
         get  "my_rsvps",    to: "events#index", defaults: { variation: "rsvps" }
         get  "list",        to: "events#index", defaults: { variation: "list" }, as: "list"
