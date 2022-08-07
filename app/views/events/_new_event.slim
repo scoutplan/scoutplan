@@ -7,12 +7,12 @@ article(class="relative event #{row_classes(event)}")
 
     .flex.flex-row.gap-6.items-center
       // date / day
-      time.w-20
+      time.w-20.shrink-0
         .text-3xl = raw(@presenter.dates_to_s)
         .font-semibold.text-sm.uppercase.tracking-wider.text-stone-400 = raw(@presenter.days_to_s)
 
       // icon
-      .w-6.text-center
+      .w-6.text-center.shrink-0
         = glyph_tag(event)
 
       // basic info
