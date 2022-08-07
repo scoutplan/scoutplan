@@ -14,11 +14,11 @@
         // RIGHT SIDE
         - if policy(:event).create?
           = link_to new_unit_event_path(@unit),
-                    class: "rounded border border-brand-500 text-brand-500 hover:border-brand-600 hover:bg-brand-100 hover:text-brand-600 px-4 py-2 uppercase text-sm font-bold tracking-wider" do
+                    class: "rounded border border-brand-500 text-brand-500 hover:border-brand-600 hover:text-brand-600 px-4 py-2 uppercase text-sm font-bold tracking-wider" do
             i.fa-plus.fas.mr-2
             = t("events.titles.new")
 
-      h1.text-center.text-4xl.font-bold.mb-2
+      h1.md:text-center.text-xl.md:text-4xl.font-bold.mb-2
         = t("events.index.page_title", unit_name: @unit.name)
 
     // LIST WRAPPER

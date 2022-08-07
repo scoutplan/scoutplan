@@ -243,6 +243,11 @@ en:
         no_response:      "RSVP is open. Your family hasn't responded yet. You can still change your response."
         partial_response: "RSVP is open. Some of your family has responded; some remain outstanding. You can still change your response."
         full_response:    "RSVP is open. Your family has responded."
+        response_received: "You have RSVP'ed"
+        closed:           "RSVPs are closed"
+
+      tooltips:
+        response_received: "Click to view and change your RSVP"
 
     form:
       timezone_prompt: "Dates and times are %{timezone_name}"

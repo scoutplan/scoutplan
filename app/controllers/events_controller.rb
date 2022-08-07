@@ -75,7 +75,7 @@ class EventsController < UnitContextController
   def render_event_brief
     render(
       locals: { },
-      pdf: "#{@event.title} Brief",
+      pdf: "#{@unit.name} #{@event.starts_at.strftime('%B %Y')} #{@event.title} Brief",
       layout: "pdf",
       encoding: "utf8",
       orientation: "portrait",
