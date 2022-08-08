@@ -19,7 +19,7 @@
       .inline-block.px-2.py-1.text-xs.font-semibold.bg-sky-500.text-white.uppercase.tracking-wider.rounded.ml-2
         = "Draft"
   
-  = content_tag :p, event.short_description if event.short_description.present?
+  = (content_tag :p, event.short_description, class: "italic") if event.short_description.present?
 
   .mt-3.overflow-y-scroll
     = render partial: "event_activities/event_activities", locals: { event: event }

@@ -3,8 +3,8 @@
 # manage Unit Plans
 class PlansController < UnitContextController
   def index
-    @category_names = ['Troop Meeting', 'No Meeting', 'Camping Trip', 'Court of Honor'].freeze
-    @event_categories = @current_unit.event_categories.where('name IN (?)', @category_names)
+    @category_names = ["Troop Meeting", "Camping Trip"].freeze
+    @event_categories = @current_unit.event_categories.where("name IN (?)", @category_names)
     @events = @current_unit.events.includes(:event_category, :event_activities).future.where(event_category: @event_categories)
   end
 
