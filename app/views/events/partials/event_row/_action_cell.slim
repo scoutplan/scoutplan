@@ -12,8 +12,8 @@
     - if policy(event).rsvp?
       - if family_fully_responded
         = link_to unit_event_edit_rsvps_path(@unit, event), title: t("events.index.tooltips.response_received") do
-          .text-yellow-500.font-bold.hover:text-yellow-600
-            i.fa-circle-check.fas.mr-1
+          .font-bold
+            i.fa-circle-check.fas.text-green-500.mr-1
             = t("events.index.rsvp.response_received")
 
       - elsif family_has_rsvps

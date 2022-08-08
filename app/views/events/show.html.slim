@@ -32,67 +32,19 @@
           i.fa-exclamation-circle.fas.mr-2
           = flash[:notice]
 
-    // modal header
     header.py-4.overflow-auto.sticky.top-0.bg-white
       .flex.flex-row.justify-between
         h3.font-bold.text-2xl
           = @event.title
           span.align-middle.ml-2.text-base = glyph_tag(@event)
-          = content_tag(:div, @event.short_description, class: "mb-2 font-normal text-base text-gray-500") if @event.short_description.present?
 
-        .block.md:hidden
-          - if policy(@event).edit? && @event.editable?
-            = link_to edit_unit_event_path(@event.unit, @event),
-              class: "block p-2 text-brand-500",
-              data: { turbo_action: "advance" },
-              title: "Edit Event Details"
-              do
-                i.fa-pencil.fas
+        #rsvp_status_container
+          = render partial: "rsvp_card" if @event.requires_rsvp
 
+      = content_tag(:p, @event.short_description, class: "italic my-4 font-normal text-base text-gray-500") if @event.short_description.present?          
 
-    // first row: RSVP panel
-    - if @event.requires_rsvp
-      section.bg-stone-100.rounded.px-6.py-4.mb-1
-        = render partial: 'rsvp_card'
+    = render partial: "organize_panel" if @event.organizable? && policy(@event).rsvps?
 
-    - if @event.organizable? && policy(@event).rsvps?
-      section#manage_rsvps_card.bg-stone-100.rounded.px-6.py-4.mb-1
-        .flex.md:flex-row.flex-col.justify-between
-          // left side
-          .flex.flex-col.md:flex-row.gap-4.md:gap-6.py-2
-            .md:inline-block
-              .inline-block.w-6.md:w-auto.text-green-500.text-center.mr-2
-                i.fa-hiking.fas
-              strong = @event.rsvps.accepted.count
-              = " Going"
-              - if @event.rsvps.accepted.count.positive?
-                = " (#{@event.rsvps.accepted.select { |r| r.youth? }.count} Youth,"
-                = " #{@event.rsvps.accepted.select { |r| r.adult? }.count} Adult)"
-
-            .md:inline-block
-              .inline-block.w-6.md:w-auto.text-red-500.text-center.mr-2
-                i.fa-couch.fas
-              strong = @event.rsvps.declined.count
-              = " Not going"
-
-            .md:inline-block
-              .inline-block.w-6.md:w-auto.text-amber-500.text-center.mr-2
-                i.fa-ghost.fas
-              strong = @non_respondents.count
-              = " No response"
-
-          div
-            // right side
-            = link_to t("events.show.organize_button_caption"),
-              unit_event_rsvps_path(@event.unit, @event),
-              class:  "text-sm font-bold no-underline tracking-wider uppercase text-center" \
-                      " px-4 py-3 md:py-2" \
-                      " block" \
-                      " bg-cyan-600 hover:bg-cyan-700" \
-                      " text-cyan-100 hover:text-cyan-200" \
-                      " rounded",
-              data: { turbo_action: "advance", turbo_frame: "main" },
-              title: t("events.show.organize_reason_admin", unit_name: @event.unit.name)
 
     // date panel
     section#date_time_card.text-center.bg-stone-100.px-6.py-4.mb-1.rounded
@@ -143,7 +95,7 @@
         div.flex-auto.md:flex-none
           // Done button
           = link_to t("events.show.captions.done"),
-            unit_events_path(@event.unit),
+            unit_events_path(@event.unit, anchor: "event_#{@event.id}"),
             class:  "text-white text-sm font-bold no-underline tracking-wider uppercase text-center  \
                     block md:inline-block \
                     px-4 py-3 md:py-2 \
