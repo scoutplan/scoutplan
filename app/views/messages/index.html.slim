@@ -14,31 +14,37 @@
     section.tabbed
       nav.tab-menu.mb-4.text-center
         ul
+          // DRAFTS
           li.inline-block
             = link_to "#drafts",
               data: { tab_target: "#messages_drafts" },
               class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-500 hover:border-brand-500 uppercase font-bold text-sm tracking-wider" do
-
               = "Drafts"
               = " (#{@draft_messages.count})" if @draft_messages.count.positive?
 
+          // QUEUED
           li.inline-block
             = link_to "#queued",
               data: { tab_target: "#messages_queued" },
               class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider" do
-
               = "Queued"
               = " (#{@queued_messages.count})" if @queued_messages.count.positive?
 
+          // SENT (ACTIVE)
           li.inline-block
-            = link_to "#{t("messages.index.sent_tab")} (#{@sent_messages.select(&:active?).count})", "#sent",
+            = link_to "#sent",
               data: { tab_target: "#messages_sent" },
-              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider"
+              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider" do
+              = t("messages.index.sent_tab")
+              = pill_tag_if_positive(@sent_messages.select(&:active?).count)
 
+          // COMPLETED
           li.inline-block
-            = link_to "#{t("messages.index.done_tab")} (#{@sent_messages.select { |m| !m.active? }.count })", "#done",
+            = link_to "#done",
               data: { tab_target: "#messages_done" },
-              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider"
+              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider" do
+              = t("messages.index.done_tab")
+              = pill_tag_if_positive(@sent_messages.select{ |m| !m.active? }.count)
 
       .tabs
         .tab#messages_drafts
@@ -52,8 +58,10 @@
           = render partial: "empty", locals: { message_type: "queued" } unless @queued_messages.present?
 
         .tab#messages_sent.hidden
-
-          p These active announcements will appear in the weekly email newsletter
+          .flex.justify-center.mb-2
+            .text-center.text-purple-700.bg-purple-100.rounded.px-4.py-2.font-semibold
+              i.fa-thumbtack.fas.mr-2
+              = t("messages.index.legend_active")
 
           ul.divide-y
             = render partial: "message", collection: @sent_messages.select(&:active?)

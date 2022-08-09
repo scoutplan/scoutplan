@@ -1,4 +1,4 @@
-h1 = "#{@event.title} Trip Brief"
+h1 = "#{@event.title} Brief"
 = content_tag(:p, @event&.short_description) if @event.short_description
 p = EventPresenter.new(event: @event, current_member: @current_member).full_dates_to_s(show_year: true)
 = content_tag(:p, @event&.location) if @event.location

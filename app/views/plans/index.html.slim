@@ -1,6 +1,6 @@
 = turbo_frame_tag "main"
   header.w-full.px-16.py-8
-    h1.text-center.text-xl.font-bold.mx-2
+    h1.text-center.text-3xl.font-bold.mx-2
       = t("planner.title", unit: @unit.name)
 
   .w-full
@@ -25,98 +25,92 @@
                 hover:bg-opacity-100 \
                 text-2xl h-24 px-4 \
                 md:text-5xl md:h-36 md:px-4" do
-          i.fas.fa-chevron-right
+          i.fas.fa-chevron-right  
 
-javascript:
-  function dismissDialog(selector) {
-    var elem = document.querySelector(selector);
-    elem.parentNode.removeChild(elem);
-  }      
-
-scss:
-  main {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-
-  .scroller {
-    overflow-x: scroll;
-    max-width: 100%;
-
-    .card {
-      min-width: 18rem;
-      min-height: 25rem;
-      margin-right: 1rem;
+  scss:
+    main {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
     }
 
-    .card-title .month {
-      font-size: 1rem;
-      text-transform: uppercase;
-    }
+    .scroller {
+      overflow-x: scroll;
+      max-width: 100%;
 
-    h1.card-title {
-      font-size: 5rem;
-    }
+      .card {
+        min-width: 18rem;
+        min-height: 25rem;
+        margin-right: 1rem;
+      }
 
-    .card.event-camping-trip {
+      .card-title .month {
+        font-size: 1rem;
+        text-transform: uppercase;
+      }
 
-    }
+      h1.card-title {
+        font-size: 5rem;
+      }
 
-    .card.event-no-meeting {
-      color: #aaa;
-    }
-  }
+      .card.event-camping-trip {
 
-  .add-activity-link {
-    text-decoration: none;
-    color: #666;
-    border: none;
-    background: none;
-  }
+      }
 
-  .card.event-card {
-    background: #f6f6f6;
-  }
-
-  li.event-activity {
-    display: block;
-    cursor: default;
-    white-space: nowrap;
-
-    .sort-grip {
-      display: inline-block;
-      width: 1.2rem;
-      cursor: move;      
-    }
-
-    .activity-title {
-      display: inline;
-      overflow-x: hidden;
-      white-space: nowrap;
-    }
-
-    h3 {
-      margin-bottom: 1rem;      
-    }
-
-    .activity-action-link {
-      display: none;
-      color: #888;
-    }
-
-    &:hover {
-      .activity-action-link {
-        display: inline;
+      .card.event-no-meeting {
+        color: #aaa;
       }
     }
-  }
 
-  ul.event-activities {
-    list-style-type: none;
-    padding: 0;
-  }
+    .add-activity-link {
+      text-decoration: none;
+      color: #666;
+      border: none;
+      background: none;
+    }
 
-css:
-  .card.event-troop-meeting h1 {
-    color: #{ @unit.planner.event_category_for(:camping_trip)&.color || '#333' };
-  }
+    .card.event-card {
+      background: #f6f6f6;
+    }
+
+    li.event-activity {
+      display: block;
+      cursor: default;
+      white-space: nowrap;
+
+      .sort-grip {
+        display: inline-block;
+        width: 1.2rem;
+        cursor: move;      
+      }
+
+      .activity-title {
+        display: inline;
+        overflow-x: hidden;
+        white-space: nowrap;
+      }
+
+      h3 {
+        margin-bottom: 1rem;      
+      }
+
+      .activity-action-link {
+        display: none;
+        color: #888;
+      }
+
+      &:hover {
+        .activity-action-link {
+          display: inline;
+        }
+      }
+    }
+
+    ul.event-activities {
+      list-style-type: none;
+      padding: 0;
+    }
+
+  css:
+    .card.event-troop-meeting h1 {
+      color: #{ @unit.planner.event_category_for(:camping_trip)&.color || '#333' };
+    }

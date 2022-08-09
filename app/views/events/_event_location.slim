@@ -1,6 +1,6 @@
 address
   - if event.location.present? || event.address.present?
-    address.text-gray-500.text-sm.not-italic.text-md
+    address.text-sm.not-italic.text-md
       - if event.online?
         i.fa-desktop.fas.text-gray-300.mr-1
         = event.location.presence || event.address

@@ -11,6 +11,9 @@ class MessagesController < UnitContextController
     @sent_messages   = @unit.messages.sent.order("updated_at DESC")
   end
 
+  def show
+  end
+
   def new
     authorize current_member.messages.new
     @message = current_member.messages.new(recipients: "active_members",
@@ -27,12 +30,29 @@ class MessagesController < UnitContextController
     redirect_to unit_messages_path(@unit), notice: @notice
   end
 
-  def edit; end
+  def edit
+    authorize @message
+  end
 
   def update
     @message.update(message_params)
     handle_commit
     redirect_to unit_messages_path(@unit), notice: notice
+  end
+
+  def duplicate
+    new_message = @message.dup
+    new_message.title = "DUPLICATE - #{@message.title}"
+    new_message.status = "draft"
+    new_message.pin_until = 7.days.from_now
+    new_message.send_at = Time.now
+    new_message.save
+    redirect_to edit_unit_message_path(@unit, new_message), notice: t("messages.notices.duplicate_success")
+  end
+
+  def unpin
+    @message.update(pin_until: Time.now)
+    redirect_to unit_messages_path(@unit), notice: t("messages.notices.unpin_success")
   end
 
   private
@@ -49,6 +69,9 @@ class MessagesController < UnitContextController
     when t("messages.captions.send_message")
       @message.update(status: :queued)
       @notice = t("messages.notices.#{@message.send_now? ? 'message_sent' : 'message_queued'}")
+    when t("messages.captions.delete_draft")
+      @message.destroy
+      @notice = t("messages.notices.delete_success")
     end
 
     SendMessageJob.perform_later(@message) if @message.queued?
@@ -65,6 +88,6 @@ class MessagesController < UnitContextController
   end
 
   def find_message
-    @message = Message.find(params[:id])
+    @message = Message.find(params[:id] || params[:message_id])
   end
 end

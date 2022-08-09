@@ -6,12 +6,15 @@
   - family_fully_responded = family_fully_responded && rsvp.present?
 /  - next unless member.status_active? || rsvp&.accepted?
 
-.block.absolute.right-2.top-1/2.-translate-y-2/4.z-10.flex.flex-row.gap-2
+.block.absolute.right-2.top-6.md:top-1/2.md:-translate-y-2/4.z-10.flex.flex-row.gap-2
   // RSVPs
   - if event.rsvp_open?
     - if policy(event).rsvp?
       - if family_fully_responded
-        = "You have responded"
+        = link_to unit_event_edit_rsvps_path(@unit, event), title: t("events.index.tooltips.response_received") do
+          .font-bold
+            i.fa-circle-check.fas.text-green-500.mr-1
+            = t("events.index.rsvp.response_received")
 
       - elsif family_has_rsvps
         = link_to t("events.index.event_row.rsvp_complete"), unit_event_edit_rsvps_path(@unit, event),
@@ -22,7 +25,7 @@
                   class: "inline-block bg-yellow-600 px-2 py-1 text-sm uppercase tracking-wider font-bold rounded text-yellow-100"
 
     - else
-      = "RSVPs are closed"
+      = t("events.index.rsvp.closed")
 
   // ORGANIZE BUTTON
   - if policy(event).organize?

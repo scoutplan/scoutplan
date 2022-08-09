@@ -1,5 +1,7 @@
+- path = message.sent? ? unit_message_path(@unit, message) : edit_unit_message_path(@unit, message)
+
 li.hover:bg-stone-100
-  = link_to edit_unit_message_path(@unit, message),
+  = link_to path,
     class: "block px-2 py-4 message #{message.updated_at < 4.weeks.ago ? 'older' : 'current' }",
     data: { turbo_action: "advance" } do
 

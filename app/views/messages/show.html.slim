@@ -1,0 +1,21 @@
+= turbo_frame_tag "main"
+  .min-w-4xl.max-w-3xl.mx-auto.pt-6
+    header.mb-2
+      h1.text-3xl.font-bold = @message.title
+
+      - if @message.active?
+        div
+          = t("messages.show.legend_pinned", pin_until: @message.pin_until.strftime('%B %-d'))
+          = button_to unit_message_unpin_path(@unit, @message), class: "ml-2 text-sm font-semibold text-purple-500 hover:text-purple-600 rounded border border-purple-500 hover:border-purple-600 px-2 py-1", form: { class: "inline" } do
+            i.fa-box-archive.fas.mr-2
+            = "Unpin now"
+
+    article.text-lg
+      == @message.body
+
+    p.border-t.mt-1.pt-1
+      = t("messages.show.send_dates", author: @message.author.first_name, start_date: @message.updated_at, end_date: @message.pin_until)
+
+    footer.py-1
+      = button_to t("messages.captions.duplicate"), unit_message_duplicate_path(@unit, @message),
+                  class: "inline-block rounded border border-brand-500 text-brand-500 hover:border-brand-600 hover:text-brand-600 px-4 py-2 uppercase text-sm font-bold tracking-wider"

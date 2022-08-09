@@ -1,51 +1,26 @@
 / On mobile, this flexbox renders as a column, thus stacking the title, family members,
 / and button. On desktop it becomes a row with title + family on left, button on right
-.flex.flex-col.md:flex-row.md:justify-between.w-full.gap-1
+.flex.flex-col.md:flex-row.md:justify-between.w-full.gap-1.items-center
 
   / top (mobile) or left (desktop) piece
-  div
-    h3.font-bold.mb-2 = t('rsvps')
-
-    / On mobile, this list renders as a stack. On desktop it renders horiztonally
-    / (courtesy of the md:inline-block class on each <li>)
-    ul.m-0
-      / iterate over family members
-      - @current_member.family.each do |family_member|
-        / find the RSVP for the family member for the event (may or may not exist)
-        - rsvp = @event.rsvp_for(family_member)
-        - next unless family_member.status_active? || rsvp&.accepted?
-        li.py-1.md:inline-block.md:mr-5
-          // show one of three glyphs depending on status
-          - if rsvp.nil?
-            span.rsvp-response.rsvp-unknown.text-gray-400(title="#{ t('rsvp_unknown') }")
-              i.fas.fa-ghost
-          - elsif rsvp.accepted?
-            span.rsvp-response.rsvp-accepted.text-green-500(title="#{ t('rsvp_accepted') }")
-              i.fad.fa-hiking
-          - elsif rsvp.declined?
-            span.rsvp-response.rsvp-declined.text-red-500(title="#{ t('rsvp_declined') }")
-              i.fad.fa-couch
-          
-          / now show the family member's first name
-          span.ml-1
-            = @presenter.family_context_name(family_member)
-
-          - if rsvp&.note.present?
-            - double_quote = '"'
-            span.ml-1(title="#{rsvp&.respondent&.full_display_name}: #{double_quote}#{rsvp.note}#{double_quote}" data-bs-toggle="tooltip")
-              i.fa-comment-alt-lines.fas
-
+  div.font-bold
+    - family_rsvps = @event.rsvps.where(unit_membership_id: @current_member.family.collect(&:id))
+    / = list_of_words(family_rsvps.select({ |r| r.response == "accepted" }).collect(&:first_name))
+    i.fa-circle-check.fas.text-green-500.mr-1
+    - family_accepted = family_rsvps.select { |r| r.accepted? }
+    - family_declined = family_rsvps.select { |r| r.declined? }
+    - going = "#{list_of_words(family_accepted.map(&:first_name), linking_verb: true)} going"
+    - not_going = "#{list_of_words(family_declined.map(&:first_name), linking_verb: true)} not#{family_accepted.present? ? '' : 'going'}"
+    = [going, not_going].join("; ")
   / bottom (mobile) or right (desktop) piece
+
   div.md:self-center
 
     // Update RSVPs button (if allowed)
     - if policy(@event).rsvp? && @event.rsvp_open?
-      = link_to t(:change_rsvp),
-        unit_event_edit_rsvps_path(@event.unit, @event),
-        data: { turbo_action: "advance", turbo_frame: "main" },
-        class:  "text-sm font-bold uppercase tracking-wider no-underline text-center " \
-                "block md:inline-block grow-0 px-3 py-3 md:py-2 mt-1 rounded " \
-                "bg-yellow-400 hover:bg-yellow-500 text-yellow-800 hover:text-yellow-900 "
+      = link_to "(change)", unit_event_edit_rsvps_path(@event.unit, @event),
+                class: "text-yellow-600 hover:text-yellow-700 underline",
+                data: { turbo_action: "advance", turbo_frame: "main" }
     - else
       .inline-block.font-bold.text-gray-400.text-sm.mt-1
         = t('events.rsvp.closed')

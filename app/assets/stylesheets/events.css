@@ -16,7 +16,16 @@
     width: 100%; }
 
 .event-past, .event-cancelled {
-  display: none; }
+  display: none;
+}
+
+.event-past a {
+  color: #D6D3D1;
+}
+
+.event-past a:hover {
+  color: #57534E;
+}
 
 .event-draft .event-title:after {
   content: "Draft";
@@ -138,8 +147,16 @@ body.showing-past-events .event-past:not(.event-cancelled) {
   display: block;
 }
 
-body.showing-past-events #show_past_events_link {
+#hide_past_events_caption {
   display: none;
+}
+
+body.showing-past-events #show_past_events_caption {
+  display: none;
+}
+
+body.showing-past-events #hide_past_events_caption {
+  display: block;
 }
 
 body.showing-future-events .event-future {

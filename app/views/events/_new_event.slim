@@ -1,26 +1,38 @@
 - @presenter.event = event
 
 // START ROW
-article(class="relative event #{row_classes(event)}")
+article(class="relative event #{row_classes(event)}" id="event_#{event.id}")
+  a(name="event_#{event.id}")
   = link_to unit_event_path(@unit, event),
-            class: "px-2 py-4 block hover:bg-stone-100" do
+            class: "px-2 py-4 block hover:bg-stone-100",
+            data: { turbo_action: "advance" } do
 
     .flex.flex-row.gap-6.items-center
       // date / day
-      time.w-20.shrink-0
-        .text-3xl = raw(@presenter.dates_to_s)
+      time.w-20.md:w-20.shrink-0
+        .text-xl.md:text-3xl = raw(@presenter.dates_to_s)
         .font-semibold.text-sm.uppercase.tracking-wider.text-stone-400 = raw(@presenter.days_to_s)
 
       // icon
-      .w-6.text-center.shrink-0
+      .hidden.md:block.w-6.text-center.shrink-0
         = glyph_tag(event)
 
       // basic info
-      div.pr-24
+      div.pr-48.hidden.md:block
         h4.font-normal.text-xl.event-title = event.title
         p.event-short-description
-          = render partial: "event_short_description", locals: { event: event } if event.short_description.present?
+          = event.short_description if event.short_description.present?
         p.event-location.mt-1
           = render partial: "event_location", locals: { event: event }
+
+    // mobile view stacks under
+    .md:hidden
+      .inline-block.mr-1
+        = glyph_tag(event)
+      h4.inline-block.font-normal.text-xl.event-title = event.title
+      p.event-short-description
+        = render partial: "event_short_description", locals: { event: event } if event.short_description.present?
+      p.event-location.mt-1
+        = render partial: "event_location", locals: { event: event }    
 
   = render partial: "events/partials/event_row/action_cell", locals: { event: event } if event.requires_rsvp
