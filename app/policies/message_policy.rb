@@ -17,4 +17,8 @@ class MessagePolicy < UnitContextPolicy
   def new?
     admin?
   end
+
+  def edit?
+    admin? && @message.editable?
+  end
 end

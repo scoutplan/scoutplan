@@ -39,6 +39,10 @@ class Message < ApplicationRecord
     sent? && deliver_via_digest && pin_until > Time.now
   end
 
+  def editable?
+    status != "sent"
+  end
+
   # private
 
   # def find_unit

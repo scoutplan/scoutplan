@@ -440,15 +440,22 @@ en:
   messages:
     index:
       will_send_on: "Will send on %{send_date}"
-      sent_tab:     "Active Posts"
+      sent_tab:     "Pinned"
       done_tab:     "Completed"
       title:        "Announcements"
+      legend_active: "Pinned announcements appear in the weekly email newsletter"
+
+    show:
+      send_dates:   "Originally posted by %{author} from %{start_date} to %{end_date}"
+      legend_pinned: "This announcement will remain pinned until %{pin_until}"
     
     captions:
       save_draft:   "Save Draft"
       send_preview: "Send Preview"
       send_message: "Post Announcement"
       new_message:  "Post an Announcement"
+      duplicate:    "Duplicate This Announcement"
+      delete_draft: "Delete Draft"
 
     form:
       labels:
@@ -474,7 +481,10 @@ en:
         new:  "New Announcement"
 
     notices:
-      draft_saved:  "Draft message saved"
-      preview_sent: "Preview sent"
-      message_sent: "Message sent"
-      message_queued: "Message queued to send later"
+      draft_saved:        "Draft message saved"
+      preview_sent:       "Preview sent"
+      message_sent:       "Message sent"
+      message_queued:     "Message queued to send later"
+      duplicate_success:  "Your Announcement has been duplicated"
+      delete_success:     "Your Announcement has been deleted"
+      unpin_success:      "Your Announcement has been taken down"

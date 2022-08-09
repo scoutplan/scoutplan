@@ -20,7 +20,7 @@ module ApplicationHelper
 
   def pill_tag(text, additional_classes = nil)
     additional_classes ||= "text-white bg-gray-600"
-    classes = "text-xs font-semibold inline-block text-center rounded px-2 py-1 mx-2 min-w-[2rem]"
+    classes = "text-xs font-semibold inline text-center rounded px-2 py-1 mx-2 min-w-[2rem]"
     classes = [classes, additional_classes].join(" ")
     content_tag :span, text, class: classes
   end

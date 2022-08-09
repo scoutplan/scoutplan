@@ -34,7 +34,11 @@ Rails.application.routes.draw do
 
   # begin units
   resources :units, only: %i[show index] do
-    resources :messages, path: "announcements"
+    resources :messages, path: "announcements" do
+      post "duplicate"
+      post "unpin", as: "unpin"
+    end
+
     resources :plans, path: "planner"
     resources :event_categories
     resources :event_rsvps, only: [:destroy]
