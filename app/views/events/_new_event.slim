@@ -10,7 +10,7 @@ article(class="relative event #{row_classes(event)}" id="event_#{event.id}")
     .flex.flex-row.gap-6.items-center
       // date / day
       time.w-20.md:w-20.shrink-0
-        .text-xl.md:text-3xl = raw(@presenter.dates_to_s)
+        .text-2xl.md:text-3xl = raw(@presenter.dates_to_s)
         .font-semibold.text-sm.uppercase.tracking-wider.text-stone-400 = raw(@presenter.days_to_s)
 
       // icon
@@ -19,9 +19,10 @@ article(class="relative event #{row_classes(event)}" id="event_#{event.id}")
 
       // basic info
       div.pr-48.hidden.md:block
-        h4.font-normal.text-xl.event-title = event.title
-        p.event-short-description
-          = event.short_description if event.short_description.present?
+        h4.font-semibold.text-xl.event-title = event.title
+        - if event.short_description.present?
+          p.event-short-description
+            = event.short_description
         p.event-location.mt-1
           = render partial: "event_location", locals: { event: event }
 
@@ -29,9 +30,10 @@ article(class="relative event #{row_classes(event)}" id="event_#{event.id}")
     .md:hidden
       .inline-block.mr-1
         = glyph_tag(event)
-      h4.inline-block.font-normal.text-xl.event-title = event.title
-      p.event-short-description
-        = render partial: "event_short_description", locals: { event: event } if event.short_description.present?
+      h4.inline-block.font-semibold.text-xl.event-title = event.title
+      - if event.short_description.present?
+        p.event-short-description
+          = event.short_description
       p.event-location.mt-1
         = render partial: "event_location", locals: { event: event }    
 

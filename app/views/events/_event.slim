@@ -39,9 +39,9 @@
         // title
         .event-title
           = link_to unit_event_path(@unit, event),
-            class: "row-link cursor-pointer no-underline px-1 py-2",
+            class: "px-1 py-2",
             data: { turbo_frame: "main", turbo_action: "advance" } do
-            .font-bold.py-1.w-full.whitespace-nowrap
+            .font-semibold.py-1.w-full.whitespace-nowrap
               = event.title
               = event_badge(event)
               - description_text = event.description.to_plain_text

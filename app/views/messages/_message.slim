@@ -1,18 +1,28 @@
 - path = message.sent? ? unit_message_path(@unit, message) : edit_unit_message_path(@unit, message)
 
-li.hover:bg-stone-100
+article.hover:bg-stone-100
   = link_to path,
     class: "block px-2 py-4 message #{message.updated_at < 4.weeks.ago ? 'older' : 'current' }",
     data: { turbo_action: "advance" } do
 
-    .flex.flex-row.justify-between.w-full
+    div
       // LEFT
+      time.uppercase.text-sm.font-semibold.text-stone-400
+        - if message.send_at&.future? && message.queued?
+          i.fa-clock.fas
+          | &nbsp;
+          = t("messages.index.will_send_on", send_date: message.send_at.strftime('%b %d'))
+
+        - elsif message.active?
+          .inline.text-purple-500
+            = t("messages.index.pinned_until", pin_until: message.pin_until.strftime('%B %-d'))
+
+        - else
+          = t("time_ago", value: distance_of_time_in_words_to_now(message.updated_at))
+
       div.truncate
-        h3.font-bold
+        h3.text-xl.font-semibold
           = message.title
-          - if message.active?
-            .inline-block.rounded.text-xs.uppercase.tracking-wider.bg-purple-500.text-white.px-2.py-1.mx-2
-              = "Active"
 
         p.inline-block.text-stone-500
           // author name
@@ -34,14 +44,3 @@ li.hover:bg-stone-100
           // body preview
           span.message-preview(style="max-width: calc(100% - 12rem;")
             = strip_tags(message.body)
-
-      // RIGHT
-      time.whitespace-nowrap.pl-12
-        - if message.send_at&.future? && message.queued?
-          i.fa-clock.fas.text-stone-500
-          | &nbsp;
-          = t("messages.index.will_send_on", send_date: message.send_at.strftime('%b %d'))
-        - elsif message.active?
-          = "Until #{message.pin_until.strftime('%b %-d')}"
-        - else
-          = t("time_ago", value: distance_of_time_in_words_to_now(message.updated_at))

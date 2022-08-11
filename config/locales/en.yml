@@ -201,7 +201,7 @@ en:
 
     index:
       title:                "Event Schedule"
-      page_title:           "%{unit_name} Schedule"
+      page_title:           "Schedule"
       showing_some:         "Showing events for the upcoming 3 months. "
       showing_rsvps:        "Showing only events requiring an RSVP"
       showing_past:         "Showing past events"
@@ -444,6 +444,10 @@ en:
       done_tab:     "Completed"
       title:        "Announcements"
       legend_active: "Pinned announcements appear in the weekly email newsletter"
+      pinned_until: "Pinned until %{pin_until}"
+
+    tooltips:
+      new_message: "Write a new announcement"
 
     show:
       send_dates:   "Originally posted by %{author} from %{start_date} to %{end_date}"
@@ -453,7 +457,7 @@ en:
       save_draft:   "Save Draft"
       send_preview: "Send Preview"
       send_message: "Post Announcement"
-      new_message:  "Post an Announcement"
+      new_message:  "Post"
       duplicate:    "Duplicate This Announcement"
       delete_draft: "Delete Draft"
 
