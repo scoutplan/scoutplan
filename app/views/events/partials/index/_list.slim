@@ -6,20 +6,17 @@
       = check_box_tag "all_visible_events", "on", false, class: "form-check-input", id: "select_all_events_checkbox"
       = label_tag :select_all_events_checkbox, "Select all", class: "ml-2 font-bold"
 
-    header.max-w-4xl.mx-auto
-      .flex.flex-row.justify-between
-        // LEFT SIDE
-        div
-
-        // RIGHT SIDE
-        - if policy(:event).create?
-          = link_to new_unit_event_path(@unit),
-                    class: "rounded border border-brand-500 text-brand-500 hover:border-brand-600 hover:text-brand-600 px-4 py-2 uppercase text-sm font-bold tracking-wider" do
-            i.fa-plus.fas.mr-2
-            = t("events.titles.new")
-
+    header.max-w-3xl.mx-auto.relative
+      // LEFT SIDE
       h1.md:text-center.text-xl.md:text-4xl.font-bold.mb-2
-        = t("events.index.page_title", unit_name: @unit.name)
+        = t("events.index.page_title")
+
+      // RIGHT SIDE
+      - if policy(:event).create?
+        = link_to new_unit_event_path(@unit),
+                  class: "absolute right-0 top-0 rounded border border-brand-500 text-brand-500 hover:border-brand-600 hover:text-brand-600 px-4 py-2 uppercase text-sm font-bold tracking-wider" do
+          i.fa-plus.fas.mr-2
+          = t("events.titles.new")
 
     // LIST WRAPPER
     .max-w-3xl.mx-auto

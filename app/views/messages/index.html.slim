@@ -1,74 +1,79 @@
 = turbo_frame_tag "main"
-  .max-w-4xl.mx-auto
-    header.flex.flex-row.justify-between.my-12
-      h1.font-bold.text-xl
+  .max-w-3xl.mx-auto
+    header.my-12.relative
+      h1.font-bold.text-xl.md:text-3xl.md:text-center
         = t("messages.index.title", unit_name: @unit.name)
 
-      div
         - if policy(:message).create?
-          = link_to t("messages.captions.new_message"),
-            new_unit_message_path(@unit),
-            class: "rounded bg-brand-500 uppercase text-sm font-bold tracking-wider text-white px-4 py-2",
-            data: { turbo_frame: "main", turbo_action: "advance" }
+          = link_to new_unit_message_path(@unit),
+            class: "rounded border border-brand-500 hover:border-brand-600 uppercase text-sm font-bold tracking-wider text-brand-500 hover:text-brand-600 px-4 py-2 inline-block absolute right-0 top-0",
+            data: { turbo_frame: "main", turbo_action: "advance" },
+            title: t("messages.tooltips.new_message") do
+            i.fa-plus.fas.mr-2
+            = t("messages.captions.new_message")
 
-    section.tabbed
-      nav.tab-menu.mb-4.text-center
+    section.tabbed.mx-auto
+      nav.tab-menu.mb-4.text-center.text-xs.md:text-sm
         ul
           // DRAFTS
           li.inline-block
             = link_to "#drafts",
               data: { tab_target: "#messages_drafts" },
-              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-500 hover:border-brand-500 uppercase font-bold text-sm tracking-wider" do
+              class: "inline-block tab-link px-2 md:px-6 py-2 border-b-2 border-brand-500 hover:border-brand-500 uppercase font-bold tracking-wider" do
               = "Drafts"
-              = " (#{@draft_messages.count})" if @draft_messages.count.positive?
+              .hidden.md:inline
+                = pill_tag_if_positive(@draft_messages.count, "bg-stone-200")
 
           // QUEUED
           li.inline-block
             = link_to "#queued",
               data: { tab_target: "#messages_queued" },
-              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider" do
+              class: "inline-block tab-link px-2 md:px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold tracking-wider" do
               = "Queued"
-              = " (#{@queued_messages.count})" if @queued_messages.count.positive?
+              .hidden.md:inline
+                = pill_tag_if_positive(@queued_messages.count, "bg-stone-200")
 
           // SENT (ACTIVE)
           li.inline-block
             = link_to "#sent",
               data: { tab_target: "#messages_sent" },
-              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider" do
+              class: "inline-block tab-link px-2 md:px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold tracking-wider" do                    
               = t("messages.index.sent_tab")
-              = pill_tag_if_positive(@sent_messages.select(&:active?).count)
+              .hidden.md:inline
+                = pill_tag_if_positive(@sent_messages.select(&:active?).count, "bg-stone-200")
 
           // COMPLETED
           li.inline-block
             = link_to "#done",
               data: { tab_target: "#messages_done" },
-              class: "inline-block tab-link px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold text-sm tracking-wider" do
+              class: "inline-block tab-link px-2 md:px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold tracking-wider" do
               = t("messages.index.done_tab")
-              = pill_tag_if_positive(@sent_messages.select{ |m| !m.active? }.count)
+              .hidden.md:inline
+                = pill_tag_if_positive(@sent_messages.select{ |m| !m.active? }.count, "bg-stone-200")
 
       .tabs
         .tab#messages_drafts
-          ul.divide-y
+          .divide-y
             = render partial: "message", collection: @draft_messages
           = render partial: "empty", locals: { message_type: "draft" } unless @draft_messages.present?
 
         .tab#messages_queued.hidden
-          ul.divide-y
+          .divide-y
             = render partial: "message", collection: @queued_messages
           = render partial: "empty", locals: { message_type: "queued" } unless @queued_messages.present?
 
         .tab#messages_sent.hidden
           .flex.justify-center.mb-2
-            .text-center.text-purple-700.bg-purple-100.rounded.px-4.py-2.font-semibold
+            .text-center.text-purple-700.bg-purple-100.rounded.px-4.py-2.font-semibold.text-sm
               i.fa-thumbtack.fas.mr-2
               = t("messages.index.legend_active")
 
-          ul.divide-y
+          .divide-y
             = render partial: "message", collection: @sent_messages.select(&:active?)
           = render partial: "empty", locals: { message_type: "sent" } unless @sent_messages.present?
 
         .tab#messages_done.hidden
-          ul.divide-y
+          .divide-y
             = render partial: "message", collection: @sent_messages.select { |m| !m.active? }
           = render partial: "empty", locals: { message_type: "sent" } unless @sent_messages.present?          
 
