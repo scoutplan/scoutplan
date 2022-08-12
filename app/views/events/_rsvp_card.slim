@@ -8,14 +8,13 @@ section#rsvp_status_container.border.border-yellow-600.text-center.py-3.font-bol
 
   - family_accepted = family_rsvps.select { |r| r.accepted? }
   - family_declined = family_rsvps.select { |r| r.declined? }
-  - going = "#{list_of_words(family_accepted.map(&:first_name), linking_verb: true)} going"
-  - not_going = "#{list_of_words(family_declined.map(&:first_name), linking_verb: true)} not#{family_accepted.present? ? '' : 'going'}"
-
+  - going = "#{list_of_words(family_accepted.map(&:first_name), linking_verb: true)} going" if family_accepted
+  - not_going = "#{list_of_words(family_declined.map(&:first_name), linking_verb: true)} not#{family_accepted.present? ? '' : 'going'}" if family_declined.present?
 
   - if family_rsvps_complete
     i.fa-circle-check.fas.text-green-500.mr-1
 
-  = [going, not_going].join("; ")
+  = [going, not_going].compact.join("; ")
 
   // Update RSVPs button (if allowed)
   - if policy(@event).rsvp? && @event.rsvp_open?
