@@ -273,9 +273,10 @@ en:
       departs_from:             "Departs From"
       series_count:             "%{count} events in this series"
       past_warning:             "This event has already occurred."
-      map:                      "Map"
+      map:                      "View a Map"
       captions:
         done:                   "Back to Full Schedule"
+      organizer:                "Organizer"
 
       cancel:
         notice:       "Cancelling a published event will remove it from the calendar. Are you sure you want to proceed?"

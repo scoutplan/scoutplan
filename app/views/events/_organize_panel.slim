@@ -1,5 +1,9 @@
-section#manage_rsvps_card.bg-cyan-600.rounded.px-6.py-4.mb-1
-  h2.text-center.text-cyan-100.font-bold.mb-4.uppercase.tracking-widest = "Organize"
+section#manage_rsvps_card.bg-cyan-600.rounded.px-6.py-4.relative
+  .absolute.right-4.top-4
+    i.fa-info-circle.far.text-cyan-100(title="Most members don't see this section. It's visible to you because you're a #{@unit.name} admin or event organizer.")
+
+  h2.text-center.text-cyan-100.font-bold.mb-4.uppercase.tracking-widest
+    = "Organize"
 
   .flex.flex-col.md:flex-row.gap-12.justify-center
     // ATTENDING

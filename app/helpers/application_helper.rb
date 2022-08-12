@@ -51,6 +51,8 @@ module ApplicationHelper
   # ['Red', 'white', 'blue'] => "Red, white, and blue"
   # And, yes, it includes an Oxford comma. Deal with it.
   def list_of_words(words, linking_verb: false)
+    return "" unless words
+
     case words.count
     when 0
       ""
@@ -63,7 +65,7 @@ module ApplicationHelper
     when 2
       "#{words.first} and #{words.last}#{linking_verb ? ' are' : ''}"
     else
-      "#{words[0, -1].join(', ')}, and #{words.last}#{linking_verb ? ' are' : ''}"
+      "#{words[0..-2].join(', ')}, and #{words.last}#{linking_verb ? ' are' : ''}"
     end
   end
 end

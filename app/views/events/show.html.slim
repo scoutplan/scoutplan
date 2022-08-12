@@ -1,12 +1,9 @@
 - url = @event_view.new_record? ? unit_events_path(@event_view.unit) : unit_event_path(@event_view.unit, @event_view.event)
-- method = @event_view.new_record? ? 'post' : 'patch'
-- mode = 'rsvp' if action_name == 'edit_rsvps'
-
-// white dialog
-// .modal.w-auto.my-2.mx-2.md:mx-auto.max-w-3xl.bg-white.rounded.z-40.drop-shadow-xl.filter.overflow-y-auto
+- method = @event_view.new_record? ? "post" : "patch"
+- mode = action_name == "edit_rsvps" ? "rsvp" : "show"
 
 = turbo_frame_tag "main"
-  .max-w-3xl.mx-auto
+  article.event.max-w-3xl.mx-auto(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event.organizable' : ''}")
 
     // CANCELLED watermark
     - if @event.cancelled?
@@ -32,48 +29,34 @@
           i.fa-exclamation-circle.fas.mr-2
           = flash[:notice]
 
-    header.py-4.overflow-auto.sticky.top-0.bg-white
-      .flex.flex-row.justify-between
-        h3.font-bold.text-2xl
+    section#informative.relative
+      header.py-4.overflow-auto.top-0.bg-white
+        h3.font-bold.text-2xl.md:text-3xl.md:text-center
           = @event.title
           span.align-middle.ml-2.text-base = glyph_tag(@event)
 
-        #rsvp_status_container
+        = content_tag(:p, @event.short_description, class: "md:text-center italic my-4 font-normal text-base text-gray-500") if @event.short_description.present?          
+
+      .flex.flex-col.gap-2
+        - if mode == "show"
           = render partial: "rsvp_card" if @event.requires_rsvp
+          = render partial: "organize_panel" if @event.organizable? && policy(@event).rsvps?
+        - elsif mode == "rsvp"
+          = render partial: "edit_rsvp_section"          
+        = render partial: "events/partials/show/date_card"
+        = render partial: "location_card" if @event.location.present? || @event.address.present? || @event.departs_from.present?
+        = render partial: "description" if @event.description.present?
 
-      = content_tag(:p, @event.short_description, class: "italic my-4 font-normal text-base text-gray-500") if @event.short_description.present?          
-
-    = render partial: "organize_panel" if @event.organizable? && policy(@event).rsvps?
-
-
-    // date panel
-    section#date_time_card.text-center.bg-stone-100.px-6.py-4.mb-1.rounded
-      = render partial: 'events/partials/show/date_card'
-
-    - if @event.location.present? || @event.address.present? || @event.departs_from.present?
-      section#location_card.bg-stone-100.rounded.px-6.py-4.mb-1.relative
-        - if @event.address =~ /\A#{URI::regexp(['http', 'https'])}\z/
-          = render partial: 'events/partials/show/link_card'
-        - else
-          = render partial: 'events/partials/show/location_card'
-
-    // third row: longform description, if present
-    - if @event.description.present?
-      section#location_card.bg-stone-100.rounded.px-6.py-4.mb-1.relative.overflow-y-scroll
-        .md:overflow-y-scroll
-          .font-bold.mt-2
-            .inline-block.w-5
-              i.fa-comment-lines.fas.mr-1.text-indigo-400
-            = "Description"
-          .block
-            == @event.description
-
-    .h-3
 
     // footer, containing right-justified buttons
-    footer.pt-2.md:pt-4.pb-4.rounded.w-full.bg-white.sticky.bottom-0.border-t
-      .flex.flex-col.md:flex-row.md:justify-between
+    footer.w-full.sticky.bottom-0
+      // SCROLL DOWN LINK
+      .-ml-12
+        a.inline-block.rounded-full.bg-fuchsia-500.text-white.text-center.px-6.py-1.mb-2.animate-bounce.scroll-down-button(href="#" data-scroll-container="#informative")
+          = "Scroll down "
+          i.fa-arrow-down.fas
 
+      .flex.flex-col.md:flex-row.md:justify-between.border-t.pt-2.md:pt-4.bg-white.pb-4
         // left side (on desktop)
         .hidden.md:block
           // Edit button (if authorized)
@@ -103,3 +86,20 @@
                     bg-brand-500 hover:bg-brand-600 \
                     rounded border border-brand-500 hover:border-brand-600",
             data: { turbo_frame: "main", turbo_action: "restore" }
+
+javascript:
+  document.querySelectorAll(".scroll-down-button").forEach(function (elem) {
+    elem.addEventListener("click", function(event) {
+      var scrollContainerId = this.dataset.scrollContainer;
+      var scrollContainer = document.querySelector(scrollContainerId);
+      window.scrollBy(0, window.innerHeight);
+      this.parentNode.classList.add("hidden");
+      event.preventDefault();
+    });
+  });
+
+  window.addEventListener("scroll", function(event) {
+    document.querySelectorAll(".scroll-down-button").forEach(function (elem) {
+      elem.parentNode.classList.add("hidden");
+    });
+  });

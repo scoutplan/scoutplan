@@ -127,6 +127,7 @@ class EventsController < UnitContextController
     @event = Event.find(params[:event_id])
     @event_view = EventView.new(@event)
     @current_member = @unit.membership_for(current_user)
+    render template: "events/show"
   end
 
   # POST /:unit_id/events/new
