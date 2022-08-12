@@ -1,2 +1,8 @@
-section#narrative.py-6.relative.overflow-y-scroll.text-lg.font-semibold
-  == @event.description
+section#narrative.py-6.relative.overflow-y-scroll.text-lg
+  .flex.flex-col.md:flex-row.place-content-center
+    .md:w-2/3.font-serif
+      == @event.description
+
+    - if false
+      .md:w-1/3
+        h3 Packing List

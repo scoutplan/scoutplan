@@ -30,17 +30,18 @@
           = flash[:notice]
 
     header.py-4.overflow-auto.sticky.top-0.bg-white
-      h3.font-bold.text-2xl.md:text-3xl
+      h3.font-bold.text-2xl.md:text-3xl.md:text-center
         = @event.title
         span.align-middle.ml-2.text-base = glyph_tag(@event)
 
-      = content_tag(:p, @event.short_description, class: "italic my-4 font-normal text-base text-gray-500") if @event.short_description.present?          
+      = content_tag(:p, @event.short_description, class: "md:text-center italic my-4 font-normal text-base text-gray-500") if @event.short_description.present?          
 
-    = render partial: "rsvp_card" if @event.requires_rsvp
-    = render partial: "organize_panel" if @event.organizable? && policy(@event).rsvps?
-    = render partial: "events/partials/show/date_card"
-    = render partial: "location_card" if @event.location.present? || @event.address.present? || @event.departs_from.present?
-    = render partial: "description" if @event.description.present?
+    .flex.flex-col.gap-1
+      = render partial: "rsvp_card" if @event.requires_rsvp
+      = render partial: "organize_panel" if @event.organizable? && policy(@event).rsvps?
+      = render partial: "events/partials/show/date_card"
+      = render partial: "location_card" if @event.location.present? || @event.address.present? || @event.departs_from.present?
+      = render partial: "description" if @event.description.present?
 
     // footer, containing right-justified buttons
     footer.pt-2.md:pt-4.pb-4.rounded.w-full.bg-white.sticky.bottom-0.border-t

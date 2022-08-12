@@ -1,0 +1,35 @@
+.flex.md:flex-row.gap-8.place-content-center
+  - if @event.departs_from.present?
+    div.w-1/4
+      h5.font-bold
+        i.fa-car.fas.mr-1.text-lime-400.text-3xl.block
+        = t("events.show.departs_from")
+
+      address.not-italic
+        = @event.departs_from
+
+  - if @event.departs_from.present? && @event.location.present?
+    i.fa-arrow-right.fas.text-4xl.text-stone-400.mt-8
+
+  - if @event.location.present?
+    div.w-1/4
+      h5.font-bold(role="heading" aria-level="5")
+        i.fa-location-dot.fas.mr-1.text-rose-400.text-3xl.block
+        = t("events.show.location")
+
+      address.not-italic
+        = @event.location
+
+      - if @event.address.present?
+        address.not-italic
+          = @event.address
+
+.text-center
+  = link_to event_map_url(@event),
+    target: "_new",
+    class: "inline-block no-underline hover:text-rose-600 text-center text-rose-500 mt-4 border border-rose-500 rounded hover:border-rose-600 px-4 py-2",
+    aria: { role: "link" },
+    title: "View a Map" do
+
+    i.fa-map.fas.mr-2
+    = t("events.show.map")
