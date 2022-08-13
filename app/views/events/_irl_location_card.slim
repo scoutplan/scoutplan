@@ -24,6 +24,10 @@
         address.not-italic
           = @event.address
 
+      - if @event.venue_phone.present?
+        i.fa-phone.fas.mr-2.text-stone-400
+        = phone_to @event.venue_phone
+
 .text-center
   = link_to event_map_url(@event),
     target: "_new",

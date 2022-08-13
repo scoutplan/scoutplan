@@ -323,6 +323,7 @@ class EventsController < UnitContextController
       :repeats_until,
       :departs_from,
       :status,
+      :venue_phone,
       # these ones are specifically for cancellation
       :message_audience,
       :note
