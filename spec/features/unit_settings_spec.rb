@@ -13,7 +13,7 @@ describe "unit settings", type: :feature do
 
     it "does not have a Unit Settings link" do
       visit unit_events_path(@member.unit)
-      expect(page).not_to have_link("#{@member.unit.name} Settings", visible: false)
+      expect(page).not_to have_link("Unit Settings", visible: false)
     end
 
     it "prevents Unit Settings page navigation" do
@@ -30,7 +30,7 @@ describe "unit settings", type: :feature do
 
     it "has a Unit Settings link" do
       visit unit_events_path(@member.unit)
-      expect(page).to have_link("#{@member.unit.name} Settings", visible: false)
+      expect(page).to have_link("Unit Settings", visible: false)
     end
 
     it "visits the unit settings page" do

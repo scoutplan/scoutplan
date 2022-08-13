@@ -38,7 +38,7 @@ describe "events", type: :feature do
     end
 
     it "shows settings" do
-      expect(page).to have_content("#{@unit.name} Settings")
+      expect(page).to have_content("Unit Settings")
     end
   end
 
@@ -61,7 +61,7 @@ describe "events", type: :feature do
     end
 
     it "doesn't show settings" do
-      expect(page).not_to have_content("#{@unit.name} Settings")
+      expect(page).not_to have_content("Unit Settings")
     end
   end
 end

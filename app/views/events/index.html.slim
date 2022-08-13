@@ -2,7 +2,6 @@
 
 = turbo_frame_tag "main"
   .max-w-6xl.mx-auto(data-controller="event" class="w-full")
-    = render partial: "events/partials/index/actions", locals: { current_variation: variation }
     = render partial: "events/partials/index/no_events" if @events.count.zero?
     = render partial: "events/partials/index/#{variation}" 
 
