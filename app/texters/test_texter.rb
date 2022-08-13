@@ -4,7 +4,7 @@
 class TestTexter < MemberTexter
   def body
     ApplicationController.render(
-      template: "texters/test",
+      template: "member_texter/test",
       format: "text",
       assigns: { member: @member }
     )
