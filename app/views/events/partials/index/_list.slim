@@ -10,6 +10,7 @@
       // LEFT SIDE
       h1.md:text-center.text-xl.md:text-4xl.font-bold.mb-2
         = t("events.index.page_title")
+        .text-sm.uppercase.tracking-wider.text-stone-500 = @unit.name
 
       // RIGHT SIDE
       - if policy(:event).create?
