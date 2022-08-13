@@ -1,3 +1,4 @@
+const { scale } = require('tailwindcss/defaultTheme')
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
@@ -37,6 +38,22 @@ module.exports = {
       },
       maxWidth: {
         '1/2': '50%',
+      },
+      animation: {
+        'pop-open': 'pop-open 0.1s'
+      },
+      keyframes: {
+        'pop-open': {
+          '0%': {
+            transform: 'scale(0%)'
+          },
+          '90%': {
+            transform: 'scale(110%)'
+          },
+          '100%': {
+            transform: 'scale(100%)'
+          }
+        }
       }
     },
   },

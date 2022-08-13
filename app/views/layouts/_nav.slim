@@ -1,18 +1,10 @@
 nav#top_nav.sticky.top-0.bg-white/95.z-10.hidden.lg:block.mb-1
-  = link_to root_path, class: "block" do
-    .fixed.w-96.h-24#nav_logo.overflow-y-hidden.transition-all.duration-100
-      = image_tag "scoutplan-logo-word", style: "width:128px;height:10.65px;top:20px;left:16px;", class: "block absolute"
-      = image_tag "scoutplan-logo-needle", style: "height:48px;top:35px;left:135px;animation:find-center 5s cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;", class: "absolute", id: "needle"
-      // see https://matthewlein.com/tools/ceaser for timing curves
+  .grid.grid-cols.grid-cols-5
+    = link_to root_path, class: "block" do
+      = image_tag "scoutplan_logo", style: "width:128px;top:20px;left:16px;", class: "block absolute"
 
-
-  /  .flex.flex-row
-  .grid.grid-cols-5
-    div#nav_left
-
-    div.col-span-3.justify-self-center#nav_center
-      - if @current_member
-        = render partial: "layouts/partials/main_menu"
+    #nav_center.col-span-3.justify-self-center
+      = render partial: "layouts/partials/main_menu" if @current_member
 
     // RIGHT SIDE NAME / UNIT
     div.justify-self-end#nav_right
@@ -25,6 +17,7 @@ css:
   body.scrolled nav#top_nav {
     border-bottom: 1px solid #E7E5E4;
     filter: drop-shadow(0 6px 6px rgb(0 0 0 / 0.05));
+    overflow-y: hidden;
   }
 
   body.scrolled #nav_logo {
@@ -38,23 +31,3 @@ css:
   .dropdown.menu-open .dropdown-menu {
     display: block;
   }
-
-  @keyframes tilt-shaking {
-    0% { transform: rotate(0deg); }
-    2% { transform: rotate(30deg); }
-    4% { transform: rotate(-30deg); }
-    6% { transform: rotate(30deg); }
-    8% { transform: rotate(-30deg); }    
-    10% { transform: rotate(0deg); }
-  }
-
-  @keyframes find-center {
-    0% { transform: rotate(0deg); }
-    10% { transform: rotate(-30deg); }
-    20% { transform: rotate(30deg); }
-    30% { transform: rotate(-20deg); }
-    40% { transform: rotate(20deg); }
-    60% { transform: rotate(-10deg); }    
-    80% { transform: rotate(10deg); }    
-    100% { transform: rotate(0deg); }
-  }  

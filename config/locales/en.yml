@@ -185,6 +185,9 @@ en:
       category:     "Select an event category"
       cancellation_message: "Type your cancellation message here (optional)"
       venue_phone:  "Phone number where you're staying"
+
+    captions:
+      new_short: "Add"
     
     edit_rsvps:
       title: "RSVP — "

@@ -3,9 +3,7 @@
   = link_to "#",
     class: "block px-4 py-3 dropdown-button dropdown-button-chevron font-bold text-sm xl:text-base" \
     do
-      = @current_member.full_display_name
-      span.mx-2.text-brand-500 &bull;
-      = @current_member.unit_name
+      = @current_member.short_display_name
       i.fa-chevron-down.fas.ml-2
 
   .dropdown-menu.rounded.bg-stone-700.block.absolute.right-0.mr-2.py-2.color-stone-100.w-64
