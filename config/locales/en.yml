@@ -183,7 +183,8 @@ en:
       address:      "Address or place name"
       departs_from: "Departure address"
       category:     "Select an event category"
-      cancellation_message:       "Type your cancellation message here (optional)"
+      cancellation_message: "Type your cancellation message here (optional)"
+      venue_phone:  "Phone number where you're staying"
     
     edit_rsvps:
       title: "RSVP — "

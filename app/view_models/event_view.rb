@@ -25,6 +25,7 @@ class EventView
                  :repeats_until,
                  :location,
                  :address,
+                 :venue_phone,
                  :departs_from,
                  :requires_rsvp,
                  :rsvp_closes_at,

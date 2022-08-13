@@ -11,7 +11,7 @@
         action: "keyup->geocoding#performQuery",
         }
 
-  // adddress
+  // address
   .md:border-b.py-2.md:py-4
     = f.styled_label :address, layout: :inline
     = f.text_field :address,
@@ -22,6 +22,14 @@
         geocoding_target: "address",
         action: "keyup->geocoding#performQuery",
       }
+
+  // phone
+  .md:border-b.py-2.md:py-4
+    = f.styled_label :venue_phone, layout: :inline
+    = f.phone_field :venue_phone,
+      class: "geocoded bg-white border border-stone-200 rounded p-2 w-full md:w-[75%] hover:ring-brand-500 placeholder-stone-300",
+      autocomplete: "off",
+      placeholder: t("events.placeholders.venue_phone")
 
   // departs from
   .py-2.py-2.md:py-4.relative

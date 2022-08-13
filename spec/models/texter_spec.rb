@@ -64,5 +64,21 @@ RSpec.describe DigestTexter, type: :model do
       expect(body).to be_a(String)
     end
   end
+
+  describe "TestTexter" do
+    it "can instantiate" do
+      member = FactoryBot.build(:member)
+      expect(TestTexter.new(member)).to be_a(TestTexter)
+    end
+
+    it "renders reminders from template" do
+      User.destroy_all
+      member = FactoryBot.create(:unit_membership)
+      texter = TestTexter.new(member)
+      body = texter.body
+      render_text_body_to_console(body)
+      expect(body).to be_a(String)
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength
