@@ -18,7 +18,7 @@ html.scroll-smooth
     = render partial: "layouts/nav"
     = render partial: "layouts/nav_mobile"
         
-    main.h-screen.flex-grow.px-4.py-0
+    main
       = turbo_frame_tag "main"
         = yield
 
