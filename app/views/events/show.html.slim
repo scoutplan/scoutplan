@@ -51,7 +51,7 @@
     // footer, containing right-justified buttons
     footer.w-full.sticky.bottom-0
       // SCROLL DOWN LINK
-      .-ml-12
+      .hidden.-ml-12#scroll_down_wrapper
         a.inline-block.rounded-full.bg-fuchsia-500.text-white.text-center.px-6.py-1.mb-2.animate-bounce.scroll-down-button(href="#" data-scroll-container="#informative")
           = "Scroll down "
           i.fa-arrow-down.fas
@@ -103,3 +103,10 @@ javascript:
       elem.parentNode.classList.add("hidden");
     });
   });
+
+  // reveal 'scroll down' button if needed
+  document.addEventListener("turbo:load", function(event) {
+    if (document.body.scrollHeight > window.innerHeight) {
+      document.querySelector("#scroll_down_wrapper")?.classList?.remove("hidden");
+    }
+  })
