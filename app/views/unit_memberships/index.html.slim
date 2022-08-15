@@ -1,5 +1,5 @@
 = turbo_frame_tag("main")
-  .max-w-6xl.mx-auto
+  .max-w-3xl.mx-auto
     = render partial: "unit_memberships/partials/index/header"
 
     - if flash[:notice]
@@ -9,17 +9,10 @@
           = flash[:notice]
 
     = form_tag bulk_update_unit_members_path(@unit), id: "bulk_edit_form"
-      table.w-full.mb-12
-        thead.sticky
-          tr
-            th.selection.text-left.text-black
-              = check_box_tag "all_visible_events", "on", false, class: "form-check-input", id: "select_all_members_checkbox"
-            th.text-left.px-2.py-2.text-black = t("members.name")
-            th.hidden.sm:table-cell.badges.text-left.px-2.py-2.text-black Status
-            th.hidden.md:table-cell.px-2.py-2.text-black.text-left Family
-
-        tbody
-          = render @unit_memberships         
+      .divide-y
+        - ('A'..'Z').each do |letter|
+          - letter_memberships = @unit_memberships.select{ |m| m.first_name.first.downcase == letter.downcase }
+          = render partial: "member_index", locals: { letter: letter, unit_memberships: letter_memberships } if letter_memberships.present?
 
   scss:
     th.selection, td.selection {
@@ -84,7 +77,7 @@ javascript:
   // BULK EDIT FACILITY
 
   // 'Select All' checkbox
-  document.querySelector('#select_all_members_checkbox').addEventListener('click', function(event) {
+  document.querySelector('#select_all_members_checkbox')?.addEventListener('click', function(event) {
     const checked = this.checked;
     document.querySelectorAll('.bulk-publish-checkbox').forEach(function (elem) {
         elem.checked = checked && elem.offsetParent !== null;
@@ -93,13 +86,13 @@ javascript:
   });
 
   // enter bulk edit mode by adding a body class
-  document.querySelector('#bulk_edit_link').addEventListener('click', function(event) {
+  document.querySelector('#bulk_edit_link')?.addEventListener('click', function(event) {
     document.body.classList.toggle('bulk-edit');
     event.preventDefault();
   });
 
   // exit bulk edit mode by removing the same body class
-  document.querySelector('#cancel_bulk_edit').addEventListener('click', function(event) {
+  document.querySelector('#cancel_bulk_edit')?.addEventListener('click', function(event) {
     document.body.classList.remove('bulk-edit');
     event.preventDefault();
   });
@@ -113,13 +106,13 @@ javascript:
   });
 
   // wire up the bulk edit Apply button
-  document.querySelector('#execute_bulk_edit_button').addEventListener('click', function(event) {
+  document.querySelector('#execute_bulk_edit_button')?.addEventListener('click', function(event) {
     document.querySelector('#bulk_edit_form').submit();
     event.preventDefault();
   });
 
   // toggle inactive members
-  document.querySelector('#show_inactive_members_link').addEventListener('click', function(event) {
+  document.querySelector('#show_inactive_members_link')?.addEventListener('click', function(event) {
     document.body.classList.toggle('showing-inactive-members');
     event.preventDefault();
   });

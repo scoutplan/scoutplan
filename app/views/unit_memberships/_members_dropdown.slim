@@ -1,0 +1,32 @@
+.dropdown.absolute
+  .dropdown-button
+    i.fa-circle-ellipsis.far.text-xl
+
+  .dropdown-menu.relative.z-10.bg-stone-800.text-stone-100.rounded.py-2
+    ul
+      li = link_to '#',
+          class: "hover:text-white inline-block px-4 py-2 w-full toggle-body-class",
+          data: { action: 'event#toggleCancelledEvents' },
+          id: 'bulk_edit_link' do
+        .menu-glyph
+          span.menu-glyph-wrapper
+            i.far.fa-check
+        = 'Bulk Edit Members'
+
+      li = link_to '#',
+          class: "hover:text-white inline-block px-4 py-2 w-full toggle-body-class",
+          data: { action: 'event#toggleCancelledEvents' },
+          id: 'show_inactive_members_link' do
+        .menu-glyph
+          span.menu-glyph-wrapper
+            i.far.fa-check
+        |Show Inactive Members (#{ @current_unit.members.status_inactive.count })               
+
+      li = link_to import_unit_members_path(@unit),
+          class: "hover:text-white inline-block px-4 py-2 w-full toggle-body-class",
+          data: { action: 'event#toggleCancelledEvents' },
+          id: 'import_members_link' do
+        .menu-glyph
+          span.menu-glyph-wrapper
+            i.far.fa-check
+        |Import Members

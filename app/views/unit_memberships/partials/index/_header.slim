@@ -1,124 +1,15 @@
-header
-  .flex.flex-row.justify-between
-    div.left-side
-      // search field
-      - if true
-        .relative.inline-block
-          = search_field_tag(:search, 
-            "",
-            class: "rounded text-sm px-3 py-2 bg-gray-100 mr-2 md:w-60 lg:w-48 xl:w-72 border-0 focus:ring-1 focus:ring-inset focus:ring-brand-500",
-            autofocus: true,
-            autocomplete: 'off',
-            placeholder: raw(t('members.search_by_name')),
-            onkeyup: 'performNameSearch();')
+header.relative.mb-4
+  h1.text-center.text-3xl.font-bold
+    = t("members.index.page_title")
+    .text-sm.uppercase.tracking-wider.text-stone-500 = @unit.name
 
-          i.fa-magnifying-glass.fas.absolute.right-6(style="top:50%;transform:translateY(-50%);")
+  .absolute.left-0.top-1/2
+    = render "members_dropdown" if @current_member.admin?
 
-    div.right-side
+  .absolute.right-0.top-1/2
+    = render partial: "new_member_button"
 
+header.mb-4
+  = render partial: "search_field"
 
-    // regularly-displayed controls (hidden under some circumstances)
-    span#regular_options
-
-      // add a member
-      = link_to new_unit_member_path(@unit),
-                data: { turbo_action: "advance", turbo_frame: "main" },
-                class:  " bg-brand-500 rounded text-white" \
-                        " font-bold text-sm tracking-wider uppercase px-4 py-2 mr-2" \
-                        "" do
-        i.fas.fa-user-plus.text-sm
-        .hidden.xl:inline-block.ml-3
-          = t("members.index.new_button_caption")
-
-      - if @current_member.admin?
-        .inline-block.relative.dropdown
-
-          // 'Options' button
-          button(class= "text-sm uppercase tracking-wider font-bold \
-                        rounded bg-stone-200 no-underline text-black px-4 py-2 \
-                        border border-stone-200"
-                        type="button"
-                        onclick="this.parentElement.classList.toggle('menu-open');"
-                )
-            .hidden.xl:inline-block.mr-2.text-sm
-              = t('events.index.view.dropdown')
-            i.far.fa-chevron-down
-
-          .dropdown-menu.text-left.origin-top-right.absolute.right-0.mt-2.w-72.rounded-md.shadow-lg.bg-white.ring-1.ring-black.ring-opacity-5.divide-y.divide-stone-100.focus:outline-none
-            ul
-              li = link_to '#',
-                  class: "hover:bg-stone-100 inline-block px-4 py-2 w-full toggle-body-class",
-                  data: { action: 'event#toggleCancelledEvents' },
-                  id: 'bulk_edit_link' do
-                .menu-glyph
-                  span.menu-glyph-wrapper
-                    i.far.fa-check
-                = 'Bulk Edit Members'
-
-              li = link_to '#',
-                  class: "hover:bg-gray-100 inline-block px-4 py-2 w-full toggle-body-class",
-                  data: { action: 'event#toggleCancelledEvents' },
-                  id: 'show_inactive_members_link' do
-                .menu-glyph
-                  span.menu-glyph-wrapper
-                    i.far.fa-check
-                |Show Inactive Members (#{ @current_unit.members.status_inactive.count })               
-
-              li = link_to import_unit_members_path(@unit),
-                  class: "hover:bg-gray-100 inline-block px-4 py-2 w-full toggle-body-class",
-                  data: { action: 'event#toggleCancelledEvents' },
-                  id: 'import_members_link' do
-                .menu-glyph
-                  span.menu-glyph-wrapper
-                    i.far.fa-check
-                |Import Members  
-
-    span.mb-3.me-3#bulk_edit_options(style="font-size: 80%;")
-      span(style="display: inline-block; vertical-align: middle;")
-        span(style="display: inline-block;")
-          h6 Status
-          .form-check.me-3(style="display: inline-block;")
-            input.form-check-input(type="radio" name="member[status]" id="status_active" value="active")
-            label.form-check-label(for="status_active") Active
-
-          .form-check.me-3(style="display: inline-block;")
-            input.form-check-input(type="radio" name="member[status]" id="status_inactive" value="inactive")
-            label.form-check-label(for="status_inactive") Inactive
-
-        span.me-3(style="display: inline-block;")
-          h6 Member Type
-          .form-check.me-3(style="display: inline-block;")
-            input.form-check-input(type="radio" name="member[member_type]" id="member_type_youth" value="youth")
-            label.form-check-label(for="member_type_youth") Youth
-
-          .form-check.me-3(style="display: inline-block;")
-            input.form-check-input(type="radio" name="member[member_type]" id="member_type_adult" value="adult")
-            label.form-check-label(for="member_type_adult") Adult
-
-      button.btn.btn-warning#execute_bulk_edit_button(disabled="disabled") Update Selected Members
-      |&nbsp;
-      button.btn.btn-secondary#cancel_bulk_edit = t("global.cancel")
-
-  h1.font-bold.text-xl.text-center.py-4
-    = t("members.titles.index", unit_name: @unit.name)
-
-javascript:
-  // search functionality
-  // adapted from https://www.w3schools.com/howto/howto_js_filter_table.asp
-  function performNameSearch() {
-    var input = document.querySelector('#search');
-    var filter = input.value.toUpperCase();
-
-    var rows = document.querySelectorAll('tr.member');
-    rows.forEach(function(row) {
-      var nameCell = row.querySelector('td.name');
-      var name = nameCell.innerText;
-      if (filter.length < 0 || name.toUpperCase().indexOf(filter) > -1) {
-        row.style.display = '';
-      } else {
-        row.style.display = 'none';
-      }
-    });
-
-    hideEmptyLetterIndices();
-  }
+= render "member_bulk_edit_panel"

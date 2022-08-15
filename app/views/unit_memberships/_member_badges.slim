@@ -1,0 +1,23 @@
+// badges
+span.text-xs.font-bold.whitespace-nowrap
+  - if unit_membership.admin?
+    span.ml-1(title="#{@unit.name} Administrator")
+      i.fas.fa-user-crown.mr-2.py-1.text-emerald-500
+
+  - elsif unit_membership.event_organizer?
+    span(title="#{@unit.name} Event Organizer")
+      i.fas.fa-clipboard-user.mr-2.py-1.text-fuchsia-500.text-base
+
+  - case unit_membership.status
+  - when "active"
+    .inline-block.ml-1.bg-cyan-100.text-cyan-700.px-2.py-1.rounded-md Active
+  - when "registered"
+    .inline-block.ml-1.bg-purple-100.text-purple-700.px-2.py-1.rounded-md Family &amp; Friends                  
+  - when "inactive"
+    .inline-block.ml-1.bg-rose-100.text-rose-700.px-2.py-1.rounded-md Inactive
+
+  - case unit_membership.member_type
+  - when "adult"
+    .inline-block.ml-1.bg-pink-100.text-pink-700.px-2.py-1.rounded-md Adult
+  - when "youth"
+    .inline-block.ml-1.bg-sky-100.text-sky-700.px-2.py-1.rounded-md Youth

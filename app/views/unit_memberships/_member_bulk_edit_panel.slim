@@ -1,0 +1,25 @@
+span.mb-3.me-3#bulk_edit_options(style="font-size: 80%;")
+      span(style="display: inline-block; vertical-align: middle;")
+        span(style="display: inline-block;")
+          h6 Status
+          .form-check.me-3(style="display: inline-block;")
+            input.form-check-input(type="radio" name="member[status]" id="status_active" value="active")
+            label.form-check-label(for="status_active") Active
+
+          .form-check.me-3(style="display: inline-block;")
+            input.form-check-input(type="radio" name="member[status]" id="status_inactive" value="inactive")
+            label.form-check-label(for="status_inactive") Inactive
+
+        span.me-3(style="display: inline-block;")
+          h6 Member Type
+          .form-check.me-3(style="display: inline-block;")
+            input.form-check-input(type="radio" name="member[member_type]" id="member_type_youth" value="youth")
+            label.form-check-label(for="member_type_youth") Youth
+
+          .form-check.me-3(style="display: inline-block;")
+            input.form-check-input(type="radio" name="member[member_type]" id="member_type_adult" value="adult")
+            label.form-check-label(for="member_type_adult") Adult
+
+      button.btn.btn-warning#execute_bulk_edit_button(disabled="disabled") Update Selected Members
+      |&nbsp;
+      button.btn.btn-secondary#cancel_bulk_edit = t("global.cancel")
