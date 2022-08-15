@@ -3,14 +3,10 @@
   = form_tag bulk_publish_unit_events_path(@unit), id: "bulk_action_form"
 
     header.max-w-3xl.mx-auto.relative.mt-8
-      // LEFT SIDE
-      .hidden.md:block.absolute.left-0.dropdown
-        = link_to "#", class: "dropdown-button inline-block py-3 text-2xl" do
-          i.fa-circle-ellipsis.far.text-stone-500
 
-        .dropdown-menu.animate-pop-open.z-10.relative
-          .bg-white.p-4.rounded.border.text-stone-200.bg-stone-700
-            = render partial: "events/partials/index/actions", locals: { current_variation: "list" }
+      // LEFT SIDE ellipsis menu
+      .hidden.md:block.absolute.left-0.pt-2
+        = render partial: "events_dropdown", locals: { current_variation: "list" }
 
       // CENTER (desktop) or LEFT (mobile)
       h1.md:text-center.text-xl.md:text-4xl.font-bold.mb-2
@@ -19,23 +15,7 @@
 
       // RIGHT SIDE
       .absolute.right-0.top-0
-
-        - if policy(:event).create?
-          = link_to new_unit_event_path(@unit),
-                    class: "inline-block rounded border border-brand-500 text-brand-500 hover:border-brand-600 hover:text-brand-600 px-4 py-2 uppercase text-sm font-bold tracking-wider" do
-            i.fa-plus.fas.mr-2
-            .hidden.md:inline
-              = t("events.titles.new")
-            .inline.md:hidden
-              = t("events.captions.new_short")
-
-          .inline-block.md:hidden.dropdown
-            = link_to "#", class: "dropdown-button inline-block py-3 text-2xl" do
-              i.fa-circle-ellipsis.far.text-stone-500
-
-            .dropdown-menu.animate-pop-open.z-10.relative
-              .bg-white.p-4.rounded.border.text-stone-200.bg-stone-700
-                = render partial: "events/partials/index/actions", locals: { current_variation: "list" }
+        = render partial: "new_event_button" if policy(:event).create?
 
     // LIST WRAPPER
     .max-w-3xl.mx-auto

@@ -48,12 +48,12 @@ document.addEventListener("DOMContentLoaded", function() {
   //   validateBulkPublishState();
   // });
 
-  document.querySelector("#check_all_button").addEventListener("click", function(event) {
+  document.querySelector("#check_all_button")?.addEventListener("click", function(event) {
     selectAllBulkPublish(true);
     event.preventDefault();
   });
 
-  document.querySelector("#uncheck_all_button").addEventListener("click", function(event) {
+  document.querySelector("#uncheck_all_button")?.addEventListener("click", function(event) {
     selectAllBulkPublish(false);
     event.preventDefault();
   });  

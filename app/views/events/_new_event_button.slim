@@ -1,0 +1,7 @@
+= link_to new_unit_event_path(@unit),
+          class: "inline-block rounded border border-brand-500 text-brand-500 hover:border-brand-600 hover:text-brand-600 px-4 py-2 uppercase text-sm font-bold tracking-wider" do
+  i.fa-plus.fas.mr-2
+  .hidden.md:inline
+    = t("events.titles.new")
+  .inline.md:hidden
+    = t("events.captions.new_short")

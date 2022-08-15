@@ -7,9 +7,15 @@
 - display_day = - first_day_of_month.wday + 1
 - done = false
 
-header.flex.justify-between.py-2.border-b
-  div
-    .inline-block.dropdown
+header.flex.justify-between.py-2.border-b.relative
+  // LEFT SIDE
+  div.relative
+    // ellipsis menu
+    .hidden.md:block.absolute.left-0.top-0
+      = render partial: "events_dropdown", locals: { current_variation: "calendar" }
+
+    // clickable month name launches month picker
+    .inline-block.dropdown.pl-8
       a.dropdown-button(href="#")
         h2.px-2.font-bold.text-sm.md:text-lg.text-brand-500.md:w-48.inline-block
           = first_day_of_month.strftime("%B %Y")
@@ -49,33 +55,8 @@ header.flex.justify-between.py-2.border-b
   
   // RIGHT SIDE
   div
-    // Add Event button
-    - if policy(:event).create?
-      = link_to new_unit_event_path(@unit),
-                class:  " font-bold text-sm text-white tracking-wider uppercase" \
-                        " inline-block px-4 py-2 mr-2" \
-                        " bg-brand-500 hover:bg-brand-600" \
-                        " rounded" \
-                        "",
-        data: { turbo_frame: "main", turbo_action: "advance" } do
-        i.fas.fa-calendar-plus
-        .hidden.md:inline.ml-3
-          = t(:event_add)
-
-    // Options dropdown button
-    .inline-block.relative.dropdown
-      button.text-sm.uppercase.tracking-wider.font-bold.rounded.bg-stone-200.hover:bg-stone-300.no-underline.text-black.px-4.py-2(type="button" onclick="this.parentElement.classList.toggle('menu-open');return false;")
-        .hidden.md:inline.mr-3
-          = t('events.index.view.dropdown')
-        i.far.fa-chevron-down
-
-      .dropdown-menu.origin-top-right.absolute.right-0.py-2.mt-px.min-w-max.rounded-md.shadow-lg.bg-stone-800.text-white.ring-1.ring-black.ring-opacity-5.divide-y.divide-stone-100.focus:outline-none
-        .table
-          = render partial: 'events/partials/index/dropdown_items/bulk_publish'   if @current_member.admin?
-          = render partial: 'events/partials/index/dropdown_items/show_cancelled' if @current_member.admin?
-          = render partial: 'events/partials/index/dropdown_items/show_only_rsvps'
-          = render partial: 'events/partials/index/dropdown_items/show_past_events'          
-
+    = render partial: "new_event_button" if policy(:event).create?
+    
 .table.px-0.w-full.table-fixed
   .table-row.font-bold
     - 7.times do |dow|
