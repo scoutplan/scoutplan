@@ -40,16 +40,26 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // wire up the check/uncheck all box
-  document.querySelector('#select_all_events_checkbox')?.addEventListener('click', function(event) {
-    const checked = this.checked;
-    document.querySelectorAll('.bulk-publish-checkbox').forEach(function (elem) {
-        elem.checked = checked && elem.offsetParent !== null;
-    });
-    validateBulkPublishState();
+  // document.querySelector('#select_all_events_checkbox')?.addEventListener('click', function(event) {
+  //   const checked = this.checked;
+  //   document.querySelectorAll('.bulk-publish-checkbox').forEach(function (elem) {
+  //       elem.checked = checked && elem.offsetParent !== null;
+  //   });
+  //   validateBulkPublishState();
+  // });
+
+  document.querySelector("#check_all_button").addEventListener("click", function(event) {
+    selectAllBulkPublish(true);
+    event.preventDefault();
   });
 
+  document.querySelector("#uncheck_all_button").addEventListener("click", function(event) {
+    selectAllBulkPublish(false);
+    event.preventDefault();
+  });  
+
   // wire up event row checkboxes
-  document.querySelectorAll(".bulk-publish-checkbox").forEach(function(elem) {
+  document.querySelectorAll("input.bulk-publish-checkbox").forEach(function(elem) {
     elem.addEventListener("click", function(event) {
       validateBulkPublishState();
     });
@@ -82,17 +92,24 @@ var gOriginalBulkPublishExecuteButtonCaption;
 // fired whenever a bulk update checkbox is clicked
 function validateBulkPublishState() {
   // tally up checked count
-  const checkedCount = document.querySelectorAll(".event-row .bulk-selection input:checked").length;
+  const checkedCount = document.querySelectorAll("input.bulk-publish-checkbox:checked").length;
 
   // enable execute button
   var bulkPublishExecuteButton = document.querySelector("#bulk_publish_execute_button");
   bulkPublishExecuteButton.disabled = (checkedCount == 0);
 
   // store the original caption, if needed
-  gOriginalBulkPublishExecuteButtonCaption = gOriginalBulkPublishExecuteButtonCaption ?? bulkPublishExecuteButton?.textContent;
+  gOriginalBulkPublishExecuteButtonCaption = gOriginalBulkPublishExecuteButtonCaption ?? bulkPublishExecuteButton?.value;
 
   // update execute button caption
-  bulkPublishExecuteButton.textContent = gOriginalBulkPublishExecuteButtonCaption + (checkedCount == 0 ? '' : ' (' + checkedCount + ')');
+  bulkPublishExecuteButton.value = gOriginalBulkPublishExecuteButtonCaption + (checkedCount == 0 ? '' : ' (' + checkedCount + ')');
+}
+
+function selectAllBulkPublish(checked) {
+  document.querySelectorAll(".event-draft:not(.event-past) .bulk-publish-checkbox").forEach(function(elem) {
+    elem.checked = checked;
+  });
+  validateBulkPublishState();
 }
 
 /* SHOW/HIDE MONTH HEADERS */

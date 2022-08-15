@@ -2,10 +2,6 @@
 #event_table_container.max-w-full
   = form_tag bulk_publish_unit_events_path(@unit), id: "bulk_action_form"
 
-    #bulk_select_all_wrapper.bulk-selection.block.px-2.py-4
-      = check_box_tag "all_visible_events", "on", false, class: "form-check-input", id: "select_all_events_checkbox"
-      = label_tag :select_all_events_checkbox, "Select all", class: "ml-2 font-bold"
-
     header.max-w-3xl.mx-auto.relative.mt-8
       // LEFT SIDE
       .hidden.md:block.absolute.left-0.dropdown
@@ -46,9 +42,11 @@
       // iterate by month
       - @event_month_count = 0
       - @current_event_month_count = 0
+
+      = render partial: "bulk_publish_panel"
+
       .divide-y.divide-stone-300
-        = link_to "#",
-                  class: "inline-block px-4 py-2 w-full toggle-body-class text-sm text-center text-stone-400 hover:text-stone-600",
+        = link_to "#", class: "hide-bulk-publish inline-block px-4 py-2 w-full toggle-body-class text-sm text-center text-stone-400 hover:text-stone-600",
                   data: { action: "event#togglePastEvents" },
                   id: "toggle_past_events_link" do
             #show_past_events_caption

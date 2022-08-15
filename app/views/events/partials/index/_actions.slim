@@ -1,55 +1,76 @@
+// ICAL SUBSCRIBE
+- ics_url = calendar_feed_unit_events_url( \
+    token: @ical_magic_link.token,
+    unit_id: @unit.to_param,
+    format: :ics,
+    only_path: false,
+    protocol: "webcal" \
+  )
+
+div
   - if current_variation == "list"
     // VIEW AS CALENDAR
     = link_to calendar_unit_events_path(@unit),
-              class: "inline-block py-3 text-sm font-bold",
+              class: "inline-block py-3 text-sm font-bold hover:text-white",
               data: { turbo_action: "advance" },
               id: "show_as_calendar" do
-      i.fas.fa-calendar-days.mr-2
+      span.inline-block.w-8.mr-2.text-center
+        i.fas.fa-calendar-days
       = "View as a calendar"
 
   - if current_variation == "calendar"
     // VIEW AS CALENDAR
     = link_to list_unit_events_path(@unit),
-              class: "inline-block py-3 text-sm font-bold",
+              class: "inline-block py-3 text-sm font-bold hover:text-white",
               data: { turbo_action: "advance" },
               id: "show_as_calendar" do
-      i.far.fa-list.mr-2
+      span.inline-block.w-8.mr-2.text-center
+        i.far.fa-list
       = "View as a list"
 
-  // PDF DOWNLOAD
-  div
-    = link_to list_unit_events_path(@unit, format: :pdf),
-              class: "inline-block py-3 text-sm font-bold",
-              data: { turbo_action: "advance" },
-              id: "printable" do
-
-      i.far.fa-print.mr-2
-      = "Download a printable schedule"
-
-  - if @current_member.admin?
-    div
-      = link_to list_unit_events_path(@unit, format: :pdf, season: "next"),
-                class: "inline-block py-3 text-sm font-bold ml-1",
-                data: { turbo_action: "advance" },
-                id: "show_as_calendar" do
-        i.fa-forward-step.fas.mr-2                
-        = "Download next season's printable schedule"
-
-  // ICAL SUBSCRIBE
-  - ics_url = calendar_feed_unit_events_url( \
-      token: @ical_magic_link.token,
-      unit_id: @unit.to_param,
-      format: :ics,
-      only_path: false,
-      protocol: "webcal" \
-    )
-  = link_to ics_url,
-            class: "inline-block py-3 text-sm font-bold",
+// PDF DOWNLOAD
+div
+  = link_to list_unit_events_path(@unit, format: :pdf),
+            class: "inline-block py-3 text-sm font-bold hover:text-white",
             data: { turbo_action: "advance" },
-            id: "show_as_calendar"
-            do
-              i.far.fa-mobile.mr-2
-              .hidden.md:inline
-                = "Add this Schedule to your Google Calendar, Outlook, or iCal"
-              .inline.md:hidden
-                = "Add this Schedule to your calendar"
+            id: "printable" do
+
+    span.inline-block.w-8.mr-2.text-center
+      i.far.fa-print
+    = "Download a printable schedule"
+
+- if @current_member.admin?
+  div
+    = link_to list_unit_events_path(@unit, format: :pdf, season: "next"),
+              class: "inline-block py-3 text-sm font-bold hover:text-white",
+              data: { turbo_action: "advance" },
+              id: "show_as_calendar" do
+
+      span.inline-block.w-8.mr-2.text-center
+        i.fa-forward-step.fas
+      = "Download next season's printable schedule"
+
+div
+  = link_to ics_url,
+            class: "inline-block py-3 text-sm font-bold hover:text-white",
+            data: { turbo_action: "advance" },
+            id: "show_as_calendar" do
+
+    span.inline-block.w-8.mr-2.text-center
+      i.far.fa-mobile
+    .hidden.md:inline
+      = "Add this Schedule to your Google Calendar, Outlook, or iCal"
+    .inline.md:hidden
+      = "Add this Schedule to your calendar"
+
+- if @current_member.admin?
+  div
+    = link_to "#",
+          class: "inline-block py-3 text-sm font-bold hover:text-white",
+          data: { action: "event#toggleBulkPublish" },
+          id: "show-only-draft-events-link" do
+
+      span.inline-block.w-8.mr-2.text-center
+        i.fa-layer-group.fas
+      = t("events.index.view.drafts")
+      = pill_tag_if @event_drafts.count.positive?, @event_drafts.count, "bg-none border"
