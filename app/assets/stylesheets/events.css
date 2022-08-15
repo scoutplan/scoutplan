@@ -1,6 +1,3 @@
-.bulk-selection {
-  display: none; }
-
 .start-day, .days, .title {
   width: 1%;
   white-space: nowrap; }
@@ -79,14 +76,16 @@ body.showing-only-rsvp-events .filter-status-only-rsvps {
 body.showing-cancelled-events .filter-status-cancelled {
   display: inline-block; }
 
-table-cell.bulk-selection {
-  display: none; }
-
 #bulk_publish_button_wrapper {
   display: none; }
 
-body.showing-only-draft-events .event-row:not(.event-draft) {
-  display: none; }
+body.showing-only-draft-events article:not(.event-draft) {
+  display: none;
+}
+
+body.showing-only-draft-event .hide-bulk-publish {
+  display: none !important;
+}
 
 body.showing-only-draft-events .event-row.event-draft {
   display: block; }  
@@ -97,8 +96,20 @@ body.showing-only-draft-events .event-row.event-draft.event-past {
 body.showing-only-draft-events #show-only-draft-events-link .menu-glyph-wrapper {
   display: inline-block; }
 
+
+/* bulk event selection */
+
+.bulk-selection {
+  display: none;
+}
+
 body.showing-only-draft-events .bulk-selection {
-  display: table-cell; }
+  display: inherit;
+}
+
+body.showing-only-draft-events article.event time {
+  padding-left: 3rem;
+}
 
 body.showing-only-draft-events #bulk_publish_button_wrapper {
   display: inline-block; }

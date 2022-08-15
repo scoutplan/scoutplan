@@ -23,3 +23,11 @@
   text-decoration: underline;
   color: rgb(230, 100, 37);
 }
+
+html:not(.fontawesome-i2svg-complete) .icon-substitute {
+  display: inherit;
+}
+
+html.fontawesome-i2svg-complete .icon-substitute {
+  display: none;
+}

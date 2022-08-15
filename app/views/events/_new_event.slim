@@ -2,12 +2,21 @@
 
 // START ROW
 article(class="relative event #{row_classes(event)}" id="event_#{event.id}")
+  // anchor for scroll-to purposes
   a(name="event_#{event.id}")
+
+  // bulk selection
+  = check_box_tag "event_ids[]", event.id, false,
+    class: "text-lg block bulk-selection z-10 bulk-publish-checkbox absolute left-0 ml-2 top-1/2 md:-translate-y-2/4"
+
+  // link
   = link_to unit_event_path(@unit, event),
             class: "px-2 py-4 block hover:bg-stone-100",
             data: { turbo_action: "advance" } do
 
     .flex.flex-row.gap-6.items-center
+      // bulk publish checkbox
+
       // date / day
       time.w-20.md:w-20.shrink-0
         .text-2xl.md:text-3xl = raw(@presenter.dates_to_s)

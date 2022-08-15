@@ -1,0 +1,10 @@
+.dropdown
+  = link_to "#", class: "dropdown-button inline-block text-2xl" do
+    .icon-substitute.text-sm
+      = "Options"
+
+    i.fa-circle-ellipsis.far.text-stone-500
+
+  .dropdown-menu.animate-pop-open.z-10.relative
+    .p-4.rounded.border.text-stone-200.bg-stone-700
+      = render partial: "events/partials/index/actions", locals: { current_variation: current_variation }
