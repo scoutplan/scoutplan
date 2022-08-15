@@ -21,7 +21,9 @@ javascript:
     var rows = document.querySelectorAll('article.member');
     rows.forEach(function(row) {
       var nameCell = row.querySelector('.member-name');
-      var name = nameCell.innerText;
+
+      // the normalize and replace voodoo converts diacriticals to undecorated letters, e.g. ñ -> n
+      var name = nameCell.innerText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       if (filter.length < 0 || name.toUpperCase().indexOf(filter) > -1) {
         row.style.display = '';
       } else {
@@ -59,4 +61,4 @@ javascript:
         visibleParents++;
       }
     });
-  }  
+  } // function toggleIndices

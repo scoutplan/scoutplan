@@ -5,8 +5,8 @@
 - row_classes += " member-admin" if unit_membership.admin?
 - row_classes += " member-inactive" if unit_membership.status_inactive?
 
-article.member(class="#{row_classes}")
-  .bulk-selection
+article.member.relative(class="#{row_classes}")
+  .bulk-edit.pl-2.absolute.left-0.top-1/2
     = check_box_tag "members[]", unit_membership.id, false, class: 'form-check-input bulk-edit-checkbox'
 
   // person name
