@@ -126,7 +126,8 @@ class UnitMembershipsController < ApplicationController
     params.require(:unit_membership).permit(
       :status, :role, :member_type,
       child_relationships_attributes: [:id, :child_unit_membership_id, :_destroy],
-      parent_relationships_attributes: [:id, :_destroy]
+      parent_relationships_attributes: [:id, :_destroy],
+      user_attributes: [:first_name, :last_name, :phone]
     )
   end
 

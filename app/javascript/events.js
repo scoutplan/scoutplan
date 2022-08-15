@@ -98,6 +98,8 @@ function validateBulkPublishState() {
   var bulkPublishExecuteButton = document.querySelector("#bulk_publish_execute_button");
   bulkPublishExecuteButton.disabled = (checkedCount == 0);
 
+  // enable uncheck all button
+
   // store the original caption, if needed
   gOriginalBulkPublishExecuteButtonCaption = gOriginalBulkPublishExecuteButtonCaption ?? bulkPublishExecuteButton?.value;
 

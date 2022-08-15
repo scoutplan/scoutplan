@@ -4,80 +4,34 @@
 - row_classes += " member-#{ unit_membership.member_type }"
 - row_classes += " member-admin" if unit_membership.admin?
 - row_classes += " member-inactive" if unit_membership.status_inactive?
-- @current_letter ||= ""
 
-- if unit_membership.display_first_name.first != @current_letter
-  - @current_letter = unit_membership.display_first_name.first
-  tr.letter-index
-    td.px-2.pt-2.pb-4
-      .text-brand-500.font-bold.text-base
-        a(name="#{@current_letter}")
-        = @current_letter
-
-tr.border-b.hover:bg-gray-100.member.member-row(class="#{ row_classes }" id="member_#{unit_membership.id}_row")
-  td.selection
-    = link_to unit_membership.full_display_name, edit_unit_member_path(@unit, unit_membership), style: 'display: none;', data: { turbo_action: 'advance', turbo_frame: 'member' }
+article.member.relative(class="#{row_classes}")
+  .bulk-edit.pl-2.absolute.left-0.top-1/2
     = check_box_tag "members[]", unit_membership.id, false, class: 'form-check-input bulk-edit-checkbox'
 
-  td.name.w-1.pb-2
-
-    // person name
-    = link_to unit_member_path(@unit, unit_membership),
-      class: "block px-2 pt-3 pb-1 font-bold whitespace-nowrap w-full",
-      data: { turbo_frame: "main", turbo_action: "advance" } do
-        = unit_membership.full_display_name
-
+  // person name
+  = link_to unit_member_path(@unit, unit_membership),
+    class: "block px-2 py-4 hover:bg-stone-100",
+    data: { turbo_action: "advance" } do
+    
+    h3.text-xl.member-name.mb-2
+      span.mr-2 = unit_membership.full_display_name
+      = render partial: "member_badges", locals: { unit_membership: unit_membership }
 
     // contact info below name
-    .text-sm.text-gray-500.px-2.min-h-4.whitespace-nowrap
+    .text-sm.text-stone-600.mb-2
       - if unit_membership.emailable?
-        = mail_to unit_membership.email,
-                  class: "inline-block pb-1 hover:text-gray-700" do
-          i.fa-envelope.fas.mr-1.text-gray-300
-          = unit_membership.email
+        i.fa-envelope.fas.mr-1.text-gray-300
+        = unit_membership.email
 
       - if unit_membership.phone.present?
-        = link_to "tel:#{unit_membership.phone}",
-                   class: "inline-block pb-1 hover:text-gray-700" do
-          i.fa-phone.fas.ml-5.mr-1.text-gray-300
-          = number_to_phone unit_membership.phone
+        i.fa-phone.fas.ml-5.mr-1.text-gray-300
+        = number_to_phone unit_membership.phone
 
-  // ROLES
-  td.role.w-1.hidden.md:table-cell
-    = link_to unit_member_path(@unit, unit_membership),
-              class: 'inline-block px-2 py-2 whitespace-nowrap',
-              data: { turbo_action: 'advance' } do
 
-              span.text-xs.font-bold.flex.gap-1.whitespace-nowrap
-                - if unit_membership.admin?
-                  span(title="#{@unit.name} Administrator")
-                    i.fas.fa-user-crown.mr-2.py-1.text-emerald-500.text-base
 
-                - elsif unit_membership.event_organizer?
-                  span(title="#{@unit.name} Event Organizer")
-                    i.fas.fa-clipboard-user.mr-2.py-1.text-fuchsia-500.text-base
-
-                - case unit_membership.member_type
-                - when "adult"
-                  .inline-block.bg-pink-100.text-pink-700.px-2.py-1.rounded-md Adult
-                - when "youth"
-                  .inline-block.bg-sky-100.text-sky-700.px-2.py-1.rounded-md Youth
-
-                - case unit_membership.status
-                - when "active"
-                  .inline-block.bg-cyan-100.text-cyan-700.px-2.py-1.rounded-md Active
-                - when "registered"
-                  .inline-block.bg-purple-100.text-purple-700.px-2.py-1.rounded-md Family &amp; Friends                  
-                - when "inactive"
-                  .inline-block.bg-rose-100.text-rose-700.px-2.py-1.rounded-md Inactive
-
-  // FAMILY
-  td.family-members.w-1.px-2.hidden.sm:table-cell
-    .flex.gap-4.whitespace-nowrap
+    div
       - unit_membership.family(include_self: false).map do |m|
-        = link_to unit_member_path(@unit, m),
-                  class: "hover:text-gray-700",
-                  turbo: { frame: "main" } do
-
+        span.mr-4
           = member_glyph_tag(m)
           = m.display_first_name

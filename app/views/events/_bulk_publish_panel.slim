@@ -1,12 +1,15 @@
 #bulk_select_all_wrapper.bulk-selection.block.px-4.py-4.rounded.bg-pink-100.border-pink-500.text-pink-500.text-center
   h3.mb-2.text-lg.font-bold Bulk publish
 
+  p.max-w-1/2.mx-auto.text-left.mb-6
+    = "Check the box next to each event you want to publish, then click the Publish button."
+
   .flex.flex-row.gap-2.justify-center
     = link_to "#",
       class: "inline-block border rounded px-4 py-2 border-pink-500 uppercase text-sm tracking-wider font-bold",
       id: "check_all_button" do
       i.far.fa-check-double.mr-2
-      = "Check all"
+      = "Check all #{@event_drafts.count}"
 
     = link_to "#",
       class: "inline-block border rounded px-4 py-2 border-pink-500 uppercase text-sm tracking-wider font-bold",

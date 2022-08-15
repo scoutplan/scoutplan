@@ -356,7 +356,7 @@ en:
     titles:
       new:     "Add a Member"
       edit:    "Update Member Details"
-      index:   "%{unit_name} Member Roster"
+      index:   "Member Roster"
 
     confirmations:
       create: "%{member_name} was added to %{unit_name}"
@@ -367,6 +367,7 @@ en:
 
     index:
       new_button_caption: "Add a Member"
+      page_title: "Member Roster"
 
     show:
       children:         "Children, Guardees, and Delegatees"

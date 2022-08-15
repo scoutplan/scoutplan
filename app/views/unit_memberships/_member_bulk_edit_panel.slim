@@ -1,0 +1,38 @@
+.bulk-edit.bg-emerald-100.border.border-emerald-500.text-emerald-500.rounded.px-4.py-4.mb-2
+  div.max-w-1/2.mx-auto
+    h3.font-bold.text-xl.mb-2 = "Bulk Edit Members"
+
+    div.py-1
+      = "Change status to:"
+      
+      .inline.ml-2
+        input.form-check-input(type="radio" name="member[status]" id="status_active" value="active")
+        label.form-check-label(for="status_active") Active
+
+      .inline.ml-2
+        input(type="radio" name="member[status]" id="status_inactive" value="inactive")
+        label(for="status_inactive") Inactive
+
+
+    div.py-1
+      = "Change member type to:"
+
+      .inline.ml-2
+        input.form-check-input(type="radio" name="member[member_type]" id="member_type_youth" value="youth")
+        label.form-check-label(for="member_type_youth") Youth
+
+      .inline.ml-2
+        input.form-check-input(type="radio" name="member[member_type]" id="member_type_adult" value="adult")
+        label.form-check-label(for="member_type_adult") Adult
+
+    div.mt-2
+      = button_tag t("global.cancel"),
+        class: "inline-block border border-emerald-500 px-4 py-2 text-emerald-500 rounded uppercase text-sm font-bold tracking-wider",
+        id: "cancel_bulk_edit"
+
+      = button_tag "Update Selected Members",
+        class: "rounded inline-block border border-emerald-500 px-4 py-2 text-emerald-100 bg-emerald-500 ml-2 uppercase text-sm font-bold tracking-wider disabled:bg-emerald-300 disabled:border-emerald-400",
+        id: "execute_bulk_edit_button",
+        disabled: "disabled"
+
+
