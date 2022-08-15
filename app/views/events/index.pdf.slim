@@ -1,0 +1,91 @@
+- current_year = 0
+- current_col = 0
+- presenter = EventPresenter.new
+- month_index = 0
+- month_count = events_by_month.count
+
+table.wrapper
+  - while month_index < month_count do
+    tr
+      - 3.times do
+        td.month-column
+
+          // if we're not out of data...
+          - if month_index < month_count
+            - month_and_year = events_by_month.keys[month_index]
+            - year = month_and_year.first
+            - month_number = month_and_year.second
+            - events = events_by_month.values[month_index]
+            - month_index += 1
+
+            h2
+              = Date::MONTHNAMES[month_number]
+              - if current_year != year
+                = " "
+                = current_year = year
+
+            table.month-events
+              - events.each do |event|
+                - presenter.event = event
+
+                tr
+                  td
+                    .dates = presenter.dates_to_s
+                    .days  = presenter.days_to_s
+                  
+                  td
+                    h3.event-title
+                      = "#{event.title}#{event.draft? ? ' - DRAFT' : ''}"
+
+                    location
+                      = event.location
+
+css:
+  table {
+    width: 100%;
+  }
+
+  table.wrapper {
+    border-spacing: 1rem;
+    margin: 0 -1rem;
+    table-layout: fixed;
+  }
+
+  .month-column {
+    padding-top: 1rem;
+  }
+
+  .month-column {
+    break-inside: avoid;
+    vertical-align: top;
+    padding-left: 0;
+    margin-left: 0;
+  }
+
+  .month-column ul {
+    list-style: none;
+  }
+
+  .month-column li {
+    margin: 0;
+    padding: 0;
+  }
+
+  h3.event-title {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  td {
+    padding: 0;
+    vertical-align: top;
+  }
+
+  td:first-child {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .month-events td {
+    padding: 0.25rem 0;
+  }
