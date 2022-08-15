@@ -94,5 +94,16 @@ describe "unit_memberships", type: :feature do
     expect { click_link_or_button "Add This Member" }.to change { UnitMembership.all.count }.by 1
     expect(page).to have_current_path unit_members_path(@unit)
   end
+
+  it "edits a member's user attributes" do
+    member = FactoryBot.create(:member, unit: @admin.unit)
+    visit edit_unit_member_path(@unit, member)
+
+    new_name = "A different name"
+    fill_in "unit_membership_user_attributes_first_name", with: new_name
+    click_link_or_button "Save These Changes"
+    member.reload
+    expect(member.first_name).to eq(new_name)
+  end
 end
 # rubocop:enable Metrics/BlockLength
