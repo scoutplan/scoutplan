@@ -6,7 +6,7 @@
   - family_fully_responded = family_fully_responded && rsvp.present?
 /  - next unless member.status_active? || rsvp&.accepted?
 
-.block.absolute.right-2.top-6.md:top-1/2.md:-translate-y-2/4.flex.flex-row.gap-2
+.block.absolute.right-4.md:right-2.top-6.md:top-1/2.md:-translate-y-2/4.flex.flex-row.gap-2
   // RSVPs
   - if event.rsvp_open?
     - if policy(event).rsvp?
