@@ -30,6 +30,35 @@ class RsvpService < ApplicationService
     @event.unit.members.status_active - @event.rsvps.collect(&:member)
   end
 
+  # has a family completely declined an event?
+  # this feels a little kludgy...is there a more elegant way?
+  def member_family_declined?(event)
+    self.event = event
+    raise ArgumentError, "Event does not require RSVPs" unless event.requires_rsvp
+
+    # are all active family members represented in the RSVPs?
+    active_family_rsvp_ids = @event.rsvps.map(&:unit_membership_id) & active_family_members.map(&:id)
+    return false unless active_family_rsvp_ids.count == active_family_members.count
+
+    responses = family_rsvps.map(&:response)
+    return false if responses.include? "accepted"
+
+    true
+  end
+
+  def family_rsvps
+    family_member_ids = family_members.map(&:id)
+    @event.rsvps.where(unit_membership: family_member_ids)
+  end
+
+  def family_members
+    @member.family(include_self: true)
+  end
+
+  def active_family_members
+    family_members.select(&:status_active?)
+  end
+
   private
 
   def events

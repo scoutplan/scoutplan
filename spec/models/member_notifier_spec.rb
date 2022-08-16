@@ -4,8 +4,8 @@ require "rails_helper"
 
 RSpec.describe MemberNotifier, type: :model do
   before do
-    User.destroy_all
     @member = FactoryBot.create(:member)
+    @unit = @member.unit
   end
 
   it "instantiates" do
@@ -19,6 +19,15 @@ RSpec.describe MemberNotifier, type: :model do
 
     it "sends a test message" do
       expect { @notifier.send_test_message }.not_to raise_exception
+    end
+
+    it "skips reminders when member has declined" do
+      Timecop.freeze(DateTime.now.change( { hour: 9, minute: 0 } ))
+      event = FactoryBot.create(:event, unit: @unit, starts_at: 12.hours.from_now,
+                                        requires_rsvp: true, status: :published)
+      event.rsvps.create!(unit_membership: @member, response: :declined, respondent: @member)
+      expect { @notifier.send_daily_reminder }.to change { ActionMailer::Base.deliveries.count }.by(0)
+      Timecop.return
     end
   end
 end
