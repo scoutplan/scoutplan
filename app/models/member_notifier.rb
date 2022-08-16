@@ -41,6 +41,11 @@ class MemberNotifier < ApplicationNotifier
 
   # should member receive daily reminders?
   def daily_reminder?
-    @member.unit.events.published.imminent.count.positive?
+    events = @member.unit.events.published.imminent
+
+    # strip out events that the family has explicitly declined
+    service = RsvpService.new(@member)
+    events = events.reject { |e| e.requires_rsvp && service.member_family_declined?(e) }
+    events.count.positive?
   end
 end

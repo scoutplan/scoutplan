@@ -1,4 +1,3 @@
-/ = render partial: "events/partials/index/header"
 #event_table_container.max-w-full
   = form_tag bulk_publish_unit_events_path(@unit), id: "bulk_action_form"
 
@@ -9,12 +8,12 @@
         = render partial: "events_dropdown", locals: { current_variation: "list" }
 
       // CENTER (desktop) or LEFT (mobile)
-      h1.md:text-center.text-xl.md:text-4xl.font-bold.mb-2
+      h1.px-4.md:text-center.text-xl.md:text-4xl.font-bold.mb-2
         = t("events.index.page_title")
         .text-sm.uppercase.tracking-wider.text-stone-500 = @unit.name
 
       // RIGHT SIDE
-      .absolute.right-0.top-0
+      .absolute.md:right-0.top-0.right-4
         = render partial: "new_event_button" if policy(:event).create?
 
     // LIST WRAPPER

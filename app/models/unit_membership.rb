@@ -42,6 +42,7 @@ class UnitMembership < ApplicationRecord
   enum role: { member: "member", admin: "admin", event_organizer: "event_organizer" }
   enum member_type: { unknown: 0, youth: 1, adult: 2 }
 
+  scope :active, -> { where(status: %i[active]) }
   scope :status_active_and_registered, -> { where(status: %i[active registered]) } # everyone except inactives
   scope :contactable, -> { joins(:user).where("email NOT LIKE 'anonymous-member-%@scoutplan.org'") }
 

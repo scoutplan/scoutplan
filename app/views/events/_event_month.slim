@@ -11,10 +11,10 @@
   - css_class += " " + "month_#{month}"
 
   section(class="#{css_class}" id="event_month_current_#{@current_event_month_count - 1}")
-    h2.text-brand-700.text-3xl.px-2.pt-4.event-year
+    h2.text-brand-700.text-3xl.px-4.md:px-2.pt-4.event-year
       = year
 
-    h3.text-brand-500.font-bold.uppercase.tracking-wider.px-2.py-4
+    h3.text-brand-500.font-bold.uppercase.tracking-wider.px-4.md:px-2.py-4
       = Date::MONTHNAMES[month]
     
     .divide-y

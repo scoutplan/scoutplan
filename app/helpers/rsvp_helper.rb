@@ -14,6 +14,7 @@ module RsvpHelper
     result
   end
 
+  # TODO: move this to RsvpService
   # given a list of family members and an event, determine whether the
   # family's RSVPs are complete
   def family_rsvps_complete(family_members, event)
