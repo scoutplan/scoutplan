@@ -188,6 +188,7 @@ en:
 
     captions:
       new_short: "Add"
+      payment_amount: "Cost per person"
     
     edit_rsvps:
       title: "RSVP — "
@@ -281,6 +282,7 @@ en:
       captions:
         done:                   "Back to Full Schedule"
       organizer:                "Organizer"
+      payment_amount_prompt:    "Cost is %{amount} per person"
 
       cancel:
         notice:       "Cancelling a published event will remove it from the calendar. Are you sure you want to proceed?"

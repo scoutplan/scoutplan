@@ -1,5 +1,6 @@
 # 17 AUG 2022
 - Alignment of header items on Members page fixed
+- Add cost per person field to events
 
 # 16 AUG 2022
 - Started CHANGELOG (better late than never)

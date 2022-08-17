@@ -326,7 +326,8 @@ class EventsController < UnitContextController
       :venue_phone,
       # these ones are specifically for cancellation
       :message_audience,
-      :note
+      :note,
+      :payment_amount
     )
   end
   # rubocop:enable Metrics/MethodLength

@@ -74,6 +74,10 @@ class Event < ApplicationRecord
     starts_at.future?
   end
 
+  def requires_payment?
+    payment_amount.positive?
+  end
+
   def series?
     !new_record? && (series_children.count.positive? || series_siblings.count.positive?)
   end
