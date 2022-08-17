@@ -70,14 +70,22 @@
 
     // RSVP
     section.bg-stone-100.py-4.px-4.md:px-8.mb-1.rounded
-      .form-check
+      .form-check.py-4
         = f.check_box :requires_rsvp, class: "w-4 h-4 text-green-500 rounded mr-2"
         = f.label :requires_rsvp, class: "text-sm font-bold tracking-wide uppercase"
+
+      // payment amount
+      .md:border-t.py-4
+        = f.styled_label :payment_amount, t("events.captions.payment_amount"), layout: :inline
+        = f.number_field :payment_amount,
+                          class: "w-24 border border-stone-200 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
+                          min: 0
 
       #rsvp_fields.mt-6(class="#{@event.requires_rsvp ? '' : 'hidden'}")
         = f.styled_label :rsvp_closes_at, t("events.form.rsvp_closes_at"), layout: :inline
         = f.date_field :rsvp_closes_at,
           class: "bg-white border border-stone-200 rounded p-2 w-full md:w-fit hover:ring-brand-500 placeholder-stone-300"
+
 
     // activity
     section.bg-stone-100.py-4.px-4.md:px-8.mb-1.rounded

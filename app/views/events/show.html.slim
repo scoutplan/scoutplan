@@ -44,6 +44,7 @@
         - elsif mode == "rsvp"
           = render partial: "edit_rsvp_section"          
         = render partial: "events/partials/show/date_card"
+        = render partial: "events/payment" if @event.requires_payment?
         = render partial: "location_card" if @event.location.present? || @event.address.present? || @event.departs_from.present?
         = render partial: "description" if @event.description.present?
 

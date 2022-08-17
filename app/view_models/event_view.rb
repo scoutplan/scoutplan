@@ -34,7 +34,8 @@ class EventView
                  :new_record?,
                  :save,
                  :save!,
-                 :status
+                 :status,
+                 :payment_amount
 
   def initialize(event)
     @event = event || new_record
