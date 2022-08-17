@@ -1,8 +1,8 @@
 .dropdown
-  .dropdown-button
-    i.fa-circle-ellipsis.far.text-xl
+  = link_to "#", class: "dropdown-button inline-block text-2xl" do
+    i.fa-circle-ellipsis.far.text-2xl.text-stone-500
 
-  .dropdown-menu.relative.z-10.bg-stone-800.text-stone-200.rounded.py-2.text-sm.font-bold
+  .dropdown-menu.animate-pop-open.relative.z-10.bg-stone-800.text-stone-200.rounded.py-2.text-sm.font-bold
     = link_to "#", class: "hover:text-white block px-4 py-2 toggle-body-class",
       data: { action: "event#toggleCancelledEvents" },
       id: "bulk_edit_link" do
