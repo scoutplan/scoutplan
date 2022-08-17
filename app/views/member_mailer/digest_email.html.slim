@@ -5,6 +5,7 @@
 
 - content_for :left_column do
 
+  // outstanding RSVPs
   - if (unresponded_count = service.unresponded_events.count).positive?
     = magic_link_to @member,
                     unit_url(@unit),
@@ -18,8 +19,10 @@
           = "Click to respond."  
 
   #this_week
-   - @this_week_events.each do |event|
-     = render partial: "digest_event", locals: { event: event }
+    = render partial: "nothing_this_week" unless @this_week_events.present?
+    
+    - @this_week_events.each do |event|
+      = render partial: "digest_event", locals: { event: event }
 
 - content_for :right_column do
   - if @upcoming_events.present?
