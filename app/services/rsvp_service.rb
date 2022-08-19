@@ -9,19 +9,26 @@ class RsvpService < ApplicationService
     super()
   end
 
-  # given a UnitMembership, return a list of
-  # events without RSVPs for the member's family
+  # return a list of events without RSVPs for the member's family
   def unresponded_events
-    return @unresponded_events if @unresponded_events.present?
+    # return @unresponded_events if @unresponded_events.present?
 
     res = []
-    family = @member.family
-    family_member_ids = family.map(&:id)
+    # family = @member.family
+    # family_member_ids = family.map(&:id)
     events.each do |event|
-      rsvps = event.rsvps.where("unit_membership_id IN (?)", family_member_ids)
-      res << event unless rsvps.count.positive?
+      self.event = event
+      # rsvps = event.rsvps.where("unit_membership_id IN (?)", family_member_ids)
+      # res << event unless rsvps.count.positive?
+      res << event unless family_fully_responded?
     end
-    @unresponded_events = res
+    res
+  end
+
+  # for the current @event, have we received responses from all active family members?
+  def family_fully_responded?
+    active_family_rsvp_ids = @event.rsvps.map(&:unit_membership_id) & active_family_members.map(&:id) # intersection
+    active_family_rsvp_ids.count == active_family_members.count
   end
 
   def non_respondents
@@ -32,13 +39,11 @@ class RsvpService < ApplicationService
 
   # has a family completely declined an event?
   # this feels a little kludgy...is there a more elegant way?
-  def member_family_declined?(event)
+  def member_family_declined?
     self.event = event
     raise ArgumentError, "Event does not require RSVPs" unless event.requires_rsvp
 
-    # are all active family members represented in the RSVPs?
-    active_family_rsvp_ids = @event.rsvps.map(&:unit_membership_id) & active_family_members.map(&:id)
-    return false unless active_family_rsvp_ids.count == active_family_members.count
+    return false unless family_fully_responded?
 
     responses = family_rsvps.map(&:response)
     return false if responses.include? "accepted"
@@ -62,6 +67,7 @@ class RsvpService < ApplicationService
   private
 
   def events
+    # debugger
     unit.events.future.published.rsvp_required
   end
 

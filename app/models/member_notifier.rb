@@ -45,7 +45,10 @@ class MemberNotifier < ApplicationNotifier
 
     # strip out events that the family has explicitly declined
     service = RsvpService.new(@member)
-    events = events.reject { |e| e.requires_rsvp && service.member_family_declined?(e) }
+    events = events.reject do |event|
+      service.event = event
+      event.requires_rsvp && service.member_family_declined?
+    end
     events.count.positive?
   end
 end
