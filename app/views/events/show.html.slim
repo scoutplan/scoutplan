@@ -29,7 +29,7 @@
           i.fa-exclamation-circle.fas.mr-2
           = flash[:notice]
 
-    section#informative.relative
+    section#informative.relative.mx-2
       header.py-4.overflow-auto.top-0.bg-white
         h3.font-bold.text-2xl.md:text-3xl.md:text-center
           = @event.title
@@ -50,7 +50,7 @@
 
 
     // footer, containing right-justified buttons
-    footer.w-full.sticky.bottom-0
+    footer.w-full.sticky.bottom-0.px-2
       // SCROLL DOWN LINK
       .hidden.-ml-12#scroll_down_wrapper
         a.inline-block.rounded-full.bg-fuchsia-500.text-white.text-center.px-6.py-1.mb-2.animate-bounce.scroll-down-button(href="#" data-scroll-container="#informative")
@@ -59,7 +59,7 @@
 
       .flex.flex-col.md:flex-row.md:justify-between.border-t.pt-2.md:pt-4.bg-white.pb-4
         // left side (on desktop)
-        .hidden.md:block
+        div
           // Edit button (if authorized)
           - if policy(@event).edit? && @event.editable?
             = link_to t("event_edit"),
