@@ -2,10 +2,11 @@
 
 # a Texter base class for sending SMS to existing members
 class MemberTexter < ApplicationTexter
-  attr_accessor :member
+  attr_accessor :member, :unit
 
   def initialize(member)
     @member = member
+    @unit = @member.unit
     super
   end
 

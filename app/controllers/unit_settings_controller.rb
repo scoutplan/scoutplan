@@ -4,6 +4,10 @@
 # TODO: factor this into a view model
 #
 class UnitSettingsController < UnitContextController
+  TASK_KEY_RSVP_NAG = "rsvp_nag"
+  TASK_DAY_RSVP_NAG = 2 # Tuesday
+  TASK_HOUR_RSVP_NAG = 10 # 10 AM local
+
   before_action :find_unit
 
   # GET /units/:unit_id/settings
@@ -18,6 +22,7 @@ class UnitSettingsController < UnitContextController
     @unit.settings(:utilities).fire_scheduled_tasks = true if params.dig(:settings, :utilities, :fire_scheduled_tasks)
     @unit.settings(:locale).meeting_location = params.dig(:settings, :locale, :meeting_location)
     @unit.settings(:locale).meeting_address = params.dig(:settings, :locale, :meeting_address)
+    @unit.settings(:communication).rsvp_nag = params.dig(:settings, :communication, :rsvp_nag)
 
     set_schedule
 
@@ -36,6 +41,18 @@ class UnitSettingsController < UnitContextController
     Time.zone = @unit.settings(:locale).time_zone
     set_digest_schedule
     set_reminder_schedule
+    set_rsvp_nag_schedule
+  end
+
+  def set_rsvp_nag_schedule
+    @unit.tasks.where(key: TASK_KEY_RSVP_NAG).destroy_all
+    return unless params.dig(:settings, :communication, :rsvp_nag) == "true"
+
+    task = @unit.tasks.create(key: TASK_KEY_RSVP_NAG, type: "RsvpNagTask")
+    rule = IceCube::Rule.weekly.day(TASK_DAY_RSVP_NAG).hour_of_day(TASK_HOUR_RSVP_NAG)
+    task.schedule.start_time = DateTime.now.in_time_zone
+    task.schedule.add_recurrence_rule rule
+    task.save_schedule
   end
 
   def set_digest_schedule
@@ -81,7 +98,7 @@ class UnitSettingsController < UnitContextController
       :location,
       :logo,
       settings: [
-        [communication: [digest_schedule: [:day_of_week, :hour_of_day, :every_hour]]],
+        [communication: [:rsvp_nag, { digest_schedule: [:day_of_week, :hour_of_day, :every_hour] }]],
         :utilities
       ]
     )

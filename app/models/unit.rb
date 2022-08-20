@@ -24,7 +24,8 @@ class Unit < ApplicationRecord
     s.key :security, defaults: { enable_magic_links: true }
     s.key :communication, defaults: {
       from_email: "reminders@scoutplan.org",
-      rsvp_reminders: true
+      rsvp_reminders: true,
+      rsvp_nag: false
     }
     s.key :appearance, defaults: { main_color: "#003F87" }
     s.key :locale, defaults: {
