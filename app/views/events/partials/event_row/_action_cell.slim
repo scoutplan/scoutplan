@@ -31,5 +31,7 @@
   - if policy(event).organize?
     = link_to unit_event_organize_path(@unit, event),
               class: "inline-block bg-cyan-600 px-2 py-1 text-sm uppercase tracking-wider font-bold rounded text-cyan-100",
-              title: "Organize this event"
+              title: "Organize this event",
+              id: "organize_#{dom_id(event)}_link",
+              data: { turbo_action: "advance" }
       i.fa-clipboard.fas      

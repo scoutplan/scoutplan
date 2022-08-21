@@ -44,6 +44,22 @@ describe "events", type: :feature do
         visit unit_events_path(@unit)
         expect(page).to have_content("Draft Event")
       end
+
+      describe "organize buttons" do
+        before do
+          @organizable_event = FactoryBot.create(:event, :requires_rsvp, unit: @unit)
+        end
+
+        it "navigates to event organize page", js: true do
+          page.driver.browser.js_errors = false
+
+          visit unit_events_path(@unit)
+          link_id = "#organize_event_#{@organizable_event.id}_link"
+          link = page.find(link_id)
+          link.click
+          expect(page).to have_current_path(unit_event_organize_path(@unit, @organizable_event))
+        end
+      end
     end
 
     describe "show" do

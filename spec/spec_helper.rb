@@ -6,6 +6,9 @@ require "capybara/rspec"
 require "warden"
 
 require "capybara/apparition"
+Capybara.register_driver :apparition do |app|
+  Capybara::Apparition::Driver.new(app, { js_errors: false } )
+end
 Capybara.javascript_driver = :apparition
 
 SimpleCov.start do
