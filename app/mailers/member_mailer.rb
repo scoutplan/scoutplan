@@ -51,6 +51,14 @@ class MemberMailer < ScoutplanMailer
     )
   end
 
+  def rsvp_nag_email
+    mail(
+      to: @to_address,
+      from: @from_address,
+      subject: "Your RSVP is needed"
+    )    
+  end
+
   def test_email
     mail(
       to: @to_address,

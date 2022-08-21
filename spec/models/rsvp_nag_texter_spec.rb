@@ -15,8 +15,8 @@ RSpec.describe RsvpNagTexter, type: :model do
     # Hi, Scouty. Here's what's going on at Troop 231:
     it "contains the member greeting" do
       texter = RsvpNagTexter.new(@member, @event)
-      expected_body = "Hi, #{@member.display_first_name}. Coming up at #{@member.unit.name}:"
-      expect(texter.body).to eq(expected_body)
+      expected_body = "Hi, #{@member.display_first_name}, #{@member.unit.name} here. We need your RSVP for the upcoming Hiking Trip event."
+      expect(texter.body).to include(expected_body)
     end
   end
 end
