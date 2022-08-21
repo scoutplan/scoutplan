@@ -7,115 +7,118 @@
 - display_day = - first_day_of_month.wday + 1
 - done = false
 
-header.flex.justify-between.py-2.border-b.relative
-  // LEFT SIDE
-  div.relative
-    // ellipsis menu
-    .hidden.md:block.absolute.left-0.top-0
-      = render partial: "events_dropdown", locals: { current_variation: "calendar" }
+.mx-4.md:mx-0
+  header.flex.justify-between.py-2.border-b.relative.mt-12
+    // LEFT SIDE
+    div.relative
+      // ellipsis menu
+      .hidden.md:block.absolute.left-0.top-0
+        = render partial: "events_dropdown", locals: { current_variation: "calendar" }
 
-    // clickable month name launches month picker
-    .inline-block.dropdown.pl-8
-      a.dropdown-button(href="#")
-        h2.px-2.font-bold.text-sm.md:text-lg.text-brand-500.md:w-48.inline-block
-          = first_day_of_month.strftime("%B %Y")
-          i.fa-chevron-down.fas.ml-2
-      
-      .dropdown-menu.absolute.bg-stone-800.text-stone-50.p-2.rounded
-        = render partial: "events/partials/index/month_picker", locals: { display_date: first_day_of_month }
+      // clickable month name launches month picker
+      .inline-block.dropdown.pl-8
+        a.dropdown-button(href="#")
+          h2.px-2.font-bold.text-sm.md:text-lg.text-brand-500.md:w-48.inline-block
+            = first_day_of_month.strftime("%B %Y")
+            i.fa-chevron-down.fas.ml-2
+        
+        .dropdown-menu.absolute.bg-stone-800.text-stone-50.p-2.rounded
+          = render partial: "events/partials/index/month_picker", locals: { display_date: first_day_of_month }
 
-    // prev button
-    = link_to targeted_calendar_unit_events_path(@unit,
-        month: "%02i" % ((display_month > 1) ? display_month - 1 : 12),
-        year: (display_month > 1) ? display_year : display_year - 1),
-      title: t("events.calendar_view.prev_month"),
-      data: { turbo_action: "advance" },
-      class: "uppercase text-sm font-bold inline-block py-1 px-2 md:px-4 rounded-l border hover:bg-stone-100" do
-        i.fa-chevron-left.fas.mr-1
-        .hidden.md:inline
-          = "Prev"
+      // prev button
+      = link_to targeted_calendar_unit_events_path(@unit,
+          month: "%02i" % ((display_month > 1) ? display_month - 1 : 12),
+          year: (display_month > 1) ? display_year : display_year - 1),
+        title: t("events.calendar_view.prev_month"),
+        data: { turbo_action: "advance" },
+        class: "uppercase text-sm font-bold inline-block py-1 px-2 md:px-4 rounded-l border hover:bg-stone-100" do
+          i.fa-chevron-left.fas.mr-1
+          .hidden.md:inline
+            = "Prev"
 
-    // next button
-    = link_to targeted_calendar_unit_events_path(@unit,
-        month: "%02i" % ((display_month == 12) ? 1 : display_month + 1),
-        year: (display_month == 12) ? display_year + 1 : display_year),
-      data: { turbo_action: "advance" },
-      class: "uppercase text-sm font-bold inline-block py-1 px-2 md:px-4 rounded-r border hover:bg-stone-100 border-l-0" do
-        .hidden.md:inline
-          = "Next"
-        i.fa-chevron-right.fas.ml-1
+      // next button
+      = link_to targeted_calendar_unit_events_path(@unit,
+          month: "%02i" % ((display_month == 12) ? 1 : display_month + 1),
+          year: (display_month == 12) ? display_year + 1 : display_year),
+        data: { turbo_action: "advance" },
+        class: "uppercase text-sm font-bold inline-block py-1 px-2 md:px-4 rounded-r border hover:bg-stone-100 border-l-0" do
+          .hidden.md:inline
+            = "Next"
+          i.fa-chevron-right.fas.ml-1
 
-    // today button
-    = link_to "Today",
-      targeted_calendar_unit_events_path(@unit,
-        month: "%02i" % Time.now.month,
-        year: Time.now.year),
-      data: { turb_action: "advance" },
-      class: "inline-block uppercase font-bold text-sm tracking-wide hover:bg-stone-100 border rounded px-2 py-1 ml-2"
-  
-  // RIGHT SIDE
-  div
-    = render partial: "new_event_button" if policy(:event).create?
+      // today button
+      = link_to "Today",
+        targeted_calendar_unit_events_path(@unit,
+          month: "%02i" % Time.now.month,
+          year: Time.now.year),
+        data: { turb_action: "advance" },
+        class: "inline-block uppercase font-bold text-sm tracking-wide hover:bg-stone-100 border rounded px-2 py-1 ml-2"
     
-.table.px-0.w-full.table-fixed
-  .table-row.font-bold
-    - 7.times do |dow|
-      .table-cell.p-2
-        .hidden.md:inline = Date::DAYNAMES[dow]
-        .inline.md:hidden = Date::DAYNAMES[dow][0, 3]
+    // RIGHT SIDE
+    div
+      = render partial: "new_event_button" if policy(:event).create?
 
-  // start of loop
-  - until display_day >= days_in_month do
-    .table-row
-      - 7.times do |col|
-        - cell_class = "cal-cell-dow-#{col}"
-        - cell_class << " cal-weekend-cell" if Date::WEEKEND_DAYS.include? col
-        - display_date = first_day_of_month + display_day.days - 1
+    // END HEADER
 
-        - if display_day > days_in_month
-          - day_number = display_day - days_in_month
-        - elsif display_day < 1
-          - day_number = days_in_last_month + display_day
-        - else
-          - day_number = display_day
-          - month_number = display_month
+  .table.px-0.w-full.table-fixed
+    .table-row.font-bold
+      - 7.times do |dow|
+        .table-cell.p-2
+          .hidden.md:inline = Date::DAYNAMES[dow]
+          .inline.md:hidden = Date::DAYNAMES[dow][0, 3]
 
-        // now render the cell
-        .table-cell.border-t.p-1.h-32.select-none.cal-cell.(class="#{cell_class}" data-cal-date="#{display_date}")
-          - if display_date.today?
-            - if day_number == 1
-              .text-brand-500.font-bold
-                = display_date.strftime("%b")
+    // start of loop
+    - until display_day >= days_in_month do
+      .table-row
+        - 7.times do |col|
+          - cell_class = "cal-cell-dow-#{col}"
+          - cell_class << " cal-weekend-cell" if Date::WEEKEND_DAYS.include? col
+          - display_date = first_day_of_month + display_day.days - 1
 
-            .cal-day-number.text-white.font-bold
-              .inline-block.w-7.h-7.justify-center.items-center.flex.rounded-full.bg-brand-500
-                = display_date.strftime("%-d")
-
+          - if display_day > days_in_month
+            - day_number = display_day - days_in_month
+          - elsif display_day < 1
+            - day_number = days_in_last_month + display_day
           - else
-            .cal-day-number
+            - day_number = display_day
+            - month_number = display_month
+
+          // now render the cell
+          .table-cell.border-t.p-1.h-32.select-none.cal-cell.(class="#{cell_class}" data-cal-date="#{display_date}")
+            - if display_date.today?
               - if day_number == 1
-                span.text-brand-500.font-bold
+                .text-brand-500.font-bold
                   = display_date.strftime("%b")
 
-              .inline-block.w-7.h-7.justify-center.items-center.whitespace-nowrap.ml-1
-                = display_date.strftime("%-d")
+              .cal-day-number.text-white.font-bold
+                .inline-block.w-7.h-7.justify-center.items-center.flex.rounded-full.bg-brand-500
+                  = display_date.strftime("%-d")
 
-          - @events.each do |event|
-            - css_classes = "event-cancelled" if event.cancelled?
-            - css_classes = "event-draft" if event.draft?
+            - else
+              .cal-day-number
+                - if day_number == 1
+                  span.text-brand-500.font-bold
+                    = display_date.strftime("%b")
 
-            - if display_date.beginning_of_day >= event.starts_at.beginning_of_day && \
-              display_date.beginning_of_day <= event.ends_at.end_of_day
-              .cal-event.text-xs.overflow-hidden(class="#{css_classes}")
-                = link_to event.title, [ event.unit, event ],
-                  class: "block p-1 font-bold hover:bg-stone-100 rounded",
-                  data: { turbo_action: "advance" },
-                  style: "color: #{event.category.color}"
+                .inline-block.w-7.h-7.justify-center.items-center.whitespace-nowrap.ml-1
+                  = display_date.strftime("%-d")
 
-        - display_day += 1
+            - @events.each do |event|
+              - css_classes = "event-cancelled" if event.cancelled?
+              - css_classes = "event-draft" if event.draft?
 
-    // end of 7-day loop
-  // end of until loop
+              - if display_date.beginning_of_day >= event.starts_at.beginning_of_day && \
+                display_date.beginning_of_day <= event.ends_at.end_of_day
+                .cal-event.text-xs.overflow-hidden(class="#{css_classes}")
+                  = link_to event.title, [ event.unit, event ],
+                    class: "block p-1 font-bold hover:bg-stone-100 rounded",
+                    data: { turbo_action: "advance" },
+                    style: "color: #{event.category.color}"
+
+          - display_day += 1
+
+      // end of 7-day loop
+    // end of until loop
 
 javascript:
   document.addEventListener("turbo:load", function() {
