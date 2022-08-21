@@ -57,8 +57,8 @@ Rails.application.configure do
   config.action_mailer.perform_caching        = false
   config.action_mailer.default_url_options    = { host: "local.scoutplan.org", protocol: :https }
 
-  # config.active_job.queue_adapter = :sidekiq
-  config.active_job.queue_adapter = :inline
+  config.active_job.queue_adapter = :sidekiq
+  # config.active_job.queue_adapter = :sucker_punch
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
