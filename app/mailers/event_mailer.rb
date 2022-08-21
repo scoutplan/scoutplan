@@ -42,4 +42,13 @@ class EventMailer < ScoutplanMailer
          from: email_address_with_name(@rsvp.unit.settings(:communication).from_email, @rsvp.unit.name),
          subject: "#{@rsvp.unit.name}: Your RSVP for #{@rsvp.event.title} has been received")
   end
+
+  def rsvp_nag_email
+    @member = params[:member]
+    @event = params[:event]
+    @unit = @member.unit
+    mail(to: email_address_with_name(@member.email, @member.full_display_name),
+         from: email_address_with_name(@unit.settings(:communication).from_email, @unit.name),
+         subject: "#{@rsvp.unit.name}: RSVP needed!")
+  end
 end

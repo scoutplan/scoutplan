@@ -1,3 +1,6 @@
+# 21 AUG 2022
+- Soft launch RSVP nag feature
+
 # 17 AUG 2022
 - Alignment of header items on Members page fixed
 - Add cost per person field to events
