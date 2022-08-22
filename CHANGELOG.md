@@ -1,5 +1,6 @@
 # 21 AUG 2022
 - Soft launch RSVP nag feature
+- Fix incorrect URL after clicking blue "Organize" button
 
 # 17 AUG 2022
 - Alignment of header items on Members page fixed
