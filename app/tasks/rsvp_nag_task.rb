@@ -8,7 +8,7 @@ class RsvpNagTask < UnitTask
   def perform
     unit.members.each do |member|
       notifier = RsvpNagNotifier.new(member)
-      notifier.send_rsvp_nag_reminder
+      notifier.perform
     end
   end
 end
