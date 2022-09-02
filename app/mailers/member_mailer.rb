@@ -52,11 +52,13 @@ class MemberMailer < ScoutplanMailer
   end
 
   def rsvp_nag_email
+    @event = Event.find(params[:event_id])
+    @unit = @event.unit
     mail(
       to: @to_address,
       from: @from_address,
-      subject: "Your RSVP is needed"
-    )    
+      subject: annotated_subject(t("mailers.member_mailer.rsvp_nag.subject"))
+    )
   end
 
   def test_email

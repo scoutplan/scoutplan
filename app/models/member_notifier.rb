@@ -47,7 +47,7 @@ class MemberNotifier < ApplicationNotifier
     service = RsvpService.new(@member)
     events = events.reject do |event|
       service.event = event
-      event.requires_rsvp && service.member_family_declined?
+      event.requires_rsvp && service.family_fully_declined?
     end
     events.count.positive?
   end

@@ -45,6 +45,10 @@ class Unit < ApplicationRecord
     [id, name, location].join(" ").parameterize
   end
 
+  def to_s
+    name
+  end
+
   def membership_for(user)
     members.includes(:parent_relationships, :child_relationships).find_by(user: user)
   end

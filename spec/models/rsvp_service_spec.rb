@@ -15,14 +15,14 @@ RSpec.describe RsvpService, type: :model do
     MemberRelationship.create!(parent_member: @member, child_member: @spouse)
 
     @event = FactoryBot.create(:event, unit: @member.unit, requires_rsvp: true, starts_at: 1.week.from_now, status: :published)
-    @service = RsvpService.new(@member)
-    @service.event = @event
+    @service = RsvpService.new(@member, @event)
   end
 
   it "is set up correctly" do
     expect(@member.family(include_self: true).count).to eq(4)
   end
 
+  # rubocop:disable Metrics/BlockLength
   describe "unresponded_events method" do
     describe "active family has all declined" do
       it "returns no events" do
@@ -56,15 +56,25 @@ RSpec.describe RsvpService, type: :model do
         expect(@service.unresponded_events).to include(@event)
       end
     end
+
+    describe "family non-respondents" do
+      it "returns family members who haven't responded to the Event" do
+        @event.rsvps.create!(member: @member, response: :accepted, respondent: @member)
+        @event.rsvps.create!(member: @child1, response: :accepted, respondent: @member)
+        result = @service.family_non_respondents
+        expect(result.count).to eq(1)
+        expect(result.first).to eq(@child2)
+      end
+    end
   end
 
-  describe "member_family_declined? method" do
+  describe "family_fully_declined? method" do
     describe "active family has all declined" do
       it "returns true if registered member hasn't responded" do
         @event.rsvps.create!(member: @member, response: :declined, respondent: @member)
         @event.rsvps.create!(member: @child1, response: :declined, respondent: @member)
         @event.rsvps.create!(member: @child2, response: :declined, respondent: @member)
-        expect(@service.member_family_declined?).to be_truthy
+        expect(@service.family_fully_declined?).to be_truthy
       end
 
       # this is kinda edge-casey, but all active members could decline while a friend/family
@@ -73,8 +83,8 @@ RSpec.describe RsvpService, type: :model do
         @event.rsvps.create!(member: @member, response: :declined, respondent: @member)
         @event.rsvps.create!(member: @child1, response: :declined, respondent: @member)
         @event.rsvps.create!(member: @child2, response: :declined, respondent: @member)
-        @event.rsvps.create!(member: @spouse, response: "accepted", respondent: @member)
-        expect(@service.member_family_declined?).to be_falsey
+        @event.rsvps.create!(member: @spouse, response: :accepted, respondent: @member)
+        expect(@service.family_fully_declined?).to be_falsey
       end
     end
 
@@ -82,7 +92,8 @@ RSpec.describe RsvpService, type: :model do
       @event.rsvps.create!(member: @member, response: :declined, respondent: @member)
       @event.rsvps.create!(member: @child1, response: :declined, respondent: @member)
       # @child2 hasn't responded
-      expect(@service.member_family_declined?).to be_falsey
+      expect(@service.family_fully_declined?).to be_falsey
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
