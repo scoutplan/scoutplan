@@ -3,6 +3,8 @@
 # The Mailer class for sending email relating to specific events
 #
 class EventMailer < ScoutplanMailer
+  helper MagicLinksHelper
+
   def cancellation_email
     @event  = params[:event]
     @member = params[:member]
@@ -49,6 +51,6 @@ class EventMailer < ScoutplanMailer
     @unit = @member.unit
     mail(to: email_address_with_name(@member.email, @member.full_display_name),
          from: email_address_with_name(@unit.settings(:communication).from_email, @unit.name),
-         subject: "#{@rsvp.unit.name}: RSVP needed!")
+         subject: "#{@unit.name}: RSVP needed!")
   end
 end

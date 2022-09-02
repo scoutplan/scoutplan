@@ -402,6 +402,8 @@ en:
       daily_reminder:
         this: "This"
         multiple_events: "Today's Events"
+      rsvp_nag:
+        subject: "Your RSVP is needed!"
 
   helpers:
     submit:

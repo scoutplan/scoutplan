@@ -14,7 +14,7 @@ class ApplicationTexter
 
   # returns true if successful, false if not
   def send_message
-    raise ArgumentError, "'to' argument missing" unless to
+    raise ArgumentError, "'to' argument missing" unless to.present?
     return unless body
 
     Rails.logger.warn { "Sending SMS to #{to}: #{body}" }

@@ -10,14 +10,16 @@ class RsvpNagNotifier < ApplicationNotifier
     super()
   end
 
+  # rubocop:disable Metrics/AbcSize
   def perform
     return if (!Flipper.enabled? :rsvp_nag, member) && (ENV["RAILS_ENV"] == "production")
     return unless member.contactable?
-    return unless (event = find_event)
+    return unless (@event = find_event)
 
-    send_email { |recipient| MemberMailer.with(member: recipient, event: event).rsvp_nag_email.deliver_later }
     send_text  { |recipient| RsvpNagTexter.new(recipient, event).send_message }
+    send_email { |recipient| MemberMailer.with(member: recipient, event_id: @event.id).rsvp_nag_email.deliver_later }
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 
@@ -30,6 +32,7 @@ class RsvpNagNotifier < ApplicationNotifier
       rsvp_service.event = event
       return event unless rsvp_service.family_fully_responded?
     end
+    nil
   end
 
   def unit

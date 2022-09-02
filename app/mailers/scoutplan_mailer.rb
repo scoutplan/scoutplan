@@ -20,4 +20,10 @@ class ScoutplanMailer < ApplicationMailer
   def find_unit
     @unit = @member.unit
   end
+
+  # given a string, prepends with the unit name
+  # "Test Subject" => "Troop 123 - Test Subject"
+  def annotated_subject(subject)
+    [@unit&.name, subject].join(" - ")
+  end
 end

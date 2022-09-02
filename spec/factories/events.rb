@@ -19,23 +19,23 @@ FactoryBot.define do
   end
 
   trait :requires_rsvp do
-    requires_rsvp   { true }
+    requires_rsvp { true }
   end
 
   trait :draft do
-    status          { :draft }
+    status { :draft }
   end
 
   trait :published do
-    status          { :published }
+    status { :published }
   end
 
   trait :past do
-    starts_at       { 15.days.ago }
-    ends_at         { 14.days.ago }
+    starts_at { 15.days.ago }
+    ends_at { 14.days.ago }
   end
 
   trait :series do
-    repeats_until   { 28.days.from_now }
+    repeats_until { 28.days.from_now }
   end
 end
