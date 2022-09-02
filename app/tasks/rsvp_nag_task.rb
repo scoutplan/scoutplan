@@ -6,9 +6,13 @@
 # and (c) the member's family RSVP is incomplete
 class RsvpNagTask < UnitTask
   def perform
+    Rails.logger.info { "Performing RsvpNagTask for #{taskable}"}
     unit.members.each do |member|
       notifier = RsvpNagNotifier.new(member)
       notifier.perform
+    rescue StandardError => error
+      Rails.logger.error { error.message }
     end
+    super
   end
 end

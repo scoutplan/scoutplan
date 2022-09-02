@@ -56,6 +56,10 @@ class Task < ApplicationRecord
     update! last_ran_at: DateTime.now
   end
 
+  def reset_high_water_mark!
+    update! last_ran_at: nil
+  end
+
   # Make or rehydrate a Schedule object and store as instance var
   #
   def schedule

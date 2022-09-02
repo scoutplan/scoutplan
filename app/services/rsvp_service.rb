@@ -4,8 +4,9 @@
 class RsvpService < ApplicationService
   attr_accessor :event
 
-  def initialize(member)
+  def initialize(member, event = nil)
     @member = member
+    @event = event
     super()
   end
 
@@ -25,22 +26,23 @@ class RsvpService < ApplicationService
     res
   end
 
-  # for the current @event, have we received responses from all active family members?
-  def family_fully_responded?
-    active_family_rsvp_ids = @event.rsvps.map(&:unit_membership_id) & active_family_members.map(&:id) # intersection
-    active_family_rsvp_ids.count == active_family_members.count
-  end
-
+  # for the current Event, return an array of members who haven't responded
   def non_respondents
     raise ArgumentError, "Event attribute must be set" unless @event.present?
 
     @event.unit.members.status_active - @event.rsvps.collect(&:member)
   end
 
+  # for the current Member and Event, have we received responses from all active family members?
+  def family_fully_responded?
+    active_family_rsvp_ids = @event.rsvps.map(&:unit_membership_id) & active_family_members.map(&:id) # intersection
+    active_family_rsvp_ids.count == active_family_members.count
+  end
+
   # has a family completely declined an event?
   # this feels a little kludgy...is there a more elegant way?
-  def member_family_declined?
-    self.event = event
+  def family_fully_declined?
+    # self.event = event
     raise ArgumentError, "Event does not require RSVPs" unless event.requires_rsvp
 
     return false unless family_fully_responded?
@@ -49,6 +51,12 @@ class RsvpService < ApplicationService
     return false if responses.include? "accepted"
 
     true
+  end
+
+  def family_non_respondents
+    return unless @event.present?
+
+    active_family_members - @event.rsvps.map(&:unit_membership)
   end
 
   def family_rsvps

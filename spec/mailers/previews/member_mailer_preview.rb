@@ -44,4 +44,17 @@ class MemberMailerPreview < ActionMailer::Preview
     member = Unit.first.members.first
     MemberMailer.with(member: member).test_email
   end
+
+  def rsvp_nag_email
+    member = FactoryBot.create(:member)
+    unit = member.unit
+    child1 = FactoryBot.create(:member, unit: unit)
+    child2 = FactoryBot.create(:member, unit: unit)
+    member.child_relationships.create(child_member: child1)
+    member.child_relationships.create(child_member: child2)
+    unit = member.unit
+    event = FactoryBot.create(:event, :requires_rsvp, unit: unit, location: "State Park")
+    event.rsvps.create!(member: child2, response: :accepted, respondent: member)
+    MemberMailer.with(event_id: event.id, member: member).rsvp_nag_email
+  end
 end

@@ -155,7 +155,12 @@ class EventPresenter
     [things[0..-2].join(", "), "#{things.count > 2 ? ',' : ''}", " and ", things.last].join
   end
 
+  # returns 'is' or 'are'
   def substantive_verb(things)
     things.count == 1 ? (things.first.downcase == "you" ? "are" : "is") : "are"
+  end
+
+  def pluperfect_verb(things)
+    things.count == 1 ? (things.first.downcase == "you" ? "has" : "have") : "have"
   end
 end
