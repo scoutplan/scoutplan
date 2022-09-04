@@ -27,6 +27,15 @@ describe "events", type: :feature do
     end
   end
 
+  describe "events index" do
+    it "is accessible when logged out" do
+      path = unit_events_path(@unit)
+      logout(:user)
+      visit(path)
+      expect(page).to have_current_path(list_unit_events_path(@unit))
+    end
+  end
+
   describe "as an admin..." do
     before :each do
       login_as(@admin_user, scope: :user)

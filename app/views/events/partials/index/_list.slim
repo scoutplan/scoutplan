@@ -3,18 +3,20 @@
 
     header.max-w-3xl.mx-auto.relative.mt-8
 
-      // LEFT SIDE ellipsis menu
-      .hidden.md:block.absolute.left-0.pt-2
-        = render partial: "events_dropdown", locals: { current_variation: "list" }
+      - if user_signed_in?
+        // LEFT SIDE ellipsis menu
+        .hidden.md:block.absolute.left-0.pt-2
+          = render partial: "events_dropdown", locals: { current_variation: "list" }
 
       // CENTER (desktop) or LEFT (mobile)
       h1.px-4.md:text-center.text-xl.md:text-4xl.font-bold.mb-2
         = t("events.index.page_title")
         .text-sm.uppercase.tracking-wider.text-stone-500 = @unit.name
 
-      // RIGHT SIDE
-      .absolute.md:right-0.top-0.right-4
-        = render partial: "new_event_button" if policy(:event).create?
+      - if user_signed_in?
+        // RIGHT SIDE
+        .absolute.md:right-0.top-0.right-4
+          = render partial: "new_event_button" if policy(:event).create?
 
     // LIST WRAPPER
     .max-w-3xl.mx-auto
@@ -25,13 +27,14 @@
       = render partial: "bulk_publish_panel"
 
       .divide-y.divide-stone-300
-        = link_to "#", class: "hide-bulk-publish inline-block px-4 py-2 w-full toggle-body-class text-sm text-center text-stone-400 hover:text-stone-600",
-                  data: { action: "event#togglePastEvents" },
-                  id: "toggle_past_events_link" do
-            #show_past_events_caption
-              = "Show past events"
-            #hide_past_events_caption
-              = "Hide past events"
+        - if user_signed_in?
+          = link_to "#", class: "hide-bulk-publish inline-block px-4 py-2 w-full toggle-body-class text-sm text-center text-stone-400 hover:text-stone-600",
+                    data: { action: "event#togglePastEvents" },
+                    id: "toggle_past_events_link" do
+              #show_past_events_caption
+                = "Show past events"
+              #hide_past_events_caption
+                = "Hide past events"
 
         - @events_by_year.each do |year, yearly_events|
           - monthly_events = yearly_events.group_by { |e| e.starts_at.month }
