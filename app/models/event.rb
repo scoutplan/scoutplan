@@ -71,7 +71,7 @@ class Event < ApplicationRecord
   end
 
   def editable?
-    starts_at.future?
+    true
   end
 
   def requires_payment?
