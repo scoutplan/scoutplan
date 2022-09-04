@@ -29,5 +29,21 @@ RSpec.describe IcalExporter, type: :model do
       ical_event = @exporter.to_ical
       expect(ical_event.location).to eq("#{@event.location} #{@event.address}")
     end
+
+    it "appends DRAFT events" do
+      @event = FactoryBot.create(:event, :with_location, :with_address)
+      @exporter.event = @event
+      @event.status = :draft
+      ical_event = @exporter.to_ical
+      expect(ical_event.summary).to end_with("(DRAFT)")
+    end
+
+    it "appends CANCELLED events" do
+      @event = FactoryBot.create(:event, :with_location, :with_address)
+      @exporter.event = @event
+      @event.status = :cancelled
+      ical_event = @exporter.to_ical
+      expect(ical_event.summary).to end_with("(CANCELLED)")
+    end
   end
 end

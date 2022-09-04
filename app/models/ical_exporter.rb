@@ -15,6 +15,7 @@ class IcalExporter
     event = Icalendar::Event.new
     event.summary = @event.title
     event.summary += " (DRAFT)" if @event.draft?
+    event.summary += " (CANCELLED)" if @event.cancelled?
     event.dtstart = @event.starts_at.in_time_zone(@event.unit.time_zone)
     event.dtend = @event.ends_at.in_time_zone(@event.unit.time_zone)
     event.location = [@event.location.presence, @event.address.presence].compact.join(" ")
