@@ -6,11 +6,12 @@ require "humanize"
 
 # rubocop:disable Metrics/ClassLength
 class EventsController < UnitContextController
-  before_action :authenticate_user!, except: :public
+  before_action :authenticate_user!, except: [:index, :public]
   # before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish public]
   # before_action :find_member, only: %i[index create new edit edit_rsvps bulk_publish]
   before_action :find_event, except: %i[index create new bulk_publish public]
   before_action :collate_rsvps, only: [:show, :rsvps]
+  layout :current_layout
 
   # TODO: refactor this mess
   def index
@@ -37,11 +38,14 @@ class EventsController < UnitContextController
 
     @event_drafts = @events.select(&:draft?).select{ |e| e.ends_at.future? }
     @presenter = EventPresenter.new
-    @current_family = @current_member.family
-    # @current_year = @current_month = nil
 
-    # kludge alert: we shouldn't generate this here, now
-    @ical_magic_link = MagicLink.generate_non_expiring_link(@current_member, "icalendar") # create a MagicLink object
+    if user_signed_in?
+      @current_family = @current_member.family
+
+      # kludge alert: we shouldn't generate this here, now
+      @ical_magic_link = MagicLink.generate_non_expiring_link(@current_member, "icalendar") # create a MagicLink object
+    end
+
     page_title @unit.name, t("events.index.title")
     respond_to do |format|
       format.html
@@ -362,6 +366,10 @@ class EventsController < UnitContextController
   def find_next_and_previous_events
     @next_event = @unit.events.published.rsvp_required.where("starts_at > ?", @event.starts_at)&.first
     @previous_event = @unit.events.published.rsvp_required.where("starts_at < ?", @event.starts_at)&.last
+  end
+
+  def current_layout
+    user_signed_in? ? "application" : "public"
   end
 end
 # rubocop:enable Metrics/ClassLength
