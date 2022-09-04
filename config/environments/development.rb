@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "active_support/core_ext/integer/time"
-
 # rubocop:disable Metrics/BlockLength
 Rails.application.configure do
   config.web_console.permissions = "172.0.0.0/8"

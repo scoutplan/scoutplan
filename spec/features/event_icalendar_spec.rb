@@ -44,7 +44,7 @@ describe "events", type: :feature do
 
       # expect(cal_event.dtstart.to_datetime).to be_within(1.second).of event.starts_at
       # expect(cal_event.dtstart.to_datetime.utc).to be_within(1.second).of event.starts_at.to_datetime
-      expect(cal_event.summary).to eq(event.title)
+      expect(cal_event.summary.to_s).to eq("#{@unit.short_name} - #{event.title}")
       expect(cal_event.location).to eq(event.location)
       expect(cal_event.description).to eq(event.description.to_plain_text)
       expect(cal_event.url.to_s).not_to be_empty
