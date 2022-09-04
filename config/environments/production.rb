@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "active_support/core_ext/integer/time"
-
 Rails.application.default_url_options = {
   host: ENV["SCOUTPLAN_HOST"],
   protocol: ENV["SCOUTPLAN_PROTOCOL"]
