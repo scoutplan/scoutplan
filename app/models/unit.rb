@@ -41,14 +41,6 @@ class Unit < ApplicationRecord
     Message.where(author_id: members.collect(&:id))
   end
 
-  def to_param
-    [id, name, location].join(" ").parameterize
-  end
-
-  def to_s
-    name
-  end
-
   def membership_for(user)
     members.includes(:parent_relationships, :child_relationships).find_by(user: user)
   end
@@ -61,8 +53,20 @@ class Unit < ApplicationRecord
     categories.first
   end
 
+  def short_name
+    name.split.map { |word| word.numeric? ? word : word.first }.join
+  end
+
   def time_zone
     settings(:locale).time_zone
+  end
+
+  def to_param
+    [id, name, location].join(" ").parameterize
+  end
+
+  def to_s
+    name
   end
 
   private
