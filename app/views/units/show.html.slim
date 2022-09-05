@@ -9,7 +9,7 @@
 
     .flex.flex-col.gap-1
       - @current_unit.events.published.future.rsvp_required.each do |event|
-        - presenter = EventPresenter.new(event: event, current_member: @current_member)
+        - presenter = EventPresenter.new(event, @current_member)
         - family_has_rsvps = false
         - family_fully_responded = true
 
