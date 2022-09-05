@@ -3,6 +3,7 @@
 require "sidekiq/web"
 
 # rubocop:disable Metrics/BlockLength
+# rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
   root to: "home#index"
 
@@ -11,20 +12,6 @@ Rails.application.routes.draw do
   end
 
   devise_for :users
-
-  # resources :events, only: %i[show edit update destroy] do
-  #   member do
-  #     get   "organize"
-  #     patch "create_or_update_rsvp"
-  #     post  "cancel"
-  #     post  "publish"
-  #     post  "invite", to: "event_rsvps#invite"
-  #     get   "edit_rsvps"
-  #   end
-
-  #   resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
-  #   resources :event_activities, as: "activities", path: "activities", only: %i[new create]
-  # end
 
   resources :event_activities, as: "activities"
   resources :users
@@ -46,15 +33,8 @@ Rails.application.routes.draw do
       post "enqueue", to: "news_items#enqueue", as: "enqueue"
       post "dequeue", to: "news_items#dequeue", as: "dequeue"
     end
-    # resources :news_items, path: "announcements", as: "announcements" do
-    #   collection do
-    #     get "drafts", to: "news_items#index", as: "drafts", defaults: { mode: "drafts" }
-    #     get "queued", to: "news_items#index", as: "queued", defaults: { mode: "queued" }
-    #     get "sent", to: "news_items#index", as: "sent", defaults: { mode: "sent" }
-    #   end
-    #   post "enqueue", to: "news_items#enqueue", as: "enqueue"
-    #   post "dequeue", to: "news_items#dequeue", as: "dequeue"
-    # end
+
+    get "my_rsvps", to: "events#my_rsvps", as: "my_rsvps"
 
     resources :events, path: "schedule" do
       resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
@@ -64,7 +44,6 @@ Rails.application.routes.draw do
       collection do
         get "/", to: redirect("/units/%{unit_id}/schedule/list")
         get  "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
-        get  "my_rsvps",    to: "events#index", defaults: { variation: "rsvps" }
         get  "list",        to: "events#index", defaults: { variation: "list" }, as: "list"
         get  "calendar", to: "events#index", defaults: { variation: "calendar" }
         get  "calendar/:year/:month", to: "events#index", defaults: { variation: "calendar" }, as: "targeted_calendar"
@@ -79,6 +58,7 @@ Rails.application.routes.draw do
       patch "rsvp", as: "send_rsvps", to: "events#create_or_update_rsvps"
     end
 
+    # redirect the old /events path. We can probably get rid of this
     # https://stackoverflow.com/questions/38509769/rails-routes-redirect-a-wild-card-route
     get "/events/*after", to: redirect("/units/%{unit_id}/schedule/%{after}")
 
@@ -132,3 +112,4 @@ Rails.application.routes.draw do
   get "link_expired", to: "magic_links#expired", as: "expired_magic_link"
 end
 # rubocop:enable Metrics/BlockLength
+# rubocop:enable Style/FormatStringToken

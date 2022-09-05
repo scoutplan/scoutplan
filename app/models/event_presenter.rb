@@ -7,10 +7,9 @@ class EventPresenter
   attr_accessor :event, :current_member
 
   # EventPresenter.new(event: @event, current_member: @current_member)
-  def initialize(**options)
-    options.each do |k, v|
-      instance_variable_set("@#{k}", v) unless v.nil?
-    end
+  def initialize(event = nil, current_member = nil)
+    self.event = event
+    self.current_member = current_member
   end
 
   # if family member is current user: "Todd (you)"

@@ -2,7 +2,7 @@
 / and button. On desktop it becomes a row with title + family on left, button on right
 
 section#rsvp_status_container.border.border-yellow-600.text-center.py-3.font-bold.rounded
-  - family_rsvps = @event.rsvps.where(unit_membership_id: @current_member.family.collect(&:id))
+  - family_rsvps = event.rsvps.where(unit_membership_id: @current_member.family.collect(&:id))
   - family_rsvps_complete = true
 
 
@@ -17,10 +17,10 @@ section#rsvp_status_container.border.border-yellow-600.text-center.py-3.font-bol
   = [going, not_going].compact.join("; ")
 
   // Update RSVPs button (if allowed)
-  - if policy(@event).rsvp? && @event.rsvp_open?
-    = link_to "Change", unit_event_edit_rsvps_path(@event.unit, @event),
+  - if policy(event).rsvp? && event.rsvp_open?
+    = link_to "Change", unit_event_edit_rsvps_path(event.unit, event),
               class: "inline-block uppercase text-sm font-bold tracking-wider bg-yellow-500 rounded text-white hover:bg-yellow-600 px-4 py-2 ml-3",
               data: { turbo_action: "advance", turbo_frame: "main" }
   - else
     .inline-block.font-bold.text-gray-400.text-sm.mt-1
-      = t('events.rsvp.closed')
+      = t("events.rsvp.closed")

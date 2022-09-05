@@ -1,0 +1,9 @@
+= turbo_frame_tag "main"
+  .max-w-2xl.mx-auto
+    header.text-center.mb-2
+      h1.text-2xl.font-bold
+        = t("events.my_rsvps.title")
+
+    .flex.flex-col.divide-y
+      - @events.each do |event|
+        = render partial: "event_rsvp", locals: { event: event }

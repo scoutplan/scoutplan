@@ -9,7 +9,7 @@ class EventsController < UnitContextController
   before_action :authenticate_user!, except: [:index, :public]
   # before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish public]
   # before_action :find_member, only: %i[index create new edit edit_rsvps bulk_publish]
-  before_action :find_event, except: %i[index create new bulk_publish public]
+  before_action :find_event, except: %i[index create new bulk_publish public my_rsvps]
   before_action :collate_rsvps, only: [:show, :rsvps]
   layout :current_layout
 
@@ -37,7 +37,7 @@ class EventsController < UnitContextController
     @events_by_year = @events.group_by { |e| e.starts_at.year }
 
     @event_drafts = @events.select(&:draft?).select{ |e| e.ends_at.future? }
-    @presenter = EventPresenter.new
+    @presenter = EventPresenter.new(nil, current_member)
 
     if user_signed_in?
       @current_family = @current_member.family
@@ -138,7 +138,7 @@ class EventsController < UnitContextController
   def new
     build_prototype_event
     # @event_view = EventView.new(@event)
-    @presenter = EventPresenter.new(event: @event, current_user: current_user)
+    @presenter = EventPresenter.new(@event, current_member)
   end
 
   # POST /:unit_id/events
@@ -174,11 +174,17 @@ class EventsController < UnitContextController
     redirect_to unit_events_path(@unit), notice: "#{@event.title} has been permanently deleted."
   end
 
+  # organizer-facing view showing all RSVPs for an event
   def rsvps
     authorize @event
     find_next_and_previous_events
     @page_title = [@event.title, "Organize"]
     @non_invitees = @event.unit.members.status_registered - @event.rsvps.collect(&:member)
+  end
+
+  # member-facing view showing all RSVPable events and their responses
+  def my_rsvps
+    @events = @unit.events.rsvp_required.published.future
   end
 
   def publish
@@ -303,7 +309,7 @@ class EventsController < UnitContextController
     @event = @unit.events.includes(:event_rsvps).find(params[:event_id] || params[:id])
     # @current_unit = @event.unit
     # @current_member = @current_unit.membership_for(current_user)
-    @presenter = EventPresenter.new(event: @event, current_user: current_user)
+    @presenter = EventPresenter.new(@event, @current_member)
   end
 
   # permitted parameters
