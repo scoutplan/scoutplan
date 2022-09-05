@@ -78,6 +78,8 @@ javascript:
     });
   }
   
+  // Each row is a link. Set them up so they disable when in bulk edit mode
+  // to prevent accidentally navigating away from the page
   function prepareEventLinks() {
     document.querySelectorAll("a.event").forEach(function(elem) {
       elem.addEventListener("click", function(event) {
