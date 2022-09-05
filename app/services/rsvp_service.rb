@@ -26,6 +26,11 @@ class RsvpService < ApplicationService
     res
   end
 
+  # for the given Event, are there any responses at all?
+  def any_responses?
+    family_rsvps.count.positive?
+  end
+
   # for the current Event, return an array of members who haven't responded
   def non_respondents
     raise ArgumentError, "Event attribute must be set" unless @event.present?

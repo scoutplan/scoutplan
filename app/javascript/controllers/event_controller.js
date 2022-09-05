@@ -48,6 +48,6 @@ export default class extends Controller {
       document.body.classList.remove(className);
     }
 
-    hideEmptyMonthHeaders();
+    toggleMonthSections();
   }
 }

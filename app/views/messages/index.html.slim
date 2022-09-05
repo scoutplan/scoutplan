@@ -1,7 +1,7 @@
 = turbo_frame_tag "main"
   .max-w-3xl.mx-auto
-    header.my-12.relative
-      h1.font-bold.text-xl.md:text-3xl.md:text-center
+    header.mt-8.mb-8.relative
+      h1.font-bold.text-lg.md:text-4xl.md:text-center
         = t("messages.index.title", unit_name: @unit.name)
 
         - if policy(:message).create?

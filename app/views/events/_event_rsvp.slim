@@ -1,13 +1,32 @@
-// partial used in my_rsvps template to render events
+// partial used in my_rsvps to render a single event
 
 - presenter = EventPresenter.new(event, @current_member)
 
-article.px-2.py-2
-  h3.text-xl.font-bold
-    = event.title
+article.px-2.py-3
+  .flex.flex-row.justify-between
+    div
+      h3.text-xl.font-bold
+        = event.title
 
-  p = presenter.months_and_dates
+      p
+        .inline-block.w-6.text-center
+          i.fa-solid.fa-map-marker.mr-1
+        = presenter.months_and_dates
 
-  p = presenter.location
+      - if presenter.location.present?
+        p
+          .inline-block.w-6.text-center
+            i.fa-solid.fa-calendar.mr-1
+          = presenter.location
+      
+      p
+        = link_to t("events.index.rsvp.show_details"), unit_event_path(@unit, event),
+          class: "text-blue-500 hover:underline",
+          data: { turbo_action: "advance" }
 
-  = render partial: "edit_rsvp_section", locals: { event: event, presenter: presenter }
+    // right
+    div.font-semibold.align-middle
+      = render partial: "rsvp_card", locals: { event: event, presenter: presenter }
+
+  .hidden.rsvp-form-wrapper
+    = render partial: "edit_rsvp_section", locals: { event: event, presenter: presenter }
