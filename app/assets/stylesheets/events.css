@@ -220,6 +220,14 @@ tr.event-past td a.row-link {
 tr:hover td a.row-link {
   color: #000; }
 
+a.event:hover {
+  background: #f5f5f4;
+}
+
+body.showing-only-draft-events a:hover {
+  background: none;
+}
+
 .attention {
   animation: pulsate 2s ease-out 3; }
 

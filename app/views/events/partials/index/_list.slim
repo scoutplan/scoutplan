@@ -44,6 +44,7 @@ javascript:
   document.addEventListener("turbo:load", function() {
     document.body.classList.add("showing-as-list");
     document.body.classList.remove("showing-as-calendar");
+    prepareEventLinks();
     // hideEmptyMonthHeaders();
     // toggleMonthSections(".event-month", ".event");
   });
@@ -74,5 +75,16 @@ javascript:
         elem.style.display = "block";
         visibleParents++;
       }
+    });
+  }
+  
+  function prepareEventLinks() {
+    document.querySelectorAll("a.event").forEach(function(elem) {
+      elem.addEventListener("click", function(event) {
+        if (document.body.classList.contains("showing-only-draft-events")) {
+          event.preventDefault();
+          return false;
+        }
+      });
     });
   }
