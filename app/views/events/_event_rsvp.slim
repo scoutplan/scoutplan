@@ -1,0 +1,13 @@
+// partial used in my_rsvps template to render events
+
+- presenter = EventPresenter.new(event, @current_member)
+
+article.px-2.py-2
+  h3.text-xl.font-bold
+    = event.title
+
+  p = presenter.months_and_dates
+
+  p = presenter.location
+
+  = render partial: "edit_rsvp_section", locals: { event: event, presenter: presenter }

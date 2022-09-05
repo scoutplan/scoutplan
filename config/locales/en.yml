@@ -260,6 +260,9 @@ en:
       delete_caption:  "Delete This Event"
       delete_confirm:  "Are you sure you want to permanently delete this event and any RSVPs associated with it?"
 
+    my_rsvps:
+      title: "My RSVPs"
+
     show:
       upcoming_events_title:    "Other upcoming events"
       description_empty:        "There's no description for this event yet."

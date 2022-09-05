@@ -39,10 +39,10 @@
 
       .flex.flex-col.gap-2
         - if mode == "show"
-          = render partial: "rsvp_card" if @event.requires_rsvp
+          = render partial: "rsvp_card", locals: { event: @event } if @event.requires_rsvp
           = render partial: "organize_panel" if @event.organizable? && policy(@event).rsvps?
         - elsif mode == "rsvp"
-          = render partial: "edit_rsvp_section"          
+          = render partial: "edit_rsvp_section", locals: { event: @event }        
         = render partial: "events/partials/show/date_card"
         = render partial: "events/payment" if @event.requires_payment?
         = render partial: "location_card" if @event.location.present? || @event.address.present? || @event.departs_from.present?

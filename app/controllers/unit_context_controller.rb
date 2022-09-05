@@ -5,6 +5,7 @@
 class UnitContextController < ApplicationController
   before_action :find_unit_info
   before_action :set_unit_cookie
+  before_action :build_event_presenter
   around_action :time_zone
   after_action  :track_action
 
@@ -48,5 +49,9 @@ class UnitContextController < ApplicationController
 
   def time_zone(&block)
     Time.use_zone(current_unit.time_zone, &block)
+  end
+
+  def build_event_presenter
+    @presenter = EventPresenter.new(nil, current_member)
   end
 end

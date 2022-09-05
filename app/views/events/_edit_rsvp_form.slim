@@ -1,13 +1,13 @@
 - family_member_ids = @current_member.family.map(&:id)
-- rsvps = @event.rsvps.where(unit_membership_id: family_member_ids)
+- rsvps = event.rsvps.where(unit_membership_id: family_member_ids)
 - @rsvps = rsvps
 - notes = rsvps.map(&:note).uniq.join(", ")
 
 .table.w-full
   - @current_member.family.each do |family_member|
     .table-row
-      - existing_rsvp = @event.rsvps.find_by(unit_membership: family_member)
-      - rsvp = @event.rsvps.build(unit_membership: family_member,
+      - existing_rsvp = event.rsvps.find_by(unit_membership: family_member)
+      - rsvp = event.rsvps.build(unit_membership: family_member,
         response: existing_rsvp&.response,
         includes_activity: existing_rsvp&.includes_activity)
       = f.fields_for "members[]", family_member do |member_fields|
@@ -17,7 +17,7 @@
           .table-cell.border-0.pr-2.py-2.font-bold
             i.fa-user.fad.text-yellow-500
             |&nbsp;&nbsp;
-            = @presenter.family_context_name(family_member)
+            = presenter.family_context_name(family_member)
             = " (you)" if family_member == @current_member
 
           // two radio buttons (going/not going)
@@ -32,10 +32,10 @@
               = rsvp_fields.label :response, :declined, value: :declined, class: "inline" do
                 = t("rsvp_declined")     
 
-          - if @event.includes_activity
+          - if event.includes_activity
             .table-cell.px-3.py-2.border-0
               = rsvp_fields.check_box :includes_activity, class: "mr-1"
-              = label :includes_activity, @event.activity_name
+              = label :includes_activity, event.activity_name
 
 // note field
 .mt-2
