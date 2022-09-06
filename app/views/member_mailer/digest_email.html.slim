@@ -8,7 +8,7 @@
   // outstanding RSVPs
   - if (unresponded_count = service.unresponded_events.count).positive?
     = magic_link_to @member,
-                    unit_url(@unit),
+                    unit_my_rsvps_url(@unit),
                     style: "display:block;margin-bottom:1rem;color:#E66425;font-weight:bold;text-decoration:none;" do
                     
       div(style="padding-left:1.5rem;text-indent:-1.5rem;")
