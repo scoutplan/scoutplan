@@ -39,8 +39,9 @@
 
       .flex.flex-col.gap-2
         - if mode == "show"
-          section#rsvp_status_container.border.border-yellow-600.text-center.py-3.font-bold.rounded
-            = render partial: "rsvp_card", locals: { event: @event } if @event.requires_rsvp
+          - if @event.requires_rsvp
+            section#rsvp_status_container.border.border-yellow-600.text-center.py-3.font-bold.rounded
+              = render partial: "rsvp_card", locals: { event: @event }
           = render partial: "organize_panel" if @event.organizable? && policy(@event).rsvps?
 
         - elsif mode == "rsvp"

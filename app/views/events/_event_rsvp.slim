@@ -10,13 +10,13 @@ article.px-2.py-3
 
       p
         .inline-block.w-6.text-center
-          i.fa-solid.fa-map-marker.mr-1
+          i.fa-solid.fa-map-marker.mr-1.text-stone-300
         = presenter.months_and_dates
 
       - if presenter.location.present?
         p
           .inline-block.w-6.text-center
-            i.fa-solid.fa-calendar.mr-1
+            i.fa-solid.fa-calendar.mr-1.text-stone-300
           = presenter.location
       
       p
@@ -26,7 +26,42 @@ article.px-2.py-3
 
     // right
     div.font-semibold.align-middle
-      = render partial: "rsvp_card", locals: { event: event, presenter: presenter }
+      - rsvp_count = 0
+      - family = @current_member.family
+      - family.each do |member|
+        - rsvp = event.rsvp_for(member)
+        - rsvp_count += 1 if rsvp.present?
+        p
+          - if !rsvp.present?
+            .inline-block.w-8.text-center
+              i.fa-solid.fa-ghost.text-stone-400
+            = member.display_first_name
+            = " (no response)"
+          - elsif rsvp.accepted?
+            .inline-block.w-8.text-center
+              i.fa-solid.fa-check-circle.text-emerald-400
+            = member.display_first_name
+            = " (going)"
+          - elsif rsvp.declined?
+            .inline-block.w-8.text-center
+              i.fa-solid.fa-couch.text-red-400
+            = member.display_first_name
+            = " (not going)"
 
-  .hidden.rsvp-form-wrapper
-    = render partial: "edit_rsvp_section", locals: { event: event, presenter: presenter }
+      - if !event.rsvp_open?
+        p = "RSVPs are closed"
+
+      - elsif policy(event).rsvp?
+        p.text-center.mt-2
+          - if rsvp_count == 0
+            = link_to "Respond Now", unit_event_edit_rsvps_path(event.unit, event),
+                      class: "cta-button inline-block uppercase text-sm font-bold tracking-wider bg-yellow-400 text-yellow-800 hover:bg-yellow-500 hover:text-yellow-900 rounded px-4 py-2",
+                      data: { turbo_action: "advance", turbo_frame: "main" }  
+          - elsif rsvp_count < family.count
+            = link_to "Complete", unit_event_edit_rsvps_path(event.unit, event),
+                      class: "cta-button inline-block uppercase text-sm font-bold tracking-wider bg-yellow-400 text-yellow-800 hover:bg-yellow-500 hover:text-yellow-900 rounded px-4 py-2",
+                      data: { turbo_action: "advance", turbo_frame: "main" }          
+          - else
+            = link_to "Change", unit_event_edit_rsvps_path(event.unit, event),
+                      class: "cta-button inline-block uppercase text-sm font-bold tracking-wider border border-yellow-500 text-yellow-600 hover:bg-yellow-50 rounded px-4 py-2",
+                      data: { turbo_action: "advance", turbo_frame: "main" }
