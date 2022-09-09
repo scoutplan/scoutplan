@@ -1,0 +1,39 @@
+h1 = t("locations.edit.title")
+
+= render partial: "locatable", locals: { location: @location, locatable: @location.locatable }
+
+= form_with model: @location do |f|
+  section
+    = f.label :name
+    = f.text_field :name
+
+  section
+    = f.label :address
+    = f.text_field :address
+
+  section
+    = f.label :city
+    = f.text_field :city
+
+  section
+    = f.label :state
+    = f.text_field :state
+
+  section
+    = f.label :postal_code, "Zip"
+    = f.text_field :postal_code
+
+  section
+    = f.label :phone
+    = f.phone_field :phone
+
+  section
+    = f.label :website
+    = f.url_field :website
+
+  = f.hidden_field :key
+  = f.hidden_field :locatable_type
+  = f.hidden_field :locatable_id
+  = hidden_field_tag :return_path, @return_path
+  = f.submit "Save"
+  = link_to "Cancel", @return_path

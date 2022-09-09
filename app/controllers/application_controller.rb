@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   before_action :authenticate_user!
   before_action :process_query_string
-  after_action  :clear_session_view
+  after_action :clear_session_view
 
   def new_session_path(_scope)
     new_user_session_path
