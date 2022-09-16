@@ -53,6 +53,7 @@ en:
   passwordless_warning: "You're logged in using a password-less \"magic link.\"  This link is valid until x/x/xx."
   see_below: "See below."
   time_ago: "%{value} ago"
+  change: "Change"
 
   global:
     cancel: "Cancel"
@@ -64,7 +65,7 @@ en:
     sign_out: "Sign Out"
     remember_me: "Stay signed in for two weeks"
     nevermind: "Never Mind"
-  
+
   main_nav:
     events:        "Schedule"
     members:       "Members"
@@ -261,6 +262,9 @@ en:
       rsvp_closes_at:  "RSVP closes on"
       delete_caption:  "Delete This Event"
       delete_confirm:  "Are you sure you want to permanently delete this event and any RSVPs associated with it?"
+      depart_from:    "Depart From"
+      arrive_at:       "Arrive At"
+      activity_at:     "Activity Location"
 
     my_rsvps:
       title: "My RSVPs"
@@ -401,8 +405,15 @@ en:
     court_of_honor:   "Court of Honor"
 
   locations:
-    edit:
-      title: "Edit Location"
+    titles:
+      edit: "Edit Location"
+      new:  "New Location"
+      departure: "Depart From"
+      arrival: "Arrive At"
+      activity: "Activity Location"
+    
+    labels:
+      name: "Site Name"
   
   mailers:
     member_mailer:

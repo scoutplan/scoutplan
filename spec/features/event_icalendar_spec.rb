@@ -28,11 +28,11 @@ describe "events", type: :feature do
         :event,
         :published,
         unit: @unit,
-        location: Faker::Address.community,
         description: Faker::Lorem.paragraph(sentence_count: 3),
         starts_at: starts_at,
         ends_at: ends_at \
       )
+      arrival_location = FactoryBot.create(:location, key: :arrival, locatable: event)
       magic_link = MagicLink.generate_link(@normal_member, "icalendar")
       visit(calendar_feed_unit_events_path(@unit, magic_link.token))
 
@@ -45,7 +45,7 @@ describe "events", type: :feature do
       # expect(cal_event.dtstart.to_datetime).to be_within(1.second).of event.starts_at
       # expect(cal_event.dtstart.to_datetime.utc).to be_within(1.second).of event.starts_at.to_datetime
       expect(cal_event.summary.to_s).to eq("#{@unit.short_name} - #{event.title}")
-      expect(cal_event.location).to eq(event.location)
+      expect(cal_event.location).to eq(event.full_address)
       expect(cal_event.description).to eq(event.description.to_plain_text)
       expect(cal_event.url.to_s).not_to be_empty
     end

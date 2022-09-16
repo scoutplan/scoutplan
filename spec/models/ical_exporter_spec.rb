@@ -8,6 +8,7 @@ RSpec.describe IcalExporter, type: :model do
     @member = FactoryBot.create(:member)
     @unit = @member.unit
     @event = FactoryBot.create(:event, unit: @member.unit)
+    @arrival_location = FactoryBot.create(:location, locatable: @event, key: "arrival")
     @exporter = IcalExporter.new(@member, @event)
   end
 
@@ -31,23 +32,9 @@ RSpec.describe IcalExporter, type: :model do
   end
 
   describe "location" do
-    it "includes the location field when present" do
-      @exporter.event.location = "A location"
+    it "includes the location and address when both are present" do
       @ical_event = @exporter.to_ical
-      expect(@ical_event.location).to eq(@event.location)
-    end
-
-    it "includes the address when present" do
-      @event.address = "An address"
-      @ical_event = @exporter.to_ical
-      expect(@ical_event.location).to eq(@event.address)
-    end
-
-    it "includes the location and address when both as present" do
-      @event.location = "A location"
-      @event.address = "An address"
-      @ical_event = @exporter.to_ical
-      expect(@ical_event.location).to eq("#{@event.location} #{@event.address}")
+      expect(@ical_event.location).to eq(@event.full_address)
     end
   end
 end

@@ -6,4 +6,8 @@ class Location < ApplicationRecord
 
   # ensure we don't duplicate keys
   validates_uniqueness_of :key, scope: [:locatable_type, :locatable_id]
+
+  def full_address
+    [name, address, city, state, postal_code].join(" ")
+  end
 end
