@@ -100,6 +100,7 @@ Rails.application.routes.draw do
 
   resources :member_relationships, as: "relationships", path: "relationships", only: %i[destroy]
   resources :event_rsvps, except: [:index, :show, :edit, :update, :new]
+  resources :locations, only: [:edit, :update]
 
   constraints CanAccessFlipperUI do
     mount Sidekiq::Web => "/sidekiq"
