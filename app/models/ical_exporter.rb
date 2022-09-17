@@ -20,7 +20,7 @@ class IcalExporter
     ical_event.summary += " (CANCELLED)" if @event.cancelled?
     ical_event.dtstart = @event.starts_at.in_time_zone(@event.unit.time_zone)
     ical_event.dtend = @event.ends_at.in_time_zone(@event.unit.time_zone)
-    ical_event.location = [@event.location.presence, @event.address.presence].compact.join(" ")
+    ical_event.location = @event.full_address
     ical_event.description = @event.description&.to_plain_text || @event.short_description
     ical_event.url = Rails.application.routes.url_helpers.unit_event_url(@event.unit, @event, host: ENV["APP_HOST"])
     ical_event

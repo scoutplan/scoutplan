@@ -1,0 +1,40 @@
+- departure_location = @event.locations.find_by(key: :departure)
+- arrival_location = @event.locations.find_by(key: :arrival)
+- activity_location = @event.locations.find_by(key: :activity)
+
+section.tabbed
+  nav.tab-menu.mb-4.text-xs.md:text-sm
+    ul
+      li.inline-block
+        = link_to "#departure_location",
+          data: { tab_target: "#departure_location" },
+          class: "inline-block tab-link px-2 md:px-6 py-2 border-b-2 border-brand-500 hover:border-brand-500 uppercase font-bold tracking-wider" do
+          - if departure_location.present?
+            i.fa-solid.fa-circle-small.text-brand-500.mr-1.inline-block
+          = t("events.form.depart_from")
+
+      li.inline-block
+        = link_to "#arrival_location",
+          data: { tab_target: "#arrival_location" },
+          class: "inline-block tab-link px-2 md:px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold tracking-wider" do
+          - if arrival_location.present?
+            i.fa-solid.fa-circle-small.text-brand-500.mr-1.inline-block
+          = t("events.form.arrive_at")
+
+      li.inline-block
+        = link_to "#activity_location",
+          data: { tab_target: "#activity_location" },
+          class: "inline-block tab-link px-2 md:px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold tracking-wider" do
+          - if activity_location.present?
+            i.fa-solid.fa-circle-small.text-brand-500.mr-1.inline-block
+          = t("events.form.activity_at")             
+
+  .tabs
+    .tab#departure_location
+      = render partial: "location", locals: { location: departure_location, location_key: "departure" }
+
+    .tab.hidden#arrival_location
+      = render partial: "location", locals: { location: arrival_location, location_key: "arrival" }
+
+    .tab.hidden#activity_location
+      = render partial: "location", locals: { location: activity_location, location_key: "activity" }

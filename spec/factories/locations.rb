@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :location do
+    name { Faker::Address.community }
     address { Faker::Address.street_address }
     city { Faker::Address.city }
     state { Faker::Address.state_abbr }

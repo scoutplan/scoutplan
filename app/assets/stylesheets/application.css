@@ -31,3 +31,11 @@ html:not(.fontawesome-i2svg-complete) .icon-substitute {
 html.fontawesome-i2svg-complete .icon-substitute {
   display: none;
 }
+
+a.external-link:after {
+  font-family: "Font Awesome 6 Pro";
+  font-style: normal;
+  content: "\f08e";
+  margin-left: 0.5rem;
+  font-weight: normal;
+}

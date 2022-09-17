@@ -124,6 +124,22 @@ class Event < ApplicationRecord
     address =~ /\A#{URI::regexp(['http', 'https'])}\z/
   end
 
+  def primary_location
+    (locations.find_by(key: "arrival") || locations.find_by(key: "activity"))
+  end
+
+  def location
+    primary_location&.name
+  end
+
+  def address
+    primary_location&.address
+  end
+
+  def full_address
+    primary_location&.full_address
+  end
+
   private
 
   # create a weekly series based on @event
