@@ -400,6 +400,10 @@ en:
     service_project:  "Service Project"
     court_of_honor:   "Court of Honor"
 
+  locations:
+    edit:
+      title: "Edit Location"
+  
   mailers:
     member_mailer:
       digest_email:
