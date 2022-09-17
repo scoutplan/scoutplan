@@ -1,2 +1,25 @@
 section#location_card.py-6.border-b
   = render partial: @event.online? ? "online_location_card" : "irl_location_card"
+
+css:
+  .location-card i:before {
+    font-family: "Font Awesome 6 Pro";
+    font-weight: bold;
+    font-size: 2rem;
+    font-style: normal;
+  }
+
+  .location-card.location-departure i:before {
+    content: "\f1b9";
+    color: #059669;     
+  }
+
+  .location-card.location-arrival i:before {
+    content: "\e582";
+    color: #d97706;
+  }
+
+  .location-card.location-activity i:before {
+    content: "\f6ec";
+    color: #0369a1;
+  }

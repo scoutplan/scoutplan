@@ -178,6 +178,10 @@ en:
     location:             "Location"
     dates:                "Dates"
 
+    captions:
+      new_short: "Add"
+      payment_amount: "Cost per person"    
+
     placeholders:
       title:        "Event title"
       location:     "Location"
@@ -186,10 +190,6 @@ en:
       category:     "Select an event category"
       cancellation_message: "Type your cancellation message here (optional)"
       venue_phone:  "Phone number where you're staying"
-
-    captions:
-      new_short: "Add"
-      payment_amount: "Cost per person"
     
     edit_rsvps:
       title: "RSVP — "

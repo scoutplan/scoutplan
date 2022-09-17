@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # represents a place (typically for an Event)
+# :departure, :arrival, :activity are valid keys
 class Location < ApplicationRecord
   belongs_to :locatable, polymorphic: true
 

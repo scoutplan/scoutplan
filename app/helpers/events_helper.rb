@@ -86,7 +86,13 @@ module EventsHelper
   # given an Event, generate a Google Maps URL. Assumes the Event has
   # at least a destination
   def event_map_url(event)
-    parts = event.departs_from.present? ? ["dir", event.departs_from, event.destination] : ["search", event.destination]
+    departure_location = event.locations.find_by(key: "departure")
+    arrival_location = event.locations.find_by(key: "arrival")
+    activity_location = event.locations.find_by(key: "activity")
+
+    parts = departure_location.present? ? ["dir", departure_location&.full_address, arrival_location&.full_address, activity_location&.full_address] : ["search", arrival_location&.full_address]
+
+    # parts = event.departs_from.present? ? ["dir", event.departs_from, event.destination] : ["search", event.destination]
     search_path = parts.map { |m| CGI.escape(m.gsub(",", "")) }.join("/")
     [MAP_BASE_URL, search_path].join
   end
