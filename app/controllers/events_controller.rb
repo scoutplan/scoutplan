@@ -95,7 +95,11 @@ class EventsController < UnitContextController
         @unit.next_season_ends_at
       )
     else
-      events = @unit.events.includes(:event_category).published
+      events = @unit.events.includes(:event_category).published.where(
+        "starts_at BETWEEN ? AND ?",
+        @unit.this_season_starts_at,
+        @unit.this_season_ends_at
+      )
     end
     # events = events.reject { |e| e.category.name == "Troop Meeting" } # TODO: not hard-wire this
     events.group_by { |e| [e.starts_at.year, e.starts_at.month] }
