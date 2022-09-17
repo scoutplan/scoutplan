@@ -125,7 +125,7 @@ class Event < ApplicationRecord
   end
 
   def primary_location
-    (locations.find_by(key: "activity") || locations.find_by(key: "arrival"))
+    (locations.find_by(key: "arrival") || locations.find_by(key: "activity"))
   end
 
   def location

@@ -10,7 +10,7 @@ section.tabbed
           data: { tab_target: "#departure_location" },
           class: "inline-block tab-link px-2 md:px-6 py-2 border-b-2 border-brand-500 hover:border-brand-500 uppercase font-bold tracking-wider" do
           - if departure_location.present?
-            i.fa-solid.fa-circle.text-brand-500
+            i.fa-solid.fa-circle-small.text-brand-500.mr-1.inline-block
           = t("events.form.depart_from")
 
       li.inline-block
@@ -18,7 +18,7 @@ section.tabbed
           data: { tab_target: "#arrival_location" },
           class: "inline-block tab-link px-2 md:px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold tracking-wider" do
           - if arrival_location.present?
-            i.fa-solid.fa-circle.text-brand-500
+            i.fa-solid.fa-circle-small.text-brand-500.mr-1.inline-block
           = t("events.form.arrive_at")
 
       li.inline-block
@@ -26,7 +26,7 @@ section.tabbed
           data: { tab_target: "#activity_location" },
           class: "inline-block tab-link px-2 md:px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold tracking-wider" do
           - if activity_location.present?
-            i.fa-solid.fa-circle.text-brand-500
+            i.fa-solid.fa-circle-small.text-brand-500.mr-1.inline-block
           = t("events.form.activity_at")             
 
   .tabs
