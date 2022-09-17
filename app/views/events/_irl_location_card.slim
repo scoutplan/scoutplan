@@ -1,32 +1,19 @@
+// this partial is contained within events/_location_card.slim
+
 .flex.md:flex-row.gap-8.place-content-center
-  - if @event.departs_from.present?
-    div.w-1/4
-      h5.font-bold
-        i.fa-car.fas.mr-1.text-lime-400.text-3xl.block
-        = t("events.show.departs_from")
+  - count = 0
+  - ["departure", "arrival", "activity"].each do |key|
+    - location = @event.locations.find_by(key: key)
+    - if location.present?
+      - if count > 0
+        div.pt-6
+          i.fa-solid.fa-arrow-right.text-xl.align-middle
 
-      address.not-italic
-        = @event.departs_from
-
-  - if @event.departs_from.present? && @event.location.present?
-    i.fa-arrow-right.fas.text-4xl.text-stone-400.mt-8
-
-  - if @event.location.present?
-    div.w-1/4
-      h5.font-bold(role="heading" aria-level="5")
-        i.fa-location-dot.fas.mr-1.text-rose-400.text-3xl.block
-        = t("events.show.location")
-
-      address.not-italic
-        = @event.location
-
-      - if @event.address.present?
-        address.not-italic
-          = @event.address
-
-      - if @event.venue_phone.present?
-        i.fa-phone.fas.mr-2.text-stone-400
-        = phone_to @event.venue_phone
+      - count += 1
+      div(class="location-card location-#{key}")
+        // this <i> tag gets styled in _location_card.slim
+        i
+        = render partial: "events/location", locals: { location: location, location_key: key, short_link: true, editing_disabled: true }
 
 .text-center
   = link_to event_map_url(@event),

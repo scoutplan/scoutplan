@@ -3,14 +3,23 @@
 # Policy for accessing an Location object
 class LocationPolicy < UnitContextPolicy
   def initialize(member, location)
+    super
     @member = member
     @location = location
-    super
+  end
+
+  def create?
+    edit?
   end
 
   def edit?
+    ap @member
     # defer to Event policy
-    true if (@location.locatable.is_a? Event) && EventPolicy.new(@member, @location.locatable).edit?
+    (@location.locatable.is_a? Event) && EventPolicy.new(@member, @location.locatable).edit?
+  end
+
+  def new?
+    edit?
   end
 
   def update?

@@ -17,7 +17,7 @@ namespace :scoutplan do
         puts "Skipping departure location"
       end
 
-      if event.location.present? || event.address.present? || event.venue_phone.present?
+      if event["location"].present? || event["address"].present? || event["venue_phone"].present?
         Location.create_with(name: event.location,
                              address: event.address,
                              phone: event.venue_phone).find_or_create_by(key: "arrival", locatable: event)
