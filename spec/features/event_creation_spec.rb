@@ -26,10 +26,8 @@ describe "events", type: :feature do
     it "creates a single event" do
       visit(new_unit_event_path(@unit))
       fill_in :event_title, with: "Event Title"
-      fill_in :event_location, with: "Anytown, USA"
       fill_in :event_starts_at_date, with: 13.days.from_now
       fill_in :event_ends_at_date, with: 14.days.from_now
-      fill_in :event_venue_phone, with: "777-555-1212"
       select "Camping Trip", from: "event_event_category_id"
       expect { click_link_or_button "Add This Event" }.to change { Event.count }.by(1)
     end
@@ -37,7 +35,6 @@ describe "events", type: :feature do
     it "creates a series" do
       visit(new_unit_event_path(@unit))
       fill_in :event_title, with: "Event Title"
-      fill_in :event_location, with: "Anytown, USA"
       fill_in :event_starts_at_date, with: 13.days.from_now
       fill_in :event_ends_at_date, with: 14.days.from_now
       select "Camping Trip", from: "event_event_category_id"
