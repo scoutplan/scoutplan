@@ -11,18 +11,16 @@ namespace :scoutplan do
 
       # origin
       if event.departs_from.present?
-        Location.create_with(locatable: event,
-                             address: event.departs_from).find_or_create_by(key: "departure")
+        Location.create_with(address: event.departs_from).find_or_create_by(key: "departure", locatable: event)
         puts "Created departure location".purple
       else
         puts "Skipping departure location"
       end
 
       if event.location.present? || event.address.present? || event.venue_phone.present?
-        Location.create_with(locatable: event,
-                             name: event.location,
+        Location.create_with(name: event.location,
                              address: event.address,
-                             phone: event.venue_phone).find_or_create_by(key: "arrival")
+                             phone: event.venue_phone).find_or_create_by(key: "arrival", locatable: event)
         puts "Created arrival location".blue
       else
         puts "Skipping arrival location"
