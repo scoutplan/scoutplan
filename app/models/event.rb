@@ -136,8 +136,14 @@ class Event < ApplicationRecord
     primary_location&.address
   end
 
-  def full_address
-    primary_location&.full_address
+  def full_address(key = nil)
+    return primary_location&.full_address unless key.present?
+
+    find_location(key)&.full_address
+  end
+
+  def find_location(key)
+    locations.find_by(key: key)
   end
 
   private

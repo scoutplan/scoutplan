@@ -11,6 +11,14 @@ RSpec.describe EventsHelper, type: :helper do
     @arrival_location = FactoryBot.create(:location, locatable: @event, key: "arrival")
   end
 
+  describe "event_map_url" do
+    it "renders a valid URL" do
+      @arrival_location = FactoryBot.create(:location, locatable: @event, key: "departure")
+      helper.event_map_url(@event)
+      expect(helper.event_map_url(@event)).not_to be_nil
+    end
+  end
+
   describe "location_address_string" do
     it "is empty when event lacks both" do
       @arrival_location.name = nil
