@@ -1,9 +1,10 @@
+- event_location = @locations_cache[[event.id, "arrival"]] || @locations_cache[[event.id, "activity"]]
+
 address
-  - if event.location.present? || event.address.present?
+  - if (full_address = event_location&.full_address).present?
     address.text-sm.not-italic.text-md
       - if event.online?
         i.fa-desktop.fas.text-gray-300.mr-1
-        = event.location.presence || event.address
       - else
         i.fa-location-dot.fas.text-gray-300.mr-1
-        = event.location.presence || event.address
+      = full_address

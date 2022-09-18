@@ -33,10 +33,16 @@ class EventsController < UnitContextController
     cookies[:calendar_display_year] = params[:year] if params[:year]
 
     @events = UnitEventQuery.new(current_member, current_unit).execute
+    @locations = Location.where("locatable_type = 'Event' AND locatable_id IN (?)", @events.map(&:id))
+    @locations_cache = @locations.each_with_object({}) do |location, cache|
+      key = [location.locatable_id, location.key]
+      cache[key] = location
+      cache
+    end
 
-    @events_by_year = @events.group_by { |e| e.starts_at.year }
+    @events_by_year = @events.includes(:locations).group_by { |e| e.starts_at.year }
 
-    @event_drafts = @events.select(&:draft?).select{ |e| e.ends_at.future? }
+    @event_drafts = @events.select(&:draft?).select { |e| e.ends_at.future? }
     @presenter = EventPresenter.new(nil, current_member)
 
     if user_signed_in?
