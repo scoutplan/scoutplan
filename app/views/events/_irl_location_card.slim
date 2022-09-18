@@ -3,7 +3,8 @@
 .flex.md:flex-row.gap-8.place-content-center
   - count = 0
   - ["departure", "arrival", "activity"].each do |key|
-    - location = @event.locations.find_by(key: key)
+    / - location = @event.locations.find_by(key: key)
+    - location = @locations_cache[[@event.id, key]]
     - if location.present?
       - if count > 0
         div.pt-6
