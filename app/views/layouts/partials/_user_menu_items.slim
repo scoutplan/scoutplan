@@ -1,8 +1,10 @@
+- memberships = current_user.unit_memberships
+
 ul
-  - if current_user.unit_memberships.count > 1
-    - current_user.unit_memberships.each do |membership|
+  - if memberships.count > 1
+    - memberships.each do |membership|
       li
-        = link_to @unit, class: "block px-4 md:px-8 py-3 md:py-2 font-bold md:font-normal text-brand-500 md:text-stone-100 md:hover:bg-stone-600" do
+        = link_to membership.unit, class: "block px-4 md:px-8 py-3 md:py-2 font-bold md:font-normal text-brand-500 md:text-stone-100 md:hover:bg-stone-600" do
           span.inline-block.w-8.text-center
             - if membership.unit == @current_unit
               i.fa-check.fas
