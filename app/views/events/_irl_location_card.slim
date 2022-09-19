@@ -3,25 +3,28 @@
 .flex.md:flex-row.gap-8.place-content-center
   - count = 0
   - ["departure", "arrival", "activity"].each do |key|
-    / - location = @event.locations.find_by(key: key)
-    - location = @locations_cache[[@event.id, key]]
+    - if @locations_cache.present?
+      - location = @locations_cache[[@event.id, key]]
+    - else
+      - location = @event.locations.find_by(key: key)
     - if location.present?
       - if count > 0
-        div.pt-6
+        div.pt-8
           i.fa-solid.fa-arrow-right.text-xl.align-middle
 
       - count += 1
-      div(class="location-card location-#{key}")
+      div.pt-6(class="location-card location-#{key}")
         // this <i> tag gets styled in _location_card.slim
         i
         = render partial: "events/location", locals: { location: location, location_key: key, short_link: true, editing_disabled: true }
 
-.text-center
-  = link_to event_map_url(@event),
-    target: "_new",
-    class: "inline-block no-underline hover:text-rose-600 text-center text-rose-500 mt-4 border border-rose-500 rounded hover:border-rose-600 px-4 py-2",
-    aria: { role: "link" },
-    title: "View a Map" do
+- if count > 0
+  .text-center.mb-6
+    = link_to event_map_url(@event),
+      target: "_new",
+      class: "inline-block no-underline hover:text-rose-600 text-center text-rose-500 mt-4 border border-rose-500 rounded hover:border-rose-600 px-4 py-2",
+      aria: { role: "link" },
+      title: "View a Map" do
 
-    i.fa-map.fas.mr-2
-    = t("events.show.map")
+      i.fa-map.fas.mr-2
+      = t("events.show.map")

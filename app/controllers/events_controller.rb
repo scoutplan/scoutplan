@@ -40,7 +40,7 @@ class EventsController < UnitContextController
       cache
     end
 
-    @events_by_year = @events.includes(:locations).group_by { |e| e.starts_at.year }
+    @events_by_year = @events.group_by { |e| e.starts_at.year }
 
     @event_drafts = @events.select(&:draft?).select { |e| e.ends_at.future? }
     @presenter = EventPresenter.new(nil, current_member)
