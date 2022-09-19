@@ -1,7 +1,8 @@
 - event_location = @locations_cache[[event.id, "arrival"]] || @locations_cache[[event.id, "activity"]]
+- full_address = [:name, :address, :city, :state, :postal_code].map { |attr| event_location[attr] }.join(" ") if event_location.present?
 
-address
-  - if (full_address = event_location&.full_address).present?
+- if full_address.present?
+  address
     address.text-sm.not-italic.text-md
       - if event.online?
         i.fa-desktop.fas.text-gray-300.mr-1

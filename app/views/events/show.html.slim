@@ -48,7 +48,7 @@
           = render partial: "edit_rsvp_section", locals: { event: @event, presenter: @presenter }        
         = render partial: "events/partials/show/date_card"
         = render partial: "events/payment" if @event.requires_payment?
-        = render partial: "location_card" if @event.location.present? || @event.address.present? || @event.departs_from.present?
+        = render partial: "location_card"
         = render partial: "description" if @event.description.present?
 
 
