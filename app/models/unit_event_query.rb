@@ -6,7 +6,7 @@ class UnitEventQuery
 
   def initialize(membership, unit = nil)
     @membership = membership
-    @unit = membership&.unit || unit
+    @unit = unit || membership&.unit
   end
 
   def execute
