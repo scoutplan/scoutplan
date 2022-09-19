@@ -32,7 +32,19 @@ class EventsController < UnitContextController
     cookies[:calendar_display_month] = params[:month] if params[:month]
     cookies[:calendar_display_year] = params[:year] if params[:year]
 
-    @events = UnitEventQuery.new(current_member, current_unit).execute
+    query = UnitEventQuery.new(current_member, current_unit)
+
+    case params[:scope]
+    when "future"
+      query.start_date = 1.month.from_now.end_of_month + 1.day
+    when "past"
+      query.end_date = Date.today.at_beginning_of_month - 1.day
+    else
+      query.start_date = Date.today.at_beginning_of_month
+      query.end_date = 1.month.from_now.end_of_month
+    end
+
+    @events = query.execute
     @locations = Location.where("locatable_type = 'Event' AND locatable_id IN (?)", @events.map(&:id))
     @locations_cache = @locations.each_with_object({}) do |location, cache|
       key = [location.locatable_id, location.key]
@@ -50,6 +62,10 @@ class EventsController < UnitContextController
 
       # kludge alert: we shouldn't generate this here, now
       @ical_magic_link = MagicLink.generate_non_expiring_link(@current_member, "icalendar") # create a MagicLink object
+    end
+
+    if params[:scope].present?
+      render partial: "event_year", locals: { turbo_frame_id: "#{params[:scope]}_events" } and return
     end
 
     page_title @unit.name, t("events.index.title")

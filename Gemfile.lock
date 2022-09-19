@@ -166,6 +166,9 @@ GEM
     fugit (1.5.3)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
+    geared_pagination (1.1.2)
+      activesupport (>= 5.0)
+      addressable (>= 2.5.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
     honeybadger (4.12.1)
@@ -437,6 +440,7 @@ DEPENDENCIES
   flipper
   flipper-active_record
   flipper-ui
+  geared_pagination
   honeybadger (~> 4.0)
   humanize
   icalendar
