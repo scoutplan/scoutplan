@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: scoutplan/app
     command: sh -c "bundle exec puma -C config/puma.rb"
     volumes:
       - .:/app
@@ -12,9 +13,10 @@ services:
       - db
 
   sidekiq:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: scoutplan/app
     command: sh -c "bundle exec sidekiq"
     depends_on:
       - redis
