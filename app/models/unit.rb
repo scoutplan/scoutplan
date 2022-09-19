@@ -42,7 +42,7 @@ class Unit < ApplicationRecord
   end
 
   def membership_for(user)
-    members.includes(:parent_relationships, :child_relationships).find_by(user_id: user.id)
+    members.includes(:parent_relationships, :child_relationships).find_by(user: user)
   end
 
   def planner
