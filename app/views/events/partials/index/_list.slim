@@ -36,9 +36,14 @@
               #hide_past_events_caption
                 = "Hide past events"
 
-        - @events_by_year.each do |year, yearly_events|
-          - monthly_events = yearly_events.group_by { |e| e.starts_at.month }
-          = render partial: "event_month", locals: { event_month: monthly_events, year: year }
+        = turbo_frame_tag "past_events", src: list_unit_events_path(@unit, scope: "past")
+
+        = turbo_frame_tag "current_events"
+          = render partial: "event_year"
+
+        = turbo_frame_tag "future_events", src: list_unit_events_path(@unit, scope: "future")
+          .text-center
+            i.text-stone-300.text-lg.fa-solid.fa-circle-notch.fa-spin
 
 javascript:
   document.addEventListener("turbo:load", function() {
