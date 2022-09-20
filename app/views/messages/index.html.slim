@@ -58,6 +58,11 @@
           = render partial: "empty", locals: { message_type: "draft" } unless @draft_messages.present?
 
         .tab#messages_queued.hidden
+          .flex.justify-center.mb-2
+            .text-center.text-sky-700.bg-sky-100.rounded.px-4.py-2.font-semibold.text-sm
+              i.fa-clock.fas.mr-2
+              = t("messages.index.legend_queued")
+
           .divide-y
             = render partial: "message", collection: @queued_messages
           = render partial: "empty", locals: { message_type: "queued" } unless @queued_messages.present?
@@ -69,13 +74,13 @@
               = t("messages.index.legend_active")
 
           .divide-y
-            = render partial: "message", collection: @sent_messages.select(&:active?)
-          = render partial: "empty", locals: { message_type: "sent" } unless @sent_messages.present?
+            = render partial: "message", collection: @pinned_messages
+          = render partial: "empty", locals: { message_type: "pinned" } unless @pinned_messages.present?
 
         .tab#messages_done.hidden
           .divide-y
-            = render partial: "message", collection: @sent_messages.select { |m| !m.active? }
-          = render partial: "empty", locals: { message_type: "sent" } unless @sent_messages.present?          
+            = render partial: "message", collection: @completed_messages
+          = render partial: "empty", locals: { message_type: "completed" } unless @completed_messages.present?          
 
 css:
   .message.older {

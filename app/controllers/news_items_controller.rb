@@ -61,7 +61,7 @@ class NewsItemsController < UnitContextController
 
     # respond_to do |format|
     #   format.turbo_stream { render turbo_stream: turbo_stream.remove(@news_item) }
-    #   format.html { redirect_to path, notice: t("news_items.notices.status_update") }
+    #   format.html { redirect_to path, notice: t("announcements.notices.status_update") }
     # end
 
     render turbo_stream: [
