@@ -8,7 +8,7 @@ li.newsletter-child#main_nav_item_newsletter_drafts
       span
         span.w-8.inline-block.text-center
           i.fa-edit.fad.text-purple-500
-        = t("messaging.drafts")
+        = t("announcements.drafts")
       span
         = pill_tag_if_positive(@current_unit.news_items.draft.count, "bg-stone-400 text-stone-50")
 
@@ -22,7 +22,7 @@ li.newsletter-child#main_nav_item_newsletter_queued
       span
         span.w-8.inline-block.text-center.text-purple-400
           i.fa-file-export.fad
-        = t("messaging.queued")
+        = t("announcements.queued")
 
       span
         = pill_tag_if_positive(@current_unit.news_items.queued.count, "bg-stone-400 text-stone-50")
@@ -37,7 +37,7 @@ li.newsletter-child#main_nav_item_newsletter_sent
       span
         span.w-8.inline-block.text-center.text-purple-400
           i.fa-file-check.fad
-        = t("messaging.sent")
+        = t("announcements.sent")
 
 css:
   #main_nav_item_newsletter_#{@view} a {

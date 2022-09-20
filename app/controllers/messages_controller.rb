@@ -9,6 +9,8 @@ class MessagesController < UnitContextController
     @draft_messages  = @unit.messages.draft
     @queued_messages = @unit.messages.queued
     @sent_messages   = @unit.messages.sent.order("updated_at DESC")
+    @pinned_messages = @sent_messages.select(&:active?)
+    @completed_messages = @sent_messages.reject(&:active?)
   end
 
   def show
