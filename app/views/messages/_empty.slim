@@ -1,4 +1,4 @@
 p.mt-8.text-center
-  = "No #{message_type} messages."
-  | &nbsp;
-  = link_to "Write one now", new_unit_message_path, class: "text-brand-500", data: { turbo_action: "advance" }
+  = t("announcements.index.empty", message_type: message_type)
+  = " "
+  = link_to t("announcements.index.write_one_now"), new_unit_message_path, class: "text-blue-500", data: { turbo_action: "advance" }

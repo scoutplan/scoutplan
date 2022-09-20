@@ -27,7 +27,7 @@ article.border-t.px-2.py-4.hover:bg-stone-100.flex.justify-between.gap-8(id="#{ 
         = button_to \
           unit_announcement_path(@unit, news_item),
           method: :delete,
-          title: t("messaging.delete_draft"),
+          title: t("announcements.delete_draft"),
           form_class: "inline-block",
           class: "text-brand-500 hover:text-brand-600 px-2 py-2 text-center" do
             i.fa-trash.fas
@@ -38,7 +38,7 @@ article.border-t.px-2.py-4.hover:bg-stone-100.flex.justify-between.gap-8(id="#{ 
           unit_news_item_dequeue_path(@unit, news_item),
           method: :post,
           form_class: "inline-block",
-          title: t("messaging.dequeue"),
+          title: t("announcements.dequeue"),
           class: "text-brand-500 hover:text-brand-600 px-2 py-2 text-center" do
             i.fa-arrow-to-left.fas
 
@@ -48,7 +48,7 @@ article.border-t.px-2.py-4.hover:bg-stone-100.flex.justify-between.gap-8(id="#{ 
           unit_news_item_enqueue_path(news_item.unit, news_item),
           method: :post,
           form_class: "inline-block",
-          title: t("news_items.titles.enqueue"),
+          title: t("announcements.titles.enqueue"),
           class: "text-brand-500 hover:text-brand-600 px-2 py-2 text-center" do
             i.fa-arrow-to-right.fas
 

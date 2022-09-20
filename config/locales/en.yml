@@ -97,8 +97,11 @@ en:
   announcements:
     titles:
       index: "Announcements"
+
+    index:
+      write_one_now: "Write one now..."
+      empty: "No %{message_type} announcements."      
       
-  messaging:
     title: "Messaging"
     new_item_description: "Announcements appear in the %{unit_name} weekly digest once they're approved"
     new_news_item: "Write an Announcement"
@@ -113,10 +116,6 @@ en:
     dequeue: "Move back to Drafts"
     delete_draft: "Delete this item"
     edit: "Edit this item"
-
-  news_items:
-    index:
-      write_one_now: "Write one now..."
 
     new:
       submit_caption: "Add This Announcement"
@@ -473,7 +472,8 @@ en:
       sent_tab:     "Pinned"
       done_tab:     "Completed"
       title:        "Announcements"
-      legend_active: "Pinned announcements appear in the weekly email newsletter"
+      legend_active: "Pinned announcements appear in the weekly email newsletter."
+      legend_queued: "Queued announcements have a 'Don't send until' date in the future."
       pinned_until: "Pinned until %{pin_until}"
 
     tooltips:
