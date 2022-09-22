@@ -9,4 +9,4 @@ Ahoy.api = false
 # see https://github.com/ankane/ahoy#geocoding
 Ahoy.geocode = false
 
-Ahoy.user_method = :current_member
+# Ahoy.user_method = :current_member
