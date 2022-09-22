@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   before_action :process_query_string
   after_action :clear_session_view
+  after_action :track_action
 
   def new_session_path(_scope)
     new_user_session_path
@@ -45,4 +46,14 @@ class ApplicationController < ActionController::Base
   end
 
   def current_member; end
+
+  protected
+
+  def track_action
+    ahoy.track tracking_description, request.path_parameters
+  end
+
+  def tracking_description
+    "#{controller_name}##{action_name}"
+  end  
 end
