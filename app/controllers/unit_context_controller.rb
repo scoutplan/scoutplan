@@ -7,7 +7,6 @@ class UnitContextController < ApplicationController
   before_action :set_unit_cookie
   before_action :build_event_presenter
   around_action :time_zone
-  after_action  :track_action
 
   def current_unit
     @current_unit || (@current_unit = Unit.includes(
@@ -24,12 +23,6 @@ class UnitContextController < ApplicationController
 
   def pundit_user
     @membership
-  end
-
-  protected
-
-  def track_action
-    ahoy.track "Ran action", request.path_parameters
   end
 
   private
