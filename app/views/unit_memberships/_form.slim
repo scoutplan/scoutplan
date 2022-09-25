@@ -48,7 +48,7 @@
           = t("helpers.label.event.cancel_update")
 
         // save
-        = f.submit @target_membership.new_record? ? "Add This Member" : "Save These Changes",
+        = f.submit @target_membership.new_record? ? t("members.form.captions.accept_create") : t("members.form.captions.accept_update"),
           class: "bg-brand-500 inline-block px-4 py-2 no-underline rounded text-white text-sm font-bold tracking-wider uppercase"
 
 scss:

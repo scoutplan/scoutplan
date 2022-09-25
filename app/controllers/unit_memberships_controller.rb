@@ -111,7 +111,7 @@ class UnitMembershipsController < ApplicationController
   end
 
   def find_membership
-    @target_membership = UnitMembership.includes(:parent_relationships, :child_relationships).find(params[:id] || params[:member_id])
+    @target_membership = UnitMembership.includes(:parent_relationships, :child_relationships).find(params[:member_id] || params[:id])
     @target_user = @target_membership.user
     @current_unit = @unit = @target_membership.unit
     @current_member = @unit.membership_for(current_user)
@@ -127,7 +127,7 @@ class UnitMembershipsController < ApplicationController
       :status, :role, :member_type,
       child_relationships_attributes: [:id, :child_unit_membership_id, :_destroy],
       parent_relationships_attributes: [:id, :_destroy],
-      user_attributes: [:first_name, :last_name, :phone]
+      user_attributes: [:id, :first_name, :last_name, :phone, :email]
     )
   end
 

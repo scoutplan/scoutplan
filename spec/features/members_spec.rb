@@ -101,9 +101,20 @@ describe "unit_memberships", type: :feature do
 
     new_name = "A different name"
     fill_in "unit_membership_user_attributes_first_name", with: new_name
-    click_link_or_button "Save These Changes"
+    click_link_or_button I18n.t("members.form.captions.accept_update")
     member.reload
     expect(member.first_name).to eq(new_name)
+  end
+
+  it "edits a member's email address" do
+    member = FactoryBot.create(:member, unit: @admin.unit)
+    visit edit_unit_member_path(@unit, member)
+
+    new_email = Faker::Internet.email
+    fill_in "unit_membership_user_attributes_email", with: new_email
+    click_link_or_button I18n.t("members.form.captions.accept_update")
+    member.reload
+    expect(member.email).to eq(new_email)
   end
 end
 # rubocop:enable Metrics/BlockLength
