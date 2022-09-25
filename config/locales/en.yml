@@ -354,6 +354,11 @@ en:
     member_type:      "Youth/Adult"
     search_by_name:   "Search by name"
 
+    form:
+      captions:
+        accept_create: "Add This Member"
+        accept_update: "Save These Changes"
+
     statuses:
       active: "Active"
       registered: "Family & Friends"
