@@ -100,10 +100,16 @@ describe "unit_memberships", type: :feature do
     visit edit_unit_member_path(@unit, member)
 
     new_name = "A different name"
+    new_nickname = "A different nickname"
+    new_phone = "A different phone"
     fill_in "unit_membership_user_attributes_first_name", with: new_name
+    fill_in "unit_membership_user_attributes_nickname", with: new_nickname
+    fill_in "unit_membership_user_attributes_phone", with: new_phone
     click_link_or_button I18n.t("members.form.captions.accept_update")
     member.reload
     expect(member.first_name).to eq(new_name)
+    expect(member.nickname).to eq(new_nickname)
+    expect(member.phone).to eq(new_phone)
   end
 
   it "edits a member's email address" do
