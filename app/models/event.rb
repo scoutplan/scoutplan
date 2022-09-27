@@ -33,6 +33,8 @@ class Event < ApplicationRecord
   validates_presence_of :title, :starts_at, :ends_at
   validate :dates_are_subsequent
 
+  date_time_fields_for :starts_at, :ends_at
+
   enum status: { draft: 0, published: 1, cancelled: 2, archived: 3 }
 
   # TODO: clean up this mess
