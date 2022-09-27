@@ -1,0 +1,5 @@
+= turbo_frame_tag "main"
+  .max-w-3xl.mx-auto
+    h1.font-bold.text-3xl = t("locations.titles.index", unit_name: @unit.name)
+    .flex.flex-col.divide-y
+      = render @locations

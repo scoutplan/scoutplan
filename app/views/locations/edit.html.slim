@@ -1,2 +1,3 @@
-.mx-auto.max-w-xl
-  = render partial: "form", locals: { location: @location, locatable: @location.locatable, return_path: @return_path }
+= turbo_frame_tag "main"
+  .mx-auto.max-w-xl
+    = render partial: "form", locals: { location: @location, return_path: @return_path }

@@ -8,10 +8,11 @@ class Unit < ApplicationRecord
   has_many :event_categories
   has_many :unit_memberships
   has_many :users, through: :unit_memberships
-  # has_many :messages, through: :unit_memberships
+  has_many :locations, through: :events
   has_many :news_items
   has_many :tasks, as: :taskable
   has_one_attached :logo
+  has_many :locations, through: :events
 
   validates_presence_of :name
 

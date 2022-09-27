@@ -1,0 +1,5 @@
+div.p-4
+  = link_to edit_unit_location_path(@unit, location),
+            data: { turbo_action: "advance" } do
+    = content_tag :div, location.name if location.name.present?
+    = content_tag :div, location.address if location.address.present?

@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 
-namespace :scoutplan do
+namespace :sp do
+  desc "Convert Locations to EventLocations"
+  task normalize_locations: :environment do
+    EventLocation.destroy_all
+
+    Location.all.each do |location|
+      event = location.locatable
+      event.event_locations.create!(location: location, key: location.key)
+    end
+  end
+
   desc "Create event locations"
   task create_event_locations: :environment do
     puts "Processing #{Event.count} events..."

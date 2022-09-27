@@ -8,6 +8,8 @@ class EventView
   include ActiveModel::Model
   extend Forwardable
 
+  date_time_fields :starts_at, :ends_at
+
   attr_accessor :event, :update_scope, :repeats
   attr_writer   :starts_at_date,
                 :starts_at_time,
@@ -16,26 +18,10 @@ class EventView
 
   # TODO: delegate missing to @event
 
-  def_delegators :@event,
-                 :unit,
-                 :title,
-                 :short_description,
-                 :description,
-                 :event_category_id,
-                 :repeats_until,
-                 :location,
-                 :address,
-                 :venue_phone,
-                 :departs_from,
-                 :requires_rsvp,
-                 :rsvp_closes_at,
-                 :includes_activity,
-                 :activity_name,
-                 :new_record?,
-                 :save,
-                 :save!,
-                 :status,
-                 :payment_amount
+  def_delegators :@event, :unit, :title, :short_description, :description, :event_category_id,
+                 :repeats_until, :location, :address, :venue_phone, :departs_from, :requires_rsvp,
+                 :rsvp_closes_at, :includes_activity, :activity_name, :new_record?, :save, :save!,
+                 :status, :payment_amount, :event_locations_attributes, :website, :event_locations
 
   def initialize(event)
     @event = event || new_record

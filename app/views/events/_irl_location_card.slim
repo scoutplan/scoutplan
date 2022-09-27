@@ -2,6 +2,8 @@
 
 .flex.md:flex-row.gap-8.place-content-center
   - count = 0
+
+  // cycle through the three (3) location types
   - ["departure", "arrival", "activity"].each do |key|
     - if @locations_cache.present?
       - location = @locations_cache[[@event.id, key]]
@@ -16,7 +18,7 @@
       div.pt-6(class="location-card location-#{key}")
         // this <i> tag gets styled in _location_card.slim
         i
-        = render partial: "events/location", locals: { location: location, location_key: key, short_link: true, editing_disabled: true }
+        = render partial: "show_location", locals: { location: location, location_key: key, short_link: true }
 
 - if count > 0
   .text-center.mb-6

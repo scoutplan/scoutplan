@@ -1,9 +1,10 @@
-= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&libraries=places", async: true
-
 - url = @event_view.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event_view.event)
 - method = @event_view.new_record? ? "post" : "patch"
 - @format_date = "%Y-%m-%d"
 - @format_time = "%H:%M:%S"
+
+- content_for :body_classes do
+  = "online-event" if @event.online
 
 .mx-auto.max-w-3xl
   = styled_header_tag @event.new_record? ? t("events.titles.new") : t("events.titles.edit")

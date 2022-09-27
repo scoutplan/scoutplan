@@ -1,5 +1,6 @@
-section#location_card.border-b
-  = render partial: @event.online? ? "online_location_card" : "irl_location_card"
+- if @event.locations.present?
+  section#location_card.border-b
+    = render partial: @event.online? ? "online_location_card" : "irl_location_card"
 
 css:
   .location-card i:before {

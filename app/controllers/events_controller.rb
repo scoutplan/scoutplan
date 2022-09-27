@@ -154,7 +154,7 @@ class EventsController < UnitContextController
   def edit_rsvps
     authorize @event
     @unit = Unit.find(params[:unit_id])
-    @event = Event.find(params[:event_id])
+    @event = Event.include(:event_locations).find(params[:event_id])
     @event_view = EventView.new(@event)
     @current_member = @unit.membership_for(current_user)
     render template: "events/show"
@@ -180,6 +180,10 @@ class EventsController < UnitContextController
   # GET /:unit_id/events/:event_id/edit
   def edit
     authorize @event
+    # @event.event_locations.build
+    %w[departure arrival activity].each do |location_key|
+      @event.event_locations.build(key: location_key) # unless @event.event_locations.find_by(key: location_key)
+    end
     @event_view = EventView.new(@event)
   end
 
@@ -339,34 +343,32 @@ class EventsController < UnitContextController
   end
 
   # permitted parameters
-  # rubocop:disable Metrics/MethodLength
   def event_params
-    params.require(:event).permit(
-      :title,
-      :event_category_id,
-      :location,
-      :address,
-      :description,
-      :short_description,
-      :requires_rsvp,
-      :includes_activity,
-      :activity_name,
-      :starts_at_date,
-      :starts_at_time,
-      :ends_at_date,
-      :ends_at_time,
-      :repeats,
-      :repeats_until,
-      :departs_from,
-      :status,
-      :venue_phone,
-      # these ones are specifically for cancellation
-      :message_audience,
-      :note,
-      :payment_amount
-    )
+    ap params
+    p = params.require(:event).permit(:title, :event_category_id, :location, :address, :description,
+                                      :short_description, :requires_rsvp, :includes_activity, :activity_name,
+                                      :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
+                                      :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
+                                      :note, :payment_amount, :website,
+                                      event_locations_attributes: [:id, :key, :location_id, :event_id, :_destroy])
+    process_event_locations_attributes(p)
   end
-  # rubocop:enable Metrics/MethodLength
+
+  # iterates through event_location_attributes and adds _destroy: true where appropriate
+  def process_event_locations_attributes(p)
+    ap p
+    elas = p[:event_locations_attributes]
+    ap elas
+
+    elas.each do |key, value_hash|
+      if value_hash[:id] != "" && value_hash[:location_id] == ""
+        value_hash[:_destroy] = true
+        elas[key] = value_hash
+      end
+    end
+    p[:event_locations_attributes] = elas
+    p
+  end
 
   def event_set_datetimes
     event_set_start

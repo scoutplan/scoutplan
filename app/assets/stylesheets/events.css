@@ -282,3 +282,15 @@ body.showing-only-draft-events a:hover {
 
 body.modal-open main {
   overflow: hidden; }
+
+#fields_online {
+  visibility: hidden;
+}
+
+body.online-event #fields_online {
+  visibility: visible;
+}
+
+body.online-event #fields_offline {
+  visibility: hidden;
+}

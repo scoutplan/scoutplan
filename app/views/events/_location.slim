@@ -2,30 +2,34 @@
 - short_link ||= false
 
 .py-3
-  - if location.nil?
-    p
-      = "No location set."
-      = link_to new_unit_event_location_path(@unit, @event, location_key: location_key),
-        class: "ml-2 text-blue-500 hover:underline",
-        data: { turbo_frame: "_top" } do
-        = "Set one now "
-        i.fa-solid.fa-chevron-right
+  .location-selector
+    = f.fields_for "event_locations_attributes[]", event_location do |location_fields|
+      = location_fields.hidden_field :key
+      = location_fields.hidden_field :id
+      = location_fields.select :location_id,
+                                options_from_collection_for_select(@unit.locations.reject { |l| l.display_name.empty? }.sort_by(&:display_name),
+                                  :id,
+                                  :full_address,
+                                  event_location.location_id),
+                                include_blank: "None",
+                                class: "rounded"
+      .mt-2
+        = link_to unit_event_locations_path(@event.unit, @event),
+                  class: "text-blue-500 hover:text-blue-600",
+                  data: { turbo_action: "advance" } do
 
-  - else
-    address.not-italic
-      .font-bold = location.name
-      div = location.address
-      div
-        = [ location.city.presence, location.state.presence ].join(", ")
-        = "  "
-        = location.postal_code
-      div = location.phone
-      - if location.website.present?
-        div
-          = link_to short_link ? "Link" : location.website, location.website, target: "_new", class: "text-blue-500 hover:underline external-link"
+          i.fa-solid.fa-book-atlas.mr-1
+          = t("locations.captions.address_book", unit_name: @unit.name)
 
-    - unless editing_disabled
-      = link_to t("change"),
-        edit_location_path(location),
-        class: "inline-block border rounded px-2 py-1 mt-2 uppercase font-bold text-sm tracking-wider text-stone-500 border-stone-500 hover:bg-stone-200 hover:text-stone-800",
-        data: { turbo_action: "advance" }
+      - if false
+        div.mt-2.flex.flex-row.gap-4
+          = link_to new_unit_event_location_path(@event.unit, @event),
+                    class: "text-blue-500 hover:text-blue-600",
+                    data: { turbo_action: "advance" } do
+          
+            i.fa-solid.fa-plus.mr-1
+            = t("locations.captions.add_a_location")
+
+          = link_to "#", class: "text-blue-500" do
+            i.fa-solid.fa-pencil.mr-1
+            = t("locations.captions.edit_location")

@@ -10,7 +10,7 @@ header.sticky.top-0.z-10
       // RIGHT SIDE NAME / UNIT
       div.justify-self-end#nav_right
         .flex
-          = render partial: "layouts/partials/notifications", locals: { presenter: @presenter }
+          = render partial: "layouts/partials/notifications", locals: { presenter: @presenter || EventPresenter.new(nil, @current_member) }
           = render partial: "layouts/partials/user_menu"
 
 css:

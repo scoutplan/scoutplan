@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_07_114825) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_26_150915) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -185,6 +185,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_07_114825) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "event_locations", force: :cascade do |t|
+    t.integer "event_id", null: false
+    t.integer "location_id", null: false
+    t.string "key", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "event_organizers", force: :cascade do |t|
     t.integer "event_id"
     t.integer "unit_membership_id"
@@ -231,6 +239,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_07_114825) do
     t.string "phone"
     t.string "venue_phone"
     t.integer "payment_amount", default: 0, null: false
+    t.boolean "online", default: false, null: false
+    t.string "website"
   end
 
   create_table "flipper_features", force: :cascade do |t|

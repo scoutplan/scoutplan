@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 # Controller for manipulating Location objects
-class LocationsController < ApplicationController
-  before_action :find_location, except: [:new, :create]
-  before_action :find_locatable, except: [:create]
-  before_action :find_unit, except: [:create]
-  before_action :find_member, except: [:create]
-  layout "modal"
+class LocationsController < UnitContextController
+  before_action :find_location, except: [:index, :new, :create]
+
+  def index
+    @locations = @unit.locations.sort_by(&:display_name)
+  end
 
   def create
     @location = Location.new
@@ -21,7 +21,6 @@ class LocationsController < ApplicationController
 
   def edit
     authorize @location
-    @return_path = edit_unit_event_path(@unit, @locatable)
   end
 
   def new
@@ -40,32 +39,10 @@ class LocationsController < ApplicationController
     redirect_to params[:return_path], notice: "Location updated"
   end
 
-  def pundit_user
-    @member
-  end
-
   private
-
-  def create_context
-    @location = Location.find(params[:id])
-    @locatable = @location.locatable
-  end
-
-  def find_locatable
-    @locatable = @location.locatable if @location.present?
-    @locatable = Event.find(params[:event_id]) if params[:event_id].present?
-  end
 
   def find_location
     @location = Location.find(params[:id])
-  end
-
-  def find_member
-    @member = @unit.membership_for(current_user)
-  end
-
-  def find_unit
-    @unit = @locatable&.unit
   end
 
   def location_params

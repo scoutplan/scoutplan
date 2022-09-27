@@ -263,7 +263,7 @@ en:
       delete_confirm:  "Are you sure you want to permanently delete this event and any RSVPs associated with it?"
       depart_from:    "Depart From"
       arrive_at:       "Arrive At"
-      activity_at:     "Activity Location"
+      activity_at:     "Side Activity"
 
     my_rsvps:
       title: "My RSVPs"
@@ -354,6 +354,11 @@ en:
     member_type:      "Youth/Adult"
     search_by_name:   "Search by name"
 
+    form:
+      captions:
+        accept_create: "Add This Member"
+        accept_update: "Save These Changes" 
+
     statuses:
       active: "Active"
       registered: "Family & Friends"
@@ -410,9 +415,16 @@ en:
       departure: "Depart From"
       arrival: "Arrive At"
       activity: "Activity Location"
+      index: "%{unit_name} Location Atlas"
     
     labels:
       name: "Site Name"
+      link: "Link"
+
+    captions:
+      add_a_location: "Add a Location"
+      edit_location: "Edit Location"
+      address_book: "%{unit_name} Location Atlas"
   
   mailers:
     member_mailer:

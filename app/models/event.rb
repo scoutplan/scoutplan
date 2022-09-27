@@ -22,8 +22,12 @@ class Event < ApplicationRecord
   has_many :event_organizers, dependent: :destroy
   has_many :document_types, as: :document_typeable, dependent: :destroy
   has_many :locations, as: :locatable, dependent: :destroy
+  has_many :event_locations, inverse_of: :event
+  has_many :locations, through: :event_locations
 
   has_rich_text :description
+
+  accepts_nested_attributes_for :event_locations, allow_destroy: true, reject_if: ->(attr) { attr["location_id"] == "" }
 
   alias_attribute :rsvps, :event_rsvps
   alias_attribute :category, :event_category
@@ -124,8 +128,12 @@ class Event < ApplicationRecord
     address =~ /\A#{URI::regexp(['http', 'https'])}\z/
   end
 
+  def offline?
+    !online?
+  end
+
   def primary_location
-    (locations.find_by(key: "arrival") || locations.find_by(key: "activity"))
+    (event_locations.find_by(key: "arrival")&.location || event_locations.find_by(key: "activity")&.location)
   end
 
   def location
