@@ -60,11 +60,13 @@ RSpec.describe Event, type: :model do
   end
 
   describe "extensions" do
-    it "has date and time attributes" do
-      expect(Event.new.methods.include?(:starts_at_date)).to be_truthy
-      expect(Event.new.methods.include?(:starts_at_time)).to be_truthy
-      expect(Event.new.methods.include?(:ends_at_date)).to be_truthy
-      expect(Event.new.methods.include?(:ends_at_time)).to be_truthy
+    describe "date and time attributes" do
+      it "works" do
+        event = FactoryBot.build(:event)
+        puts event.starts_at.class.name
+        expect(event.starts_at).to be_a(ActiveSupport::TimeWithZone)
+        expect(event.starts_at_date).to be_a(Date)
+      end
     end
   end
 
