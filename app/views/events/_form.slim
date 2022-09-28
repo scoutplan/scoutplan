@@ -1,5 +1,7 @@
-- url = @event_view.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event_view.event)
-- method = @event_view.new_record? ? "post" : "patch"
+= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&libraries=places", async: true
+
+- url = @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event)
+- method = @event.new_record? ? "post" : "patch"
 - @format_date = "%Y-%m-%d"
 - @format_time = "%H:%M:%S"
 
@@ -14,7 +16,7 @@
       = "Cancelled"
 
   = form_with \
-    model: @event_view,
+    model: @event,
     builder: ApplicationFormBuilder,
     scope: 'event',
     url: url,
@@ -40,7 +42,7 @@
           @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
           { \
             prompt: t("events.placeholders.category"),
-            selected: @event_view.event_category_id,
+            selected: @event.event_category_id,
           },
           { class: "border border-stone-200 rounded py-2 bg-white w-full md:w-fit" }
 
@@ -159,7 +161,7 @@
       // RIGHT SIDE
       .flex.flex-col.md:flex-row.md:justify-end.gap-2
         // Save Changes
-        = f.submit @event_view.new_record? ? t("events.new.add_this_event") : t("global.save_changes"),
+        = f.submit @event.new_record? ? t("events.new.add_this_event") : t("global.save_changes"),
           class: "text-white text-sm font-bold tracking-wider uppercase \
                   inline-block w-full md:w-fit px-4 py-3 md:py-2 \
                   bg-brand-500 hover:bg-brand-600 \

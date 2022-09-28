@@ -129,16 +129,13 @@ class EventsController < UnitContextController
 
   def show
     authorize @event
-    @event_view = EventView.new(@event)
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).rsvps?
     @current_family = @current_member.family
     page_title @event.unit.name, @event.title
     respond_to do |format|
       format.html
-      format.pdf do
-        render_event_brief
-      end
+      format.pdf { render_event_brief }
     end
   end
 
@@ -154,8 +151,7 @@ class EventsController < UnitContextController
   def edit_rsvps
     authorize @event
     @unit = Unit.find(params[:unit_id])
-    @event = Event.include(:event_locations).find(params[:event_id])
-    @event_view = EventView.new(@event)
+    @event = Event.find(params[:event_id])
     @current_member = @unit.membership_for(current_user)
     render template: "events/show"
   end
@@ -163,7 +159,6 @@ class EventsController < UnitContextController
   # POST /:unit_id/events/new
   def new
     build_prototype_event
-    # @event_view = EventView.new(@event)
     @presenter = EventPresenter.new(@event, current_member)
   end
 
@@ -180,19 +175,16 @@ class EventsController < UnitContextController
   # GET /:unit_id/events/:event_id/edit
   def edit
     authorize @event
-    # @event.event_locations.build
     %w[departure arrival activity].each do |location_key|
       @event.event_locations.build(key: location_key) # unless @event.event_locations.find_by(key: location_key)
     end
-    @event_view = EventView.new(@event)
   end
 
   # PATCH /:unit_id/events/:event_id
   def update
     authorize @event
-    @event_view = EventView.new(@event)
-    @event_view.assign_attributes(event_params)
-    return unless @event_view.save!
+    @event.assign_attributes(event_params)
+    return unless @event.save!
 
     redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
   end
@@ -315,7 +307,6 @@ class EventsController < UnitContextController
       @event.ends_at = date_s.to_date
     end
     set_default_times
-    @event_view = EventView.new(@event)
     @member_rsvps = current_member.event_rsvps
   end
 

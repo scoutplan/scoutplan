@@ -357,7 +357,7 @@ en:
     form:
       captions:
         accept_create: "Add This Member"
-        accept_update: "Save These Changes" 
+        accept_update: "Save These Changes"
 
     statuses:
       active: "Active"

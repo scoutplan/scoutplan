@@ -1,5 +1,5 @@
-- url = @event_view.new_record? ? unit_events_path(@event_view.unit) : unit_event_path(@event_view.unit, @event_view.event)
-- method = @event_view.new_record? ? "post" : "patch"
+- url = @event.new_record? ? unit_events_path(@event.unit) : unit_event_path(@event.unit, @event)
+- method = @event.new_record? ? "post" : "patch"
 - mode = action_name == "edit_rsvps" ? "rsvp" : "show"
 
 = turbo_frame_tag "main"
