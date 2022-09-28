@@ -59,6 +59,15 @@ RSpec.describe Event, type: :model do
     end
   end
 
+  describe "extensions" do
+    it "has date and time attributes" do
+      expect(Event.new.methods.include?(:starts_at_date)).to be_truthy
+      expect(Event.new.methods.include?(:starts_at_time)).to be_truthy
+      expect(Event.new.methods.include?(:ends_at_date)).to be_truthy
+      expect(Event.new.methods.include?(:ends_at_time)).to be_truthy
+    end
+  end
+
   describe "rsvps" do
     before do
       @member = FactoryBot.create(:member, :non_admin)

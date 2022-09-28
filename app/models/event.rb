@@ -3,6 +3,9 @@
 # a calendar event
 # rubocop:disable Metrics/ClassLength
 class Event < ApplicationRecord
+  extend DateTimeAttributes
+  date_time_attrs_for :starts_at, :ends_at
+
   LOCATION_KEYS = {
     departure: "departure",
     staging: "staging",
