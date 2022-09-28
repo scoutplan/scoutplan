@@ -1,10 +1,13 @@
-# adds a `date_time_fields_for` macro to classes
-# so that we can pass individual date and time strings
-# usage: date_time_fields :start_time
+# frozen_string_literal: true
+
 require "date"
 
-module DateTimeFields
-  def date_time_fields_for(*attr_names)
+# adds a `date_time_attrs_for` class method
+# so that we can pass individual date and time strings
+# usage: date_time_fields :start_time
+module DateTimeAttributes
+  # rubocop:disable Metrics/MethodLength
+  def date_time_attrs_for(*attr_names)
     attr_names.each do |attr_name|
       date_attr_name = "#{attr_name}_date"
       time_attr_name = "#{attr_name}_time"
@@ -34,4 +37,5 @@ module DateTimeFields
       CODE
     end
   end
+  # rubocop:enable Metrics/MethodLength
 end

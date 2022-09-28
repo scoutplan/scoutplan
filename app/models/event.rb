@@ -3,6 +3,9 @@
 # a calendar event
 # rubocop:disable Metrics/ClassLength
 class Event < ApplicationRecord
+  extend DateTimeAttributes
+  date_time_attrs_for :starts_at, :ends_at
+
   LOCATION_KEYS = {
     departure: "departure",
     staging: "staging",
@@ -32,8 +35,6 @@ class Event < ApplicationRecord
 
   validates_presence_of :title, :starts_at, :ends_at
   validate :dates_are_subsequent
-
-  date_time_fields_for :starts_at, :ends_at
 
   enum status: { draft: 0, published: 1, cancelled: 2, archived: 3 }
 
