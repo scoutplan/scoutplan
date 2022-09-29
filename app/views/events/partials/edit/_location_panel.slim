@@ -1,92 +1,51 @@
-- departure_event_location = @event.event_locations.find_by(key: :departure) || @event.event_locations.build(key: :departure)
-- arrival_event_location = @event.event_locations.find_by(key: :arrival) || @event.event_locations.build(key: :arrival)
-- activity_event_location = @event.event_locations.find_by(key: :activity) || @event.event_locations.build(key: :activity)
-
-// location
-section
-
-  h1 Testing
-
-
-
-  = f.fields_for :event_locations do |location_fields|
-    = location_fields.object
-    p
-      = location_fields.label :location_id
-      = location_fields.text_field :location_id
-
-    p
-      = location_fields.label :key
-      = location_fields.text_field :key
-
-
-  // online checkbox
-  section.mb-4.pt-4
-    = f.check_box :online, class: "mr-2", onclick: "document.body.classList.toggle('online-event', this.checked);"
+section#location_panel
+  section.mb-4.pt-4#online_offline_picker
+    = f.check_box :online, class: "mr-2 text-green-500 rounded", onclick: "checkOnline(this);"
     = f.label :online, "This event is online", class: "mr-2 font-bold uppercase tracking-wider text-sm"
 
     // online
-    span#fields_online
-      = text_field :website, "", placeholder: "Type a web address", class: "rounded placeholder:text-stone-200"
+    span#fields_online.mt-2
+      = f.url_field :website, placeholder: "Type a web address", class: "rounded placeholder:text-stone-200 border-stone-300 w-full"
 
   section.tabbed#fields_offline
     nav.tab-menu.mb-4.text-xs.md:text-sm
       ul
-        li.inline-block
-          = link_to "#departure_location",
-            data: { tab_target: "#departure_location" },
-            class: "inline-block tab-link px-2 md:px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold tracking-wider" do
-            - if departure_event_location.location.present?
-              i.fa-solid.fa-circle-small.text-brand-500.mr-1.inline-block
-            = t("events.form.depart_from")
-
-        li.inline-block
-          = link_to "#arrival_location",
-            data: { tab_target: "#arrival_location" },
-            class: "inline-block tab-link px-2 md:px-6 py-2 border-b-2 border-brand-500 hover:border-brand-500 uppercase font-bold tracking-wider" do
-            - if arrival_event_location.location.present?
-              i.fa-solid.fa-circle-small.text-brand-500.mr-1.inline-block
-            = t("events.form.arrive_at")
-
-        li.inline-block
-          = link_to "#activity_location",
-            data: { tab_target: "#activity_location" },
-            class: "inline-block tab-link px-2 md:px-6 py-2 border-b-2 border-brand-200 hover:border-brand-500 uppercase font-bold tracking-wider" do
-            - if activity_event_location.location.present?
-              i.fa-solid.fa-circle-small.text-brand-500.mr-1.inline-block
-            = t("events.form.activity_at")
+        - %w[departure arrival activity].each do |location_type|
+          li.inline-block
+            = link_to "#",
+              data: { tab_target: "##{location_type}_location_tab" },
+              class: "inline-block tab-link px-2 md:px-6 py-2 border-b-2 #{location_type == "arrival" ? "border-brand-500" : "border-brand-200"} hover:border-brand-500 uppercase font-bold tracking-wider" do
+              - if @event.event_locations.exists?(location_type: location_type)
+                i.fa-solid.fa-circle-small.text-brand-500.mr-2.inline-block
+              = t("events.form.#{location_type}_tab")
 
     .tabs
-      .tab.hidden#departure_location
-        = render partial: "location", locals: { f: f, event_location: departure_event_location, location_key: "departure" }
+      = f.fields_for :event_locations do |ff|
+        .tab(class="#{ff.object.location_type == 'arrival' ? '' : 'hidden'}" id="#{ff.object.location_type}_location_tab")
+          .py-3
+            = ff.select :location_id,
+                          options_from_collection_for_select(@unit.locations.reject { |l| l.full_address.empty? }.sort_by(&:display_name),
+                                                            :id,
+                                                            :full_address,
+                                                            ff.object.location_id),
+                          { include_blank: "None" },
+                          { class: "rounded border-stone-200" }
 
-      .tab#arrival_location
-        = render partial: "location", locals: { f: f, event_location: arrival_event_location, location_key: "arrival" }
+            = ff.hidden_field :location_type
 
-      .tab.hidden#activity_location
-        = render partial: "location", locals: { f: f, event_location: activity_event_location, location_key: "activity" }
+            .pt-2
+              = link_to unit_event_locations_path(@event.unit, @event),
+                        class: "text-blue-500 hover:text-blue-600 text-sm font-semibold",
+                        data: { turbo_action: "advance" } do
+
+                i.fa-solid.fa-book-atlas.mr-1
+                = t("locations.captions.address_book", unit_name: @unit.name)
 
 javascript:
-
-    document.querySelectorAll(".change-location-button").forEach(function(elem) {
-      elem.addEventListener("click", function(event) {
-        var wrapper = this.closest(".location-wrapper");
-        wrapper.classList.toggle("editing-location")
-        event.preventDefault();
-        return false;
-      });
-    });
-
-
-css:
-  .location-wrapper .location-selector {
-    display: none;
-  }
-
-  .location-wrapper.editing-location .location-selector {
-    display: block;
-  }
-
-  .location-wrapper.editing-location .location-prompt {
-    display: none;
+  // respond when Online is checked
+  function checkOnline(c) {
+    document.body.classList.toggle("online-event", c.checked);
+    if (c.checked) {
+      document.querySelector("#event_website").focus();
+    }
   }

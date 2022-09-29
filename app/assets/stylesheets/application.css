@@ -32,6 +32,14 @@ html.fontawesome-i2svg-complete .icon-substitute {
   display: none;
 }
 
+a.external-link {
+  color: #2563eb;
+}
+
+a.external-link:hover {
+  color: #1d4ed8;
+}
+
 a.external-link:after {
   font-family: "Font Awesome 6 Pro";
   font-style: normal;

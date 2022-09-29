@@ -5,38 +5,39 @@ class LocationsController < UnitContextController
   before_action :find_location, except: [:index, :new, :create]
 
   def index
-    @locations = @unit.locations.sort_by(&:display_name)
+    @locations = @unit.locations.uniq.sort_by(&:display_name)
   end
 
   def create
-    @location = Location.new
-    @location.assign_attributes(location_params)
-    @locatable = @location.locatable
-    find_unit
-    find_member
+    @location = @unit.locations.new(location_params)
     authorize @location
     @location.save!
-    redirect_to params[:return_path], notice: "Location updated"
+    redirect_to unit_locations_path(@unit), notice: I18n.t("locations.notices.created")
+  end
+
+  def destroy
+    @location.destroy
+    redirect_to unit_locations_path(@unit), notice: I18n.t("locations.notices.destroyed", location_name: @location.display_name)
   end
 
   def edit
     authorize @location
+    # @location_type = params[:location_type]
+    # @event_id = params[:event_id]
   end
 
   def new
-    find_locatable
-    @location = @locatable.locations.new(key: params[:location_key])
-    @return_path = edit_unit_event_path(@unit, @locatable)
-    ap @location
+    @location = @unit.locations.new
     authorize @location
+    @event_id = params[:event_id]
+    @location_type = params[:location_type]
   end
 
   def update
-    @location = Location.find(params[:id])
     authorize @location
     @location.assign_attributes(location_params)
     @location.save!
-    redirect_to params[:return_path], notice: "Location updated"
+    redirect_to params[:return_path] || unit_locations_path(@unit), notice: I18n.t("locations.notices.updated")
   end
 
   private
@@ -46,7 +47,6 @@ class LocationsController < UnitContextController
   end
 
   def location_params
-    params.require(:location).permit(:locatable_type, :locatable_id, :key,
-                                     :name, :address, :city, :state, :postal_code, :phone, :website)
+    params.require(:location).permit(:name, :map_name, :address, :phone, :website)
   end
 end

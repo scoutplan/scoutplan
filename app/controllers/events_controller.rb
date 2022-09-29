@@ -45,12 +45,12 @@ class EventsController < UnitContextController
     end
 
     @events = query.execute
-    @locations = Location.where("locatable_type = 'Event' AND locatable_id IN (?)", @events.map(&:id))
-    @locations_cache = @locations.each_with_object({}) do |location, cache|
-      key = [location.locatable_id, location.key]
-      cache[key] = location
-      cache
-    end
+    # @locations = Location.where("locatable_type = 'Event' AND locatable_id IN (?)", @events.map(&:id))
+    # @locations_cache = @locations.each_with_object({}) do |location, cache|
+    #   key = [location.locatable_id, location.key]
+    #   cache[key] = location
+    #   cache
+    # end
 
     @events_by_year = @events.group_by { |e| e.starts_at.year }
 
@@ -143,6 +143,14 @@ class EventsController < UnitContextController
     @attendees = @event.rsvps.accepted
   end
 
+  # GET /:unit_id/events/:event_id/edit
+  def edit
+    authorize @event
+    %w[departure arrival activity].each do |location_type|
+      @event.event_locations.find_or_initialize_by(location_type: location_type)
+    end
+  end
+
   # GET /units/:unit_id/events/:id/rsvp
   # this is a variation on the 'show' action that swaps
   # out the RSVP panel on the modal with a form where users
@@ -170,14 +178,6 @@ class EventsController < UnitContextController
     return unless @event.present?
 
     redirect_to [@unit, @event], notice: t("helpers.label.event.create_confirmation", event_name: @event.title)
-  end
-
-  # GET /:unit_id/events/:event_id/edit
-  def edit
-    authorize @event
-    %w[departure arrival activity].each do |location_key|
-      @event.event_locations.build(key: location_key) # unless @event.event_locations.find_by(key: location_key)
-    end
   end
 
   # PATCH /:unit_id/events/:event_id
@@ -340,8 +340,8 @@ class EventsController < UnitContextController
                                       :short_description, :requires_rsvp, :includes_activity, :activity_name,
                                       :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
-                                      :note, :payment_amount, :website,
-                                      event_locations_attributes: [:id, :key, :location_id, :event_id, :_destroy])
+                                      :note, :payment_amount, :online, :website,
+                                      event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy])
     process_event_locations_attributes(p)
   end
 

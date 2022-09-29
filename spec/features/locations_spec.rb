@@ -8,7 +8,7 @@ describe "locations", type: :feature do
     @admin = FactoryBot.create(:member, :admin)
     @unit = @admin.unit
     @event = FactoryBot.create(:event, unit: @unit)
-    @location = FactoryBot.create(:location, locatable: @event, key: "test")
+    @location = FactoryBot.create(:location)
     login_as(@admin.user, scope: :user)
   end
 
@@ -18,10 +18,7 @@ describe "locations", type: :feature do
     expect(page).to have_current_path(path)
 
     fill_in :location_name,        with: "Paul's Boutique"
-    fill_in :location_address,     with: "99 Rivington Street"
-    fill_in :location_city,        with: "New York"
-    fill_in :location_state,       with: "NY"
-    fill_in :location_postal_code, with: "10002"
+    fill_in :location_address,     with: "99 Rivington Street, New York, NY  10002"
     fill_in :location_phone,       with: "212-555-1212"
     fill_in :location_website,     with: "https://paulsboutique.mil"
     click_link_or_button "Save"
@@ -31,10 +28,7 @@ describe "locations", type: :feature do
     @location.reload
 
     expect(@location.name).to        eq("Paul's Boutique")
-    expect(@location.address).to     eq("99 Rivington Street")
-    expect(@location.city).to        eq("New York")
-    expect(@location.state).to       eq("NY")
-    expect(@location.postal_code).to eq("10002")
+    expect(@location.address).to     eq("99 Rivington Street, New York, NY  10002")
     expect(@location.phone).to       eq("212-555-1212")
     expect(@location.website).to     eq("https://paulsboutique.mil")
   end

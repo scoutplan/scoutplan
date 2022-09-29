@@ -220,9 +220,9 @@ tr.event-past td a.row-link {
 tr:hover td a.row-link {
   color: #000; }
 
-a.event:hover {
+/* a.event:hover {
   background: #f5f5f4;
-}
+} */
 
 body.showing-only-draft-events a:hover {
   background: none;
@@ -283,14 +283,28 @@ body.showing-only-draft-events a:hover {
 body.modal-open main {
   overflow: hidden; }
 
+/* used on events/_form to toggle online/offline fieldsets */
 #fields_online {
-  visibility: hidden;
+  display: none;
 }
 
 body.online-event #fields_online {
-  visibility: visible;
+  display: block;
 }
 
 body.online-event #fields_offline {
-  visibility: hidden;
+  display: none;
 }
+
+.location-wrapper .location-selector {
+  display: none;
+}
+
+.location-wrapper.editing-location .location-selector {
+  display: block;
+}
+
+.location-wrapper.editing-location .location-prompt {
+  display: none;
+}
+/* end */

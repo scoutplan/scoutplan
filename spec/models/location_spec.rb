@@ -5,11 +5,4 @@ RSpec.describe Location, type: :model do
     event = FactoryBot.create(:event)
     expect(FactoryBot.build(:location, locatable: event)).to be_valid
   end
-
-  it "prevents duplicates" do
-    event = FactoryBot.create(:event)
-    key = "test_key"
-    FactoryBot.create(:location, locatable: event, key: key)
-    expect(FactoryBot.build(:location, locatable: event, key: key)).not_to be_valid
-  end
 end

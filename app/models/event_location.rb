@@ -4,5 +4,5 @@
 class EventLocation < ApplicationRecord
   belongs_to :event
   belongs_to :location
-  validates_uniqueness_of :key, scope: [:event, :location]
+  validates_uniqueness_of :location_type, scope: [:event, :location]
 end

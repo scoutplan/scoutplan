@@ -7,7 +7,7 @@ class Event < ApplicationRecord
   date_time_attrs_for :starts_at, :ends_at
   attr_accessor :repeats
 
-  LOCATION_KEYS = {
+  LOCATION_TYPES = {
     departure: "departure",
     staging: "staging",
     activity: "activity"
@@ -31,7 +31,7 @@ class Event < ApplicationRecord
 
   has_rich_text :description
 
-  accepts_nested_attributes_for :event_locations, allow_destroy: true, reject_if: ->(attr) { attr["location_id"] == "" }
+  accepts_nested_attributes_for :event_locations, allow_destroy: true
 
   alias_attribute :rsvps, :event_rsvps
   alias_attribute :category, :event_category
@@ -137,7 +137,7 @@ class Event < ApplicationRecord
   end
 
   def primary_location
-    (event_locations.find_by(key: "arrival")&.location || event_locations.find_by(key: "activity")&.location)
+    (event_locations.find_by(location_type: "arrival")&.location || event_locations.find_by(location_type: "activity")&.location)
   end
 
   def location
@@ -148,14 +148,14 @@ class Event < ApplicationRecord
     primary_location&.address
   end
 
-  def full_address(key = nil)
-    return primary_location&.full_address unless key.present?
+  def full_address(location_type = nil)
+    return primary_location&.full_address unless location_type.present?
 
-    find_location(key)&.full_address
+    find_location(location_type)&.full_address
   end
 
-  def find_location(key)
-    locations.find_by(key: key)
+  def find_location(location_type)
+    event_locations.find_by(location_type: location_type)&.location
   end
 
   private

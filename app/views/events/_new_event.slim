@@ -1,7 +1,7 @@
 - @presenter.event = event
 
 // START ROW
-article(class="relative event #{row_classes(event)}" id="event_#{event.id}")
+article.hover:bg-stone-100(class="relative event #{row_classes(event)}" id="event_#{event.id}")
   // anchor for scroll-to purposes
   a(name="event_#{event.id}")
 
@@ -28,10 +28,16 @@ article(class="relative event #{row_classes(event)}" id="event_#{event.id}")
 
       // basic info
       div.pr-48.hidden.md:block
-        h4.font-semibold.text-xl.event-title = event.title
+        // title
+        h4.font-bold.text-xl.event-title
+          = event.title
+
+        // short description
         - if event.short_description.present?
-          p.event-short-description
+          p.event-short-description.text-stone-500
             = event.short_description
+
+        // location
         p.event-location.mt-1
           = render partial: "event_location", locals: { event: event }
 
@@ -45,5 +51,10 @@ article(class="relative event #{row_classes(event)}" id="event_#{event.id}")
           = event.short_description
       p.event-location.mt-1
         = render partial: "event_location", locals: { event: event }    
+
+  - if event.online && website = event.website.presence
+    .absolute.bottom-4(style="left:160px;")
+      i.fa-solid.fa-laptop.mr-2.text-stone-400
+      = link_to website, website, class: "external-link"
 
   = render partial: "events/partials/event_row/action_cell", locals: { event: event } if event.requires_rsvp && user_signed_in?

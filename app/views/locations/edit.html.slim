@@ -1,3 +1,11 @@
 = turbo_frame_tag "main"
-  .mx-auto.max-w-xl
-    = render partial: "form", locals: { location: @location, return_path: @return_path }
+  .mx-auto.max-w-xl.relative
+    = render partial: "form"
+
+    .absolute.left-0.bottom-0.pb-2
+      = button_to unit_location_path(@unit, @location),
+                  method: "delete",
+                  form: { data: { turbo_confirm: t("locations.prompts.destroy", location_name: @location.display_name, unit_name: @unit.name) } },
+                  class: "inline-block uppercase text-sm font-bold text-brand-600 py-2" do
+
+        = t("locations.captions.destroy")

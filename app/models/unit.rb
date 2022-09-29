@@ -12,7 +12,7 @@ class Unit < ApplicationRecord
   has_many :news_items
   has_many :tasks, as: :taskable
   has_one_attached :logo
-  has_many :locations, through: :events
+  has_many :locations
 
   validates_presence_of :name
 
