@@ -95,10 +95,4 @@ module EventsHelper
     search_path = parts.map { |m| CGI.escape(m.gsub(",", "")) }.join("/")
     [MAP_BASE_URL, search_path].join
   end
-
-  def location_address_string(event, prepend = "")
-    res = [event.location, event.address].join(" ").strip
-    res = "#{prepend}#{res}" if res.present?
-    res
-  end
 end

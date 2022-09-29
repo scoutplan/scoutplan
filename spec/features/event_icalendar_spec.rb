@@ -32,7 +32,6 @@ describe "events", type: :feature do
         starts_at: starts_at,
         ends_at: ends_at \
       )
-      arrival_location = FactoryBot.create(:location, key: :arrival, locatable: event)
       magic_link = MagicLink.generate_link(@normal_member, "icalendar")
       visit(calendar_feed_unit_events_path(@unit, magic_link.token))
 

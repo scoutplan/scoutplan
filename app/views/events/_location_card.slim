@@ -6,7 +6,7 @@
       = link_to @event.website, @event.website, class: "text-blue-600 font-bold external-link"
 - elsif @event.locations.present?
   section#location_card.border-b
-    = render partial: @event.online? ? "online_location_card" : "irl_location_card"
+    = render "irl_location_card"
 
 css:
   .location-card i:before {

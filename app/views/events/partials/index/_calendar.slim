@@ -110,10 +110,14 @@
               - if display_date.beginning_of_day >= event.starts_at.beginning_of_day && \
                 display_date.beginning_of_day <= event.ends_at.end_of_day
                 .cal-event.text-xs.overflow-hidden(class="#{css_classes}")
-                  = link_to event.title, [ event.unit, event ],
+                  = link_to [ event.unit, event ],
                     class: "block p-1 font-bold hover:bg-stone-100 rounded",
                     data: { turbo_action: "advance" },
-                    style: "color: #{event.category.color}"
+                    style: "color: #{event.category.color}" do
+
+                    = event.title
+                    - if event.online
+                      i.fa-solid.fa-laptop.ml-1(title="Online")
 
           - display_day += 1
 

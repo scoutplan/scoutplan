@@ -1,7 +1,17 @@
 section#location_panel
   section.mb-4.pt-4#online_offline_picker
-    = f.check_box :online, class: "mr-2 text-green-500 rounded", onclick: "checkOnline(this);"
-    = f.label :online, "This event is online", class: "mr-2 font-bold uppercase tracking-wider text-sm"
+    / = f.check_box :online, class: "mr-2 text-green-500 rounded", onclick: "checkOnline(this);"
+    / = f.label :online, "This event is online", class: "mr-2 font-bold uppercase tracking-wider text-sm"
+
+    = label_tag nil, "This event is:", class: "mr-3 font-bold uppercase tracking-wider text-sm"
+    
+    = f.radio_button :online, false, onclick: "checkOnline(this);"
+    = f.label :online_false, "In real life", class: "ml-1 font-bold uppercase tracking-wider text-sm"
+
+    .inline-block.w-4
+
+    = f.radio_button :online, true, onclick: "checkOnline(this);"
+    = f.label :online_true, "Online", class: "ml-1 font-bold uppercase tracking-wider text-sm"
 
     // online
     span#fields_online.mt-2
@@ -44,8 +54,9 @@ section#location_panel
 javascript:
   // respond when Online is checked
   function checkOnline(c) {
-    document.body.classList.toggle("online-event", c.checked);
-    if (c.checked) {
+    var isOnline = (c.id == "event_online_true");
+    c.closest(".form-wrapper").classList.toggle("online-event", isOnline);
+    if (isOnline) {
       document.querySelector("#event_website").focus();
     }
   }

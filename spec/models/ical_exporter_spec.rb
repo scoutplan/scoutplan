@@ -7,8 +7,7 @@ RSpec.describe IcalExporter, type: :model do
   before do
     @member = FactoryBot.create(:member)
     @unit = @member.unit
-    @event = FactoryBot.create(:event, unit: @member.unit)
-    @arrival_location = FactoryBot.create(:location, locatable: @event, key: "arrival")
+    @event = FactoryBot.create(:event, unit: @unit)
     @exporter = IcalExporter.new(@member, @event)
   end
 

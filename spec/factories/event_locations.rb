@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :event_location do
-    event_id { 1 }
-    location_id { 1 }
-    key { "MyString" }
+    event
+    location
+    location_type { "test" }
   end
 end

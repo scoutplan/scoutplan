@@ -7,7 +7,7 @@ namespace :sp do
 
     Location.all.each do |location|
       event = location.locatable
-      event.event_locations.create!(location: location, key: location.key)
+      event.event_locations.create!(location: location, location_type: location.key)
     end
   end
 

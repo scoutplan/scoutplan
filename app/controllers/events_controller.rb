@@ -335,7 +335,6 @@ class EventsController < UnitContextController
 
   # permitted parameters
   def event_params
-    ap params
     p = params.require(:event).permit(:title, :event_category_id, :location, :address, :description,
                                       :short_description, :requires_rsvp, :includes_activity, :activity_name,
                                       :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
@@ -347,9 +346,7 @@ class EventsController < UnitContextController
 
   # iterates through event_location_attributes and adds _destroy: true where appropriate
   def process_event_locations_attributes(p)
-    ap p
-    elas = p[:event_locations_attributes]
-    ap elas
+    return p unless (elas = p[:event_locations_attributes])
 
     elas.each do |key, value_hash|
       if value_hash[:id] != "" && value_hash[:location_id] == ""

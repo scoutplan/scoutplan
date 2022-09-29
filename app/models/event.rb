@@ -128,14 +128,6 @@ class Event < ApplicationRecord
     unit.members.status_registered - rsvps.collect(&:member)
   end
 
-  def online?
-    address =~ /\A#{URI::regexp(['http', 'https'])}\z/
-  end
-
-  def offline?
-    !online?
-  end
-
   def primary_location
     (event_locations.find_by(location_type: "arrival")&.location || event_locations.find_by(location_type: "activity")&.location)
   end
@@ -149,7 +141,7 @@ class Event < ApplicationRecord
   end
 
   def full_address(location_type = nil)
-    return primary_location&.full_address unless location_type.present?
+    return primary_location&.full_address || "TBD" unless location_type.present?
 
     find_location(location_type)&.full_address
   end

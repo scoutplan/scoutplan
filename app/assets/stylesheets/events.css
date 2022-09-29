@@ -288,23 +288,11 @@ body.modal-open main {
   display: none;
 }
 
-body.online-event #fields_online {
+.online-event #fields_online {
   display: block;
 }
 
-body.online-event #fields_offline {
-  display: none;
-}
-
-.location-wrapper .location-selector {
-  display: none;
-}
-
-.location-wrapper.editing-location .location-selector {
-  display: block;
-}
-
-.location-wrapper.editing-location .location-prompt {
+.online-event #fields_offline {
   display: none;
 }
 /* end */
