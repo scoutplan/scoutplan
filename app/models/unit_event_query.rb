@@ -10,8 +10,8 @@ class UnitEventQuery
   end
 
   def execute
-    scope = @unit.events.includes(:event_category, [event_locations: :location], [event_rsvps: :unit_membership]).with_rich_text_description
-    scope = scope.where(["starts_at >= ?", @start_date]) if @start_date.present?
+    scope = @unit.events.preload(:event_category, [event_rsvps: :unit_membership]).with_rich_text_description
+    scope = scope.where(["ends_at >= ?", @start_date]) if @start_date.present?
     scope = scope.where(["starts_at <= ?", @end_date]) if @end_date.present?
 
     # limit non-admins to only published events

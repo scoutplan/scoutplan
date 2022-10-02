@@ -65,7 +65,7 @@ class Event < ApplicationRecord
   end
 
   def past?
-    starts_at.past?
+    ends_at.past?
   end
 
   # override getter
