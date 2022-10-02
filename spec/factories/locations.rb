@@ -1,13 +1,12 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :location do
-    name { Faker::Address.community }
-    address { Faker::Address.street_address }
-    city { Faker::Address.city }
-    state { Faker::Address.state_abbr }
-    postal_code { Faker::Address.zip }
-    phone { Faker::PhoneNumber.phone_number }
-    locatable_id { 1 }
-    locatable_type { "Event" }
-    key { "departure" }
+    name     { Faker::Address.community }
+    map_name { Faker::Address.community }
+    address  { Faker::Address.full_address }
+    phone    { Faker::PhoneNumber.phone_number }
+    website  { Faker::Internet.url }
+    unit
   end
 end

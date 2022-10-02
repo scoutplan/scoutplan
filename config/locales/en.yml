@@ -261,9 +261,9 @@ en:
       rsvp_closes_at:  "RSVP closes on"
       delete_caption:  "Delete This Event"
       delete_confirm:  "Are you sure you want to permanently delete this event and any RSVPs associated with it?"
-      depart_from:    "Depart From"
-      arrive_at:       "Arrive At"
-      activity_at:     "Activity Location"
+      departure_tab:   "Depart From"
+      arrival_tab:     "Arrive At"
+      activity_tab:    "Side Activity"
 
     my_rsvps:
       title: "My RSVPs"
@@ -291,6 +291,9 @@ en:
         done:                   "Back to Full Schedule"
       organizer:                "Organizer"
       payment_amount_prompt:    "Cost is %{amount} per person"
+
+      captions:
+        online: "This event is online at"
 
       cancel:
         notice:       "Cancelling a published event will remove it from the calendar. Are you sure you want to proceed?"
@@ -415,9 +418,30 @@ en:
       departure: "Depart From"
       arrival: "Arrive At"
       activity: "Activity Location"
+      index: "Location Atlas"
     
     labels:
       name: "Site Name"
+      display_name: "Display Name"
+      link: "Link"
+
+    placeholders:
+      name: "Name as your members will see it"
+      map_name: "Optional name as it appears on maps"
+
+    captions:
+      add_a_location: "Add a Location"
+      edit_location: "Edit Location"
+      address_book: "%{unit_name} Location Atlas"
+      destroy: "Remove from Atlas"
+    
+    notices:
+      created: "Location added to your atlas"
+      destroyed: "%{location_name} has been removed from your atlas"
+      updated: "Location has been updated"
+    
+    prompts:
+      destroy: "Are you sure you want to remove %{location_name} from the %{unit_name} Atlas?"
   
   mailers:
     member_mailer:

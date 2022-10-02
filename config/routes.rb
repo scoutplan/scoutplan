@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       post "unpin", as: "unpin"
     end
 
+    resources :locations
     resources :plans, path: "planner"
     resources :event_categories
     resources :event_rsvps, only: [:destroy]
@@ -41,7 +42,7 @@ Rails.application.routes.draw do
       resources :event_activities
       resources :event_organizers, as: "organizers", path: "organizers"
       resources :document_types
-      resources :locations, only: [:new]
+      resources :locations
       collection do
         get "/", to: redirect("/units/%{unit_id}/schedule/list")
         get  "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
@@ -101,7 +102,6 @@ Rails.application.routes.draw do
 
   resources :member_relationships, as: "relationships", path: "relationships", only: %i[destroy]
   resources :event_rsvps, except: [:index, :show, :edit, :update, :new]
-  resources :locations, only: [:new, :create, :edit, :update]
 
   constraints CanAccessFlipperUI do
     mount Sidekiq::Web => "/sidekiq"

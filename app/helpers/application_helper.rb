@@ -2,6 +2,12 @@
 
 # application-wide helpers
 module ApplicationHelper
+  def content_tag_if(tag, conditional, content = nil)
+    return unless conditional.present?
+
+    content_tag(tag, content || conditional)
+  end
+
   # rubocop:disable Metrics/MethodLength
   def deictic_string_for_time_interval_from_day(val)
     if val.today?

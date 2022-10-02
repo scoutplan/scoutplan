@@ -2,21 +2,21 @@
 
 .flex.md:flex-row.gap-8.place-content-center
   - count = 0
-  - ["departure", "arrival", "activity"].each do |key|
-    - if @locations_cache.present?
-      - location = @locations_cache[[@event.id, key]]
-    - else
-      - location = @event.locations.find_by(key: key)
-    - if location.present?
+
+  // cycle through the three (3) location types
+  - ["departure", "arrival", "activity"].each do |location_type|
+    - event_location = @event.event_locations.includes(:location).find_by(location_type: location_type)
+    - location = event_location&.location
+    - if location = event_location&.location
       - if count > 0
         div.pt-8
           i.fa-solid.fa-arrow-right.text-xl.align-middle
 
       - count += 1
-      div.pt-6(class="location-card location-#{key}")
+      div.pt-6(class="location-card location-#{location_type}")
         // this <i> tag gets styled in _location_card.slim
         i
-        = render partial: "events/location", locals: { location: location, location_key: key, short_link: true, editing_disabled: true }
+        = render partial: "show_location", locals: { location: location, location_type: location_type, short_link: true }
 
 - if count > 0
   .text-center.mb-6

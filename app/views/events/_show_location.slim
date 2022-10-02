@@ -1,0 +1,9 @@
+- short_link ||= false
+
+.py-3
+  = content_tag_if :div, content_tag(:h4, location.name, class: "font-bold")
+  = content_tag_if :div, location.address
+  = content_tag_if :div, location.phone
+  = content_tag_if :div,
+                   location.website,
+                   link_to(short_link ? t("locations.labels.link") : location.website, location.website, class: "external-link text-blue-500")

@@ -8,7 +8,8 @@ RSpec.describe LocationPolicy, type: :model do
     @unit = @admin.unit
     @non_admin = FactoryBot.create(:member, unit: @unit)
     @event = FactoryBot.create(:event, unit: @unit)
-    @location = Location.new(locatable: @event, key: "test")
+    @location = @unit.locations.create
+    EventLocation.create(event: @event, location: @location, location_type: "test")
   end
 
   it "permits edit by an admin" do

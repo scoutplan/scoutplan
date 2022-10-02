@@ -14,10 +14,11 @@
   - css_class += " " + "month_#{month}"
 
   section(class="#{css_class}" id="event_month_current_#{@current_event_month_count - 1}")
-    h3.text-brand-500.font-bold.uppercase.tracking-wider.px-4.md:px-2.py-4
-      = Date::MONTHNAMES[month]
-      = " "
-      = year
+    header.border-t.border-stone-400
+      h3.text-brand-500.font-bold.uppercase.tracking-wider.px-4.md:px-2.py-4
+        = Date::MONTHNAMES[month]
+        = " "
+        = year
     
     .divide-y
       - events.each do |event|

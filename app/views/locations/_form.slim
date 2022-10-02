@@ -1,31 +1,28 @@
-= form_with model: location,
+= form_with model: [@unit, @location],
   builder: ApplicationFormBuilder,
   data: { turbo_action: "advance" } do |f|
 
   header.py-2
-    h2.font-bold.text-2xl = locatable&.title
-    h3.font-bold.text-xl = t("locations.titles.#{location.key}")
 
   section.bg-stone-100.px-4.py-2.md:px-8.md:py-0.mb-1.rounded
     .py-2.md:py-2
       = f.styled_label :name, t("locations.labels.name"), layout: :inline
-      = f.text_field :name, class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300", autocomplete: "off", autofocus: true
+      = f.text_field :name,
+                     class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300",
+                     autocomplete: "off",
+                     autofocus: true,
+                     placeholder: t("locations.placeholders.name")
+
+    .py-2.md:py-2
+      = f.styled_label :name, t("locations.labels.map_name"), layout: :inline
+      = f.text_field :map_name,
+                     class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300",
+                     autocomplete: "off",
+                     placeholder: t("locations.placeholders.map_name")
 
     .py-2.md:py-2
       = f.styled_label :address, layout: :inline
       = f.text_field :address, class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300", autocomplete: "off"
-
-    .py-2.md:py-2
-      = f.styled_label :city, layout: :inline
-      = f.text_field :city, class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300", autocomplete: "off"
-
-    .py-2.md:py-2
-      = f.styled_label :state, layout: :inline
-      = f.text_field :state, class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300", autocomplete: "off"
-
-    .py-2.md:py-2
-      = f.styled_label :postal_code, "Zip", layout: :inline
-      = f.text_field :postal_code, class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300", autocomplete: "off"
 
     .py-2.md:py-2
       = f.styled_label :phone, layout: :inline
@@ -37,26 +34,27 @@
 
     .h-2
 
-  = f.hidden_field :key
-  = f.hidden_field :locatable_type
-  = f.hidden_field :locatable_id
-  = hidden_field_tag :return_path, return_path
+    / = hidden_field :location_type, @location_type
+    / = hidden_field :event_id, @event_id
 
   footer.py-2
-    .flex.flex-col.md:flex-row.md:justify-end.gap-2
-      = f.submit t("global.save_changes"),
-        class: "text-white text-sm font-bold tracking-wider uppercase \
-                inline-block w-full md:w-fit px-4 py-3 md:py-2 \
-                bg-brand-500 hover:bg-brand-600 \
-                border-brand-500 hover:border-brand-600 \
-                border rounded cursor-pointer"
+    .flex.flex-row.justify-between
+      #footer_left
+      
+      #footer-right.flex.flex-col.md:flex-row.md:justify-end.gap-2
+        = f.submit t("global.save_changes"),
+          class: "text-white text-sm font-bold tracking-wider uppercase \
+                  inline-block w-full md:w-fit px-4 py-3 md:py-2 \
+                  bg-brand-500 hover:bg-brand-600 \
+                  border-brand-500 hover:border-brand-600 \
+                  border rounded cursor-pointer"
 
-      = link_to t("global.discard_changes"),
-        return_path,
-        data: { turbo_action: "advance", turbo_frame: "main" },
-        class: "text-center text-sm font-bold tracking-wider uppercase no-underline \
-                inline-block w-full md:w-fit px-4 py-3 md:py-2 \
-                bg-brand-100 hover:bg-brand-200 \
-                text-brand-500 hover:text-brand-600 \
-                border-brand-100 hover:border-brand-100 \
-                rounded border"  
+        = link_to t("global.discard_changes"),
+          return_path ||= unit_locations_path(@unit),
+          data: { turbo_action: "advance", turbo_frame: "main" },
+          class: "text-center text-sm font-bold tracking-wider uppercase no-underline \
+                  inline-block w-full md:w-fit px-4 py-3 md:py-2 \
+                  bg-brand-100 hover:bg-brand-200 \
+                  text-brand-500 hover:text-brand-600 \
+                  border-brand-100 hover:border-brand-100 \
+                  rounded border"

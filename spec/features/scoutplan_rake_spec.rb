@@ -12,13 +12,13 @@ describe "scoutplan rake", type: :feature do
   #   expect { Rake::Task["scoutplan:create_event_locations"].invoke }.to change { Location.count }.by(1)
   # end
 
-  it "also creates a departure Location" do
-    5.times do
-      @event = FactoryBot.create(:event,
-                                 location: "State Park",
-                                 address: "123 Mountain Road, Faraway, ST  00000",
-                                 departs_from: "School Parking Lot")
-    end
-    expect { Rake::Task["scoutplan:create_event_locations"].invoke }.to change { Location.count }.by(10)
-  end
+  # it "also creates a departure Location" do
+  #   5.times do
+  #     @event = FactoryBot.create(:event,
+  #                                location: "State Park",
+  #                                address: "123 Mountain Road, Faraway, ST  00000",
+  #                                departs_from: "School Parking Lot")
+  #   end
+  #   expect { Rake::Task["scoutplan:create_event_locations"].invoke }.to change { Location.count }.by(10)
+  # end
 end
