@@ -136,7 +136,7 @@ class EventPresenter
     classes += " event-#{event.category.name.parameterize}"
     classes += " event-#{event.status}"
     classes += " event-future" if event.starts_at > 3.months.from_now
-    classes += " event-past " if event.starts_at.past?
+    classes += " event-past " if event.past?
     classes += " event-rsvp" if event.requires_rsvp?
 
     classes
