@@ -95,4 +95,14 @@ module EventsHelper
     search_path = parts.map { |m| CGI.escape(m.gsub(",", "")) }.join("/")
     [MAP_BASE_URL, search_path].join
   end
+
+  def link_name(url)
+    return "Zoom" if zoom_link?(url)
+
+    "Link"
+  end
+
+  def zoom_link?(url)
+    url =~ /https:\/\/.*\.zoom.us\/j\/.*/
+  end
 end

@@ -1,116 +1,16 @@
-- url = @event.new_record? ? unit_events_path(@event.unit) : unit_event_path(@event.unit, @event)
-- method = @event.new_record? ? "post" : "patch"
-- mode = action_name == "edit_rsvps" ? "rsvp" : "show"
-
 = turbo_frame_tag "main"
-  article.event.max-w-3xl.mx-auto(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event.organizable' : ''}")
+  article.event.mx-auto.max-w-lg.mt-8.px-2.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
+    = render partial: "events/partials/show/nav"
 
-    // CANCELLED watermark
-    - if @event.cancelled?
-      .absolute.z-10.transform.-rotate-45.text-7xl.font-bold.text-red-500.uppercase.text-opacity-20.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/4(style="left:50%;top:25%;font-family:courier,serif;")
-        = t("index.events.cancelled")
+    section#informative.flex.flex-col.gap-1
+      = render partial: "events/partials/show/header"
+      = render partial: "events/partials/show/rsvp"
+      = render partial: "events/partials/show/date"
+      = render partial: "events/partials/show/payment"
+      = render partial: "events/partials/show/location"
+      = render partial: "events/partials/show/description"
+      = render partial: "events/partials/show/contact"
 
-    // DRAFT watermark
-    - if @event.draft?
-      .absolute.z-10.transform.-rotate-45.text-7xl.font-bold.text-blue-500.uppercase.text-opacity-20.tracking-widest.z-50.-translate-x-1/2.-translate-y-1/2(style="left:50%;top:25%;font-family:courier,serif;")
-        = t("index.events.draft")
-
-    - if flash[:alert]
-      = content_tag( \
-        :p,
-        class: "font-bold mt-4 p-4 bg-amber-100 border rounded border-amber-300 text-amber-600") do
-          i.fa-info-circle.fas.mr-2
-          = flash[:alert]
-
-    - if flash[:notice]
-      = content_tag( \
-        :p,
-        class: "font-bold mt-4 p-4 bg-lime-100 border rounded border-lime-300 text-lime-700") do
-          i.fa-exclamation-circle.fas.mr-2
-          = flash[:notice]
-
-    section#informative.relative.mx-2
-      header.py-4.overflow-auto.top-0.bg-white
-        h3.font-bold.text-2xl.md:text-3xl.md:text-center
-          = @event.title
-          span.align-middle.ml-2.text-base = glyph_tag(@event)
-
-        = content_tag(:p, @event.short_description, class: "md:text-center italic my-4 font-normal text-base text-gray-500") if @event.short_description.present?          
-
-      .flex.flex-col.gap-2
-        - if mode == "show"
-          - if @event.requires_rsvp
-            section#rsvp_status_container.border.border-yellow-600.text-center.py-3.font-bold.rounded
-              = render partial: "rsvp_card", locals: { event: @event }
-          = render partial: "organize_panel" if @event.organizable? && policy(@event).rsvps?
-
-        - elsif mode == "rsvp"
-          = render partial: "edit_rsvp_section", locals: { event: @event, presenter: @presenter }        
-        = render partial: "events/partials/show/date_card"
-        = render partial: "events/payment" if @event.requires_payment?
-        = render partial: "location_card"
-        = render partial: "description" if @event.description.present?
-
-
-    // footer, containing right-justified buttons
-    footer.w-full.sticky.bottom-0.px-2
-      // SCROLL DOWN LINK
-      .hidden.-ml-12#scroll_down_wrapper
-        a.inline-block.rounded-full.bg-fuchsia-500.text-white.text-center.px-6.py-1.mb-2.animate-bounce.scroll-down-button(href="#" data-scroll-container="#informative")
-          = "Scroll down "
-          i.fa-arrow-down.fas
-
-      .flex.flex-col.md:flex-row.md:justify-between.border-t.pt-2.md:pt-4.bg-white.pb-4
-        // left side (on desktop)
-        div
-          // Edit button (if authorized)
-          - if policy(@event).edit? && @event.editable?
-            = link_to t("event_edit"),
-              edit_unit_event_path(@event.unit, @event),
-              class:  " text-sm font-bold no-underline tracking-wider uppercase text-center" \
-                      " block md:inline-block " \
-                      " w-full px-6 py-3 md:py-2 mb-2 md:pl-0" \
-                      " text-brand-500 hover:text-brand-600" \
-                      " border-brand-500 border" \
-                      " md:border-0 " \
-                      " rounded" \
-                      "",
-              data: { turbo_action: "advance" },
-              title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)
-
-        // right side (on desktop)
-        div.flex-auto.md:flex-none
-          // Done button
-          = link_to t("events.show.captions.done"),
-            unit_events_path(@event.unit, anchor: "event_#{@event.id}"),
-            class:  "text-white text-sm font-bold no-underline tracking-wider uppercase text-center  \
-                    block md:inline-block \
-                    px-4 py-3 md:py-2 \
-                    min-w-[8rem] \
-                    bg-brand-500 hover:bg-brand-600 \
-                    rounded border border-brand-500 hover:border-brand-600",
-            data: { turbo_frame: "main", turbo_action: "restore" }
-
-javascript:
-  document.querySelectorAll(".scroll-down-button").forEach(function (elem) {
-    elem.addEventListener("click", function(event) {
-      var scrollContainerId = this.dataset.scrollContainer;
-      var scrollContainer = document.querySelector(scrollContainerId);
-      window.scrollBy(0, window.innerHeight);
-      this.parentNode.classList.add("hidden");
-      event.preventDefault();
-    });
-  });
-
-  window.addEventListener("scroll", function(event) {
-    document.querySelectorAll(".scroll-down-button").forEach(function (elem) {
-      elem.parentNode.classList.add("hidden");
-    });
-  });
-
-  // reveal 'scroll down' button if needed
-  document.addEventListener("turbo:load", function(event) {
-    if (document.body.scrollHeight > window.innerHeight) {
-      document.querySelector("#scroll_down_wrapper")?.classList?.remove("hidden");
-    }
-  })
+    = render partial: "events/partials/show/new_footer"
+    = render partial: "events/partials/show/watermarks"
+    = render partial: "events/partials/show/flash"

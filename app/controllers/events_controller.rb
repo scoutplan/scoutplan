@@ -158,10 +158,6 @@ class EventsController < UnitContextController
   # TODO: is there a better, more RESTful way of doing this?
   def edit_rsvps
     authorize @event
-    @unit = Unit.find(params[:unit_id])
-    @event = Event.find(params[:event_id])
-    @current_member = @unit.membership_for(current_user)
-    render template: "events/show"
   end
 
   # POST /:unit_id/events/new

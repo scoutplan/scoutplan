@@ -56,15 +56,18 @@ en:
   change: "Change"
 
   global:
+    back_to_top: "Back to top"
     cancel: "Cancel"
     discard_changes: "Discard Changes"
     save_changes:    "Save Changes"
+    link:   "Link"
     next:   "Next"
     done:   "Done"
     sign_in: "Sign In"
     sign_out: "Sign Out"
     remember_me: "Stay signed in for two weeks"
     nevermind: "Never Mind"
+    zoom: "Zoom"
 
   main_nav:
     events:        "Schedule"
@@ -287,12 +290,13 @@ en:
       series_count:             "%{count} events in this series"
       past_warning:             "This event has already occurred."
       map:                      "View a Map"
-      captions:
-        done:                   "Back to Full Schedule"
-      organizer:                "Organizer"
-      payment_amount_prompt:    "Cost is %{amount} per person"
+      organize:                 "Organize"
+      organizer:                "Questions?"
+      payment_amount_prompt:    "%{amount} per person"
+      description:              "Notes"
 
       captions:
+        done:                   "Back to Full Schedule"
         online: "This event is online at"
 
       cancel:
@@ -301,7 +305,21 @@ en:
         everyone:     "All active %{unit_name} members (%{count})"
         accepted:     "\"Going\" RSVPS (%{count})"
         none:         "Don't send a notification"
-        confirmation: "%{event_title} has been cancelled"      
+        confirmation: "%{event_title} has been cancelled"   
+
+      colors:
+        departure:    "text-red-500"
+        arrival:      "text-amber-500"
+        activity:     "text-emerald-500"
+
+      icons:
+        departure:    "fa-car"
+        arrival:      "fa-tent"
+        activity:     "fa-person-hiking"
+
+      titles:
+        youth:        "Youth"
+        adults:       "Adults"
 
     cancel:
       proceed:        "Cancel This Event"

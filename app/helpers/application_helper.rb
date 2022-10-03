@@ -2,10 +2,10 @@
 
 # application-wide helpers
 module ApplicationHelper
-  def content_tag_if(tag, conditional, content = nil)
+  def content_tag_if(tag, conditional, content = nil, options = nil)
     return unless conditional.present?
 
-    content_tag(tag, content || conditional)
+    content_tag(tag, content || conditional, options)
   end
 
   # rubocop:disable Metrics/MethodLength

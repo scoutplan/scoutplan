@@ -1,0 +1,45 @@
+/* partial for displaying event stats & a link to the Organize page,
+   only visible to Event Organizers and Unit Admins */
+
+- return unless @event.organizable? && policy(@event).rsvps?
+
+#manage_rsvps_card.bg-cyan-600.text-cyan-50.px-6.py-4.relative.mb-4.w-60
+    header.mb-2
+      h2.text-lg.font-bold.uppercase.tracking-wide.mb-4
+        i.fa-regular.fa-clipboard.mr-2
+        = t("events.show.organize")
+
+    section
+      - rsvps = @event.rsvps.accepted.select { |r| r.member.youth? }
+      h3.font-bold
+        = t("events.show.titles.youth")
+        .inline-block.ml-2.text-xs.rounded.py-1.px-2.bg-cyan-800
+          = "#{rsvps.count}"
+      ul
+        - rsvps.each do |rsvp|
+          li.font-bold
+            i.fa-solid.fa-check-circle.mr-2
+            = rsvp.short_display_name
+
+      - rsvps = @event.rsvps.accepted.select { |r| r.member.adult? }
+      h3.mt-4.mb-2.font-bold
+        = t("events.show.titles.adults")
+        .inline-block.ml-2.text-xs.rounded.py-1.px-2.bg-cyan-800
+          = "#{rsvps.count}"
+      ul
+        - rsvps.each do |rsvp|
+          li.font-bold
+            i.fa-solid.fa-check-circle.mr-2
+            = rsvp.short_display_name      
+
+    footer.mt-6
+      = link_to t("events.show.organize_button_caption"),
+        unit_event_rsvps_path(@event.unit, @event),
+        class:  "text-sm font-bold no-underline tracking-wider uppercase" \
+                " px-4 py-3" \
+                " block" \
+                " border border-cyan-50" \
+                " text-cyan-50 hover:bg-cyan-500" \
+                " rounded text-center",
+        data: { turbo_action: "advance", turbo_frame: "main" },
+        title: t("events.show.organize_reason_admin", unit_name: @event.unit.name)

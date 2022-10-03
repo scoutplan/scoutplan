@@ -15,7 +15,7 @@ section.bg-stone-100.rounded.p-4.mb-2.mt-2.attention.border.border-yellow-200
       div.flex-auto.md:flex-none
 
         // Cancel button
-        = button_to t("global.nevermind"),
+        = link_to t("global.nevermind"),
           unit_event_path(event.unit, event),
           class:  " text-sm font-bold no-underline tracking-wider uppercase text-center " \
                   " block md:inline-block" \

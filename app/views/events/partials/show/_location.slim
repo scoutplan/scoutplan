@@ -1,0 +1,43 @@
+- return unless @event.online || @event.locations.present?
+- location_count = 0
+- ["departure", "arrival", "activity"].each do |location_type|
+  - location_count += 1 if @event.event_locations.exists?(location_type: location_type)
+
+section#location.py-4.border-t.border-stone-800
+  - if @event.online
+    p = t("events.show.captions.online")
+    p = link_to @event.website, @event.website, class: "text-blue-600 font-bold external-link"
+
+  - elsif location_count.positive?
+    = render partial: "events/partials/show/map"
+
+    - count = 0
+    .table
+      - ["departure", "arrival", "activity"].each do |location_type|
+        - event_location = @event.event_locations.includes(:location).find_by(location_type: location_type)
+        - next unless location = event_location&.location
+
+        - count += 1
+        .table-row(class="location-card location-#{location_type}")
+          .table-cell.relative
+            - if count < location_count
+              .absolute.w-1.left-1/2.top-0.bottom-0.border-l.border-stone-800
+
+            .fa-stack
+              i.fa-solid.fa-circle.fa-stack-2x(class=t("events.show.colors.#{location_type}"))
+              i.fa-solid.fa-stack-1x.fa-inverse.(class=t("events.show.icons.#{location_type}"))
+
+          .table-cell.pl-6
+            = render partial: "events/partials/show/show_location", locals: { location: location, location_type: location_type, short_link: true }
+
+      .table-row
+        .table-cell
+        .table-cell.pl-6
+          = link_to event_map_url(@event),
+            target: "_new",
+            class: "inline-block no-underline hover:text-rose-700 hover:border-rose-700 text-rose-500 border border-rose-500 rounded hover:border-rose-600 px-4 py-2",
+            aria: { role: "link" },
+            title: "View a Map" do
+
+            i.fa-map.fas.mr-2
+            = t("events.show.map")
