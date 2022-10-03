@@ -1,0 +1,63 @@
+// SCROLL DOWN LINK
+
+#scroll_down_wrapper.hidden.sticky.z-10.bottom-0.text-center
+  a.inline-block.rounded-full.bg-fuchsia-500.text-white.text-center.px-6.py-1.mb-2.animate-bounce.scroll-down-button(href="#" data-scroll-container="#informative")
+    = "Scroll down "
+    i.fa-arrow-down.fas
+
+footer.mx-auto.max-w-2xl.sticky.bottom-0.border-t.border-stone-800
+
+  .flex.flex-col.md:flex-row.md:justify-between.pt-2.md:pt-4.bg-white.pb-4
+    // left side (on desktop)
+    div
+      // Edit button (if authorized)
+      - if policy(@event).edit? && @event.editable?
+        = link_to t("event_edit"),
+          edit_unit_event_path(@event.unit, @event),
+          class:  " text-sm font-bold no-underline tracking-wider uppercase text-center" \
+                  " block md:inline-block " \
+                  " w-full px-6 py-3 md:py-2 mb-2 md:pl-0" \
+                  " text-brand-500 hover:text-brand-600" \
+                  " border-brand-500 border" \
+                  " md:border-0 " \
+                  " rounded" \
+                  "",
+          data: { turbo_action: "advance" },
+          title: t('events.show.edit_reason_admin', unit_name: @event.unit.name)
+
+    // right side (on desktop)
+    div.flex-auto.md:flex-none
+      // Done button
+      = link_to t("events.show.captions.done"),
+        unit_events_path(@event.unit, anchor: "event_#{@event.id}"),
+        class:  "text-white text-sm font-bold no-underline tracking-wider uppercase text-center  \
+                block md:inline-block \
+                px-4 py-3 md:py-2 \
+                min-w-[8rem] \
+                bg-brand-500 hover:bg-brand-600 \
+                rounded border border-brand-500 hover:border-brand-600",
+        data: { turbo_frame: "main", turbo_action: "restore" }
+
+javascript:
+  document.querySelectorAll(".scroll-down-button").forEach(function (elem) {
+    elem.addEventListener("click", function(event) {
+      var scrollContainerId = this.dataset.scrollContainer;
+      var scrollContainer = document.querySelector(scrollContainerId);
+      window.scrollBy(0, window.innerHeight);
+      this.parentNode.classList.add("hidden");
+      event.preventDefault();
+    });
+  });
+
+  window.addEventListener("scroll", function(event) {
+    document.querySelectorAll(".scroll-down-button").forEach(function (elem) {
+      elem.parentNode.classList.add("hidden");
+    });
+  });
+
+  // reveal 'scroll down' button if needed
+  document.addEventListener("turbo:load", function(event) {
+    if (document.body.scrollHeight > window.innerHeight) {
+      document.querySelector("#scroll_down_wrapper")?.classList?.remove("hidden");
+    }
+  })

@@ -1,0 +1,23 @@
+aside.md:absolute.md:-ml-72
+  nav.mb-8
+    ul
+      li
+        = link_to unit_events_path(@unit),
+                  class: "block py-1 font-bold hover:text-brand-600",
+                  data: { turbo_action: "advance" } do
+          .fa-stack
+            i.fa-regular.fa-circle.fa-stack-2x
+            i.fa-solid.fa-arrow-left.fa-stack-1x
+
+          = t("events.show.captions.done")
+      li
+        = link_to edit_unit_event_path(@unit, @event),
+                  class: "block py-1 font-bold hover:text-brand-600",
+                  data: { turbo_action: "advance" } do
+          .fa-stack
+            i.fa-regular.fa-circle.fa-stack-2x
+            i.fa-solid.fa-pencil.fa-stack-1x
+          
+          = t("events.titles.edit")      
+
+  = render partial: "events/partials/show/organize"  

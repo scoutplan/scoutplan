@@ -1,0 +1,13 @@
+- if flash[:alert]
+  = content_tag( \
+    :p,
+    class: "font-bold mt-4 p-4 bg-amber-100 border rounded border-amber-300 text-amber-600") do
+      i.fa-info-circle.fas.mr-2
+      = flash[:alert]
+
+- if flash[:notice]
+  = content_tag( \
+    :p,
+    class: "font-bold mt-4 p-4 bg-lime-100 border rounded border-lime-300 text-lime-700") do
+      i.fa-exclamation-circle.fas.mr-2
+      = flash[:notice]

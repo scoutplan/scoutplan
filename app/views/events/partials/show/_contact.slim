@@ -1,0 +1,18 @@
+- return unless @event.organizers.present?
+
+section#organizer.py-4.border-t.border-stone-800
+  h2.font-bold.uppercase.tracking-wide.text-stone-400.mb-6
+    = t("events.show.organizer").pluralize(@event.organizers.count)
+
+  dl
+    - @event.organizers.each do |organizer|
+      dt.font-bold
+        = organizer.full_display_name
+
+      - if organizer.phone.present?
+        dd.font-bold
+          = number_to_phone(organizer.phone, area_code: true).gsub(/^\+\d/, '')
+
+      - if organizer.email.present?
+        dd.font-bold
+          = mail_to organizer.email, organizer.email, class: "text-sky-600"

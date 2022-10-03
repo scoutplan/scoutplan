@@ -1,0 +1,6 @@
+header.mb-4
+  h3.font-bold.text-3xl.md:text-4xl
+    = @event.title
+    span.align-middle.ml-2.text-base = glyph_tag(@event)
+
+  = content_tag(:p, @event.short_description, class: "md:text-center italic my-4 font-normal text-base text-gray-500") if @event.short_description.present?          
