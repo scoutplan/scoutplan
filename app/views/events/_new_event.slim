@@ -32,14 +32,8 @@ article.hover:bg-stone-100(class="relative event #{row_classes(event)}" id="even
         h4.font-bold.text-xl.event-title
           = event.title
 
-        // short description
-        - if event.short_description.present?
-          p.event-short-description.font-bold.text-red-500
-            = event.short_description
-
-        // location
-        p.event-location.mt-1
-          = render partial: "event_location", locals: { event: event }
+        = render partial: "events/partials/index/short_description", locals: { event: event }
+        = render partial: "event_location", locals: { event: event }
 
     // mobile view stacks under
     .md:hidden
