@@ -1,0 +1,17 @@
+= turbo_frame_tag "main"
+  .max-w-md.mx-auto
+    header.relative.mb-4
+      h1.text-4xl.font-bold.mb-2
+        = t("event_categories.titles.index")
+
+      = link_to "Add an Event Category",
+        new_unit_event_category_path(@unit),
+        class: "inline-block px-4 py-2 rounded border font-bold border-teal-600 text-teal-600 hover:border-teal-700 hover:text-teal-700",
+        data: { turbo_action: "advance" }      
+
+    ul
+      - @unit.event_categories.order(:name).each do |category|
+        li
+          = link_to edit_unit_event_category_path(@unit, category), class: "block py-2" do
+            i.fas(class="fa-#{ category.glyph } fa-fw mr-2" style="color: #{ category.color }")
+            = category.name

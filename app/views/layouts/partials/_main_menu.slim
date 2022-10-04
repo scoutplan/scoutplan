@@ -44,7 +44,7 @@ ul.list-none
   // Unit settings
   - if policy(:unit_settings).edit?
     li.main_nav_item_unit_settings.md:inline-block
-      = link_to edit_unit_settings_path(@current_unit),
+      = link_to unit_settings_path(@current_unit),
         class: "text-brand-600 font-bold text-sm xl:text-base mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block hover:text-brand-600",
         data: { turbo_frame: "main", turbo_action: "advance" } do
 

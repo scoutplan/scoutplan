@@ -255,6 +255,7 @@ en:
         closed:           "RSVPs are closed"
         none_cta:         "Your response is needed"
         show_details:     "See event details"
+        closed:           "RSVPs are closed."
 
       tooltips:
         response_received: "Click to view and change your RSVP"
@@ -315,7 +316,7 @@ en:
 
       icons:
         departure:    "fa-car"
-        arrival:      "fa-tent"
+        arrival:      "fa-campground"
         activity:     "fa-person-hiking"
 
       titles:
@@ -430,6 +431,9 @@ en:
     service_project:  "Service Project"
     court_of_honor:   "Court of Honor"
 
+    titles:
+      index:          "Event Categories"
+
   locations:
     titles:
       edit: "Edit Location"
@@ -437,7 +441,7 @@ en:
       departure: "Depart From"
       arrival: "Arrive At"
       activity: "Activity Location"
-      index: "Location Atlas"
+      index: "Unit Address Book"
     
     labels:
       name: "Site Name"
@@ -570,3 +574,13 @@ en:
       duplicate_success:  "Your Announcement has been duplicated"
       delete_success:     "Your Announcement has been deleted"
       unpin_success:      "Your Announcement has been taken down"
+
+  settings:
+    captions:
+      back:           "Back to unit setup"
+
+    titles:
+      unit_profile:   "Edit your unit information"
+
+    notices:
+      update_success: "Your unit profile has been updated"

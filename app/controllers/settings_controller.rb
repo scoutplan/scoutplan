@@ -3,7 +3,7 @@
 # Controller for editing and updating Unit settings
 # TODO: factor this into a view model
 #
-class UnitSettingsController < UnitContextController
+class SettingsController < UnitContextController
   TASK_KEY_RSVP_NAG = "rsvp_nag"
   TASK_DAY_RSVP_NAG = 2 # Tuesday
   TASK_HOUR_RSVP_NAG = 10 # 10 AM local
@@ -14,6 +14,9 @@ class UnitSettingsController < UnitContextController
   def edit
     @page_title = [@unit.name, "Settings"]
     authorize @unit, policy_class: UnitSettingsPolicy
+  end
+
+  def index
   end
 
   # POST /unit/:unit_id/settings
@@ -27,7 +30,7 @@ class UnitSettingsController < UnitContextController
     set_schedule
 
     @unit.save!
-    redirect_to edit_unit_settings_path(@unit)
+    redirect_to unit_settings_path(@unit)
   end
 
   def pundit_user

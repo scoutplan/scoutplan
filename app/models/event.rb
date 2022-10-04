@@ -146,6 +146,11 @@ class Event < ApplicationRecord
     find_location(location_type)&.full_address
   end
 
+  def mapping_address(location_type = nil)
+    location = find_location(location_type)
+    location&.map_address || location&.address
+  end
+
   def find_location(location_type)
     event_locations.find_by(location_type: location_type)&.location
   end
