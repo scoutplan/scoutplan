@@ -148,7 +148,7 @@ class Event < ApplicationRecord
 
   def mapping_address(location_type = nil)
     location = find_location(location_type)
-    location&.map_address || location&.address
+    location&.map_name || location&.address
   end
 
   def find_location(location_type)
