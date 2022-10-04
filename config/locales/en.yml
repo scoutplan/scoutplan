@@ -310,14 +310,14 @@ en:
         confirmation: "%{event_title} has been cancelled"   
 
       colors:
-        departure:    "text-red-500"
-        arrival:      "text-amber-500"
-        activity:     "text-emerald-500"
+        departure:    "text-emerald-500"
+        arrival:      "text-red-500"
+        activity:     "text-amber-500"
 
       icons:
         departure:    "fa-car"
-        arrival:      "fa-campground"
-        activity:     "fa-person-hiking"
+        arrival:      "fa-location-dot"
+        activity:     "fa-location-exclamation"
 
       titles:
         youth:        "Youth"
