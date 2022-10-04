@@ -297,7 +297,8 @@ en:
 
       captions:
         done:                   "Back to Full Schedule"
-        online: "This event is online at"
+        online:                 "This event is online at"
+        download_brief:         "Print a Trip Brief"
 
       cancel:
         notice:       "Cancelling a published event will remove it from the calendar. Are you sure you want to proceed?"
