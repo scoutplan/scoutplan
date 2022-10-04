@@ -88,6 +88,14 @@ describe "events", type: :feature do
         expect(page).to have_current_path(path)
       end
 
+      it "shows an Event with a location" do
+        location = FactoryBot.create(:location, unit: @unit)
+        @event.event_locations.create(location: location, location_type: :arrival)
+        path = unit_event_path(@unit, @event)
+        visit(path)
+        expect(page).to have_current_path(path)
+      end
+
       it "does not display a Publish button on published events" do
         event = FactoryBot.create(:event, :published, unit: @unit, title: "Published event")
         visit unit_event_path(@unit, event)

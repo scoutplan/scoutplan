@@ -5,7 +5,7 @@ header
   = content_tag(:p, @event&.location, style: "margin: 0;") if @event.location
   = content_tag(:p, @event&.address, style: "margin: 0;") if @event.address
 
-.flex.flex-col.gap-8
+div(style="width")
   section
     h2 Questions?
     dl
