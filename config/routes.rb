@@ -16,8 +16,8 @@ Rails.application.routes.draw do
   resources :event_activities, as: "activities"
   resources :users
 
-  get "units/:unit_id/settings", as: "edit_unit_settings", to: "unit_settings#edit"
-  patch "units/:unit_id/settings", as: "update_unit_settings", to: "unit_settings#update"
+  # get "units/:unit_id/settings", as: "edit_unit_settings", to: "unit_settings#edit"
+  # patch "units/:unit_id/settings", as: "update_unit_settings", to: "unit_settings#update"
 
   # begin units
   resources :units, only: %i[show index] do
@@ -59,6 +59,8 @@ Rails.application.routes.draw do
       post  "cancel", to: "events#perform_cancellation"
       patch "rsvp", as: "send_rsvps", to: "events#create_or_update_rsvps"
     end
+
+    resources :settings
 
     # redirect the old /events path. We can probably get rid of this
     # https://stackoverflow.com/questions/38509769/rails-routes-redirect-a-wild-card-route

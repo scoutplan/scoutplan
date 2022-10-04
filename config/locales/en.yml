@@ -315,7 +315,7 @@ en:
 
       icons:
         departure:    "fa-car"
-        arrival:      "fa-tent"
+        arrival:      "fa-campground"
         activity:     "fa-person-hiking"
 
       titles:

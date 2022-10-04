@@ -17,7 +17,7 @@ describe "unit settings", type: :feature do
     end
 
     it "prevents Unit Settings page navigation" do
-      expect { visit edit_unit_settings_path(@member.unit) }.to raise_error(Pundit::NotAuthorizedError)
+      expect { visit unit_settings_path(@member.unit) }.to raise_error(Pundit::NotAuthorizedError)
     end
   end
 
@@ -34,7 +34,7 @@ describe "unit settings", type: :feature do
     end
 
     it "visits the unit settings page" do
-      path = edit_unit_settings_path(@member.unit)
+      path = unit_settings_path(@member.unit)
       visit path
       expect(page).to have_current_path(path)
     end

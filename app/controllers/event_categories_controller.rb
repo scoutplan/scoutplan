@@ -10,7 +10,7 @@ class EventCategoriesController < UnitContextController
     @category = current_unit.event_categories.new(event_category_params)
     return unless @category.save!
 
-    redirect_to edit_unit_settings_path(@unit)
+    redirect_to unit_settings_path(@unit)
   end
 
   private
