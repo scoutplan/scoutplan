@@ -1,7 +1,7 @@
 - recipients = [ ["Active Members (#{@unit.members.status_active.count} total, #{@unit.members.status_active.adult.count} adults)", "active_members"],
                  ["Active + Family & Friends (#{@unit.members.select{|m| !m.status_inactive?}.count} total, #{@unit.members.adult.select{|m| !m.status_inactive?}.count} adults)", "all_members"] ]
 
-- events = @unit.events.published.recent.rsvp_required
+- events = @unit.events.recent.rsvp_required.published
 / - recipients << ["", nil] if events.present?
 
 - events.each do |event|

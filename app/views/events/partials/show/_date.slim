@@ -13,7 +13,11 @@ section#date_time_card.py-4.border-t.border-stone-800
       .start-dayz.block.bg-white.pr-2
         .uppercase.text-sm.font-bold.tracking-wider = @event.starts_at.in_time_zone.strftime('%a')
         .font-bold.text-5xl = @event.starts_at.day
-        .font-bold.whitespace-nowrap = @event.starts_at.in_time_zone.strftime('%-I:%M %p')  
+        .font-bold.whitespace-nowrap
+          = @event.starts_at.in_time_zone.strftime('%-I:%M %p')
+          - if !multiday
+            | &ndash;
+            = @event.ends_at.in_time_zone.strftime('%-I:%M %p')
 
       - if multiday && duration_in_days < 5
         .interim-day.bg-white.text-purple-500.px-2
