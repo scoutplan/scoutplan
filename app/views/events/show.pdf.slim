@@ -1,13 +1,19 @@
-h1 = "#{@event.title} Brief"
-= content_tag(:p, @event&.short_description) if @event.short_description
-= content_tag(:p, EventPresenter.new(@event, @current_member).full_dates_to_s(show_year: true))
-= content_tag(:p, @event&.location) if @event.location
-= content_tag(:p, @event&.address) if @event.address
+header
+  h1 = "#{@event.title} Brief"
+  = content_tag(:h2, @event&.short_description, style: "margin: 0;") if @event.short_description
+  = content_tag(:p, EventPresenter.new(@event, @current_member).full_dates_to_s(show_year: true), style: "margin: 0;")
+  = content_tag(:p, @event&.location, style: "margin: 0;") if @event.location
+  = content_tag(:p, @event&.address, style: "margin: 0;") if @event.address
 
-table
-  - @event.organizers.each do |member|
-    tr
-      td = member.full_display_name
-      td = member.phone
+.flex.flex-col.gap-8
+  section
+    h2 Questions?
+    dl
+    - @event.organizers.each do |member|
+      dt = member.full_display_name
+      dd = member.phone
 
-      
+    h2 Notes
+    == @event.description
+
+  section

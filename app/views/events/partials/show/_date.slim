@@ -25,7 +25,7 @@ section#date_time_card.py-4.border-t.border-stone-800
 
         - interim_date = @event.starts_at + 1.day
         - while interim_date < @event.ends_at
-          .interim-day.bg-white.text-stone-400.px-2
+          .interim-day.bg-white.text-stone-500.px-2
             .uppercase.text-xs.font-bold.tracking-wider = interim_date.in_time_zone.strftime('%a')
             .font-bold.text-2xl = interim_date.day
 

@@ -1,13 +1,13 @@
 doctype html
 html.scroll-smooth
   head
-    title = ((@page_title || []).reverse + [t("app_name")]).join(" · ")
+    title = (@page_title || []).reverse.join(" · ")
     meta name="viewport" content="width=device-width,initial-scale=1"
     = csrf_meta_tags
     = csp_meta_tag
     = favicon_link_tag "favicon.ico"
     = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
-    = stylesheet_link_tag 'application', 'data-turbo-track': 'reload'
+    = stylesheet_link_tag "application", "data-turbo-track": "reload"
     = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: "anonymous"
     = javascript_include_tag "main"
     = javascript_importmap_tags

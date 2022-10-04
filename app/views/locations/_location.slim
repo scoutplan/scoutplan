@@ -3,13 +3,11 @@ div.p-4.hover:bg-stone-100
             data: { turbo_action: "advance" } do
 
     = content_tag :div, location.name || location.map_name || "No name", class: "font-bold"
-    = content_tag :div, location.address
+    = content_tag :div, location.address, class: "font-bold"
     - if location.phone.present?
-      = content_tag :div do
-        i.fa-solid.fa-phone.fa-fw.text-stone-400.mr-2
+      = content_tag :div, class: "font-bold" do
         = location.phone
 
   - if location.website.present?
     = content_tag :div do
-      i.fa-solid.fa-laptop.fa-fw.text-stone-400.mr-2
-      = link_to location.website, location.website, class: "text-blue-600 external-link", target: "_new"
+      = link_to location.website, location.website, class: "text-sky-500 external-link font-bold", target: "_new"

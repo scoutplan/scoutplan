@@ -1,0 +1,47 @@
+- @page_title = ["Unit Profile"]
+
+nav.mb-6.mt-4
+  = link_to unit_settings_path(@unit),
+            class: "text-violet-600 font-bold text-center",
+            data: { turbo_action: "advance" } do
+    .fa-stack
+      i.fa-regular.fa-circle.fa-stack-2x
+      i.fa-solid.fa-arrow-left.fa-stack-1x
+    = t("settings.captions.back")
+
+header.mb-8
+
+  h1.font-bold.text-4xl
+    = t("settings.titles.unit_profile")
+
+
+= form_for @unit, url: unit_path(@unit), class: 'w-full', builder: ApplicationFormBuilder do |f|
+  div
+    = image_tag @unit.logo, class: "mb-4"
+    = f.file_field :logo, class: "hidden", id: "file_selection_input"
+    = button_tag "Upload a logo",
+                 class: "font-bold rounded border px-4 py-2 text-violet-600 border-violet-600 hover:text-violet-700 hover:border-violet-700",
+                 onclick: ""
+
+  section.bg-stone-100.px-4.py-2.md:px-8.md:py-0.my-4.rounded.divide-y
+    .py-2.md:py-4
+      = f.styled_label :name, layout: :inline
+      = f.text_field :name,
+        class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300",
+        autocomplete: "off",
+        autofocus: true,
+        placeholder: "e.g. Troop 123"
+
+    .py-2.md:py-4
+      = f.styled_label :location, layout: :inline
+      = f.text_field :location,
+        class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300",
+        autocomplete: "off",
+        autofocus: true,
+        placeholder: "City name"
+
+  .flex.flex-row.justify-between
+    div
+
+    div
+      = f.submit "Save", class: "px-4 py-2 rounded bg-brand-500 text-white uppercase font-bold text-sm"

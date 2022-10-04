@@ -5,22 +5,24 @@
         = "Unit Setup"
 
     .flex.flex-col.divide-y
-      = link_to "#", class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100" do
-        i.fa-solid.fa-fw.fa-sliders.mr-2
-        = "Unit Settings"
+      = link_to unit_setting_path(@unit, category: "unit_profile"),
+                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100",
+                data: { turbo_action: "advance" } do
+        i.fa-solid.fa-fw.fa-flag.mr-2
+        = "Unit Profile"
 
-      = link_to "#", class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100" do
-        i.fa-solid.fa-fw.fa-badge.mr-2
-        = "Logo"
-
-      = link_to "#", class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100" do
+      = link_to unit_event_categories_path(@unit),
+                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100",
+                data: { turbo_action: "advance" } do
         i.fa-solid.fa-fw.fa-calendar-lines-pen.mr-2
         = "Event Categories"
 
-      = link_to unit_locations_path(@unit), class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100" do
+      = link_to unit_locations_path(@unit),
+                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100",
+                data: { turbo_action: "advance" } do
         i.fa-solid.fa-fw.fa-address-book.mr-2
         = "Address Book"
 
-      = link_to "#", class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100" do
+      = link_to unit_setting_path(@unit, category: "communications"), class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100" do
         i.fa-solid.fa-fw.fa-tower-broadcast.mr-2
         = "Communications"        

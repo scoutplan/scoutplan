@@ -34,9 +34,7 @@ section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800
           .inline-block.font-bold.text-gray-400.text-sm.mt-1
             = t("@events.rsvp.closed")
 
-  - else
-    // family has no RSVPs for this @event
-
+  - elsif policy(@event).rsvp? && @event.rsvp_open?
     .flex.flex-row.justify-between.items-center
       div
         i.fa-solid.fa-exclamation-triangle.mr-1.text-yellow-400.text-lg
@@ -47,3 +45,8 @@ section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800
           = link_to "Respond Now", unit_event_edit_rsvps_path(@event.unit, @event),
                     class: "cta-button inline-block font-bold bg-yellow-400 rounded text-yellow-800 hover:bg-yellow-500 hover:text-yellow-900 px-4 py-2 ml-3 my-2",
                     data: { turbo_action: "advance", turbo_frame: "main" }
+
+  - elsif !@event.rsvp_open?
+    .flex.flex-row.justify-between.items-center
+      div
+        = t("events.index.rsvp.closed")

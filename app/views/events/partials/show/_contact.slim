@@ -1,7 +1,7 @@
 - return unless @event.organizers.present?
 
 section#organizer.py-4.border-t.border-stone-800
-  h2.font-bold.uppercase.tracking-wide.text-stone-400.mb-6
+  h2.font-bold.uppercase.tracking-wide.text-stone-500.mb-6
     = t("events.show.organizer").pluralize(@event.organizers.count)
 
   dl
@@ -15,4 +15,4 @@ section#organizer.py-4.border-t.border-stone-800
 
       - if organizer.email.present?
         dd.font-bold
-          = mail_to organizer.email, organizer.email, class: "text-sky-600"
+          = mail_to organizer.email, organizer.email, class: "text-blue-600"

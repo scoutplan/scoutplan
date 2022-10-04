@@ -1,5 +1,11 @@
 = turbo_frame_tag "main"
   .mx-auto.max-w-xl.relative
+    iframe.mb-4(
+      width="100%"
+      height="300px"
+      src="#{location_map_src(@location)}"
+      style="border:none;")
+
     = render partial: "form"
 
     .absolute.left-0.bottom-0.pb-2
