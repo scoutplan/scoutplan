@@ -291,7 +291,7 @@ en:
       series_count:             "%{count} events in this series"
       past_warning:             "This event has already occurred."
       map:                      "View a Map"
-      organize:                 "Organize"
+      organize:                 "Current RSVPs"
       organizer:                "Questions?"
       payment_amount_prompt:    "%{amount} per person"
       description:              "Notes"
@@ -581,6 +581,10 @@ en:
 
     titles:
       unit_profile:   "Edit your unit information"
+      communications: "Communications"
+      daily_reminder: "Daily reminder"
+      rsvp_nag:       "RSVP reminder"
+      digest:         "Weekly newsletter"
 
     notices:
       update_success: "Your unit profile has been updated"

@@ -60,7 +60,7 @@ h2.font-bold.text-lg
 
 
   .mb-3
-      = check_box "settings[communication]", :rsvp_nag, { checked: @unit.settings(:communication).rsvp_nag == "true" }, "true", "false"
+      = check_box "settings[communication]", :rsvp_nag, { checked: @unit.tasks.exists?(key: "digest") }, "true", "false"
       / = check_box "settings", "communication[rsvp_nag]", {}, "yes", "no"
       = label "settings[communication]", :rsvp_nag, "Tuesday morning RSVP reminder", class: "ml-2"
 
