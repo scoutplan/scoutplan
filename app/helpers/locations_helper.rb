@@ -9,7 +9,7 @@ module LocationsHelper
     map_params = if coordinates?(location)
                    "q=#{escape_location_name(@location.address)}&center=#{@location.map_name}"
                  else
-                   "q=#{escape_location_name(@location.map_name || @location.address)}"
+                   "q=#{escape_location_name(@location&.map_name.presence || @location&.address.presence)}"
                  end
     BASE_MAP_URL + "?key=#{ENV.fetch('GOOGLE_API_KEY')}" + "&zoom=#{ZOOM_LEVEL}" + "&#{map_params}"
   end

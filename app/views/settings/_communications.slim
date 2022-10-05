@@ -1,0 +1,41 @@
+.h-4
+
+= render partial: "back_to_settings"
+
+header.mb-6
+  h1.font-bold.text-4xl
+    = t("settings.titles.communications")
+
+= form_with model: @unit do |f|
+  fieldset.divide-y
+    article.py-4
+      h2.font-bold.text-xl
+        i.fa-solid.fa-sun.mr-2.text-yellow-600
+        = t("settings.titles.daily_reminder")
+
+      p.text-md.text-stone-600.mb-3 Send a message in the evening for events the following morning, and in the morning for events later the same day.
+
+      = check_box "settings[communication]", :daily_reminder, { checked: @unit.tasks.exists?(key: "daily_reminder") }, "true", "false"
+      = label "settings[communication]", :daily_reminder, "Turn on daily reminders", class: "ml-2 font-bold"
+
+    article.py-4
+      h2.font-bold.text-xl
+        i.fa-solid.fa-hand-point-ribbon.mr-2.text-cyan-600
+        = t("settings.titles.rsvp_nag")
+
+      p.text-md.text-stone-600.mb-3 Send a message on Tuesday mornings to members with outstanding RSVPs, gently reminding them to respond.
+
+      = check_box "settings[communication]", :rsvp_nag, { checked: @unit.tasks.exists?(key: "rsvp_nag") }, "true", "false"
+      = label "settings[communication]", :rsvp_nag, "Turn on RSVP reminders", class: "ml-2 font-bold"
+
+    article.py-4
+      h2.font-bold.text-xl
+        i.fa-solid.fa-calendar-week.mr-2.text-rose-600
+        = t("settings.titles.digest")
+
+      p.text-md.text-stone-600.mb-3 Send a message on Sunday mornings with the coming week's schedule, news, and RSVPs.
+
+      = check_box "settings[communication]", :digest, { checked: enabled = @unit.tasks.exists?(key: "digest") }, "true", "false"
+      = label "settings[communication]", :digest, "Turn on weekly newsletters", class: "ml-2 font-bold"
+      - if enabled
+        p.text-sm.text-stone-400 Last ran on #{@unit.tasks.find_by(key: "digest").last_ran_at.strftime('%A, %b %-d')}

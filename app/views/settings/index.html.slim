@@ -23,6 +23,8 @@
         i.fa-solid.fa-fw.fa-address-book.mr-2
         = "Address Book"
 
-      = link_to unit_setting_path(@unit, category: "communications"), class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100" do
+      = link_to unit_setting_path(@unit, category: "communications"),
+                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100",
+                data: { turbo_action: "advance" } do
         i.fa-solid.fa-fw.fa-tower-broadcast.mr-2
         = "Communications"        
