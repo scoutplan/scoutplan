@@ -431,8 +431,14 @@ en:
     service_project:  "Service Project"
     court_of_honor:   "Court of Honor"
 
+    captions:
+      back:           "Back to event category list"
+
     titles:
       index:          "Event Categories"
+
+    notices:
+      update_success: "%{name} has been updated."
 
   locations:
     titles:
