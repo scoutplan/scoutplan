@@ -28,7 +28,9 @@ Rails.application.routes.draw do
 
     resources :locations
     resources :plans, path: "planner"
-    resources :event_categories
+    resources :event_categories do
+      get "remove", as: "remove"
+    end
     resources :event_rsvps, only: [:destroy]
     resources :news_items do
       post "enqueue", to: "news_items#enqueue", as: "enqueue"

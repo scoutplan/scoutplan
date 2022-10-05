@@ -1,0 +1,44 @@
+= form_for [@unit, @event_category] do |f|
+  fieldset
+    article.py-4
+      = f.label :name, "Category Name", class: "block font-bold mb-1"
+      = f.text_field :name,
+        class: "bg-white border border-stone-200 rounded p-2 w-full placeholder-stone-300",
+        autocomplete: "off",
+        autofocus: true,
+        placeholder: "Name your event category (e.g. \"Training\")"
+
+    article.py-4
+      = f.label :glyph, "Icon", class: "block font-bold mb-1"
+      p.mb-3 #{ENV["APP_NAME"]} uses <a href="https://fontawesome.com/icons" target="_blank" class="underline">Font Awesome</a> to provide thousands of icon choices. Type the identifier of the icon you'd like to use.
+
+      div
+        span = "fa-"
+
+        = f.text_field :glyph,
+          class: "bg-white border border-stone-200 rounded p-2 placeholder-stone-300 mr-2",
+          autocomplete: "off",
+          placeholder: "(e.g. \"tent\")"
+
+    article.py-4
+      .flex.flex-row.items-center
+        = f.label :name, "Color", class: "font-bold mb-1 mr-2"
+        = f.color_field :color,
+          class: "bg-white border border-stone-200 rounded h-12 p-2 placeholder-stone-300",
+          autocomplete: "off",
+          placeholder: "Named color (e.g. \"Periwinkle\") or hex value (e.g. \"#44AA22\")"
+
+  footer.mt-2
+    .flex.flex-row.justify-between
+      div
+        = f.submit f.object.new_record? ? "Add This Event Category" : t("global.save_changes"),
+                   class: "rounded bg-brand-500 text-white px-4 py-2 font-bold cursor-pointer"
+
+      div
+        - if !f.object.new_record?
+          = link_to unit_event_category_remove_path(@unit, @event_category),
+                    class: "text-stone-400 hover:text-stone-800",
+                    data: { turbo_action: "advance" } do
+            .fa-stack
+              i.fa-regular.fa-circle.fa-stack-2x
+              i.fa-solid.fa-trash.fa-stack-1x

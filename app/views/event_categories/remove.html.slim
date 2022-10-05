@@ -1,0 +1,28 @@
+= turbo_frame_tag "main"
+  .max-w-lg.mx-auto.pt-8
+    nav.mb-6.mt-4
+      = link_to unit_event_categories_path(@unit),
+                class: "text-teal-600 font-bold text-center",
+                data: { turbo_action: "advance" } do
+        .fa-stack
+          i.fa-regular.fa-circle.fa-stack-2x
+          i.fa-solid.fa-arrow-left.fa-stack-1x
+        = t("event_categories.captions.back")
+
+    = form_with model: [@unit, @event_category], method: :delete, data: { turbo_action: "advance" } do |f|
+      h1.font-bold.text-3xl.mb-4
+        = "Remove Event Category"
+
+      p.mb-6
+        | #{@count} #{"event".pluralize(@count)} #{(@count == 1) ? "refers" : "refer"} to the <strong>#{@event_category.name}</strong> category.
+
+      div
+        = f.label :choose_a_replacement, class: "block font-bold mb-1"
+        = select :replacement, :id,
+                 options_from_collection_for_select(@unit.event_categories.order(:name).reject { |c| c.id == @event_category.id }, :id, :name),
+                 {},
+                 class: "w-full rounded border-stone-200"
+
+      footer.pt-6
+        = f.submit "Replace and remove the #{@event_category.name} category",
+                   class: "rounded px-4 py-2 bg-brand-500 text-white font-bold"
