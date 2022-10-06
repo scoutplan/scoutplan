@@ -516,6 +516,10 @@ en:
         create_confirmation:  "%{event_name} was added to the calendar"
         description_save:     "Save This Description"
 
+  search:
+    placeholders:
+      query_term: "Type an event or member name"
+  
   tasks:
     undefined_description:      "Undefined Task"
     daily_reminder_description: "Daily Reminders"

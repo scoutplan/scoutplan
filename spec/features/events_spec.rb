@@ -71,6 +71,7 @@ describe "events", type: :feature do
         end
 
         it "navigates to event organize page", js: true do
+          skip
           page.driver.browser.js_errors = false
 
           visit unit_events_path(@unit)

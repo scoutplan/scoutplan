@@ -1,0 +1,11 @@
+#search_overlay {
+  display: none;
+}
+
+body.showing-search {
+
+}
+
+body.showing-search #search_overlay {
+  display: block;
+}
