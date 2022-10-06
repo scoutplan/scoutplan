@@ -140,7 +140,7 @@ describe "events", type: :feature do
     it "hides the add event button on the Index page" do
       login_as(@normal_user, scope: :user)
       visit unit_events_path(@unit)
-      expect(page).not_to have_selector(:link_or_button, I18n.t("event_add"))
+      expect(page).not_to have_selector(:link_or_button, I18n.t("events.index.new_button_caption"))
       logout
     end
 

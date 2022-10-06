@@ -5,11 +5,11 @@
 
       - if user_signed_in?
         // LEFT SIDE ellipsis menu
-        .hidden.md:block.absolute.left-0.pt-2
+        .hidden.md:block.absolute.left-0.pt-2.px-2
           = render partial: "events_dropdown", locals: { current_variation: "list" }
 
       // CENTER (desktop) or LEFT (mobile)
-      h1.px-4.md:text-center.text-xl.md:text-4xl.font-bold.mb-2
+      h1.md:px-4.md:text-center.text-2xl.md:text-4xl.font-bold.mb-2
         = t("events.index.page_title")
         .text-sm.uppercase.tracking-wider.text-stone-500 = @unit.name
 
@@ -28,7 +28,7 @@
 
       .divide-y.divide-stone-300
         - if user_signed_in?
-          = link_to "#", class: "hide-bulk-publish inline-block px-4 py-2 w-full toggle-body-class text-sm text-center text-stone-400 hover:text-stone-600",
+          = link_to "#", class: "font-bold hide-bulk-publish inline-block md:px-2 py-2 w-full toggle-body-class text-sm text-stone-500 hover:text-stone-600",
                     data: { action: "event#togglePastEvents" },
                     id: "toggle_past_events_link" do
               #show_past_events_caption

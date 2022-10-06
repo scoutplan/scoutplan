@@ -16,12 +16,8 @@
   display: none;
 }
 
-.event-past a {
-  color: #D6D3D1;
-}
-
-.event-past a:hover {
-  color: #57534E;
+.event-past .event-title {
+  text-decoration: strikethrough;
 }
 
 .event-draft .event-title:after {

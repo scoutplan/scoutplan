@@ -35,7 +35,7 @@ en:
   administration: "Administration"
   rsvps: "Your RSVPs"
   hello: "Hello world"
-  event_add: "Add an Event"
+  event_add: "Add"
   event_update: "Change a Calendar Event"
   event_edit: "Change Event Details"
   description_edit: "Edit Event Description"
@@ -225,6 +225,9 @@ en:
         prev_month: "Previous month"
         next_month: "Next month"
 
+      captions:
+        new_event:  "Add"
+
       bulk_publish:
         execute_caption:  "Publish Selected Events"
         cancel_caption:   "Cancel"
@@ -255,7 +258,6 @@ en:
         closed:           "RSVPs are closed"
         none_cta:         "Your response is needed"
         show_details:     "See event details"
-        closed:           "RSVPs are closed."
 
       tooltips:
         response_received: "Click to view and change your RSVP"
@@ -404,7 +406,7 @@ en:
       phone: "111-222-3333 (optional)"
 
     index:
-      new_button_caption: "Add a Member"
+      new_button_caption: "Add"
       page_title: "Member Roster"
 
     show:
