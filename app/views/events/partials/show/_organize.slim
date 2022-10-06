@@ -3,7 +3,7 @@
 
 - return unless @event.organizable? && policy(@event).rsvps?
 
-#manage_rsvps_card.bg-cyan-700.text-cyan-50.px-4.py-4.relative.mb-4.w-60
+#manage_rsvps_card.bg-cyan-700.text-cyan-50.px-4.py-4.relative.mb-4.w-full.md:w-60
     header.mb-2
       .flex.flex-row.justify-between
         h2.text-lg.font-bold.mb-2
@@ -13,7 +13,7 @@
           .inline-block.ml-2.text-xs.rounded.py-1.px-2.bg-cyan-800
             = @event.rsvps.accepted.count
 
-    section.border-t.border-cyan-200.py-3
+    section.border-t.border-cyan-200.py-3.hidden.md:block
       - rsvps = @event.rsvps.accepted.select { |r| r.member.youth? }
       .flex.flex-row.justify-between
         h3.font-bold.mb-2
@@ -27,7 +27,7 @@
             i.fa-solid.fa-check-circle.mr-2
             = rsvp.short_display_name
 
-    section.border-t.border-cyan-200.py-3
+    section.border-t.border-cyan-200.py-3.hidden.md:block
       - rsvps = @event.rsvps.accepted.select { |r| r.member.adult? }
       .flex.flex-row.justify-between
         h3.font-bold.mb-2

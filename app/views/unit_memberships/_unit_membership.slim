@@ -15,20 +15,17 @@ article.member.relative(class="#{row_classes}")
     data: { turbo_action: "advance" } do
     
     h3.text-xl.member-name.mb-2
-      span.mr-2 = unit_membership.full_display_name
+      span.font-bold.mr-2 = unit_membership.full_display_name
       = render partial: "member_badges", locals: { unit_membership: unit_membership }
 
     // contact info below name
-    .text-sm.text-stone-600.mb-2
-      - if unit_membership.emailable?
-        i.fa-envelope.fas.mr-1.text-gray-300
+    - if unit_membership.emailable?
+      .mb-2.font-bold
         = unit_membership.email
 
-      - if unit_membership.phone.present?
-        i.fa-phone.fas.ml-5.mr-1.text-gray-300
+    - if unit_membership.phone.present?
+      .mb-2.font-bold
         = number_to_phone unit_membership.phone
-
-
 
     div
       - unit_membership.family(include_self: false).map do |m|
