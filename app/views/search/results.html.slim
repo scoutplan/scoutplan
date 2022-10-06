@@ -1,0 +1,25 @@
+= turbo_frame_tag "search_results", class: "overflow-scroll"
+  = render partial: "form"
+
+  - if @term.length > 2
+    .divide-y
+      - if @events.present?
+        div.py-1
+          h2.font-bold.text-lg.px-2.text-brand-600
+            = "Events"
+          ul.divide-y
+            = render collection: @events, partial: "search/event"
+
+      - if @members.present?
+        div.py-1
+          h2.font-bold.text-lg.px-2.text-brand-600
+            = "Members"
+          ul.divide-y
+            = render collection: @members, partial: "search/member"
+
+      - if @locations.present?
+        div.py-1
+          h2.font-bold.text-lg.px-2.text-brand-600
+            = "Locations"
+          ul.divide-y
+            = render collection: @locations, partial: "search/location"

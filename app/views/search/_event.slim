@@ -1,0 +1,9 @@
+li
+  = link_to unit_event_path(@unit, event),
+    class: "block py-2 px-2 hover:bg-stone-100",
+    data: { turbo_action: "advance", turbo_frame: "_top" } do
+    
+    .font-bold = event.title
+    div
+      = distance_of_time_in_words_to_now(event.starts_at)
+      = event.starts_at.past? ? " ago" : " from now"

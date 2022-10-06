@@ -24,6 +24,8 @@ html.scroll-smooth
     footer
       /!  CI #{ENV["GITHUB_RUN_NUMBER"]}
 
+    = render partial: "search/overlay"
+
   javascript:
     function setElemDisplay(elem, show) {
       var elem = document.querySelector(elem);

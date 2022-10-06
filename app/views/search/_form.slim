@@ -1,0 +1,3 @@
+= form_tag unit_search_path(@unit), id: "query_form", data: { turbo_frame: "search_results" }
+  = hidden_field_tag :q, "#{@term}", id: "query_term"
+  = submit_tag "let's rock", id: "query_submit", class: "hidden"
