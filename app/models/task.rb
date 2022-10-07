@@ -90,4 +90,8 @@ class Task < ApplicationRecord
   def self.perform_all_on_schedule
     Task.all.each(&:perform_on_schedule)
   end
+
+  def setup_schedule
+    raise NotImplementedError, "Subclasses must implement this method"
+  end
 end

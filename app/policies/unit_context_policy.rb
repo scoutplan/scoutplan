@@ -8,6 +8,10 @@ class UnitContextPolicy < ApplicationPolicy
     @membership = user
   end
 
+  def update?
+    admin?
+  end
+
   protected
 
   def admin?

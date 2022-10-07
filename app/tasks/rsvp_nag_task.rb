@@ -6,10 +6,8 @@
 # and (c) the member's family RSVP is incomplete
 class RsvpNagTask < UnitTask
   TASK_KEY = "rsvp_nag"
-
-  def self.add_to_unit(unit)
-    unit.tasks.find_or_create_by(key: TASK_KEY, type: "DailyReminderTask")
-  end
+  DEFAULT_DAY = :tuesday
+  DEFAULT_HOUR = 10
 
   def description
     "RSVP nag"
@@ -23,6 +21,16 @@ class RsvpNagTask < UnitTask
       Rails.logger.error { e.message }
     end
     super
+  end
+
+  # set up default schedule for Tuesday mornings at 10 AM
+  def setup_schedule
+    return if schedule_hash.present?
+
+    rule = IceCube::Rule.weekly.day(DEFAULT_DAY).hour_of_day(DEFAULT_HOUR).minute_of_hour(0)
+    schedule.start_time = DateTime.now.in_time_zone
+    schedule.add_recurrence_rule rule
+    save_schedule
   end
 
   private

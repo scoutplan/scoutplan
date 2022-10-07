@@ -17,6 +17,7 @@ class SettingsController < UnitContextController
   end
 
   def index
+    authorize @unit, :edit?
   end
 
   # POST /unit/:unit_id/settings
@@ -35,6 +36,10 @@ class SettingsController < UnitContextController
 
   def pundit_user
     @current_member
+  end
+
+  def difference_in_days(from, to)
+    (to.to_date - from.to_date).to_i
   end
 
   private
@@ -61,6 +66,7 @@ class SettingsController < UnitContextController
   def set_digest_schedule
     digest_schedule_params = params.dig(:settings, :communication, :digest_schedule)
     return unless digest_schedule_params
+
     day_of_week = digest_schedule_params[:day_of_week].to_i
     hour_of_day = digest_schedule_params[:hour_of_day].to_i
     digest_task = @unit.tasks.find_or_create_by(key: "digest", type: "UnitDigestTask")

@@ -8,7 +8,7 @@ class UnitPolicy < UnitContextPolicy
     @event = event
   end
 
-  def update?
+  def edit?
     admin?
   end
 end

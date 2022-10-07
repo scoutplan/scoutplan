@@ -588,15 +588,22 @@ en:
       unpin_success:      "Your Announcement has been taken down"
 
   settings:
+    buttons:
+      save:           "Save settings"
+      
     captions:
       back:           "Back to unit setup"
+
+    labels:
+      digest:         "Turn on weekly newsletters"
+      daily_reminder: "Turn on daily reminders"
 
     titles:
       unit_profile:   "Edit your unit information"
       communications: "Communications"
-      daily_reminder: "Daily reminder"
-      rsvp_nag:       "RSVP reminder"
-      digest:         "Weekly newsletter"
+      daily_reminder: "Event reminders"
+      rsvp_nag:       "RSVP reminders"
+      digest:         "Weekly newsletters"
 
     notices:
       update_success: "Your unit profile has been updated"
