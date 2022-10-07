@@ -25,8 +25,9 @@ class Unit < ApplicationRecord
     s.key :security, defaults: { enable_magic_links: true }
     s.key :communication, defaults: {
       from_email: "reminders@scoutplan.org",
-      rsvp_reminders: true,
-      rsvp_nag: false
+      digest: true,
+      rsvp_nag: true,
+      daily_reminder: true
     }
     s.key :appearance, defaults: { main_color: "#003F87" }
     s.key :locale, defaults: {
@@ -68,6 +69,13 @@ class Unit < ApplicationRecord
 
   def to_s
     name
+  end
+
+  # acts like .update, but for settings as defined at the top of the class
+  def update_settings(params)
+    params.each do |key, value|
+      settings(key.to_sym).update!(value)
+    end
   end
 
   private

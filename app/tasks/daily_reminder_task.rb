@@ -13,6 +13,19 @@ class DailyReminderTask < UnitTask
     super
   end
 
+  # set up default schedule every day at 7 AM and 7 PM
+  def setup_schedule
+    return if schedule_hash.present?
+
+    morning_rule = IceCube::Rule.daily.hour_of_day(7).minute_of_hour(0)
+    evening_rule = IceCube::Rule.daily.hour_of_day(19).minute_of_hour(0)
+    schedule.start_time = DateTime.now.in_time_zone
+    schedule.add_recurrence_rule morning_rule
+    schedule.add_recurrence_rule evening_rule
+
+    save_schedule
+  end
+
   private
 
   def find_events

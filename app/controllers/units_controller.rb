@@ -8,14 +8,22 @@ class UnitsController < UnitContextController
 
   def update
     authorize @unit
-    @unit.assign_attributes(unit_params)
-    @unit.save!
-    redirect_to unit_setting_path(@unit, category: "unit_profile"), notice: I18n.t("settings.notices.update_success")
+
+    @unit.update(unit_params) if params[:unit].present?
+    @unit.update_settings(settings_params) if params[:settings].present?
+    UnitTaskService.new(@unit).setup_tasks_from_settings
+    redirect_to unit_settings_path(@unit), notice: I18n.t("settings.notices.update_success")
   end
 
   private
 
   def unit_params
+    return unless params[:unit].present?
+
     params.require(:unit).permit(:name, :location, :logo)
+  end
+
+  def settings_params
+    params.require(:settings).permit!
   end
 end
