@@ -1,10 +1,14 @@
+- checked_value ||= "true"
+- unchecked_value ||= "false"
+
 .switch-wrapper
   = check_box object_name,
               method,
               { class: "switch hidden",
                 checked: checked,
                 role: "switch" },
-              "true", "false"
+              checked_value,
+              unchecked_value
   = label object_name, method,
           class: "font-bold flex items-center",
           id: "#{object_name.parameterize(separator: "_")}_#{method}_label" do

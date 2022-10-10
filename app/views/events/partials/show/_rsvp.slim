@@ -9,20 +9,22 @@ section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800
   - family_rsvps = @event.rsvps.where(unit_membership_id: @current_member.family.collect(&:id))
   - family_rsvps_complete = true
 
-
-  - family_accepted = family_rsvps.select { |r| r.accepted? }
-  - family_declined = family_rsvps.select { |r| r.declined? }
-  - going = "#{list_of_words(family_accepted.map(&:display_first_name), linking_verb: true)} going" if family_accepted
-  - not_going = "#{list_of_words(family_declined.map(&:display_first_name), linking_verb: true)} not#{family_accepted.present? ? '' : ' going'}" if family_declined.present?
+  - family_accepted = family_rsvps.select { |r| r.accepted? }.presence
+  - family_declined = family_rsvps.select { |r| r.declined? }.presence
+  - going = "#{list_of_words(family_accepted.map { |r| r.display_first_name(current_user) }, linking_verb: true)} going" if family_accepted
+  - not_going = "#{list_of_words(family_declined.map { |r| r.display_first_name(current_user) }, linking_verb: true)} not#{family_accepted.present? ? '' : ' going'}" if family_declined.present?
 
   - if rsvp_service.any_responses?
 
     .flex.flex-row.justify-between.items-center
       div
         - if family_rsvps_complete
-          i.fa-circle-check.fas.text-green-500.mr-1
+          i.fa-circle-check.fas.text-green-500.mr-1(title="Your RSVP is complete")
 
-        = [going, not_going].compact.join("; ") + "."
+        - if rsvp_service.family_fully_declined?
+          = t("events.show.full_decline")
+        - else
+          = [going, not_going].compact.join("; ") + "."
 
       div
         // Update RSVPs button (if allowed)

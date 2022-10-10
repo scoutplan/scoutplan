@@ -14,6 +14,10 @@ export default class extends Controller {
     document.querySelector("#search_query_term").focus();
   }
 
+  hide() {
+    document.body.classList.remove("showing-search");
+  }
+
   keypress() {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(function() {

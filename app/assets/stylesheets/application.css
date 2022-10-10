@@ -39,3 +39,17 @@ a.external-link:after {
   margin-left: 0.5rem;
   font-weight: normal;
 }
+
+input.switch:checked + label .switch-container {
+  background: #16a34a;
+}
+
+.switch-button {
+  transform: translateX(0);
+  transition: transform 0.25s;
+}
+
+input.switch:checked + label .switch-button {
+  transform: translateX(1.5rem);
+  transition: transform 0.25s;
+}

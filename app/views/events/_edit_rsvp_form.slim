@@ -3,39 +3,28 @@
 - @rsvps = rsvps
 - notes = rsvps.map(&:note).uniq.join(", ")
 
-.table.w-full
+.table
   - @current_member.family.each do |family_member|
-    .table-row
+    .table-row.items-center
       - existing_rsvp = event.rsvps.find_by(unit_membership: family_member)
       - rsvp = event.rsvps.build(unit_membership: family_member,
         response: existing_rsvp&.response,
         includes_activity: existing_rsvp&.includes_activity)
-      = f.fields_for "members[]", family_member do |member_fields|
-        = member_fields.fields_for "event_rsvp", rsvp do |rsvp_fields|
 
-          // family member name
-          .table-cell.border-0.pr-2.py-2.font-bold
-            i.fa-user.fad.text-yellow-500
-            |&nbsp;&nbsp;
-            = presenter.family_context_name(family_member)
-            = " (you)" if family_member == @current_member
+      // family member name
+      .table-cell.border-0.pr-2.py-2.font-bold.align-middle
+        i.fa-user.fad.text-yellow-500
+        |&nbsp;&nbsp;
+        = presenter.family_context_name(family_member)
 
-          // two radio buttons (going/not going)
-          .table-cell.px-3.py-2.border-0
-            .inline.mr-6
-              = rsvp_fields.radio_button :response, :accepted, class: "mr-1 rsvp-option"
-              = rsvp_fields.label :response, :accepted, value: :accepted, class: "inline" do
-                = t("rsvp_accepted")
-
-            .inline
-              = rsvp_fields.radio_button :response, :declined, class: "mr-1 rsvp-option"
-              = rsvp_fields.label :response, :declined, value: :declined, class: "inline" do
-                = t("rsvp_declined")     
-
-          - if event.includes_activity
-            .table-cell.px-3.py-2.border-0
-              = rsvp_fields.check_box :includes_activity, class: "mr-1"
-              = label :includes_activity, event.activity_name
+      // "Going" switch
+      .table-cell.px-3.py-2.border-0.response-wrapper
+        = render partial: "components/switch", locals: { checked: existing_rsvp.accepted?,
+                                                         label: t("rsvp_accepted"),
+                                                         object_name: "event[members][#{family_member.id}][event_rsvp]",
+                                                         method: "response",
+                                                         checked_value: "accepted",
+                                                         unchecked_value: "declined" }
 
 // note field
 .mt-2
@@ -46,7 +35,7 @@
     autocomplete: "off"
 
 javascript:
-  document.querySelectorAll(".rsvp-option").forEach(function(elem) {
+  document.querySelectorAll(".response-wrapper input").forEach(function(elem) {
     elem.addEventListener("click", function(event) {
       var submitElem = document.querySelector("#accept");
       submitElem.disabled = false;
