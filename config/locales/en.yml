@@ -297,6 +297,7 @@ en:
       organizer:                "Questions?"
       payment_amount_prompt:    "%{amount} per person"
       description:              "Notes"
+      full_decline:             "Your family isn't planning to attend"
 
       captions:
         done:                   "Back to Full Schedule"

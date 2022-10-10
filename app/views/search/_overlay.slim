@@ -1,15 +1,23 @@
 #search_overlay.fixed.inset-0.z-50.backdrop-blur-sm.bg-black/20(data-controller="search")
   .flex.items-center.md:justify-center.h-screen
     .block.rounded-lg.bg-white.drop-shadow-sm.pt-4.mx-2.w-full.md:w-1/4
-      header.p-4.bg-white.border-b
-        = text_field_tag :search, "",
-                  class: "placeholder:text-stone-300 text-lg w-full",
-                  id: "search_query_term",
-                  placeholder: t("search.placeholders.query_term"),
-                  autocomplete: false,
-                  data: { action: "search#keypress", search_target: "query" }
+      header.p-4.bg-white
+        .flex.items-center
+          i.fa-solid.fa-magnifying-glass.absolute.left-0.pl-4
+
+          = text_field_tag :search, "",
+                    class: "px-0 pl-8 placeholder:text-stone-300 text-lg w-full focus:outline-none focus:ring-0 border-0 border-b border-stone-500 focus:border-stone-500",
+                    id: "search_query_term",
+                    placeholder: t("search.placeholders.query_term"),
+                    autocomplete: false,
+                    data: { action: "search#keypress", search_target: "query" }
+
+          = button_tag :dismiss,
+                    class: "absolute right-0 block p-4 text-stone-500 hover:text-brand-700",
+                    data: { action: "search#hide" } do
+            i.fa-solid.fa-times.fa-lg
       
-      section.px-4.py-4.overflow-scroll.h-96
+      section.px-2.py-4.overflow-scroll.h-96
         = turbo_frame_tag "search_results", class: "w-full"
           = render partial: "search/form"
 
