@@ -1,5 +1,8 @@
 <%- if controller_name != 'sessions' %>
-  <%= link_to "Log in", new_session_path(resource_name) %>
+  <%= link_to new_session_path(resource_name) do %>
+    <i class="fa-solid fa-arrow-left mr-2"></i>
+    <%= "Back to sign-in" %>
+  <% end %>
 <% end %>
 
 <%- if devise_mapping.registerable? && controller_name != 'registrations' %>

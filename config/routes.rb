@@ -99,11 +99,11 @@ Rails.application.routes.draw do
     resources :documents
   end
 
-  # Profile editing
-  get   "profile/edit", to: "profile#edit",   as: "edit_profile"
-  patch "profile/save", to: "profile#update", as: "update_profile"
-  get   "profile/change_password", to: "profile#edit_password", as: "edit_password"
-  patch "profile/save_password", to: "profile#update_password", as: "update_password"
+  # # Profile editing
+  get   "user_settings/edit", to: "profile#edit",   as: "edit_profile"
+  patch "user_settings/save", to: "profile#update", as: "update_profile"
+  get   "user_settings/change_password", to: "profile#edit_password", as: "edit_password"
+  patch "user_settings/save_password", to: "profile#update_password", as: "update_password"
 
   post "units/:unit_id/members/:member_id/test_communication/:message_type", to: "test_communications#create", as: "create_test_communication"
 
