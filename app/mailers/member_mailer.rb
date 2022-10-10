@@ -15,7 +15,7 @@ class MemberMailer < ScoutplanMailer
   def digest_email
     Rails.logger.info "Emailing digest to #{@to_address}"
     @this_week_events = @unit.events.published.this_week
-    @upcoming_events = @unit.events.published.upcoming
+    @upcoming_events = @unit.events.published.coming_up
     @news_items = @unit.messages.where("pin_until > ?", Time.now).order("created_at ASC").select(&:active?)
     mail(
       to: @to_address,
