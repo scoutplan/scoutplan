@@ -1,7 +1,7 @@
 .max-w-xl.mx-auto
   = form_with \
     model: @user,
-    url: update_profile_path,
+    url: update_user_settings_path,
     data: { turbo: false },
     builder: ApplicationFormBuilder do |f|
 
@@ -38,7 +38,7 @@
         .basis-1/4
 
         .basis-3/4.flex.flex-col.gap-2        
-          = link_to "Change your password", edit_password_path, class: "inline-block rounded border border-stone-300 hover:bg-stone-100 px-4 py-2 text-sm font-bold uppercase tracking-wider"
+          = link_to "Change your password", edit_credentials_path, class: "inline-block rounded border border-stone-300 hover:bg-stone-100 px-4 py-2 text-sm font-bold uppercase tracking-wider"
 
     footer.bg-white.pb-2.md:py-4.px-0.sticky.bottom-0.flex.flex-col.md:flex-row.md:justify-between.gap-2.border-t.mt-4
 
