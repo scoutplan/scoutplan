@@ -19,7 +19,7 @@ class ProfileController < ApplicationController
   # rubocop:disable Style/GuardClause
   def update_password
     if current_user.update!(password_params)
-      redirect_to edit_profile_path, notice: t("profile.update_password_confirmation")
+      redirect_to edit_user_settings_path, notice: t("profile.update_password_confirmation")
     end
   end
   # rubocop:enable Style/GuardClause

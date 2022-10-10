@@ -3,7 +3,7 @@
 require "rails_helper"
 
 # rubocop:disable Metrics/BlockLength
-describe "planner", type: :feature do
+describe "user profile", type: :feature do
   before :each do
     @member = FactoryBot.create(:member)
     @user = @member.user
@@ -11,8 +11,9 @@ describe "planner", type: :feature do
   end
 
   it "includes current user information" do
-    visit edit_profile_path
-    expect(page).to have_current_path(edit_profile_path)
+    path = edit_user_settings_path
+    visit path
+    expect(page).to have_current_path(path)
     expect(page.find("#user_first_name").value).to eq(@user.first_name)
     expect(page.find("#user_last_name").value).to eq(@user.last_name)
     expect(page.find("#user_email").value).to eq(@user.email)
@@ -20,7 +21,7 @@ describe "planner", type: :feature do
   end
 
   it "changes stuff" do
-    visit edit_profile_path
+    visit edit_user_settings_path
 
     new_first_name = Faker::Name.first_name
     new_last_name = Faker::Name.last_name
@@ -43,3 +44,4 @@ describe "planner", type: :feature do
     expect(@user.phone).to eq(new_phone)
   end
 end
+# rubocop:enable Metrics/BlockLength
