@@ -4,7 +4,7 @@
   .text-left
     h2.text-xl.font-bold.mb-3.text-center = t("global.sign_in")
 
-    .p-6.bg-stone-200/40.rounded.mx-2
+    .p-6.bg-stone-200/30.rounded.mx-2
       = form_for resource, as: resource_name, url: session_path(resource_name), data: { turbo: false } do |f|
         .mb-4
           = f.label :email, class: "block uppercase text-sm font-bold tracking-wide mb-1"
@@ -21,10 +21,7 @@
 
         .pt-3.overflow-auto
           = f.submit t("global.sign_in"), class: "block w-full rounded bg-brand-500 hover:bg-brand-600 font-bold uppercase tracking-wide px-8 py-2 text-white"
-          = link_to "Forgot your password?", new_password_path(resource_name), class: "block text-center pt-2 text-gray-400 underline"
-
-    .absolute.bottom-0.left-0.right-0.p-4.text-center.text-gray-400
-      | &copy; 2021–2022 Scoutplan. All rights reserved.
+          = link_to "Forgot your password?", new_password_path(resource_name), class: "block pt-2 text-stone-600 underline"
 
 css:
   body {

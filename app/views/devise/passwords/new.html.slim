@@ -1,0 +1,23 @@
+
+  h2.font-bold.text-2xl.mb-4
+    = "Reset your password"
+
+  = form_for resource, as: resource_name,
+             url: password_path(resource_name),
+             data: { turbo: false },
+             html: { method: :post } do |f|
+    = render "devise/shared/error_messages", resource: resource
+
+    = f.label :email, class: "block font-bold"
+    = f.email_field :email,
+                    autofocus: "yes",
+                    autocomplete: false,
+                    class: "w-full border border-gray-300 rounded p-2 mb-4"
+
+    .footer
+      = f.submit "Send me reset password instructions",
+                 class: "rounded bg-brand-500 text-white px-4 py-2 font-bold"
+
+      .h-4
+
+      = render "devise/shared/links"
