@@ -103,6 +103,6 @@ module EventsHelper
   end
 
   def zoom_link?(url)
-    url =~ /https:\/\/.*\.zoom.us\/j\/.*/
+    url =~ %r{https://.*\.zoom.us/j/.*}
   end
 end
