@@ -10,7 +10,7 @@
                     id: "search_query_term",
                     placeholder: t("search.placeholders.query_term"),
                     autocomplete: false,
-                    data: { action: "search#keypress", search_target: "query" }
+                    data: { action: "keyup->search#keypress", search_target: "query" }
 
           = button_tag :dismiss,
                     class: "absolute right-0 block p-4 text-stone-500 hover:text-brand-700",
