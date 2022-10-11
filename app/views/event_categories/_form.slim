@@ -3,7 +3,7 @@
     article.py-4
       = f.label :name, "Category Name", class: "block font-bold mb-1"
       = f.text_field :name,
-        class: "bg-white border border-stone-200 rounded p-2 w-full placeholder-stone-300",
+        class: "bg-white border border-stone-300 rounded p-2 w-full placeholder-stone-300",
         autocomplete: "off",
         autofocus: true,
         placeholder: "Name your event category (e.g. \"Training\")"
@@ -16,7 +16,7 @@
         span = "fa-"
 
         = f.text_field :glyph,
-          class: "bg-white border border-stone-200 rounded p-2 placeholder-stone-300 mr-2",
+          class: "bg-white border border-stone-300 rounded p-2 placeholder-stone-300 mr-2",
           autocomplete: "off",
           placeholder: "(e.g. \"tent\")"
 
@@ -24,7 +24,7 @@
       .flex.flex-row.items-center
         = f.label :name, "Color", class: "font-bold mb-1 mr-2"
         = f.color_field :color,
-          class: "bg-white border border-stone-200 rounded h-12 p-2 placeholder-stone-300",
+          class: "bg-white border border-stone-300 rounded h-12 p-2 placeholder-stone-300",
           autocomplete: "off",
           placeholder: "Named color (e.g. \"Periwinkle\") or hex value (e.g. \"#44AA22\")"
 
