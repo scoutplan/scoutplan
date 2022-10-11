@@ -299,6 +299,8 @@ en:
       description:              "Notes"
       full_decline:             "Your family isn't planning to attend"
 
+      buttons:
+        duplicate:              "Duplicate"
       captions:
         done:                   "Back to Full Schedule"
         online:                 "This event is online at"
