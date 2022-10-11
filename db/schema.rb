@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_29_002530) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_11_173441) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -219,7 +219,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_29_002530) do
     t.text "description"
     t.datetime "starts_at", precision: nil
     t.datetime "ends_at", precision: nil
-    t.string "location"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "requires_rsvp", default: false
@@ -229,15 +228,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_29_002530) do
     t.integer "series_parent_id"
     t.integer "status", default: 0
     t.date "repeats_until"
-    t.string "address"
     t.text "short_description"
-    t.string "departs_from"
     t.boolean "includes_activity", default: false, null: false
     t.string "activity_name"
     t.datetime "rsvp_closes_at"
     t.boolean "send_reminder", default: true, null: false
-    t.string "phone"
-    t.string "venue_phone"
     t.integer "payment_amount", default: 0, null: false
     t.boolean "online", default: false, null: false
     t.string "website"

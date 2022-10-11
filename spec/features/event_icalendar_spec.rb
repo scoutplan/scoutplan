@@ -55,7 +55,6 @@ describe "events", type: :feature do
         :event,
         :published,
         unit: @unit,
-        location: Faker::Address.community,
         description: Faker::Lorem.paragraph(sentence_count: 3),
         starts_at: 36.hours.from_now,
         ends_at: 38.hours.from_now \
@@ -64,7 +63,6 @@ describe "events", type: :feature do
         :event,
         :cancelled,
         unit: @unit,
-        location: Faker::Address.community,
         description: Faker::Lorem.paragraph(sentence_count: 3),
         starts_at: 40.hours.from_now,
         ends_at: 42.hours.from_now \
@@ -73,7 +71,6 @@ describe "events", type: :feature do
         :event,
         :draft,
         unit: @unit,
-        location: Faker::Address.community,
         description: Faker::Lorem.paragraph(sentence_count: 3),
         starts_at: 50.hours.from_now,
         ends_at: 52.hours.from_now \

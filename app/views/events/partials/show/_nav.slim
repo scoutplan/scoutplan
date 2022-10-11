@@ -3,7 +3,7 @@ aside.md:absolute.md:-ml-72
     ul
       li
         = link_to unit_events_path(@unit),
-                  class: "block py-1 font-bold hover:text-brand-600",
+                  class: "block py-1 font-bold hover:text-brand-500",
                   data: { turbo_action: "advance" } do
           .fa-stack
             i.fa-regular.fa-circle.fa-stack-2x
@@ -14,7 +14,7 @@ aside.md:absolute.md:-ml-72
       - if EventPolicy.new(@current_member, @event).edit?
         li
           = link_to edit_unit_event_path(@unit, @event),
-                    class: "block py-1 font-bold hover:text-brand-600",
+                    class: "block py-1 font-bold hover:text-brand-500",
                     data: { turbo_action: "advance" } do
             .fa-stack
               i.fa-regular.fa-circle.fa-stack-2x
@@ -24,7 +24,7 @@ aside.md:absolute.md:-ml-72
 
         li
           = link_to new_unit_event_path(@unit, duplicate_from: @event.id),
-                    class: "block py-1 font-bold hover:text-brand-600",
+                    class: "block py-1 font-bold hover:text-brand-500",
                     data: { turbo_action: "advance" } do
             .fa-stack
               i.fa-regular.fa-circle.fa-stack-2x
@@ -34,7 +34,7 @@ aside.md:absolute.md:-ml-72
 
       li.hidden
         = link_to unit_event_path(@unit, @event, format: :pdf),
-                  class: "block py-1 font-bold hover:text-brand-600",
+                  class: "block py-1 font-bold hover:text-brand-500",
                   data: { turbo_action: "advance" } do
           .fa-stack
             i.fa-regular.fa-circle.fa-stack-2x

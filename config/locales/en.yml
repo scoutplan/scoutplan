@@ -444,6 +444,7 @@ en:
 
     notices:
       update_success: "%{name} has been updated."
+      create_success: "The '%{name}' event category has been added."
 
   locations:
     titles:
@@ -597,15 +598,31 @@ en:
     captions:
       back:           "Back to unit setup"
 
+    descriptions:
+      daily_reminder: "Send a reminder message the evening before a morning event; send a message in the morning an event later the same day."
+      digest:         "Send a message on Sunday mornings with the coming week's schedule, news, and RSVPs."
+      rsvp_nag:       "Send a message on Tuesday mornings, gently reminding members with outstanding RSVPs to respond."
+
+    icons:
+      daily_reminder: "fa-sun"
+      digest:         "fa-calendar-week"
+      rsvp_nag:       "fa-hand-point-ribbon"
+
+    icon_colors:
+      daily_reminder: "text-yellow-600"
+      digest:         "text-cyan-600"
+      rsvp_nag:       "text-rose-600"
+
     labels:
-      digest:         "Turn on weekly newsletters"
       daily_reminder: "Turn on daily reminders"
+      digest:         "Turn on weekly newsletters"
+      rsvp_nag:       "Turn on RSVP prompts"
 
     titles:
       unit_profile:   "Edit your unit information"
       communications: "Communications"
       daily_reminder: "Event reminders"
-      rsvp_nag:       "RSVP reminders"
+      rsvp_nag:       "RSVP prompts"
       digest:         "Weekly newsletters"
 
     notices:
