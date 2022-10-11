@@ -44,7 +44,7 @@ section#location_panel
             = ff.hidden_field :location_type
 
             .pt-2
-              = link_to unit_event_locations_path(@event.unit, @event),
+              = link_to unit_locations_path(@event.unit),
                         class: "text-blue-600 hover:text-blue-600 text-sm font-semibold",
                         data: { turbo_action: "advance" } do
 

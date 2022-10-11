@@ -302,6 +302,9 @@ class EventsController < UnitContextController
       @event.starts_at = date_s.to_date
       @event.ends_at = date_s.to_date
     end
+    %w[departure arrival activity].each do |location_type|
+      @event.event_locations.find_or_initialize_by(location_type: location_type)
+    end
     set_default_times
     @member_rsvps = current_member.event_rsvps
   end
