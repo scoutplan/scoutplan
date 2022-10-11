@@ -19,7 +19,7 @@
 
       // "Going" switch
       .table-cell.px-3.py-2.border-0.response-wrapper
-        = render partial: "components/switch", locals: { checked: existing_rsvp.accepted?,
+        = render partial: "components/switch", locals: { checked: existing_rsvp&.accepted?,
                                                          label: t("rsvp_accepted"),
                                                          object_name: "event[members][#{family_member.id}][event_rsvp]",
                                                          method: "response",

@@ -24,4 +24,11 @@ describe "event_rsvp", type: :feature do
     visit path
     expect(page).to have_current_path(path)
   end
+
+  it "works with incomplete RSVPs" do
+    event = FactoryBot.create(:event, :requires_rsvp, unit: @unit, title: "RSVP Event")
+    path = unit_event_edit_rsvps_path(@unit, event)
+    visit path
+    expect(page).to have_current_path(path)
+  end
 end
