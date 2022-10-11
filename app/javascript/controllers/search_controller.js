@@ -18,7 +18,12 @@ export default class extends Controller {
     document.body.classList.remove("showing-search");
   }
 
-  keypress() {
+  keypress(event) {
+    console.log(event.keyCode);
+    if (event.keyCode == 27) {
+      this.hide();
+      return;
+    }
     clearTimeout(this.timeout);
     this.timeout = setTimeout(function() {
       // this.performSearch();  // <- for some reason this doesn't work
