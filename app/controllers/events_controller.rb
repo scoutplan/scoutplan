@@ -162,7 +162,13 @@ class EventsController < UnitContextController
 
   # POST /:unit_id/events/new
   def new
-    build_prototype_event
+    authorize Event
+
+    if (duplicate_from_id = params[:duplicate_from])
+      build_duplicate_event(duplicate_from_id)
+    else
+      build_prototype_event
+    end
     @presenter = EventPresenter.new(@event, current_member)
   end
 
@@ -287,6 +293,10 @@ class EventsController < UnitContextController
 
   def collate_rsvps
     @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
+  end
+
+  def build_duplicate_event(duplicate_from_id)
+    @event = EventDuplicateService.new(@unit, duplicate_from_id).build
   end
 
   # the default Event will start on the first Saturday at least 4 weeks (28 days) from today
