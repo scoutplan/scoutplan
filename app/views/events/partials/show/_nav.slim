@@ -23,7 +23,7 @@ aside.md:absolute.md:-ml-72
             = t("events.titles.edit")
 
         li
-          = link_to new_unit_event_path(@unit, duplicate_from: @event.id),
+          = link_to new_unit_event_path(@unit, source_event_id: @event.id),
                     class: "block py-1 font-bold hover:text-brand-500",
                     data: { turbo_action: "advance" } do
             .fa-stack

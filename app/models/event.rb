@@ -75,7 +75,7 @@ class Event < ApplicationRecord
   end
 
   def rsvp_open?
-    requires_rsvp && rsvp_closes_at > DateTime.now
+    status == "published" && requires_rsvp && rsvp_closes_at > DateTime.now
   end
 
   def rsvps?

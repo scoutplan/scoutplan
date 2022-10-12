@@ -48,6 +48,8 @@ article.hover:bg-stone-100(class="relative event #{row_classes(event)}" id="even
 
   - if event.online && website = event.website.presence
     .absolute.bottom-4(style="left:160px;")
-      = link_to link_name(website), website, class: "external-link font-bold text-sky-600", target: "_new"
+      = link_to website, class: "font-bold text-sky-700", target: "_new" do
+        = link_name(website)
+        i.fa-solid.fa-arrow-up-right-from-square.ml-1
 
   = render partial: "events/partials/event_row/action_cell", locals: { event: event } if event.requires_rsvp && user_signed_in?
