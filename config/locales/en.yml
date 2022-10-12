@@ -609,7 +609,7 @@ en:
       rsvp_nag:       "fa-hand-point-ribbon"
 
     icon_colors:
-      daily_reminder: "text-yellow-600"
+      daily_reminder: "text-yellow-400"
       digest:         "text-cyan-600"
       rsvp_nag:       "text-rose-600"
 

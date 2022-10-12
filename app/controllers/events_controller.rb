@@ -132,7 +132,7 @@ class EventsController < UnitContextController
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).rsvps?
     @current_family = @current_member.family
-    page_title @event.unit.name, @event.title
+    page_title @unit.name, @event.title
     respond_to do |format|
       format.html
       format.pdf { render_event_brief }

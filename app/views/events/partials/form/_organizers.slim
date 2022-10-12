@@ -1,0 +1,31 @@
+= content_tag :section,
+              class: "py-2",
+              data: { controller: "autocomplete",
+                      autocomplete_url_value: unit_search_path(@unit) } do
+
+  select.hidden(data-autocomplete-target="select" multiple="multiple" name="event[organizer_ids][]" id="event_organizer_ids")
+    - @event.organizers.each do |organizer|
+      option(value="#{organizer.id}", selected="selected")
+        = organizer.full_display_name
+
+  = f.label :organizers, "Organizers", class: "block font-bold mb-1"
+  
+  div.rounded.border.border-stone-300.px-2.py-2
+    .flex.gap-1
+      // left part: list of organizers
+      - @event.organizers.each do |organizer|
+        = render partial: "events/partials/form/organizer", locals: { organizer: organizer }
+
+      // right part: input field
+      .flex-initial.relative
+        = text_field_tag :organizers, "",
+                        class: "w-ful focus:ring-0 focus:outline-none focus:border-0 border-0 w-full placeholder:text-stone-300",
+                        autocomplete: "off",
+                        placeholder: "Search for organizers",
+                        data: { autocomplete_target: "query", action: "keyup->autocomplete#search" }
+
+        // autocomplete results
+        = content_tag :ul,
+                      class: "absolute autocomplete-results w-60 max-h-24 bg-sky-700 text-sky-100",
+                      data: { autocomplete_target: "results",
+                              action: "mousedown->autocomplete#select" }
