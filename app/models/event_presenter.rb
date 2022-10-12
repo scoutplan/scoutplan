@@ -40,11 +40,10 @@ class EventPresenter
   # within same month: "February"
   # spanning month boundary: "February–March"
   def month_name
-    if event.starts_at.month != event.ends_at.month
-      return "#{event.starts_at.strftime('%B')}&ndash;#{event.ends_at.strftime('%B')}".html_safe
-    end
-
-    event.starts_at.strftime("%B")
+    result = event.starts_at.strftime("%B")
+    result.concat "&ndash;#{event.ends_at.strftime('%B')}" unless event.starts_at.month == event.ends_at.month
+    result.concat " #{event.starts_at.strftime('%Y')}" unless event.starts_at.year == Date.today.year
+    result.html_safe
   end
 
   def months_and_dates

@@ -467,16 +467,16 @@ en:
     captions:
       add_a_location: "Add a Location"
       edit_location: "Edit Location"
-      address_book: "%{unit_name} Location Atlas"
-      destroy: "Remove from Atlas"
+      address_book: "%{unit_name} Location Address Book"
+      destroy: "Remove from your unit's Address Book"
     
     notices:
-      created: "Location added to your atlas"
-      destroyed: "%{location_name} has been removed from your atlas"
+      created: "Location added to your Address Book"
+      destroyed: "%{location_name} has been removed from your unit's Address Book"
       updated: "Location has been updated"
     
     prompts:
-      destroy: "Are you sure you want to remove %{location_name} from the %{unit_name} Atlas?"
+      destroy: "Are you sure you want to remove %{location_name} from the %{unit_name} Address Book?"
   
   mailers:
     member_mailer:

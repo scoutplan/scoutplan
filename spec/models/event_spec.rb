@@ -33,12 +33,12 @@ RSpec.describe Event, type: :model do
 
     describe "rsvp_open?" do
       it "RSVP is open if rsvp_closes_at is nil and start date hasn't occurred yet" do
-        event = FactoryBot.build(:event, :requires_rsvp, starts_at: 5.days.from_now, rsvp_closes_at: nil)
+        event = FactoryBot.build(:event, :requires_rsvp, :published, starts_at: 5.days.from_now, rsvp_closes_at: nil)
         expect(event.rsvp_open?).to be_truthy
       end
 
       it "RSVP is open if rsvp_closes_at hasn't occurred yet" do
-        event = FactoryBot.build(:event, :requires_rsvp, starts_at: 5.days.from_now, rsvp_closes_at: 4.days.from_now)
+        event = FactoryBot.build(:event, :requires_rsvp, :published, starts_at: 5.days.from_now, rsvp_closes_at: 4.days.from_now)
         expect(event.rsvp_open?).to be_truthy
       end
 
