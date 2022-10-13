@@ -1,10 +1,13 @@
+- organizers = @event.organizers
+
 = content_tag :section,
-              class: "py-2",
+              class: "autocomplete py-2",
               data: { controller: "autocomplete",
+                      autocomplete_target: "wrapper",
                       autocomplete_url_value: unit_search_path(@unit) } do
 
-  select.hidden(data-autocomplete-target="select" multiple="multiple" name="event[organizer_ids][]" id="event_organizer_ids")
-    - @event.organizers.each do |organizer|
+  select.hidden(data-autocomplete-target="selections" multiple="multiple" name="event[organizer_ids][]" id="event_organizer_ids")
+    - organizers.each do |organizer|
       option(value="#{organizer.id}", selected="selected")
         = organizer.full_display_name
 
@@ -13,19 +16,37 @@
   div.rounded.border.border-stone-300.px-2.py-2
     .flex.gap-1
       // left part: list of organizers
-      - @event.organizers.each do |organizer|
+      - organizers.each do |organizer|
         = render partial: "events/partials/form/organizer", locals: { organizer: organizer }
 
       // right part: input field
       .flex-initial.relative
-        = text_field_tag :organizers, "",
-                        class: "w-ful focus:ring-0 focus:outline-none focus:border-0 border-0 w-full placeholder:text-stone-300",
-                        autocomplete: "off",
-                        placeholder: "Search for organizers",
-                        data: { autocomplete_target: "query", action: "keyup->autocomplete#search" }
+        = turbo_frame_tag "organizer_search_results"
+          = text_field_tag :organizers, "",
+                           class: "px-4 w-full focus:ring-0 focus:outline-none focus:border-0 border-0 w-full placeholder:text-stone-300",
+                           autocomplete: "off",
+                           placeholder: "Type a name",
+                           data: { autocomplete_target: "query", action: "keyup->autocomplete#search" }
 
-        // autocomplete results
-        = content_tag :ul,
-                      class: "absolute autocomplete-results w-60 max-h-24 bg-sky-700 text-sky-100",
-                      data: { autocomplete_target: "results",
-                              action: "mousedown->autocomplete#select" }
+          // autocomplete results
+          = content_tag :ul,
+                        class: "absolute autocomplete-results min-w-72 max-h-96 bg-cyan-800 text-cyan-100 rounded overflow-auto z-10",
+                        data: { autocomplete_target: "results" } do
+
+            - @unit.members.status_active_and_registered.each do |member|
+              - display_class = organizers.map(&:unit_membership).include?(member) ? "hidden existing" : ""
+
+              li(class="#{display_class}")
+                = link_to member.full_display_name,
+                          "#",
+                          class: "block px-4 py-2 hover:bg-cyan-700 whitespace-nowrap font-bold",
+                          data: { action: "autocomplete#select", autocomplete_target: "option", autocomplete_value: member.id }
+
+css:
+  .autocomplete-results {
+    display: none;
+  }
+
+  .autocomplete-active .autocomplete-results {
+    display: block;
+  }

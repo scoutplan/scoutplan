@@ -1,44 +1,60 @@
+// Stimulus controller for autocomplete
+
 import { Controller } from "@hotwired/stimulus"
 
 const SEARCH_TIMEOUT = 500;
+const ACTIVE_CLASS = "autocomplete-active";
 
 export default class extends Controller {
-  static targets = [ "query" ];
+  static targets = [ "query", "wrapper", "results", "selections" ];
 
   connect() {
     console.log("Autocomplete controller connected");
   }
 
   show() {
-
+    this.wrapperTarget.classList.add(ACTIVE_CLASS);
   }
 
   hide() {
+    this.wrapperTarget.classList.remove(ACTIVE_CLASS);
+  }
+
+  remove(event) {
 
   }
 
   search(event) {
-    var queryTerm = this.queryTarget.value;
-    if (queryTerm.length < 3) { return; }
-    console.log("Performing search with " + queryTerm);
-  }
-
-  oldsearch(event) {
     if (event.keyCode == 27) {
       this.hide();
+      this.queryTarget.value = "";
       return;
     }
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(function() {
-      // this.performSearch();  // <- for some reason this doesn't work
-      var queryTerm = document.querySelector("#search_query_term").value;
-      console.log("Performing search with " + queryTerm);
-      
-      var queryTermField = document.querySelector("#query_term");
-      var queryForm = document.querySelector("#query_form");
-  
-      queryTermField.value = queryTerm;
-      document.querySelector("#query_submit").click();
-    }, 250);
+
+    var queryTerm = this.queryTarget.value.toUpperCase();
+    if (queryTerm.length < 3) {
+      this.hide();
+      return; 
+    }
+
+    this.show();
+
+    var rows = this.resultsTarget.querySelectorAll("li");
+    rows.forEach(function(row) {
+      if (row.classList.contains("existing")) { return; }
+
+      var text = row.innerText.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      if (text.indexOf(queryTerm) > -1) {
+        row.classList.remove("hidden");
+      } else {
+        row.classList.add("hidden");
+      }
+    });
+  }
+
+  select(event) {
+    var row = event.currentTarget;
+    var memberId = row.dataset.autocompleteValue;
+    this.hide();
   }
 }

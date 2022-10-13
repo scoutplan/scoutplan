@@ -68,7 +68,8 @@
     /         data: { turbo_action: "advance" },
     /         class: "border rounded px-4 py-2 text-sm font-bold tracking-wider uppercase text-brand-500 border-brand-500 ml-4"
 
-    = render partial: "events/partials/form/organizers", locals: { f: f }
+    = turbo_frame_tag "organizer_search_results"
+      = render partial: "events/partials/form/organizers", locals: { f: f }
 
     // RSVP
     section.bg-stone-100.py-4.px-4.md:px-8.mb-1.rounded

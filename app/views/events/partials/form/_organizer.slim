@@ -1,4 +1,4 @@
 span.rounded.bg-sky-100.text-sky-600.px-2.py-1.font-bold.flex-initial.whitespace-nowrap.items-center.flex
-  = organizer.short_display_name
-  button.ml-2
+  = organizer.full_display_name
+  button.ml-2(type="button" data-action="click->autocomplete#remove" data-autocomplete-target="option" data-autocomplete-value="#{organizer.id}")
     i.fa-solid.fa-times-circle.text-stone-500
