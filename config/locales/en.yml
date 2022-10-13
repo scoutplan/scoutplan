@@ -284,7 +284,7 @@ en:
       cancel_title:             "Cancel This Event"
       cancel_button:            "Yes, Cancel This Event"
       cancel_cancel:            "No, Don't Cancel"
-      organize_button_caption:  "Manage RSVPs"
+      organize_button_caption:  "View RSVPs"
       edit_reason_admin:        "Not available to most, but available to you because you're a %{unit_name} administrator."
       organize_reason_admin:    "Not available to most, but available to you because you're a %{unit_name} administrator."
       location:                 "Location"
@@ -301,10 +301,13 @@ en:
 
       buttons:
         duplicate:              "Duplicate"
+
       captions:
         done:                   "Back to Full Schedule"
         online:                 "This event is online at"
         download_brief:         "Print a Trip Brief"
+        rsvp_empty_youth:       "No youth members have RSVP'd yet."
+        rsvp_empty_adult:       "No adult members have RSVP'd yet."
 
       cancel:
         notice:       "Cancelling a published event will remove it from the calendar. Are you sure you want to proceed?"
