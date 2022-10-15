@@ -8,10 +8,11 @@ header
 div(style="width")
   section
     h2 Questions?
+
     dl
-    - @event.organizers.each do |member|
-      dt = member.full_display_name
-      dd = member.phone
+      - @event.organizers.each do |member|
+        dt = member.full_display_name
+        dd = member.phone
 
     h2 Notes
     == @event.description

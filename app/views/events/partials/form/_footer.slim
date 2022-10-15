@@ -1,0 +1,29 @@
+footer.flex.md:justify-between.py-4
+  div
+    - if event_cancellable?(@current_member, @event)
+      = link_to t("events.show.cancel_title"),
+        unit_event_cancel_path(@unit, @event),
+        class: "inline-block px-0 py-2 text-red-500 hover:text-red-700 font-bold",
+        data: { turbo_action: "advance" }
+
+    - if event_deletable?(@current_member, @event)
+      = content_tag(:button,
+          t("events.form.delete_caption"),
+          class: "text-sm font-bold tracking-wider uppercase no-underline text-center \
+          block md:inline-block px-4 py-3 md:py-2 \
+          text-red-100 hover:text-red-200 \
+          bg-red-500 hover:bg-red-600 \
+          rounded",
+          onclick: "if (confirm('#{t("events.form.delete_confirm")}')) { document.querySelector('#delete_event_form').submit(); } else { return false; }")
+
+  .flex.flex-col.md:flex-row.md:justify-end.gap-2
+    // Discard Changes
+    = link_to t("global.discard_changes"),
+      @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event),
+      data: { turbo_action: "advance", turbo_frame: "main" },
+      class: "inline-block px-4 py-2 font-bold rounded border border-stone-400 text-brand-500"
+      
+    // Save Changes
+    = f.submit @event.new_record? ? t("events.new.add_this_event") : t("global.save_changes"),
+      class: "inline-block px-4 py-2 font-bold bg-brand-500 hover:bg-brand-600 text-white rounded"
+    

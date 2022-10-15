@@ -27,6 +27,8 @@
             i.fa-solid.fa-check-circle.mr-2
             = rsvp.short_display_name
 
+      = content_tag(:p, t("events.show.captions.rsvp_empty_youth"), class: "font-bold text-sm text-cyan-100") if rsvps.empty?
+
     section.border-t.border-cyan-200.py-3.hidden.md:block
       - rsvps = @event.rsvps.accepted.select { |r| r.member.adult? }
       .flex.flex-row.justify-between
@@ -37,18 +39,15 @@
             = "#{rsvps.count}"
       ul
         - rsvps.each do |rsvp|
-          li.py-1
+          li.py-1.font-bold
             i.fa-solid.fa-check-circle.mr-2
-            = rsvp.short_display_name      
+            = rsvp.short_display_name   
+
+      = content_tag(:p, t("events.show.captions.rsvp_adult_youth"), class: "font-bold text-sm text-cyan-100") if rsvps.empty?
 
     footer.mt-6
       = link_to t("events.show.organize_button_caption"),
         unit_event_rsvps_path(@event.unit, @event),
-        class:  "text-sm font-bold no-underline tracking-wider uppercase" \
-                " px-4 py-3" \
-                " block" \
-                " border border-cyan-50" \
-                " text-cyan-50 hover:bg-cyan-500" \
-                " rounded text-center",
-        data: { turbo_action: "advance", turbo_frame: "main" },
-        title: t("events.show.organize_reason_admin", unit_name: @event.unit.name)
+        title: t("events.show.organize_reason_admin", unit_name: @event.unit.name),
+        class: "block font-bold no-underline px-4 py-3 border border-cyan-100 text-cyan-50 hover:bg-cyan-500 rounded text-center",
+        data: { turbo_action: "advance", turbo_frame: "main" }

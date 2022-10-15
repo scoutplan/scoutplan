@@ -1,0 +1,52 @@
+section.py-4
+  .py-2
+    = f.label :from, "Starts", class: "font-bold block mb-1"
+
+    .flex.flex-grow.gap-x-4.items-center
+      = f.date_field :starts_at_date, class: "flex flex-grow border border-stone-300 rounded p-2", tabindex: -1
+      span.font-bold = "at"
+      = f.time_field :starts_at_time,
+        class: "flex flex-grow border border-stone-300 rounded p-2",
+        list: "suggested_times",
+        tabindex: -1,
+        value: @event.starts_at.strftime("#{ @format_time }")
+
+  .py-2
+    = f.label :to, "Ends", class: "font-bold block mb-1"
+
+    .flex.flex-grow.gap-x-4.items-center
+      = f.date_field :ends_at_date, class: "flex flex-grow border border-stone-300 rounded p-2", tabindex: -1
+      span.font-bold = "at"
+      = f.time_field :ends_at_time,
+        class: "flex flex-grow border border-stone-300 rounded p-2",
+        step: "900",
+        tabindex: -1,
+        value: @event.ends_at.strftime("#{ @format_time }")
+
+  // repeats
+  .flex.mb-3.h-10.mt-4
+    .py-6.inline-flex.items-center
+      = f.check_box :repeats, { \
+          class: "w-4 h-4 text-green-500 rounded mr-2",
+          onclick: "setElemDisplay(\"#repeat_fields\", this.checked);setElemDisplay(\"#repeat_label_on\", this.checked);setElemDisplay(\"#repeat_label_off\", !this.checked);" \
+        }, "yes", "no"
+
+      = f.label "Repeats weekly",
+        for: "event_repeats",
+        id: "repeat_label_off",
+        class: "font-bold block"
+
+      = f.label "Repeats weekly until",
+        for: "event_repeats",
+        id: "repeat_label_on",
+        class: "hidden font-bold block"
+
+    #repeat_fields.hidden
+      = f.date_field :repeats_until, value: (@event.starts_at + 6.months).strftime("#{ @format_date }"), class: "bg-white rounded ml-2 p-2 inline-block"
+
+  // timezone message
+  .mb-0
+    .text-sm.text-gray-400 = t("events.form.timezone_prompt", timezone_name: @current_unit.settings(:locale).time_zone)
+
+  datalist#suggested_times
+    option(value="9:00 AM")

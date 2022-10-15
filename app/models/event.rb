@@ -32,6 +32,7 @@ class Event < ApplicationRecord
   has_rich_text :description
 
   accepts_nested_attributes_for :event_locations, allow_destroy: true
+  accepts_nested_attributes_for :event_organizers, allow_destroy: true
 
   alias_attribute :rsvps, :event_rsvps
   alias_attribute :category, :event_category

@@ -1,0 +1,14 @@
+section.py-4
+  = f.check_box \
+    :includes_activity,
+    class: "w-4 h-4 text-green-500 rounded mr-2",
+    onclick: "toggleActivityFields(this.checked);"
+  = f.label :includes_activity, class: "text-sm font-bold tracking-wide uppercase inline"
+
+  = f.text_field \
+    :activity_name,
+    id: "activity_name_field",
+    disabled: !@event.includes_activity,
+    autocomplete: "off",
+    class: "p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
+    placeholder: "e.g. Rock climbing"

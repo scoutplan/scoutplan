@@ -8,7 +8,7 @@ module CoreExtensions
     module CaseMethods
       # re-open String and add a sentence_case method to it
       def sentence_case
-        substr(0, 1).upcase + substr(1, length - 1)
+        self[0, 1].upcase + self[1..]
       end
     end
   end
