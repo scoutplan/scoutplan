@@ -19,7 +19,7 @@ section.py-4
     div.rounded.border.border-stone-300.px-2.py-2
       .flex.flex-wrap.gap-1.items-center
         // left part: list of organizers
-        div.flex.gap-1(data-autocomplete-target="list")
+        div.flex.flex-wrap.gap-1(data-autocomplete-target="list")
           - organizers.each do |organizer|
             = render partial: "events/partials/form/organizer", locals: { organizer: organizer }
 

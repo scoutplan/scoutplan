@@ -6,9 +6,10 @@ section.py-4
                       object_name: "event",
                       method: "requires_rsvp",
                       checked_value: "true",
-                      unchecked_value: "false" }
+                      unchecked_value: "false",
+                      data: { body_class: "event-requires-rsvp" } }
 
-  #rsvp_fields.mt-6(class="#{@event.requires_rsvp ? '' : 'hidden'}")
+  #rsvp_fields
     .py-2
       = f.label :payment_amount, t("events.captions.payment_amount"), class: "font-bold mr-2"
       = f.number_field :payment_amount,
@@ -19,3 +20,12 @@ section.py-4
       = f.label :rsvp_closes_at, t("events.form.rsvp_closes_at"), class: "block font-bold mb-2"
       = f.date_field :rsvp_closes_at,
         class: "bg-white border border-stone-300 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300"
+
+css:
+  #rsvp_fields {
+    display: none;
+  }
+
+  .event-requires-rsvp #rsvp_fields {
+    display: block;
+  }

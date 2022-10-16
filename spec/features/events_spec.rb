@@ -41,7 +41,6 @@ describe "events", type: :feature do
     it "shows in-flight events" do
       event_title = "In-Flight Event"
       FactoryBot.create(:event, status: :published, unit: @unit, starts_at: 2.days.ago, ends_at: 1.day.from_now, title: event_title)
-      # ap @unit.events
       visit current_path # reload the page
       expect(page).to have_content(event_title)
     end

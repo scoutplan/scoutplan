@@ -3,15 +3,20 @@ section.py-4
   .py-2
     = render partial: "components/switch",
             locals: { checked: @event.online,
-            label: "This event is online",
+            label: "This is an online event",
             object_name: "event",
             method: "online",
             checked_value: "true",
-            unchecked_value: "false" }
+            unchecked_value: "false",
+            data: { body_class: "event-online" } }
 
     // online
   #fields_online.mt-2
-    = f.url_field :website, placeholder: "Type a web address", class: "rounded placeholder:text-stone-200 border-stone-300 w-full"
+    = f.label :online_url, "Online web address", class: "font-bold block mb-2"
+    = f.url_field :website,
+                  placeholder: "Type a web address",
+                  autocomplete: "off",
+                  class: "rounded placeholder:text-stone-200 border-stone-300 w-full"
 
   #fields_offline
     = f.fields_for :event_locations do |ff|
@@ -34,12 +39,19 @@ section.py-4
         i.fa-solid.fa-book-atlas.mr-1
         = t("locations.captions.address_book", unit_name: @unit.name)
 
-javascript:
-  // respond when Online is checked
-  function checkOnline(c) {
-    var isOnline = (c.id == "event_online_true");
-    c.closest(".form-wrapper").classList.toggle("online-event", isOnline);
-    if (isOnline) {
-      document.querySelector("#event_website").focus();
-    }
+css:
+  #fields_offline {
+    display: block;
+  }
+
+  #fields_online {
+    display: none;
+  }
+
+  .event-online #fields_online {
+    display: block;
+  }
+
+  .event-online #fields_offline {
+    display: none;
   }

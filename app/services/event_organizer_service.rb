@@ -10,7 +10,6 @@ class EventOrganizerService
 
   def update(event_organizer_params = {})
     event_organizer_params ||= {}
-    ap event_organizer_params
     create_if_needed(event_organizer_params[:unit_membership_ids])
     delete_unused(event_organizer_params[:unit_membership_ids])
   end

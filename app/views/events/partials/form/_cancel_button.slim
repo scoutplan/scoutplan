@@ -1,0 +1,4 @@
+= link_to t("events.show.cancel_title"),
+  unit_event_cancel_path(@unit, @event),
+  class: "text-center block md:inline-block px-0 py-2 text-red-500 hover:text-red-700 font-bold",
+  data: { turbo_action: "advance" }

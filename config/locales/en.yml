@@ -470,7 +470,7 @@ en:
     captions:
       add_a_location: "Add a Location"
       edit_location: "Edit Location"
-      address_book: "%{unit_name} Location Address Book"
+      address_book: "%{unit_name} Address Book"
       destroy: "Remove from your unit's Address Book"
     
     notices:

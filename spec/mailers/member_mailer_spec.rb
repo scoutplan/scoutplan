@@ -22,7 +22,6 @@ RSpec.describe MemberMailer, type: :mailer do
     end
 
     it "correctly renders the body" do
-      # ap @mail.body
       Time.zone = "UTC"
       expect(@mail.body).to include(@unit.name)
       # expect(@mail.body).to include(@member.display_first_name)

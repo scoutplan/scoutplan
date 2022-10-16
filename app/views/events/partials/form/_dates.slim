@@ -23,30 +23,34 @@ section.py-4
         tabindex: -1,
         value: @event.ends_at.strftime("#{ @format_time }")
 
-  // repeats
-  .flex.mb-3.h-10.mt-4
-    .py-6.inline-flex.items-center
-      = f.check_box :repeats, { \
-          class: "w-4 h-4 text-green-500 rounded mr-2",
-          onclick: "setElemDisplay(\"#repeat_fields\", this.checked);setElemDisplay(\"#repeat_label_on\", this.checked);setElemDisplay(\"#repeat_label_off\", !this.checked);" \
-        }, "yes", "no"
+  .py-4
+    = render partial: "components/switch",
+            locals: { checked: false,
+                      label: "Repeats weekly",
+                      object_name: "event",
+                      method: "repeats",
+                      checked_value: "yes",
+                      unchecked_value: "no",
+                      data: { body_class: "event-repeats" } }
 
-      = f.label "Repeats weekly",
-        for: "event_repeats",
-        id: "repeat_label_off",
-        class: "font-bold block"
-
-      = f.label "Repeats weekly until",
-        for: "event_repeats",
-        id: "repeat_label_on",
-        class: "hidden font-bold block"
-
-    #repeat_fields.hidden
-      = f.date_field :repeats_until, value: (@event.starts_at + 6.months).strftime("#{ @format_date }"), class: "bg-white rounded ml-2 p-2 inline-block"
+  #repeat_fields.py-2
+    = f.label "Repeats until", class: "font-bold block mb-1"
+    = f.date_field :repeats_until,
+                   value: (@event.starts_at + 6.months).strftime("#{ @format_date }"),
+                   class: "bg-white rounded w-full p-2 inline-block"
 
   // timezone message
-  .mb-0
-    .text-sm.text-gray-400 = t("events.form.timezone_prompt", timezone_name: @current_unit.settings(:locale).time_zone)
+  p.text-gray-500
+    = t("events.form.timezone_prompt", timezone_name: @current_unit.settings(:locale).time_zone)
 
   datalist#suggested_times
     option(value="9:00 AM")
+
+css:
+  #repeat_fields {
+    display: none;
+  }
+
+  .event-repeats #repeat_fields {
+    display: block;
+  }

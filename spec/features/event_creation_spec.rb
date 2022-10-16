@@ -38,7 +38,7 @@ describe "events", type: :feature do
       fill_in :event_starts_at_date, with: 13.days.from_now
       fill_in :event_ends_at_date, with: 14.days.from_now
       select "Camping Trip", from: "event_event_category_id"
-      check :event_repeats
+      check :event_repeats, visible: false
       fill_in :event_repeats_until, with: 10.weeks.from_now
       expect { click_link_or_button "Add This Event" }.to change { Event.count }.by_at_least(4)
     end
