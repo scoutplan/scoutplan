@@ -1,0 +1,14 @@
+- return unless event_deletable?(@current_member, @event)
+
+.hidden
+  = button_to "Hidden Delete Button",
+    unit_event_path(@unit, @event),
+    method: :delete,
+    form: { id: "delete_event_form" },
+    onclick: "return confirm('#{t("events.form.delete_confirm")}');",
+    class: "text-sm font-bold tracking-wider uppercase no-underline text-center \
+            block md:inline-block px-4 py-3 md:py-2 \
+            text-red-100 hover:text-red-200 \
+            bg-red-500 hover:bg-red-600 \
+            rounded",
+    data: { turbo_action: "advance" }
