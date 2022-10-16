@@ -1,0 +1,55 @@
+- organizers = @event.organizers
+
+section.py-4
+  = content_tag :section,
+                class: "autocomplete",
+                data: { controller: "autocomplete",
+                        autocomplete_target: "wrapper",
+                        autocomplete_url_value: unit_search_path(@unit) } do
+
+    // select tag that actually gets submitted as part of the form
+    // - select_name = "event[event_organizers_attributes][][unit_membership_id][]"
+    - select_name = "event_organizers[unit_membership_ids][]"
+    select.hidden(data-autocomplete-target="selections" multiple="multiple" name=select_name id="event_event_organizer_unit_membership_ids")
+      - organizers.each do |organizer|
+        option(value="#{organizer.unit_membership_id}" selected="") = organizer.full_display_name
+
+    = f.label :organizers, "Organizers", class: "block font-bold mb-1"
+    
+    div.rounded.border.border-stone-300.px-2.py-2
+      .flex.flex-wrap.gap-1.items-center
+        // left part: list of organizers
+        div.flex.flex-wrap.gap-1(data-autocomplete-target="list")
+          - organizers.each do |organizer|
+            = render partial: "events/partials/form/organizer", locals: { organizer: organizer }
+
+        // right part: input field
+        .flex-initial.relative
+          = text_field_tag :organizers, "",
+                            class: "w-full focus:ring-0 focus:outline-none focus:border-0 border-0 w-full placeholder:text-stone-300",
+                            autocomplete: "off",
+                            placeholder: "Type a name",
+                            data: { autocomplete_target: "query", action: "keyup->autocomplete#search" }
+
+          // autocomplete results
+          = content_tag :ul,
+                        class: "absolute autocomplete-results min-w-72 max-h-96 bg-cyan-800 text-cyan-100 rounded overflow-auto z-10",
+                        data: { autocomplete_target: "results" } do
+
+            - @unit.members.status_active_and_registered.each do |member|
+              - display_class = organizers.map(&:unit_membership).include?(member) ? "hidden existing" : ""
+
+              li(class="#{display_class}")
+                = link_to member.full_display_name,
+                          "#",
+                          class: "block px-4 py-2 hover:bg-cyan-700 whitespace-nowrap font-bold",
+                          data: { action: "autocomplete#select", autocomplete_target: "option", autocomplete_value: member.id }
+
+css:
+  .autocomplete-results {
+    display: none;
+  }
+
+  .autocomplete-active .autocomplete-results {
+    display: block;
+  }

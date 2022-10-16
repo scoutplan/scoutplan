@@ -277,18 +277,6 @@ body.showing-only-draft-events a:hover {
   border-color: black transparent transparent transparent; }
 
 body.modal-open main {
-  overflow: hidden; }
-
-/* used on events/_form to toggle online/offline fieldsets */
-#fields_online {
-  display: none;
-}
-
-.online-event #fields_online {
-  display: block;
-}
-
-.online-event #fields_offline {
-  display: none;
+  overflow: hidden; 
 }
 /* end */

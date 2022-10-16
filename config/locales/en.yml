@@ -182,7 +182,7 @@ en:
 
     captions:
       new_short: "Add"
-      payment_amount: "Cost per person"    
+      payment_amount: "Cost per member $"    
 
     placeholders:
       title:        "Event title"
@@ -267,9 +267,9 @@ en:
       rsvp_closes_at:  "RSVP closes on"
       delete_caption:  "Delete This Event"
       delete_confirm:  "Are you sure you want to permanently delete this event and any RSVPs associated with it?"
-      departure_tab:   "Depart From"
-      arrival_tab:     "Arrive At"
-      activity_tab:    "Side Activity"
+      departure:   "Depart From"
+      arrival:     "Arrive At"
+      activity:    "Side Activity"
 
     my_rsvps:
       title: "My RSVPs"
@@ -470,7 +470,7 @@ en:
     captions:
       add_a_location: "Add a Location"
       edit_location: "Edit Location"
-      address_book: "%{unit_name} Location Address Book"
+      address_book: "%{unit_name} Address Book"
       destroy: "Remove from your unit's Address Book"
     
     notices:
@@ -612,7 +612,7 @@ en:
       rsvp_nag:       "fa-hand-point-ribbon"
 
     icon_colors:
-      daily_reminder: "text-yellow-600"
+      daily_reminder: "text-yellow-400"
       digest:         "text-cyan-600"
       rsvp_nag:       "text-rose-600"
 

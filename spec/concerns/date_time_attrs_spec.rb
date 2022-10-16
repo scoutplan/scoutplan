@@ -33,7 +33,6 @@ RSpec.describe DailyReminderTask, type: :model do
     it "sets attributes" do
       @thing.happens_at_date = "2006-02-14"
       @thing.happens_at_time = "13:45"
-      ap @thing
       expect(@thing.happens_at.year).to eq(2006)
       expect(@thing.happens_at.month).to eq(2)
       expect(@thing.happens_at.day).to eq(14)

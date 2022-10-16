@@ -13,7 +13,6 @@ RSpec.describe LocationPolicy, type: :model do
   end
 
   it "permits edit by an admin" do
-    ap @location
     expect(LocationPolicy.new(@admin, @location).edit?).to be_truthy
   end
 

@@ -132,7 +132,7 @@ class EventsController < UnitContextController
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).rsvps?
     @current_family = @current_member.family
-    page_title @event.unit.name, @event.title
+    page_title @unit.name, @event.title
     respond_to do |format|
       format.html
       format.pdf { render_event_brief }
@@ -177,6 +177,7 @@ class EventsController < UnitContextController
     authorize :event, :create?
     service = EventCreationService.new(@unit)
     @event = service.create(event_params)
+    EventOrganizerService.new(@event).update(params[:event_organizers])
     return unless @event.present?
 
     redirect_to [@unit, @event], notice: t("helpers.label.event.create_confirmation", event_name: @event.title)
@@ -187,6 +188,8 @@ class EventsController < UnitContextController
     authorize @event
     @event.assign_attributes(event_params)
     return unless @event.save!
+
+    EventOrganizerService.new(@event).update(params[:event_organizers])
 
     redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
   end
@@ -345,7 +348,8 @@ class EventsController < UnitContextController
                                       :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
                                       :note, :payment_amount, :online, :website,
-                                      event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy])
+                                      event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy],
+                                      event_organizers_attributes: [:unit_membership_id])
     process_event_locations_attributes(p)
   end
 

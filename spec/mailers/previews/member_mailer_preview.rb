@@ -30,10 +30,9 @@ class MemberMailerPreview < ActionMailer::Preview
     member.unit.events.where(title: "Preview Test Event").destroy_all
     event = member.unit.events.new(
       title: "Preview Test Event",
-      starts_at: 3.hours.from_now,
-      ends_at: 4.hours.from_now,
+      starts_at: 8.hours.from_now,
+      ends_at: 9.hours.from_now,
       status: :published,
-      location: "Meeting place",
       event_category: member.unit.event_categories.first
     )
     event.save!

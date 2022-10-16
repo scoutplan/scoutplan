@@ -13,9 +13,9 @@
     article.text-lg
       == @message.body
 
-    p.border-t.mt-1.pt-1
-      = t("messages.show.send_dates", author: @message.author.first_name, start_date: @message.updated_at, end_date: @message.pin_until)
+    p.border-t.py-4.text-stone-500.text-sm.font-bold
+      = t("messages.show.send_dates", author: @message.author.display_first_name, start_date: @message.updated_at, end_date: @message.pin_until)
 
-    footer.py-1
+    footer.py-4
       = button_to t("messages.captions.duplicate"), unit_message_duplicate_path(@unit, @message),
-                  class: "inline-block rounded border border-brand-500 text-brand-500 hover:border-brand-600 hover:text-brand-600 px-4 py-2 uppercase text-sm font-bold tracking-wider"
+                  class: "inline-block rounded border border-brand-500 text-brand-500 hover:border-brand-600 hover:text-brand-600 px-4 py-2 font-bold"

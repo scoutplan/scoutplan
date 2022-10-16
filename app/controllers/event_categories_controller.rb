@@ -12,7 +12,6 @@ class EventCategoriesController < UnitContextController
   def destroy
     find_event_category
     if (replacement_id = params[:replacement][:id]).present?
-      ap replacement_id
       @unit.events.where(event_category_id: @event_category.id).update(event_category_id: replacement_id)
     end
 

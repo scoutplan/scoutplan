@@ -3,8 +3,10 @@
 = render partial: "back_to_settings"
 
 header.mb-6
-  h1.font-bold.text-4xl.mb-1
+  h1.font-bold.text-4xl.mb-4
     = t("settings.titles.communications")
+    .text-sm.font-bold.uppercase.tracking-wider
+      = @unit.name
 
   p.text-lg
     | Scoutplan can automatically send messages via email and SMS (your members choose) at regular intervals. 
@@ -18,6 +20,3 @@ header.mb-6
   footer.py-4
     = f.submit t("settings.buttons.save"),
               class: "rounded font-bold bg-brand-500 hover:bg-brand-600 text-white px-4 py-2"
-
-css:
-

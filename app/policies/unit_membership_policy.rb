@@ -2,7 +2,6 @@
 
 class UnitMembershipPolicy < UnitContextPolicy
   # def initialize(current_member, target_member)
-  #   ap current_member
   #   super
   #   # @membership = current_member
   # end

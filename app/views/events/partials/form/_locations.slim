@@ -1,0 +1,57 @@
+section.py-4
+
+  .py-2
+    = render partial: "components/switch",
+            locals: { checked: @event.online,
+            label: "This is an online event",
+            object_name: "event",
+            method: "online",
+            checked_value: "true",
+            unchecked_value: "false",
+            data: { body_class: "event-online" } }
+
+    // online
+  #fields_online.mt-2
+    = f.label :online_url, "Online web address", class: "font-bold block mb-2"
+    = f.url_field :website,
+                  placeholder: "Type a web address",
+                  autocomplete: "off",
+                  class: "rounded placeholder:text-stone-200 border-stone-300 w-full"
+
+  #fields_offline
+    = f.fields_for :event_locations do |ff|
+      .py-3
+        = ff.label :location_id, t("events.form.#{ff.object.location_type}"), class: "block font-bold mb-1"
+        = ff.select :location_id,
+                    options_from_collection_for_select(@unit.locations.reject { |l| l.full_address.empty? }.sort_by(&:display_name),
+                                                      :id,
+                                                      :full_address,
+                                                      ff.object.location_id),
+                      { include_blank: "None" },
+                      { class: "rounded border-stone-200 w-full" }
+        = ff.hidden_field :location_type
+
+    .py-2
+      = link_to unit_locations_path(@event.unit),
+                class: "text-blue-600 hover:text-blue-600 font-bold",
+                data: { turbo_action: "advance" } do
+
+        i.fa-solid.fa-book-atlas.mr-1
+        = t("locations.captions.address_book", unit_name: @unit.name)
+
+css:
+  #fields_offline {
+    display: block;
+  }
+
+  #fields_online {
+    display: none;
+  }
+
+  .event-online #fields_online {
+    display: block;
+  }
+
+  .event-online #fields_offline {
+    display: none;
+  }

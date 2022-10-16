@@ -8,7 +8,6 @@ class Location < ApplicationRecord
 
   def full_address
     [name, address].compact.join(", ").strip.gsub(/\,$/, "").gsub(" , ", " ")
-    # [name.presence || map_name.presence, address].compact.join(", ").strip
   end
 
   def display_name

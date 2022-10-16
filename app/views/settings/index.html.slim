@@ -3,6 +3,8 @@
     header.mt-8.mb-4.px-2
       h1.text-4xl.font-bold
         = "Unit Setup"
+        .text-sm.font-bold.uppercase.tracking-wider
+          = @unit.name        
 
     .flex.flex-col.divide-y
       = link_to unit_setting_path(@unit, category: "unit_profile"),

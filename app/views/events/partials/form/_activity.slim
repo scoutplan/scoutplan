@@ -1,0 +1,27 @@
+section.py-4
+  = render partial: "components/switch",
+           locals: { checked: @event.includes_activity,
+                     label: "Includes activity",
+                     object_name: "event",
+                     method: "includes_activity",
+                     checked_value: "true",
+                     unchecked_value: "false",
+                     data: { body_class: "event-has-activity" } }
+
+  #activity_fields.py-2
+    = f.label :activity_name, "Activity name", class: "font-bold block mb-2"
+    = f.text_field :activity_name,
+                   id: "activity_name_field",
+                   disabled: !@event.includes_activity,
+                   autocomplete: "off",
+                   class: "p-2 w-full placeholder-stone-400 disabled:text-stone-300 disabled:placeholder-stone-200 border border-stone-300 rounded",
+                   placeholder: "e.g. Rock climbing"
+
+css:
+  #activity_fields {
+    display: none;
+  }
+
+  .event-has-activity #activity_fields {
+    display: block;
+  }
