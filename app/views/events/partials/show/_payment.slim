@@ -1,5 +1,8 @@
 - return unless @event.requires_payment?
 
 section.py-4.font-bold.border-t.border-stone-800
-  i.fa-circle-dollar.fas.mr-3.text-2xl.text-lime-600
+  .fa-stack.mr-1
+    i.fa-solid.fa-circle.fa-stack-2x.text-lime-600
+    i.fa-solid.fa-dollar.fa-stack-1x.fa-inverse
+
   = t("events.show.payment_amount_prompt", amount: number_to_currency(@event.payment_amount))

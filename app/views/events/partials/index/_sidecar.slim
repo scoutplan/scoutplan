@@ -1,0 +1,63 @@
+- return unless user_signed_in?
+
+- ics_url = calendar_feed_unit_events_url( \
+    token: @ical_magic_link.token,
+    unit_id: @unit.to_param,
+    format: :ics,
+    only_path: false,
+    protocol: "webcal" \
+  )
+
+aside.md:absolute.md:-ml-72.text-stone-500
+  nav.mb-8
+    ul
+      li
+        = link_to calendar_unit_events_path(@unit),
+                  class: "block py-1 font-bold hover:text-brand-500",
+                  data: { turbo_action: "advance" } do
+          .fa-stack
+            i.fa-regular.fa-circle.fa-stack-2x
+            i.fa-solid.fa-calendar.fa-stack-1x
+
+          = t("events.index.buttons.calendar")
+
+      li
+        = link_to list_unit_events_path(@unit, format: :pdf),
+                  class: "block py-1 font-bold hover:text-brand-500",
+                  data: { turbo_action: "advance" } do
+          .fa-stack
+            i.fa-regular.fa-circle.fa-stack-2x
+            i.fa-solid.fa-print.fa-stack-1x
+
+          = t("events.index.buttons.print")
+
+      - if @current_member.admin?
+        li
+          = link_to list_unit_events_path(@unit, format: :pdf, season: "next"),
+                    class: "block py-1 font-bold hover:text-brand-500",
+                    data: { turbo_action: "advance" } do
+            .fa-stack
+              i.fa-regular.fa-circle.fa-stack-2x
+              i.fa-solid.fa-rotate-right.fa-stack-1x
+
+            = t("events.index.buttons.next_season")
+
+      li
+        = link_to ics_url,
+                  class: "block py-1 font-bold hover:text-brand-500",
+                  data: { turbo_action: "advance" } do
+          .fa-stack
+            i.fa-regular.fa-circle.fa-stack-2x
+            i.fa-regular.fa-mobile.fa-stack-1x
+
+          = t("events.index.buttons.subscribe")
+
+      - if @current_member.admin?
+        li
+          = link_to "#", class: "block py-1 font-bold hover:text-brand-500",
+                    data: { action: "event#toggleBulkPublish" } do
+            .fa-stack
+              i.fa-regular.fa-circle.fa-stack-2x
+              i.fa-solid.fa-layer-group.fa-stack-1x
+
+            = t("events.index.buttons.bulk_publish")

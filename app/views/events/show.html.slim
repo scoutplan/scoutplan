@@ -1,5 +1,8 @@
+- content_for :title do
+  = [@event.title, " · ", @unit.name].join
+
 = turbo_frame_tag "main"
-  article.event.mx-auto.max-w-lg.md:mt-8.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
+  article.event.mx-auto.max-w-xl.md:mt-8.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
     = render partial: "events/partials/show/nav"
 
     section#informative.flex.flex-col.gap-1
@@ -14,3 +17,6 @@
     = render partial: "events/partials/show/new_footer"
     = render partial: "events/partials/show/watermarks"
     = render partial: "events/partials/show/flash"
+
+javascript:
+  document.title = "#{@event.title} · #{@unit.name}"

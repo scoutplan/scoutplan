@@ -1,0 +1,5 @@
+- return unless event.online && website = event.website.presence
+
+= link_to website, class: "font-bold text-blue-500", target: "_new" do
+  = website
+  i.fa-solid.fa-arrow-up-right-from-square.ml-2

@@ -209,7 +209,7 @@ en:
 
     index:
       title:                "Event Schedule"
-      page_title:           "Schedule"
+      page_title:           "Event Schedule"
       showing_some:         "Showing events for the upcoming 3 months. "
       showing_rsvps:        "Showing only events requiring an RSVP"
       showing_past:         "Showing past events"
@@ -220,6 +220,13 @@ en:
       cancelled:            "Cancelled"
       description_present:  "This event has notes to read"
       download_pdf:         "Download a Printable PDF"
+
+      buttons:
+        calendar:           "View as calendar"
+        print:              "Download for print"
+        next_season:        "Download next season"
+        subscribe:          "Add to your calendar"
+        bulk_publish:       "Bulk publish drafts"
 
       calendar_view:
         prev_month: "Previous month"
@@ -251,13 +258,13 @@ en:
         rsvp_complete: "Complete Your RSVP"
 
       rsvp:   
-        no_response:      "RSVP is open. Your family hasn't responded yet, but there's still time!"
-        partial_response: "RSVP is open. Some of your family has responded; some remain outstanding. You can still change your response."
-        full_response:    "RSVP is open. Your family has responded."
+        no_response:       "RSVP is open. Your family hasn't responded yet, but there's still time!"
+        partial_response:  "RSVP is open. Some of your family has responded; some remain outstanding. You can still change your response."
+        full_response:     "RSVP is open. Your family has responded."
         response_received: "You have RSVP'ed"
-        closed:           "RSVPs are closed"
-        none_cta:         "Your response is needed"
-        show_details:     "See event details"
+        closed:            "RSVPs are closed"
+        none_cta:          "Your response is needed"
+        show_details:      "See event details"
 
       tooltips:
         response_received: "Click to view and change your RSVP"
