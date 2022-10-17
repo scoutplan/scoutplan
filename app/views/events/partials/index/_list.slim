@@ -1,11 +1,8 @@
 #event_table_container.max-w-xl.mx-auto
   = form_tag bulk_publish_unit_events_path(@unit), id: "bulk_action_form"
-
-    = render partial: "events/partials/index/nav"
+    = render partial: "events/partials/index/sidecar"
 
     header.max-w-xl.mx-auto.relative.mt-8
-
-
 
       // CENTER (desktop) or LEFT (mobile)
       h1.text-3xl.font-bold.mb-2.px-2
@@ -32,6 +29,7 @@
                     data: { action: "event#togglePastEvents" },
                     id: "toggle_past_events_link" do
               #show_past_events_caption
+                i.fa-solid.fa-rotate-left.mr-1
                 = "Show past events"
               #hide_past_events_caption
                 = "Hide past events"

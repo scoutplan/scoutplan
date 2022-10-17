@@ -1,7 +1,7 @@
 doctype html
 html.scroll-smooth
   head
-    title = (@page_title || []).reverse.join(" · ")
+    title = yield :title
     meta name="viewport" content="width=device-width,initial-scale=1"
     = csrf_meta_tags
     = csp_meta_tag
@@ -25,7 +25,10 @@ html.scroll-smooth
       /!  CI #{ENV["GITHUB_RUN_NUMBER"]}
 
     = render partial: "search/overlay"
-
+  
+  - content_for :title do
+    = (@page_title || []).reverse.join(" · ")
+    
   javascript:
     function setElemDisplay(elem, show) {
       var elem = document.querySelector(elem);

@@ -1,5 +1,8 @@
 - variation = params[:variation] || "list"
 
+- content_for :title do
+  = ["Event Schedule", " · ", @unit.name].join
+
 = turbo_frame_tag "main"
   .max-w-6xl.mx-auto(data-controller="event" class="w-full")
     = render partial: "events/partials/index/no_events" if @events.count.zero?
@@ -13,3 +16,6 @@
     = "showing-only-rsvp-events showing-future-events" if params[:mode] == 'rsvps'    
 
   footer.h-4
+
+javascript:
+  document.title = "Event Schedule · #{@unit.name}"
