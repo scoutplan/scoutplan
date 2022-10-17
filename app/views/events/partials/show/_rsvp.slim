@@ -11,8 +11,8 @@ section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800
 
   - family_accepted = family_rsvps.select { |r| r.accepted? }.presence
   - family_declined = family_rsvps.select { |r| r.declined? }.presence
-  - going = "#{list_of_words(family_accepted.map { |r| r.display_first_name(current_user) }, linking_verb: true)} going".sentence_case if family_accepted
-  - not_going = "#{list_of_words(family_declined.map { |r| r.display_first_name(current_user) }, linking_verb: true)} not#{family_accepted.present? ? '' : ' going'}".sentence_case if family_declined.present?
+  - going = "#{list_of_words(family_accepted.map { |r| r.display_first_name(current_user) }, linking_verb: true)} going" if family_accepted
+  - not_going = "#{list_of_words(family_declined.map { |r| r.display_first_name(current_user) }, linking_verb: true)} not#{family_accepted.present? ? '' : ' going'}" if family_declined.present?
 
   - if rsvp_service.any_responses?
 
@@ -24,7 +24,7 @@ section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800
         - if rsvp_service.family_fully_declined?
           = t("events.show.full_decline")
         - else
-          = [going, not_going].compact.join("; ") + "."
+          = [going, not_going].compact.join("; ").sentence_case + "."
 
       div
         // Update RSVPs button (if allowed)

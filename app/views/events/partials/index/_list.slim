@@ -1,17 +1,17 @@
-#event_table_container.max-w-full
+#event_table_container.max-w-xl.mx-auto
   = form_tag bulk_publish_unit_events_path(@unit), id: "bulk_action_form"
 
-    header.max-w-3xl.mx-auto.relative.mt-8
+    = render partial: "events/partials/index/nav"
 
-      - if user_signed_in?
-        // LEFT SIDE ellipsis menu
-        .hidden.md:block.absolute.left-0.pt-2.px-2
-          = render partial: "events_dropdown", locals: { current_variation: "list" }
+    header.max-w-xl.mx-auto.relative.mt-8
+
+
 
       // CENTER (desktop) or LEFT (mobile)
-      h1.md:px-4.md:text-center.text-2xl.md:text-4xl.font-bold.mb-2
+      h1.text-3xl.font-bold.mb-2.px-2
         = t("events.index.page_title")
-        .text-sm.uppercase.tracking-wider.text-stone-500 = @unit.name
+        .text-sm.uppercase.tracking-wider.text-stone-500
+          = @unit.name
 
       - if user_signed_in?
         // RIGHT SIDE
@@ -19,7 +19,7 @@
           = render partial: "new_event_button" if policy(:event).create?
 
     // LIST WRAPPER
-    .max-w-3xl.mx-auto
+    .max-w-xl.mx-auto
       // iterate by month
       - @event_month_count = 0
       - @current_event_month_count = 0

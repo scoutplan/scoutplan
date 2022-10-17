@@ -221,6 +221,13 @@ en:
       description_present:  "This event has notes to read"
       download_pdf:         "Download a Printable PDF"
 
+      buttons:
+        calendar:           "View as calendar"
+        print:              "Download for print"
+        next_season:        "Download next season"
+        subscribe:          "Add to your calendar"
+        bulk_publish:       "Bulk publish drafts"
+
       calendar_view:
         prev_month: "Previous month"
         next_month: "Next month"
