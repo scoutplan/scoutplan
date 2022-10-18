@@ -1,6 +1,6 @@
 = turbo_frame_tag "main"
   article.event.mx-auto.max-w-lg.mt-8.px-2.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
-    = render partial: "events/partials/show/nav"
+    = render partial: "events/partials/show/sidecar"
 
     section#informative.flex.flex-col.gap-1
       = render partial: "events/partials/show/header"

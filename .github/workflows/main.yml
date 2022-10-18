@@ -44,12 +44,12 @@ jobs:
         run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/github_sha
 
       - name: Install doctl
-        uses: digitalocean/action-doctl@v2
+        uses: digitalocean/action-doctl@v3
         with:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
 
       - name: Install kubectl
-        uses: azure/setup-kubectl@v1
+        uses: azure/setup-kubectl@v3
 
       - name: Build container image
         run: docker build -t registry.digitalocean.com/scoutplan/app:$(echo $GITHUB_SHA | head -c7) .

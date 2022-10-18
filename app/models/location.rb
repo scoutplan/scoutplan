@@ -7,6 +7,8 @@ class Location < ApplicationRecord
   has_many :event_locations, dependent: :destroy
 
   def full_address
+    return map_name.strip.gsub(/\,$/, "").gsub(" , ", " ") if map_name.present?
+
     [name, address].compact.join(", ").strip.gsub(/\,$/, "").gsub(" , ", " ")
   end
 
