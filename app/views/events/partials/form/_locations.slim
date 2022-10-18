@@ -31,13 +31,20 @@ section.py-4
                       { class: "rounded border-stone-200 w-full" }
         = ff.hidden_field :location_type
 
-    .py-2
+    .py-4
       = link_to unit_locations_path(@event.unit),
                 class: "text-blue-600 hover:text-blue-600 font-bold",
                 data: { turbo_action: "advance" } do
 
         i.fa-solid.fa-book-atlas.mr-1
         = t("locations.captions.address_book", unit_name: @unit.name)
+
+      / = link_to "#",
+      /           class: "px-4 py-2 font-bold rounded border border-sky-600 text-sky-600 hover:border-sky-700 hover:text-sky-700",
+      /           data: { body_class: "editing-location" } do
+
+      /   i.fa-solid.fa-plus.mr-1
+      /   = t("locations.buttons.add_location")
 
 css:
   #fields_offline {

@@ -35,19 +35,7 @@ article.hover:bg-stone-100(class="relative event #{row_classes(event)}" id="even
         = render partial: "events/partials/index/short_description", locals: { event: event }
         = render partial: "event_location", locals: { event: event }
 
-  .flex.flex-row.gap-3.px-2.py-2.items-center
+  .flex.flex-col.md:flex-row.md:gap-4.px-2.md:items-center
     = render partial: "events/partials/event_row/rsvp", locals: { event: event }
     = render partial: "events/partials/event_row/organize", locals: { event: event }
     = render partial: "events/partials/event_row/online", locals: { event: event }
-
-  // mobile view stacks under
-  .md:hidden
-    .inline-block.mr-1
-      = glyph_tag(event)
-    h4.inline-block.font-semibold.text-xl.event-title = event.title
-    - if event.short_description.present?
-      p.event-short-description.text-stone-500
-        = event.short_description
-    p.event-location.mt-1
-      = render partial: "event_location", locals: { event: event }    
-

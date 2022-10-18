@@ -457,6 +457,9 @@ en:
       create_success: "The '%{name}' event category has been added."
 
   locations:
+    buttons:
+      add_location:   "Add a location"
+      
     titles:
       edit: "Edit Location"
       new:  "New Location"
@@ -473,6 +476,9 @@ en:
     placeholders:
       name: "Name as your members will see it"
       map_name: "Optional name as it appears on maps"
+      address: "Full address, e.g. 123 Main St., Anytown, XY  12345"
+      phone: "e.g. 121-555-1212"
+      website:  "https://www.website.com"
 
     captions:
       add_a_location: "Add a Location"

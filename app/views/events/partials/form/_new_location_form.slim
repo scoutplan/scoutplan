@@ -1,0 +1,7 @@
+.fixed.inset-0.z-40
+  #new_location_fields.absolute.inset-0.backdrop-blur-sm.bg-black/20
+    .max-w-lg.mx-auto.bg-white.px-4.py-4.mt-24.rounded
+      header.mb-4
+        h2.text-2xl.font-bold = t("locations.titles.new")
+
+      = render partial: "locations/form", locals: { location: Location.new, unit: @unit, event: @event }

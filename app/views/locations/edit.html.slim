@@ -7,7 +7,7 @@
         src="#{location_map_src(@location)}"
         style="border:none;")
 
-    = render partial: "form"
+    = render partial: "form", locals: { unit: @unit, location: @location }
 
     .absolute.left-0.bottom-0.pb-2
       = button_to unit_location_path(@unit, @location),
