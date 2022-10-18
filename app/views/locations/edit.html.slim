@@ -1,17 +1,21 @@
 = turbo_frame_tag "main"
   .mx-auto.max-w-xl.relative
-    iframe.mb-4(
-      width="100%"
-      height="300px"
-      src="#{location_map_src(@location)}"
-      style="border:none;")
+    - if @location.mappable?
+      iframe.mb-4(
+        width="100%"
+        height="300px"
+        src="#{location_map_src(@location)}"
+        style="border:none;")
 
     = render partial: "form"
 
     .absolute.left-0.bottom-0.pb-2
       = button_to unit_location_path(@unit, @location),
                   method: "delete",
+                  title: t("locations.captions.destroy"),
                   form: { data: { turbo_confirm: t("locations.prompts.destroy", location_name: @location.display_name, unit_name: @unit.name) } },
-                  class: "inline-block uppercase text-sm font-bold text-brand-600 py-2" do
+                  class: "inline-block uppercase text-sm font-bold text-stone-500 py-2" do
 
-        = t("locations.captions.destroy")
+        .fa-stack
+          i.fa-regular.fa-circle.fa-stack-2x
+          i.fa-solid.fa-trash.fa-stack-1x

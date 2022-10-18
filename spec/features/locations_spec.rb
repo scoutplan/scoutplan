@@ -32,4 +32,11 @@ describe "locations", type: :feature do
     expect(@location.phone).to       eq("212-555-1212")
     expect(@location.website).to     eq("https://paulsboutique.mil")
   end
+
+  it "visits the edit page when address is missing" do
+    @location.update(address: nil, map_name: nil)
+    path = edit_unit_location_path(@unit, @location)
+    visit(path)
+    expect(page).to have_current_path(path)
+  end
 end

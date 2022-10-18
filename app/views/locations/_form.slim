@@ -32,29 +32,22 @@
       = f.styled_label :website, layout: :inline
       = f.url_field :website, class: "bg-white border border-stone-200 rounded p-2 w-full md:w-3/4 hover:ring-brand-500 placeholder-stone-300", autocomplete: "off"
 
-    .h-2
-
-    / = hidden_field :location_type, @location_type
-    / = hidden_field :event_id, @event_id
-
   footer.py-2
     .flex.flex-row.justify-between
       #footer_left
       
       #footer-right.flex.flex-col.md:flex-row.md:justify-end.gap-2
+        = link_to t("global.discard_changes"),
+          return_path ||= unit_locations_path(@unit),
+          data: { turbo_action: "advance", turbo_frame: "main" },
+          class: "text-center font-bold no-underline \
+                  inline-block w-full md:w-fit px-4 py-3 md:py-2 \
+                  text-brand-500 hover:text-brand-600 \
+                  rounded border border-brand-500 hover:border-brand-600"
+
         = f.submit t("global.save_changes"),
-          class: "text-white text-sm font-bold tracking-wider uppercase \
+          class: "text-white font-bold \
                   inline-block w-full md:w-fit px-4 py-3 md:py-2 \
                   bg-brand-500 hover:bg-brand-600 \
                   border-brand-500 hover:border-brand-600 \
                   border rounded cursor-pointer"
-
-        = link_to t("global.discard_changes"),
-          return_path ||= unit_locations_path(@unit),
-          data: { turbo_action: "advance", turbo_frame: "main" },
-          class: "text-center text-sm font-bold tracking-wider uppercase no-underline \
-                  inline-block w-full md:w-fit px-4 py-3 md:py-2 \
-                  bg-brand-100 hover:bg-brand-200 \
-                  text-brand-500 hover:text-brand-600 \
-                  border-brand-100 hover:border-brand-100 \
-                  rounded border"

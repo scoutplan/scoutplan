@@ -13,4 +13,8 @@ class Location < ApplicationRecord
   def display_name
     name || map_name || address || ""
   end
+
+  def mappable?
+    map_name.present? || address.present?
+  end
 end

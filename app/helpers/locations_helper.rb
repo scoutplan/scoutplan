@@ -5,7 +5,10 @@ module LocationsHelper
   BASE_MAP_URL = "https://www.google.com/maps/embed/v1/place"
   ZOOM_LEVEL = 10
 
+  # rubocop:disable Metrics/AbcSize
   def location_map_src(location)
+    return "" unless location.map_name.present? || location.address.present?
+
     map_params = if coordinates?(location)
                    "q=#{escape_location_name(@location.address)}&center=#{@location.map_name}"
                  else
@@ -13,6 +16,7 @@ module LocationsHelper
                  end
     BASE_MAP_URL + "?key=#{ENV.fetch('GOOGLE_API_KEY')}" + "&zoom=#{ZOOM_LEVEL}" + "&#{map_params}"
   end
+  # rubocop:enable Metrics/AbcSize
 
   def coordinates?(location)
     location.map_name =~ /^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/
