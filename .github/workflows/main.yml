@@ -44,7 +44,7 @@ jobs:
         run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/github_sha
 
       - name: Install doctl
-        uses: digitalocean/action-doctl@v3
+        uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
 
