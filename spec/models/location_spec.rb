@@ -23,6 +23,7 @@ RSpec.describe Location, type: :model do
       end
 
       it "displays when name and address are set" do
+        @location.update(map_name: nil)
         expect(@location.full_address).to eq("#{@location.name}, #{@location.address}")
       end
     end
