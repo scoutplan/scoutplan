@@ -86,4 +86,14 @@ RSpec.describe Event, type: :model do
       expect(@event.rsvp_token_for(@member)).to eq(@rsvp_token)
     end
   end
+
+  describe "scopes" do
+    describe "imminent" do
+      it "exludes same-day events in the PM" do
+        Timecop.freeze(DateTime.now.change({ hour: 19, minute: 0 }))
+        event = FactoryBot.create(:event, starts_at: DateTime.now.change({ hour: 16, minute: 0 }))
+        expect(Event.imminent).not_to include(event)
+      end
+    end
+  end
 end
