@@ -1,7 +1,7 @@
 - @presenter.event = event
 
 // START ROW
-article.hover:bg-stone-100(class="relative event #{row_classes(event)}" id="event_#{event.id}")
+article.py-2.hover:bg-stone-100(class="relative event #{row_classes(event)}" id="event_#{event.id}")
   // anchor for scroll-to purposes
   a(name="event_#{event.id}")
 
@@ -9,22 +9,19 @@ article.hover:bg-stone-100(class="relative event #{row_classes(event)}" id="even
   = check_box_tag "event_ids[]", event.id, false,
     class: "text-lg block bulk-selection z-10 bulk-publish-checkbox absolute left-0 ml-2 top-1/2 md:-translate-y-2/4"
 
-
   // link
   = link_to unit_event_path(@unit, event),
             class: "event md:px-2 py-2 block",
             data: { turbo_action: "advance", turbo_frame: "main" } do
 
-    .flex.flex-row.gap-6.items-center
-      // bulk publish checkbox
-
+    div.flex
       // date / day
-      time.w-20.md:w-24.grow-0
+      time.w-24.shrink-0
         .font-bold.text-2xl.md:text-3xl = raw(@presenter.dates_to_s)
         .font-bold.text-sm.uppercase.tracking-wider.text-stone-500 = raw(@presenter.days_to_s)
 
       // icon
-      .hidden.md:block.w-8.text-center.grow-0
+      .hidden.md:block.w-8.text-center
         = glyph_tag(event)
 
       div
@@ -35,7 +32,7 @@ article.hover:bg-stone-100(class="relative event #{row_classes(event)}" id="even
         = render partial: "events/partials/index/short_description", locals: { event: event }
         = render partial: "event_location", locals: { event: event }
 
-  .flex.flex-col.md:flex-row.md:gap-4.px-2.md:items-center
+  .flex.flex-col.md:flex-row.md:gap-4.md:px-2.md:items-center
     = render partial: "events/partials/event_row/rsvp", locals: { event: event }
     = render partial: "events/partials/event_row/organize", locals: { event: event }
     = render partial: "events/partials/event_row/online", locals: { event: event }
