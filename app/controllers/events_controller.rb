@@ -17,7 +17,9 @@ class EventsController < UnitContextController
   def index
     variation = params[:variation]
     if variation.nil? && request.format.html?
-      variation = cookies[:event_index_variation] || "event_table"
+      variation = cookies[:event_index_variation] || "list"
+
+      # this redirection can probably happen in routes.rb
       case variation
       when "event_table"
         redirect_to list_unit_events_path(@unit)
@@ -28,6 +30,8 @@ class EventsController < UnitContextController
       end
     end
 
+
+    # TODO: move this to a service object
     cookies[:event_index_variation] = variation
     cookies[:calendar_display_month] = params[:month] if params[:month]
     cookies[:calendar_display_year] = params[:year] if params[:year]
@@ -40,8 +44,10 @@ class EventsController < UnitContextController
     when "past"
       query.end_date = Date.today.at_beginning_of_month - 1.day
     else
-      query.start_date = Date.today.at_beginning_of_month
-      query.end_date = 1.month.from_now.end_of_month
+      if variation == "list"
+        query.start_date = Date.today.at_beginning_of_month
+        query.end_date = 1.month.from_now.end_of_month
+      end
     end
 
     @events = query.execute
