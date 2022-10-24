@@ -1,5 +1,6 @@
 = turbo_frame_tag "main"
   .mx-auto.max-w-xl
+<<<<<<< HEAD
     header
       = link_to return_path ||= unit_locations_path(@unit),
           class: "text-center font-bold no-underline inline-block w-full md:w-fit py-3 md:py-2 text-brand-500 hover:text-brand-600",
@@ -14,4 +15,10 @@
 
     = render partial: "form",
              locals: { unit: @unit, location: @location, event_id: params[:event_id],
+=======
+    = render partial: "form",
+             locals: { unit: @unit,
+                       location: @location,
+                       event_id: params[:event_id],
+>>>>>>> de9c948 (Inline event creation feature complete)
                        location_type: params[:location_type] }
