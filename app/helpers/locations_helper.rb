@@ -7,12 +7,12 @@ module LocationsHelper
 
   # rubocop:disable Metrics/AbcSize
   def location_map_src(location)
-    return "" unless location.map_name.present? || location.address.present?
+    return "" unless location.map_address.present?
 
     map_params = if coordinates?(location)
                    "q=#{escape_location_name(@location.address)}&center=#{@location.map_name}"
                  else
-                   "q=#{escape_location_name(@location&.map_name.presence || @location&.address.presence)}"
+                   "q=#{escape_location_name(@location.map_address)}"
                  end
     BASE_MAP_URL + "?key=#{ENV.fetch('GOOGLE_API_KEY')}" + "&zoom=#{ZOOM_LEVEL}" + "&#{map_params}"
   end

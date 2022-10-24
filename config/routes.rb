@@ -44,7 +44,7 @@ Rails.application.routes.draw do
       resources :event_activities
       resources :event_organizers, as: "organizers", path: "organizers"
       resources :document_types
-      resources :locations
+      resources :locations, module: :events
       collection do
         get "/", to: redirect("/units/%{unit_id}/schedule/list")
         get  "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link

@@ -1,0 +1,11 @@
+- return unless EventPolicy.new(@current_member, @event).edit?
+
+li
+  = link_to new_unit_event_path(@unit, source_event_id: @event.id),
+            class: "block py-1 font-bold hover:text-brand-500",
+            data: { turbo_action: "advance" } do
+    .fa-stack
+      i.fa-regular.fa-circle.fa-stack-2x
+      i.fa-solid.fa-calendars.fa-stack-1x
+    
+    = t("events.show.buttons.duplicate")     

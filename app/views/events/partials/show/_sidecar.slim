@@ -1,45 +1,9 @@
 aside.md:absolute.md:-ml-72.text-stone-500
-  nav.mb-8
+  nav
     ul
-      li
-        = link_to unit_events_path(@unit),
-                  class: "block py-1 font-bold hover:text-brand-500",
-                  data: { turbo_action: "advance" } do
-          .fa-stack
-            i.fa-regular.fa-circle.fa-stack-2x
-            i.fa-solid.fa-arrow-left.fa-stack-1x
+      = render partial: "events/partials/show/sidecar/back_to_schedule"
+      = render partial: "events/partials/show/sidecar/edit"
+      = render partial: "events/partials/show/sidecar/duplicate"
+      = render partial: "events/partials/show/sidecar/download_brief"
 
-          = t("events.show.captions.done")
-
-      - if EventPolicy.new(@current_member, @event).edit?
-        li
-          = link_to edit_unit_event_path(@unit, @event),
-                    class: "block py-1 font-bold hover:text-brand-500",
-                    data: { turbo_action: "advance" } do
-            .fa-stack
-              i.fa-regular.fa-circle.fa-stack-2x
-              i.fa-solid.fa-pencil.fa-stack-1x
-            
-            = t("events.titles.edit")
-
-        li
-          = link_to new_unit_event_path(@unit, source_event_id: @event.id),
-                    class: "block py-1 font-bold hover:text-brand-500",
-                    data: { turbo_action: "advance" } do
-            .fa-stack
-              i.fa-regular.fa-circle.fa-stack-2x
-              i.fa-solid.fa-calendars.fa-stack-1x
-            
-            = t("events.show.buttons.duplicate")        
-
-      li.hidden
-        = link_to unit_event_path(@unit, @event, format: :pdf),
-                  class: "block py-1 font-bold hover:text-brand-500",
-                  data: { turbo_action: "advance" } do
-          .fa-stack
-            i.fa-regular.fa-circle.fa-stack-2x
-            i.fa-solid.fa-print.fa-stack-1x
-          
-          = t("events.show.captions.download_brief")
-
-  = render partial: "events/partials/show/organize"  
+  = render partial: "events/partials/show/organize"

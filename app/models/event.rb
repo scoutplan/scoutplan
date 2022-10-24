@@ -149,6 +149,10 @@ class Event < ApplicationRecord
     primary_location&.address
   end
 
+  def map_address
+    primary_location&.map_address
+  end
+
   def full_address(location_type = nil)
     return primary_location&.full_address || "TBD" unless location_type.present?
 
