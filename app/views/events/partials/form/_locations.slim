@@ -19,32 +19,25 @@ section.py-4
                   class: "rounded placeholder:text-stone-200 border-stone-300 w-full"
 
   #fields_offline
-    = f.fields_for :event_locations do |ff|
-      .py-3
-        = ff.label :location_id, t("events.form.#{ff.object.location_type}"), class: "block font-bold mb-1"
-        = ff.select :location_id,
-                    options_from_collection_for_select(@unit.locations.reject { |l| l.full_address.empty? }.sort_by(&:display_name),
-                                                      :id,
-                                                      :full_address,
-                                                      ff.object.location_id),
-                      { include_blank: "None" },
-                      { class: "rounded border-stone-200 w-full" }
-        = ff.hidden_field :location_type
+    #location_dropdowns
+      = render partial: "events/partials/form/location_dropdowns", locals: { unit: @unit, event: @event }
 
     .py-4
-      = link_to unit_locations_path(@event.unit),
-                class: "text-blue-600 hover:text-blue-600 font-bold",
-                data: { turbo_action: "advance" } do
+      - unless Flipper.enabled? :inline_location_form, @current_member
+        = link_to unit_locations_path(@event.unit),
+                  class: "text-blue-600 hover:text-blue-600 font-bold",
+                  data: { turbo_action: "advance" } do
 
-        i.fa-solid.fa-book-atlas.mr-1
-        = t("locations.captions.address_book", unit_name: @unit.name)
+          i.fa-solid.fa-book-atlas.mr-1
+          = t("locations.captions.address_book", unit_name: @unit.name)
 
-      / = link_to "#",
-      /           class: "px-4 py-2 font-bold rounded border border-sky-600 text-sky-600 hover:border-sky-700 hover:text-sky-700",
-      /           data: { body_class: "editing-location" } do
+      - if Flipper.enabled? :inline_location_form, @current_member
+        = button_tag class: "px-4 py-2 font-bold rounded border border-sky-600 text-sky-600 hover:border-sky-700 hover:text-sky-700",
+                    type: "button",
+                    data: { action: "click->event-edit#showLocation" } do
 
-      /   i.fa-solid.fa-plus.mr-1
-      /   = t("locations.buttons.add_location")
+          i.fa-solid.fa-plus.mr-1
+          = t("locations.buttons.add_location")
 
 css:
   #fields_offline {

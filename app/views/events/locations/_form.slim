@@ -1,5 +1,8 @@
-= form_with model: [unit, location],
-  data: { turbo_action: "advance" } do |f|
+// Location form intended for use when editing an Event
+
+= form_with model: [unit, location], url: unit_event_locations_path(@unit, @event.new_record? ? "new" : @event.id) do |f|
+
+  = hidden_field_tag :event_id, event.id
 
   = render partial: "locations/form_fields", locals: { f: f }
 

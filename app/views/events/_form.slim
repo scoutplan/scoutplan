@@ -3,7 +3,7 @@
 
 = javascript_include_tag "events_form"
 
-.mx-auto.max-w-xl.form-wrapper(class="#{@event.online ? "online-event" : ""}" data-controller="body-classer")
+.mx-auto.max-w-xl.form-wrapper(class="#{@event.online ? "online-event" : ""}" data-controller="body-classer event-edit")
   = render partial: "events/partials/form/watermark"
 
   header.py-4
@@ -25,4 +25,4 @@
     = render partial: "events/partials/form/footer",      locals: { f: f }
 
   = render partial: "events/partials/form/delete_form"
-/  = render partial: "events/partials/form/new_location_form"
+  = render partial: "events/partials/form/new_location_form" if Flipper.enabled? :inline_location_form, @current_member

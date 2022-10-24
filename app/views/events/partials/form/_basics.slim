@@ -1,23 +1,23 @@
 section.py-4
   div.field.py-2
-    = f.label :title, class: "block font-bold mb-1"
+    = f.label :title, class: "block mb-1"
     = f.text_field :title,
-      class: "border border-stone-300 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300",
+      class: "border border-stone-300 font-bold rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300",
       autocomplete: "off",
       autofocus: true,
       placeholder: t("events.placeholders.title")
 
   div.field.py-2
-    = f.label :category, class: "block font-bold mb-1"
+    = f.label :category, class: "block mb-1"
     = f.select :event_category_id,
                 @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
                 { prompt: t("events.placeholders.category"), selected: @event.event_category_id },
-                { class: "border border-stone-300 rounded py-2 bg-white w-full" }
+                { class: "border border-stone-300 rounded py-2 bg-white w-full font-bold" }
 
   div.field.py-2
-    = f.label :short_description, class: "block font-bold mb-1"
+    = f.label :short_description, class: "block mb-1"
     = f.text_field :short_description,
-      class: "w-full border border-stone-300 rounded bg-white p-2 placeholder-stone-300",
+      class: "w-full border border-stone-300 rounded bg-white p-2 placeholder-stone-300 font-bold",
       autocomplete: "off",
       placeholder: t("events.edit.short_description_placeholder")
 

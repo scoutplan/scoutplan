@@ -6,8 +6,8 @@ const SELECTOR = "[data-body-class]"
 export default class extends Controller {
   connect() {
     document.querySelectorAll(SELECTOR).forEach(function(elem) {
-      elem.dataset.action = "change->body-classer#change";
-      this.toggle(elem);
+      elem.dataset.action = "body-classer#change";
+      if (elem.tagName == "INPUT") { this.toggle(elem); }
     }.bind(this));
     document.body.classList.add(ACTIVE_CLASS);
   }
@@ -18,6 +18,10 @@ export default class extends Controller {
   
   toggle(elem) {
     var className = elem.dataset.bodyClass;
-    document.body.classList.toggle(className, elem.checked);
+    if (elem.tagName == "INPUT") {
+      document.body.classList.toggle(className, elem.checked);
+    } else {
+      document.body.classList.toggle(className);
+    }
   }
 }

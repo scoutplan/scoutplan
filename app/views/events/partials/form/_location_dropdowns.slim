@@ -1,0 +1,19 @@
+// partial that renders dropdowns for each of an Event's locations
+
+- unit_locations = unit.locations.reject { |l| l.full_address.empty? }.sort_by(&:display_name)
+- locations_array = unit_locations.map { |l| [l.display_address, l.id] }
+/ - locations_array.append(["-----", nil])
+/ - locations_array.append(["Add new location...", "_new"])
+
+- ["arrival", "departure", "activity"].each do |location_type|
+  - event_location = event&.event_locations&.find_by(location_type: location_type)
+  /- options = options_from_collection_for_select(locations, :id, :display_address, event_location&.location&.id)
+  - options = options_for_select(locations_array, event_location&.location&.id)
+
+  .py-3
+    = label_tag :location_type, t("events.form.#{location_type}"), class: "block font-bold mb-1"
+    = select_tag "event[event_locations_attributes][0][location_id]",
+                 options,
+                 include_blank: "None",
+                 class: "rounded border-stone-200 w-full"
+    = hidden_field_tag "event[event_locations_attributes][0][location_type]", location_type

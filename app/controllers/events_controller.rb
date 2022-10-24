@@ -17,7 +17,9 @@ class EventsController < UnitContextController
   def index
     variation = params[:variation]
     if variation.nil? && request.format.html?
-      variation = cookies[:event_index_variation] || "event_table"
+      variation = cookies[:event_index_variation] || "list"
+
+      # this redirection can probably happen in routes.rb
       case variation
       when "event_table"
         redirect_to list_unit_events_path(@unit)
@@ -28,6 +30,8 @@ class EventsController < UnitContextController
       end
     end
 
+
+    # TODO: move this to a service object
     cookies[:event_index_variation] = variation
     cookies[:calendar_display_month] = params[:month] if params[:month]
     cookies[:calendar_display_year] = params[:year] if params[:year]
@@ -40,8 +44,10 @@ class EventsController < UnitContextController
     when "past"
       query.end_date = Date.today.at_beginning_of_month - 1.day
     else
-      query.start_date = Date.today.at_beginning_of_month
-      query.end_date = 1.month.from_now.end_of_month
+      if variation == "list"
+        query.start_date = Date.today.at_beginning_of_month
+        query.end_date = 1.month.from_now.end_of_month
+      end
     end
 
     @events = query.execute
@@ -86,27 +92,24 @@ class EventsController < UnitContextController
   end
 
   def render_printable_calendar
-    render(
-      locals: { events_by_month: calendar_events },
-      pdf: "#{@unit.name} Schedule as of #{Date.today.strftime('%-d %B %Y')}",
-      layout: "pdf",
-      encoding: "utf8",
-      orientation: "landscape",
-      header: { html: { template: "events/partials/index/calendar_header", locals: { events_by_month: calendar_events } } },
-      # footer: { html: { template: "events/partials/index/calendar_footer", locals: { events_by_month: calendar_events } } },
-      margin: { top: 20, bottom: 20 }
-    )
+    render(locals: { events_by_month: calendar_events },
+           pdf: "#{@unit.name} Schedule as of #{Date.today.strftime('%-d %B %Y')}",
+           layout: "pdf",
+           encoding: "utf8",
+           orientation: "landscape",
+           header: { html: { template: "events/partials/index/calendar_header",
+                             locals: { events_by_month: calendar_events } } },
+           margin: { top: 20, bottom: 20 })
   end
 
   def render_event_brief
-    render(
-      locals: { },
-      pdf: "#{@unit.name} #{@event.starts_at.strftime('%B %Y')} #{@event.title} Brief",
-      layout: "pdf",
-      encoding: "utf8",
-      orientation: "portrait",
-      margin: { top: 20, bottom: 20 }
-    )
+    filename = "#{@unit.name} #{@event.starts_at.strftime('%B %Y')} #{@event.title} Brief"
+    filename.concat " as of #{DateTime.now.in_time_zone(@unit.settings(:locale).time_zone).strftime('%d %B %Y')}"
+    render(pdf: filename,
+           layout: "pdf",
+           encoding: "utf8",
+           orientation: "portrait",
+           margin: { top: 20, bottom: 20 })
   end
 
   def calendar_events

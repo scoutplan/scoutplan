@@ -1,3 +1,7 @@
 = turbo_frame_tag "main"
   .mx-auto.max-w-xl
-    = render partial: "form", locals: { unit: @unit, location: @location, event_id: params[:event_id], location_type: params[:location_type] }
+    = render partial: "form",
+             locals: { unit: @unit,
+                       location: @location,
+                       event_id: params[:event_id],
+                       location_type: params[:location_type] }

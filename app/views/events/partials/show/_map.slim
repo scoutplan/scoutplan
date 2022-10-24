@@ -1,5 +1,5 @@
 iframe.mb-4(
   width="100%"
   height="300px"
-  src="https://www.google.com/maps/embed/v1/place?key=#{ENV['GOOGLE_API_KEY']}&zoom=10&q=#{CGI.escape(@event.full_address.gsub(",", ""))}"
+  src="https://www.google.com/maps/embed/v1/place?key=#{ENV['GOOGLE_API_KEY']}&zoom=10&q=#{CGI.escape(@event.map_address.gsub(",", ""))}"
   style="border:none;")

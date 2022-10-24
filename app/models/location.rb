@@ -9,11 +9,20 @@ class Location < ApplicationRecord
   def full_address
     return map_name.strip.gsub(/\,$/, "").gsub(" , ", " ") if map_name.present?
 
-    [name, address].compact.join(", ").strip.gsub(/\,$/, "").gsub(" , ", " ")
+    display_address
+  end
+
+  def map_address
+    [map_name || name, address].compact.join(", ").strip.gsub(/\,$/, "").gsub(" , ", " ")
   end
 
   def display_name
     name || map_name || address || ""
+  end
+
+  # for use in dropdowns
+  def display_address
+    [name, address].compact.join(", ").strip.gsub(/\,$/, "").gsub(" , ", " ")
   end
 
   def mappable?

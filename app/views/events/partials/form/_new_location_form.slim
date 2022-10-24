@@ -1,7 +1,26 @@
-.fixed.inset-0.z-40
+#new_location_overlay.fixed.inset-0.z-40.hidden
   #new_location_fields.absolute.inset-0.backdrop-blur-sm.bg-black/20
-    .max-w-lg.mx-auto.bg-white.px-4.py-4.mt-24.rounded
-      header.mb-4
+    .max-w-lg.mx-auto.bg-white.px-6.mt-24.rounded
+      header.py-4.flex.flex-row.justify-between.items-center
         h2.text-2xl.font-bold = t("locations.titles.new")
 
-      = render partial: "locations/form", locals: { location: Location.new, unit: @unit, event: @event }
+        = link_to "#",
+                  class: "text-lg text-stone-500 hover:text-brand-900",
+                  id: "close_new_location_button",
+                  data: { action: "event-edit#hideLocation" } do
+          i.fa-solid.fa-times
+
+      = render partial: "events/locations/form", locals: { location: Location.new, unit: @unit, event: @event }
+
+javascript:
+  // override the Cancel button to simply dismiss the modal
+  // by removing a CSS class from the <body> tag
+  document.addEventListener("DOMContentLoaded", function() {
+  });
+  
+  var cancelButton = document.querySelector("#cancel_location_button");
+  cancelButton.href = "#";
+  cancelButton.dataset.action = "click->event-edit#hideLocation";
+
+  var saveButton = document.querySelector("#add_location_button");
+  saveButton.dataset.action = "click->event-edit#hideLocationAndContinue";
