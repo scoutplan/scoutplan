@@ -22,19 +22,27 @@
     = render partial: "form", locals: { unit: @unit, location: @location }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     .absolute.right-0.bottom-0.pb-2.items-center
 =======
     .absolute.left-0.bottom-0.pb-2.items-center
 >>>>>>> de9c948 (Inline event creation feature complete)
+=======
+    .absolute.right-0.bottom-0.pb-2.items-center
+>>>>>>> 658a4c2 (Roughed in SMS response for #701)
       = button_to unit_location_path(@unit, @location),
                   method: "delete",
                   title: t("locations.captions.destroy"),
                   form: { data: { turbo_confirm: t("locations.prompts.destroy", location_name: @location.display_name, unit_name: @unit.name) } },
 <<<<<<< HEAD
+<<<<<<< HEAD
                   class: "mt-2 inline-block text-stone-500 hover:text-stone-900 py-4" do
 =======
                   class: "inline-block text-stone-500 hover:text-stone-900 py-4" do
 >>>>>>> de9c948 (Inline event creation feature complete)
+=======
+                  class: "mt-2 inline-block text-stone-500 hover:text-stone-900 py-4" do
+>>>>>>> 658a4c2 (Roughed in SMS response for #701)
 
         .fa-stack
           i.fa-regular.fa-circle.fa-stack-2x

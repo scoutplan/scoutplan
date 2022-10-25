@@ -1,6 +1,9 @@
 = turbo_frame_tag "main"
   .mx-auto.max-w-xl
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 658a4c2 (Roughed in SMS response for #701)
     header
       = link_to return_path ||= unit_locations_path(@unit),
           class: "text-center font-bold no-underline inline-block w-full md:w-fit py-3 md:py-2 text-brand-500 hover:text-brand-600",
@@ -13,6 +16,7 @@
 
           = "Back to address book"
 
+<<<<<<< HEAD
     = render partial: "form",
              locals: { unit: @unit, location: @location, event_id: params[:event_id],
 =======
@@ -21,4 +25,8 @@
                        location: @location,
                        event_id: params[:event_id],
 >>>>>>> de9c948 (Inline event creation feature complete)
+=======
+    = render partial: "form",
+             locals: { unit: @unit, location: @location, event_id: params[:event_id],
+>>>>>>> 658a4c2 (Roughed in SMS response for #701)
                        location_type: params[:location_type] }
