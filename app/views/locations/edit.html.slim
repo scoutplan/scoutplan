@@ -21,6 +21,7 @@
 
     = render partial: "form", locals: { unit: @unit, location: @location }
 
+
     .absolute.right-0.bottom-0.pb-2.items-center
       = button_to unit_location_path(@unit, @location),
                   method: "delete",
