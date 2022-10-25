@@ -2,12 +2,16 @@
 
 # Service for dealing with event RSVPs
 class RsvpService < ApplicationService
-  attr_accessor :event
+  attr_accessor :member, :event
 
   def initialize(member, event = nil)
     @member = member
     @event = event
     super()
+  end
+
+  def active_family_members
+    family_members.select(&:status_active?)
   end
 
   # return a list of events without RSVPs for the member's family
@@ -31,6 +35,10 @@ class RsvpService < ApplicationService
     family_rsvps.count.positive?
   end
 
+  def family_members
+    @member.family(include_self: true)
+  end
+
   # for the current Event, return an array of members who haven't responded
   def non_respondents
     raise ArgumentError, "Event attribute must be set" unless @event.present?
@@ -40,8 +48,8 @@ class RsvpService < ApplicationService
 
   # for the current Member and Event, have we received responses from all active family members?
   def family_fully_responded?
-    active_family_rsvp_ids = @event.rsvps.map(&:unit_membership_id) & active_family_members.map(&:id) # intersection
-    active_family_rsvp_ids.count == active_family_members.count
+    active_family_rsvp_ids = event.rsvps.map(&:unit_membership_id) & active_family_members.map(&:id) # intersection
+    active_family_rsvp_ids.count >= active_family_members.count
   end
 
   # has a family completely declined an event?
@@ -69,12 +77,18 @@ class RsvpService < ApplicationService
     @event.rsvps.where(unit_membership: family_member_ids)
   end
 
-  def family_members
-    @member.family(include_self: true)
-  end
-
-  def active_family_members
-    family_members.select(&:status_active?)
+  # for the current member, return the next
+  # event that isn't fully responded by the family
+  def next_pending_event
+    unit = member.unit
+    candidate_events = unit.events.published.rsvp_required.where("starts_at BETWEEN ? AND ?",
+                                                                 DateTime.now,
+                                                                 30.days.from_now)
+    candidate_events.each do |candidate_event|
+      self.event = candidate_event
+      return candidate_event unless family_fully_responded?
+    end
+    nil
   end
 
   private
