@@ -34,7 +34,7 @@ section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800
                     data: { turbo_action: "advance", turbo_frame: "main" }
         - else
           .inline-block.font-bold.text-gray-400.text-sm.mt-1
-            = t("@events.rsvp.closed")
+            = t("events.rsvp.closed")
 
   - elsif policy(@event).rsvp? && @event.rsvp_open?
     .flex.flex-row.justify-between.items-center

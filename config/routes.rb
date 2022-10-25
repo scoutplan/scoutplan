@@ -13,6 +13,9 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  get "sms", to: "inbound_sms#receive"
+  post "sms", to: "inbound_sms#receive"
+
   resources :event_activities, as: "activities"
   resources :users
 
