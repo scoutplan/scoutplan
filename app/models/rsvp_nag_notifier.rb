@@ -14,7 +14,7 @@ class RsvpNagNotifier < ApplicationNotifier
   def perform
     return if (!Flipper.enabled? :rsvp_nag, member) && (ENV["RAILS_ENV"] == "production")
     return unless member.contactable?
-    return unless (@event = find_event)
+    return unless (@event = RsvpService.new(member).next_pending_event)
 
     send_text  { |recipient| RsvpNagTexter.new(recipient, event).send_message }
     send_email { |recipient| MemberMailer.with(member: recipient, event_id: @event.id).rsvp_nag_email.deliver_later }
@@ -22,18 +22,6 @@ class RsvpNagNotifier < ApplicationNotifier
   # rubocop:enable Metrics/AbcSize
 
   private
-
-  # we're looking for the next event within the next 30 days where the member's family hasn't
-  # completely responded
-  def find_event
-    rsvp_service = RsvpService.new(member)
-    candidate_events = unit.events.published.rsvp_required.where("starts_at BETWEEN ? AND ?", DateTime.now, 30.days.from_now)
-    candidate_events.each do |event|
-      rsvp_service.event = event
-      return event unless rsvp_service.family_fully_responded?
-    end
-    nil
-  end
 
   def unit
     @member.unit
