@@ -4,14 +4,8 @@
   = render partial: "locations/form_fields", locals: { f: f }
 
   footer.py-4
-<<<<<<< HEAD
-    = f.submit location.new_record? ? "Add Location" : t("global.save_changes"),
-      class: "text-white font-bold inline-block w-full md:w-fit px-4 py-3 md:py-2 bg-brand-500 hover:bg-brand-600 border-brand-500 hover:border-brand-600 border rounded cursor-pointer",
-      id: "add_location_button"
-=======
     .flex.flex-row.justify-between
       #footer_left
         = f.submit location.new_record? ? "Add Location" : t("global.save_changes"),
           class: "text-white font-bold inline-block w-full md:w-fit px-4 py-3 md:py-2 bg-brand-500 hover:bg-brand-600 border-brand-500 hover:border-brand-600 border rounded cursor-pointer",
           id: "add_location_button"
->>>>>>> de9c948 (Inline event creation feature complete)
