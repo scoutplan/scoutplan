@@ -1,5 +1,17 @@
 = turbo_frame_tag "main"
   .mx-auto.max-w-xl.relative
+    header.py-4
+      = link_to return_path ||= unit_locations_path(@unit),
+          class: "text-center font-bold no-underline inline-block w-full md:w-fit py-3 md:py-2 text-brand-500 hover:text-brand-600",
+          id: "cancel_location_button",
+          data: { turbo_action: "advance", turbo_frame: "main" } do
+          
+          i.fa-stack
+            i.fa-regular.fa-circle.fa-stack-2x
+            i.fa-solid.fa-arrow-left.fa-stack-1x
+
+          = "Back to address book"
+
     - if @location.mappable?
       iframe.mb-4(
         width="100%"
