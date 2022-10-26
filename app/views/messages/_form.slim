@@ -15,63 +15,66 @@
             method: @message.new_record? ? "post" : "patch",
             data: { turbo_action: "advance" } do |f|
 
-  section
+  section.flex.flex-col.gap-4
 
     // TO
-    .mb-4.flex.justify-between.items-center
-      = f.label :groups, t("messages.form.labels.groups"), class: "text-sm font-bold tracking-wide uppercase"
+    div
+      = f.label :groups, t("messages.form.labels.groups"), class: "block py-2 font-bold"
+      = f.select :recipients, recipients, { }, class: "inline-block font-bold rounded border border-stone-200 w-full"
 
-      .inline-block.w-full(style = "width: calc(100% - 13rem);")
-        = f.select :recipients, recipients,
-          { },
-          class: "inline-block rounded border border-stone-200 w-full"
-
-      .inline-block
-          = f.check_box :member_type, { }, "adults_only", "youth_and_adults"
-          = f.label :member_type, "Only Adults", class: "ml-1"        
+    div.py-2
+      = render partial: "components/switch", locals: { checked: @message.member_type == "adults_only",
+                                                        label: "Only send to adults",
+                                                        object_name: "message]",
+                                                        method: "member_type",
+                                                        checked_value: "adults_only",
+                                                        unchecked_value: "youth_and_adults" }
 
     // FROM
-    .mb-4.hidden
-      = f.label :from, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
+    div.hidden
+      = f.label :from, class: "block py-1 text-sm font-bold"
       = text_field_tag :from_address,
         @unit.settings(:communication).from_email,
         disabled: true,
         class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-400 disabled:text-stone-400 disabled:placeholder-stone-200"
 
+    // DELIVERY VIA EMAIL
+    div.py-2
+      = render partial: "components/switch", locals: { checked: @message.deliver_via_notification,
+                                                       label: "Deliver via email",
+                                                       object_name: "message",
+                                                       method: "deliver_via_notification",
+                                                       checked_value: "yes",
+                                                       unchecked_value: "no" }
+
+
+    // via newsletter
+    div.flex.flex-row.items-center
+      = render partial: "components/switch", locals: { checked: @message.deliver_via_digest,
+                                                        label: "Include in weekly newsletter",
+                                                        object_name: "message",
+                                                        method: "deliver_via_digest",
+                                                        checked_value: "yes",
+                                                        unchecked_value: "no" }
+
+      #digest_fields.ml-1.inline.items-center
+        = label_tag :until, "until", class: "font-bold"
+        = f.date_field :pin_until, class: "ml-2 rounded border border-stone-200 "
 
     // SUBJECT
-    .mt-4.flex.justify-between.items-center
-      = f.label :subject, t("messages.form.labels.subject"), class: "block mb-1 text-sm font-bold tracking-wide uppercase"
-      .inline-block.w-full(style = "width: calc(100% - 5rem);")
-        = f.text_field :title,
-                       autofocus: true,
-                       autocomplete: "off",
-                       class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200 capitalize",
-                       placeholder: t("messages.form.placeholders.subject")
+    div
+      = f.label :subject, t("messages.form.labels.subject"), class: "block py-2 font-bold"
 
-    // DELIVERY
-    .mt-4.flex.flex-row.items-center.gap-4#delivery_methods_container
-      = f.label :deliver_via, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
+      = f.text_field :title,
+                      autofocus: true,
+                      autocomplete: "off",
+                      class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200 capitalize",
+                      placeholder: t("messages.form.placeholders.subject")
 
-      .flex.flex-row.items-center.gap-5
-        // via email
-        div.flex.flex-row.items-center
-          = f.check_box :deliver_via_notification, class: "delivery-method-checkbox"
-          = f.label :deliver_via_notification, t("messages.form.labels.notify_members_directly"), class: "ml-1"
-
-        // via newsletter
-        div.flex.flex-row.items-center
-            = f.check_box :deliver_via_digest, class: "delivery-method-checkbox"
-            = f.label :deliver_via_digest, t("messages.form.labels.include_in_digest"), class: "ml-1 "
-
-            #digest_fields.ml-1.inline.items-center
-              = label_tag :until, "until", class: ""
-              = f.date_field :pin_until, class: "ml-2 rounded border border-stone-200 "
 
 
     // BODY
-    .mt-4
-      / = f.label :message, class: "block mb-1 text-sm font-bold tracking-wide uppercase"
+    div
       = f.rich_text_area :body, class: "bg-white overflow-auto h-48 border border-stone-200", placeholder: "Type your message..."
 
     // SEND LATER
@@ -81,14 +84,14 @@
 
   footer.flex.flex-col.md:flex-row.mt-4.justify-between.mb-2.bottom-0.sticky.bg-white.border-t.py-4
     = f.submit t("messages.captions.send_message"),
-                class: "font-bold w-full md:w-fit px-4 py-3 md:py-2 bg-brand-500 text-white rounded disabled:bg-brand-100",
+                class: "inline-block px-4 py-2 font-bold text-white bg-brand-500 disabled:bg-brand-100 rounded",
                 id: "send_message_button"
     
-    // LEFT SIDE
+    // RIGHT SIDE
     .flex.gap-1
       = f.button t("messages.captions.save_draft"),
                  type: "submit",
-                 class: "w-full md:w-fit py-2 md:py-2 rounded uppercase text-stone-500 cursor-pointer",
+                 class: "py-2 rounded uppercase text-stone-500 hover:text-brand-500 cursor-pointer",
                  value: t("messages.captions.save_draft"),
                  name: "commit",
                  title: "Save as a draft" do
@@ -101,7 +104,7 @@
                  title: "Send a preview to yourself",
                  value: t("messages.captions.send_preview"),
                  name: "commit",
-                 class: "w-full md:w-fit py-2 md:py-2 rounded uppercase text-stone-500 cursor-pointer" do
+                 class: "w-full md:w-fit py-2 text-stone-500 hover:text-brand-500 cursor-pointer" do
         .fa-stack
           i.fa-regular.fa-circle.fa-stack-2x
           i.fa-solid.fa-paper-plane.fa-stack-1x
@@ -113,37 +116,18 @@
                   value: t("messages.captions.delete_draft"),
                   name: "commit",
                   onclick: "return confirm('Are you sure you want to delete this draft?');",
-                  class: "w-full md:w-fit py-2 md:py-2 rounded uppercase text-stone-500 cursor-pointer" do
+                  class: "w-full md:w-fit py-2 text-stone-500 hover:text-brand-500 cursor-pointer" do
           .fa-stack
             i.fa-regular.fa-circle.fa-stack-2x
             i.fa-solid.fa-trash.fa-stack-1x
 
-
-- if !@message.new_record?
+- unless @message.new_record?
   - service = MessageService.new(@message)
   h3.font-bold Recipients
   ol
     - service.resolve_members.each do |member|
       li = member.full_display_name
 
-css:
-  input[type="checkbox"] {
-    display: none;
-  }
-
-  input[type="checkbox"] ~ label::before {
-    font-family: "Font Awesome 6 Pro";
-    font-weight: normal;
-    font-style: normal;
-    content: "\f0c8";
-    margin-right: 0.5rem;
-    color: rgb(230, 100, 37);
-  }
-
-  input[type="checkbox"]:checked ~ label::before {
-    content: "\f14a";
-    font-weight: bold;
-  }
 
 javascript:
   document.querySelectorAll(".delivery-method-checkbox").forEach(function(elem) {
