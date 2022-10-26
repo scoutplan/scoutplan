@@ -16,6 +16,13 @@
             data: { turbo_action: "advance" } do |f|
 
   section.flex.flex-col.gap-4
+    // FROM
+    div.hidden
+      = f.label :from, class: "block py-1 text-sm font-bold"
+      = text_field_tag :from_address,
+        @unit.settings(:communication).from_email,
+        disabled: true,
+        class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-400 disabled:text-stone-400 disabled:placeholder-stone-200"
 
     // TO
     div
@@ -30,13 +37,6 @@
                                                         checked_value: "adults_only",
                                                         unchecked_value: "youth_and_adults" }
 
-    // FROM
-    div.hidden
-      = f.label :from, class: "block py-1 text-sm font-bold"
-      = text_field_tag :from_address,
-        @unit.settings(:communication).from_email,
-        disabled: true,
-        class: "w-full border border-stone-200 rounded bg-white p-2 placeholder-stone-400 disabled:text-stone-400 disabled:placeholder-stone-200"
 
     // DELIVERY VIA EMAIL
     div.py-2
@@ -44,18 +44,18 @@
                                                        label: "Deliver via email",
                                                        object_name: "message",
                                                        method: "deliver_via_notification",
-                                                       checked_value: "yes",
-                                                       unchecked_value: "no" }
+                                                       checked_value: "true",
+                                                       unchecked_value: "false" }
 
 
     // via newsletter
     div.flex.flex-row.items-center
       = render partial: "components/switch", locals: { checked: @message.deliver_via_digest,
-                                                        label: "Include in weekly newsletter",
-                                                        object_name: "message",
-                                                        method: "deliver_via_digest",
-                                                        checked_value: "yes",
-                                                        unchecked_value: "no" }
+                                                       label: "Include in weekly newsletter",
+                                                       object_name: "message",
+                                                       method: "deliver_via_digest",
+                                                       checked_value: "true",
+                                                       unchecked_value: "false" }
 
       #digest_fields.ml-1.inline.items-center
         = label_tag :until, "until", class: "font-bold"
@@ -64,7 +64,6 @@
     // SUBJECT
     div
       = f.label :subject, t("messages.form.labels.subject"), class: "block py-2 font-bold"
-
       = f.text_field :title,
                       autofocus: true,
                       autocomplete: "off",
@@ -83,9 +82,12 @@
       = f.date_field :send_at, class: "rounded border-stone-200 ml-2"
 
   footer.flex.flex-col.md:flex-row.mt-4.justify-between.mb-2.bottom-0.sticky.bg-white.border-t.py-4
-    = f.submit t("messages.captions.send_message"),
-                class: "inline-block px-4 py-2 font-bold text-white bg-brand-500 disabled:bg-brand-100 rounded",
-                id: "send_message_button"
+    = f.button t("messages.captions.send_message"),
+               type: "submit",
+               name: "commit",
+               value: t("messages.captions.send_message"),
+               class: "inline-block px-4 py-2 font-bold text-white bg-brand-500 disabled:bg-brand-100 rounded",
+               id: "send_message_button"
     
     // RIGHT SIDE
     .flex.gap-1
