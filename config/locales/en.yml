@@ -560,6 +560,10 @@ en:
       legend_queued: "Queued announcements have a 'Don't send until' date in the future."
       pinned_until: "Pinned until %{pin_until}"
 
+    new:
+      buttons:
+        cancel: "Back to announcements list"
+
     tooltips:
       new_message: "Write a new announcement"
 
@@ -571,13 +575,13 @@ en:
       save_draft:   "Save Draft"
       send_preview: "Send Preview"
       send_message: "Post Announcement"
-      new_message:  "Post"
+      new_message:  "New Announcement"
       duplicate:    "Duplicate This Announcement"
       delete_draft: "Delete Draft"
 
     form:
       labels:
-        dont_sent_until:         "Don't send until"
+        dont_sent_until:         "Don't post until"
         youth_and_adults:        "Youth & adults"
         adults_only:             "Only adults"
         member_types:            "Send to"

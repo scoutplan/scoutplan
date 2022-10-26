@@ -37,6 +37,11 @@ class MemberNotifier < ApplicationNotifier
     send_email { |recipient| MemberMailer.with(member: recipient, message_id: message.id, preview: preview).message_email.deliver_later }
   end
 
+  def send_rsvp_confirmation(event)
+    send_email { |recipient| MemberMailer.with(member: recipient, event_id: event.id).rsvp_confirmation_email.deliver_later }
+    send_text  { |recipient| RsvpConfirmationTexter.new(recipient, event).send_message }
+  end
+
   private
 
   # should member receive daily reminders?

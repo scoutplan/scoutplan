@@ -89,7 +89,8 @@ class SmsResponseService < ApplicationService
   end
 
   def send_event_list
-    ConversationContext.create_with(values: candidate_events.collect(&:id)).find_or_create_by(identifier: from)
+    ConversationContext.create_with(values: { event_ids: candidate_events.collect(&:id) })
+                       .find_or_create_by(identifier: from)
     ap candidate_events.map(&:full_title)
   end
 
