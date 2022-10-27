@@ -95,5 +95,12 @@ RSpec.describe RsvpService, type: :model do
       expect(@service.family_fully_declined?).to be_falsey
     end
   end
+
+  describe "record_family_response method" do
+    it "creates the correct number of RSVPs" do
+      @service.record_family_response(:accepted)
+      expect(@event.rsvps.count).to eq(3)
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength

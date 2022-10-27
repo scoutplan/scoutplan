@@ -33,6 +33,14 @@ class MemberNotifier < ApplicationNotifier
     send_text  { |recipient| DailyReminderTexter.new(recipient).send_message }
   end
 
+  def send_family_rsvp_confirmation(event)
+    send_email do |recipient|
+      MemberMailer.with(member: recipient, event_id: event.id)
+                  .family_rsvp_confirmation_email.deliver_later
+    end
+    send_text { |recipient| FamilyRsvpConfirmationTexter.new(recipient, event).send_message }
+  end
+
   def send_message(message, preview: false)
     send_email { |recipient| MemberMailer.with(member: recipient, message_id: message.id, preview: preview).message_email.deliver_later }
   end

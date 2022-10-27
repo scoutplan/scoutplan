@@ -5,19 +5,20 @@ class SmsResponseService < ApplicationService
   attr_accessor :from, :body, :user, :unit, :member, :event, :context
 
   def initialize(params)
-    self.from = format_phone_number(params[:From])
-    self.body = params[:Body].strip.downcase
+    self.from = params["From"]
+    self.body = params["Body"].strip.downcase.gsub(/\W/, "")
     super()
   end
 
   def process
-    self.user = user_from_phone
+    resolve_user_from_phone
     return unless user.present?
 
     process_yes_no_response if body_yes_no?
-    process_number_response if body_numeric?
+    process_numeric_response if body_numeric?
   end
 
+  #-------------------------------------------------------------------------
   private
 
   def body_numeric?
@@ -43,6 +44,9 @@ class SmsResponseService < ApplicationService
       rsvp_service = RsvpService.new(member, event)
       rsvp_service.family_fully_responded?
     end
+
+    # TEMPORARY
+    @candidate_events = [@candidate_events&.first]
   end
 
   def find_context
@@ -56,18 +60,19 @@ class SmsResponseService < ApplicationService
     result
   end
 
+  def process_numeric_response
+    ap "Processing number response"
+  end
+
   def process_yes_no_response
     if candidate_events.count == 1
-      set_single_event_context
-      RsvpService.new(member, event).record_response(body == "yes" ? :accepted : :declined)
+      return unless set_single_event_context
+
+      RsvpService.new(member, event).record_family_response(body == "yes" ? :accepted : :declined)
       return
     end
 
     send_event_list if candidate_events.count > 1
-  end
-
-  def process_number_response
-    ap "Processing number response"
   end
 
   def query_events
@@ -77,14 +82,11 @@ class SmsResponseService < ApplicationService
     @candidate_events = scope.all
   end
 
-  def record_rsvp
-    ap "Recording RSVP to #{event.title} for #{member.full_display_name}"
-  end
+  def resolve_user_from_phone
+    self.user = User.find_by(phone: from)
+  end  
 
-  def send_confirmation
-    ap "Sending #{body} confirmation to #{member.full_display_name} at #{user.phone}"
-  end
-
+  # if >1 candidate events, send a list for disambiguation
   def send_event_list
     ConversationContext.create_with(values: { event_ids: candidate_events.collect(&:id) })
                        .find_or_create_by(identifier: from)
@@ -92,14 +94,10 @@ class SmsResponseService < ApplicationService
   end
 
   def set_single_event_context
-    self.event = candidate_events.first
+    return unless (self.event = candidate_events.first)
+
     self.unit = event.unit
     self.member = unit.members.find_by(user: user)
-  end
-
-  # resolve a User from the phone number
-  def user_from_phone
-    User.find_by(phone: from)
   end
 end
 

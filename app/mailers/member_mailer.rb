@@ -6,6 +6,14 @@ class MemberMailer < ScoutplanMailer
   before_action :time_zone
   helper MagicLinksHelper
 
+  def family_rsvp_confirmation_email
+    @event = Event.find(params[:event_id])
+    @service = RsvpService.new(@member, @event)
+    mail(to: @to_address,
+         from: @from_address,
+         subject: "#{@unit.name} — Your RSVP has been received")
+  end
+
   def invitation_email
     mail(to: @to_address,
          from: @from_address,
