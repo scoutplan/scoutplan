@@ -94,6 +94,16 @@ spec:
                 secretKeyRef:
                   name: scoutplan-production
                   key: TWILIO_TOKEN
+            - name: SMS_BASIC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: SMS_BASIC_USERNAME
+            - name: SMS_BASIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: SMS_BASIC_PASSWORD                                  
             - name: BLAZER_DATABASE_URL
               valueFrom:
                 secretKeyRef:
