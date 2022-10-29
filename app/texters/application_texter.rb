@@ -12,6 +12,13 @@ class ApplicationTexter
     @client = Twilio::REST::Client.new(@sid, @token)
   end
 
+  def renderer
+    ApplicationController.renderer.new(
+      http_host: ENV["SCOUTPLAN_HOST"],
+      https: ENV["SCOUTPLAN_PROTOCOL"] == "https"
+    )
+  end
+
   # returns true if successful, false if not
   def send_message
     raise ArgumentError, "'to' argument missing" unless to.present?

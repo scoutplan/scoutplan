@@ -6,6 +6,7 @@ class RsvpService < ApplicationService
 
   def initialize(member, event = nil)
     @member = member
+    @member = event.unit.members.find_by(user: member) if member.is_a?(User) && event.present?
     @event = event
     super()
   end
@@ -49,7 +50,7 @@ class RsvpService < ApplicationService
   # for the current Member and Event, have we received responses from all active family members?
   def family_fully_responded?
     active_family_rsvp_ids = event.rsvps.map(&:unit_membership_id) & active_family_members.map(&:id) # intersection
-    active_family_rsvp_ids.count >= active_family_members.count
+    active_family_rsvp_ids.count == active_family_members.count
   end
 
   # has a family completely declined an event?
@@ -89,6 +90,24 @@ class RsvpService < ApplicationService
       return candidate_event unless family_fully_responded?
     end
     nil
+  end
+
+  # record a response to @event for the @member's active family
+  def record_family_response(response)
+    members = member.family(include_self: true)
+    members.each do |family_member|
+      next unless family_member.status_active?
+
+      record_response(family_member, response)
+    end
+    MemberNotifier.new(member).send_family_rsvp_confirmation(event)
+  end
+
+  # record a response to @event for a given member
+  def record_response(member, response)
+    rsvp = event.rsvps.create_with(respondent: member, response: response)
+                .find_or_create_by!(event: event, unit_membership: member)
+    rsvp.update(response: response)
   end
 
   private

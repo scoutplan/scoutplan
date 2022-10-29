@@ -1,0 +1,10 @@
+- content_for :title do
+  = "RSVP Received"
+
+- content_for :left_column do
+  ul
+    - @member.family(include_self: true).each do |member|
+      - next unless (rsvp = @event.rsvp_for(member)).present?
+      li
+        = member.display_first_name
+        = rsvp.response

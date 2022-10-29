@@ -10,7 +10,7 @@ class UnitMembership < ApplicationRecord
   include Flipper::Identifier
   include Contactable
 
-  default_scope { includes(:user).order("users.first_name, users.last_name ASC") }
+  # default_scope { includes(:user).order("users.first_name, users.last_name ASC") }
 
   belongs_to :unit
   belongs_to :user
@@ -88,6 +88,10 @@ class UnitMembership < ApplicationRecord
 
   def contactable_object
     user
+  end
+
+  def smsable?
+    user.smsable? && settings(:communication).via_sms
   end
 
   def time_zone

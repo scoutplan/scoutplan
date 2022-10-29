@@ -1,3 +1,15 @@
 = turbo_frame_tag "main"
   .min-w-3xl.max-w-3xl.mx-auto.pt-6
+    = link_to unit_messages_path(@unit),
+          class: "inline-block font-bold pb-4 text-lime-500",
+          data: { turbo_action: "advance" } do
+      .fa-stack
+        i.fa-regular.fa-circle.fa-stack-2x
+        i.fa-solid.fa-arrow-left.fa-stack-1x
+      = t("messages.new.buttons.cancel")
+
+    header
+      h1.font-bold.text-4xl.mb-2
+        = "Edit Announcement"
+
     = render partial: "form"

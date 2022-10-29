@@ -13,6 +13,10 @@ class MemberNotifier < ApplicationNotifier
     super()
   end
 
+  def contactable
+    @member
+  end
+
   def send_test_message
     send_email { |recipient| MemberMailer.with(member: recipient).test_email.deliver_later }
     send_text  { |recipient| TestTexter.new(recipient).send_message }
@@ -33,8 +37,21 @@ class MemberNotifier < ApplicationNotifier
     send_text  { |recipient| DailyReminderTexter.new(recipient).send_message }
   end
 
+  def send_family_rsvp_confirmation(event)
+    send_email do |recipient|
+      MemberMailer.with(member: recipient, event_id: event.id)
+                  .family_rsvp_confirmation_email.deliver_later
+    end
+    send_text { |recipient| FamilyRsvpConfirmationTexter.new(recipient, event).send_message }
+  end
+
   def send_message(message, preview: false)
     send_email { |recipient| MemberMailer.with(member: recipient, message_id: message.id, preview: preview).message_email.deliver_later }
+  end
+
+  def send_rsvp_confirmation(event)
+    send_email { |recipient| MemberMailer.with(member: recipient, event_id: event.id).rsvp_confirmation_email.deliver_later }
+    send_text  { |recipient| RsvpConfirmationTexter.new(recipient, event).send_message }
   end
 
   private

@@ -12,6 +12,7 @@ class User < ApplicationRecord
 
   has_many  :unit_memberships, dependent: :destroy
   has_many  :units, through: :unit_memberships
+  has_many  :events, through: :units
   has_many  :parent_relationships,
             foreign_key: "child_unit_membership_id",
             class_name: "MemberRelationship",
@@ -54,6 +55,10 @@ class User < ApplicationRecord
 
   def short_display_name
     "#{display_first_name} #{last_name&.first}."
+  end
+
+  def smsable?
+    phone.present?
   end
 
   def display_legal_and_nicknames

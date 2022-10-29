@@ -1,16 +1,16 @@
 = turbo_frame_tag "main"
   .max-w-3xl.mx-auto
-    header.mt-8.mb-8.relative
-      h1.font-bold.text-lg.md:text-4xl.md:text-center
+    header.mt-8.mb-8.relative.flex.flex-row
+      h1.font-bold.text-lg.md:text-4xl
         = t("messages.index.title", unit_name: @unit.name)
 
-        - if policy(:message).create?
-          = link_to new_unit_message_path(@unit),
-            class: "rounded border border-brand-500 hover:border-brand-600 uppercase text-sm font-bold tracking-wider text-brand-500 hover:text-brand-600 px-4 py-2 inline-block absolute right-0 top-0",
-            data: { turbo_frame: "main", turbo_action: "advance" },
-            title: t("messages.tooltips.new_message") do
-            i.fa-plus.fas.mr-2
-            = t("messages.captions.new_message")
+      - if policy(:message).create?
+        = link_to new_unit_message_path(@unit),
+          class: "font-bold rounded border border-brand-500 hover:border-brand-600 text-brand-500 hover:text-brand-600 px-4 py-2 inline-block absolute right-0 top-0",
+          data: { turbo_frame: "main", turbo_action: "advance" },
+          title: t("messages.tooltips.new_message") do
+          i.fa-plus.fas.mr-2
+          = t("messages.captions.new_message")
 
     section.tabbed.mx-auto
       nav.tab-menu.mb-4.text-center.text-xs.md:text-sm

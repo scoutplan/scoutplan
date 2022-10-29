@@ -9,7 +9,7 @@ FactoryBot.define do
     first_name  { Faker::Name.first_name }
     nickname    { Faker::FunnyName.name }
     last_name   { Faker::Name.last_name }
-    phone       { Faker::PhoneNumber.phone_number_with_country_code }
+    phone       { Faker::PhoneNumber.cell_phone }
     password    { "password" }
     email
     type { 0 }
