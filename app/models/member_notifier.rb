@@ -13,6 +13,10 @@ class MemberNotifier < ApplicationNotifier
     super()
   end
 
+  def contactable
+    @member
+  end
+
   def send_test_message
     send_email { |recipient| MemberMailer.with(member: recipient).test_email.deliver_later }
     send_text  { |recipient| TestTexter.new(recipient).send_message }

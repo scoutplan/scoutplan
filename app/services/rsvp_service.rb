@@ -6,6 +6,7 @@ class RsvpService < ApplicationService
 
   def initialize(member, event = nil)
     @member = member
+    @member = event.unit.members.find_by(user: member) if member.is_a?(User) && event.present?
     @event = event
     super()
   end

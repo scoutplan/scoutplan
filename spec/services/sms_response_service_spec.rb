@@ -24,7 +24,7 @@ RSpec.describe SmsResponseService, type: :model do
 
   it "records responses" do
     params = { "From" => @member.phone, "Body" => "  YES!  " }
-    service = SmsResponseService.new(params)
+    service = SmsResponseService.new(params, {})
     service.process
     expect(@service.family_fully_responded?).to be_truthy
   end

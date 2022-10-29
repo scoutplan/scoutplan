@@ -110,11 +110,10 @@
         // list of "going" members
         ul.mt-2.empty:mt-0
           #organize_category_accepted
-            = render \
-              partial:    "events/partials/rsvps/accepted_rsvp",
-              collection: @event.rsvps.accepted.ordered,
-              as:         :rsvp,
-              layout:     "events/partials/rsvps/organize_entry"
+            = render partial:    "events/partials/rsvps/accepted_rsvp",
+                     collection: @event.rsvps.accepted.ordered,
+                     as:         :rsvp,
+                     layout:     "events/partials/rsvps/organize_entry"
 
       // DECLINED
       .bg-red-50.rounded.p-4#declined_rsvp_container

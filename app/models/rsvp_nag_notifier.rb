@@ -21,6 +21,10 @@ class RsvpNagNotifier < ApplicationNotifier
   end
   # rubocop:enable Metrics/AbcSize
 
+  def contactable
+    member
+  end
+
   private
 
   def unit

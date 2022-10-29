@@ -1,0 +1,7 @@
+Hi, <%= @user.display_first_name %>. Here are your upcoming RSVPs:
+
+<% @events.each_with_index do |event, index| %>
+<%= index + 1 %> — <%= event.title %><%= @unit_count > 1 ? " (#{event.unit.name})" : "" %>
+<%= event.starts_at.strftime("%B %e") %>
+<%= RsvpService.new(user, event) %>
+<% end %>

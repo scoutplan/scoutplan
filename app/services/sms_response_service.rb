@@ -1,21 +1,35 @@
 # frozen_string_literal: true
 
+require "twilio-ruby"
+
 # service for handling inbound SMS messages
 class SmsResponseService < ApplicationService
-  attr_accessor :from, :body, :user, :unit, :member, :event, :context
+  attr_accessor :from, :body, :user, :unit, :member, :event, :context, :params, :request
 
-  def initialize(params)
+  def initialize(params, request)
+    self.request = request
+    self.params = params
     self.from = params["From"]
     self.body = params["Body"].strip.downcase.gsub(/\W/, "")
     super()
   end
 
   def process
+    return unless request_valid?
+
     resolve_user_from_phone
     return unless user.present?
 
-    process_yes_no_response if body_yes_no?
-    process_numeric_response if body_numeric?
+    Rails.logger.info "Processing SMS response from #{from} with body #{body} for user_id #{user.id}"
+
+    case response_classification
+    when :rsvp_response
+      process_yes_no_response
+    when :choose_item
+      process_numeric_response
+    else
+      send_event_list
+    end
   end
 
   #-------------------------------------------------------------------------
@@ -60,6 +74,15 @@ class SmsResponseService < ApplicationService
     result
   end
 
+  # what's the user trying to do?
+  def response_classification
+    return :choose_item if body_numeric?
+    return :rsvp_response if body_yes_no?
+    return :list_events if %w[events list].include?(body)
+
+    :unknown
+  end
+
   def process_numeric_response
     ap "Processing number response"
   end
@@ -82,15 +105,34 @@ class SmsResponseService < ApplicationService
     @candidate_events = scope.all
   end
 
+  def request_valid?
+    true
+
+    # return true if ENV["RAILS_ENV"] == "test"
+
+    # signature = request.headers["X-Twilio-Signature"]
+    # return false unless signature.present?
+
+    # validator = Twilio::Security::RequestValidator.new(ENV["TWILIO_TOKEN"])
+    # url = ENV["RAILS_ENV"] == "production" ? "https://#{ENV["APP_HOST"]}/sms" : "https://scoutplan.ngrok.io/sms"
+    # signature = request.headers["X-Twilio-Signature"]
+
+    # ap url
+    # ap signature
+    # ap validation_params
+
+    # res = validator.validate(url, validation_params, signature)
+    # ap res
+    # res
+  end
+
   def resolve_user_from_phone
     self.user = User.find_by(phone: from)
-  end  
+  end
 
   # if >1 candidate events, send a list for disambiguation
   def send_event_list
-    ConversationContext.create_with(values: { event_ids: candidate_events.collect(&:id) })
-                       .find_or_create_by(identifier: from)
-    ap candidate_events.map(&:full_title)
+    UserNotifier.new(user).send_event_list
   end
 
   def set_single_event_context
@@ -98,6 +140,10 @@ class SmsResponseService < ApplicationService
 
     self.unit = event.unit
     self.member = unit.members.find_by(user: user)
+  end
+
+  def validation_params
+    request.params.reject { |k, _v| k == "controller" || k == "action" }
   end
 end
 
