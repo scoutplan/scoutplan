@@ -72,6 +72,16 @@ spec:
                 secretKeyRef:
                   name: scoutplan-production
                   key: DO_STORAGE_SECRET
+            - name: SMS_BASIC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: SMS_BASIC_USERNAME
+            - name: SMS_BASIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: SMS_BASIC_PASSWORD                     
           envFrom:
           - configMapRef:
               name: scoutplan-production-config
