@@ -229,6 +229,10 @@ GEM
     parser (3.1.2.0)
       ast (~> 2.4.1)
     pg (1.4.1)
+    phony (2.20.1)
+    phony_rails (0.15.0)
+      activesupport (>= 3.0)
+      phony (>= 2.18.12)
     public_suffix (4.0.7)
     puma (5.6.4)
       nio4r (~> 2.0)
@@ -449,6 +453,7 @@ DEPENDENCIES
   mixpanel-ruby
   nokogiri (>= 1.13.6)
   pg
+  phony_rails
   puma (~> 5.0)
   pundit
   rack-attack

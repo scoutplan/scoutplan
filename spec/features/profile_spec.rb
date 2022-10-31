@@ -41,7 +41,7 @@ describe "user profile", type: :feature do
     expect(@user.last_name).to eq(new_last_name)
     expect(@user.nickname).to eq(new_nickname)
     expect(@user.email).to eq(new_email)
-    expect(@user.phone).to eq(new_phone)
+    expect(@user.phone).to eq(new_phone.phony_normalized(country_code: "US"))
   end
 end
 # rubocop:enable Metrics/BlockLength
