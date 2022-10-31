@@ -49,7 +49,7 @@
               - if @target_membership.phone.present?
                 p.block
                   i.fad.fa-phone.mr-2
-                  = link_to number_to_phone(@target_membership.phone, area_code: true), "tel:#{@target_membership.phone}"
+                  = link_to @target_membership.phone.phony_formatted(country_code: 'US'), "tel:#{@target_membership.phone}"
 
           // parents & children
           .flex.mb-1

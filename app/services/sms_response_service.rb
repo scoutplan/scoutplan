@@ -130,6 +130,18 @@ class SmsResponseService < ApplicationService
     self.user = User.find_by(phone: from)
   end
 
+  def format_phone_number(str)
+    str.gsub!(/\D/, "")
+    case str.length
+    when 10
+      "+1#{str}"
+    when 11
+      "+#{str}"
+    else
+      str
+    end
+  end
+
   # if >1 candidate events, send a list for disambiguation
   def send_event_list
     UserNotifier.new(user).send_event_list
