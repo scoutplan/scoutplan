@@ -1,9 +1,9 @@
 // search field
 - if true
-  .relative.inline-block
+  .relative.md:inline-block
     = search_field_tag(:search, 
       "",
-      class: "rounded text-sm px-3 py-2 bg-gray-100 mr-2 md:w-60 lg:w-48 xl:w-72 border",
+      class: "w-full rounded text-sm px-2 py-2 bg-stone-100 border border-stone-300 placeholder-stone-400",
       autofocus: true,
       autocomplete: 'off',
       placeholder: raw(t('members.search_by_name')),

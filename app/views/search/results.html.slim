@@ -1,6 +1,8 @@
 = turbo_frame_tag "search_results", class: "overflow-scroll"
   = render partial: "form"
 
+  - return unless @term.present?
+  
   - if @term.length > 2
     .divide-y
       - if @events.present?
