@@ -18,13 +18,11 @@ class UnitMembershipsController < ApplicationController
   end
 
   def edit
-    build_new_relationship
   end
 
   def new
     @target_membership = @unit.memberships.build(role: "member")
     @target_membership.build_user
-    build_new_relationship
   end
 
   def show
@@ -41,6 +39,7 @@ class UnitMembershipsController < ApplicationController
     @member = @unit.memberships.new(member_params)
     @member.user_id = @user.id
     return unless @member.save!
+    MemberRelationshipService.new(@member).update(params[:member_relationships])
 
     flash[:notice] = t("members.confirmations.create", member_name: @member.full_display_name, unit_name: @unit.name)
     redirect_to unit_members_path(@unit)
@@ -59,6 +58,7 @@ class UnitMembershipsController < ApplicationController
     @target_membership.assign_attributes(member_params)
     update_settings_params
     return unless @target_membership.save!
+    MemberRelationshipService.new(@target_membership).update(params[:member_relationships])
 
     flash[:notice] = "Member information updated"
     redirect_to unit_members_path(@current_unit)
@@ -99,16 +99,6 @@ class UnitMembershipsController < ApplicationController
   end
 
   private
-
-  def build_new_relationship
-    # @target_membership.child_relationships.build
-    @member_relationship = MemberRelationship.new(parent_member: @target_membership)
-
-    # possible relationships are any other unit members, minus onesself, minus existing child memberships
-    @candidates = @current_unit.memberships -
-                  [@target_membership] -
-                  @target_membership.child_relationships.collect(&:child_member)
-  end
 
   def find_membership
     @target_membership = UnitMembership.includes(:parent_relationships, :child_relationships).find(params[:member_id] || params[:id])

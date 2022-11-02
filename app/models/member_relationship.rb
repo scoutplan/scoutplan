@@ -2,8 +2,8 @@
 
 # mapping between UnitMemberships
 class MemberRelationship < ApplicationRecord
-  belongs_to :parent_unit_membership, class_name: 'UnitMembership'
-  belongs_to :child_unit_membership, class_name: 'UnitMembership'
+  belongs_to :parent_unit_membership, class_name: "UnitMembership"
+  belongs_to :child_unit_membership, class_name: "UnitMembership"
   alias_attribute :parent_member, :parent_unit_membership
   alias_attribute :child_member, :child_unit_membership
   validates_uniqueness_of :parent_unit_membership, scope: :child_unit_membership

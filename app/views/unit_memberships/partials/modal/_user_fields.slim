@@ -37,4 +37,5 @@
       = u.phone_field :phone,
                       class: "block w-full rounded p-2 placeholder-stone-400",
                       autocomplete: "off",
-                      placeholder: t("members.placeholders.phone")
+                      placeholder: t("members.placeholders.phone"),
+                      value: @target_membership.user&.phone&.phony_formatted(country_code: "US")

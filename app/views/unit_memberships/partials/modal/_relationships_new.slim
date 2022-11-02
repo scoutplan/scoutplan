@@ -1,6 +1,6 @@
-- organizers = @event.organizers
+- child_relationships = f.object.child_relationships
 
-section.py-4
+section.py-4(data-controller="autocomplete")
   = content_tag :section,
                 class: "autocomplete",
                 data: { controller: "autocomplete",
@@ -9,24 +9,24 @@ section.py-4
 
     // select tag that actually gets submitted as part of the form
     // - select_name = "event[event_organizers_attributes][][unit_membership_id][]"
-    - select_name = "event_organizers[unit_membership_ids][]"
+    - select_name = "member_relationships[unit_membership_ids][]"
     select.hidden(data-autocomplete-target="selections" multiple="multiple" name=select_name id="event_event_organizer_unit_membership_ids")
-      - organizers.each do |organizer|
-        option(value="#{organizer.unit_membership_id}" selected="") = organizer.full_display_name
+      - child_relationships.each do |relationship|
+        option(value="#{relationship.child_member.id}" selected="") = relationship
 
-    = f.label :organizers, "Organizers", class: "block font-bold mb-1"
+    = f.label :child_relationships, "Can RSVP on behalf of:", class: "block font-bold mb-1"
     
     div.rounded.border.border-stone-300.px-2.py-0
       .flex.flex-wrap.gap-1.items-center
         // left part: list of organizers
         div.flex.flex-wrap.gap-1(data-autocomplete-target="list")
-          - organizers.each do |organizer|
-            = render partial: "events/partials/form/organizer", locals: { organizer: organizer }
+          - child_relationships.each do |relationship|
+            = render partial: "unit_memberships/partials/form/relationship", locals: { member: relationship.child_member }
 
         // right part: input field
         .flex-initial.relative
           = text_field_tag :organizers, "",
-                            class: "w-full focus:ring-0 focus:outline-none focus:border-0 border-0 w-full placeholder:text-stone-300",
+                            class: "w-full px-0 focus:ring-0 focus:outline-none focus:border-0 border-0 w-full placeholder:text-stone-300",
                             autocomplete: "off",
                             placeholder: "Type a name",
                             data: { autocomplete_target: "query", action: "keyup->autocomplete#search" }
@@ -36,8 +36,8 @@ section.py-4
                         class: "absolute autocomplete-results min-w-72 max-h-96 bg-cyan-800 text-cyan-100 rounded overflow-auto z-10",
                         data: { autocomplete_target: "results" } do
 
-            - @unit.members.status_active_and_registered.each do |member|
-              - display_class = organizers.map(&:unit_membership).include?(member) ? "hidden existing" : ""
+            - @unit.members.each do |member|
+              - display_class = f.object.children.include?(member) ? "hidden existing" : ""
 
               li(class="#{display_class}")
                 = link_to member.full_display_name,

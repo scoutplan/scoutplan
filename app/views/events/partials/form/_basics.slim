@@ -5,6 +5,7 @@ section.py-4
       class: "border border-stone-300 font-bold rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300",
       autocomplete: "off",
       autofocus: true,
+      required: "An event title is required",
       placeholder: t("events.placeholders.title")
 
   div.field.py-2
@@ -12,7 +13,8 @@ section.py-4
     = f.select :event_category_id,
                 @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
                 { prompt: t("events.placeholders.category"), selected: @event.event_category_id },
-                { class: "border border-stone-300 rounded py-2 bg-white w-full font-bold" }
+                { class: "border border-stone-300 rounded py-2 bg-white w-full font-bold",
+                  required: "A category is required" }
 
   div.field.py-2
     = f.label :short_description, class: "block mb-1"
