@@ -1,55 +1,22 @@
-.max-w-2xl.mx-auto.mt-4
-  header.my-2
-    h3.text-2xl.font-bold
+- cancel_path = @target_membership.new_record? ? unit_members_path(@unit) : unit_member_path(@unit, @target_membership)
+
+.max-w-xl.mx-auto.mt-4
+  = render partial: "unit_memberships/partials/modal/cancel_button", locals: { cancel_path: cancel_path }
+
+  header.py-4
+    h3.text-4xl.font-bold
       = t("members.titles.#{@target_membership.new_record? ? "new" : "edit"}")
 
   = form_with model: [@unit, @target_membership], id: "member_info_form" do |f|
+    section.flex.flex-col.gap-4.divide-y.divide-stone-800
+      = render partial: "unit_memberships/partials/modal/user_fields", locals: { f: f }
+      = render partial: "unit_memberships/partials/modal/member_type_fields", locals: { f: f }
+      = render partial: "unit_memberships/partials/modal/member_role_fields", locals: { f: f }
+      = render partial: "unit_memberships/partials/modal/member_status_fields", locals: { f: f }
+      = render partial: "unit_memberships/partials/modal/communication_settings_fields", locals: { f: f }
+      = render partial: "unit_memberships/partials/modal/relationships_new", locals: { f: f }
 
-    // guts of the modal
-    section
-      .bg-stone-100.rounded.px-2.md:px-6.py-0.mb-2
-        = render partial: "unit_memberships/partials/modal/user_fields", locals: { f: f }
-
-      .bg-stone-100.rounded.px-2.md:px-6.py-2.mb-2
-        .py-4.border-b
-          = render partial: "unit_memberships/partials/modal/member_type_fields", locals: { f: f }
-
-        .py-4.border-b
-          = render partial: "unit_memberships/partials/modal/member_role_fields", locals: { f: f }
-
-        .py-4.border-b
-          = render partial: "unit_memberships/partials/modal/member_status_fields", locals: { f: f }
-
-        .py-4
-          = render partial: "unit_memberships/partials/modal/communication_settings_fields", locals: { f: f }
-
-      .bg-stone-100.rounded.px-2.md:px-6.py-2
-        = render partial: "unit_memberships/partials/modal/relationships", locals: { f: f }
-
-
-    // footer, containing right-justified buttons
-    footer.flex.flex-col.md:flex-row.justify-between.mt-4
-      // top/left
-      div
-
-      // right/bottom
-      .flex.flex-col.md:flex-row.gap-2
-
-        // cancel
-        - cancel_path = @target_membership.new_record? ? unit_members_path(@unit) : unit_member_path(@unit, @target_membership)
-        = link_to cancel_path,
-          class: "text-sm font-bold tracking-wider uppercase no-underline text-center \
-                  w-full md:w-fit md:inline-block px-4 py-2 \
-                  text-brand-700 hover:textscoutplan-800 \
-                  bg-brand-100 hover:bg-brand-200 \
-                  border border-brand-100 hover:border-brand-200 \
-                  rounded",
-          data: { turbo_action: "advance" } do
-          = t("helpers.label.event.cancel_update")
-
-        // save
-        = f.submit @target_membership.new_record? ? t("members.form.captions.accept_create") : t("members.form.captions.accept_update"),
-          class: "bg-brand-500 inline-block px-4 py-2 no-underline rounded text-white text-sm font-bold tracking-wider uppercase"
+    = render partial: "unit_memberships/partials/modal/footer", locals: { f: f }
 
 scss:
   input.destroy_relationship_input:checked {

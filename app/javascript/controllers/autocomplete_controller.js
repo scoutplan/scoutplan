@@ -19,7 +19,8 @@ export default class extends Controller {
 
   addSelection(memberName, memberId) {
     var newOption = new Option(memberName, memberId, true, true);
-    this.selectionsTarget.add(newOption, undefined);    
+    this.selectionsTarget.add(newOption, undefined);
+    this.queryTarget.focus();
   }
 
   connect() {

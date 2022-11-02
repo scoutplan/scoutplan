@@ -1,15 +1,11 @@
-header.relative.mb-4.mt-8
-  .md:block.absolute.left-0.pt-2
-    = render "members_dropdown" if @current_member.admin?
+header
+  .flex.flex-row.justify-between.mt-8.px-2
+    h1.text-3xl.font-bold.mb-2
+      = t("members.index.page_title")
+      .text-sm.uppercase.tracking-wider.text-stone-500 = @unit.name
+    
+    div
+      = render partial: "new_member_button"
 
-  h1.text-center.text-4xl.font-bold.mb-2
-    = t("members.index.page_title")
-    .text-sm.uppercase.tracking-wider.text-stone-500 = @unit.name
-
-  .absolute.top-0.right-4.md:right-0
-    = render partial: "new_member_button"
-
-header.my-6.text-center
-  = render partial: "search_field"
-
-= render "member_bulk_edit_panel"
+  div
+    = render "member_bulk_edit_panel"

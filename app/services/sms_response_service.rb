@@ -106,7 +106,7 @@ class SmsResponseService < ApplicationService
   end
 
   def request_valid?
-    true
+    return true
 
     # return true if ENV["RAILS_ENV"] == "test"
 

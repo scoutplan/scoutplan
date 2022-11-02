@@ -8,6 +8,6 @@ class SearchController < UnitContextController
     @term = params[:q]
     @events = @unit.events.where("title ILIKE ?", "%#{@term}%")
     @locations = @unit.locations.where("name ILIKE ?", "%#{@term}%")
-    @members = @unit.members.where("first_name ILIKE ? OR last_name ILIKE ?", "%#{@term}%", "%#{@term}%")
+    @members = @unit.members.joins(:user).where("users.first_name ILIKE ? OR users.last_name ILIKE ?", "%#{@term}%", "%#{@term}%")
   end
 end
