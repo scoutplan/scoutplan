@@ -7,6 +7,7 @@
 # from one Unit to another
 #
 class UnitMembership < ApplicationRecord
+  ROLES = %w[member admin event_organizer].freeze
   include Flipper::Identifier
   include Contactable
 
@@ -35,11 +36,11 @@ class UnitMembership < ApplicationRecord
   has_many :visits, class_name: "Ahoy::Visit"
   has_many :event_organizers
 
-  alias_attribute :member, :user
+  # alias_attribute :member, :user
   alias_attribute :rsvps, :event_rsvps
 
   enum status: { inactive: 0, active: 1, registered: 2 }, _prefix: true
-  enum role: { member: "member", admin: "admin", event_organizer: "event_organizer" }
+  enum role: ROLES.zip(ROLES).to_h
   enum member_type: { unknown: 0, youth: 1, adult: 2 }
 
   scope :active, -> { where(status: %i[active]) }
@@ -68,9 +69,9 @@ class UnitMembership < ApplicationRecord
     [id, user&.full_display_name].join("-").parameterize
   end
 
-  def admin?
-    role == "admin"
-  end
+  # def admin?
+  #   role == "admin"
+  # end
 
   def parents
     parent_relationships.map(&:parent_member)
