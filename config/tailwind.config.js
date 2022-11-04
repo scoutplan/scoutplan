@@ -41,7 +41,8 @@ module.exports = {
         '1/2': '50%',
       },
       animation: {
-        'pop-open': 'pop-open 0.1s'
+        'pop-open': 'pop-open 0.1s',
+        'fade-out-after-load': 'fade-out-after-load 3s linear 1',
       },
       keyframes: {
         'pop-open': {
@@ -53,6 +54,14 @@ module.exports = {
           },
           '100%': {
             transform: 'scale(100%)'
+          }
+        },
+        'fade-out-after-load': {
+          '0%': {
+            opacity: '1'
+          },
+          '100%': {
+            opacity: '0'
           }
         }
       }

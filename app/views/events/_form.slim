@@ -13,7 +13,7 @@
               url: @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event),
               method: @event.new_record? ? "post" : "patch",
               class: "divide-y divide-stone-800",
-              data: { turbo_action: "advance" } do |f|
+              data: { turbo: false } do |f|
               
     = render partial: "events/partials/form/basics",      locals: { f: f }    
     = render partial: "events/partials/form/rsvp",        locals: { f: f }
