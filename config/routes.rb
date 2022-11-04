@@ -108,7 +108,7 @@ Rails.application.routes.draw do
   get   "user_settings/change_password", to: "profile#edit_password", as: "edit_credentials"
   patch "user_settings/save_password", to: "profile#update_password", as: "update_credentials"
 
-  post "units/:unit_id/members/:member_id/test_communication/:message_type", to: "test_communications#create", as: "create_test_communication"
+  post "units/:unit_id/members/:member_id/test_communication", to: "test_communications#create", as: "create_test_communication"
 
   resources :member_relationships, as: "relationships", path: "relationships", only: %i[destroy]
   resources :event_rsvps, except: [:index, :show, :edit, :update, :new]

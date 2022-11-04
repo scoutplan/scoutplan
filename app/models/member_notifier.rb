@@ -23,7 +23,6 @@ class MemberNotifier < ApplicationNotifier
   end
 
   def send_digest
-    puts @member.id
     return unless Flipper.enabled?(:digest, @member)
 
     send_email { |recipient| MemberMailer.with(member: recipient).digest_email.deliver_later }
@@ -52,6 +51,11 @@ class MemberNotifier < ApplicationNotifier
   def send_rsvp_confirmation(event)
     send_email { |recipient| MemberMailer.with(member: recipient, event_id: event.id).rsvp_confirmation_email.deliver_later }
     send_text  { |recipient| RsvpConfirmationTexter.new(recipient, event).send_message }
+  end
+
+  def send_rsvp_nag
+    notifier = RsvpNagNotifier.new(member)
+    notifier.perform    
   end
 
   private

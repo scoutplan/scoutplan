@@ -15,7 +15,7 @@ class SmsResponseService < ApplicationService
   end
 
   def process
-    return unless request_valid?
+    return unless valid_request?
 
     resolve_user_from_phone
     return unless user.present?
@@ -105,8 +105,8 @@ class SmsResponseService < ApplicationService
     @candidate_events = scope.all
   end
 
-  def request_valid?
-    return true
+  def valid_request?
+    true
 
     # return true if ENV["RAILS_ENV"] == "test"
 
@@ -114,7 +114,7 @@ class SmsResponseService < ApplicationService
     # return false unless signature.present?
 
     # validator = Twilio::Security::RequestValidator.new(ENV["TWILIO_TOKEN"])
-    # url = ENV["RAILS_ENV"] == "production" ? "https://#{ENV["APP_HOST"]}/sms" : "https://scoutplan.ngrok.io/sms"
+    # url = request.url
     # signature = request.headers["X-Twilio-Signature"]
 
     # ap url

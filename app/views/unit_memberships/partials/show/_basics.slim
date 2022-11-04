@@ -1,0 +1,11 @@
+section.flex.flex-col.gap-2
+  section
+    - if @target_membership.emailable?
+      = link_to "mailto:#{@target_membership.email}", class: "text-blue-500" do
+        i.fas.fa-envelope.mr-2
+        = @target_membership.email
+
+  section
+    - if @target_membership.phone.present?
+      i.fad.fa-phone.mr-2
+      = link_to @target_membership.phone.phony_formatted(country_code: "US"), "tel:#{@target_membership.phone}"

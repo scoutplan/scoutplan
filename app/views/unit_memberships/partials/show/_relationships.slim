@@ -1,0 +1,22 @@
+- if @target_membership.children.length.positive?
+  section.mt-4.border-t.py-2
+    dl
+      dt.font-bold.mb-1
+        | #{@target_membership.display_first_name} can RSVP on behalf of:
+      - @target_membership.children.each do |relative|
+        dd
+          = link_to unit_member_path(@unit, relative), class: "inline-block py-1", data: { turbo_action: "advance" } do
+            i.fad.fa-user.text-sky-500.mr-2
+            = relative.full_display_name
+
+- if @target_membership.parents.length.positive?
+  section.mt-2.border-t.py-2
+    dl
+      dt.font-bold.mb-1
+        | Members that can RSVP on behalf of #{@target_membership.display_first_name}:               
+
+      - @target_membership.parents.each do |relative|
+        dd
+          = link_to unit_member_path(@unit, relative), class: "inline-block py-1", data: { turbo_action: "advance" } do
+            i.fad.fa-user.text-rose-500.mr-2
+            = relative.full_display_name

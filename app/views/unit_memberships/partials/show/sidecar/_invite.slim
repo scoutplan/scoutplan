@@ -1,0 +1,11 @@
+- return unless @target_membership.invitation_accepted_at.nil? && UnitMembershipPolicy.new(@current_member, @target_membership).invite?
+
+= button_to unit_member_invite_path(@unit, @target_membership),
+  class: "block font-bold",
+  form_class: "inline" do
+
+  .fa-stack
+    i.fa-regular.fa-circle.fa-stack-2x
+    i.fa-solid.fa-envelope.fa-stack-1x
+
+  = "Send Invitation"
