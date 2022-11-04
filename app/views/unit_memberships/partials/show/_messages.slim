@@ -1,0 +1,18 @@
+
+section#messages_section.border-t.py-2
+  - options = [["Select a message type", ""], ["Digest", "digest"], ["Daily Reminder", "daily_reminder"], ["Test Message", "test_message"], ["RSVP Reminder", "rsvp_nag"]]
+
+  h4.font-bold.mb-3
+    = t("members.titles.messaging")
+  
+  = form_tag create_test_communication_path(@unit, @target_membership), method: :post
+    .flex(data-controller="validation")
+      = select_tag :message_type,
+                   options_for_select(options),
+                   class: "w-full rounded border border-stone-300 font-bold",
+                   onchange: "this.nextSibling.disabled = (this.value == '')"
+      = submit_tag "Send",
+                   disabled: true,
+                   id: "send_message_button",
+                   class: "ml-2 rounded px-4 py-2 bg-teal-200 text-teal-700 font-bold hover:bg-teal-300 hover:text-teal-900 disabled:bg-stone-100 disabled:text-stone-200",
+                   data: { validation_target: "button" }

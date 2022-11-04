@@ -410,6 +410,7 @@ en:
       new:     "Add a Member"
       edit:    "Update Member Details"
       index:   "Member Roster"
+      messaging: "Send a message"
 
     confirmations:
       create: "%{member_name} was added to %{unit_name}"
