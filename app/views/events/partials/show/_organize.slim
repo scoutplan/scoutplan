@@ -1,7 +1,7 @@
 /* partial for displaying event stats & a link to the Organize page,
    only visible to Event Organizers and Unit Admins */
 
-- return unless @event.organizable? && policy(@event).rsvps?
+- return unless @event.organizable? && EventPolicy.new(@current_member, @event).rsvps?
 
 #manage_rsvps_card.mt-8.bg-cyan-700.text-cyan-50.px-4.py-4.relative.mb-4.w-full.md:w-60
     header.mb-2
