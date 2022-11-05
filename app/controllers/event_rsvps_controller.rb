@@ -3,7 +3,7 @@
 # only intended to be called via XHR...no HTML view exists for this controller
 class EventRsvpsController < UnitContextController
   before_action :find_rsvp, only: [:destroy]
-  before_action :find_event
+  before_action :find_event, except: [:destroy]
 
   def create
     @service = EventRsvpService.new(current_member)
