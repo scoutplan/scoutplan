@@ -76,8 +76,8 @@ Rails.application.configure do
   # RGB 12/31/21: temporarily subbing in the inline adapter. I know, it's not production-
   # worthy. But Sidekiq is busted (see https://github.com/hotwired/turbo-rails/issues/285#issuecomment-1001690504).
   # When and as that issue resolves, we'll go back to Sidekiq.
-  # config.active_job.queue_adapter = :sidekiq
-  config.active_job.queue_adapter = :inline
+  config.active_job.queue_adapter = :sidekiq
+  # config.active_job.queue_adapter = :inline
 
   config.action_mailer.raise_delivery_errors  = true
   config.action_mailer.delivery_method        = :smtp

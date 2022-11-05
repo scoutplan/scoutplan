@@ -8,6 +8,9 @@
           - letter_memberships = @unit_memberships.select{ |m| m.first_name.first.downcase == letter.downcase }
           = render partial: "member_index", locals: { letter: letter, unit_memberships: letter_memberships } if letter_memberships.present?
 
+  javascript:
+    document.title = "Member Roster · #{@unit.name}"
+
   scss:
     th.selection, td.selection {
       display: none;
