@@ -5,27 +5,27 @@
 
   .w-full
     .relative.flex.items-center.justify-center(data-controller="paged-scroll")
-      .flex.overflow-x-scroll.pb-6
+      .scrollable.flex.overflow-x-scroll.pb-6(data-paged-scroll-target="scrollable")
         .flex.flex-nowrap.px-12.md:px-16
           = render partial: "event", collection: @events
 
       // left scroll button
       = link_to "#",
-        class: "text-white bg-red-600 bg-opacity-80 block absolute left-0 flex items-center justify-center \
-                hidden \
-                hover:bg-opacity-100 \
+        class: "text-stone-100 bg-sky-500 bg-opacity-50 block absolute left-0 flex items-center justify-center \
+                hover:bg-opacity-75 \
                 text-2xl h-24 px-4 \
-                md:text-5xl md:h-36 md:px-4" do
+                md:text-5xl md:h-36 md:px-4",
+        data: { action: "paged-scroll#scrollLeft" } do
           i.fas.fa-chevron-left
 
       // right scroll button
       = link_to "#",
-        class: "text-white bg-green-600 bg-opacity-80 block absolute right-0 flex items-center justify-center \
-                hidden \
-                hover:bg-opacity-100 \
+        class: "text-stone-100 bg-sky-500 bg-opacity-50 block absolute right-0 flex items-center justify-center \
+                hover:bg-opacity-75 \
                 text-2xl h-24 px-4 \
-                md:text-5xl md:h-36 md:px-4" do
-          i.fas.fa-chevron-right  
+                md:text-5xl md:h-36 md:px-4",
+        data: { action: "paged-scroll#scrollRight" } do
+          i.fas.fa-chevron-right          
 
   scss:
     main {
@@ -75,7 +75,7 @@
     li.event-activity {
       display: block;
       cursor: default;
-      white-space: nowrap;
+      stone-100-space: nowrap;
 
       .sort-grip {
         display: inline-block;
@@ -86,7 +86,7 @@
       .activity-title {
         display: inline;
         overflow-x: hidden;
-        white-space: nowrap;
+        stone-100-space: nowrap;
       }
 
       h3 {
@@ -113,4 +113,8 @@
   css:
     .card.event-troop-meeting h1 {
       color: #{ @unit.planner.event_category_for(:camping_trip)&.color || '#333' };
+    }
+
+    .scrollable {
+      scroll-behavior: smooth;
     }
