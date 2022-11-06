@@ -127,12 +127,12 @@ class SmsResponseService < ApplicationService
   end
 
   def prompt_upcoming_event
+    reset_context
     event = user.events.published.future.rsvp_required.first
     unit = event.unit
     member = unit.members.find_by(user: user)
     family = member.family
-    values = { "type" => "event", "family" => family.map(&:id), "index" => 0 }
-    reset_context
+    values = { "type" => "event", "members" => family.map(&:id), "index" => 0 }
     ConversationContext.create(identifier: from, values: values)
     UserNotifier.new(user).prompt_upcoming_event(event)
   end

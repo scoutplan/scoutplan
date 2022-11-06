@@ -27,7 +27,7 @@
             i.fa-solid.fa-check-circle.mr-2
             = rsvp.short_display_name
 
-      = content_tag(:p, t("events.show.captions.rsvp_empty_youth"), class: "font-bold text-sm text-cyan-100") if rsvps.empty?
+      = content_tag(:p, t("events.show.captions.rsvp_empty_youth"), class: "text-sm text-cyan-100") if rsvps.empty?
 
     section.border-t.border-cyan-200.py-3.hidden.md:block
       - rsvps = @event.rsvps.accepted.select { |r| r.member.adult? }
@@ -43,7 +43,7 @@
             i.fa-solid.fa-check-circle.mr-2
             = rsvp.short_display_name   
 
-      = content_tag(:p, t("events.show.captions.rsvp_adult_youth"), class: "font-bold text-sm text-cyan-100") if rsvps.empty?
+      = content_tag(:p, t("events.show.captions.rsvp_empty_adult"), class: "text-sm text-cyan-100") if rsvps.empty?
 
     footer.mt-6
       = link_to t("events.show.organize_button_caption"),

@@ -1,4 +1,4 @@
-- return unless (query = CGI.escape(@event.map_address.gsub(",", "")).present?)
+- return unless (query = CGI.escape(@event.map_address.gsub(",", "")))
 
 iframe.mb-4(
   width="100%"
