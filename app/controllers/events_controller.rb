@@ -189,6 +189,7 @@ class EventsController < UnitContextController
   # PATCH /:unit_id/events/:event_id
   def update
     authorize @event
+    @event.event_locations.destroy_all
     @event.assign_attributes(event_params)
     return unless @event.save!
 
