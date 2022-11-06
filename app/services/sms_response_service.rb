@@ -27,6 +27,8 @@ class SmsResponseService < ApplicationService
       process_yes_no_response
     when :choose_item
       process_numeric_response
+    when :prompt_upcoming_event
+      prompt_upcoming_event
     else
       send_event_list
     end
@@ -67,15 +69,9 @@ class SmsResponseService < ApplicationService
     self.context = ConversationContext.find_by(identifier: from)
   end
 
-  # strips all non-numerics from a string
-  def format_phone_number(phone, country_code = "1")
-    result = phone.gsub(/\D/, "")
-    result = "+#{country_code}#{result}" if result.length == 10
-    result
-  end
-
   # what's the user trying to do?
   def response_classification
+    return :prompt_upcoming_event if %w[upcoming next].include?(body)
     return :choose_item if body_numeric?
     return :rsvp_response if body_yes_no?
     return :list_events if %w[events list].include?(body)
@@ -130,16 +126,19 @@ class SmsResponseService < ApplicationService
     self.user = User.find_by(phone: from)
   end
 
-  def format_phone_number(str)
-    str.gsub!(/\D/, "")
-    case str.length
-    when 10
-      "+1#{str}"
-    when 11
-      "+#{str}"
-    else
-      str
-    end
+  def prompt_upcoming_event
+    event = user.events.published.future.rsvp_required.first
+    unit = event.unit
+    member = unit.members.find_by(user: user)
+    family = member.family
+    values = { "type" => "event", "family" => family.map(&:id), "index" => 0 }
+    reset_context
+    ConversationContext.create(identifier: from, values: values)
+    UserNotifier.new(user).prompt_upcoming_event(event)
+  end
+
+  def reset_context
+    ConversationContext.find_by(identifier: from)&.destroy
   end
 
   # if >1 candidate events, send a list for disambiguation

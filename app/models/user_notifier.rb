@@ -17,6 +17,10 @@ class UserNotifier < ApplicationNotifier
     @user
   end
 
+  def prompt_upcoming_event(event)
+    send_text { |recipient| EventPromptTexter.new(recipient, event).send_message }
+  end
+
   def send_event_list
     events = @user.events.upcoming.rsvp_required
     send_text { |recipient| EventListTexter.new(recipient, events).send_message }
