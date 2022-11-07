@@ -161,4 +161,7 @@ class EventPresenter
   def pluperfect_verb(things)
     things.count == 1 ? (things.first.downcase == "you" ? "has" : "have") : "have"
   end
+
+  def proper_noun_list(things)
+  end
 end
