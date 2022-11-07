@@ -69,10 +69,6 @@ class UnitMembership < ApplicationRecord
     [id, user&.full_display_name].join("-").parameterize
   end
 
-  # def admin?
-  #   role == "admin"
-  # end
-
   def parents
     parent_relationships.map(&:parent_member)
   end
@@ -91,7 +87,7 @@ class UnitMembership < ApplicationRecord
     res = (children | parents)
     res.append(self) if [true, :append].include?(include_self)
     res.unshift(self) if include_self == :prepend
-    res.sort_by(&:first_name)
+    res
   end
 
   def contactable_object

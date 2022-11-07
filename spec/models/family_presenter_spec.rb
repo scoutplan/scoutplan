@@ -28,7 +28,7 @@ RSpec.describe FamilyPresenter, type: :model do
       MemberRelationship.create!(parent_member: @member, child_member: child2)
       @member.reload
       presenter = FamilyPresenter.new(@member)
-      expect(presenter.active_member_names).to eq("you, #{child1.display_first_name}, and #{child2.display_first_name}")
+      expect(presenter.active_member_names).to eq("you, #{child1.display_first_name}, and #{child2.display_first_name}") || eq("you, #{child2.display_first_name}, and #{child1.display_first_name}")
     end
   end
 end
