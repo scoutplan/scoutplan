@@ -14,6 +14,10 @@ class FamilyPresenter
   end
 
   def active_member_names
-    list_of_words(active.map { |m| m.display_first_name(@member) })
+    active.map { |m| m.display_first_name(@member) }
+  end
+
+  def active_member_names_list
+    list_of_words(active_member_names)
   end
 end
