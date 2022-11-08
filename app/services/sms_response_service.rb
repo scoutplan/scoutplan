@@ -4,7 +4,7 @@ require "twilio-ruby"
 
 # service for handling inbound SMS messages
 class SmsResponseService < ApplicationService
-  attr_accessor :from, :body, :user, :unit, :member, :event, :context, :params, :request
+  attr_accessor :from, :body, :user, :context, :params, :request
 
   def initialize(params, request)
     self.request = request
@@ -54,6 +54,14 @@ class SmsResponseService < ApplicationService
     @candidate_events
   end
 
+  def event
+    user.events.published.future.rsvp_required.first
+  end
+
+  def family
+    member.family
+  end
+
   def filter_events
     @candidate_events = @candidate_events.reject do |event|
       member = event.unit.members.find_by(user: user)
@@ -69,6 +77,41 @@ class SmsResponseService < ApplicationService
     self.context = ConversationContext.find_by(identifier: from)
   end
 
+  def member
+    unit.members.find_by(user: user)
+  end
+
+  def process_numeric_response
+    ap "Processing number response"
+  end
+
+  def process_yes_no_response
+    if candidate_events.count == 1
+      RsvpService.new(member, event).record_family_response(body == "yes" ? :accepted : :declined)
+      return
+    end
+
+    send_event_list if candidate_events.count > 1
+  end
+
+  def prompt_upcoming_event
+    reset_context
+    values = { "type" => "event", "members" => family.map(&:id), "index" => 0 }
+    ConversationContext.create(identifier: from, values: values)
+    UserNotifier.new(user).prompt_upcoming_event(event)
+  end
+
+  def query_events
+    scope = Event.published.rsvp_required
+    scope = scope.where("unit_id IN (?)", user.unit_memberships.collect(&:unit_id))
+    scope = scope.where("starts_at BETWEEN ? AND ?", DateTime.now, 30.days.from_now)
+    @candidate_events = scope.all
+  end
+
+  def reset_context
+    ConversationContext.find_by(identifier: from)&.destroy
+  end
+
   # what's the user trying to do?
   def response_classification
     return :prompt_upcoming_event if %w[upcoming next].include?(body)
@@ -79,66 +122,9 @@ class SmsResponseService < ApplicationService
     :unknown
   end
 
-  def process_numeric_response
-    ap "Processing number response"
-  end
-
-  def process_yes_no_response
-    if candidate_events.count == 1
-      return unless set_single_event_context
-
-      RsvpService.new(member, event).record_family_response(body == "yes" ? :accepted : :declined)
-      return
-    end
-
-    send_event_list if candidate_events.count > 1
-  end
-
-  def query_events
-    scope = Event.published.rsvp_required
-    scope = scope.where("unit_id IN (?)", user.unit_memberships.collect(&:unit_id))
-    scope = scope.where("starts_at BETWEEN ? AND ?", DateTime.now, 30.days.from_now)
-    @candidate_events = scope.all
-  end
-
-  def valid_request?
-    true
-
-    # return true if ENV["RAILS_ENV"] == "test"
-
-    # signature = request.headers["X-Twilio-Signature"]
-    # return false unless signature.present?
-
-    # validator = Twilio::Security::RequestValidator.new(ENV["TWILIO_TOKEN"])
-    # url = request.url
-    # signature = request.headers["X-Twilio-Signature"]
-
-    # ap url
-    # ap signature
-    # ap validation_params
-
-    # res = validator.validate(url, validation_params, signature)
-    # ap res
-    # res
-  end
-
+  # given the current phone, find the User
   def resolve_user_from_phone
     self.user = User.find_by(phone: from)
-  end
-
-  def prompt_upcoming_event
-    reset_context
-    event = user.events.published.future.rsvp_required.first
-    unit = event.unit
-    member = unit.members.find_by(user: user)
-    family = member.family
-    values = { "type" => "event", "members" => family.map(&:id), "index" => 0 }
-    ConversationContext.create(identifier: from, values: values)
-    UserNotifier.new(user).prompt_upcoming_event(event)
-  end
-
-  def reset_context
-    ConversationContext.find_by(identifier: from)&.destroy
   end
 
   # if >1 candidate events, send a list for disambiguation
@@ -146,11 +132,30 @@ class SmsResponseService < ApplicationService
     UserNotifier.new(user).send_event_list
   end
 
-  def set_single_event_context
-    return unless (self.event = candidate_events.first)
+  def unit
+    event.unit
+  end
 
-    self.unit = event.unit
-    self.member = unit.members.find_by(user: user)
+  def valid_request?
+    # true
+
+    return true if ENV["RAILS_ENV"] == "test"
+
+    signature = request.headers["X-Twilio-Signature"]
+    return false unless signature.present?
+
+    validator = Twilio::Security::RequestValidator.new(ENV["TWILIO_TOKEN"])
+    url = request.url
+    signature = request.headers["X-Twilio-Signature"]
+
+    ap ENV["TWILIO_TOKEN"]
+    ap url
+    ap signature
+    ap validation_params
+
+    res = validator.validate(url, validation_params, signature)
+    ap res
+    res
   end
 
   def validation_params
