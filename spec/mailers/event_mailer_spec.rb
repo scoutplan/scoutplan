@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe EventMailer, type: :mailer do
   # describe 'token_invitation_email' do
