@@ -7,6 +7,14 @@ RSpec.describe Event, type: :model do
     @member = FactoryBot.create(:member)
   end
 
+  describe "methods" do
+    it "returns an HTML ndash" do
+      event = FactoryBot.build(:event)
+      presenter = EventPresenter.new(event, @member)
+      expect(presenter.ndash).to eq("&ndash;")
+    end
+  end
+
   describe "single_day" do
     it "handles same-day events" do
       event = FactoryBot.build(

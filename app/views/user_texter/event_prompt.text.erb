@@ -1,3 +1,3 @@
-Hi, <%= @user.display_first_name %>...<%= @unit.name %> here. <%= @event.title %> is coming up on <%= @event_presenter.dates_to_s %>. <%= @verb %> <%= @names %> planning to attend?
+Hi, <%= @user.display_first_name %>...<%= @unit.name %> here. <%= @event.title %> is coming up on <%= @event_presenter.months_and_dates %>. <%= @verb.capitalize %> <%= @name_list %> planning to attend?
 
-(YES, NO, or MORE information)
+(YES, NO<%= @family_count > 1 ? ", SOME" : "" %>, or MORE information)

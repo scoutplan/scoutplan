@@ -4,12 +4,13 @@
 # handling things like single- versus multi-day events,
 # events that span month boundaries, etc.
 class EventPresenter
-  attr_accessor :event, :current_member
+  attr_accessor :event, :current_member, :plain_text
 
   # EventPresenter.new(event: @event, current_member: @current_member)
-  def initialize(event = nil, current_member = nil)
+  def initialize(event = nil, current_member = nil, plain_text: false)
     self.event = event
     self.current_member = current_member
+    self.plain_text = plain_text
   end
 
   # if family member is current user: "Todd (you)"
@@ -26,7 +27,7 @@ class EventPresenter
   def dates_to_s
     return event.starts_at.strftime("%-d") if single_day?
 
-    "#{event.starts_at.strftime('%-d')}&ndash;#{event.ends_at.strftime('%-d')}".html_safe
+    "#{event.starts_at.strftime('%-d')}#{plain_text ? '-' : '&ndash;'}#{event.ends_at.strftime('%-d')}".html_safe
   end
 
   # single day: "Friday"
@@ -39,29 +40,30 @@ class EventPresenter
 
   # within same month: "February"
   # spanning month boundary: "February–March"
+  # rubocop:disable Metrics/AbcSize
   def month_name
     result = event.starts_at.strftime("%B")
-    result.concat "&ndash;#{event.ends_at.strftime('%B')}" unless event.starts_at.month == event.ends_at.month
+    result.concat "#{ndash}#{event.ends_at.strftime('%B')}" unless single_month?
     result.concat " #{event.starts_at.strftime('%Y')}" unless event.starts_at.year == Date.today.year
     result.html_safe
   end
+  # rubocop:enable Metrics/AbcSize
 
+  # rubocop:disable Metrics/AbcSize
   def months_and_dates
     return event.starts_at.strftime("%-d %b %Y").html_safe if single_day?
 
-    result = ""
-    result += event.starts_at.in_time_zone(current_member.time_zone).strftime("%B")
-    result += " " + event.starts_at.in_time_zone(current_member.time_zone).strftime("%-d")
-    result += "&ndash;"
-    if single_month?
-      result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%-d")
-    else
-      result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%B")
-      result += " "
-      result += event.ends_at.in_time_zone(current_member.time_zone).strftime("%-d")
-    end
+    result = event.starts_at.in_time_zone(current_member.time_zone).strftime("%B %-d")
+    result.concat ndash
+    result.concat "#{event.ends_at.in_time_zone(current_member.time_zone).strftime('%B')} " unless single_month?
+    result.concat event.ends_at.in_time_zone(current_member.time_zone).strftime("%-d")
 
     result.html_safe
+  end
+  # rubocop:enable Metrics/AbcSize
+
+  def ndash
+    @plain_text ? "-" : "&ndash;"
   end
 
   def days
