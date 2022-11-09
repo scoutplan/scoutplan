@@ -48,9 +48,11 @@ class MemberNotifier < ApplicationNotifier
     send_email { |recipient| MemberMailer.with(member: recipient, message_id: message.id, preview: preview).message_email.deliver_later }
   end
 
+  # pass an option array of UnitMembership ids for bulk reponses
   def send_rsvp_confirmation(event)
-    send_email { |recipient| MemberMailer.with(member: recipient, event_id: event.id).rsvp_confirmation_email.deliver_later }
-    send_text  { |recipient| RsvpConfirmationTexter.new(recipient, event).send_message }
+    rsvp = EventRsvp.find_by(event: event, unit_membership: @member)
+    # send_email { |recipient| MemberMailer.with(member: recipient, event_id: event.id, member_ids: member_ids).rsvp_confirmation_email.deliver_later }
+    send_text  { |recipient| RsvpConfirmationTexter.new(recipient, event, rsvp).send_message }
   end
 
   def send_rsvp_nag

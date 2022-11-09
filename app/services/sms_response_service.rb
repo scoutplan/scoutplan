@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "twilio-ruby"
+require "json"
 
 # service for handling inbound SMS messages
 class SmsResponseService < ApplicationService
@@ -24,7 +25,7 @@ class SmsResponseService < ApplicationService
 
     case response_classification
     when :rsvp_response
-      process_yes_no_response
+      process_rsvp_response
     when :choose_item
       process_numeric_response
     when :prompt_upcoming_event
@@ -54,7 +55,11 @@ class SmsResponseService < ApplicationService
     @candidate_events
   end
 
-  def event
+  def conversation_context
+    @context ||= @context = ConversationContext.find_by(identifier: from)
+  end
+
+  def candidate_event
     user.events.published.future.rsvp_required.first
   end
 
@@ -73,32 +78,46 @@ class SmsResponseService < ApplicationService
     @candidate_events = [@candidate_events&.first]
   end
 
-  def find_context
-    self.context = ConversationContext.find_by(identifier: from)
-  end
-
   def member
-    unit.members.find_by(user: user)
+    @member || @member = unit.members.find_by(user: user)
   end
 
   def process_numeric_response
     ap "Processing number response"
   end
 
-  def process_yes_no_response
-    if candidate_events.count == 1
-      RsvpService.new(member, event).record_family_response(body == "yes" ? :accepted : :declined)
-      return
-    end
+  # if a yes/no response is received, process it
+  def process_rsvp_response
+    prompt_upcoming_event and return if conversation_context.nil?
 
-    send_event_list if candidate_events.count > 1
+    values = JSON.parse(conversation_context.values)
+    event = Event.find(values["event_id"])
+    member_ids = values["members"]
+    member_ids.each { |member_id| process_rsvp(event, member_id) }
+    MemberNotifier.new(member).send_rsvp_confirmation(event)
   end
 
+  # process a yes/no for a single member. Called by #process_rsvp_response
+  def process_rsvp(event, member_id)
+    family_member = event.unit.members.find(member_id)
+    response = (body == "yes") ? "accepted" : "declined"
+    rsvp = EventRsvp.find_by(event: event, unit_membership: family_member)
+    if rsvp.present?
+      rsvp.update(response: response)
+    else
+      rsvp = EventRsvp.create(event: event, unit_membership: family_member, response: response, respondent: member)
+    end
+    rsvp
+  end
+
+  # compute next event needing a response and SMS it to the user
   def prompt_upcoming_event
     reset_context
-    values = { "type" => "event", "members" => family.map(&:id), "index" => 0 }
-    ConversationContext.create(identifier: from, values: values)
-    UserNotifier.new(user).prompt_upcoming_event(event)
+    values = { "type" => "event",
+               "event_id" => candidate_event.id,
+               "members" => family.map(&:id) }
+    ConversationContext.create(identifier: from, values: values.to_json)
+    UserNotifier.new(user).prompt_upcoming_event(candidate_event)
   end
 
   def query_events
@@ -133,12 +152,10 @@ class SmsResponseService < ApplicationService
   end
 
   def unit
-    event.unit
+    @unit || @unit = candidate_event.unit
   end
 
   def valid_request?
-    # true
-
     return true if ENV["RAILS_ENV"] == "test"
 
     signature = request.headers["X-Twilio-Signature"]
@@ -148,14 +165,7 @@ class SmsResponseService < ApplicationService
     url = request.url
     signature = request.headers["X-Twilio-Signature"]
 
-    ap ENV["TWILIO_TOKEN"]
-    ap url
-    ap signature
-    ap validation_params
-
-    res = validator.validate(url, validation_params, signature)
-    ap res
-    res
+    validator.validate(url, validation_params, signature)
   end
 
   def validation_params

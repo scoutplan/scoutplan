@@ -15,6 +15,9 @@ RSpec.describe SmsResponseService, type: :model do
 
     @event = FactoryBot.create(:event, unit: @member.unit, requires_rsvp: true, starts_at: 1.week.from_now, status: :published)
     @service = RsvpService.new(@member, @event)
+
+    values = { "type" => "event", "event_id" => @event.id, "members" => @member.family.select { |m| m.status_active? }.map(&:id) }
+    ConversationContext.create(identifier: @member.phone, values: values.to_json)    
   end
 
   it "is set up correctly" do
@@ -25,7 +28,7 @@ RSpec.describe SmsResponseService, type: :model do
   it "records responses" do
     params = { "From" => @member.phone, "Body" => "  YES!  " }
     service = SmsResponseService.new(params, {})
-    service.process
+    expect { service.process }.to change { EventRsvp.count }.by(3)
     expect(@service.family_fully_responded?).to be_truthy
   end
 end
