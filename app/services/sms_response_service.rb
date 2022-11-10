@@ -94,6 +94,7 @@ class SmsResponseService < ApplicationService
     event = Event.find(values["event_id"])
     member_ids = values["members"]
     member_ids.each { |member_id| process_rsvp(event, member_id) }
+    reset_context
     MemberNotifier.new(member).send_rsvp_confirmation(event)
   end
 
@@ -172,10 +173,3 @@ class SmsResponseService < ApplicationService
     request.params.reject { |k, _v| k == "controller" || k == "action" }
   end
 end
-
-# {"ToCountry"=>"US", "ToState"=>"MO", "SmsMessageSid"=>"SM56b5e81897e94acbbac1fc25d4405717", "NumMedia"=>"0",
-#  "ToCity"=>"OTTERVILLE", "FromZip"=>"94914", "SmsSid"=>"SM56b5e81897e94acbbac1fc25d4405717", "FromState"=>"CA",
-#  "SmsStatus"=>"received", "FromCity"=>"SAN FRANCISCO", "Body"=>"Yes", "FromCountry"=>"US", "To"=>"+16603337175",
-#  "ToZip"=>"65348", "NumSegments"=>"1", "ReferralNumMedia"=>"0", "MessageSid"=>"SM56b5e81897e94acbbac1fc25d4405717",
-#  "AccountSid"=>"AC898472780113fd79e558e22ce340491a", "From"=>"+14153088236", "putsiVersion"=>"2010-04-01",
-#  "controller"=>"inbound_sms", "action"=>"receive"}

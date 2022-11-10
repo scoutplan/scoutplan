@@ -1,34 +1,13 @@
-// This partial represents a row in the UnitMemberships#index table
-
 - row_classes = "member-#{ unit_membership.status }"
 - row_classes += " member-#{ unit_membership.member_type }"
 - row_classes += " member-admin" if unit_membership.admin?
 - row_classes += " member-inactive" if unit_membership.status_inactive?
 
 article.member.relative(class="#{row_classes}")
-  .bulk-edit.pl-2.absolute.left-0.top-1/2
-    = check_box_tag "members[]", unit_membership.id, false, class: 'form-check-input bulk-edit-checkbox'
+  = render partial: "unit_memberships/partials/index/checkbox", locals: { unit_membership: unit_membership }
 
-  // person name
-  = link_to unit_member_path(@unit, unit_membership),
-    class: "block px-2 py-4 hover:bg-stone-100",
-    data: { turbo_action: "advance" } do
-    
-    h3.text-xl.member-name.mb-2
-      span.font-bold.mr-2 = unit_membership.full_display_name
-      = render partial: "member_badges", locals: { unit_membership: unit_membership }
-
-    // contact info below name
-    - if unit_membership.emailable?
-      .mb-2.font-bold
-        = unit_membership.email
-
-    - if unit_membership.phone.present?
-      .mb-2.font-bold
-        = unit_membership.phone.phony_formatted(country_code: 'US')
-
-    div
-      - unit_membership.family(include_self: false).map do |m|
-        span.mr-4
-          = member_glyph_tag(m)
-          = m.display_first_name
+  = link_to unit_member_path(@unit, unit_membership), class: "block px-2 py-4 hover:bg-stone-100", data: { turbo_action: "advance" } do
+    = render partial: "unit_memberships/partials/index/name", locals: { unit_membership: unit_membership }
+    = render partial: "unit_memberships/partials/index/email", locals: { unit_membership: unit_membership }
+    = render partial: "unit_memberships/partials/index/phone", locals: { unit_membership: unit_membership }
+    = render partial: "unit_memberships/partials/index/family", locals: { unit_membership: unit_membership }
