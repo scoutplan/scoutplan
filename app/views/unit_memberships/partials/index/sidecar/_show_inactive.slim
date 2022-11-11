@@ -1,0 +1,23 @@
+- return unless policy(:unit_membership).edit?
+
+.member-hide-for-inactive
+  = link_to "#",
+            class: "block py-1 font-bold hover:text-brand-500",
+            onclick: "document.body.classList.add('showing-inactive-members'); return false;",
+            data: { turbo_action: "advance" } do
+    .fa-stack
+      i.fa-regular.fa-circle.fa-stack-2x
+      i.fa-solid.fa-users-viewfinder.fa-stack-1x
+
+    = t("members.index.show_inactive")
+
+.member-inactive
+  = link_to "#",
+            class: "block py-1 font-bold hover:text-brand-500",
+            onclick: "document.body.classList.remove('showing-inactive-members');; return false;",
+            data: { turbo_action: "advance" } do
+    .fa-stack
+      i.fa-regular.fa-circle.fa-stack-2x
+      i.fa-solid.fa-users-viewfinder.fa-stack-1x
+
+    = t("members.index.hide_inactive")    

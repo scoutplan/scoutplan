@@ -47,14 +47,12 @@
       display: none;
     }
 
-    body.showing-inactive-members {
-      .member-inactive {
-        display: table-row;
-      }
+    body.showing-inactive-members .member-hide-for-inactive {
+      display: none;
+    }
 
-      #show_inactive_members_link .menu-glyph-wrapper {
-        display: inline;
-      }
+    body.showing-inactive-members .member-inactive {
+      display: table-row;
     }
 
 = content_for :head do
