@@ -422,6 +422,8 @@ en:
     index:
       new_button_caption: "Add"
       page_title: "Member Roster"
+      show_inactive: "Show inactive members"
+      hide_inactive: "Hide inactive members"
 
     show:
       children:         "Children, Guardees, and Delegatees"

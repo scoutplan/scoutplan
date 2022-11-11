@@ -1,0 +1,5 @@
+div
+  - unit_membership.family(include_self: false).map do |m|
+    span.mr-4
+      = member_glyph_tag(m)
+      = m.display_first_name
