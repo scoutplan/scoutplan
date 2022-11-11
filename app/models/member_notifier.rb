@@ -56,7 +56,7 @@ class MemberNotifier < ApplicationNotifier
   end
 
   def send_rsvp_nag
-    notifier = RsvpNagNotifier.new(member)
+    notifier = RsvpNagNotifier.new(@member)
     notifier.perform    
   end
 
