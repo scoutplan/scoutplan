@@ -1,0 +1,12 @@
+- return unless @event.previous.present?
+
+li
+  = link_to unit_event_path(@event.previous.unit, @event.previous),
+            class: "block py-1 font-bold hover:text-brand-500",
+            title: "#{@event.previous.title} on #{@event.previous.starts_at.strftime('%B %-d')}",
+            data: { turbo_action: "advance" } do
+    .fa-stack
+      i.fa-regular.fa-circle.fa-stack-2x
+      i.fa-solid.fa-arrow-left.fa-stack-1x
+    
+    = t("events.captions.previous_event")

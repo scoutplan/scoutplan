@@ -157,6 +157,10 @@ class Event < ApplicationRecord
     primary_location&.map_address
   end
 
+  def find_location(location_type)
+    event_locations.find_by(location_type: location_type)&.location
+  end
+
   def full_address(location_type = nil)
     return primary_location&.full_address || "TBD" unless location_type.present?
 
@@ -168,8 +172,12 @@ class Event < ApplicationRecord
     location&.map_name || location&.address
   end
 
-  def find_location(location_type)
-    event_locations.find_by(location_type: location_type)&.location
+  def next
+    unit.events.published.where("starts_at > ?", starts_at).order("starts_at ASC").first
+  end
+
+  def previous
+    unit.events.published.where("starts_at < ?", starts_at).order("starts_at ASC").last
   end
 
   private
