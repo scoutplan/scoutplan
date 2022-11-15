@@ -18,12 +18,12 @@ spec:
       labels:
         app: scoutplan-app
     spec:
-      # initContainers:
-      # - name: migrations
-      #   image: registry.digitalocean.com/scoutplan/app
-      #   command:
-      #   - rake
-      #   - db:abort_if_pending_migrations
+      initContainers:
+      - name: migrations
+        image: registry.digitalocean.com/scoutplan/app
+        command:
+        - rake
+        - db:abort_if_pending_migrations
       containers:
         - name: scoutplan-app
           image: registry.digitalocean.com/scoutplan/app
