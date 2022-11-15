@@ -114,10 +114,11 @@ class SmsResponseService < ApplicationService
   # compute next event needing a response and SMS it to the user
   def prompt_upcoming_event
     reset_context
+    member_ids = family.select{ |m| m.status_active? }.map(&:id)
     values = { "type" => "event",
                "event_id" => candidate_event.id,
-               "members" => family.map(&:id) }
-    ConversationContext.create(identifier: from, values: values.to_json)
+               "members" => member_ids }
+    ConversationContext.create!(identifier: from, values: values.to_json)
     UserNotifier.new(user).prompt_upcoming_event(candidate_event)
   end
 

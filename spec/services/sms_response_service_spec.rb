@@ -22,7 +22,18 @@ RSpec.describe SmsResponseService, type: :model do
 
   it "is set up correctly" do
     expect(@member.family(include_self: true).count).to eq(4)
+    expect(@member.family.select { |m| m.status_active? }.count).to eq(3)
     expect(@service.family_fully_responded?).to be_falsey
+  end
+  
+  it "sets up context correctly" do
+    ConversationContext.destroy_all
+    params = { "From" => @member.phone, "Body" => "next" }
+    sms_service = SmsResponseService.new(params, {})
+    expect { sms_service.process }.to change { ConversationContext.count }.by(1)
+    context = ConversationContext.last
+    values = JSON.parse(context.values)
+    expect(values["members"].count).to eq(3)
   end
 
   it "records responses" do
