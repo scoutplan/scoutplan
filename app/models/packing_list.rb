@@ -1,0 +1,2 @@
+class PackingList < ApplicationRecord
+end
