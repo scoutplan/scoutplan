@@ -24,6 +24,29 @@ spec:
         command:
         - rake
         - db:abort_if_pending_migrations
+        env:
+          - name: GITHUB_RUN_NUMBER
+            value: "github-run-number"
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: scoutplan-production
+                key: DATABASE_PASSWORD
+          - name: RAILS_MASTER_KEY
+            valueFrom:
+              secretKeyRef:
+                name: scoutplan-production
+                key: RAILS_MASTER_KEY
+          - name: SECRET_KEY_BASE
+            valueFrom:
+              secretKeyRef:
+                name: scoutplan-production
+                key: SECRET_KEY_BASE
+
+        envFrom:
+        - configMapRef:
+            name: scoutplan-production-config
+
       containers:
         - name: scoutplan-app
           image: registry.digitalocean.com/scoutplan/app
