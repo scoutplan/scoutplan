@@ -200,13 +200,8 @@ class EventsController < UnitContextController
 
   # DELETE /:unit_id/events/:event_id
   def destroy
-    ap "##################################"
     authorize @event
     @event.destroy!
-
-    ap "##################################"
-    ap @event
-
     redirect_to unit_events_path(@unit), notice: "#{@event.title} has been permanently deleted."
   end
 
