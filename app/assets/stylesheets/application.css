@@ -54,10 +54,6 @@ input.switch:checked + label .switch-button {
   transition: transform 0.25s;
 }
 
-.actionable {
-  cursor: pointer;
-}
-
 .actionable:hover .actions {
   display: inline-block;
 }
