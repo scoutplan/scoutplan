@@ -53,3 +53,11 @@ input.switch:checked + label .switch-button {
   transform: translateX(1.5rem);
   transition: transform 0.25s;
 }
+
+.actionable {
+  cursor: pointer;
+}
+
+.actionable:hover .actions {
+  display: inline-block;
+}

@@ -1,0 +1,6 @@
+section.py-4
+  h4.font-bold.pb-4
+    = t("events.form.packing_lists")
+
+  ul
+    = render partial: "events/partials/form/packing_list", collection: @unit.packing_lists

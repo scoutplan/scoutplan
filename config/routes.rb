@@ -30,6 +30,9 @@ Rails.application.routes.draw do
     end
 
     resources :locations
+    resources :packing_lists do
+      resources :packing_list_items
+    end
     resources :plans, path: "planner"
     resources :event_categories do
       get "remove", as: "remove"

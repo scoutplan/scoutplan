@@ -1,0 +1,33 @@
+= turbo_frame_tag "main"
+  .max-w-xl.mx-auto
+    = render partial: "back_to_packing_list_index"
+    
+    header.flex.flex-row.justify-between.items-center
+      h1.font-bold.text-3xl
+        = "#{@packing_list.name}"
+
+      .flex.flex-row.gap-0
+        = button_to unit_packing_list_path(@unit, @packing_list),
+                    method: :delete,
+                    title: "Rename this packing list",
+                    class: "text-stone-400" do
+          .fa-stack
+            i.fa-regular.fa-circle.fa-stack-2x
+            i.fa-solid.fa-pencil.fa-stack-1x
+
+        = button_to unit_packing_list_path(@unit, @packing_list),
+                    method: :delete,
+                    title: "Delete this packing list",
+                    class: "text-stone-400" do
+          .fa-stack
+            i.fa-regular.fa-circle.fa-stack-2x
+            i.fa-solid.fa-trash.fa-stack-1x
+
+
+    article.py-6
+      ul
+        = render @packing_list.packing_list_items
+
+      = render "empty_state" if @packing_list.packing_list_items.empty?
+
+    = render "add_item"

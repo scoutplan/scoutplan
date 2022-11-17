@@ -1,0 +1,2 @@
+module PackingListsHelper
+end

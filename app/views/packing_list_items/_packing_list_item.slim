@@ -1,0 +1,20 @@
+li.px-2.py-2.font-bold.packlist-item.actionable.flex.flex-row.justify-between.items-center.hover:bg-stone-100
+  div
+    i.fa-regular.fa-square.text-brand-500.font-bold.mr-2
+    = packing_list_item.name
+
+  .actions.text-xs.hidden
+    = link_to edit_unit_packing_list_packing_list_item_path(@unit, @packing_list, packing_list_item),
+              title: "Rename this item",
+              class: "text-stone-400" do
+      .fa-stack
+        i.fa-regular.fa-circle.fa-stack-2x
+        i.fa-solid.fa-pencil.fa-stack-1x
+
+    = link_to unit_packing_list_packing_list_item_path(@unit, @packing_list, packing_list_item),
+              method: :delete,
+              title: "Delete this item",
+              class: "text-stone-400" do
+      .fa-stack
+        i.fa-regular.fa-circle.fa-stack-2x
+        i.fa-solid.fa-trash.fa-stack-1x
