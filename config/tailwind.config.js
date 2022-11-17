@@ -10,7 +10,6 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-//        sans: ['proxima-nova', ...defaultTheme.fontFamily.sans],
         sans: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"],
         serif: [...defaultTheme.fontFamily.serif],
       },
@@ -36,6 +35,9 @@ module.exports = {
           500: '',
           700: '',
         }
+      },
+      listStyleType: {
+        square: 'square',
       },
       maxWidth: {
         '1/2': '50%',

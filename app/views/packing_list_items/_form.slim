@@ -1,0 +1,11 @@
+= form_with model: [@unit, @packing_list, @packing_list_item] do |f|
+  section.py-2
+    = f.label :name, class: "font-bold block mb-1"
+    = f.text_field :name, class: "w-full font-bold rounded border-stone-300 placeholder-stone-300", autofocus: true, placeholder: "e.g. Sleeping bag", autocomplete: "off"
+
+  section.py-2
+    = f.label :description, class: "font-bold block mb-1"
+    = f.text_area :description, class: "w-full font-bold rounded border-stone-300 placeholder-stone-300 h-24", placeholder: "", autocomplete: "off"
+
+  footer.py-2
+    = f.submit "Add this item", class: "font-bold text-brand-500 hover:text-brand-600 border rounded border-brand-500 hover:border-brand-600 px-4 py-2"

@@ -279,6 +279,7 @@ en:
       departure:   "Depart From"
       arrival:     "Arrive At"
       activity:    "Side Activity"
+      packing_lists:   "Packing lists"
 
     my_rsvps:
       title: "My RSVPs"
@@ -540,6 +541,12 @@ en:
         rsvp_save:            "Send RSVPs"
         create_confirmation:  "%{event_name} was added to the calendar"
         description_save:     "Save This Description"
+
+  packing_lists:
+    captions:
+      new:      "Add"
+    titles:
+      index:    "Packing Lists"
 
   search:
     placeholders:

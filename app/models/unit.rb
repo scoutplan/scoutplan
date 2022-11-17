@@ -13,6 +13,7 @@ class Unit < ApplicationRecord
   has_many :tasks, as: :taskable
   has_one_attached :logo
   has_many :locations
+  has_many :packing_lists, dependent: :destroy
 
   validates_presence_of :name
 

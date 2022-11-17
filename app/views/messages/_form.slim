@@ -32,7 +32,7 @@
     div.py-2
       = render partial: "components/switch", locals: { checked: @message.member_type == "adults_only",
                                                         label: "Only send to adults",
-                                                        object_name: "message]",
+                                                        object_name: "message",
                                                         method: "member_type",
                                                         checked_value: "adults_only",
                                                         unchecked_value: "youth_and_adults" }
