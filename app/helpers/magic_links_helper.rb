@@ -30,12 +30,6 @@ module MagicLinksHelper
     end
   end
 
-  # courtesy of https://stackoverflow.com/questions/55854766/how-can-i-remove-https-and-http-from-ruby-on-rails
-  def url_without_scheme(url)
-    uri = URI(url)
-    uri.hostname + uri.path
-  end
-
   # def url_to_magic_link(member, url)
   #   uri = URI(url)
 

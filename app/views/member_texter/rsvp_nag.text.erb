@@ -1,2 +1,2 @@
 Hi, <%= @member.display_first_name %>, <%= @unit.name %> here. We need your RSVP for the upcoming <%= @event.title %> event.
-Visit <%= url_without_scheme(magic_url_for(@member, unit_event_rsvp_path(@unit, @event))) %> to see details and respond. Thanks!
+Visit <%= magic_url_for(@member, unit_event_rsvp_path(@unit, @event)) %> to see details and respond. Thanks!
