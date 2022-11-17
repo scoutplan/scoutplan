@@ -23,7 +23,7 @@ spec:
         image: registry.digitalocean.com/scoutplan/app
         command:
         - rake
-        - db:abort_if_pending_migrations
+        - db:migrate
         env:
           - name: GITHUB_RUN_NUMBER
             value: "github-run-number"
