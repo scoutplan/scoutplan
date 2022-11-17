@@ -1,3 +1,3 @@
 Hi, <%= @user.display_first_name %>...<%= @unit.name %> here. <%= @event.title %> is coming up on <%= @event_presenter.months_and_dates %>. <%= @verb.capitalize %> <%= @name_list %> planning to attend?
 
-(YES, NO or <%= url_without_scheme(magic_url_for(@member, unit_event_path(@unit, @event))) %> for more info & options)
+(YES, NO or <%= magic_url_for(@member, unit_event_path(@unit, @event)) %> for more info & options)

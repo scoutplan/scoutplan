@@ -1,0 +1,12 @@
+= turbo_frame_tag "main" do
+  .max-w-xl.mx-auto
+    header
+      = render partial: "back_to_packing_list"
+    header
+      h1.text-3xl.font-bold
+        = "Edit an item"
+
+      p.font-bold.text-stone-500
+        = @packing_list.name
+
+    = render partial: "form"

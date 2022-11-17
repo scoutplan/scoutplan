@@ -24,10 +24,4 @@ RSpec.describe MagicLinksHelper, type: :helper do
       expect { magic_link_to(@member, @event.title, [@event.unit, @event]) }.not_to raise_exception
     end
   end
-
-  describe "url_without_scheme" do
-    it "works" do
-      expect(url_without_scheme("https://example.com")).to eq("example.com")
-    end
-  end
 end
