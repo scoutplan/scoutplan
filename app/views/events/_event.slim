@@ -19,6 +19,7 @@ article.py-2.hover:bg-stone-100(class="relative event #{row_classes(event)}" id=
       time.w-24.shrink-0
         .font-bold.text-2xl.md:text-3xl = raw(@presenter.dates_to_s)
         .font-bold.text-sm.uppercase.tracking-wider.text-stone-500 = raw(@presenter.days_to_s)
+        = render partial: "events/partials/event_row/today", locals: { event: event }
 
       // icon
       .hidden.md:block.w-16.text-center
