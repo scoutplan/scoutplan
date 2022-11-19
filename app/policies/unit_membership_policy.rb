@@ -15,7 +15,7 @@ class UnitMembershipPolicy < UnitContextPolicy
   end
 
   def create?
-    true
+    admin?
   end
 
   def edit?
