@@ -1,7 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  connect() {
+  static targets = [ "deleteform" ];
+
+  delete(event) {
+    this.deleteformTarget.submit();
+    console.log("delete this!");
+    event.preventDefault();
   }
 
   showLocation() {
