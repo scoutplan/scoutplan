@@ -7,6 +7,11 @@ class PackingListItemsController < UnitContextController
     redirect_to unit_packing_list_path(@unit, @packing_list)
   end
 
+  def destroy
+    @packing_list_item.destroy
+    redirect_to unit_packing_list_path(@unit, @packing_list)
+  end
+
   def edit; end
 
   def new
@@ -29,6 +34,6 @@ class PackingListItemsController < UnitContextController
   end
 
   def packing_list_item_params
-    params.require(:packing_list_item).permit(:name)
+    params.require(:packing_list_item).permit(:name, :description)
   end
 end

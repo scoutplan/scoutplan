@@ -1,2 +1,5 @@
 = turbo_frame_tag "main"
   = render partial: "form"
+
+javascript:
+  document.title = "Edit: #{@event.title} · #{@unit.name}"

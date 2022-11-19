@@ -6,7 +6,9 @@ class EventCancellationService < EventService
     return if @event.cancelled?
 
     @event.status = :cancelled
-    return false unless @event.save
+    @event.save
+
+    return false unless @event.save!
     return if @event.draft? # no need to send notifications for a draft
 
     send_notifications

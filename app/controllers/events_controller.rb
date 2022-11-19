@@ -281,14 +281,10 @@ class EventsController < UnitContextController
 
   # POST cancel
   # actually cancel the event and send out notifications
-  # rubocop:disable Style/GuardClause
   def perform_cancellation
     service = EventCancellationService.new(@event, event_params)
-    if service.cancel
-      redirect_to unit_events_path(@unit), notice: t("events.show.cancel.confirmation", event_title: @event.title)
-    end
+    redirect_to unit_events_path(@unit), notice: "Event has been cancelled." and return if service.cancel
   end
-  # rubocop:enable Style/GuardClause
 
   # this override is needed to pass the membership instead of the user
   # as the object to be evaluated in Pundit policies
@@ -347,6 +343,7 @@ class EventsController < UnitContextController
 
   # permitted parameters
   def event_params
+    ap params[:event][:packing_list_ids]
     p = params.require(:event).permit(:title, :event_category_id, :location, :address, :description,
                                       :short_description, :requires_rsvp, :includes_activity, :activity_name,
                                       :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
@@ -355,6 +352,7 @@ class EventsController < UnitContextController
                                       event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy],
                                       event_organizers_attributes: [:unit_membership_id])
     process_event_locations_attributes(p)
+    process_packlist_ids(p)
   end
 
   # iterates through event_location_attributes and adds _destroy: true where appropriate
@@ -368,6 +366,11 @@ class EventsController < UnitContextController
       end
     end
     p[:event_locations_attributes] = elas
+    p
+  end
+
+  def process_packlist_ids(p)
+    p[:packing_list_ids] = p[:packing_list_ids].reject(&:blank?) if p[:packing_list_ids]
     p
   end
 
