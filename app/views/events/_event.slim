@@ -25,13 +25,7 @@ article.py-2.hover:bg-stone-100(class="relative event #{row_classes(event)}" id=
       .hidden.md:block.w-16.text-center
         = glyph_tag(event)
 
-      div
-        // title
-        h4.font-bold.text-xl.event-title
-          = event.title
-
-        = render partial: "events/partials/index/short_description", locals: { event: event }
-        = render partial: "event_location", locals: { event: event }
+      = render partial: "events/partials/event_row/title", locals: { event: event }
 
   .flex.flex-col.md:flex-row.md:gap-4.md:px-2.md:items-center
     = render partial: "events/partials/event_row/rsvp", locals: { event: event }

@@ -24,5 +24,4 @@
     = render partial: "events/partials/form/organizers",  locals: { f: f }
     = render partial: "events/partials/form/footer",      locals: { f: f }
 
-  = render partial: "events/partials/form/delete_form"
   = render partial: "events/partials/form/new_location_form" if Flipper.enabled? :inline_location_form, @current_member

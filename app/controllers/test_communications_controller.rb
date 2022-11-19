@@ -14,7 +14,6 @@ class TestCommunicationsController < UnitContextController
     method_name = "send_#{message_type}"
     @message_name = message_type.humanize.titleize
     target_member = UnitMembership.find(params[:member_id])
-    ap target_member
     MemberNotifier.new(target_member).send method_name
   end
 end

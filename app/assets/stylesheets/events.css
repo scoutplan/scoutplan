@@ -49,7 +49,7 @@
   margin-top: -12px; }
 
 body.showing-cancelled-events .event-cancelled:not(.event-past) {
-  display: table-row; }
+  display: block; }
 
 body.showing-cancelled-events #show-cancelled-events-link .menu-glyph-wrapper {
   display: inline-block; }

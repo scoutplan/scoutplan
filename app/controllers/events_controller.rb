@@ -188,6 +188,8 @@ class EventsController < UnitContextController
 
   # PATCH /:unit_id/events/:event_id
   def update
+    destroy and return if params[:event_action] == "delete"
+
     authorize @event
     @event.event_locations.destroy_all
     @event.assign_attributes(event_params)
@@ -343,7 +345,6 @@ class EventsController < UnitContextController
 
   # permitted parameters
   def event_params
-    ap params[:event][:packing_list_ids]
     p = params.require(:event).permit(:title, :event_category_id, :location, :address, :description,
                                       :short_description, :requires_rsvp, :includes_activity, :activity_name,
                                       :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
