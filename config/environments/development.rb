@@ -28,6 +28,7 @@ Rails.application.configure do
 
   # Show full error reports.
   config.consider_all_requests_local = true
+  # config.consider_all_requests_local = false
 
   # set to false to see production-like error handling
   # config.consider_all_requests_local = false

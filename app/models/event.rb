@@ -13,21 +13,23 @@ class Event < ApplicationRecord
     activity: "activity"
   }.freeze
 
+  serialize :packing_list_ids
+
   default_scope { order(starts_at: :asc) }
 
   belongs_to :unit
   belongs_to :series_parent, class_name: "Event", optional: true
   belongs_to :event_category
 
-  has_many :members, through: :event_rsvps
-  has_many :event_rsvps, dependent: :destroy
-  has_many :rsvp_tokens, dependent: :destroy
-  has_many :event_activities, dependent: :destroy
-  has_many :event_organizers, dependent: :destroy
   has_many :document_types, as: :document_typeable, dependent: :destroy
-  has_many :locations, as: :locatable, dependent: :destroy
+  has_many :event_activities, dependent: :destroy
   has_many :event_locations, inverse_of: :event
+  has_many :event_organizers, dependent: :destroy
+  has_many :event_rsvps, dependent: :destroy
+  has_many :locations, as: :locatable, dependent: :destroy
   has_many :locations, through: :event_locations
+  has_many :members, through: :event_rsvps
+  has_many :rsvp_tokens, dependent: :destroy
 
   has_rich_text :description
 
@@ -178,6 +180,10 @@ class Event < ApplicationRecord
 
   def previous
     unit.events.published.where("starts_at < ?", starts_at).order("starts_at ASC").last
+  end
+
+  def packing_lists
+    unit.packing_lists.where("id IN (?)", event_packing_lists.pluck(:packing_list_id))
   end
 
   private

@@ -1,10 +1,11 @@
 - checked_value ||= "true"
 - unchecked_value ||= "false"
+- multiple ||= false
 - data ||= {}
 
 .switch-wrapper
   = check_box object_name, method,
-              { class: "switch hidden", checked: checked, role: "switch", data: data },
+              { multiple: multiple, class: "switch hidden", checked: checked, role: "switch", data: data },
               checked_value, unchecked_value
 
   = label object_name, method,

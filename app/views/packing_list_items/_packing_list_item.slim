@@ -1,7 +1,9 @@
 li.font-bold.py-2.actionable
-  .flex.flex-row.justify-between.items-center
+  .flex.flex-row.justify-between
     div
       = packing_list_item.name
+
+      = content_tag(:p, packing_list_item.description, class: "mt-2 text-sm text-stone-500") if packing_list_item.description.present?
 
     .actions.text-xs.hidden
       = link_to edit_unit_packing_list_packing_list_item_path(@unit, @packing_list, packing_list_item),
@@ -11,10 +13,11 @@ li.font-bold.py-2.actionable
           i.fa-regular.fa-circle.fa-stack-2x
           i.fa-solid.fa-pencil.fa-stack-1x
 
-      = link_to unit_packing_list_packing_list_item_path(@unit, @packing_list, packing_list_item),
+      = button_to unit_packing_list_packing_list_item_path(@unit, @packing_list, packing_list_item),
                 method: :delete,
+                form: { class: "inline" },
                 title: "Delete this item",
-                class: "text-stone-400" do
+                class: "inline text-stone-400" do
         .fa-stack
           i.fa-regular.fa-circle.fa-stack-2x
           i.fa-solid.fa-trash.fa-stack-1x
