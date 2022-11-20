@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_16_142124) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_20_005103) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -243,6 +243,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_16_142124) do
     t.integer "payment_amount", default: 0, null: false
     t.boolean "online", default: false, null: false
     t.string "website"
+    t.integer "packing_list_ids", default: [], array: true
   end
 
   create_table "flipper_features", force: :cascade do |t|

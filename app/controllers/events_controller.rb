@@ -345,13 +345,16 @@ class EventsController < UnitContextController
 
   # permitted parameters
   def event_params
+    ap params
     p = params.require(:event).permit(:title, :event_category_id, :location, :address, :description,
                                       :short_description, :requires_rsvp, :includes_activity, :activity_name,
                                       :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
                                       :note, :payment_amount, :online, :website,
+                                      packing_list_ids: [],
                                       event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy],
                                       event_organizers_attributes: [:unit_membership_id])
+    p[:packing_list_ids] = p[:packing_list_ids].reject(&:blank?) if p[:packing_list_ids].present?
     process_event_locations_attributes(p)
     process_packlist_ids(p)
   end
