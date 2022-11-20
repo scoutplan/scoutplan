@@ -1,10 +1,10 @@
 li.py-2
   = render partial: "components/switch",
            locals: { label: packing_list.name,
-                     object_name: "",
-                     method: "packing_list_ids[#{packing_list.id}]",
+                     object_name: "events",
+                     method: "packing_list_ids",
                      checked_value: packing_list.id,
-                     unchecked_value: false,
+                     unchecked_value: nil,
                      multiple: true,
                      checked: false }
 
