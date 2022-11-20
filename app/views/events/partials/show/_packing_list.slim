@@ -1,0 +1,9 @@
+- return unless @event.packing_lists.present?
+
+aside.absolute.text-stone-600.w-60(style="right: -19rem;")
+  h3.font-bold.text-lg.pb-2.mb-2.border-b.border-stone-500
+    = "Packing list"
+
+  ul.list-square
+    - @event.packing_list_items.each do |item|
+      li.py-1 = item.name

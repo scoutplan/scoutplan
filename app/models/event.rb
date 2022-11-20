@@ -13,8 +13,6 @@ class Event < ApplicationRecord
     activity: "activity"
   }.freeze
 
-  serialize :packing_list_ids
-
   default_scope { order(starts_at: :asc) }
 
   belongs_to :unit
@@ -183,7 +181,11 @@ class Event < ApplicationRecord
   end
 
   def packing_lists
-    unit.packing_lists.where("id IN (?)", event_packing_lists.pluck(:packing_list_id))
+    unit.packing_lists.where("id IN (?)", packing_list_ids.reject(&:zero?).uniq)
+  end
+
+  def packing_list_items
+    packing_lists.map(&:packing_list_items).flatten.uniq
   end
 
   private
