@@ -5,7 +5,7 @@
 class Event < ApplicationRecord
   extend DateTimeAttributes
   date_time_attrs_for :starts_at, :ends_at
-  attr_accessor :repeats
+  attr_accessor :repeats, :notify_members, :notify_recipients, :notify_message
 
   LOCATION_TYPES = {
     departure: "departure",
@@ -53,7 +53,6 @@ class Event < ApplicationRecord
   scope :coming_up,     -> { where("starts_at BETWEEN ? AND ?", 7.days.from_now, 35.days.from_now) }
   scope :rsvp_required, -> { where(requires_rsvp: true) }
   scope :today,         -> { where("starts_at BETWEEN ? AND ?", Time.zone.now.beginning_of_day, Time.zone.now.at_end_of_day) }
-  # scope :imminent,      -> { where("starts_at BETWEEN ? AND ?", Time.zone.now.beginning_of_day + 12.hours, Time.zone.now.at_end_of_day + 12.hours) }
 
   scope :imminent,      -> {
                           where("starts_at BETWEEN ? AND ?",

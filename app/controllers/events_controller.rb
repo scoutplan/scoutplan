@@ -191,10 +191,7 @@ class EventsController < UnitContextController
     destroy and return if params[:event_action] == "delete"
 
     authorize @event
-    @event.event_locations.destroy_all
-    @event.assign_attributes(event_params)
-    return unless @event.save!
-
+    EventUpdateService.new(@event, @current_member, event_params).perform
     EventOrganizerService.new(@event).update(params[:event_organizers])
 
     redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
@@ -345,12 +342,12 @@ class EventsController < UnitContextController
 
   # permitted parameters
   def event_params
-    ap params
     p = params.require(:event).permit(:title, :event_category_id, :location, :address, :description,
                                       :short_description, :requires_rsvp, :includes_activity, :activity_name,
                                       :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
                                       :note, :payment_amount, :online, :website,
+                                      :notify_members, :notify_recipients, :notify_message,
                                       packing_list_ids: [],
                                       event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy],
                                       event_organizers_attributes: [:unit_membership_id])
