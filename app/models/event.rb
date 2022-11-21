@@ -5,7 +5,7 @@
 class Event < ApplicationRecord
   extend DateTimeAttributes
   date_time_attrs_for :starts_at, :ends_at
-  attr_accessor :repeats
+  attr_accessor :repeats, :notify_members, :notify_recipients, :notify_message
 
   LOCATION_TYPES = {
     departure: "departure",

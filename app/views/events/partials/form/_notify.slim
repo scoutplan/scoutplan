@@ -1,0 +1,36 @@
+- accepted_reachable_rsvps = @event.rsvps.accepted.select { |r| r.member.contactable? }
+- recipients = [ ["Active Members (#{@unit.members.status_active.count} total, #{@unit.members.status_active.adult.count} adults)", "active_members"],
+                 ["Active + Family & Friends (#{@unit.members.select{|m| !m.status_inactive?}.count} total, #{@unit.members.adult.select{|m| !m.status_inactive?}.count} adults)", "all_members"] ]
+
+- recipients << ["Planned attendees (#{accepted_reachable_rsvps.count})", "event_#{@event.id}_attendees"] if @event.rsvps.present?
+- switch_caption = @event.new_record? ? "Notify members about this event" : "Notify members about changes to this event"
+
+.py-4
+  div
+    = render partial: "components/switch",
+            locals: { label: switch_caption,
+                      object_name: "event",
+                      method: "notify_members",
+                      checked_value: "true",
+                      unchecked_value: "false",
+                      checked: false,
+                      data: { body_class: "event-notify" } }
+
+  #notify_fields.pt-4
+    div.pb-4
+      = f.label :notify_recipients, "Recipients", class: "font-bold block mb-2"
+      = f.select :notify_recipients, recipients, { }, class: "inline-block font-bold rounded border border-stone-200 w-full"                   
+
+    div
+      = f.label :notify_message, "Message", class: "font-bold block mb-1"
+      = f.text_area :notify_message,
+                    class: "w-full rounded border-stone-200 border"
+
+css:
+  #notify_fields {
+    display: none;
+  }
+
+  .event-notify #notify_fields {
+    display: block;
+  }
