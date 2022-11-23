@@ -1,0 +1,14 @@
+section.py-4
+  = f.label :attachments, class: "block font-bold mb-2"
+
+  ul
+    - @event.attachments.each do |attachment|
+      li.py-1
+        = attachment.filename
+        = link_to "Remove", "#", method: :delete, class: "text-red-600 hover:underline ml-2", data: { confirm: "Are you sure you want to remove this attachment?" }
+
+section.py-4
+  = f.label :attach_files, class: "block font-bold mb-2"
+  = f.file_field :attachments,
+                 multiple: true,
+                class: "block w-full rounded border border-solid p-2 border-stone-300 font-bold"

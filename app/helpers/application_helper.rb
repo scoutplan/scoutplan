@@ -24,6 +24,31 @@ module ApplicationHelper
   end
   # rubocop:enable Metrics/MethodLength
 
+  def fontawesome_file_icon(extension, style = "fa-solid")
+    raw(content_tag(:i, nil, class: "#{style} fa-fw fa-#{fontawesome_file_icon_name(extension)}"))
+  end
+
+  # rubocop:disable Metrics/MethodLength
+  def fontawesome_file_icon_name(extension)
+    case extension
+    when "pdf"
+      "file-pdf"
+    when "doc", "docx"
+      "file-word"
+    when "xls", "xlsx"
+      "file-excel"
+    when "ppt", "pptx"
+      "file-powerpoint"
+    when "zip", "rar", "7z"
+      "file-archive"
+    when "txt"
+      "file-alt"
+    else
+      "file"
+    end
+  end
+  # rubocop:enable Metrics/MethodLength
+
   def pill_tag(text, additional_classes = nil)
     additional_classes ||= "text-white bg-gray-600"
     classes = "text-xs font-semibold inline text-center rounded px-2 py-1 mx-2 min-w-[2rem]"

@@ -183,8 +183,8 @@ en:
     captions:
       new_short: "Add"
       payment_amount: "Cost per member $"   
-      next_event: "Next event"
-      previous_event: "Previous event" 
+      next_event: "Next"
+      previous_event: "Previous" 
 
     placeholders:
       title:        "Event title"

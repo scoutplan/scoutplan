@@ -19,6 +19,7 @@ class Event < ApplicationRecord
   belongs_to :series_parent, class_name: "Event", optional: true
   belongs_to :event_category
 
+  has_many :documents, as: :documentable, dependent: :destroy
   has_many :document_types, as: :document_typeable, dependent: :destroy
   has_many :event_activities, dependent: :destroy
   has_many :event_locations, inverse_of: :event
@@ -31,6 +32,8 @@ class Event < ApplicationRecord
 
   has_rich_text :description
 
+  has_many_attached :attachments
+
   accepts_nested_attributes_for :event_locations, allow_destroy: true
   accepts_nested_attributes_for :event_organizers, allow_destroy: true
 
@@ -41,6 +44,12 @@ class Event < ApplicationRecord
 
   validates_presence_of :title, :starts_at, :ends_at
   validate :dates_are_subsequent
+  validates :attachments,
+            content_type: ["image/png", "image/jpg", "image/jpeg", "image/gif", "application/pdf",
+                           "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                           "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                           "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation"],
+            size: { less_than: 2.megabytes, message: "must be less than 2 MB" }
 
   enum status: { draft: 0, published: 1, cancelled: 2, archived: 3 }
 
