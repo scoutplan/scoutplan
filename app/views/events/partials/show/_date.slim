@@ -24,7 +24,7 @@ section#date_time_card.py-4.border-t.border-stone-800
           i.fa-solid.fa-moon
 
         - interim_date = @event.starts_at + 1.day
-        - while interim_date < @event.ends_at
+        - while interim_date.beginning_of_day < @event.ends_at.beginning_of_day
           .interim-day.bg-white.text-stone-500.px-2
             .uppercase.text-xs.font-bold.tracking-wider = interim_date.in_time_zone.strftime('%a')
             .font-bold.text-2xl = interim_date.day
@@ -33,6 +33,7 @@ section#date_time_card.py-4.border-t.border-stone-800
             i.fa-solid.fa-moon
 
           - interim_date = interim_date + 1.day
+
       - elsif multiday
         .interim-day.bg-white.px-2
           .uppercase.font-bold.tracking-wider

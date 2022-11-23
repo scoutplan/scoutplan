@@ -183,6 +183,12 @@ class EventsController < UnitContextController
     EventOrganizerService.new(@event).update(params[:event_organizers])
     return unless @event.present?
 
+    if params[:event][:attachments].present?
+      params[:event][:attachments].each do |attachment|
+        @event.attachments.attach(attachment)
+      end
+    end    
+
     redirect_to [@unit, @event], notice: t("helpers.label.event.create_confirmation", event_name: @event.title)
   end
 
@@ -193,6 +199,11 @@ class EventsController < UnitContextController
     authorize @event
     EventUpdateService.new(@event, @current_member, event_params).perform
     EventOrganizerService.new(@event).update(params[:event_organizers])
+    if params[:event][:attachments].present?
+      params[:event][:attachments].each do |attachment|
+        @event.attachments.attach(attachment)
+      end
+    end
 
     redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
   end
