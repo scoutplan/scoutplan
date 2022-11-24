@@ -55,5 +55,5 @@ class ApplicationController < ActionController::Base
 
   def tracking_description
     "#{controller_name}##{action_name}"
-  end  
+  end
 end

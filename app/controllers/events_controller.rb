@@ -6,7 +6,7 @@ require "humanize"
 
 # rubocop:disable Metrics/ClassLength
 class EventsController < UnitContextController
-  before_action :authenticate_user!, except: [:index, :public]
+  before_action :authenticate_user!, except: [:public]
   # before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish public]
   # before_action :find_member, only: %i[index create new edit edit_rsvps bulk_publish]
   before_action :find_event, except: %i[index create new bulk_publish public my_rsvps]
@@ -29,7 +29,6 @@ class EventsController < UnitContextController
         return
       end
     end
-
 
     # TODO: move this to a service object
     cookies[:event_index_variation] = variation

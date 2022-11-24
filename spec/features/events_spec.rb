@@ -29,18 +29,16 @@ describe "events", type: :feature do
 
   describe "events index" do
     before do
+      login_as(@admin_user, scope: :user)
       path = unit_events_path(@unit)
-      logout(:user)
       visit(path)
-    end
-
-    it "is accessible when logged out" do
-      expect(page).to have_current_path(list_unit_events_path(@unit))
     end
 
     it "shows in-flight events" do
       event_title = "In-Flight Event"
-      FactoryBot.create(:event, status: :published, unit: @unit, starts_at: 2.days.ago, ends_at: 1.day.from_now, title: event_title)
+      FactoryBot.create(:event,
+                        status: :published, unit: @unit, starts_at: 2.days.ago,
+                        ends_at: 1.day.from_now, title: event_title)
       visit current_path # reload the page
       expect(page).to have_content(event_title)
     end
