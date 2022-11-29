@@ -1,0 +1,9 @@
+- items.each do |item|
+  li.py-1.font-bold
+    = item.name
+
+    - if @unit.packing_lists.pluck(:name).include?(item.name)
+      ul.list-disc.mt-1.ml-3.text-sm.text-sky-500
+        - @unit.packing_lists.find_by(name: item.name).packing_list_items.each do |sub_item|
+          li.py-1
+            = sub_item.name

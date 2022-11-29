@@ -1,20 +1,28 @@
-header
-  h1 = "#{@event.title} Brief"
+header(style="width:100%; border-bottom: 1px solid #aaa; padding-bottom:0.5rem; margin-bottom:1rem;")
+  h1.text-3xl.font-bold
+    .text-base.uppercase = "Trip Brief"
+    = @event.title
+
   = content_tag(:h2, @event&.short_description, style: "margin: 0;") if @event.short_description
-  = content_tag(:p, EventPresenter.new(@event, @current_member).full_dates_to_s(show_year: true), style: "margin: 0;")
-  = content_tag(:p, @event&.location, style: "margin: 0;") if @event.location
-  = content_tag(:p, @event&.address, style: "margin: 0;") if @event.address
 
-div(style="width")
-  section
-    h2 Questions?
+table(cellspacing="30" cellpadding="0" style="width:100%;table-layout:fixed;")
+  tr
+    td(valign="top")
+      = render partial: "events/partials/show/pdf/dates"
+      = render partial: "events/partials/show/pdf/location"
 
-    dl
-      - @event.organizers.each do |member|
-        dt = member.full_display_name
-        dd = member.phone
+    td(width="60")
 
-    h2 Notes
-    == @event.description
+    td(valign="top")
+      = "col 2"
 
-  section
+    td(width="60")      
+
+    td(valign="top")
+      = render partial: "events/partials/show/pdf/packing_list"
+      = render partial: "events/partials/show/pdf/contacts"
+
+css:
+  p {
+    font-weight: bold;
+  }

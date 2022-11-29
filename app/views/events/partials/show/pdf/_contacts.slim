@@ -1,0 +1,7 @@
+section
+  h2 Questions?
+
+  dl
+    - @event.organizers.each do |member|
+      dt = member.full_display_name
+      dd = member.phone

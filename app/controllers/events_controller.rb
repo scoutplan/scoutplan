@@ -107,7 +107,7 @@ class EventsController < UnitContextController
     render(pdf: filename,
            layout: "pdf",
            encoding: "utf8",
-           orientation: "portrait",
+           orientation: "landscape",
            margin: { top: 20, bottom: 20 })
   end
 

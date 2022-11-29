@@ -1,0 +1,102 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: scoutplan-load-balancer
+  namespace: default
+  uid: dfd85e21-8fd3-4fb9-b60b-bc31a9910183
+  resourceVersion: '57206446'
+  creationTimestamp: '2021-08-27T13:41:06Z'
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: >
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"scoutplan-load-balancer","namespace":"default"},"spec":{"ports":[{"name":"http","port":80,"protocol":"TCP","targetPort":3000}],"selector":{"app":"scoutplan-app"},"type":"LoadBalancer"}}
+    kubernetes.digitalocean.com/load-balancer-id: 85b3e76a-ac97-46e3-95a6-5870f368e343
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: ff5975b0-c855-4147-b604-1fa3f7d85f59
+    service.beta.kubernetes.io/do-loadbalancer-protocol: http2
+    service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
+  finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+  managedFields:
+    - manager: kubectl-client-side-apply
+      operation: Update
+      apiVersion: v1
+      time: '2021-08-27T13:41:06Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:kubectl.kubernetes.io/last-applied-configuration: {}
+        f:spec:
+          f:externalTrafficPolicy: {}
+          f:ports: {}
+          f:selector: {}
+          f:sessionAffinity: {}
+          f:type: {}
+    - manager: digitalocean-cloud-controller-manager
+      operation: Update
+      apiVersion: v1
+      time: '2021-09-10T12:33:54Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:kubernetes.digitalocean.com/load-balancer-id: {}
+            f:service.beta.kubernetes.io/do-loadbalancer-certificate-id: {}
+          f:finalizers:
+            .: {}
+            v:"service.kubernetes.io/load-balancer-cleanup": {}
+        f:status:
+          f:loadBalancer:
+            f:ingress: {}
+    - manager: kubectl-edit
+      operation: Update
+      apiVersion: v1
+      time: '2022-11-11T13:55:01Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:service.beta.kubernetes.io/do-loadbalancer-protocol: {}
+        f:spec:
+          f:ports:
+            k:{"port":80,"protocol":"TCP"}:
+              .: {}
+              f:name: {}
+              f:port: {}
+              f:protocol: {}
+              f:targetPort: {}
+            k:{"port":443,"protocol":"TCP"}:
+              .: {}
+              f:name: {}
+              f:port: {}
+              f:protocol: {}
+              f:targetPort: {}
+spec:
+  ports:
+    - name: http2
+      protocol: TCP
+      port: 443
+      targetPort: 3000
+      nodePort: 31238
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000
+      nodePort: 31779
+  selector:
+    app: scoutplan-app
+  clusterIP: 10.245.230.185
+  clusterIPs:
+    - 10.245.230.185
+  type: LoadBalancer
+  sessionAffinity: None
+  externalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  allocateLoadBalancerNodePorts: true
+  internalTrafficPolicy: Cluster
+status:
+  loadBalancer:
+    ingress:
+      - ip: 159.89.252.69
