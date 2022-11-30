@@ -112,6 +112,8 @@ class SmsResponseService < ApplicationService
   # compute next event needing a response and SMS it to the user
   def prompt_upcoming_event
     reset_context
+    # service = RsvpService.new(member, candidate_event)
+    # member_ids = service.family_non_respondents
     member_ids = family.select(&:status_active?).map(&:id)
     values = { "type" => "event",
                "event_id" => candidate_event.id,

@@ -59,7 +59,10 @@ class EventsController < UnitContextController
 
     @events_by_year = @events.group_by { |e| e.starts_at.year }
 
-    @event_drafts = @events.select(&:draft?).select { |e| e.ends_at.future? }
+    @event_drafts = @unit.events.select(&:draft?).select { |e| e.ends_at.future? }
+
+  ap @event_drafts
+
     @presenter = EventPresenter.new(nil, current_member)
 
     if user_signed_in?
@@ -186,7 +189,7 @@ class EventsController < UnitContextController
       params[:event][:attachments].each do |attachment|
         @event.attachments.attach(attachment)
       end
-    end    
+    end
 
     redirect_to [@unit, @event], notice: t("helpers.label.event.create_confirmation", event_name: @event.title)
   end
