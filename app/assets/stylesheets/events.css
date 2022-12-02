@@ -103,10 +103,6 @@ body.showing-only-draft-events .bulk-selection {
   display: inherit;
 }
 
-body.showing-only-draft-events article.event time {
-  padding-left: 3rem;
-}
-
 body.showing-only-draft-events #bulk_publish_button_wrapper {
   display: inline-block; }
 
