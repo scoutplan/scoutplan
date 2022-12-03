@@ -146,11 +146,13 @@
 
 <%# ---------------------------------------- %>
 <%# FOOTER %>
-            <tr class="footer">
-              <td style="padding:40px 70px;background-color:#44403C;color:#E7E5E4;font-weight:800;">
-                <%= yield :footer %>
-              </td>
-            </tr>
+            <% if content_for(:footer ) %>
+              <tr class="footer">
+                <td style="padding:40px 70px;background-color:#44403C;color:#E7E5E4;font-weight:800;">
+                  <%= yield :footer %>
+                </td>
+              </tr>
+            <% end %>
           </table>
           <!--[if mso]>
           </td>
