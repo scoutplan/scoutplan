@@ -17,6 +17,9 @@ class CalendarController < ApplicationController
     unit = member.unit
     events = UnitEventQuery.new(member, unit).execute
     cal = Icalendar::Calendar.new
+    cal.timezone do |t|
+      t.tzid = unit.time_zone
+    end
     exporter = IcalExporter.new(member)
     events.each do |event|
       exporter.event = event

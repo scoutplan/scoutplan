@@ -7,8 +7,17 @@ RSpec.describe IcalExporter, type: :model do
   before do
     @member = FactoryBot.create(:member)
     @unit = @member.unit
-    @event = FactoryBot.create(:event, unit: @unit)
+    @event = FactoryBot.create(:event, unit: @unit, starts_at: 24.hours.from_now, ends_at: 25.hours.from_now)
     @exporter = IcalExporter.new(@member, @event)
+  end
+
+  describe "timezones" do
+    it "publishes events in the local timezone" do
+      ap @event
+      @ical_event = @exporter.to_ical
+      ap @ical_event.dtstart
+      expect(@ical_event.dtstart).to eq(@event.starts_at)
+    end
   end
 
   describe "event name" do
