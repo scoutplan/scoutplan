@@ -58,11 +58,7 @@ class EventsController < UnitContextController
     # end
 
     @events_by_year = @events.group_by { |e| e.starts_at.year }
-
     @event_drafts = @unit.events.select(&:draft?).select { |e| e.ends_at.future? }
-
-  ap @event_drafts
-
     @presenter = EventPresenter.new(nil, current_member)
 
     if user_signed_in?

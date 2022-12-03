@@ -81,7 +81,7 @@ class SmsResponseService < ApplicationService
   end
 
   def process_numeric_response
-    ap "Processing number response"
+    raise ArgumentError, "Not implemented"
   end
 
   # if a yes/no response is received, process it
