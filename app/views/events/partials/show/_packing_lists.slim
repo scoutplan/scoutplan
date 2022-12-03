@@ -1,0 +1,8 @@
+- return unless @event.packing_lists.present?
+
+aside.md:absolute.text-sky-600.w-full.md:w-60.md:top-0(style="right: -19rem;")
+  h3.font-bold.tracking-wider.py-4.md:border-0.md:py-0.md:mb-4.border-t.border-stone-500.uppercase.text-stone-500
+    = "Packing list"
+
+  ul.list-square
+    = render partial: "events/partials/show/packing_list_items", locals: { items: @event.packing_list_items }

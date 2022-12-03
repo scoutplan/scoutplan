@@ -1,0 +1,59 @@
+- duration_in_days = (@event.ends_at.to_date - @event.starts_at.to_date).to_i
+- multiday = duration_in_days.positive?
+
+section.w-full
+  h2.font-bold.text-lg.mb-3
+    = @presenter.month_name
+
+  div(style="position:relative;")
+    - if multiday
+      .absolute.top-1/2.w-full.border-t.border-stone-800(style="z-index: -1;")
+
+    table(style="width:100%;" cellpadding="0" cellspacing="0")
+      tr
+        td.block.bg-white.pr-2
+          .uppercase.text-sm.font-bold.tracking-wider = @event.starts_at.in_time_zone.strftime('%a')
+          .font-bold.text-5xl = @event.starts_at.day
+          .font-bold.whitespace-nowrap
+            = @event.starts_at.in_time_zone.strftime('%-I:%M %p')
+            - if !multiday
+              | &ndash;
+              = @event.ends_at.in_time_zone.strftime('%-I:%M %p')
+
+        - if multiday && duration_in_days < 5
+          td.interim-day.bg-white.text-purple-500.px-2.text-center
+            .fas.fa-moon
+
+          - interim_date = @event.starts_at + 1.day
+          - while interim_date.beginning_of_day < @event.ends_at.beginning_of_day
+            .interim-day.bg-white.text-stone-500.px-2
+              .uppercase.text-xs.font-bold.tracking-wider = interim_date.in_time_zone.strftime('%a')
+              .font-bold.text-2xl = interim_date.day
+
+            .interim-day.bg-white.text-purple-500.px-2
+              .fas.fa-moon
+
+            - interim_date = interim_date + 1.day
+
+        - elsif multiday
+          td.interim-day.bg-white.px-2
+            .uppercase.font-bold.tracking-wider
+              .fas.fa-fw.fa-moon.text-purple-500.mr-1
+              = "#{duration_in_days} Nights"
+
+            / .uppercase.text-sm.font-bold.tracking-wider
+            /   .fas.fa-fw.fa-sun.text-yellow-500.mr-2
+            /   = "#{duration_in_days - 1} Days"
+
+        - if multiday
+          td.end-day
+            div(style="z-index:30;background:white;display:table;float:right;")
+              .pl-2
+                .uppercase.text-sm.font-bold.tracking-wider = @event.ends_at.in_time_zone.strftime('%a')
+                .font-bold.text-5xl = @event.ends_at.day
+                .font-bold.whitespace-nowrap = @event.ends_at.in_time_zone.strftime('%-I:%M %p')
+
+  - if @event.series?
+    .text-sm.text-gray-500.mt-4
+      .fas.fa-repeat.mr-2
+      = t("events.show.series_count", count: @event.series_children.count + @event.series_siblings.count + 1)

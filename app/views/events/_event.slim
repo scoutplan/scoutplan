@@ -5,27 +5,34 @@ article.py-2.hover:bg-stone-100(class="relative event #{row_classes(event)}" id=
   // anchor for scroll-to purposes
   a(name="event_#{event.id}")
 
-  // bulk selection
-  = check_box_tag "event_ids[]", event.id, false,
-    class: "text-lg block bulk-selection z-10 bulk-publish-checkbox absolute left-0 ml-2 top-1/2 md:-translate-y-2/4"
 
-  // link
-  = link_to unit_event_path(@unit, event),
-            class: "event md:px-2 py-2 block",
-            data: { turbo_action: "advance", turbo_frame: "main" } do
+  .flex.flex-row.items-center
 
-    div.flex
-      // date / day
-      time.w-24.shrink-0
-        .font-bold.text-2xl.md:text-3xl = raw(@presenter.dates_to_s)
-        .font-bold.text-sm.uppercase.tracking-wider.text-stone-500 = raw(@presenter.days_to_s)
-        = render partial: "events/partials/event_row/today", locals: { event: event }
+    // bulk selection
+    .px-2.bulk-selection
+      = check_box_tag "event_ids[]", event.id, false,
+        class: "bulk-publish-checkbox"
 
-      // icon
-      .hidden.md:block.w-16.text-center
-        = glyph_tag(event)
 
-      = render partial: "events/partials/event_row/title", locals: { event: event }
+    // text-lg block bulk-selection z-10 bulk-publish-checkbox absolute left-0 ml-2 top-1/2 md:-translate-y-2/4
+
+    // link
+    = link_to unit_event_path(@unit, event),
+              class: "event md:px-2 py-2 block",
+              data: { turbo_action: "advance", turbo_frame: "main" } do
+
+      div.flex.flex-row
+        // date / day
+        time.w-24.shrink-0
+          .font-bold.text-2xl.md:text-3xl = raw(@presenter.dates_to_s)
+          .font-bold.text-sm.uppercase.tracking-wider.text-stone-500 = raw(@presenter.days_to_s)
+          = render partial: "events/partials/event_row/today", locals: { event: event }
+
+        // icon
+        .hidden.md:block.w-16.text-center
+          = glyph_tag(event)
+
+        = render partial: "events/partials/event_row/title", locals: { event: event }
 
   .flex.flex-col.md:flex-row.md:gap-4.md:px-2.md:items-center
     = render partial: "events/partials/event_row/rsvp", locals: { event: event }

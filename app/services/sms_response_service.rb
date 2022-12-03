@@ -17,9 +17,7 @@ class SmsResponseService < ApplicationService
 
   def process
     return unless valid_request?
-
-    resolve_user_from_phone
-    return unless user.present?
+    return unless resolve_user_from_phone
 
     Rails.logger.info "Processing SMS response from #{from} with body #{body} for user_id #{user.id}"
 
@@ -56,7 +54,7 @@ class SmsResponseService < ApplicationService
   end
 
   def conversation_context
-    @context ||= @context = ConversationContext.find_by(identifier: from)
+    @conversation_context ||= ConversationContext.find_by(identifier: from)
   end
 
   def candidate_event
@@ -83,7 +81,7 @@ class SmsResponseService < ApplicationService
   end
 
   def process_numeric_response
-    ap "Processing number response"
+    raise ArgumentError, "Not implemented"
   end
 
   # if a yes/no response is received, process it
@@ -101,7 +99,7 @@ class SmsResponseService < ApplicationService
   # process a yes/no for a single member. Called by #process_rsvp_response
   def process_rsvp(event, member_id)
     family_member = event.unit.members.find(member_id)
-    response = (body == "yes") ? "accepted" : "declined"
+    response = body == "yes" ? "accepted" : "declined"
     rsvp = EventRsvp.find_by(event: event, unit_membership: family_member)
     if rsvp.present?
       rsvp.update(response: response)
@@ -114,7 +112,9 @@ class SmsResponseService < ApplicationService
   # compute next event needing a response and SMS it to the user
   def prompt_upcoming_event
     reset_context
-    member_ids = family.select{ |m| m.status_active? }.map(&:id)
+    # service = RsvpService.new(member, candidate_event)
+    # member_ids = service.family_non_respondents
+    member_ids = family.select(&:status_active?).map(&:id)
     values = { "type" => "event",
                "event_id" => candidate_event.id,
                "members" => member_ids }

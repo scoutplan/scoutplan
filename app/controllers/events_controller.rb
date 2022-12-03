@@ -58,8 +58,7 @@ class EventsController < UnitContextController
     # end
 
     @events_by_year = @events.group_by { |e| e.starts_at.year }
-
-    @event_drafts = @events.select(&:draft?).select { |e| e.ends_at.future? }
+    @event_drafts = @unit.events.select(&:draft?).select { |e| e.ends_at.future? }
     @presenter = EventPresenter.new(nil, current_member)
 
     if user_signed_in?
@@ -107,7 +106,7 @@ class EventsController < UnitContextController
     render(pdf: filename,
            layout: "pdf",
            encoding: "utf8",
-           orientation: "portrait",
+           orientation: "landscape",
            margin: { top: 20, bottom: 20 })
   end
 
@@ -186,7 +185,7 @@ class EventsController < UnitContextController
       params[:event][:attachments].each do |attachment|
         @event.attachments.attach(attachment)
       end
-    end    
+    end
 
     redirect_to [@unit, @event], notice: t("helpers.label.event.create_confirmation", event_name: @event.title)
   end

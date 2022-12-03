@@ -16,12 +16,7 @@ class IcalEventImporter
     calendar = cals.first
 
     calendar.events.each do |event|
-      # next unless event.dtstart.future?
-      # ap event.dtstart
-      # ap event.summary
-      # ap event.location
-      # ap event.rrule
-      # ap event.uid
+      next unless event.dtstart.future?
     end
   end
 end
