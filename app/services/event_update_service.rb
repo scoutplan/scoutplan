@@ -15,7 +15,7 @@ class EventUpdateService < EventService
   end
 
   def process_notification
-    return unless @event.notify_members
+    return unless @event.notify_members.downcase == "true"
 
     message = Message.new(author: @current_member,
                           status: :queued,
