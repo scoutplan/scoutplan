@@ -38,4 +38,16 @@ namespace :sp do
     end
     puts "Created #{Location.count - location_count} Locations"
   end
+
+  desc "Create organizer digest tasks"
+  task add_organizer_digest_tasks: :environment do
+    Unit.all.each do |unit|
+      task = unit.tasks.create!(key: "EventOrganizerDigestTask", type: "EventOrganizerDigestTask")
+      rule = IceCube::Rule.daily.hour_of_day(18).minute_of_hour(0)
+      task.clear_schedule
+      task.schedule.start_time = DateTime.now.in_time_zone # this should put IceCube into the unit's local time zone
+      task.schedule.add_recurrence_rule rule
+      task.save_schedule
+    end
+  end
 end

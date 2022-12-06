@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 # Recurring task to send daily reminders to members
-class DailyReminderTask < UnitTask
+class EventOrganizerDigestTask < UnitTask
+  def initialize(unit)
+    @unit = unit
+    super
+  end
+
   def description
     "Daily digest for event organizers"
   end
@@ -28,6 +33,8 @@ class DailyReminderTask < UnitTask
   def send_digests
     @events.each do |event|
       event.organizers.each do |organizer|
+        next unless organizer.settings[:communication].event_organizer_digest
+
         send_digest(event, organizer)
       end
     end

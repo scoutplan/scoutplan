@@ -36,6 +36,12 @@ class UnitMembership < ApplicationRecord
   has_many :visits, class_name: "Ahoy::Visit"
   has_many :event_organizers
 
+  has_settings do |s|
+    s.key :communication, defaults: {
+      event_organizer_digest: true
+    }
+  end
+
   # alias_attribute :member, :user
   alias_attribute :rsvps, :event_rsvps
 

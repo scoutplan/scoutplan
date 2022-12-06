@@ -48,6 +48,11 @@ class MemberNotifier < ApplicationNotifier
     send_email { |recipient| MemberMailer.with(member: recipient, message_id: message.id, preview: preview).message_email.deliver_later }
   end
 
+  def send_event_organizer_digest
+    task = EventOrganizerDigestTask.new(@member.unit)
+    task.perform_for_member(@member)
+  end
+
   # pass an option array of UnitMembership ids for bulk reponses
   def send_rsvp_confirmation(event)
     rsvp = EventRsvp.find_by(event: event, unit_membership: @member)
@@ -57,7 +62,7 @@ class MemberNotifier < ApplicationNotifier
 
   def send_rsvp_nag
     notifier = RsvpNagNotifier.new(@member)
-    notifier.perform    
+    notifier.perform
   end
 
   private
