@@ -10,6 +10,7 @@
 class MemberNotifier < ApplicationNotifier
   def initialize(member)
     @member = member
+    @unit = @member.unit
     super()
   end
 
@@ -45,12 +46,27 @@ class MemberNotifier < ApplicationNotifier
   end
 
   def send_message(message, preview: false)
-    send_email { |recipient| MemberMailer.with(member: recipient, message_id: message.id, preview: preview).message_email.deliver_later }
+    send_email { |recipient| MemberMailer.with(member: recipient, message_id: message.id, preview: preview).event_organizer_daily_digest_email.deliver_later }
   end
 
-  def send_event_organizer_digest
-    task = EventOrganizerDigestTask.new(@member.unit)
-    task.perform_for_member(@member)
+  def send_event_organizer_digest(last_ran_at = nil)
+    events = @unit.events.future.select { |event| event.organizers.include? @member }
+    return unless events.present?
+
+    last_ran_at ||= event.created_at
+
+    events.each do |event|
+      new_rsvps = event.rsvps.where("created_at > ?", last_ran_at).group_by(&:response)
+      next unless new_rsvps.count.positive?
+
+      send_email do |recipient|
+        MemberMailer.with(organizer: recipient,
+                          event: event,
+                          new_rsvps: new_rsvps,
+                          last_ran_at: last_ran_at)
+                    .event_organizer_digest.deliver_later
+      end
+    end
   end
 
   # pass an option array of UnitMembership ids for bulk reponses
