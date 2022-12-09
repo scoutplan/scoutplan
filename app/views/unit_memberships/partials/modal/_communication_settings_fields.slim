@@ -1,12 +1,23 @@
+- label ||= "Communication preferences"
+- object_name ||= "settings[communication]"
+
 div.pt-4
-  = label_tag :communication, nil, class: "block mb-1 font-bold"
+  = label_tag :communication_preferences, label, class: "block mb-2 font-bold"
 
-  div
-    = hidden_field_tag 'settings[communication][via_email]', 'no', id: "settings_communication_via_email_hidden"
-    = check_box_tag 'settings[communication][via_email]', true, @target_membership.settings(:communication).via_email, class: "mr-2"
-    label.form-check-label(for="settings_communication_via_email") Via email
+  .py-1
+    = render partial: "components/switch",
+             locals: { object_name: object_name,
+                       label: "Via email",
+                       checked: member.settings(:communication).via_email == "true",
+                       method: "via_email",
+                       checked_value: "true",
+                       unchecked_value: "false" }
 
-  div
-    = hidden_field_tag 'settings[communication][via_sms]', 'no', id: "settings_communication_via_sms_hidden"
-    = check_box_tag 'settings[communication][via_sms]', true, @target_membership.settings(:communication).via_sms, class: "mr-2"
-    label.form-check-label(for="settings_communication_via_sms") Via SMS
+  .py-1
+    = render partial: "components/switch",
+             locals: { object_name: object_name,
+                       label: "Via SMS",
+                       checked: member.settings(:communication).via_sms == "true",
+                       method: "via_sms",
+                       checked_value: "true",
+                       unchecked_value: "false" }

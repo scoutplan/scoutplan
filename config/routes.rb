@@ -105,11 +105,13 @@ Rails.application.routes.draw do
     resources :documents
   end
 
-  # # Profile editing
+  ## Profile editing
   get   "user_settings/edit", to: "profile#edit",   as: "edit_user_settings"
   patch "user_settings/save", to: "profile#update", as: "update_user_settings"
   get   "user_settings/change_password", to: "profile#edit_password", as: "edit_credentials"
   patch "user_settings/save_password", to: "profile#update_password", as: "update_credentials"
+
+  get "profile/:user_id/edit", to: "profile#edit", as: "edit_profile"
 
   post "units/:unit_id/members/:member_id/test_communication", to: "test_communications#create", as: "create_test_communication"
 
