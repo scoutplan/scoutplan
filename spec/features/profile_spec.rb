@@ -17,7 +17,7 @@ describe "user profile", type: :feature do
     expect(page.find("#user_first_name").value).to eq(@user.first_name)
     expect(page.find("#user_last_name").value).to eq(@user.last_name)
     expect(page.find("#user_email").value).to eq(@user.email)
-    expect(page.find("#user_phone").value).to eq(@user.phone)
+    expect(page.find("#user_phone").value).to eq(@user.phone.phony_formatted(country_code: "US"))
   end
 
   it "changes stuff" do
