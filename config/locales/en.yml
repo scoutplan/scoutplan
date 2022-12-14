@@ -634,21 +634,25 @@ en:
       daily_reminder: "Send a reminder message the evening before a morning event; send a message in the morning an event later the same day."
       digest:         "Send a message on Sunday mornings with the coming week's schedule, news, and RSVPs."
       rsvp_nag:       "Send a message on Tuesday mornings, gently reminding members with outstanding RSVPs to respond."
+      event_organizer_digest: "Notify event organizers when a member RSVPs to one of their events."
 
     icons:
       daily_reminder: "fa-sun"
       digest:         "fa-calendar-week"
       rsvp_nag:       "fa-hand-point-ribbon"
+      event_organizer_digest: "fa-clipboard-check"
 
     icon_colors:
       daily_reminder: "text-yellow-400"
-      digest:         "text-cyan-600"
+      digest:         "text-purple-600"
       rsvp_nag:       "text-rose-600"
+      event_organizer_digest: "text-cyan-500"
 
     labels:
       daily_reminder: "Turn on daily reminders"
       digest:         "Turn on weekly newsletters"
       rsvp_nag:       "Turn on RSVP prompts"
+      event_organizer_digest: "Turn on event organizer RSVP notifications"
 
     titles:
       unit_profile:   "Edit your unit information"
@@ -656,6 +660,7 @@ en:
       daily_reminder: "Event reminders"
       rsvp_nag:       "RSVP prompts"
       digest:         "Weekly newsletters"
+      event_organizer_digest: "Event organizer RSVP notification"
 
     notices:
       update_success: "Your unit profile has been updated"

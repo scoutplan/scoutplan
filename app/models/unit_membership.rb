@@ -35,6 +35,7 @@ class UnitMembership < ApplicationRecord
   has_many :messages, foreign_key: :author_id
   has_many :visits, class_name: "Ahoy::Visit"
   has_many :event_organizers
+  has_many :organized_events, through: :event_organizers, source: :event
 
   has_settings do |s|
     s.key :communication, defaults: {

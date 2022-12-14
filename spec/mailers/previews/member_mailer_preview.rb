@@ -43,13 +43,15 @@ class MemberMailerPreview < ActionMailer::Preview
     unit = Unit.first
     organizer = unit.members.first
     event = unit.events.future.first
+    event.rsvps.destroy_all
     event.rsvps.find_or_create_by(unit_membership: organizer, response: "accepted", respondent: organizer)
     event.rsvps.find_or_create_by(unit_membership: unit.members.second, response: "declined", respondent: organizer)
-    new_rsvps = event.rsvps.group_by(&:response)
+    event.rsvps.find_or_create_by(unit_membership: unit.members.third, response: "declined", respondent: organizer, created_at: 2.days.ago)
+    rsvps = event.rsvps.group_by(&:response)
 
     MemberMailer.with(event: event,
                       member: organizer,
-                      new_rsvps: new_rsvps,
+                      rsvps: rsvps,
                       last_ran_at: 24.hours.ago)
                 .event_organizer_daily_digest_email
   end

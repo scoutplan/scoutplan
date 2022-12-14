@@ -14,9 +14,9 @@ header.mb-6
 
 = form_with model: @unit do |f|
   fieldset.divide-y
-    - %w(daily_reminder rsvp_nag digest).each do |task_key|
+    - %w(daily_reminder rsvp_nag digest event_organizer_digest).each do |task_key|
       = render partial: "task", locals: { task_key: task_key }
 
   footer.py-4
     = f.submit t("settings.buttons.save"),
-              class: "rounded font-bold bg-brand-500 hover:bg-brand-600 text-white px-4 py-2"
+               class: "rounded font-bold bg-brand-500 hover:bg-brand-600 text-white px-4 py-2"
