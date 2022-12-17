@@ -27,8 +27,6 @@
   </noscript>
   <![endif]-->
   <style>
-    @import("https://use.typekit.net/<%= ENV['ADOBE_FONT_KIT_ID'] %>.css");
-
     body, table, td, div, h1, p, a {
       font-family: "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     }
@@ -146,11 +144,13 @@
 
 <%# ---------------------------------------- %>
 <%# FOOTER %>
-            <tr class="footer">
-              <td style="padding:40px 70px;background-color:#44403C;color:#E7E5E4;font-weight:800;">
-                <%= yield :footer %>
-              </td>
-            </tr>
+            <% if content_for(:footer ) %>
+              <tr class="footer">
+                <td style="padding:40px 70px;background-color:#44403C;color:#E7E5E4;font-weight:800;">
+                  <%= yield :footer %>
+                </td>
+              </tr>
+            <% end %>
           </table>
           <!--[if mso]>
           </td>

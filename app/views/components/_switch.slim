@@ -2,6 +2,7 @@
 - unchecked_value ||= "false"
 - multiple ||= false
 - data ||= {}
+- size ||= "md"
 
 .switch-wrapper
   = check_box object_name, method,
@@ -10,9 +11,14 @@
 
   = label object_name, method,
           value: multiple ? checked_value : nil,
-          class: "font-bold flex items-center",
+          class: "font-bold flex items-center #{size}",
           id: "#{object_name.parameterize(separator: "_")}_#{method}_label" do
 
-    .inline-block.switch-container.rounded-full.bg-stone-400.w-14.h-8.relative.p-1
-      .switch-button.absolute.block.w-6.h-6.rounded-full.bg-white
+    - if size == "md"
+      .inline-block.switch-container.rounded-full.bg-stone-400.w-14.h-8.relative.p-1
+        .switch-button.absolute.block.w-6.h-6.rounded-full.bg-white
+    - elsif size == "sm"
+      .inline-block.switch-container.rounded-full.bg-stone-400.w-10.h-6.relative.p-1
+        .switch-button.absolute.block.w-4.h-4.rounded-full.bg-white
+
     span.ml-2 = label

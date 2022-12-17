@@ -39,6 +39,23 @@ class MemberMailerPreview < ActionMailer::Preview
     MemberMailer.with(member: member).daily_reminder_email
   end
 
+  def event_organizer_daily_digest_email
+    unit = Unit.first
+    organizer = unit.members.first
+    event = unit.events.future.first
+    event.rsvps.destroy_all
+    event.rsvps.find_or_create_by(unit_membership: organizer, response: "accepted", respondent: organizer)
+    event.rsvps.find_or_create_by(unit_membership: unit.members.second, response: "declined", respondent: organizer)
+    event.rsvps.find_or_create_by(unit_membership: unit.members.third, response: "declined", respondent: organizer, created_at: 2.days.ago)
+    rsvps = event.rsvps.group_by(&:response)
+
+    MemberMailer.with(event: event,
+                      member: organizer,
+                      rsvps: rsvps,
+                      last_ran_at: 24.hours.ago)
+                .event_organizer_daily_digest_email
+  end
+
   def test_email
     member = Unit.first.members.first
     MemberMailer.with(member: member).test_email

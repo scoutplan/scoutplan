@@ -32,6 +32,19 @@ class MemberMailer < ScoutplanMailer
     )
   end
 
+  helper MagicLinksHelper
+
+  def event_organizer_daily_digest_email
+    @event = params[:event]
+    @member = params[:member]
+    @rsvps = params[:rsvps]
+    @last_ran_at = params[:last_ran_at] || @event.created_at
+
+    mail(to: @member.email,
+         from: @unit.settings(:communication).from_email,
+         subject: "#{@event.unit.name} #{@event.title} RSVPs")
+  end
+
   def message_email
     @message = Message.find(params[:message_id])
     subject = params[:preview] ? "[PREVIEW] " : ""

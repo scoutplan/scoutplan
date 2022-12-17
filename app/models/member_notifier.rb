@@ -10,6 +10,7 @@
 class MemberNotifier < ApplicationNotifier
   def initialize(member)
     @member = member
+    @unit = member.unit
     super()
   end
 
@@ -36,6 +37,29 @@ class MemberNotifier < ApplicationNotifier
     send_text  { |recipient| DailyReminderTexter.new(recipient).send_message }
   end
 
+  def send_event_organizer_digest(last_ran_at = nil)
+    events = @unit.events.future.rsvp_required.select { |event| event.organizers.map(&:member).include? @member }
+    return unless events.present?
+
+    events.each do |event|
+      start_date = last_ran_at || event.created_at
+      rsvps = event.rsvps.group_by(&:response)
+      new_rsvps = event.rsvps.select { |r| r.created_at >= start_date }
+      next unless new_rsvps.count.positive?
+
+      send_email do |recipient|
+        MemberMailer.with(member: recipient,
+                          event: event,
+                          rsvps: rsvps,
+                          last_ran_at: start_date)
+                    .event_organizer_daily_digest_email.deliver_later
+      end
+      send_text do |recipient|
+        EventOrganizerDigestTexter.new(recipient, event, rsvps, new_rsvps, start_date).send_message
+      end
+    end
+  end
+
   def send_family_rsvp_confirmation(event)
     send_email do |recipient|
       MemberMailer.with(member: recipient, event_id: event.id)
@@ -45,7 +69,9 @@ class MemberNotifier < ApplicationNotifier
   end
 
   def send_message(message, preview: false)
-    send_email { |recipient| MemberMailer.with(member: recipient, message_id: message.id, preview: preview).message_email.deliver_later }
+    send_email do |recipient|
+      MemberMailer.with(member: recipient, message_id: message.id, preview: preview).message_email.deliver_later
+    end
   end
 
   # pass an option array of UnitMembership ids for bulk reponses
@@ -57,7 +83,7 @@ class MemberNotifier < ApplicationNotifier
 
   def send_rsvp_nag
     notifier = RsvpNagNotifier.new(@member)
-    notifier.perform    
+    notifier.perform
   end
 
   private

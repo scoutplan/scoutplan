@@ -5,7 +5,8 @@ class UnitTaskService
   TASK_KEYS = { communication:
     { digest: "UnitDigestTask",
       daily_reminder: "DailyReminderTask",
-      rsvp_nag: "RsvpNagTask" } }.freeze
+      rsvp_nag: "RsvpNagTask",
+      event_organizer_digest: "EventOrganizerDigestTask" } }.freeze
 
   def initialize(unit)
     @unit = unit
