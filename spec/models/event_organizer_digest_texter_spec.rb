@@ -19,7 +19,7 @@ RSpec.describe EventOrganizerDigestTexter, type: :model do
       new_rsvps = @event.rsvps
       last_ran_at = 1.week.ago
       texter = EventOrganizerDigestTexter.new(@member, @event, rsvps, new_rsvps, last_ran_at)
-      expected_body = "Hi, #{@member.display_first_name}, #{@member.unit.name} here. We need your RSVP for the upcoming Hiking Trip event."
+      expected_body = "Hi, #{@member.display_first_name}"
       expect(texter.body).to include(expected_body)
     end
   end

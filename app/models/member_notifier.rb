@@ -69,7 +69,9 @@ class MemberNotifier < ApplicationNotifier
   end
 
   def send_message(message, preview: false)
-    send_email { |recipient| MemberMailer.with(member: recipient, message_id: message.id, preview: preview).event_organizer_daily_digest_email.deliver_later }
+    send_email do |recipient|
+      MemberMailer.with(member: recipient, message_id: message.id, preview: preview).message_email.deliver_later
+    end
   end
 
   # pass an option array of UnitMembership ids for bulk reponses

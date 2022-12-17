@@ -36,7 +36,6 @@ class MemberMailer < ScoutplanMailer
 
   def event_organizer_daily_digest_email
     @event = params[:event]
-    @unit = @event.unit
     @member = params[:member]
     @rsvps = params[:rsvps]
     @last_ran_at = params[:last_ran_at] || @event.created_at

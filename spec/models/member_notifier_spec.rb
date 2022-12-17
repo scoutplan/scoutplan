@@ -33,16 +33,17 @@ RSpec.describe MemberNotifier, type: :model do
 
   describe "event organizer digest" do
     before do
-      @event = FactoryBot.create(:event, unit: @unit, status: "published", starts_at: 12.hours.from_now)
+      @event = FactoryBot.create(:event, :requires_rsvp, unit: @unit, status: "published", starts_at: 12.hours.from_now)
       @event.event_organizers.create!(unit_membership: @member)
       accepting_member = FactoryBot.create(:member, unit: @unit)
       declining_member = FactoryBot.create(:member, unit: @unit)
-      @event.rsvps.create!(unit_membership: accepting_member, response: :accepted, respondent: @member)
+      @event.rsvps.create!(unit_membership: accepting_member, response: :accepted, respondent: @member, created_at: 1.day.ago)
       @event.rsvps.create!(unit_membership: declining_member, response: :declined, respondent: @member)
     end
 
     it "is set up correctly" do
       @event.reload
+      expect(@event.requires_rsvp).to be_truthy
       expect(@event.organizers.count).to eq(1)
       expect(@event.organizers.map(&:unit_membership)).to include(@member)
       expect(@member.organized_events).to include(@event)
