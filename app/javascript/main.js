@@ -29,11 +29,13 @@ window.addEventListener("scroll", () => {
 document.addEventListener("turbo:load", function() {
   // dropdown links open/close the menu
   document.querySelectorAll(".dropdown-button").forEach(function(linkElem) {
+    if (linkElem.classList.contains("dropdown-ready")) { return; }
     linkElem.addEventListener("click", function(event) {
       event.target.closest(".dropdown").classList.toggle("menu-open");
       event.preventDefault();
       return false;
     });
+    linkElem.classList.add("dropdown-ready");
   });
 
   // close a dropdown menu when one of its links is clicked
