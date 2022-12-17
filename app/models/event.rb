@@ -25,6 +25,7 @@ class Event < ApplicationRecord
   has_many :event_locations, inverse_of: :event
   has_many :event_organizers, dependent: :destroy
   has_many :event_rsvps, dependent: :destroy
+  has_many :event_shifts, dependent: :destroy
   has_many :locations, as: :locatable, dependent: :destroy
   has_many :locations, through: :event_locations
   has_many :members, through: :event_rsvps
@@ -36,11 +37,13 @@ class Event < ApplicationRecord
 
   accepts_nested_attributes_for :event_locations, allow_destroy: true
   accepts_nested_attributes_for :event_organizers, allow_destroy: true
+  accepts_nested_attributes_for :event_shifts, allow_destroy: true
 
   alias_attribute :rsvps, :event_rsvps
   alias_attribute :category, :event_category
   alias_attribute :activities, :event_activities
   alias_attribute :organizers, :event_organizers
+  alias_attribute :shifts, :event_shifts
 
   validates_presence_of :title, :starts_at, :ends_at
   validate :dates_are_subsequent
@@ -108,6 +111,10 @@ class Event < ApplicationRecord
 
   def editable?
     true
+  end
+
+  def time_slots?
+    event_shifts.count.positive?
   end
 
   def requires_payment?
