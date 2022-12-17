@@ -1,0 +1,5 @@
+.flex.flex-row.gap-3.items-center
+  = text_field :event_shift, :name, class: "bg-white border border-stone-300 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300", placeholder: "Shift name"
+  = link_to t("events.form.add_shift"), "#",
+            class: "block font-bold border rounded px-4 py-2 whitespace-nowrap border-stone-500 text-stone-500 hover:border-stone-600 hover:text-stone-600",
+            data: { action: "click->event-shift#add" }
