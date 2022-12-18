@@ -21,7 +21,7 @@ section.py-4
       = f.date_field :rsvp_closes_at,
         class: "bg-white border border-stone-300 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300"
 
-    = render partial: "events/partials/form/event_shift_fields", locals: { member: @current_member }
+    = render partial: "events/partials/form/event_shift_fields", locals: { member: @current_member, f: f }
 
 css:
   #rsvp_fields {

@@ -1,8 +1,8 @@
 - return unless Flipper.enabled? :event_shifts, member
 
-.py-2
+.py-2(data-controller="event-shift")
   = render partial: "components/switch",
-          locals: { checked: @event.time_slots?,
+          locals: { checked: @event.shifts?,
                     label: "Time slots",
                     object_name: "event",
                     method: "rsvp_limit",
@@ -16,4 +16,4 @@
         - @event.event_shifts.each do |shift|
           = render partial: "events/partials/form/event_shift", locals: { shift: shift }
 
-      = render partial: "events/partials/form/new_event_shift"
+      = render partial: "events/partials/form/new_event_shift", locals: { f: f }

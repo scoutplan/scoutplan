@@ -10,4 +10,11 @@ class EventService < ApplicationService
     @params = params
     super()
   end
+
+  def process_event_shifts
+    @params[:event_shifts].each do |shift_name|
+      event_shift = @event.event_shifts.find_or_create_by(name: shift_name)
+      event_shift.save!
+    end
+  end
 end

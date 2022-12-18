@@ -37,7 +37,6 @@ class Event < ApplicationRecord
 
   accepts_nested_attributes_for :event_locations, allow_destroy: true
   accepts_nested_attributes_for :event_organizers, allow_destroy: true
-  accepts_nested_attributes_for :event_shifts, allow_destroy: true
 
   alias_attribute :rsvps, :event_rsvps
   alias_attribute :category, :event_category
@@ -113,7 +112,7 @@ class Event < ApplicationRecord
     true
   end
 
-  def time_slots?
+  def shifts?
     event_shifts.count.positive?
   end
 

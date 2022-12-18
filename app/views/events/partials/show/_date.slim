@@ -54,3 +54,10 @@ section#date_time_card.py-4.border-t.border-stone-800
     .text-sm.text-gray-500.mt-4
       i.fas.fa-repeat.mr-2
       = t("events.show.series_count", count: @event.series_children.count + @event.series_siblings.count + 1)
+
+  - if @event.shifts?
+    .text-sm.font-bold.mt-4
+      h4.inline-block = "Time slots:"
+      ul.inline-block
+        - @event.event_shifts.each do |shift|
+          li.inline-block.mx-2.px-1.py-2.border.rounded = shift.name
