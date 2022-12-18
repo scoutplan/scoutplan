@@ -40,10 +40,6 @@ section#date_time_card.py-4.border-t.border-stone-800
             i.fa-solid.fa-fw.fa-moon.text-purple-500.mr-1
             = "#{duration_in_days} Nights"
 
-          / .uppercase.text-sm.font-bold.tracking-wider
-          /   i.fa-solid.fa-fw.fa-sun.text-yellow-500.mr-2
-          /   = "#{duration_in_days - 1} Days"
-
       - if multiday
         .end-day.bg-white.pl-2
           .uppercase.text-sm.font-bold.tracking-wider = @event.ends_at.in_time_zone.strftime('%a')
@@ -60,4 +56,4 @@ section#date_time_card.py-4.border-t.border-stone-800
       h4.inline-block = "Time slots:"
       ul.inline-block
         - @event.event_shifts.each do |shift|
-          li.inline-block.mx-2.px-1.py-2.border.rounded = shift.name
+          li.inline-block.mx-1.px-2.py-2.border.rounded.border-sky-300 = shift.name

@@ -282,7 +282,7 @@ en:
       packing_lists:   "Packing lists"
       add_shift:        "Add Time Slot"
       placeholders:
-        shift_name:   "Start time (e.g. \"10:00 AM\")"
+        shift_name:   "e.g. 10-11:30 AM"
 
     my_rsvps:
       title: "My RSVPs"
