@@ -179,6 +179,7 @@ class EventsController < UnitContextController
     service = EventCreationService.new(@unit)
     @event = service.create(event_params)
     EventOrganizerService.new(@event).update(params[:event_organizers])
+    EventService.new(@event, params).process_event_shifts
     return unless @event.present?
 
     if params[:event][:attachments].present?
@@ -195,7 +196,9 @@ class EventsController < UnitContextController
     destroy and return if params[:event_action] == "delete"
 
     authorize @event
-    EventUpdateService.new(@event, @current_member, event_params).perform
+    service = EventUpdateService.new(@event, @current_member, event_params)
+    service.perform
+    EventService.new(@event, params).process_event_shifts
     EventOrganizerService.new(@event).update(params[:event_organizers])
     if params[:event][:attachments].present?
       params[:event][:attachments].each do |attachment|

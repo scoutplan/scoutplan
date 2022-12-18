@@ -280,7 +280,9 @@ en:
       arrival:     "Arrive At"
       activity:    "Side Activity"
       packing_lists:   "Packing lists"
-      add_shift:        "Add Shift"
+      add_shift:        "Add Time Slot"
+      placeholders:
+        shift_name:   "e.g. 10-11:30 AM"
 
     my_rsvps:
       title: "My RSVPs"
