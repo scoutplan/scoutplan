@@ -4,72 +4,65 @@
 - return unless @event.organizable? && EventPolicy.new(@current_member, @event).rsvps?
 
 #manage_rsvps_card.mt-8.bg-cyan-700.text-cyan-50.px-4.py-4.relative.mb-4.w-full.md:w-60
-    header.mb-2
+  header.mb-2
+    - if @event.organizers.include?(@current_member)
       p.pb-2.font-bold
         i.fa-solid.fa-info-circle.mr-2
-        | You are an organizer for this event.
+        = "You are an organizer for this event."
 
-      .py-2.text-sm
-        = render partial: "components/switch",
-                 locals: { checked: true,
-                           label: "RSVP notifications",
-                           object_name: "event",
-                           method: "send_organizer_digest", 
-                           unchecked_value: "false",
-                           checked_value: "true",
-                           size: "sm" }
+    .py-2.text-sm
+      / = render partial: "components/switch",
+      /          locals: { checked: true,
+      /                    label: "RSVP notifications",
+      /                    object_name: "event",
+      /                    method: "send_organizer_digest", 
+      /                    unchecked_value: "false",
+      /                    checked_value: "true",
+      /                    size: "sm" }
 
-              / = render partial: "components/switch", locals: { checked: existing_rsvp&.accepted?,
-              /                                            label: t("rsvp_accepted"),
-              /                                            object_name: "event[members][#{family_member.id}][event_rsvp]",
-              /                                            method: "response",
-              /                                            checked_value: "accepted",
-              /                                            unchecked_value: "declined" }
+    .flex.flex-row.justify-between.border-t.border-cyan-200.pt-2
+      h2.text-lg.font-bold
+        = t("events.show.organize")
+      
+      div
+        .inline-block.ml-2.text-xs.rounded.py-1.px-2.bg-cyan-800
+          = @event.rsvps.accepted.count
 
+  section.border-t.border-cyan-200.py-3.hidden.md:block
+    - rsvps = @event.rsvps.accepted.select { |r| r.member.youth? }
+    .flex.flex-row.justify-between
+      h3.font-bold.mb-2
+        = t("events.show.titles.youth")
+      div
+        .inline-block.ml-2.text-xs.rounded.py-1.px-2.bg-cyan-800
+          = "#{rsvps.count}"
+    ul
+      - rsvps.each do |rsvp|
+        li.py-1.font-bold
+          i.fa-solid.fa-check-circle.mr-2
+          = rsvp.short_display_name
 
-      .flex.flex-row.justify-between.border-t.border-cyan-200.pt-2
-        h2.text-lg.font-bold
-          = t("events.show.organize")
-        
-        div
-          .inline-block.ml-2.text-xs.rounded.py-1.px-2.bg-cyan-800
-            = @event.rsvps.accepted.count
+    = content_tag(:p, t("events.show.captions.rsvp_empty_youth"), class: "text-sm text-cyan-100") if rsvps.empty?
 
-    section.border-t.border-cyan-200.py-3.hidden.md:block
-      - rsvps = @event.rsvps.accepted.select { |r| r.member.youth? }
-      .flex.flex-row.justify-between
-        h3.font-bold.mb-2
-          = t("events.show.titles.youth")
-        div
-          .inline-block.ml-2.text-xs.rounded.py-1.px-2.bg-cyan-800
-            = "#{rsvps.count}"
-      ul
-        - rsvps.each do |rsvp|
-          li.py-1.font-bold
-            i.fa-solid.fa-check-circle.mr-2
-            = rsvp.short_display_name
+  section.border-t.border-cyan-200.py-3.hidden.md:block
+    - rsvps = @event.rsvps.accepted.select { |r| r.member.adult? }
+    .flex.flex-row.justify-between
+      h3.font-bold.mb-2
+        = t("events.show.titles.adults")
+      div
+        .inline-block.ml-2.text-xs.rounded.py-1.px-2.bg-cyan-800
+          = "#{rsvps.count}"
+    ul
+      - rsvps.each do |rsvp|
+        li.py-1.font-bold
+          i.fa-solid.fa-check-circle.mr-2
+          = rsvp.short_display_name   
 
-      = content_tag(:p, t("events.show.captions.rsvp_empty_youth"), class: "text-sm text-cyan-100") if rsvps.empty?
+    = content_tag(:p, t("events.show.captions.rsvp_empty_adult"), class: "text-sm text-cyan-100") if rsvps.empty?
 
-    section.border-t.border-cyan-200.py-3.hidden.md:block
-      - rsvps = @event.rsvps.accepted.select { |r| r.member.adult? }
-      .flex.flex-row.justify-between
-        h3.font-bold.mb-2
-          = t("events.show.titles.adults")
-        div
-          .inline-block.ml-2.text-xs.rounded.py-1.px-2.bg-cyan-800
-            = "#{rsvps.count}"
-      ul
-        - rsvps.each do |rsvp|
-          li.py-1.font-bold
-            i.fa-solid.fa-check-circle.mr-2
-            = rsvp.short_display_name   
-
-      = content_tag(:p, t("events.show.captions.rsvp_empty_adult"), class: "text-sm text-cyan-100") if rsvps.empty?
-
-    footer.mt-4
-      = link_to t("events.show.organize_button_caption"),
-        unit_event_rsvps_path(@event.unit, @event),
-        title: t("events.show.organize_reason_admin", unit_name: @event.unit.name),
-        class: "block font-bold no-underline px-4 py-3 md:py-2 border border-cyan-100 text-cyan-50 hover:bg-cyan-500 rounded text-center",
-        data: { turbo_action: "advance", turbo_frame: "main" }
+  footer.mt-4
+    = link_to t("events.show.organize_button_caption"),
+      unit_event_rsvps_path(@event.unit, @event),
+      title: t("events.show.organize_reason_admin", unit_name: @event.unit.name),
+      class: "block font-bold no-underline px-4 py-3 md:py-2 border border-cyan-100 text-cyan-50 hover:bg-cyan-500 rounded text-center",
+      data: { turbo_action: "advance", turbo_frame: "main" }

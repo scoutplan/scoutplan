@@ -146,6 +146,10 @@ class Event < ApplicationRecord
     address || location
   end
 
+  def documents_required?
+    document_types.present?
+  end
+
   # members who haven't RSVP'ed
   def non_respondents
     unit.members.status_active - rsvps.collect(&:member)
@@ -200,6 +204,10 @@ class Event < ApplicationRecord
 
   def packing_list_items
     packing_lists.map(&:packing_list_items).flatten.uniq
+  end
+
+  def payment_required?
+    payment_amount.positive?
   end
 
   private

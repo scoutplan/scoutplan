@@ -35,7 +35,11 @@ class EventRsvp < ApplicationRecord
   end
 
   def done?
-    (response != "accepted") || (paid && documents_received?)
+    return true unless response == "accepted"
+    return false if event.payment_required? && !paid
+    return false if event.documents_required? && !documents_received?
+
+    true
   end
 
   def action_pending?

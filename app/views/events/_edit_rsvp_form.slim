@@ -3,28 +3,40 @@
 - @rsvps = rsvps
 - notes = rsvps.map(&:note).uniq.join(", ")
 
-.table
+.table.divide-y
   - @current_member.family.each do |family_member|
     .table-row.items-center
       - existing_rsvp = event.rsvps.find_by(unit_membership: family_member)
       - rsvp = event.rsvps.build(unit_membership: family_member,
         response: existing_rsvp&.response,
-        includes_activity: existing_rsvp&.includes_activity)
+        includes_activity: existing_rsvp&.includes_activity,
+        event_shift_ids: existing_rsvp&.event_shift_ids)
 
       // family member name
-      .table-cell.border-0.pr-2.py-2.font-bold.align-middle
+      .table-cell.border-0.pr-2.py-2.font-bold(class="#{ @event.shifts? ? 'align-top pt-4' : 'align-middle' }")
         i.fa-user.fad.text-yellow-500
         |&nbsp;&nbsp;
         = presenter.family_context_name(family_member)
 
       // "Going" switch
       .table-cell.px-3.py-2.border-0.response-wrapper
-        = render partial: "components/switch", locals: { checked: existing_rsvp&.accepted?,
-                                                         label: t("rsvp_accepted"),
-                                                         object_name: "event[members][#{family_member.id}][event_rsvp]",
-                                                         method: "response",
-                                                         checked_value: "accepted",
-                                                         unchecked_value: "declined" }
+        - if @event.shifts?
+          - @event.shifts.each do |shift|
+            .py-1
+              = render partial: "components/switch", locals: { checked: existing_rsvp&.event_shift_ids&.include?(shift.id),
+                                                              label: shift.name,
+                                                              object_name: "event[members][#{family_member.id}][shifts][#{shift.id}]",
+                                                              method: "response",
+                                                              checked_value: "accepted",
+                                                              unchecked_value: "declined" }
+
+        - else
+          = render partial: "components/switch", locals: { checked: existing_rsvp&.accepted?,
+                                                          label: t("rsvp_accepted"),
+                                                          object_name: "event[members][#{family_member.id}][event_rsvp]",
+                                                          method: "response",
+                                                          checked_value: "accepted",
+                                                          unchecked_value: "declined" }
 
 // note field
 .mt-2
@@ -41,3 +53,8 @@ javascript:
       submitElem.disabled = false;
     });
   });
+
+css:
+  .table.divide-y .table-row {
+    border-top: 1px solid red;
+  }

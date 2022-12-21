@@ -102,13 +102,28 @@
             = render partial: "events/partials/rsvps/attendance_badges", locals: { event: @event }
 
 
-        // list of "going" members
-        ul.mt-2.empty:mt-0
-          #organize_category_accepted
-            = render partial:    "events/partials/rsvps/accepted_rsvp",
-                     collection: @event.rsvps.accepted.ordered,
-                     as:         :rsvp,
-                     layout:     "events/partials/rsvps/organize_entry"
+        // Who's going?
+        - if @event.shifts?
+          - @event.shifts.each do |shift|
+            h4.mt-8.font-bold.border-t.border-green-400.text-green-700
+              = shift.name
+
+            = "No one has signed up for this shift yet." if shift.accepted_rsvps.empty?
+
+            ul.empty:mt-0
+              #organize_category_accepted
+                = render partial:    "events/partials/rsvps/accepted_rsvp",
+                        collection: shift.accepted_rsvps,
+                        as:         :rsvp,
+                        layout:     "events/partials/rsvps/organize_entry"
+
+        - else
+          ul.mt-2.empty:mt-0
+            #organize_category_accepted
+              = render partial:    "events/partials/rsvps/accepted_rsvp",
+                      collection: @event.rsvps.accepted.ordered,
+                      as:         :rsvp,
+                      layout:     "events/partials/rsvps/organize_entry"
 
       // DECLINED
       .bg-red-50.rounded.p-4#declined_rsvp_container
