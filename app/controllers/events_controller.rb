@@ -5,6 +5,10 @@ require "humanize"
 # controller for Events
 
 # rubocop:disable Metrics/ClassLength
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/PerceivedComplexity
+# rubocop:disable Metrics/CyclomaticComplexity
 class EventsController < UnitContextController
   before_action :authenticate_user!, except: [:public]
   # before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish public]
@@ -259,16 +263,33 @@ class EventsController < UnitContextController
   def create_or_update_rsvps
     note = params[:note]
     params[:event][:members].each do |member_id, values|
-      response = values[:event_rsvp][:response]
+      values[:event_rsvp] ||= {}
+      shifts = values[:shifts]
+      accepted_shifts = shifts.present? ? shifts.select { |_, v| v[:response] == "accepted" }.keys : []
+
+      ap member_id
+      ap accepted_shifts
+
+      response = if shifts.present?
+                   accepted_shifts.count.positive? ? "accepted" : "declined"
+                 else
+                   values[:event_rsvp][:response]
+                 end
       includes_activity = values[:event_rsvp][:includes_activity] == "1"
       rsvp = @event.rsvps.create_with(
         response: response,
         includes_activity: includes_activity,
         note: note,
-        respondent: @current_member
+        respondent: @current_member,
+        event_shift_ids: accepted_shifts
       ).find_or_create_by!(unit_membership_id: member_id)
 
-      rsvp.update!(response: response, respondent: @current_member, note: note)
+      rsvp.update!(
+        response: response,
+        respondent: @current_member,
+        note: note,
+        event_shift_ids: accepted_shifts)
+
       # EventNotifier.send_rsvp_confirmation(rsvp)
     end
 
@@ -424,3 +445,7 @@ class EventsController < UnitContextController
   end
 end
 # rubocop:enable Metrics/ClassLength
+# rubocop:enable Metrics/MethodLength
+# rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/PerceivedComplexity
+# rubocop:enable Metrics/CyclomaticComplexity

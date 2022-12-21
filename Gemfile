@@ -42,6 +42,7 @@ gem "rails-html-sanitizer", ">= 1.4.3"
 gem "remote_syslog_logger"
 gem "rexml"
 gem "rubocop", require: false
+gem "sass-rails", "~> 6.0"
 gem "seedbank"
 gem "sentry-ruby"
 gem "sidekiq"
@@ -73,6 +74,7 @@ group :development do
   # Can be configured to work on production as well see: https://github.com/MiniProfiler/rack-mini-profiler/blob/master/README.md
   gem "listen", "~> 3.7"
   gem "rack-mini-profiler", "~> 2.3"
+  gem "ruby-lsp", "~> 0.3.7"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   # gem "spring", "~> 2.1"
 end
@@ -85,5 +87,3 @@ group :test do
   # gem "webdrivers"
   gem "apparition"
 end
-
-gem "sass-rails", "~> 6.0"
