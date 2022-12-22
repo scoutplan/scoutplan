@@ -1,11 +1,11 @@
 #event_table_container.max-w-xl.mx-auto
   = form_tag bulk_publish_unit_events_path(@unit), id: "bulk_action_form"
-    = render partial: "events/partials/index/sidecar"
+    = render partial: "events/partials/index/sidecar", layout: "layouts/sidecar"
 
     header.max-w-xl.mx-auto.relative.mt-8
 
       // CENTER (desktop) or LEFT (mobile)
-      h1.text-3xl.font-bold.mb-2.px-2
+      h1.text-3xl.font-bold.mb-2.md:px-2
         = t("events.index.page_title")
         .text-sm.uppercase.tracking-wider.text-stone-500
           = @unit.name
@@ -24,19 +24,6 @@
       = render partial: "bulk_publish_panel"
 
       .divide-y.divide-stone-300
-        - if user_signed_in?
-          = link_to "#", class: "font-bold hide-bulk-publish inline-block md:px-2 py-2 w-full toggle-body-class text-sm text-stone-500 hover:text-stone-600",
-                    data: { action: "event#togglePastEvents" },
-                    id: "toggle_past_events_link" do
-
-            #show_past_events_caption
-              i.fa-solid.fa-calendar-clock.mr-1
-              = "Show past events"
-
-            #hide_past_events_caption
-              i.fa-solid.fa-calendar-check.mr-1
-              = "Hide past events"
-
         = turbo_frame_tag "past_events", src: list_unit_events_path(@unit, scope: "past")
 
         = turbo_frame_tag "current_events"

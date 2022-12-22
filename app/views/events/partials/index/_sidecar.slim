@@ -21,6 +21,24 @@ aside.md:absolute.md:-ml-72.text-stone-500
 
           = t("events.index.buttons.calendar")
 
+      - if user_signed_in?
+        li
+          = link_to "#", class: "block py-1 font-bold hover:text-brand-500",
+                    data: { action: "event#togglePastEvents" },
+                    id: "toggle_past_events_link" do
+
+            #show_past_events_caption
+              .fa-stack
+                i.fa-regular.fa-circle.fa-stack-2x
+                i.fa-solid.fa-calendar-clock.fa-stack-1x
+              = "Show past events"
+
+            #hide_past_events_caption
+              .fa-stack
+                i.fa-regular.fa-circle.fa-stack-2x
+                i.fa-solid.fa-calendar-check.fa-stack-1x
+              = "Hide past events"          
+
       li
         = link_to list_unit_events_path(@unit, format: :pdf),
                   class: "block py-1 font-bold hover:text-brand-500",
