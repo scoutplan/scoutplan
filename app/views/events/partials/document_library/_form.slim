@@ -1,0 +1,20 @@
+= form_with model: [unit, event] do |f|
+  ul.divide-y
+    - unit.attachments.each do |attachment|
+      - attachment_event = attachment.record_type.constantize.find(attachment.record_id)
+      - next if attachment_event == event
+      li.py-2.overflow-clip
+        .flex.flex-row.gap-2.items-center
+          = render partial: "components/switch", locals: { checked: false,
+                                                 label: nil,
+                                                 object_name: "event",
+                                                 method: "[attachment_ids][#{attachment.id}}]",
+                                                 checked_value: true,
+                                                 unchecked_value: false }
+
+          div
+            span.font-bold.truncate
+              i.fa-solid.fa-file.text-stone-500.mr-1
+              = attachment.filename
+            div.text-sm.text-stone-600
+              = raw("Attached to <strong>#{event.title}</strong> #{distance_of_time_in_words_to_now(attachment.created_at)} ago.")
