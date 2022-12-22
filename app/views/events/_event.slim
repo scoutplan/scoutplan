@@ -34,7 +34,7 @@ article.py-2.hover:bg-stone-100(class="relative event #{row_classes(event)}" id=
 
         = render partial: "events/partials/event_row/title", locals: { event: event }
 
-  .flex.flex-col.md:flex-row.md:gap-4.md:px-2.md:items-center
+  .flex.flex-col.gap-2.md:flex-row.md:gap-4.md:px-2.md:items-center
     = render partial: "events/partials/event_row/rsvp", locals: { event: event }
     = render partial: "events/partials/event_row/organize", locals: { event: event }
     = render partial: "events/partials/event_row/online", locals: { event: event }

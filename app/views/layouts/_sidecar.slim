@@ -1,0 +1,16 @@
+= yield
+
+div(data-controller="sidecar")
+  .md:hidden
+    = button_tag type: "button",
+                id: "sidecar_toggle",
+                class: "text-sm px-2 py-1 border rounded",
+                data: { action: "mousedown->sidecar#reveal" } do
+
+      = "More options"
+      i.fa-solid.fa-chevron-down.ml-2
+
+css:
+  body.sidecar-open #sidecar_toggle {
+    display: none;
+  }
