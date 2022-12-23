@@ -146,7 +146,7 @@ class EventPresenter
   # grammatical_list("Garth") => "Garth"
   # grammatical_list("Ebony", "Ivory") => "Ebony and Ivory"
   # grammatical_list("Red", "White", "Blue") => "Red, White, and Blue"
-  # and, yes, we use Oxford commas. Accept it.
+  # And, yes, we use Oxford commas. Accept it.
   def grammatical_list(things)
     return things unless things.is_a?(Array)
     return "" if things.count.zero?
@@ -157,11 +157,19 @@ class EventPresenter
 
   # returns 'is' or 'are'
   def substantive_verb(things)
-    things.count == 1 ? (things.first.downcase == "you" ? "are" : "is") : "are"
+    if things.count == 1
+      things.first.downcase == "you" ? "are" : "is"
+    else
+      "are"
+    end
   end
 
   def pluperfect_verb(things)
-    things.count == 1 ? (things.first.downcase == "you" ? "has" : "have") : "have"
+    if things.count == 1
+      things.first.downcase == "you" ? "has" : "have"
+    else
+      "have"
+    end
   end
 
   def proper_noun_list(things)
