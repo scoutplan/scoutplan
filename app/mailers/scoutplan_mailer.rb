@@ -2,9 +2,9 @@
 
 # abstract Mailer class that performs some basic housekeeping
 class ScoutplanMailer < ApplicationMailer
+  has_history
   before_action :find_member
   before_action :find_unit
-  # before_action :attach_logo
 
   # base64 encode image directly: https://stackoverflow.com/questions/16163353/display-base64-encoded-image-in-rails
   def attach_logo

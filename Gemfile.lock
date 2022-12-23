@@ -75,6 +75,11 @@ GEM
       activerecord (>= 4.2)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    ahoy_email (2.1.3)
+      actionmailer (>= 5)
+      addressable (>= 2.3.2)
+      nokogiri
+      safely_block (>= 0.1.1)
     ahoy_matey (4.1.0)
       activesupport (>= 5.2)
       device_detector
@@ -427,6 +432,7 @@ PLATFORMS
 DEPENDENCIES
   active_storage_validations
   acts_as_list
+  ahoy_email
   ahoy_matey
   apparition
   awesome_print
