@@ -41,6 +41,9 @@
 
             = rsvp.full_display_name
 
+            - if rsvp.member.emailable?
+              .email-address.hidden = rsvp.member.email
+
           // PAID
           td.border-t.px-4.py-2.text-center
             - if rsvp.paid
@@ -75,12 +78,18 @@
           - @event.document_types.each do |doc_type|
             td.border-t.px-4.py-2.text-center
 
+    .mt-2
+      = link_to "#", class: "text-blue-500 hover:underline", onclick: "copyEmailsToClipboard(event);" do
+        i.fa-copy.fa-solid
+        span.pl-1 Copy Emails to Clipboard
 
 javascript:
-  document.querySelectorAll(".doc-type-control").forEach(elem) {
-    elem.addEventListener("click", processDocTypeClick(event));
+  function copyEmailsToClipboard(event) {
+    let emails = document.querySelectorAll(".email-address");
+    let emailList = [];
+    emails.forEach(function(email) {
+      emailList.push(email.innerText);
+    });
+    navigator.clipboard.writeText(emailList.join(", "));
+    event.preventDefault();
   }
-
-  document.querySelectorAll(".doc-type-control").forEach(elem) {
-    elem.addEventListener("click", processDocTypeClick(event));
-  }  
