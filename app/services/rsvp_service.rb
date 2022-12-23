@@ -37,7 +37,7 @@ class RsvpService < ApplicationService
   end
 
   def family_members
-    @member.family(include_self: true)
+    @member.family(include_self: :prepend)
   end
 
   # for the current Event, return an array of members who haven't responded
@@ -67,6 +67,17 @@ class RsvpService < ApplicationService
     true
   end
 
+  def family_responses_in_words
+    family_accepted = family_rsvps.select(&:accepted?)
+    family_declined = family_rsvps.select(&:declined?)
+    return "No responses yet." unless family_accepted.any? || family_declined.any?
+
+    going = "#{list_of_words(family_accepted.map { |r| r.display_first_name(@member) }, linking_verb: true)} going" if family_accepted.any?
+    not_going = "#{list_of_words(family_declined.map { |r| r.display_first_name(@member) }, linking_verb: true)} not#{family_accepted.present? ? '' : ' going'}" if family_declined.any?
+
+    [going, not_going].compact.join("; ").sentence_case + ". "
+  end
+
   def family_non_respondents
     return unless @event.present?
 
@@ -74,8 +85,10 @@ class RsvpService < ApplicationService
   end
 
   def family_rsvps
+    return @family_rsvps if @family_rsvps.present?
+
     family_member_ids = family_members.map(&:id)
-    @event.rsvps.where(unit_membership: family_member_ids)
+    @family_rsvps = @event.rsvps.where(unit_membership: family_member_ids)
   end
 
   # for the current member, return the next
@@ -115,6 +128,25 @@ class RsvpService < ApplicationService
   def events
     # debugger
     unit.events.future.published.rsvp_required
+  end
+
+  def list_of_words(words, linking_verb: false)
+    return "" unless words
+
+    case words.count
+    when 0
+      ""
+    when 1
+      if linking_verb
+        "#{words.first}#{words.first.downcase == 'you' ? ' are' : ' is'}"
+      else
+        words.first
+      end
+    when 2
+      "#{words.first} and #{words.last}#{linking_verb ? ' are' : ''}"
+    else
+      "#{words[0..-2].join(', ')}, and #{words.last}#{linking_verb ? ' are' : ''}"
+    end
   end
 
   def unit
