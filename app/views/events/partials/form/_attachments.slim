@@ -5,7 +5,8 @@ section.py-4
     - @event.attachments.each do |attachment|
       li.py-1
         = attachment.filename
-        = link_to "Remove", "#", method: :delete, class: "text-red-600 hover:underline ml-2", data: { confirm: "Are you sure you want to remove this attachment?" }
+        = link_to "#", method: :delete, class: "inline-block text-red-600 hover:underline p-2 ml-4", data: { confirm: "Are you sure you want to remove this attachment?" } do
+          i.fa-solid.fa-times.text-red-500
 
 section.py-4
   = f.label :attach_files, class: "block font-bold mb-2"
