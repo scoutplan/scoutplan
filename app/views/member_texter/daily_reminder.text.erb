@@ -2,7 +2,7 @@
 <% event = @events.first %>
 Hi, <%= @member.display_first_name %>. As a reminder, <%= event.title %> is <%= deictic_string_for_time_interval_from_day(event.starts_at) %> at <%= event.starts_at.in_time_zone.strftime("%-I:%M %p") %> <% loc = event.find_location(:departure).present? ? "leaving from #{loc}" : "at #{event.full_address}" %>.
 <% else %>
-- deictic = Time.now.in_time_zone.hour > 12 ? "Tomorrow" : "Today"
+<%- deictic = Time.now.in_time_zone.hour > 12 ? "Tomorrow" : "Today" %>
 Hi, <%= @member.display_first_name %>. <%= deictic %> at <%= @member.unit.name %>:
 
 <% @events.each do |event| %>
