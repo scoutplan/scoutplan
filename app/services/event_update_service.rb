@@ -11,10 +11,10 @@ class EventUpdateService < EventService
     @event.event_locations.destroy_all
     @event.assign_attributes(@params)
     @event.save!
-    process_notification
+    notify_members
   end
 
-  def process_notification
+  def notify_members
     return unless @event.notify_members.downcase == "true"
 
     message = Message.new(author: @current_member,
