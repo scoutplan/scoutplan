@@ -14,7 +14,7 @@
 
   - if @rsvp.event.rsvp_open?
     p
-      | If your plans change, please let us know: 
+      | If that's not right, or if your plans change, please let us know: 
 
       = magic_link_to @member, unit_event_edit_rsvps_url(@rsvp.unit, @rsvp.event) do
         strong
