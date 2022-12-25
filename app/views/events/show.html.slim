@@ -5,7 +5,7 @@
   article.event.mx-auto.max-w-xl.md:mt-8.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
     = render partial: "events/partials/show/sidecar", layout: "layouts/sidecar"
 
-    section#informative.flex.flex-col.gap-1
+    section#informative.flex.flex-col
       = render partial: "events/partials/show/header"
       = render partial: "events/partials/show/rsvp"
       = render partial: "events/partials/show/date"

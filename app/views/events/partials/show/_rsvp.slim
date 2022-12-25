@@ -3,9 +3,9 @@
 
 - return unless @event.requires_rsvp
 
-section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800
-  - rsvp_service = RsvpService.new(@current_member, @event)
+- rsvp_service = RsvpService.new(@current_member, @event)
 
+section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800
   - if rsvp_service.any_responses?
     .flex.flex-row.justify-between.items-center
       div
@@ -16,7 +16,6 @@ section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800
           = t("events.show.full_decline")
         - else
           = rsvp_service.family_responses_in_words
-          / = [going, not_going].compact.join("; ").sentence_case + "."
 
       div
         // Update RSVPs button (if allowed)
