@@ -1,11 +1,30 @@
-h1 #{ @rsvp.unit.name } RSVP Confirmation
+- content_for :title do
+  = "RSVP Confirmation"
 
-p
-  | Hi, #{ @rsvp.user.display_first_name }. This is to confirm that you're <strong>#{ @rsvp.accepted? ? 'going' : 'not going' }</strong> to the #{ @rsvp.event.title }&nbsp;
-  | on #{ @rsvp.event.starts_at }.
+- content_for :left_column do
 
-p
-  | Please let us know if your plans change:&nbsp;
-  = link_to 'Change Your Response', event_url(@rsvp.event, anchor: 'rsvp'), class: 'btn'
+  p
+    | Hi, #{ @rsvp.user.display_first_name }. This is to confirm that we've received your RSVP for #{ @rsvp.event.title }&nbsp;
+    | on #{ @rsvp.event.starts_at.strftime("%b %-d") }.
 
-p = link_to "View the #{ @rsvp.unit.name } event calendar", unit_events_url(@rsvp.unit)
+  p
+    = "Here's where things stand: "
+    strong
+      = RsvpService.new(@rsvp.member, @rsvp.event).family_responses_in_words
+
+  - if @rsvp.event.rsvp_open?
+    p
+      | If your plans change, please let us know: 
+
+      = magic_link_to @member,
+                      unit_event_url(@rsvp.unit, @rsvp.event) do
+        strong
+          = "Change your response"
+
+- content_for :footer do
+  = magic_link_to \
+    @member,
+    "View the full #{ @unit.name} schedule",
+    unit_events_url(@unit),
+    class: "button-light-on-dark",
+    style: "color: #fff; text-decoration: underline;"

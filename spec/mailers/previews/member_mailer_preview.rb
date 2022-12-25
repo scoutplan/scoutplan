@@ -12,7 +12,6 @@ class MemberMailerPreview < ActionMailer::Preview
       starts_at: 24.hours.from_now,
       ends_at: 25.hours.from_now,
       status: :published,
-      location: "Meeting place",
       event_category: member.unit.event_categories.first
     )
     event.save!

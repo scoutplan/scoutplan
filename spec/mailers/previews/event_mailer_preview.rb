@@ -33,6 +33,7 @@ class EventMailerPreview < ActionMailer::Preview
 
   def rsvp_confirmation_email
     rsvp = EventRsvp.first
+    rsvp.event.update(rsvp_closes_at: 1.week.from_now)
     EventMailer.with(rsvp: rsvp, member: rsvp.member).rsvp_confirmation_email
   end
 end
