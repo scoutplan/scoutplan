@@ -267,9 +267,6 @@ class EventsController < UnitContextController
       shifts = values[:shifts]
       accepted_shifts = shifts.present? ? shifts.select { |_, v| v[:response] == "accepted" }.keys : []
 
-      ap member_id
-      ap accepted_shifts
-
       response = if shifts.present?
                    accepted_shifts.count.positive? ? "accepted" : "declined"
                  else
@@ -284,13 +281,12 @@ class EventsController < UnitContextController
         event_shift_ids: accepted_shifts
       ).find_or_create_by!(unit_membership_id: member_id)
 
-      rsvp.update!(
-        response: response,
-        respondent: @current_member,
-        note: note,
-        event_shift_ids: accepted_shifts)
+      rsvp.update!(response: response,
+                   respondent: @current_member,
+                   note: note,
+                   event_shift_ids: accepted_shifts)
 
-      # EventNotifier.send_rsvp_confirmation(rsvp)
+      EventNotifier.send_rsvp_confirmation(rsvp)
     end
 
     @unit = @event.unit

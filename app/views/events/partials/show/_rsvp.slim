@@ -30,7 +30,7 @@ section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800
     
     - if @event.shifts?
       .table.border-spacing-2.text-sm
-        - family_accepted.each do |rsvp|
+        - rsvp_service.family_accepted.each do |rsvp|
           .table-row.gap-2
             .table-cell
               = rsvp.member.display_first_name

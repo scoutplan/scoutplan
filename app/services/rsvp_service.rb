@@ -91,6 +91,10 @@ class RsvpService < ApplicationService
     @family_rsvps = @event.rsvps.where(unit_membership: family_member_ids)
   end
 
+  def family_accepted
+    family_rsvps.select(&:accepted?)
+  end
+
   # for the current member, return the next
   # event that isn't fully responded by the family
   def next_pending_event

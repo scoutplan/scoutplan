@@ -53,6 +53,7 @@ class EventNotifier
     return unless rsvp.contactable?
     return unless Flipper.enabled? :receive_rsvp_confirmation, rsvp.member
 
+
     EventMailer.with(rsvp: rsvp, member: rsvp.member).rsvp_confirmation_email.deliver_later
   end
 end

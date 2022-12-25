@@ -13,9 +13,7 @@ RSpec.describe IcalExporter, type: :model do
 
   describe "timezones" do
     it "publishes events in the local timezone" do
-      ap @event
       @ical_event = @exporter.to_ical
-      ap @ical_event.dtstart
       expect(@ical_event.dtstart).to eq(@event.starts_at)
     end
   end
