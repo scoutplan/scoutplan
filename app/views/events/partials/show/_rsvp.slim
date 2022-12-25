@@ -16,7 +16,6 @@ section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800
           = t("events.show.full_decline")
         - else
           = rsvp_service.family_responses_in_words
-          / = [going, not_going].compact.join("; ").sentence_case + "."
 
       div
         // Update RSVPs button (if allowed)
