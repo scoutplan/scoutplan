@@ -6,6 +6,7 @@ class UnitContextController < ApplicationController
   before_action :find_unit_info
   before_action :set_unit_cookie
   before_action :build_event_presenter
+  before_action :set_paper_trail_whodunnit
   around_action :time_zone
 
   def current_unit
@@ -42,6 +43,10 @@ class UnitContextController < ApplicationController
 
   def time_zone(&block)
     Time.use_zone(current_unit.time_zone, &block)
+  end
+
+  def user_for_paper_trail
+    @current_member&.id
   end
 
   def build_event_presenter

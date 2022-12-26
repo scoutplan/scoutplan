@@ -64,6 +64,7 @@ Rails.application.routes.draw do
       get   "rsvps"
       get   "cancel"
       get   "organize"
+      get   "history"
       post  "cancel", to: "events#perform_cancellation"
       patch "rsvp", as: "send_rsvps", to: "events#create_or_update_rsvps"
     end

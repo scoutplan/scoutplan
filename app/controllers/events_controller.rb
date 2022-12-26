@@ -17,6 +17,10 @@ class EventsController < UnitContextController
   before_action :collate_rsvps, only: [:show, :rsvps]
   layout :current_layout
 
+  def history
+    @versions = @event.versions
+  end
+
   # TODO: refactor this mess
   def index
     variation = params[:variation]

@@ -32,8 +32,10 @@ class Event < ApplicationRecord
   has_many :rsvp_tokens, dependent: :destroy
 
   has_rich_text :description
-
   has_many_attached :attachments
+  has_paper_trail versions: {
+    scope: -> { order("id desc") }
+  }
 
   accepts_nested_attributes_for :event_locations, allow_destroy: true
   accepts_nested_attributes_for :event_organizers, allow_destroy: true
