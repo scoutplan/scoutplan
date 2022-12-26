@@ -46,8 +46,8 @@ class UnitContextController < ApplicationController
   end
 
   def user_for_paper_trail
-    @current_member.id
-  end  
+    @current_member&.id
+  end
 
   def build_event_presenter
     @presenter = EventPresenter.new(nil, current_member)
