@@ -1,0 +1,24 @@
+= text_field :filter, "", class: "w-full border rounded px-4 py-2 mb-4", placeholder: "Filter by filename"
+
+= form_with model: [unit, event] do |f|
+  ul
+    - unit.attachments.each do |attachment|
+      - attachment_event = attachment.record_type.constantize.find(attachment.record_id)
+      - next if attachment_event == event
+      li
+        = link_to "#",
+                  class: "block w-full px-2 py-2 hover:bg-stone-100",
+                  data: { action: "event-edit#attachFromLibrary",
+                          attachment_id: attachment.id } do
+          .flex.flex-row.gap-4.w-full
+            .attachment-preview.w-20.block.shrink-0
+              - if attachment.representable?
+                = image_tag attachment.representation(resize_to_limit: [100, 100]).processed.url,
+                            class: "block mx-auto"
+
+            .attachment-info.shrink.overflow-hidden
+              .font-bold.truncate
+                = attachment.filename
+                
+              .text-sm.text-stone-600
+                = raw("Attached to <strong>#{attachment_event.title}</strong> #{distance_of_time_in_words_to_now(attachment.created_at)} ago")
