@@ -15,9 +15,12 @@ RUN apk add --no-cache --update \
     fontconfig \
     freetype \
     # wkhtmltopdf \
+    poppler \
+    poppler-utils \
     ttf-dejavu \
     ttf-opensans \
-    ttf-font-awesome  
+    ttf-font-awesome \
+    vips  
 
 # copy Gemfile & then bundle install dependencies
 RUN mkdir /app

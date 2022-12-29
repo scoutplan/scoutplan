@@ -1,0 +1,26 @@
+#document_library_overlay.fixed.inset-0.z-40.hidden
+  #document_library_fields.absolute.inset-0.backdrop-blur-sm.bg-black/20
+    .max-w-lg.mx-auto.bg-white.px-6.py-6.mt-24.mb-24.rounded.overflow-y-auto
+      header.pb-4.flex.flex-row.justify-between.items-center
+        h2.text-2xl.font-bold = "Document library"
+
+        = link_to "#",
+                  class: "text-lg text-stone-500 hover:text-brand-900",
+                  id: "close_document_library_button",
+                  data: { action: "event-edit#hideDocumentLibrary" } do
+          i.fa-solid.fa-times
+
+      = render partial: "events/partials/document_library/form", locals: { unit: @unit, event: @event }
+
+javascript:
+  // override the Cancel button to simply dismiss the modal
+  // by removing a CSS class from the <body> tag
+  document.addEventListener("DOMContentLoaded", function() {
+  });
+  
+  var cancelButton = document.querySelector("#cancel_location_button");
+  cancelButton.href = "#";
+  cancelButton.dataset.action = "click->event-edit#hideLocation";
+
+  var saveButton = document.querySelector("#add_location_button");
+  saveButton.dataset.action = "click->event-edit#hideLocationAndContinue";

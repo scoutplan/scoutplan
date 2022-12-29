@@ -14,6 +14,7 @@ export default class extends Controller {
 
   change(event) {
     this.toggle(event.target);
+    event.preventDefault();
   }
   
   toggle(elem) {

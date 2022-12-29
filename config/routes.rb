@@ -47,6 +47,7 @@ Rails.application.routes.draw do
 
     resources :events, path: "schedule" do
       resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
+      resources :event_attachments, path: "attachments", as: "attachments"
       resources :event_activities
       resources :event_organizers, as: "organizers", path: "organizers"
       resources :document_types

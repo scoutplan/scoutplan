@@ -39,6 +39,10 @@ class Unit < ApplicationRecord
     s.key :utilities, defaults: { fire_scheduled_tasks: false }
   end
 
+  def attachments
+    events.order(:starts_at).collect(&:attachments).flatten
+  end
+
   def messages
     # members.collect(&:messages)
     Message.where(author_id: members.collect(&:id))
