@@ -1,5 +1,3 @@
-= text_field :filter, "", class: "w-full border rounded px-4 py-2 mb-4", placeholder: "Filter by filename"
-
 = form_with model: [unit, event] do |f|
   ul
     - unit.attachments.each do |attachment|

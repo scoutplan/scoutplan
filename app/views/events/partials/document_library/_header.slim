@@ -1,0 +1,11 @@
+header.sticky.top-0.bg-white.py-4
+  .flex.flex-row.justify-between.items-center
+    h2.text-2xl.font-bold = "Document library"
+
+    = link_to "#",
+              class: "text-lg text-stone-500 hover:text-brand-900",
+              id: "close_document_library_button",
+              data: { action: "event-edit#hideDocumentLibrary" } do
+      i.fa-solid.fa-times
+
+  = text_field :filter, "", class: "w-full border border-stone-200 placeholder-stone-400 rounded px-4 py-2 mt-2", placeholder: "Filter by filename or event title"

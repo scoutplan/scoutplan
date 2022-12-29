@@ -1,15 +1,7 @@
-#document_library_overlay.fixed.inset-0.z-40.hidden
-  #document_library_fields.absolute.inset-0.backdrop-blur-sm.bg-black/20
-    .max-w-lg.mx-auto.bg-white.px-6.py-6.mt-24.mb-24.rounded.overflow-y-auto
-      header.pb-4.flex.flex-row.justify-between.items-center
-        h2.text-2xl.font-bold = "Document library"
-
-        = link_to "#",
-                  class: "text-lg text-stone-500 hover:text-brand-900",
-                  id: "close_document_library_button",
-                  data: { action: "event-edit#hideDocumentLibrary" } do
-          i.fa-solid.fa-times
-
+#document_library_overlay.fixed.inset-0.z-40.hidden-not
+  #document_library_field.absolute.inset-0.py-24.backdrop-blur-sm.bg-black/20
+    .max-w-lg.mx-auto.bg-white.px-6.pb-6.rounded.overflow-scroll.h-full
+      = render partial: "events/partials/document_library/header", locals: { unit: @unit, event: @event }
       = render partial: "events/partials/document_library/form", locals: { unit: @unit, event: @event }
 
 javascript:

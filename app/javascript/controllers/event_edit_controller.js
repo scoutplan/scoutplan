@@ -41,13 +41,20 @@ export default class extends Controller {
   }
 
   showAttachments(event) {
-    console.log(this.fileinputTarget.files.length);
-
+    this.clearPendingAttachments();
 
     var attachment_list = document.querySelector("#existing_attachments");
     for (let i = 0; i < this.fileinputTarget.files.length; i++) {
       let file = this.fileinputTarget.files[i];
-      attachment_list.insertAdjacentHTML("beforeend", `<li class="py-1 font-bold text-green-600">${file.name} (pending)</li>`);
+      attachment_list.insertAdjacentHTML("beforeend", `<li class="pending-attachment py-1 font-bold text-green-600">${file.name} (pending)</li>`);
     }
+  }
+
+  clearPendingAttachments() {
+    var attachment_list = document.querySelector("#existing_attachments");
+    var pending_attachments = document.querySelectorAll(".pending-attachment");
+    pending_attachments.forEach(function(attachment) {
+      attachment_list.removeChild(attachment);
+    });
   }
 }

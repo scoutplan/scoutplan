@@ -33,7 +33,7 @@ section.py-4
         i.fa-solid.fa-upload.mr-2
         = "Upload files"
 
-      - if Flipper.enabled? :document_library
+      - if Flipper.enabled? :document_library, @current_member
         = button_tag class: "inline-block font-bold border rounded px-4 py-2 whitespace-nowrap border-stone-500 hover:bg-stone-100",
                     data: { action: "click->event-edit#browseDocumentLibrary" }
           i.fa-solid.fa-cabinet-filing.mr-2
