@@ -1,0 +1,2 @@
+module EventAttachmentsHelper
+end

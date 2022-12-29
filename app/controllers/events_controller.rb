@@ -267,9 +267,6 @@ class EventsController < UnitContextController
       shifts = values[:shifts]
       accepted_shifts = shifts.present? ? shifts.select { |_, v| v[:response] == "accepted" }.keys : []
 
-      ap member_id
-      ap accepted_shifts
-
       response = if shifts.present?
                    accepted_shifts.count.positive? ? "accepted" : "declined"
                  else

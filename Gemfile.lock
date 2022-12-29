@@ -179,6 +179,9 @@ GEM
     icalendar (2.8.0)
       ice_cube (~> 0.16)
     ice_cube (0.16.4)
+    image_processing (1.12.2)
+      mini_magick (>= 4.9.5, < 5)
+      ruby-vips (>= 2.0.17, < 3)
     importmap-rails (1.1.5)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
@@ -206,6 +209,7 @@ GEM
     marcel (1.0.2)
     matrix (0.4.2)
     method_source (1.0.0)
+    mini_magick (4.12.0)
     mini_mime (1.1.2)
     minitest (5.16.3)
     mixpanel-ruby (2.3.0)
@@ -326,6 +330,8 @@ GEM
       sorbet-runtime
       syntax_tree (>= 4.0.2, < 5.0.0)
     ruby-progressbar (1.11.0)
+    ruby-vips (2.1.4)
+      ffi (~> 1.12)
     ruby2_keywords (0.0.5)
     rufus-scheduler (3.8.2)
       fugit (~> 1.1, >= 1.1.6)
@@ -449,6 +455,7 @@ DEPENDENCIES
   humanize
   icalendar
   ice_cube
+  image_processing
   importmap-rails
   launchy
   ledermann-rails-settings
