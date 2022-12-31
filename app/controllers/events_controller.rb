@@ -25,7 +25,7 @@ class EventsController < UnitContextController
 
       # this redirection can probably happen in routes.rb
       case variation
-      when "event_table"
+      when "list"
         redirect_to list_unit_events_path(@unit)
         return
       when "calendar"
@@ -203,6 +203,7 @@ class EventsController < UnitContextController
     service = EventUpdateService.new(@event, @current_member, event_params)
     service.perform
     EventService.new(@event, params).process_event_shifts
+    EventService.new(@event, params).process_library_attachments
     EventOrganizerService.new(@event).update(params[:event_organizers])
     if params[:event][:attachments].present?
       params[:event][:attachments].each do |attachment|
@@ -377,7 +378,7 @@ class EventsController < UnitContextController
                                       :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
                                       :note, :payment_amount, :online, :website,
-                                      :notify_members, :notify_recipients, :notify_message,
+                                      :notify_members, :notify_recipients, :notify_message, :document_library_ids,
                                       packing_list_ids: [],
                                       event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy],
                                       event_organizers_attributes: [:unit_membership_id])

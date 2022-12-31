@@ -2,7 +2,6 @@
 
 describe "the sign-in process", type: :feature do
   before :each do
-    User.destroy_all
     @user = FactoryBot.create(:user, email: "test@scoutplan.org")
     @unit = FactoryBot.create(:unit)
     @membership = @unit.unit_memberships.create(user: @user, status: :active, role: "member")
@@ -13,6 +12,7 @@ describe "the sign-in process", type: :feature do
     fill_in "user_email", with: @user.email
     fill_in "user_password", with: "password"
     click_button I18n.t("global.sign_in")
+    ap page.current_path
     expect(page).to have_current_path(list_unit_events_path(@unit))
   end
 end

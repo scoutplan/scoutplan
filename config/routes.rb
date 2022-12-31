@@ -53,7 +53,7 @@ Rails.application.routes.draw do
       resources :document_types
       resources :locations, module: :events
       collection do
-        get "/", to: redirect("/units/%{unit_id}/schedule/list")
+        # get "/", to: redirect("/units/%{unit_id}/schedule/list")
         get  "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
         get  "list",        to: "events#index", defaults: { variation: "list" }, as: "list"
         get  "calendar", to: "events#index", defaults: { variation: "calendar" }
