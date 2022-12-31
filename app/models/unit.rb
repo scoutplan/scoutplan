@@ -40,7 +40,7 @@ class Unit < ApplicationRecord
   end
 
   def attachments
-    events.order(:starts_at).collect(&:attachments).flatten
+    ActiveStorage::Attachment.includes(:blob).with_all_variant_records.where(record_type: "Event", record_id: events.collect(&:id))
   end
 
   def messages

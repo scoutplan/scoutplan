@@ -1,15 +1,21 @@
-= text_field :filter, "", class: "w-full border rounded px-4 py-2 mb-4", placeholder: "Filter by filename"
+- events = @unit.events
+- unit_attachments = @unit.attachments
+
+/ - unit_attachments = @unit.attachments.where.not(record_type: "Event")
 
 = form_with model: [unit, event] do |f|
   ul
-    - unit.attachments.each do |attachment|
-      - attachment_event = attachment.record_type.constantize.find(attachment.record_id)
+    - unit_attachments.with_all_variant_records.each do |attachment|
+      / - attachment_event = attachment.record_type.constantize.find(attachment.record_id)
+      - attachment_event = events.select{ |e| e.id = attachment.record_id }.first
       - next if attachment_event == event
+
       li
         = link_to "#",
                   class: "block w-full px-2 py-2 hover:bg-stone-100",
                   data: { action: "event-edit#attachFromLibrary",
-                          attachment_id: attachment.id } do
+                          attachment_id: attachment.id,
+                          filename: attachment.filename } do
           .flex.flex-row.gap-4.w-full
             .attachment-preview.w-20.block.shrink-0
               - if attachment.representable?
