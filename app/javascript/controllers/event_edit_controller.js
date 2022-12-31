@@ -1,7 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-<<<<<<< HEAD
   static targets = [ "deleteform", "fileinput", "documentLibraryIds" ];
 
   addAttachmentToPendingList(filename) {
@@ -16,14 +15,6 @@ export default class extends Controller {
     this.documentLibraryIdsTarget.value += attachmentId + ",";
     this.addAttachmentToPendingList(filename);
     document.querySelector("#document_library_overlay").classList.add("hidden");
-=======
-  static targets = [ "deleteform", "fileinput" ];
-
-  attachFromLibrary(event) {
-    document.querySelector("#document_library_overlay").classList.add("hidden");
-    var attachmentId = event.target.dataset.attachmentId;
-    console.log(attachmentId);
->>>>>>> main
     event.preventDefault();
   }
 
@@ -62,17 +53,11 @@ export default class extends Controller {
   }
 
   showAttachments(event) {
-<<<<<<< HEAD
     this.clearPendingAttachments();
-=======
-    console.log(this.fileinputTarget.files.length);
-
->>>>>>> main
 
     var attachment_list = document.querySelector("#existing_attachments");
     for (let i = 0; i < this.fileinputTarget.files.length; i++) {
       let file = this.fileinputTarget.files[i];
-<<<<<<< HEAD
       attachment_list.insertAdjacentHTML("beforeend", `<li class="pending-attachment py-1 font-bold text-green-600">${file.name} (pending)</li>`);
     }
   }
@@ -84,9 +69,4 @@ export default class extends Controller {
       attachment_list.removeChild(attachment);
     });
   }
-=======
-      attachment_list.insertAdjacentHTML("beforeend", `<li class="py-1 font-bold text-green-600">${file.name} (pending)</li>`);
-    }
-  }
->>>>>>> main
 }
