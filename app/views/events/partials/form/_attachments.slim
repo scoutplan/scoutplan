@@ -9,36 +9,35 @@ section.py-4
           / = link_to "Remove", "#", method: :delete, class: "text-red-600 hover:underline ml-2", data: { confirm: "Are you sure you want to remove this attachment?" }
 
     .py-1#add_attachments_item
-      = link_to "#", class: "block text-blue-600 hover:underline font-bold", id: "add_attachment", data: { body_class: "adding-attachments"} do
+      = link_to "#", class: "block text-blue-600 hover:underline font-bold", id: "add_attachment", data: { body_class: "adding-attachments" } do
         i.fa-solid.fa-plus-circle.mr-2
         = "Add more attachments"
 
-  - if @event.attachments.empty?
+  - else
     = "This event doesn't have any attachments yet. "
     = link_to "Add one now.", "#",
                 class: "text-blue-600 hover:underline",
                 id: "add_attachment",
-                data: { body_class: "adding-attachments"}
+                data: { body_class: "adding-attachments" }
 
-  - else  
-    #new_attachments.pt-4
-      = f.file_field :attachments, multiple: true, class: "hidden", id: "upload",
-                    data: { action: "change->event-edit#showAttachments", event_edit_target: "fileinput" }
+  #new_attachments.pt-4
+    = f.file_field :attachments, multiple: true, class: "hidden", id: "upload",
+                  data: { action: "change->event-edit#showAttachments", event_edit_target: "fileinput" }
 
-      .flex.flex-col.md:flex-row.gap-2
+    .flex.flex-col.md:flex-row.gap-2
+      = button_tag class: "inline-block font-bold border rounded px-4 py-2 whitespace-nowrap border-stone-500 hover:bg-stone-100",
+                  onclick: "document.getElementById('upload').click(); return false;" do
+        i.fa-solid.fa-upload.mr-2
+        = "Upload files"
+
+      - if Flipper.enabled? :document_library, @current_member
         = button_tag class: "inline-block font-bold border rounded px-4 py-2 whitespace-nowrap border-stone-500 hover:bg-stone-100",
-                    onclick: "document.getElementById('upload').click(); return false;" do
-          i.fa-solid.fa-upload.mr-2
-          = "Upload files"
-
-        - if Flipper.enabled? :document_library, @current_member
-          = button_tag class: "inline-block font-bold border rounded px-4 py-2 whitespace-nowrap border-stone-500 hover:bg-stone-100",
-                      data: { action: "click->event-edit#browseDocumentLibrary" }
-            i.fa-solid.fa-cabinet-filing.mr-2
-            = "Browse document library"                   
+                    data: { action: "click->event-edit#browseDocumentLibrary" }
+          i.fa-solid.fa-cabinet-filing.mr-2
+          = "Browse document library"                   
 
   = text_field_tag "document_library_ids", "",
-                 class: "hidden-not",
+                 class: "hidden",
                  id: "document_library_ids",
                  data: { event_edit_target: "documentLibraryIds" }
 
