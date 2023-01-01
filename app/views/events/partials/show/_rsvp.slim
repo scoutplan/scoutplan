@@ -36,7 +36,7 @@ section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800
             .table-cell.pl-2
               - rsvp.event_shift_ids.each do |shift_id|
                 - shift = @event.shifts.find_by(id: shift_id)
-                .inline-block.px-2.py-1.border.border-sky-300.rounded
+                .inline-block.px-2.py-1.mr-1.border.border-sky-300.rounded
                   i.fa-solid.fa-circle-check.text-green-500.mr-1
                   = shift.name
 
