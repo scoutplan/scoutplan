@@ -1,0 +1,18 @@
+- return unless Flipper.enabled?(:event_chat, @current_member)
+
+section#event_chat.mt-8
+  header.border-t.border-stone-600.py-2
+    h3.font-bold.text-stone-600
+      i.fa-comments.fa-solid.text-sky-500.mr-2
+      = "Chat about #{@event.title}"
+
+  article#new_chat_message
+    = form_with :url => unit_event_chat_messages_path(@unit, @event), :method => :post, :remote => true do |f|
+      = text_field :new_chat_message,
+                  "",
+                  class: "w-full border border-stone-300 placeholder-stone-300 rounded p-2 text-sm",
+                  placeholder: "Type a new message"
+
+  = render partial: "events/partials/show/chat_message",
+           collection: @event.chat&.chat_messages,
+           locals: { current_member: @current_member }

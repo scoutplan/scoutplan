@@ -31,6 +31,8 @@ class Event < ApplicationRecord
   has_many :members, through: :event_rsvps
   has_many :rsvp_tokens, dependent: :destroy
 
+  has_one :chat, as: :chattable, dependent: :destroy
+
   has_rich_text :description
   has_many_attached :attachments
   has_paper_trail versions: {
