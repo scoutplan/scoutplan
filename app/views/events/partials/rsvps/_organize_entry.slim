@@ -18,6 +18,9 @@ li.member(id="unit_membership_#{@member.id}")
         span.member-name.inline-block
           = @member.full_display_name
 
+        - if rsvp&.note.present?
+          i.fa-comment-dots.fa-solid.text-gray-500.ml-2(title="#{rsvp.note}")
+
       // right
       div
         .inline-block
