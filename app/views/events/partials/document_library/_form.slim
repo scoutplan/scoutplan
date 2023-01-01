@@ -7,7 +7,7 @@
   ul
     - unit_attachments.with_all_variant_records.each do |attachment|
       / - attachment_event = attachment.record_type.constantize.find(attachment.record_id)
-      - attachment_event = events.select{ |e| e.id = attachment.record_id }.first
+      - attachment_event = events.select{ |e| e.id == attachment.record_id }.first
       - next if attachment_event == event
 
       li
