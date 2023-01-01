@@ -47,6 +47,11 @@
     autocomplete: "off"
 
 javascript:
+  document.querySelector("#note").addEventListener("input", function(event) {
+    var submitElem = document.querySelector("#accept");
+    submitElem.disabled = false;
+  });
+
   document.querySelectorAll(".response-wrapper input").forEach(function(elem) {
     elem.addEventListener("click", function(event) {
       var submitElem = document.querySelector("#accept");
