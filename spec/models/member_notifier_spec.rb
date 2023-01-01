@@ -54,5 +54,11 @@ RSpec.describe MemberNotifier, type: :model do
       notifier = MemberNotifier.new(@member)
       expect { notifier.send_event_organizer_digest }.to change { ActionMailer::Base.deliveries.count }.by(1)
     end
+
+    it "skips inactive members" do
+      inactive_member = FactoryBot.create(:unit_membership, unit: @unit, status: :inactive)
+      notifier = MemberNotifier.new(@member)
+      expect { notifier.send_event_organizer_digest }.to change { ActionMailer::Base.deliveries.count }.by(1)      
+    end
   end
 end
