@@ -1,15 +1,15 @@
 // search field
 - if true
-  .relative.md:inline-block
+  .relative.md:inline-block.w-full
     = search_field_tag(:search, 
       "",
-      class: "w-full rounded text-sm px-2 py-2 bg-stone-100 border border-stone-300 placeholder-stone-400",
+      class: "block w-full rounded text-sm px-2 py-2 bg-stone-100 border border-stone-300 placeholder-stone-400",
       autofocus: true,
       autocomplete: 'off',
       placeholder: raw(t('members.search_by_name')),
       onkeyup: 'performNameSearch();')
 
-    i.fa-magnifying-glass.fas.absolute.right-6(style="top:50%;transform:translateY(-50%);")
+    i.fa-magnifying-glass.fas.absolute.right-3(style="top:50%;transform:translateY(-50%);")
 
 javascript:
   // search functionality

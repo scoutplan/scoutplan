@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_26_155429) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_01_151234) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -159,6 +159,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_26_155429) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["creator_id"], name: "index_blazer_queries_on_creator_id"
+  end
+
+  create_table "chat_messages", force: :cascade do |t|
+    t.integer "chat_id"
+    t.integer "author_id"
+    t.string "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "chats", force: :cascade do |t|
+    t.string "chattable_type"
+    t.integer "chattable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "conversation_contexts", force: :cascade do |t|

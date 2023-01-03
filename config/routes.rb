@@ -46,6 +46,7 @@ Rails.application.routes.draw do
     get "my_rsvps", to: "events#my_rsvps", as: "my_rsvps"
 
     resources :events, path: "schedule" do
+      resources :chat_messages, as: "discussion", path: "discussion"
       resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
       resources :event_attachments, path: "attachments", as: "attachments"
       resources :event_activities

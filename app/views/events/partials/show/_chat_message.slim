@@ -1,0 +1,15 @@
+- if chat_message.author == current_member
+  dt.text-xs.text-left.px-2.mt-2.ml-8
+    = "You"
+    = ", #{distance_of_time_in_words_to_now(chat_message.created_at)} ago"
+
+  dd.bg-sky-500.text-white.px-2.py-1.rounded.ml-8.message-self
+    = chat_message.message
+
+- else
+  dt.text-xs.text-left.px-2.mt-2
+    = chat_message.author_name
+    = ", #{distance_of_time_in_words_to_now(chat_message.created_at)} ago"
+
+  dd.bg-stone-100.text-stone-900.px-2.py-1.rounded.mr-8.message-others
+    = chat_message.message
