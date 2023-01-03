@@ -31,6 +31,8 @@ class Event < ApplicationRecord
   has_many :members, through: :event_rsvps
   has_many :rsvp_tokens, dependent: :destroy
 
+  has_one :chat, as: :chattable, dependent: :destroy
+
   has_rich_text :description
   has_many_attached :attachments
   has_paper_trail versions: {
@@ -118,6 +120,10 @@ class Event < ApplicationRecord
     event_shifts.count.positive?
   end
 
+  def chat?
+    requires_rsvp
+  end
+
   def requires_payment?
     payment_amount.positive?
   end
@@ -185,6 +191,11 @@ class Event < ApplicationRecord
     return primary_location&.full_address || "TBD" unless location_type.present?
 
     find_location(location_type)&.full_address
+  end
+
+  def initialize_chat
+    Chat.find_or_create_by(chattable: self)
+    chat
   end
 
   def mapping_address(location_type = nil)

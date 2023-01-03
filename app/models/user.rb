@@ -54,8 +54,8 @@ class User < ApplicationRecord
     "#{display_first_name} #{last_name}"
   end
 
-  def short_display_name
-    "#{display_first_name} #{last_name&.first}."
+  def short_display_name(period: true)
+    "#{display_first_name} #{last_name&.first}#{period ? '.' : ''}"
   end
 
   def smsable?
