@@ -1,0 +1,5 @@
+<%= @chat_message.author.short_display_name(period: false) %>, discussing <%= @chat_message.chat.topic %>:
+
+<%= @chat_message.message %>
+
+Visit <%= magic_url_for(@member, unit_event_discussion_index_path(@unit, @event)) %> to view the full discussion and reply.

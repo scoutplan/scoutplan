@@ -10,6 +10,7 @@ RSpec.describe Chat, type: :model do
 
   it "auto-creates a chat when an event is created" do
     event = FactoryBot.create(:event)
+    event.initialize_chat
     expect(event.chat).to be_a(Chat)
   end
 end

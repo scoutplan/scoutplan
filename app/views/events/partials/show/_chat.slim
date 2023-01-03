@@ -1,18 +1,32 @@
+- return unless @event.chat?
 - return unless Flipper.enabled?(:event_chat, @current_member)
+- return unless ChatMessagePolicy.new(@current_member, ChatMessage.new).index?
+
+- chatters = @event.chat.participants
+
+- return unless chatters.count > 1
 
 section#event_chat.mt-8
   header.border-t.border-stone-600.py-2
-    h3.font-bold.text-stone-600
-      i.fa-comments.fa-solid.text-sky-500.mr-2
-      = "Chat about #{@event.title}"
+    = link_to unit_event_discussion_index_path(@unit, @event),
+              data: { turbo_action: "advance" } do
+      h3.font-bold.text-stone-600
+        i.fa-comments.fa-solid.text-sky-500.mr-2
+        = "#{@event.title} Discussion"
 
-  article#new_chat_message
-    = form_with :url => unit_event_chat_messages_path(@unit, @event), :method => :post, :remote => true do |f|
-      = text_field :new_chat_message,
-                  "",
-                  class: "w-full border border-stone-300 placeholder-stone-300 rounded p-2 text-sm",
-                  placeholder: "Type a new message"
+    details.text-sm.text-sky-500
+      summary = "#{chatters.count} #{"person".pluralize(chatters.count)} in this chat"
+      ul
+        - chatters.each do |member|
+          li.inline-block.mr-2
+            = member.short_display_name
 
-  = render partial: "events/partials/show/chat_message",
-           collection: @event.chat&.chat_messages,
-           locals: { current_member: @current_member }
+  article#new_chat_message.mb-4
+    = render partial: "events/partials/show/new_chat_message"
+
+  dl#chat_messages.flex.flex-col.gap-1
+    = render partial: "events/partials/show/chat_message",
+            collection: @event.chat&.chat_messages&.order(created_at: :desc),
+            locals: { current_member: @current_member }
+
+  = render partial: "events/partials/show/no_chat_messages"
