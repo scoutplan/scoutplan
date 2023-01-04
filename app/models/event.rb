@@ -120,6 +120,10 @@ class Event < ApplicationRecord
     event_shifts.count.positive?
   end
 
+  def chat
+    super || Chat.find_or_create_by(chattable: self)
+  end
+
   def chat?
     requires_rsvp
   end
