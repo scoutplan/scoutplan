@@ -9,7 +9,7 @@ class ChatMessagePolicy < UnitContextPolicy
   end
 
   def index?
-    true
+    active?
   end
 
   def destroy?
@@ -25,7 +25,7 @@ class ChatMessagePolicy < UnitContextPolicy
   end
 
   def create?
-    @membership.adult?
+    active?
   end
 
   def impersonate?
