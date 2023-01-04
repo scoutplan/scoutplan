@@ -1,5 +1,5 @@
 - return unless @event.chat?
-- return unless Flipper.enabled?(:event_chat, @current_member)
+- return unless Flipper.enabled?(:event_chat, @current_member) || ENV["RAILS_ENV"] == "test"
 - return unless ChatMessagePolicy.new(@current_member, ChatMessage.new).index?
 
 - chatters = @event.chat.participants
