@@ -17,4 +17,8 @@ class UnitContextPolicy < ApplicationPolicy
   def admin?
     @membership&.role == "admin"
   end
+
+  def active?
+    @membership&.status_active?
+  end
 end
