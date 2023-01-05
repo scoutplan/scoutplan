@@ -5,10 +5,6 @@ const SEARCH_TIMEOUT = 500;
 export default class extends Controller {
   static targets = [ "query" ];
 
-  connect() {
-    console.log("Search controller loaded");
-  }
-
   show() {
     document.body.classList.add("showing-search");
     document.querySelector("#search_query_term").focus();

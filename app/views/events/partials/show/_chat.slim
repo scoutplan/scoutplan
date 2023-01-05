@@ -6,6 +6,8 @@
 
 - return unless chatters.count > 1
 
+= turbo_stream_from "chat_#{@event.chat.id}", :chat_messages
+
 section#event_chat.mt-8
   header.border-t.border-stone-600.py-2
     = link_to unit_event_discussion_index_path(@unit, @event),
@@ -25,8 +27,8 @@ section#event_chat.mt-8
     = render partial: "events/partials/show/new_chat_message"
 
   dl#chat_messages.flex.flex-col.gap-1
-    = render partial: "events/partials/show/chat_message",
-            collection: @event.chat&.chat_messages&.order(created_at: :desc),
-            locals: { current_member: @current_member }
+    = render partial: "chat_messages/chat_message",
+             collection: @event.chat&.chat_messages&.order(created_at: :desc),
+             locals: { current_member: @current_member }
 
   = render partial: "events/partials/show/no_chat_messages"
