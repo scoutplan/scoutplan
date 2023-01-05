@@ -19,4 +19,4 @@
 
     dl#chat_messages.flex.flex-col.gap-1
       - @event.chat.messages.order(created_at: :desc).each do |message|
-        = render partial: "events/partials/show/chat_message", locals: { chat_message: message, current_member: @current_member }
+        = render partial: "chat_messages/chat_message", locals: { chat_message: message, current_member: @current_member }

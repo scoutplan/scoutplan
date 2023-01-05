@@ -483,6 +483,7 @@ DEPENDENCIES
   rack-mini-profiler (~> 2.3)
   rails (~> 7.0.0)
   rails-html-sanitizer (>= 1.4.4)
+  redis (~> 4.0)
   remote_syslog_logger
   rexml
   rspec-rails (~> 5.0)

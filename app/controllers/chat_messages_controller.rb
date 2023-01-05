@@ -21,11 +21,11 @@ class ChatMessagesController < UnitContextController
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.prepend(
-            :chat_messages,
-            partial: "events/partials/show/chat_message",
-            locals: { current_member: current_member, chat_message: @chat_message }
-          ),
+          # turbo_stream.prepend(
+          #   :chat_messages,
+          #   partial: "chat_messages/chat_message",
+          #   locals: { current_member: current_member, chat_message: @chat_message }
+          # ),
           turbo_stream.update(
             :new_chat_message,
             partial: "events/partials/show/new_chat_message",

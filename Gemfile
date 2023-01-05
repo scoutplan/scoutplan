@@ -90,3 +90,6 @@ group :test do
   # gem "webdrivers"
   gem "apparition"
 end
+
+# Use Redis for Action Cable
+gem "redis", "~> 4.0"
