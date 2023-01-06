@@ -18,14 +18,17 @@ class ChatMessagesController < UnitContextController
     end
     @chat_message.save!
 
+    Turbo::StreamsChannel.broadcast_prepend_later_to(
+      "chat_#{chat.id}",
+      :chat_messages,
+      partial: "chat_messages/chat_message",
+      target: "chat_messages",
+      locals: { chat_message: @chat_message, current_member: @current_member }
+    )
+
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
-          # turbo_stream.prepend(
-          #   :chat_messages,
-          #   partial: "chat_messages/chat_message",
-          #   locals: { current_member: current_member, chat_message: @chat_message }
-          # ),
           turbo_stream.update(
             :new_chat_message,
             partial: "events/partials/show/new_chat_message",
