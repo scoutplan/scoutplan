@@ -2,7 +2,7 @@
 / - unit = chat_message.author.unit
 / - current_member = unit.membership_for(current_user)
 
-- if false #chat_message.author == current_member
+- if chat_message.author == current_member
   dt.text-xs.text-left.px-2.mt-2.ml-8
     = "You"
     = ", #{distance_of_time_in_words_to_now(chat_message.created_at)} ago"

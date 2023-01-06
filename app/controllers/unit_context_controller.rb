@@ -39,6 +39,7 @@ class UnitContextController < ApplicationController
 
   def set_unit_cookie
     cookies[:current_unit_id] = { value: current_unit&.id }
+    cookies[:current_member_id] = { value: current_member&.id }
   end
 
   def time_zone(&block)

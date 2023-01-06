@@ -7,4 +7,13 @@ aside.md:absolute.md:-ml-72.text-stone-500.w-60
       = render partial: "events/partials/show/sidecar/download_brief"
       = render partial: "events/partials/show/sidecar/adjacent_events"
   
-  = render partial: "events/partials/show/chat"
+  header.border-t.border-stone-600.py-2.mt-8
+    = link_to unit_event_discussion_index_path(@unit, @event),
+              data: { turbo_action: "advance" } do
+      h3.font-bold.text-stone-600
+        i.fa-comments.fa-solid.text-sky-500.mr-2
+        = "#{@event.title} Discussion"
+  = turbo_frame_tag :chat, src: unit_event_discussion_index_path(@unit, @event, suppress_header: true)
+    .text-center
+      = "Loading "
+      i.fa-solid.fa-spinner.fa-spin

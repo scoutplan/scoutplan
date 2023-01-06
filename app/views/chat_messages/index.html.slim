@@ -1,22 +1,26 @@
 = turbo_frame_tag :main
   .max-w-lg.mx-auto
-    header.mb-4
-      = link_to unit_event_path(@unit, @event),
-                class: "block text-sky-800 hover:text-sky-900 mb-4",
-                data: { turbo_action: "advance" } do
-        i.fa-stack
-          i.fa-regular.fa-circle.fa-stack-2x
-          i.fa-solid.fa-arrow-left.fa-stack-1x
-        = "Back to #{@event.title}"
+    - unless params[:suppress_header].present?
+      header.mb-4
+        = link_to unit_event_path(@unit, @event),
+                  class: "block text-sky-800 hover:text-sky-900 mb-4",
+                  data: { turbo_action: "advance" } do
+          i.fa-stack
+            i.fa-regular.fa-circle.fa-stack-2x
+            i.fa-solid.fa-arrow-left.fa-stack-1x
+          = "Back to #{@event.title}"
 
-      h1.text-3xl.font-bold
-        = "#{@event.title} Discussion"
-      p.text-sm.text-stone-600
-        = "Newest messages first"
+        h1.text-3xl.font-bold
+          = "#{@event.title} Discussion"
+        p.text-sm.text-stone-600
+          = "Newest messages first"
+          
+    = turbo_frame_tag :chat
+      = turbo_stream_from "chat_#{@event.chat.id}", :chat_messages
 
-    article#new_chat_message.mb-4
-      = render partial: "events/partials/show/new_chat_message"        
+      article#new_chat_message.mb-4
+        = render partial: "events/partials/show/new_chat_message"        
 
-    dl#chat_messages.flex.flex-col.gap-1
-      - @event.chat.messages.order(created_at: :desc).each do |message|
-        = render partial: "chat_messages/chat_message", locals: { chat_message: message, current_member: @current_member }
+      dl#chat_messages.flex.flex-col.gap-1
+        - @event.chat.messages.order(created_at: :desc).each do |message|
+          = render partial: "chat_messages/chat_message", locals: { chat_message: message, current_member: @current_member }
