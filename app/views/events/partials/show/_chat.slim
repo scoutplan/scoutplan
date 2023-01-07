@@ -2,33 +2,14 @@
 - return unless Flipper.enabled?(:event_chat, @current_member) || ENV["RAILS_ENV"] == "test"
 - return unless ChatMessagePolicy.new(@current_member, ChatMessage.new).index?
 
-- chatters = @event.chat.participants
+header.border-t.border-stone-600.py-2.mt-8
+  = link_to unit_event_discussion_index_path(@unit, @event),
+            data: { turbo_action: "advance" } do
+    h3.font-bold.text-stone-600
+      i.fa-comments.fa-solid.text-sky-500.mr-2
+      = "#{@event.title} Discussion"
 
-- return unless chatters.count > 1
-
-= turbo_stream_from "chat_#{@event.chat.id}", :chat_messages
-
-section#event_chat.mt-8
-  header.border-t.border-stone-600.py-2
-    = link_to unit_event_discussion_index_path(@unit, @event),
-              data: { turbo_action: "advance" } do
-      h3.font-bold.text-stone-600
-        i.fa-comments.fa-solid.text-sky-500.mr-2
-        = "#{@event.title} Discussion"
-
-    details.text-sm.text-sky-500
-      summary = "#{chatters.count} #{"person".pluralize(chatters.count)} in this chat"
-      ul
-        - chatters.each do |member|
-          li.inline-block.mr-2
-            = member.short_display_name
-
-  article#new_chat_message.mb-4
-    = render partial: "events/partials/show/new_chat_message"
-
-  dl#chat_messages.flex.flex-col.gap-1
-    = render partial: "chat_messages/chat_message",
-             collection: @event.chat&.chat_messages&.order(created_at: :desc),
-             locals: { current_member: @current_member }
-
-  = render partial: "events/partials/show/no_chat_messages"
+= turbo_frame_tag :chat, src: unit_event_discussion_index_path(@unit, @event, suppress_header: true, limit: 16)
+  .text-center
+    = "Loading "
+    i.fa-solid.fa-spinner.fa-spin
