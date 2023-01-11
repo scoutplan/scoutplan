@@ -5,3 +5,8 @@ header.mb-4
     .text-sm.py-1.uppercase.tracking-wider.text-stone-500 = @unit.name
 
   = content_tag(:p, @event.short_description, class: "mt-2 font-bold") if @event.short_description.present?          
+
+  .flex.flex-row.gap-1
+    - @event.tag_list.each do |tag|
+      .font-bold.text-sm.border.rounded-md.py-1.px-2
+        = tag

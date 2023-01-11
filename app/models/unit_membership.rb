@@ -11,8 +11,6 @@ class UnitMembership < ApplicationRecord
   include Flipper::Identifier
   include Contactable
 
-  # default_scope { includes(:user).order("users.first_name, users.last_name ASC") }
-
   belongs_to :unit
   belongs_to :user
 
@@ -71,6 +69,8 @@ class UnitMembership < ApplicationRecord
       via_sms: false
     }
   end
+
+  acts_as_taggable_on :tags
 
   def to_param
     [id, user&.full_display_name].join("-").parameterize

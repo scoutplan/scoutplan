@@ -2,6 +2,8 @@
 
 # Policy class governing Events and what members can do with them
 class EventPolicy < UnitContextPolicy
+  attr_accessor :event
+
   def initialize(membership, event)
     super
     @membership = membership
@@ -9,7 +11,9 @@ class EventPolicy < UnitContextPolicy
   end
 
   def show?
-    @event.published? || admin?
+    return true if admin?
+
+    @event.published? && tags_match?
   end
 
   def edit_rsvps?
@@ -58,5 +62,14 @@ class EventPolicy < UnitContextPolicy
 
   def destroy?
     admin?
+  end
+
+  private
+
+  # if the event is tagged, does the member possess those tags?
+  def tags_match?
+    return true if @event.tag_list.empty?
+
+    @membership.tag_list.any? { |tag| @event.tag_list.include?(tag.name) }
   end
 end

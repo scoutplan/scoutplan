@@ -1,0 +1,9 @@
+div.pt-4
+  = f.label :tags, "Tags", class: "block mb-1"
+  = f.text_field :tag_list,
+    class: "w-full border border-stone-300 rounded bg-white p-2 placeholder-stone-300 font-bold",
+    autocomplete: "off",
+    placeholder: t("events.edit.tags_placeholder")
+
+  div.text-sm.text-stone-400.mt-1
+    | Tagged events are only visible to similarly-tagged members. Separate with commas.

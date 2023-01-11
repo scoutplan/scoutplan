@@ -21,6 +21,8 @@ class ApplicationTexter
 
   # returns true if successful, false if not
   def send_message
+    send_intro_message
+
     raise ArgumentError, "'to' argument missing" unless to.present?
     return unless body
 
@@ -35,4 +37,23 @@ class ApplicationTexter
   # override in subclasses
   def body; end
   def to; end
+
+  private
+
+  def send_intro_message
+    user = User.find_by(phone: to)
+    return if user.settings(:communication).intro_sms_sent
+
+    user.settings(:communication).intro_sms_sent = true
+    user.save!
+    @client.messages.create(from: @from, to: to, body: intro_message(user))
+  end
+
+  def intro_message(user)
+    renderer.render(
+      template: "user_texter/intro",
+      layout: false,
+      locals: { user: user }
+    )
+  end
 end

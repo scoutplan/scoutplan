@@ -30,4 +30,7 @@ section.py-4
                       object_name: "event",
                       method: "status",
                       checked_value: "published",
-                      unchecked_value: "draft" }      
+                      unchecked_value: "draft" }
+
+  div.field.py-2
+    = render partial: "events/partials/form/tags", locals: { f: f }

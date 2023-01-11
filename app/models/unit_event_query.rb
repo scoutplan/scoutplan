@@ -18,6 +18,14 @@ class UnitEventQuery
     scope = scope.where(status: :published) unless @membership&.admin?
 
     # scope = scope.limit(10)
-    scope.all
+    filter_by_tag(scope.all)
+  end
+
+  def filter_by_tag(scope)
+    policy = EventPolicy.new(@membership, nil)
+    scope.select do |event|
+      policy.event = event
+      policy.show?
+    end
   end
 end

@@ -50,4 +50,12 @@ namespace :sp do
       task.save_schedule
     end
   end
+
+  desc "Flag existing SMS recipients as having received intro messages"
+  task flag_existing_sms_recipients: :environment do
+    User.where.not(phone: nil).each do |user|
+      user.settings(:communication).intro_sms_sent = true
+      user.save!
+    end
+  end
 end

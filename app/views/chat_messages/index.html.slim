@@ -1,3 +1,5 @@
+- limit = params[:limit].present? ? params[:limit].to_i : nil
+
 = turbo_frame_tag :main
   .max-w-lg.mx-auto
     - unless params[:suppress_header].present?
@@ -22,5 +24,11 @@
         = render partial: "events/partials/show/new_chat_message"        
 
       dl#chat_messages.flex.flex-col.gap-1
-        - @event.chat.messages.order(created_at: :desc).each do |message|
+        - @event.chat.messages.order(created_at: :desc).limit(limit).each do |message|
           = render partial: "chat_messages/chat_message", locals: { chat_message: message, current_member: @current_member }
+
+      - if limit.present?
+        = link_to unit_event_discussion_index_path(@unit, @event),
+                  class: "block text-sky-800 hover:text-sky-900 py-2 mt-2 text-center font-bold",
+                  data: { turbo_action: "advance", turbo_frame: "main" } do
+          = "View full discussion"
