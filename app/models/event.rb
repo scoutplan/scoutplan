@@ -78,6 +78,8 @@ class Event < ApplicationRecord
   scope :recent_and_future, -> { where("starts_at > ?", 4.weeks.ago) }
   scope :recent_and_upcoming, -> { where("starts_at BETWEEN ? AND ?", 4.weeks.ago, 35.days.from_now)}
 
+  acts_as_taggable_on :tags
+
   def dates_are_subsequent
     errors.add(:ends_at, "must be after start_date") if starts_at > ends_at
     errors.add(:rsvp_closes_at, "must be before start_date") if rsvp_closes_at > starts_at

@@ -9,6 +9,7 @@ gem "scout_apm" # needs to be first
 
 gem "active_storage_validations"
 gem "acts_as_list"
+gem "acts-as-taggable-on", "~> 9.0"
 gem "ahoy_email"
 gem "ahoy_matey"
 gem "awesome_print"

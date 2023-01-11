@@ -71,6 +71,8 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    acts-as-taggable-on (9.0.1)
+      activerecord (>= 6.0, < 7.1)
     acts_as_list (1.0.4)
       activerecord (>= 4.2)
     addressable (2.8.1)
@@ -440,6 +442,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_storage_validations
+  acts-as-taggable-on (~> 9.0)
   acts_as_list
   ahoy_email
   ahoy_matey

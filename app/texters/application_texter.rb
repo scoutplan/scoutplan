@@ -46,10 +46,10 @@ class ApplicationTexter
 
     user.settings(:communication).intro_sms_sent = true
     user.save!
-    @client.messages.create(from: @from, to: to, body: intro_message)
+    @client.messages.create(from: @from, to: to, body: intro_message(user))
   end
 
-  def intro_message
+  def intro_message(user)
     renderer.render(
       template: "user_texter/intro",
       layout: false,
