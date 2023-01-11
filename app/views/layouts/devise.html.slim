@@ -7,14 +7,13 @@ html
     = csp_meta_tag
     = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
     = stylesheet_link_tag "application", "data-turbo-track": "reload"
-    = stylesheet_link_tag "https://use.typekit.net/#{ENV["ADOBE_FONT_KIT_ID"]}.css"
     = javascript_include_tag "https://kit.fontawesome.com/#{ ENV["FONT_AWESOME_KIT_ID"] }.js", crossorigin: "anonymous"
     = javascript_importmap_tags
     = yield :head
 
   body(class="bg-stone-100 text-gray-600 #{controller_name} #{action_name}")
     .mx-auto.w-full.md:w-96
-      header.py-12
+      header.pt-4.md:pt-12.px-2
         = image_tag "https://scoutplan.github.io/assets/scoutplan_logo_sm.png", class: "w-32"
           
         - if flash[:notice]
@@ -29,8 +28,8 @@ html
 
       = yield
 
-      footer.py-12.px-2.text-sm.text-stone-400
-        | &copy; 2021–2022 Scoutplan. All rights reserved.
+      footer.pt-4.pb-4.md:pb-12.px-2.text-sm.text-stone-400
+        | &copy; 2021&ndash;#{Date.today.year} Scoutplan. All rights reserved.
 
 css:
   body {
