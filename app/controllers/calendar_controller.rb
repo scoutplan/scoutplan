@@ -18,7 +18,7 @@ class CalendarController < ApplicationController
     events = UnitEventQuery.new(member, unit).execute
     cal = Icalendar::Calendar.new
     cal.timezone do |t|
-      t.tzid = ActiveSupport::TimeZone::MAPPING[unit.time_zone]
+      t.tzid = unit.time_zone
     end
     exporter = IcalExporter.new(member)
     events.each do |event|
