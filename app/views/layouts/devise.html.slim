@@ -13,23 +13,20 @@ html
 
   body(class="bg-stone-100 text-gray-600 #{controller_name} #{action_name}")
     .mx-auto.w-full.md:w-96
-      header.pt-4.md:pt-12.px-2
+      header.pt-4.md:pt-12.px-2.hidden.md:block
         = image_tag "https://scoutplan.github.io/assets/scoutplan_logo_sm.png", class: "w-32"
-          
-        - if flash[:notice]
-          p.py-6.mx-2.font-bold.text-left
-            i.fa-info-circle.fas.mr-2.text-orange-600
-            = flash[:notice]
-
-        - if flash[:alert]
-          p.py-6.mx-2.font-bold.text-left
-            i.fa-exclamation-triangle.fas.mr-2.text-orange-600
-            = flash[:alert]
 
       = yield
 
-      footer.pt-4.pb-4.md:pb-12.px-2.text-sm.text-stone-400
-        | &copy; 2021&ndash;#{Date.today.year} Scoutplan. All rights reserved.
+      - if flash[:notice]
+        p.py-6.mx-2.font-bold.text-left
+          i.fa-info-circle.fas.mr-2.text-orange-600
+          = flash[:notice]
+
+      - if flash[:alert]
+        p.py-6.mx-2.font-bold.text-left
+          i.fa-exclamation-triangle.fas.mr-2.text-orange-600
+          = flash[:alert]      
 
 css:
   body {
