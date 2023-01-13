@@ -16,7 +16,10 @@ class CalendarController < ApplicationController
     member = magic_link.member
     unit = member.unit
     events = UnitEventQuery.new(member, unit).execute
+
+    # create the icalendar
     cal = Icalendar::Calendar.new
+    cal.append_custom_property("X-WR-CALNAME", unit.name)
 
     # well, this is ugly
     unit_timezone = ActiveSupport::TimeZone.new(unit.time_zone)
