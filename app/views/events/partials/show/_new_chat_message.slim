@@ -31,9 +31,9 @@
           i.fa-solid.fa-paper-plane.fa-stack-1x.fa-inverse
 
   kbd.text-xs.font-sans.font-semibold.text-right.text-stone-400.block
-    - if request.headers["User-Agent"].include?("Macintosh")
+    - if request.headers["User-Agent"]&.include?("Macintosh")
       abbr = "⌘"
       = " RETURN to send"
-    - elsif request.headers["User-Agent"].include?("Windows")
+    - elsif request.headers["User-Agent"]&.include?("Windows")
       abbr = "Ctrl +"
       = " RETURN to send"
