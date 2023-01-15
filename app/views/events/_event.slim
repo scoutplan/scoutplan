@@ -29,7 +29,7 @@ article.py-2.hover:bg-stone-100(class="relative event #{row_classes(event)}" id=
           = render partial: "events/partials/event_row/today", locals: { event: event }
 
         // icon
-        .hidden.md:block.w-16.text-center
+        .hidden.md:block.w-16.text-center.shrink-0
           = glyph_tag(event)
 
         div
