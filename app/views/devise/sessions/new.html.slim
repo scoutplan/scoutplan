@@ -4,7 +4,7 @@
   h2.text-3xl.font-bold.mb-3.hidden.md:block
     = t("global.sign_in")
 
-  .px-6.pt-6.bg-stone-200/30.rounded
+  .px-6.py-6.bg-stone-200/30.rounded
     = form_for resource, as: resource_name, url: session_path(resource_name), data: { turbo: false } do |f|
       .mb-4
         = f.label :email, class: "block font-bold mb-1"
@@ -21,7 +21,14 @@
 
       .pt-3.overflow-auto
         = f.submit t("global.sign_in"), class: "block w-full rounded bg-brand-500 hover:bg-brand-600 font-bold px-8 py-2 text-white"
-        = link_to "Forgot your password?", new_password_path(resource_name), class: "block py-4 text-blue-500 font-bold hover:underline"
+
+    .mt-2
+      = form_for "Login", url: omniauth_authorize_path(resource_name, :google_oauth2), method: :post, data: { turbo: false } do |f|
+        = f.button type: "submit", class: "w-full block rounded bg-white text-center font-bold" do
+          = image_tag("btn_google_light_normal_ios.svg", height: 23, width: 23, class: "inline-block py-2 mr-2")
+          = "Sign in with Google"
+
+  = link_to "Forgot your password?", new_password_path(resource_name), class: "block py-4 text-blue-500 font-bold hover:underline"
 
 css:
   body {

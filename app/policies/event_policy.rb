@@ -70,6 +70,6 @@ class EventPolicy < UnitContextPolicy
   def tags_match?
     return true if @event.tag_list.empty?
 
-    @membership.tag_list.any? { |tag| @event.tag_list.include?(tag.name) }
+    @membership.tag_list.any? { |tag| @event.tag_list.include?(tag) }
   end
 end
