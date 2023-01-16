@@ -8,7 +8,9 @@ class User < ApplicationRecord
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :invitable, :database_authenticatable, :recoverable, :rememberable, :validatable
+  devise :invitable, :database_authenticatable, :recoverable, :rememberable, :validatable,
+         :omniauthable, omniauth_providers: [:google_oauth2]
+
   phony_normalize :phone, default_country_code: "US"
 
   has_many  :unit_memberships, dependent: :destroy
@@ -39,6 +41,10 @@ class User < ApplicationRecord
 
   def contactable_object
     self
+  end
+
+  def self.from_omniauth(auth)
+    where(email: auth.info.email).first
   end
 
   def full_name
