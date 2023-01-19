@@ -33,6 +33,8 @@ class MessageService < ApplicationService
   end
 
   def resolve_event_cohort
-    event.rsvps.accepted.map(&:member)
+    acceptors = event.rsvps.accepted.map(&:member)
+    parents = acceptors.map(&:parents).flatten
+    (acceptors + parents).uniq
   end
 end
