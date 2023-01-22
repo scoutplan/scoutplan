@@ -3,11 +3,12 @@
 # an abstract controller to be subclassed for instances
 # where a Unit is being manipulated (which is to say, most)
 class UnitContextController < ApplicationController
-  before_action :find_unit_info
-  before_action :set_unit_cookie
+  prepend_before_action :find_unit_info
+  prepend_before_action :set_unit_cookie
   before_action :build_event_presenter
   before_action :set_paper_trail_whodunnit
   around_action :time_zone
+  attr_reader :current_membership
 
   def current_unit
     @current_unit || (@current_unit = Unit.includes(
@@ -19,8 +20,6 @@ class UnitContextController < ApplicationController
   def current_member
     @current_member || (@current_member = current_unit.membership_for(current_user))
   end
-
-  attr_reader :current_membership
 
   def pundit_user
     @membership

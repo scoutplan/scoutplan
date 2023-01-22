@@ -1,0 +1,7 @@
+- return unless @current_unit
+
+.pb-4.hidden.md:block
+  - if @current_unit.logo
+    = image_tag @current_unit.logo, class: "mx-auto"
+  - else
+    = @current_unit.name

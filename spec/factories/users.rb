@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  sequence :email do |n|
-    "person#{n}_#{Time.now.to_f}@example.com"
-  end
-
   factory :user do
     first_name  { Faker::Name.first_name }
     last_name   { Faker::Name.last_name }
@@ -12,6 +8,10 @@ FactoryBot.define do
     password    { "password" }
     email
     type { 0 }
+  end
+
+  sequence :email do |n|
+    "person#{n}_#{Time.now.to_f}@example.com"
   end
 
   factory :adult, parent: :user, aliases: [:parent]

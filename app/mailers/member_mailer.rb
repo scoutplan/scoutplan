@@ -32,8 +32,6 @@ class MemberMailer < ScoutplanMailer
     )
   end
 
-  helper MagicLinksHelper
-
   def event_organizer_daily_digest_email
     @event = params[:event]
     @member = params[:member]
