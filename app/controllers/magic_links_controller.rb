@@ -19,7 +19,7 @@ class MagicLinksController < ApplicationController
 
     sign_in @magic_link.user
     session[:via_magic_link] = true
-    flash[:notice] = t("magic_links.login_success", name: current_user.full_name)
+    # flash[:notice] = t("magic_links.login_success", name: current_user.full_name)
     redirect_to @magic_link.path
   end
 
