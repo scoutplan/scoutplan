@@ -10,9 +10,7 @@ require "humanize"
 # rubocop:disable Metrics/PerceivedComplexity
 # rubocop:disable Metrics/CyclomaticComplexity
 class EventsController < UnitContextController
-  before_action :authenticate_user!, except: [:public]
-  # before_action :find_unit, only: %i[index create new edit edit_rsvps bulk_publish public]
-  # before_action :find_member, only: %i[index create new edit edit_rsvps bulk_publish]
+  skip_before_action :authenticate_user!, only: [:public]
   before_action :find_event, except: %i[index create new bulk_publish public my_rsvps]
   before_action :collate_rsvps, only: [:show, :rsvps]
   layout :current_layout
