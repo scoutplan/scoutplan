@@ -1,6 +1,6 @@
 .h-4
 
-= render partial: "back_to_settings"
+= render partial: "settings/back_to_settings"
 
 header.mb-6
   h1.font-bold.text-4xl.mb-4
@@ -15,7 +15,7 @@ header.mb-6
 = form_with model: @unit do |f|
   fieldset.divide-y
     - %w(daily_reminder rsvp_nag digest event_organizer_digest).each do |task_key|
-      = render partial: "task", locals: { task_key: task_key }
+      = render partial: "settings/task", locals: { task_key: task_key }
 
   footer.py-4
     = f.submit t("settings.buttons.save"),

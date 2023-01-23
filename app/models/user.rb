@@ -69,13 +69,6 @@ class User < ApplicationRecord
     phone.present?
   end
 
-  def display_legal_and_nicknames
-    res = [first_name]
-    res << "(#{ nickname})" unless nickname.blank?
-    res << last_name
-    res.join(" ")
-  end
-
   def check_email
     return if email.present?
 

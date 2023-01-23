@@ -1,0 +1,15 @@
+= form_with url: "/new_unit/save_unit_info", method: :post do |f|
+  h1.text-2xl.mb-4.font-bold = "Unit information"
+
+  p.mb-8 Just a few details to get started. You can add more later.
+
+  section.py-2
+    = f.label :name, "Unit name", class: "font-bold block mb-1"
+    = f.text_field :email, class: "rounded border-stone-200 w-full placeholder-stone-300", placeholder: "Troop 123"
+
+  section.py-2
+    = f.label :location, "Location", class: "font-bold block mb-1"
+    = f.text_field :location, class: "rounded border-stone-200 w-full placeholder-stone-300", placeholder: "North Kilttown, USA"
+
+  section.py-2
+    = f.submit "Next", class: "block font-bold bg-brand-500 text-white px-8 py-2 rounded"

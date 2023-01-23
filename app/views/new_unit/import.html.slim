@@ -1,0 +1,12 @@
+= form_with url: "/new_unit/perform_import", method: :post do |f|
+  h1.text-2xl.mb-4.font-bold = "Import members"
+
+  p.mb-4 If you have a CSV file of your members, you can import them here. You can also skip this step and import or add members manually later.
+
+  section
+    = f.label :member_file, "Member CSV file", class: "font-bold block mb-1"
+    = f.file_field :member_file, class: "rounded border-stone-200 w-full placeholder-stone-300"
+
+  section.py-2.flex.flex-col.md:flex-row.gap-2
+    = f.submit "Next", class: "block md:inline-block font-bold bg-brand-500 text-white px-8 py-2 rounded"
+    = f.submit "Skip", name: "skip", class: "block: md:inline-block font-bold border px-8 py-2 rounded"

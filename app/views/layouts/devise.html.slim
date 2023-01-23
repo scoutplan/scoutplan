@@ -16,17 +16,17 @@ html
       header.pt-8.px-2
         = image_tag "https://scoutplan.github.io/assets/scoutplan_logo_sm.png", class: "w-32 mx-auto"
 
-      = yield
-
-      - if flash[:notice] && false
+      - if flash[:notice].present?
         p.py-6.mx-2.font-bold.text-left
           i.fa-info-circle.fas.mr-2.text-orange-600
           = flash[:notice]
 
-      - if flash[:alert] && false
+      - if flash[:alert].present?
         p.py-6.mx-2.font-bold.text-left
           i.fa-exclamation-triangle.fas.mr-2.text-orange-600
-          = flash[:alert]      
+          = flash[:alert]   
+
+      = yield   
 
 css:
   body {

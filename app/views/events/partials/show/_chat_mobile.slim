@@ -1,0 +1,18 @@
+- return unless @event.chat?
+- return unless Flipper.enabled?(:event_chat, @current_member) || ENV["RAILS_ENV"] == "test"
+- return unless ChatMessagePolicy.new(@current_member, ChatMessage.new).index?
+
+.md:hidden.border-t.border-stone-800
+  - if @event.chat.messages.count.positive?
+    = link_to unit_event_discussion_index_path(@unit, @event),
+              class: "block text-sky-800 font-bold py-3",
+              data: { turbo_action: "advance" } do
+      i.fa-comments.fa-solid.mr-2
+      = "#{pluralize(@event.chat.messages.count, 'message')}"
+
+  - else
+    = link_to unit_event_discussion_index_path(@unit, @event),
+              class: "block text-sky-800 font-bold py-3",
+              data: { turbo_action: "advance" } do
+      i.fa-comments.fa-solid.mr-2
+      = "No messages yet. Start the discussion..."

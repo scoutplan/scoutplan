@@ -635,10 +635,10 @@ en:
       back:           "Back to unit setup"
 
     descriptions:
-      daily_reminder: "Send a reminder message the evening before a morning event; send a message in the morning an event later the same day."
+      daily_reminder: "Send a reminder message the evening before a morning event; send a message in the morning for an event later the same day."
       digest:         "Send a message on Sunday mornings with the coming week's schedule, news, and RSVPs."
       rsvp_nag:       "Send a message on Tuesday mornings, gently reminding members with outstanding RSVPs to respond."
-      event_organizer_digest: "Notify event organizers when a member RSVPs to one of their events."
+      event_organizer_digest: "Send a daily roundup of new RSVPs to event organizers."
 
     icons:
       daily_reminder: "fa-sun"
