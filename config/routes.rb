@@ -20,6 +20,19 @@ Rails.application.routes.draw do
   get "sms", to: "inbound_sms#receive"
   post "sms", to: "inbound_sms#receive"
 
+  get "new_unit", to: redirect("/new_unit/start")
+  get "new_unit/start", to: "new_unit#email"
+  post "new_unit/confirm", to: "new_unit#confirm"
+  get "new_unit/code", to: "new_unit#code"
+  post "new_unit/check_code", to: "new_unit#check_code"
+  get "new_unit/unit_info", to: "new_unit#unit_info"
+  post "new_unit/save_unit_info", to: "new_unit#save_unit_info"
+  get "new_unit/import_member_list", to: "new_unit#import"
+  post "new_unit/perform_import", to: "new_unit#perform_import"
+  get "new_unit/communication_preferences", to: "new_unit#communication_preferences"
+  post "new_unit/save_communication_preferences", to: "new_unit#save_communication_preferences"
+  get "new_unit/done", to: "new_unit#done"
+
   resources :event_activities, as: "activities"
   resources :users
 

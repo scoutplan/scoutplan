@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title = ((@page_title || []).reverse + [t("app_name")]).join(" · ")
+    meta name="viewport" content="width=device-width,initial-scale=1"
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag 'tailwind', 'data-turbo-track': 'reload'
+    = stylesheet_link_tag 'application', 'data-turbo-track': 'reload'
+    = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: "anonymous"
+    = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&libraries=places", async: true
+    = javascript_importmap_tags
+    = yield :head
+
+  body(class="text-gray-600 #{controller_name} #{action_name} #{yield :body_classes}")
+    .max-w-md.mx-auto.py-8
+      = yield
