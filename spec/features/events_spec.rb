@@ -121,6 +121,20 @@ describe "events", type: :feature do
     end
   end
 
+  describe "as an event organizer" do
+    before do
+    end
+
+    it "can access the event page page" do
+      login_as(@normal_member.user, scope: :user)
+
+      expect { @event.event_organizers.create!(unit_membership: @normal_member) }.to change { @event.organizers.count }.by(1)
+      expect(@event.organizer?(@normal_member)).to be_truthy
+      visit unit_event_path(@unit, @event)
+      expect(page).to have_current_path(unit_event_path(@unit, @event))
+    end
+  end
+
   describe "as a non-admin" do
     before :each do
       login_as(@normal_user, scope: :user)

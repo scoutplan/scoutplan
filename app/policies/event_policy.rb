@@ -12,6 +12,7 @@ class EventPolicy < UnitContextPolicy
 
   def show?
     return true if admin?
+    return true if @event.organizer?(@membership)
 
     @event.published? && tags_match?
   end
@@ -33,7 +34,7 @@ class EventPolicy < UnitContextPolicy
   end
 
   def rsvps?
-    admin? || @membership.event_organizer? || @event.organizers.include?(@membership)
+    admin? || @membership.event_organizer? || @event.organizer?(@membership)
   end
 
   def organize?

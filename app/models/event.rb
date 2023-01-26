@@ -114,6 +114,10 @@ class Event < ApplicationRecord
     requires_rsvp
   end
 
+  def organizer?(member)
+    organizers.find_by(unit_membership_id: member.id).present?
+  end
+
   def editable?
     true
   end
