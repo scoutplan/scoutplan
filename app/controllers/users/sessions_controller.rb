@@ -14,7 +14,16 @@ module Users
     end
 
     def create
-      if params[:user][:email].present? && params[:user][:password].present?
+      if params[:login_code].present?
+        if (magic_link = MagicLink.find_by(login_code: params[:login_code]))
+          sign_in(magic_link.user)
+          session[:via_magic_link] = true
+          redirect_to magic_link.path
+        else
+          flash[:alert] = "Invalid login code"
+          redirect_to root_path
+        end
+      elsif params[:user][:email].present? && params[:user][:password].present?
         super
       elsif params[:user][:email].present?
         send_session_email if resolve_user

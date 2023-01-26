@@ -1,9 +1,13 @@
 - content_for :title do
-  | Right this way to Scoutplan&#8230;
+  div(style="color: rgb(230, 100, 37); line-height:1.2;")
+    | Let's get you to Scoutplan&#8230;
 
 - content_for :left_column do
-  p(style="font-size:21px; line-height: 1.3;") Below is your Scoutplan sign-in link. If you didn't request this link, you can safely ignore this email.
-  p = magic_link_to @member, "Sign in to Scoutplan", @target_path,
-                    style: "font-weight: bold; background: rgb(230, 100, 37); color: #fff; width:100%; display: block; text-align: center; padding: 10px; text-decoration: none; border-radius: 5px;"
+  p(style="font-size:21px; line-height: 1.3;") Enter this code in your open browser to sign in:
 
-  p(style="margin-top:2rem; font-size:16px;color:#888; line-height:1.3;") This link is uniquely yours. Please don't forward or share it with anyone else.
+  p(style="font-size:48px; line-height: 1.3; display: block; text-align: center; background: #eee; padding: 15px 10px; margin: 10px 0; letter-spacing: 4px; border-radius: 5px;") 
+    = @magic_link.login_code
+
+  p(style="color: #888;")
+    | Or you can #{link_to "sign in directly", magic_link_url(token: @magic_link.token), style: "color: blue; text-decoration: none;"}. 
+    | This code is uniquely yours. Please don't forward or share it with anyone else.

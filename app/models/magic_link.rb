@@ -8,6 +8,7 @@ class MagicLink < ApplicationRecord
   before_validation :generate_token!, on: [:create]
   validates_presence_of :unit_membership, :token
   validates_uniqueness_of :token
+  validates_uniqueness_of :login_code, allow_nil: true
   alias_attribute :member, :unit_membership
   delegate :user, to: :unit_membership
   delegate :unit, to: :unit_membership
@@ -29,6 +30,10 @@ class MagicLink < ApplicationRecord
     return nil unless expires?
 
     updated_at + time_to_live
+  end
+
+  def login_code_formatted
+    login_code.scan(/.{1,3}/).join("-")
   end
 
   # for a given Member and a given path, generate a unique token
