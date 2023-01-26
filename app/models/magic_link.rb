@@ -2,12 +2,15 @@
 
 # A MagicLink is a tokenized path associated with a particular UnitMembership
 class MagicLink < ApplicationRecord
+  LOGIN_CODE_LENGTH = 6
+
   belongs_to :unit_membership
-  before_validation :generate_token, on: [:create]
+  before_validation :generate_token!, on: [:create]
   validates_presence_of :unit_membership, :token
   validates_uniqueness_of :token
   alias_attribute :member, :unit_membership
   delegate :user, to: :unit_membership
+  delegate :unit, to: :unit_membership
 
   # does this link expire?
   def expires?
@@ -39,10 +42,11 @@ class MagicLink < ApplicationRecord
 
   private
 
-  def generate_token
+  def generate_token!
     # if you decide to change this to increase keyspace, you'll need to also
     # adjust the regexp on the "magic_link" route in routes.rb as it's hard-wired
     # to a specific token width
     self.token = SecureRandom.hex(6)
+    self.login_code = (1..LOGIN_CODE_LENGTH).inject("") { |str, n| str + rand(10).to_s }
   end
 end

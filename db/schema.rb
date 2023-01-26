@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_08_181835) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_25_125354) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -307,6 +307,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_181835) do
     t.integer "unit_id"
   end
 
+  create_table "login_codes", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "value"
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "magic_links", force: :cascade do |t|
     t.string "token"
     t.integer "unit_membership_id"
@@ -315,6 +323,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_181835) do
     t.datetime "updated_at", null: false
     t.string "path", null: false
     t.integer "time_to_live", default: 432000
+    t.string "login_code"
   end
 
   create_table "member_relationships", force: :cascade do |t|

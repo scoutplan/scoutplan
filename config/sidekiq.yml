@@ -1,5 +1,9 @@
 :dynamic: true
 
+:queues:
+  - default
+  - active_storage_analysis
+
 :schedule:
   run_tasks:
     cron: "0 * * * * *" # every minute

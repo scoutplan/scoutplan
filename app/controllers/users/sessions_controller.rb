@@ -37,7 +37,9 @@ module Users
     end
 
     def send_session_email
-      UserMailer.with(user: @user, unit: @current_unit, target_path: target_path).session_email.deliver_later
+      member = @current_unit.membership_for(@user)
+      magic_link = MagicLink.generate_link(member, target_path, ttl: 1.hour)
+      UserMailer.with(magic_link: magic_link).session_email.deliver_later
     end
 
     def target_path
