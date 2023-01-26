@@ -1,7 +1,17 @@
 header.mt-8
-  h1.text-4xl.font-bold.mb-4
+  h1.text-4xl.font-bold.mb-4.text-center
     | Check your email!
 
-p.text-xl
-  | We've sent an email to <strong>#{params[:user][:email]}</strong> with a link to sign in to Scoutplan. 
-  | If you don't see the email, check your spam folder or <strong>#{link_to "try again", new_user_session_path, class: "text-blue-500"}</strong>.
+section#modal.px-6.py-6.bg-stone-200/30.rounded
+  p.text-xl
+    | We've sent an email to <strong>#{params[:user][:email]}</strong> with your Scoutplan sign-in code.
+
+
+  = form_with url: user_session_path, method: :post, class: "mt-8" do |f|
+    .flex.flex-row.gap-1
+      = f.text_field :login_code, inputmode: "numeric", autofocus: true, placeholder: "Your six-digit code", class: "border border-gray-300 rounded p-3 text-xl flex-grow placeholder-stone-400"
+      = f.button type: "submit", class: "bg-brand-500 text-white px-4 rounded" do
+        i.fa-solid.fa-arrow-right.text-2xl
+
+  p.mt-8.text-stone-500
+    | If you don't see the email, check your spam folder or <strong>#{link_to "try again", new_user_session_path, class: "text-blue-500"}</strong>.
