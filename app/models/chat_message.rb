@@ -5,7 +5,6 @@ class ChatMessage < ApplicationRecord
   include Turbo::Broadcastable
   belongs_to :chat
   belongs_to :author, class_name: "UnitMembership"
-  # after_create_commit :broadcast_later
 
   def author_name
     author.short_display_name
