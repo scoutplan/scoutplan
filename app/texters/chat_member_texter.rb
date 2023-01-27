@@ -6,7 +6,6 @@ class ChatMemberTexter < ApplicationTexter
     @member = member
     @chat_message = chat_message
     super
-    ap "ChatMemberTexter.initialize with #{member.short_display_name} at #{member.phone} and #{body}"
   end
 
   def to

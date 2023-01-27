@@ -11,6 +11,10 @@ module CoreExtensions
       def numeric?
         true if Float(self) rescue false
       end
+
+      def question?
+        self[-1] == "?"
+      end
       # rubocop:enable Style/RescueModifier
     end
   end
