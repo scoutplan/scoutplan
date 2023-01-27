@@ -1,6 +1,6 @@
 - return unless @event.next.present? || @event.previous.present?
 
-li.flex.flex-row.justify-between.border-t.border-stone-500.mt-2.pt-2
+li.flex.flex-row.justify-between.border-t.border-stone-500.mt-2.py-2
   - if @event.previous.present?
     = link_to unit_event_path(@event.previous.unit, @event.previous),
               class: "block py-1 font-bold hover:text-brand-500",
