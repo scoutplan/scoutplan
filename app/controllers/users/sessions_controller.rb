@@ -42,6 +42,7 @@ module Users
       @user = User.find_by(email: params[:user][:email])
       return false unless @user
 
+      @current_unit ||= @user.units.first
       @user
     end
 
