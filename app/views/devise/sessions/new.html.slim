@@ -1,6 +1,6 @@
 - @page_title = ["Sign In"]
 - mode ||= "magic_link"
-- @manual_login_available = false
+- @manual_login_available = true
 
 .w-full.px-2
   header.text-center
@@ -31,36 +31,63 @@
                         class: "w-full bg-white border border-stone-300 rounded px-3 py-2 placeholder-stone-400",
                         placeholder: "name@email.com"
 
-      #password_wrapper.mt-3
+      #password_wrapper.password-login.mt-3
+        = f.label :email, "Your password", class: "block font-bold mb-1"
         = f.password_field :password, autocomplete: "current-password",
-                           class: "w-full bg-white border border-stone-300 rounded px-3 py-2",
-                           placeholder: "Password"
+                           class: "w-full bg-white border border-stone-300 rounded px-3 py-2 placeholder-stone-400",
+                           placeholder: "password"
 
       - if devise_mapping.rememberable? && false
         .mb-3
           = f.check_box :remember_me, class: "mr-3 w-5 h-5 rounded text-brand-500 focus:ring-brand-500 border-brand-500"
           = f.label :remember_me, t("global.remember_me"), class: "font-bold"
 
-      .pt-3.overflow-auto
+      .pt-3.overflow-auto.passwordless-login
         = f.submit t("global.sign_in_with_email"), class: "block w-full rounded bg-brand-500 hover:bg-brand-600 font-bold px-8 py-2 text-white"
 
+      .pt-3.overflow-auto.password-login
+        = f.submit t("global.sign_in_with_password"), class: "block w-full rounded bg-brand-500 hover:bg-brand-600 font-bold px-8 py-2 text-white"
+
       .pt-2
-        | We'll email you a link so you can sign in without a password.
         - if @manual_login_available
-          | Or you can 
-          = link_to "sign in with a password instead", "#", class: "font-bold hover:underline text-blue-500"
-          | .
+          .inline.passwordless-login
+            | We'll email you a link so you can sign in without a password. Or you can 
+            = link_to "sign in with a password", "#", class: "font-bold hover:underline text-blue-500 toggle-password-link"
+            | .
+          .inline.password-login
+            | Don't know your password? You can 
+            = link_to "sign in with a code sent via email", "#", class: "font-bold hover:underline text-blue-500 toggle-password-link"
+            | .
 
   - if mode == "manual"
     = link_to "Forgot your password?", new_password_path(resource_name), class: "block py-4 text-blue-500 font-bold hover:underline"
 
+javascript:
+  document.querySelectorAll(".toggle-password-link").forEach(function(elem) {
+    elem.addEventListener("click", function(e) {
+      e.preventDefault();
+      document.body.classList.toggle("showing-password");
+
+      var emailInput = document.querySelector("#user_email");
+      if (emailInput.value) {
+        document.querySelector("#user_password").focus();
+      } else {
+        emailInput.focus();
+      }
+    })
+  });
+
 css:
-  #password_wrapper {
+  .password-login {
     display: none;
   }
 
-  body.showing-password #password_wrapper {
+  body.showing-password .password-login {
     display: block;
+  }
+
+  body.showing-password .passwordless-login {
+    display: none;
   }
 
   body {

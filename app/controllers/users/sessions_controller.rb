@@ -5,10 +5,6 @@ module Users
   class SessionsController < Devise::SessionsController
     before_action :find_unit
 
-    def after_sign_out_path_for(_resource_or_scope)
-      root_path
-    end
-
     def after_sign_in_path_for(resource)
       stored_location_for(resource) || root_path
     end
@@ -24,7 +20,11 @@ module Users
           redirect_to root_path
         end
       elsif params[:user][:email].present? && params[:user][:password].present?
-        super
+        self.resource = warden.authenticate!(auth_options)
+        set_flash_message!(:notice, :signed_in)
+        sign_in(resource_name, resource)
+        yield resource if block_given?
+        redirect_to params[:user_return_to] || root_path and return
       elsif params[:user][:email].present?
         send_session_email if resolve_user
       end
