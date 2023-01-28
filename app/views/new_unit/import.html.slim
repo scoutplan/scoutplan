@@ -1,7 +1,7 @@
 = form_with url: "/new_unit/perform_import", method: :post do |f|
   h1.text-2xl.mb-4.font-bold = "Import members"
 
-  p.mb-4 If you have a CSV file of your members, you can import them here. You can also skip this step and import or add members manually later.
+  p.mb-4 If you have a CSV file of your members, you can import them here. You can also skip this step for now and then import or manually add members later.
 
   section
     = f.label :member_file, "Member CSV file", class: "font-bold block mb-1"

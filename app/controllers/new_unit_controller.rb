@@ -1,5 +1,6 @@
 class NewUnitController < ApplicationController
   skip_before_action :authenticate_user!
+  before_action :find_unit, except: [:email, :confirm, :unit_info]
 
   layout "new_unit"
 
@@ -26,16 +27,18 @@ class NewUnitController < ApplicationController
     #TODO: create user
     #TODO: create unit
     #TODO: create unit membership
-    redirect_to "/new_unit/import_member_list"
+    redirect_to "/new_unit/add_members"
+  end
+
+  def add_members
   end
 
   def perform_import
     # TODO: import member list
-    redirect_to "/new_unit/communication_preferences"
+    redirect_to "/new_unit/weekly_digest"
   end
 
-  def communication_preferences
-    @unit = Unit.first
+  def weekly_digest
   end
 
   def save_communication_preferences
@@ -43,6 +46,12 @@ class NewUnitController < ApplicationController
   end
 
   def done
+  end
+
+  #-------------------------------------------------------------------------
+  private
+  
+  def find_unit
     @unit = Unit.first
   end
 end
