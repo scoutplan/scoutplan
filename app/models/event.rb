@@ -178,7 +178,8 @@ class Event < ApplicationRecord
   end
 
   def primary_location
-    (event_locations.find_by(location_type: "arrival")&.location || event_locations.find_by(location_type: "activity")&.location)
+    # (event_locations.find_by(location_type: "arrival")&.location || event_locations.find_by(location_type: "activity")&.location)
+    event_locations.select { |el| el.location_type == "arrival" || el.location_type == "activity" }.first&.location
   end
 
   def location
