@@ -64,6 +64,7 @@ Rails.application.routes.draw do
     end
 
     get "my_rsvps", to: "events#my_rsvps", as: "my_rsvps"
+    get "welcome", to: "units#welcome", as: "welcome"
 
     resources :events, path: "schedule" do
       resources :chat_messages, as: "discussion", path: "discussion"

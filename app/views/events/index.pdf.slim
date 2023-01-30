@@ -18,7 +18,7 @@ table.wrapper
             - events = events_by_month.values[month_index]
             - month_index += 1
 
-            h2
+            h2(style="font-weight: bold; font-size: 1.2rem;")
               = Date::MONTHNAMES[month_number]
               - if current_year != year
                 = " "
@@ -28,7 +28,7 @@ table.wrapper
               - events.each do |event|
                 - presenter.event = event
 
-                tr
+                tr(style="border-top:1px solid #ddd;")
                   td
                     .dates = presenter.dates_to_s
                     .days  = presenter.days_to_s
@@ -47,12 +47,14 @@ css:
 
   table.wrapper {
     border-spacing: 1rem;
-    margin: 0 -1rem;
+    margin: 0 0;
     table-layout: fixed;
   }
 
   .month-column {
     padding-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .month-column {
@@ -72,8 +74,9 @@ css:
   }
 
   h3.event-title {
-    margin-top: 0;
+    margin-top: 0.25rem;
     margin-bottom: 0;
+    font-weight: bold;
   }
 
   td {

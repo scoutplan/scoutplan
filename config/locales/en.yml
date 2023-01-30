@@ -65,6 +65,7 @@ en:
     done:   "Done"
     sign_in: "Sign in to Scoutplan"
     sign_in_with_email: "Sign in with email"
+    sign_in_with_password: "Sign in with password"
     sign_out: "Sign Out"
     remember_me: "Stay signed in for two weeks"
     nevermind: "Never Mind"

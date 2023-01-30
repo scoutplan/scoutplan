@@ -61,3 +61,18 @@ input.switch:checked + label.sm .switch-button {
 .actionable:hover .actions {
   display: inline-block;
 }
+
+.sidecar a {
+  color: #a8a29e;
+  transition-property: color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;  
+}
+
+.sidecar:hover a {
+  color: #44403c;
+}
+
+.sidecar a:hover {
+  color: rgb(230, 100, 37);
+}

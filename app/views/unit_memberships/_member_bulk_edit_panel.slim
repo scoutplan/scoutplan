@@ -1,38 +1,46 @@
-.bulk-edit.bg-emerald-100.border.border-emerald-500.text-emerald-500.rounded.px-4.py-4.mb-2
-  div.max-w-1/2.mx-auto
-    h3.font-bold.text-xl.mb-2 = "Bulk Edit Members"
+.bulk-edit.bg-emerald-50.border.border-emerald-100.text-emerald-700.rounded.px-4.py-4.mb-2
+  h3.font-bold.text-xl.mb-2 = "Bulk Edit Members"
+
+  p.mb-4 Check one or more members below, then select the status and/or member type you'd like to change them to.
+
+  div.py-1.font-bold
+    = "Change status to:"
+    
+    div.py-1
+      = radio_button_tag "member[status]", :active, false, class: "bulk-edit-value"
+      = label_tag :member_status_active, "Active", class: "ml-2"
+      / input.form-check-input(type="radio" name="member[status]" id="status_active" value="active")
+      / label.form-check-label(for="status_active") Active
 
     div.py-1
-      = "Change status to:"
-      
-      .inline.ml-2
-        input.form-check-input(type="radio" name="member[status]" id="status_active" value="active")
-        label.form-check-label(for="status_active") Active
-
-      .inline.ml-2
-        input(type="radio" name="member[status]" id="status_inactive" value="inactive")
-        label(for="status_inactive") Inactive
-
+      = radio_button_tag "member[status]", :registered, false, class: "bulk-edit-value"
+      = label_tag :member_status_registered, "Friends & Family", class: "ml-2"
+      / input(type="radio" name="member[status]" id="status_inactive" value="inactive")
+      / label(for="status_inactive") Inactive
 
     div.py-1
-      = "Change member type to:"
+      = radio_button_tag "member[status]", :inactive, false, class: "bulk-edit-value"
+      = label_tag :member_status_inactive, "Inactive", class: "ml-2"
 
-      .inline.ml-2
-        input.form-check-input(type="radio" name="member[member_type]" id="member_type_youth" value="youth")
-        label.form-check-label(for="member_type_youth") Youth
+  div.py-1.font-bold
+    = "Change member type to:"
 
-      .inline.ml-2
-        input.form-check-input(type="radio" name="member[member_type]" id="member_type_adult" value="adult")
-        label.form-check-label(for="member_type_adult") Adult
+    div.py-1
+      = radio_button_tag "member[member_type]", "youth", false, class: "bulk-edit-value"
+      = label_tag :member_member_type_youth, "Youth", class: "ml-2"
 
-    div.mt-2
-      = button_tag t("global.cancel"),
-        class: "inline-block border border-emerald-500 px-4 py-2 text-emerald-500 rounded uppercase text-sm font-bold tracking-wider",
-        id: "cancel_bulk_edit"
+    div.py-1
+      = radio_button_tag "member[member_type]", "adult", false, class: "bulk-edit-value"
+      = label_tag :member_member_type_adult, "Adult", class: "ml-2"
 
-      = button_tag "Update Selected Members",
-        class: "rounded inline-block border border-emerald-500 px-4 py-2 text-emerald-100 bg-emerald-500 ml-2 uppercase text-sm font-bold tracking-wider disabled:bg-emerald-300 disabled:border-emerald-400",
-        id: "execute_bulk_edit_button",
-        disabled: "disabled"
+  div.flex.flex-col.md:flex-row.gap-2.mt-4
+    = button_tag t("global.cancel"),
+      class: "w-full md:w-fit inline-block border border-emerald-700 px-6 py-2 text-emerald-700 hover:border-emerald-800 hover:text-emerald-800 rounded font-bold",
+      id: "cancel_bulk_edit"
+
+    = button_tag "Update Selected Members",
+      class: "w-full md:w-fit rounded inline-block border border-emerald-700 px-4 py-2 text-emerald-100 bg-emerald-700 hover:bg-emerald-800 font-bold disabled:bg-emerald-300 disabled:border-emerald-400",
+      id: "execute_bulk_edit_button",
+      disabled: "disabled"
 
 

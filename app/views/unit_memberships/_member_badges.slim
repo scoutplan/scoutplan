@@ -2,12 +2,13 @@
 span.text-xs.font-bold.whitespace-nowrap.flex.flex-row.gap-1
   - if unit_membership.admin?
     span.inline-block.py-1.px-2.border.rounded-md.text-emerald-500.border-emerald-500(title="#{@unit.name} Administrator")
-      i.fas.fa-user-crown.mr-1 
+      i.fa-solid.fa-user-crown.mr-1 
       = "Administrator"
 
   - elsif unit_membership.event_organizer?
-    span.inline-block.py-1.px-2(title="#{@unit.name} Event Organizer")
-      i.fas.fa-clipboard-user.text-fuchsia-500.text-base
+    .inline-block.py-1.px-2.text-fuchsia-500.rounded.px-2.py-1.rounded-md.border.border-fuchsia-500
+      i.fa-solid.fa-clipboard-user.mr-1
+      = "Event Organizer"
 
   - case unit_membership.status
   - when "active"

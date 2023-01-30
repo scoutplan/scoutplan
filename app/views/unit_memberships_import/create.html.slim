@@ -1,19 +1,20 @@
-header
-  h1 Member Import Results
+.max-w-lg.mx-auto
+  header
+    h1.text-4xl.font-bold Member Import Results
 
-.row
-  .col-md-4
-    h3 Added Members (#{ @new_memberships.count })
-    ul
+  section
+    h3.mt-4.mb-2.font-bold Added Members (#{ @new_memberships.count })
+    ul.list-disc
       - @new_memberships.each do |member|
         li = member.full_name
 
-  .col-md-4
-    h3 Already Members (#{ @existing_memberships.count })
-    ul
-      - @existing_memberships.each do |member|
-        li = member.full_name
+    - if @existing_memberships.any?
+      h3.mt-4.mb-2.font-bold Already Members (#{ @existing_memberships.count })
+      ul.list-disc
+        - @existing_memberships.each do |member|
+          li = member.full_name
 
-.row
-  .col-md-3
-    = link_to 'Done', unit_members_path(@unit), class: 'btn btn-primary'
+  footer.mt-8
+    = link_to "Done", unit_members_path(@unit), class: "inline-block rounded bg-brand-500 text-white px-8 py-2 font-bold"
+    span.mx-4 or
+    = link_to "Import another roster", import_unit_members_path(@unit), class: "inline-block py-2 font-bold text-blue-500"
