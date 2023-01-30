@@ -6,10 +6,13 @@ class UnitMembershipsImportController < ApplicationController
     @current_unit = @unit = Unit.find(params[:unit_id])
     @current_member = @unit.membership_for(current_user)
     authorize :member_import, :create?
-    page_title @unit.name, 'Import Members'
+    page_title @unit.name, "Import Members"
   end
 
   def create
+
+    ap params
+
     @current_unit = @unit = Unit.find(params[:unit_id])
     @current_member = @unit.membership_for(current_user)
     return unless @current_member.admin?

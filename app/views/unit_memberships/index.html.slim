@@ -3,6 +3,8 @@
     = render partial: "unit_memberships/partials/index/sidecar"
     = render partial: "unit_memberships/partials/index/header"
     = form_tag bulk_update_unit_members_path(@unit), id: "bulk_edit_form"
+      = render "member_bulk_edit_panel"
+
       .divide-y
         - ("A".."Z").each do |letter|
           - letter_memberships = @unit_memberships.select{ |m| m.first_name.first.downcase == letter.downcase }
@@ -20,6 +22,10 @@
       display: none;
     }
 
+    .bulk-editing {
+      display: none;
+    }
+
     body.bulk-edit {
       th.selection, td.selection {
         display: table-cell;
@@ -30,6 +36,18 @@
       }
 
       #bulk_edit_options {
+        display: inline-block;
+      }
+
+      .extended-member-info {
+        display: none;
+      }
+
+      .not-bulk-editing {
+        display: none;
+      }
+
+      .bulk-editing {
         display: inline-block;
       }
     }
@@ -85,6 +103,7 @@ javascript:
   // exit bulk edit mode by removing the same body class
   document.querySelector('#cancel_bulk_edit')?.addEventListener('click', function(event) {
     document.body.classList.remove('bulk-edit');
+    resetBulkEdit();
     event.preventDefault();
   });
 
@@ -95,6 +114,13 @@ javascript:
       event.stopPropagation();
     })
   });
+
+  document.querySelectorAll('.bulk-edit-value').forEach(function(elem) {
+    elem.addEventListener('click', function(event) {
+      validateBulkEditState();
+      event.stopPropagation();
+    })
+  });  
 
   // wire up the bulk edit Apply button
   document.querySelector('#execute_bulk_edit_button')?.addEventListener('click', function(event) {
@@ -120,13 +146,32 @@ javascript:
   // called each time a checkbox is changed
   function validateBulkEditState() {
     // tally up checked count
-    const checkedCount = document.querySelectorAll('td.selection input:checked').length;
+    const checkedCount = document.querySelectorAll('input.bulk-edit-checkbox:checked').length;
+    const valueCount = document.querySelectorAll('input.bulk-edit-value:checked').length;
+    console.log('checkedCount: ' + checkedCount);
+    console.log('valueCount: ' + valueCount);
 
     // enable execute button
-    bulkEditExecuteButton.disabled = (checkedCount == 0);
+    bulkEditExecuteButton.disabled = (checkedCount == 0) || (valueCount == 0);
 
     // update execute button caption
     bulkEditExecuteButton.innerText = originalBulkEditExecuteButtonCaption + (checkedCount == 0 ? '' : ' (' + checkedCount + ')');
+  }
+
+  function resetBulkEdit() {
+    // uncheck all checkboxes
+    document.querySelectorAll('.bulk-edit-checkbox').forEach(function(elem) {
+      elem.checked = false;
+    });
+
+    // uncheck all radio buttons
+    document.querySelectorAll('.bulk-edit-value').forEach(function(elem) {
+      elem.checked = false;
+    });
+
+    // reset execute button
+    bulkEditExecuteButton.disabled = true;
+    bulkEditExecuteButton.innerText = originalBulkEditExecuteButtonCaption;
   }
 
   function hideEmptyLetterIndices() {
