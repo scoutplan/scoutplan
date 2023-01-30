@@ -15,6 +15,9 @@ class UnitsController < UnitContextController
     redirect_to unit_settings_path(@unit), notice: I18n.t("settings.notices.update_success")
   end
 
+  def welcome
+  end
+
   private
 
   def unit_params

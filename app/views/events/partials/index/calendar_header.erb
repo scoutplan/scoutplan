@@ -1,4 +1,4 @@
-<h1 style="margin-bottom:0; line-height:1.0;">
+<h1 style="margin-bottom:0; line-height:1.0; font-weight:bold; font-size: 1.5rem;">
   <%= @unit.name %>
   Event Calendar
   <%= events_by_month&.keys&.first&.first %>&ndash;<%= events_by_month&.keys&.last&.first %>
@@ -6,4 +6,4 @@
     <%= " - DRAFT" %>
   <% end %>
 </h1>
-<p style="margin-bottom:1rem; font-weight:bold; color:#888;">As of <%= DateTime.now.in_time_zone(@unit.settings(:locale).time_zone).strftime('%d %B %Y') %></p>
+<p style="margin-bottom:1rem;">as of <%= DateTime.now.in_time_zone(@unit.settings(:locale).time_zone).strftime('%d %B %Y') %></p>

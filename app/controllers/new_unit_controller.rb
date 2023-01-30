@@ -26,8 +26,8 @@ class NewUnitController < ApplicationController
   def save_unit_info
     #TODO: create user
     #TODO: create unit
-    #TODO: create unit membership
-    redirect_to "/new_unit/add_members"
+    #TODO: create unit membership as admin
+    redirect_to unit_welcome_path(@unit)
   end
 
   def add_members
@@ -50,7 +50,7 @@ class NewUnitController < ApplicationController
 
   #-------------------------------------------------------------------------
   private
-  
+
   def find_unit
     @unit = Unit.first
   end

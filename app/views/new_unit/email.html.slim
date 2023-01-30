@@ -1,7 +1,7 @@
 = form_with url: "/new_unit/confirm", method: :post do |f|
   h1.text-2xl.mb-4.font-bold = "Email"
 
-  p.mb-4 Welcome to Scoutplan! To get started, we need to know your email address.
+  p.mb-4 Welcome to Scoutplan! Let's get your unit set up. To get started, we need to know your email address.
 
   section
     = f.label :email, "Your email address", class: "font-bold block mb-1"
@@ -9,3 +9,6 @@
 
   section.py-2
     = f.submit "Next", class: "block font-bold bg-brand-500 text-white px-8 py-2 rounded"
+
+  section.text-sm.font-stone-600.pt-8
+    p In the wrong spot? You can #{link_to "sign in here", new_user_session_path, class: "text-blue-500 font-bold"}.
