@@ -33,6 +33,8 @@ class EventsController < UnitContextController
       when "calendar"
         redirect_to calendar_unit_events_path(@unit)
         return
+      when "spreadsheet"
+        redirect_to spreadsheet_unit_events_path(@unit)
       end
     end
 
