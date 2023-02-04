@@ -93,9 +93,9 @@ class Event < ApplicationRecord
     "#{unit.name} #{title}"
   end
 
-  def to_param
-    [id, title].join(" ").parameterize
-  end
+  # def to_param
+  #   [id, title].join(" ").parameterize
+  # end
 
   def past?
     ends_at.past?

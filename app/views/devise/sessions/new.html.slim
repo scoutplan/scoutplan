@@ -11,7 +11,7 @@
 
   section#modal.px-6.py-6.bg-stone-200/30.rounded
     .mt-2
-      = form_for "Login", url: omniauth_authorize_path(resource_name, :google_oauth2), method: :post, data: { turbo_action: :advance } do |f|
+      = form_for "Login", url: omniauth_authorize_path(resource_name, :google_oauth2), method: :post, data: { turbo: false } do |f|
         = f.button type: "submit", class: "w-full block rounded bg-white text-center text-blue-500 font-bold border-blue-500 border-2" do
           = image_tag("btn_google_light_normal_ios.svg", height: 23, width: 23, class: "inline-block py-2 mr-2")
           = "Sign in with Google"

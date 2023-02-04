@@ -3,7 +3,7 @@
 - return unless ChatMessagePolicy.new(@current_member, ChatMessage.new).index?
 
 .hidden.xl:block
-  header.border-t.border-stone-600.py-2
+  header.border-t.border-stone-600.pt-4.pb-2
     = link_to unit_event_discussion_index_path(@unit, @event),
               data: { turbo_action: "advance" } do
       h3.font-bold.text-stone-600

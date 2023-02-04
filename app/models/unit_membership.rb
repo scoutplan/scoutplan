@@ -72,9 +72,9 @@ class UnitMembership < ApplicationRecord
 
   acts_as_taggable_on :tags
 
-  def to_param
-    [id, user&.full_display_name].join("-").parameterize
-  end
+  # def to_param
+  #   [id, user&.full_display_name].join("-").parameterize
+  # end
 
   def parents
     parent_relationships.map(&:parent_member)
