@@ -8,7 +8,7 @@ describe "redirection", type: :request do
   end
 
   it "redirects /events paths" do
-    get "/units/#{@member.unit.to_param}/events/list"
+    get "/u/#{@member.unit.to_param}/events/list"
     expect(response).to redirect_to(list_unit_events_path(@member.unit))
   end
 end

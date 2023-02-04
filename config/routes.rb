@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     get code, to: "errors#show", code: code
   end
 
-  devise_for :users, controllers: {
+  devise_for :users, path: "", controllers: {
     omniauth_callbacks: "users/omniauth_callbacks",
     sessions: "users/sessions",
     registrations: "users/registrations"
@@ -42,8 +42,10 @@ Rails.application.routes.draw do
   # get "units/:unit_id/settings", as: "edit_unit_settings", to: "unit_settings#edit"
   # patch "units/:unit_id/settings", as: "update_unit_settings", to: "unit_settings#update"
 
+  get "units/*after", to: redirect("/u/%{after}")
+
   # begin units
-  resources :units, only: %i[show index update] do
+  resources :units, path: "u", only: %i[show index update] do
     resources :messages, path: "announcements" do
       post "duplicate"
       post "unpin", as: "unpin"
@@ -79,6 +81,7 @@ Rails.application.routes.draw do
         get  "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
         get  "list",        to: "events#index", defaults: { variation: "list" }, as: "list"
         get  "calendar", to: "events#index", defaults: { variation: "calendar" }
+        get  "spreadsheet", to: "events#index", defaults: { variation: "spreadsheet" }
         get  "calendar/:year/:month", to: "events#index", defaults: { variation: "calendar" }, as: "targeted_calendar"
         get  "public", to: "events#public", as: "public"
         post "bulk_publish"
@@ -99,7 +102,7 @@ Rails.application.routes.draw do
 
     # redirect the old /events path. We can probably get rid of this
     # https://stackoverflow.com/questions/38509769/rails-routes-redirect-a-wild-card-route
-    get "/events/*after", to: redirect("/units/%{unit_id}/schedule/%{after}")
+    get "/events/*after", to: redirect("/u/%{unit_id}/schedule/%{after}")
 
     resources :unit_memberships
 

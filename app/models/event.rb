@@ -85,13 +85,17 @@ class Event < ApplicationRecord
     errors.add(:rsvp_closes_at, "must be before start_date") if rsvp_closes_at > starts_at
   end
 
+  def category_name
+    event_category.name
+  end
+
   def full_title
     "#{unit.name} #{title}"
   end
 
-  def to_param
-    [id, title].join(" ").parameterize
-  end
+  # def to_param
+  #   [id, title].join(" ").parameterize
+  # end
 
   def past?
     ends_at.past?

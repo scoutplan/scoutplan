@@ -68,9 +68,9 @@ class Unit < ApplicationRecord
     settings(:locale).time_zone
   end
 
-  def to_param
-    [id, name, location].join(" ").parameterize
-  end
+  # def to_param
+  #   [id, name, location].join(" ").parameterize
+  # end
 
   def to_s
     name

@@ -1,0 +1,25 @@
+span.relative
+  .absolute.block.left-0.right-0.top-0.h-12.bg-blue-500
+
+  table.mt-4(data-controller="spreadsheet")
+    = render partial: "events/partials/index/spreadsheet/headers"
+    = render partial: "events/partials/index/spreadsheet/event", collection: @events
+
+
+
+css:
+  .row-trigger * {
+    display: none;
+  }
+
+  .row-trigger:hover * {
+    display: block;
+  }
+
+  .insert-button {
+    color: #d6d3d1;
+  }
+
+  .insert-button:hover {
+    color: #3b82f6;
+  }

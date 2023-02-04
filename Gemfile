@@ -16,6 +16,7 @@ gem "awesome_print"
 gem "aws-sdk-s3", require: false
 gem "blazer"
 gem "bootsnap", require: false
+gem "chroma"
 gem "colorize"
 gem "devise"
 gem "devise_invitable"

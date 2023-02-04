@@ -1,0 +1,13 @@
+- row_class = event.draft? ? 'event-draft' : 'event-published'
+- row_class += event.past? ? ' event-past' : ''
+- bgcolor = Chroma.paint(event.category.color).opacity(0.1).to_rgb
+
+tr(class="#{row_class}" style="background-color: #{bgcolor};")
+  td.bg-stone-100.hover:bg-blue-500.w-3.relative
+    = render partial: "events/partials/index/spreadsheet/control_cell", locals: { event: event }
+  td.border.border-stone-700.px-2.py-3.text-sm = event.starts_at.strftime("%m/%d/%Y")
+  td.border.border-stone-700.px-2.py-3.text-sm = event.starts_at.strftime("%A")
+  td.border.border-stone-700.px-2.py-3.text-sm = event.title
+  td.border.border-stone-700.px-2.py-3.text-sm = event.short_description
+  td.border.border-stone-700.px-2.py-3.text-sm = event.location
+  td.border.border-stone-700.px-2.py-3.text-sm = event.category_name
