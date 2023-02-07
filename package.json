@@ -1,1 +1,5 @@
-{}
+{
+  "dependencies": {
+    "stimulus-timeago": "^4.1.0"
+  }
+}

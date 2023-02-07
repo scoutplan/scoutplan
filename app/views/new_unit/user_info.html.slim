@@ -1,0 +1,24 @@
+= form_with url: "/new_unit/save_user_info", method: :post do |f|
+  h1.text-2xl.mb-4.font-bold = "Your information"
+
+  p.mb-8 We need a few more items to make sure you appear in Scoutplan correctly.
+
+  section.py-2
+    = f.label :first_name, "Your first name", class: "font-bold block mb-1"
+    = f.text_field :first_name, class: "rounded border-stone-200 w-full placeholder-stone-300", placeholder: "First name"
+
+  section.py-2
+    = f.label :last_name, "Location", class: "font-bold block mb-1"
+    = f.text_field :last_name, class: "rounded border-stone-200 w-full placeholder-stone-300", placeholder: "Last name"
+
+  section.py-2
+    = f.label :nickname, "Nickname (optional)", class: "font-bold block mb-1"
+    = f.text_field :nickname, class: "rounded border-stone-200 w-full placeholder-stone-300", placeholder: "Nickname (optional)"
+
+  section.py-2
+    = f.label :phone, "Phone number", class: "font-bold block mb-1"
+    = f.phone_field :phone, class: "rounded border-stone-200 w-full placeholder-stone-300", placeholder: "(555) 555-1212"
+
+
+  section.py-2
+    = f.submit "Next", class: "block font-bold bg-brand-500 text-white px-8 py-2 rounded"

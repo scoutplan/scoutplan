@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   post "new_unit/confirm", to: "new_unit#confirm"
   get "new_unit/code", to: "new_unit#code"
   post "new_unit/check_code", to: "new_unit#check_code"
+  get "new_unit/user_info", to: "new_unit#user_info"
+  post "new_unit/save_user_info", to: "new_unit#save_user_info"  
   get "new_unit/unit_info", to: "new_unit#unit_info"
   post "new_unit/save_unit_info", to: "new_unit#save_unit_info"
   get "new_unit/add_members", to: "new_unit#add_members"

@@ -29,6 +29,7 @@ class CalendarController < ApplicationController
     cal.add_timezone timezone
 
     exporter = IcalExporter.new(member)
+    exporter.tzid = tzid
     events.each do |event|
       exporter.event = event
       # next unless event.published?
