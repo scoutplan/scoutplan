@@ -41,8 +41,8 @@ describe "events", type: :feature do
 
       Time.zone = @unit.time_zone
 
-      # expect(cal_event.dtstart.to_datetime).to be_within(1.second).of event.starts_at
-      # expect(cal_event.dtstart.to_datetime.utc).to be_within(1.second).of event.starts_at.to_datetime
+      expect(cal_event.dtstart).to be_within(1.second).of event.starts_at.to_datetime
+
       expect(cal_event.summary.to_s).to eq("#{@unit.short_name} - #{event.title}")
       expect(cal_event.location).to eq(event.full_address)
       expect(cal_event.description).to eq(event.description.to_plain_text)

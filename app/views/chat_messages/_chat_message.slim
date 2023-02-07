@@ -3,17 +3,24 @@
 / - current_member = unit.membership_for(current_user)
 
 - if chat_message.author == current_member
-  dt.text-xs.text-left.px-2.mt-2.ml-8
-    = "You"
-    = ", #{distance_of_time_in_words_to_now(chat_message.created_at)} ago"
+  dt.text-xs.text-left.mt-2.ml-8.text-right
+    = "You, "
+    time(data-controller="timeago" data-timeago-datetime-value="#{chat_message.created_at.iso8601}" data-timeago-refresh-interval-value="60000")
+    = " ago"
 
-  dd.bg-sky-500.text-white.px-2.py-1.rounded.ml-8.message-self
-    = chat_message.message
+    
+
+  dd.text-right.ml-8
+    .inline-block.bg-sky-500.text-white.px-2.py-1.rounded.message-self.min-w-16
+      = chat_message.message
 
 - else
   dt.text-xs.text-left.px-2.mt-2
     = chat_message.author_name
-    = ", #{distance_of_time_in_words_to_now(chat_message.created_at)} ago"
+    = ", "
+    time(data-controller="timeago" data-timeago-datetime-value="#{chat_message.created_at.iso8601}" data-timeago-refresh-interval-value="60000")
+    = " ago"
 
-  dd.bg-stone-100.text-stone-900.px-2.py-1.rounded.mr-8.message-others
-    = chat_message.message
+  dd.mr-8.text-left
+    .inline.bg-stone-200.text-stone-900.px-2.py-1.rounded.message-others
+      = chat_message.message
