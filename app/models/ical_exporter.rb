@@ -18,10 +18,10 @@ class IcalExporter
     ical_event.summary = "#{@event.unit.short_name} - #{@event.title}"
     ical_event.summary += " (DRAFT)" if @event.draft?
     ical_event.summary += " (CANCELLED)" if @event.cancelled?
-    # ical_event.dtstart = Icalendar::Values::DateOrDateTime.new(@event.starts_at)
-    # ical_event.dtend = Icalendar::Values::DateOrDateTime.new(@event.ends_at)
-    ical_event.dtstart = Icalendar::Values::DateOrDateTime.new(@event.starts_at, tzid: @tzid)
-    ical_event.dtend = Icalendar::Values::DateOrDateTime.new(@event.ends_at, tzid: @tzid)
+    ical_event.dtstart = Icalendar::Values::DateOrDateTime.new(@event.starts_at.utc, tzid: "UTC")
+    ical_event.dtend = Icalendar::Values::DateOrDateTime.new(@event.ends_at.utc, tzid: "UTC")
+    # ical_event.dtstart = Icalendar::Values::DateOrDateTime.new(@event.starts_at, tzid: @tzid)
+    # ical_event.dtend = Icalendar::Values::DateOrDateTime.new(@event.ends_at, tzid: @tzid)
     ical_event.location = @event.full_address
     ical_event.description = @event.description&.to_plain_text || @event.short_description
     ical_event.url = Rails.application.routes.url_helpers.unit_event_url(@event.unit, @event, host: ENV["APP_HOST"])

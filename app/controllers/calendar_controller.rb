@@ -16,24 +16,18 @@ class CalendarController < ApplicationController
     member = magic_link.member
     unit = member.unit
     events = UnitEventQuery.new(member, unit).execute
+    unit_timezone = ActiveSupport::TimeZone.new(unit.time_zone)
+    tzid = unit_timezone.tzinfo.name
+    tz = TZInfo::Timezone.get tzid
 
     # create the icalendar
     cal = Icalendar::Calendar.new
     cal.append_custom_property("X-WR-CALNAME", unit.name)
-
-    # well, this is ugly
-    unit_timezone = ActiveSupport::TimeZone.new(unit.time_zone)
-    tzid = unit_timezone.tzinfo.name
-    tz = TZInfo::Timezone.get tzid
-    timezone = tz.ical_timezone events.first.starts_at
-    cal.add_timezone timezone
+    cal.append_custom_property("X-WR-TIMEZONE", tzid)
 
     exporter = IcalExporter.new(member)
-    exporter.tzid = tzid
     events.each do |event|
       exporter.event = event
-      # next unless event.published?
-
       cal.add_event(exporter.to_ical)
     end
 
