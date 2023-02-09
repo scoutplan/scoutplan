@@ -5,7 +5,7 @@ class NewUnitController < ApplicationController
   layout "new_unit"
 
   def email
-    # redirect_to "/new_unit/unit_info" and return if current_user
+    redirect_to "/new_unit/unit_info" and return if current_user
   end
 
   def confirm
@@ -34,10 +34,9 @@ class NewUnitController < ApplicationController
   end
 
   def save_unit_info
-    #TODO: create user
-    #TODO: create unit
-    #TODO: create unit membership as admin
-    redirect_to unit_welcome_path(@unit)
+    service = NewUnitService.new(current_user)
+    @unit = service.create(params[:unit_name], params[:location])
+    redirect_to unit_welcome_path(@unit) and return if @unit
   end
 
   def add_members

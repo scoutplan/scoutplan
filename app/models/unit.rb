@@ -16,6 +16,7 @@ class Unit < ApplicationRecord
   has_many :packing_lists, dependent: :destroy
 
   validates_presence_of :name
+  validates_presence_of :location
 
   alias_attribute :memberships, :unit_memberships
   alias_attribute :members, :unit_memberships

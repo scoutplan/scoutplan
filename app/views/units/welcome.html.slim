@@ -23,3 +23,12 @@
               data: { turbo_action: "advance" } do
       i.fa-solid.fa-file-user.mr-2.text-amber-500
       = "Import members from a file"
+
+    = link_to unit_setting_path(@unit, category: "unit_profile"),
+              class: "block rounded bg-stone-100 border border-stone-200 px-8 py-2 font-bold text-center hover:bg-stone-200",
+              data: { turbo_action: "advance" } do
+      i.fa-solid.fa-fw.fa-seal.mr-2.text-cyan-500
+      = "Upload a unit logo"      
+
+javascript:
+  document.title = "Welcome · #{@unit.name}!"
