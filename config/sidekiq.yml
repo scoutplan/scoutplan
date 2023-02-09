@@ -1,14 +1,15 @@
-:dynamic: true
 
 :queues:
   - default
   - active_storage_analysis
 
-:schedule:
-  run_tasks:
-    cron: "0 * * * * *" # every minute
-    class: TaskRunner
+:scheduler:
+  :dynamic: true
+  :schedule:
+    run_tasks:
+      cron: "0 * * * * *" # every minute
+      class: TaskRunner
 
-  send_queued_messages:
-    cron: "0 * * * * *" # every minute
-    class: QueuedMessageSender
+    send_queued_messages:
+      cron: "0 * * * * *" # every minute
+      class: QueuedMessageSender
