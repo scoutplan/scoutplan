@@ -94,6 +94,7 @@ group :test do
   gem "simplecov", require: false
   # gem "webdrivers"
   gem "apparition"
+  gem "rack_session_access"
 end
 
 # Use Redis for Action Cable
