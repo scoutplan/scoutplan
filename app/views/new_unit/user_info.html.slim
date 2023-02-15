@@ -4,15 +4,17 @@
   p.mb-8 We need a few more items to make sure you appear in Scoutplan correctly.
 
   section.py-2
-    = f.label :first_name, "Your first name", class: "font-bold block mb-1"
-    = f.text_field :first_name, class: "rounded border-stone-200 w-full placeholder-stone-300", placeholder: "First name"
+    = f.label :first_name, "Your first name (required)", class: "font-bold block mb-1"
+    = f.text_field :first_name, class: "rounded border-stone-200 w-full placeholder-stone-300",
+                   placeholder: "First name", autofocus: true, required: true
 
   section.py-2
-    = f.label :last_name, "Location", class: "font-bold block mb-1"
-    = f.text_field :last_name, class: "rounded border-stone-200 w-full placeholder-stone-300", placeholder: "Last name"
+    = f.label :last_name, "Last name (required)", class: "font-bold block mb-1"
+    = f.text_field :last_name, class: "rounded border-stone-200 w-full placeholder-stone-300", placeholder: "Last name",
+                   required: true
 
   section.py-2
-    = f.label :nickname, "Nickname (optional)", class: "font-bold block mb-1"
+    = f.label :nickname, "Nickname", class: "font-bold block mb-1"
     = f.text_field :nickname, class: "rounded border-stone-200 w-full placeholder-stone-300", placeholder: "Nickname (optional)"
 
   section.py-2

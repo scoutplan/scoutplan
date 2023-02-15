@@ -1,0 +1,12 @@
+- content_for :title do
+  div(style="color: rgb(230, 100, 37); line-height:1.2;")
+    | Right this way to Scoutplan&#8230;
+
+- content_for :left_column do
+  p(style="font-size:21px; line-height: 1.3;") Enter this code in your open browser to sign in:
+
+  p(style="font-size:48px; line-height: 1.3; display: block; text-align: center; background: #eee; padding: 15px 10px; margin: 10px 0; letter-spacing: 4px; border-radius: 5px;") 
+    = @code
+
+  p(style="color: #888;")
+    | Your code expires shortly and is uniquely yours. Please don't forward or share it with anyone else.

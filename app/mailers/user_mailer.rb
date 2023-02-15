@@ -14,4 +14,12 @@ class UserMailer < ApplicationMailer
          from: email_address_with_name("help@scoutplan.org", "Scoutplan"),
          subject: "Scoutplan sign-in code: #{@magic_link.login_code}")
   end
+
+  def new_user_email
+    @code = params[:code]
+    @email = params[:email]
+    mail(to: @email,
+         from: email_address_with_name("help@scoutplan.org", "Scoutplan"),
+         subject: "Scoutplan verification code: #{@code}")
+  end
 end

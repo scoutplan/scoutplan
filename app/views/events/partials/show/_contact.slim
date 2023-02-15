@@ -11,8 +11,7 @@ section#organizer.py-4.border-t.border-stone-800
 
       - if organizer.phone.present?
         dd.font-bold
-          = organizer.phone.phony_formatted(country_code: 'US')
-          / = number_to_phone(organizer.phone, area_code: true).gsub(/^\+\d/, '')
+          = organizer.phone.phony_formatted(country_code: "US")
 
       - if organizer.email.present?
         dd.font-bold

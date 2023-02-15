@@ -9,25 +9,37 @@ class NewUnitController < ApplicationController
   end
 
   def confirm
-    user = User.find_or_create_by(email: params[:email])
-    # magic_link = user.magic_links.create
+    email = params[:email]
+    code = (1..6).inject("") { |str, n| str + rand(10).to_s }
 
-    #TODO: generate & email code
+    session[:email] = email
+    session[:login_code] = code
+
+    UserMailer.with(code: code, email: email).new_user_email.deliver_later
+
     redirect_to "/new_unit/code"
   end
 
-  def code
-  end
+  def code; end
 
   def check_code
-    #TODO: verify code provided
-    redirect_to "/new_unit/user_info"
+    redirect_to "/new_unit/user_info" and return if params[:code] == session[:login_code]
+
+    flash[:alert] = "Invalid code"
+    redirect_to "/new_unit/code"
   end
 
   def user_info
+    email = session[:email]
   end
 
   def save_user_info
+    session[:user] = User.create_with(
+      first_name: params[:first_name],
+      last_name: params[:last_name],
+      phone: params[:phone],
+      nickname: params[:nickname]
+    ).find_or_create_by!(email: email)
   end
 
   def unit_info

@@ -31,7 +31,7 @@
           year: (display_month > 1) ? display_year : display_year - 1),
         title: t("events.calendar_view.prev_month"),
         data: { turbo_action: "advance" },
-        class: "uppercase text-sm font-bold inline-block py-1 px-2 md:px-4 rounded-l border hover:bg-stone-100" do
+        class: "font-bold inline-block py-1 px-2 md:px-4 rounded-l border hover:bg-stone-100" do
           i.fa-chevron-left.fas.mr-1
           .hidden.md:inline
             = "Prev"
@@ -41,7 +41,7 @@
           month: "%02i" % ((display_month == 12) ? 1 : display_month + 1),
           year: (display_month == 12) ? display_year + 1 : display_year),
         data: { turbo_action: "advance" },
-        class: "uppercase text-sm font-bold inline-block py-1 px-2 md:px-4 rounded-r border hover:bg-stone-100 border-l-0" do
+        class: "font-bold inline-block py-1 px-2 md:px-4 rounded-r border hover:bg-stone-100 border-l-0" do
           .hidden.md:inline
             = "Next"
           i.fa-chevron-right.fas.ml-1
@@ -52,7 +52,7 @@
           month: "%02i" % Time.now.month,
           year: Time.now.year),
         data: { turbo_action: "advance" },
-        class: "inline-block uppercase font-bold text-sm tracking-wide hover:bg-stone-100 border rounded px-2 py-1 ml-2"
+        class: "inline-block font-bold hover:bg-stone-100 border rounded px-2 py-1 ml-2"
     
     // RIGHT SIDE
     div
