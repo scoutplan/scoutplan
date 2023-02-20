@@ -32,7 +32,7 @@ RSpec.describe MemberNotifier, type: :model do
   end
 
   describe "weekly digest" do
-    it "skips ineligible events" do
+    before do
       @member = FactoryBot.create(:member)
       @unit = @member.unit
       @event = FactoryBot.create(:event, unit: @unit, status: :published, starts_at: 5.days.from_now)
@@ -40,11 +40,23 @@ RSpec.describe MemberNotifier, type: :model do
                                                    title: "Forbidden Donut")
       @forbidden_event.tag_list.add("trendy clique")
       @forbidden_event.save!
+    end
 
+    it "skips ineligible events" do
       expect { MemberNotifier.new(@member).send_digest }.to change { ActionMailer::Base.deliveries.count }.by(1)
       body = ActionMailer::Base.deliveries.last.body.to_s
       expect(body).to include(@event.title)
       expect(body).not_to include(@forbidden_event.title)
+    end
+
+    it "shows eligible events" do
+      @member.tag_list.add("trendy clique")
+      @member.save!
+      
+      expect { MemberNotifier.new(@member).send_digest }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      body = ActionMailer::Base.deliveries.last.body.to_s
+      expect(body).to include(@event.title)
+      expect(body).to include(@forbidden_event.title)
     end
   end
 
