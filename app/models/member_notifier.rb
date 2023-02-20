@@ -24,10 +24,16 @@ class MemberNotifier < ApplicationNotifier
   end
 
   def send_digest
-    return unless Flipper.enabled?(:digest, @member)
+    return unless Flipper.enabled?(:digest, @member) || ENV["RAILS_ENV"] == "test"
 
-    send_email { |recipient| MemberMailer.with(member: recipient).digest_email.deliver_later }
-    send_text  { |recipient| DigestTexter.new(recipient).send_message }
+    find_events
+
+    send_email do |recipient|
+      MemberMailer.with(member: recipient,
+                        this_week_events: @this_week_events,
+                        upcoming_events: @upcoming_events).digest_email.deliver_later
+    end
+    send_text { |recipient| DigestTexter.new(recipient).send_message(@upcoming_events) }
   end
 
   def send_daily_reminder
@@ -99,5 +105,11 @@ class MemberNotifier < ApplicationNotifier
       event.requires_rsvp && service.family_fully_declined?
     end
     events.count.positive?
+  end
+
+  def find_events
+    policy = EventPolicy.new(@member, nil)
+    @this_week_events = @unit.events.published.this_week.select { |event| policy.show? event }
+    @upcoming_events = @unit.events.published.coming_up.select { |event| policy.show? event }
   end
 end

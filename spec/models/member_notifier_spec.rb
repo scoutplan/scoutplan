@@ -31,6 +31,23 @@ RSpec.describe MemberNotifier, type: :model do
     end
   end
 
+  describe "weekly digest" do
+    it "skips ineligible events" do
+      @member = FactoryBot.create(:member)
+      @unit = @member.unit
+      @event = FactoryBot.create(:event, unit: @unit, status: :published, starts_at: 5.days.from_now)
+      @forbidden_event = FactoryBot.create(:event, unit: @unit, status: :published, starts_at: 5.days.from_now,
+                                                   title: "Forbidden Donut")
+      @forbidden_event.tag_list.add("trendy clique")
+      @forbidden_event.save!
+
+      expect { MemberNotifier.new(@member).send_digest }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      body = ActionMailer::Base.deliveries.last.body.to_s
+      expect(body).to include(@event.title)
+      expect(body).not_to include(@forbidden_event.title)
+    end
+  end
+
   describe "event organizer digest" do
     before do
       @event = FactoryBot.create(:event, :requires_rsvp, unit: @unit, status: "published", starts_at: 12.hours.from_now)
@@ -56,9 +73,9 @@ RSpec.describe MemberNotifier, type: :model do
     end
 
     it "skips inactive members" do
-      inactive_member = FactoryBot.create(:unit_membership, unit: @unit, status: :inactive)
+      FactoryBot.create(:unit_membership, unit: @unit, status: :inactive)
       notifier = MemberNotifier.new(@member)
-      expect { notifier.send_event_organizer_digest }.to change { ActionMailer::Base.deliveries.count }.by(1)      
+      expect { notifier.send_event_organizer_digest }.to change { ActionMailer::Base.deliveries.count }.by(1)
     end
   end
 end

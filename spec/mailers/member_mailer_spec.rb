@@ -14,7 +14,13 @@ RSpec.describe MemberMailer, type: :mailer do
         unit: @unit,
         starts_at: 4.days.from_now.utc.change(hour: 0, min: 15)
       )
-      @mail = MemberMailer.with(member: @member).digest_email
+
+      @this_week_events = @unit.events.published.this_week
+      @upcoming_events = @unit.events.published.coming_up
+
+      @mail = MemberMailer.with(member: @member,
+                                this_week_events: @this_week_events,
+                                upcoming_events: @upcoming_events).digest_email
     end
 
     it "renders the headers" do
