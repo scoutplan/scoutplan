@@ -10,7 +10,8 @@ class EventPolicy < UnitContextPolicy
     @event = event
   end
 
-  def show?
+  def show?(event = nil)
+    @event = event if event.present?
     return true if admin?
     return true if @event.organizer?(@membership)
 
