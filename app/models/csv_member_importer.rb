@@ -19,6 +19,7 @@ class CsvMemberImporter
         user = User.new(
           first_name: row[:first_name],
           last_name: row[:last_name],
+          phone: row[:phone],
           password: generated_password,
           password_confirmation: generated_password,
           email: email,
