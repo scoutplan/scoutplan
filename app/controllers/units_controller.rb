@@ -23,7 +23,7 @@ class UnitsController < UnitContextController
   def unit_params
     return unless params[:unit].present?
 
-    params.require(:unit).permit(:name, :location, :logo)
+    params.require(:unit).permit(:name, :location, :logo, :email)
   end
 
   def settings_params
