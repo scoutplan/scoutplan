@@ -17,6 +17,7 @@ class Unit < ApplicationRecord
 
   validates_presence_of :name
   validates_presence_of :location
+  validates_uniqueness_of :email
 
   alias_attribute :memberships, :unit_memberships
   alias_attribute :members, :unit_memberships
