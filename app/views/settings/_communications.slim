@@ -9,7 +9,7 @@ header.mb-6
       = @unit.name
 
 = form_with model: @unit do |f|
-  = render partial: "settings/email_address", locals: { f: f } if false
+  = render partial: "settings/email_address", locals: { f: f }
 
   h2.font-bold.text-2xl.border-t.py-2.border-stone-600 Automated messages
 

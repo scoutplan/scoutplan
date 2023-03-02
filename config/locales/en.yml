@@ -161,7 +161,7 @@ en:
     title:  "%{unit} Planner"
     activities:
       placeholder: "Activity description"
-      add:  "Add an Activity"
+      add:  "Add an activity"
       add_modal:
         title:                  "Add an Event Activity"
         event_title_caption:    "Add to"

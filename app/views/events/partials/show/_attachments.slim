@@ -4,10 +4,19 @@ section.py-4.border-t.border-stone-800
   h2.font-bold.uppercase.tracking-wide.text-stone-500.mb-6
     = t("events.show.attachments")
 
-  ul
+  .grid.grid-cols-2.gap-2
     - @event.attachments.each do |attachment|
-      li
-        = link_to url_for(attachment),
-                  class: "block py-1 font-bold text-blue-600 hover:underline #{attachment.filename.extension_without_delimiter}-file" do
-          span.mr-2.text-blue-500 = fontawesome_file_icon(attachment.filename.extension_without_delimiter)
+      = link_to url_for(attachment),
+                class: "block p-4 rounded text-center bg-stone-100 hover:bg-stone-200 transition-colors text-stone-600 block font-bold text-blue-600 hover:underline #{attachment.filename.extension_without_delimiter}-file" do
+        
+        - if attachment.representable?
+          = image_tag attachment.representation(resize_to_limit: [200, 200]),
+                      class: "mx-auto block border border-stone-200 shadow mb-2"
+
+        // span.mr-2.text-blue-500 = fontawesome_file_icon(attachment.filename.extension_without_delimiter)
+        
+        .truncate.w-full
           = attachment.filename
+
+        .font-normal
+          = attachment.created_at.strftime("%b %d, %Y")
