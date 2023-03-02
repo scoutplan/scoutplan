@@ -1,7 +1,9 @@
 = turbo_frame_tag "main"
-  header.w-full.px-16.py-8
-    h1.text-center.text-3xl.font-bold.mx-2
+  header.w-full.px-16.py-8.text-center.flex.flex-row.items-center
+    h1.text-3xl.font-bold.mx-2
       = t("planner.title", unit: @unit.name)
+
+    = check_box_tag :show_camping_trips
 
   .w-full
     .relative.flex.items-center.justify-center(data-controller="paged-scroll")
@@ -29,6 +31,7 @@
 
   javascript:
     document.title = "Planner · #{@unit.name}"
+    document.head.appendChild(document.createElement("style")).innerHTML = ".event-camping-trip { display: none; }";
 
   scss:
     main {

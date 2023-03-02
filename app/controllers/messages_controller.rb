@@ -77,7 +77,7 @@ class MessagesController < UnitContextController
     end
 
     SendMessageJob.perform_later(@message) if @message.queued?
-  end
+e  end
 
   def send_preview
     MemberNotifier.new(@current_member).send_message(@message, preview: true)
