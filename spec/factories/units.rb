@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :unit do
     name     { "Troop 231" }
     location { "Peoria, IL" }
+    email
 
     after(:create) do |unit, _evaluator|
       ["Troop Meeting", "Camping Trip", "Hike", "Service Project"].each do |category_name|
