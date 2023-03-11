@@ -1,21 +1,10 @@
-# README
+![Build status](https://github.com/scoutplan/scoutplan/actions/workflows/main.yml/badge.svg)
 
-<img src="./scoutplan_logo.png" width="150"/>
-
-
-
-## Application Performance
-
-[![View performance data on Skylight](https://badges.skylight.io/problem/O56zZFqqFZWO.svg)](https://oss.skylight.io/app/applications/O56zZFqqFZWO)
-[![View performance data on Skylight](https://badges.skylight.io/typical/O56zZFqqFZWO.svg)](https://oss.skylight.io/app/applications/O56zZFqqFZWO)
-[![View performance data on Skylight](https://badges.skylight.io/rpm/O56zZFqqFZWO.svg)](https://oss.skylight.io/app/applications/O56zZFqqFZWO)
-[![View performance data on Skylight](https://badges.skylight.io/status/O56zZFqqFZWO.svg)](https://oss.skylight.io/app/applications/O56zZFqqFZWO)
+# Welcome to Scoutplan
 
 ## Assumptions & prerequisites
 
 * You have a FontAwesome kit defined
-
-* You have an Adobe Fonts kit defined
 
 * Docker & docker-compose installed
 
@@ -26,10 +15,6 @@
 * ScoutAPM account
 
 * Twilio account with SMS enabled
-
-* Mixpanel account
-
-* Solarwinds Papertrail account
 
 * S3-compatible storage (coded against DigitalOcean)
 
@@ -43,7 +28,7 @@ See https://codewithhugo.com/docker-compose-local-https/ for inspiration
 
 * `mkcert -install`
 
-* add to /etc/hosts: `127.0.0.1 local.scoutplan.org`
+* in your hosts file (e.g. /etc/hosts): `127.0.0.1 local.scoutplan.org`
 
 ## Rails credentials
 
@@ -122,10 +107,9 @@ In a separate terminal, run `rails tailwindcss:watch`
 
 The Docker Compose stack includes mailcatcher. Once the stack's up, visit http://localhost:1080 to see your mail
 
-
 ## Flipper
 
-Some features are gated by Flipper and need to be enabled:
+Features are gated by Flipper and need to be enabled:
 
 * :daily_reminder
 * :receive_event_publish_notice
@@ -133,51 +117,6 @@ Some features are gated by Flipper and need to be enabled:
 * :receive_rsvp_confirmation
 * :receive_digest
 * :receive_daily_reminder
-
-## Code Conventions
-
-We're using [Tailwind](https://tailwindcss.com) for styling, which results in potentially lots of classes for a single element. For elements
-containing more than, let's say, four classes, we're adopting the following convention when using a Rails helper:
-
-* Use string continuation (\) to categorically organize classes across multiple lines
-* Spaces belong at the start of each line, except the first
-* Place the ending comma on its own line along with an empty string (can be omitted if `class` is the last argument)
-* Gang variations together (e.g. color and hover:color) on their own lines
-* Order categories thusly:
-
-1. Font and text
-1. Display: block, inline, flex, etc.
-1. Layout: padding, margins, width, min-width, etc.
-1. Background colors
-1. Foreground colors
-1. Other appearance classes (e.g. borders, rounded, etc.)
-
-Example:
-```
-class:  "text-sm font-bold no-underline tracking-wider uppercase text-center" \
-        " hidden md:inline-block" \
-        " px-6 py-3 mr-2" \
-        " bg-brand-100 hover:bg-brand-200" \
-        " text-brand-500 hover:text-brand-600" \
-        "",
-```
-
-In the case of non-helper Slim elements, up to four classes can be specified inline:
-
-```
-header.px-6.py-4.overflow-auto.sticky
-```
-
-Elements needing more than four elements should be specified using Slim attribute notation (note use of ugly Slim comment
-to straighten out code coloring):
-
-```
-header(class="px-6 py-4 \
-              overflow-auto sticky \
-              top-0 bg-white z-50")
-
-  // " <- necessary evil comment to restore proper code highlighting in VS Code
-```
 
 ## Sources
 
@@ -190,4 +129,3 @@ Run specs from command line: ```rspec```
 Load testing: https://octoperf.com/blog/2017/10/26/how-to-install-jmeter-mac/
 
 SSL configuration: https://www.ssllabs.com/ssltest/
-

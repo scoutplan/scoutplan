@@ -10,6 +10,11 @@ class HomeController < ApplicationController
     redirect_to "/new_unit/start" and return unless current_user.present?
 
     unit_id = cookies[:current_unit_id] || current_user.unit_memberships.first.unit.id
-    redirect_to Unit.find(unit_id)
+    begin
+      unit = Unit.find(unit_id)
+      redirect_to unit
+    rescue ActiveRecord::RecordNotFound
+      redirect_to "/new_unit/start"
+    end
   end
 end

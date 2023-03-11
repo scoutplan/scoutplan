@@ -85,8 +85,13 @@ describe "new unit", type: :feature do
         visit "/new_unit/unit_info"
 
         fill_in "unit_name", with: "Troop #{Faker::Number.number(digits: 3)}"
-        fill_in "location", with: "#{Faker::Address.city}, #{Faker::Address.state_abbr}"
+        fill_in "location", with: "#{Faker::Address.city}"
         expect { click_on "Next" }.to change { Unit.count }.by(1)
+
+        unit = Unit.last
+
+        ap unit
+        expect(unit.email).to eq("#{unit.name.parameterize}#{unit.location.parameterize}".gsub("-", ""))
       end
 
       it "creates a new unit with members" do
@@ -103,7 +108,7 @@ describe "new unit", type: :feature do
         fill_in "unit_name", with: "Troop #{Faker::Number.number(digits: 3)}"
         fill_in "location", with: "#{Faker::Address.city}, #{Faker::Address.state_abbr}"
         click_on "Next"
-        
+
         expect(page).to have_current_path(unit_welcome_path(Unit.last))
       end
     end
