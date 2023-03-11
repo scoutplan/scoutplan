@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Service for creating new Units
-class NewUnitService < ApplicationService
+class NewUnitService
   attr_accessor :unit, :user
 
   def initialize(user)
@@ -9,8 +9,12 @@ class NewUnitService < ApplicationService
   end
 
   def create(unit_name, location)
+    @unit_name = unit_name
+    @location = location
+
     return unless @user
-    return unless create_unit(unit_name, location)
+    return unless create_unit
+
     create_membership
     @unit
   end
@@ -18,8 +22,8 @@ class NewUnitService < ApplicationService
   #-------------------------------------------------------------------------
   private
 
-  def create_unit(unit_name, location)
-    @unit = Unit.new(name: unit_name, location: location)
+  def create_unit
+    @unit = Unit.new(name: @unit_name, location: @location, email: email_username)
     return @unit if @unit.save
 
     false
@@ -30,6 +34,13 @@ class NewUnitService < ApplicationService
     return @member if @member.save
 
     false
+  end
+
+  def email_username
+    base = "#{@unit_name.parameterize}#{@location.parameterize}".gsub("-", "")
+    candidate = base
+    candidate = "#{base}#{rand(100)}" while Unit.exists?(email: candidate)
+    candidate
   end
 
   # place a limit on the number of units a member can create

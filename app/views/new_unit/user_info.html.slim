@@ -1,4 +1,4 @@
-= form_with url: "/new_unit/save_user_info", method: :post do |f|
+= form_with url: "/new_unit/save_user_info", model: @user, method: :post do |f|
   h1.text-2xl.mb-4.font-bold = "Your information"
 
   p.mb-8 We need a few more items to make sure you appear in Scoutplan correctly.
