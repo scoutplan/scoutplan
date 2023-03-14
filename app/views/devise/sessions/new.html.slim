@@ -37,10 +37,10 @@
                            class: "w-full bg-white border border-stone-300 rounded px-3 py-2 placeholder-stone-400",
                            placeholder: "password"
 
-      - if devise_mapping.rememberable? && false
-        .mb-3
-          = f.check_box :remember_me, class: "mr-3 w-5 h-5 rounded text-brand-500 focus:ring-brand-500 border-brand-500"
-          = f.label :remember_me, t("global.remember_me"), class: "font-bold"
+        - if devise_mapping.rememberable?
+          .py-2
+            = f.check_box :remember_me, class: "mr-3 w-5 h-5 rounded text-brand-500 focus:ring-brand-500 border-brand-500"
+            = f.label :remember_me, t("global.remember_me"), class: "font-bold"
 
       .pt-3.overflow-auto.passwordless-login
         = f.submit t("global.sign_in_with_email"), class: "block w-full rounded bg-brand-500 hover:bg-brand-600 font-bold px-8 py-2 text-white"
