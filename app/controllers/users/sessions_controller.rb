@@ -35,7 +35,11 @@ module Users
     def find_unit
       return unless (unit_id = cookies[:current_unit_id])
 
-      @current_unit = Unit.find(unit_id)
+      begin
+        @current_unit = Unit.find(unit_id)
+      rescue ActiveRecord::RecordNotFound
+        cookies[:current_unit_id] = nil
+      end
     end
 
     def resolve_user
