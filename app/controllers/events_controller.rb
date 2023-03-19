@@ -325,6 +325,11 @@ class EventsController < UnitContextController
     @current_member
   end
 
+  def weather
+    # weather = WeatherService.new(@event).current
+    # render partial: "events/partials/show/weather", locals: { weather: weather }
+  end
+
   private
 
   def collate_rsvps
