@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "street_address"
+
 # represents a place (typically for an Event)
 # :departure, :arrival, :activity are valid keys
 class Location < ApplicationRecord
@@ -27,5 +29,18 @@ class Location < ApplicationRecord
 
   def mappable?
     map_name.present? || address.present?
+  end
+
+  def street_address
+    @street_address ||= StreetAddress::US.parse(address) || street_address_from_string(address)
+  end
+
+  def street_address_from_string(str)
+    return nil if str.blank?
+
+    parts = str.split(",").map(&:strip)
+    return nil if parts.size < 2
+
+    StreetAddress::US::Address.new(city: parts[0], state: parts[1])
   end
 end

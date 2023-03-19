@@ -47,10 +47,10 @@ See https://codewithhugo.com/docker-compose-local-https/ for inspiration
 * SENTRY_DSN (requires a Sentry.io subscription)
 * SKYLIGHT_AUTHENTICATION (requires a Skylight subscription)
 * SMTP_PASSWORD
+* OPENWEATHER_API_KEY
 
 ### Config vars (stored as Kubernetes configmap)
 
-* ADOBE_KIT_ID (aka Typekit...requires an Adobe subscription)
 * APP_HOST (e.g. my.app.com)
 * DATABASE_HOST (expects a Postgres server)
 * DATABASE_NAME

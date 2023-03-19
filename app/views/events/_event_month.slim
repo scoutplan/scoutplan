@@ -22,6 +22,7 @@
     
     .divide-y.divide-stone-200
       - events.each do |event|
+        
         = render partial: "event", locals: { event: event }
 
   - @event_month_count += 1
