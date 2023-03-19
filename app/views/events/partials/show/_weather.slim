@@ -1,4 +1,4 @@
-- return unless Flipper.enabled?(:chat_notifications, @current_member)
+- return unless Flipper.enabled?(:event_weather, @current_member)
 - service = WeatherService.new(@event.primary_location)
 - return unless service.weather_available?
 - conditions = service.current.weather_conditions
