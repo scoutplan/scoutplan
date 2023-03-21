@@ -27,4 +27,10 @@ RSpec.describe WeatherService, type: :model do
       expect(service.current).to be_nil
     end
   end
+
+  describe "daily_forecast" do
+    it "returns a hash of daily forecasts" do
+      expect(@service.daily_forecast).to be_a(Hash)
+    end
+  end
 end
