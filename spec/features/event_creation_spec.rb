@@ -78,7 +78,6 @@ describe "events", type: :feature do
       expect { click_link_or_button "Add This Event" }.to change { Event.count }.by(1)
 
       event = Event.last
-      ap event.tag_list
       expect(event.tag_list.count).to eq(2)
     end
   end
