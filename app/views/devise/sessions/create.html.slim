@@ -13,5 +13,9 @@ section#modal.px-6.py-6.bg-stone-200/30.rounded
       = f.button type: "submit", class: "bg-brand-500 text-white px-4 rounded", id: "submit" do
         i.fa-solid.fa-arrow-right.text-2xl
 
+    div.py-4
+      = f.check_box :remember_me, class: "mr-3 w-5 h-5 rounded text-brand-500 focus:ring-brand-500 border-brand-500"
+      = f.label :remember_me, t("global.remember_me"), class: "font-bold"
+
   p.mt-8.text-stone-500
     | If you don't see the email, check your spam folder or <strong>#{link_to "try again", new_user_session_path, class: "text-blue-500"}</strong>.

@@ -10,9 +10,11 @@ module Users
     end
 
     def create
+      ap params[:remember_me]
       if params[:login_code].present?
         if (magic_link = MagicLink.find_by(login_code: params[:login_code]))
           sign_in(magic_link.user)
+          magic_link.user.remember_me! if params[:remember_me] == "1"
           session[:via_magic_link] = true
           redirect_to magic_link.path
         else
