@@ -13,6 +13,14 @@ ul
     li
       hr
 
+  - if Flipper.enabled?(:payments, @current_user)
+    li
+      / = link_to profile_payments_path(current_user),
+      /           class: "block px-4 md:px-8 py-3 md:py-2 font-bold md:font-normal text-brand-500 md:text-stone-100 md:hover:bg-stone-600" do
+      /   span.inline-block.w-8.text-center
+      /     i.fas.fa-dollar-sign
+      /   = t("profile.payments")
+
   = link_to edit_profile_path(current_user), class: "block px-4 md:px-8 py-3 md:py-2 font-bold md:font-normal text-brand-500 md:text-stone-100 md:hover:bg-stone-600" do
     span.inline-block.w-8.text-center
       i.fas.fa-gear

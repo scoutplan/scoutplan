@@ -1,0 +1,4 @@
+.table-row
+  .table-cell.border-t.p-2 = payment.updated_at.strftime("%b %-d, %Y")
+  .table-cell.border-t.p-2 = payment.unit_membership.short_display_name
+  .table-cell.border-t.p-2.text-right = number_to_currency(payment.amount / 100)

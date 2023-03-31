@@ -19,6 +19,8 @@ class EventRsvp < ApplicationRecord
   delegate_missing_to :unit_membership
 
   scope :ordered, -> { includes(unit_membership: :user).order("users.last_name, users.first_name") }
+  scope :youth, -> { joins(:unit_membership).merge(UnitMembership.youth) }
+  scope :adult, -> { joins(:unit_membership).merge(UnitMembership.adult) }
 
   # do the Event and UnitMembership share a Unit in common?
   # if not, something's wrong
@@ -36,10 +38,16 @@ class EventRsvp < ApplicationRecord
 
   def done?
     return true unless response == "accepted"
-    return false if event.payment_required? && !paid
+    return false if event.requires_payment? && !paid
     return false if event.documents_required? && !documents_received?
 
     true
+  end
+
+  def paid?(payments_service = nil)
+    return false unless payments_service
+
+    false
   end
 
   def action_pending?

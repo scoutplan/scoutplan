@@ -46,6 +46,8 @@ Rails.application.routes.draw do
 
   get "units/*after", to: redirect("/u/%{after}")
 
+  resources :payments, only: [:create]
+
   # begin units
   resources :units, path: "u", only: %i[show index update] do
     resources :messages, path: "announcements" do
@@ -69,10 +71,20 @@ Rails.application.routes.draw do
 
     get "my_rsvps", to: "events#my_rsvps", as: "my_rsvps"
     get "welcome", to: "units#welcome", as: "welcome"
+    resources :payments, module: :settings do
+      collection do
+        post "onboard"
+        get "refresh"
+        get "return_from_onboarding"
+      end
+    end
+
+    # resources :payments, module: :profile
 
     resources :events, path: "schedule" do
       resources :chat_messages, as: "discussion", path: "discussion"
       resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
+      resources :payments, module: :events
       resources :event_attachments, path: "attachments", as: "attachments"
       resources :event_activities
       resources :event_organizers, as: "organizers", path: "organizers"

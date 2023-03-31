@@ -28,6 +28,7 @@ class Event < ApplicationRecord
   has_many :event_shifts, dependent: :destroy
   has_many :locations, as: :locatable, dependent: :destroy
   has_many :locations, through: :event_locations
+  has_many :payments
   has_many :members, through: :event_rsvps
   has_many :rsvp_tokens, dependent: :destroy
 
@@ -101,6 +102,10 @@ class Event < ApplicationRecord
     ends_at.past?
   end
 
+  def requires_payment?
+    (cost_adult + cost_youth).positive?
+  end
+
   # override getter
   def rsvp_closes_at
     read_attribute(:rsvp_closes_at) || starts_at
@@ -136,10 +141,6 @@ class Event < ApplicationRecord
 
   def chat?
     requires_rsvp
-  end
-
-  def requires_payment?
-    payment_amount.positive?
   end
 
   def series?
@@ -232,10 +233,6 @@ class Event < ApplicationRecord
 
   def packing_list_items
     packing_lists.map(&:packing_list_items).flatten.uniq
-  end
-
-  def payment_required?
-    payment_amount.positive?
   end
 
   private

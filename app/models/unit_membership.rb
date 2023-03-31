@@ -84,6 +84,10 @@ class UnitMembership < ApplicationRecord
     child_relationships.map(&:child_member)
   end
 
+  def siblings
+    parents.flat_map(&:children) - [self]
+  end
+
   def display_first_name(member = nil)
     return "you" if member == self
 
@@ -91,7 +95,7 @@ class UnitMembership < ApplicationRecord
   end
 
   def family(include_self: :append)
-    res = (children | parents)
+    res = (children | parents | siblings)
     res.append(self) if [true, :append].include?(include_self)
     res.unshift(self) if include_self == :prepend
     res

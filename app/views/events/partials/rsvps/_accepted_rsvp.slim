@@ -8,6 +8,13 @@
 - @rsvp = rsvp
 
 ul.m-0
+  - if rsvp.note.present?
+    li
+      .py-2
+        span.w-7.text-center.inline-block.glyph
+          i.fas.fa-comment-dots.text-gray-500
+        = "\"#{rsvp.note}\""
+
   // Activity
   - if @event.includes_activity
     - if rsvp.includes_activity
