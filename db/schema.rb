@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_21_132025) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_31_101530) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -274,10 +274,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_21_132025) do
     t.string "activity_name"
     t.datetime "rsvp_closes_at"
     t.boolean "send_reminder", default: true, null: false
-    t.integer "payment_amount", default: 0, null: false
+    t.integer "cost_youth", default: 0, null: false
     t.boolean "online", default: false, null: false
     t.string "website"
     t.integer "packing_list_ids", default: [], array: true
+    t.integer "cost_adult", default: 0
   end
 
   create_table "flipper_features", force: :cascade do |t|
@@ -380,6 +381,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_21_132025) do
   create_table "packing_lists", force: :cascade do |t|
     t.integer "unit_id"
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "payment_accounts", force: :cascade do |t|
+    t.integer "unit_id"
+    t.string "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.integer "unit_membership_id"
+    t.integer "event_id"
+    t.integer "amount"
+    t.string "stripe_id"
+    t.string "stripe_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

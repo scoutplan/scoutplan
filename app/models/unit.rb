@@ -4,6 +4,7 @@
 #
 class Unit < ApplicationRecord
   include Seasons
+  has_one :payment_account
   has_many :events
   has_many :event_categories
   has_many :unit_memberships
@@ -11,9 +12,10 @@ class Unit < ApplicationRecord
   has_many :locations, through: :events
   has_many :news_items
   has_many :tasks, as: :taskable
-  has_one_attached :logo
   has_many :locations
   has_many :packing_lists, dependent: :destroy
+  has_many :payments, through: :events
+  has_one_attached :logo
 
   validates_presence_of :name
   validates_presence_of :location
@@ -52,6 +54,10 @@ class Unit < ApplicationRecord
 
   def membership_for(user)
     members.includes(:parent_relationships, :child_relationships).find_by(user: user)
+  end
+
+  def payments_enabled?
+    payment_account.present? && payment_account.active?
   end
 
   def planner

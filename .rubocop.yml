@@ -9,3 +9,6 @@ Style/ParallelAssignment:
 
 Style/SymbolArray:
   Enabled: false
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent

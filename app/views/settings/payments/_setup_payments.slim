@@ -1,0 +1,18 @@
+header.flex.flex-row.justify-between.py-4
+  h1.font-bold.text-3xl
+    = t("payments.titles.setup")
+
+p.mb-6 Scoutplan uses <a class="text-blue-500 font-bold hover:underline" href="https://stripe.com">Stripe</a> to process payments. By continuing, you will be guided through the process of setting up a Stripe account and connecting it to your unit's bank account to receive funds. You will need your bank account and routing numbers to complete this process.
+
+= form_tag onboard_unit_payments_path(@unit), method: :post, data: { turbo: false } do
+  div
+    = render partial: "components/switch",
+            locals: { checked: false,
+                      label: "I am authorized to make financial decisions on behalf of my unit",
+                      object_name: "unit",
+                      method: "auth",
+                      checked_value: "true",
+                      unchecked_value: "false" }
+  
+  div.mt-6
+    = submit_tag "Continue", class: "block bg-brand-500 hover:bg-brand-600 text-white font-bold py-2 px-8 rounded"

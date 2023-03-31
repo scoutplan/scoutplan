@@ -553,6 +553,11 @@ en:
     titles:
       index:    "Packing Lists"
 
+  payments:
+    titles:
+      index: "Payments"
+      setup: "Set up payments for your unit"
+
   search:
     placeholders:
       query_term: "Type an event or member name"

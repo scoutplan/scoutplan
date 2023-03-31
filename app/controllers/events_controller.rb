@@ -141,6 +141,13 @@ class EventsController < UnitContextController
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).rsvps?
     @current_family = @current_member.family
+    if @event.requires_payment?
+      @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
+      @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
+      @total_cost = (@family_rsvps.accepted.youth.count * @event.cost_youth) + (@family_rsvps.accepted.adult.count * @event.cost_adult)
+      @total_paid = ((@payments&.sum(:amount) || 0) / 100)
+      @amount_due = @total_cost - @total_paid
+    end
     page_title @unit.name, @event.title
     respond_to do |format|
       format.html
@@ -231,6 +238,7 @@ class EventsController < UnitContextController
     find_next_and_previous_events
     @page_title = [@event.title, "Organize"]
     @non_invitees = @event.unit.members.status_registered - @event.rsvps.collect(&:member)
+    @payments_service = PaymentsService.new(@event)
   end
 
   # member-facing view showing all RSVPable events and their responses
@@ -385,7 +393,7 @@ class EventsController < UnitContextController
                                       :short_description, :requires_rsvp, :includes_activity, :activity_name,
                                       :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
-                                      :note, :payment_amount, :online, :website, :tag_list,
+                                      :note, :cost_youth, :cost_adult, :online, :website, :tag_list,
                                       :notify_members, :notify_recipients, :notify_message, :document_library_ids,
                                       packing_list_ids: [],
                                       event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy],

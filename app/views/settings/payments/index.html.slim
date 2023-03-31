@@ -1,0 +1,6 @@
+= turbo_frame_tag "main" do
+  .max-w-3xl.mx-auto
+    - if @unit.payments_enabled?
+      = render partial: "payments_dashboard"
+    - else
+      = render partial: "setup_payments"
