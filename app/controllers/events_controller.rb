@@ -357,9 +357,6 @@ class EventsController < UnitContextController
     # render partial: "events/partials/show/weather", locals: { weather: weather }
   end
 
-  def rsvps
-  end
-
   private
 
   def collate_rsvps
