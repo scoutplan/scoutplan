@@ -79,8 +79,6 @@ Rails.application.routes.draw do
       end
     end
 
-    # resources :payments, module: :profile
-
     resources :events, path: "schedule" do
       resources :chat_messages, as: "discussion", path: "discussion"
       resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
@@ -92,12 +90,13 @@ Rails.application.routes.draw do
       resources :locations, module: :events
       collection do
         # get "/", to: redirect("/units/%{unit_id}/schedule/list")
-        get  "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
-        get  "list",        to: "events#index", defaults: { variation: "list" }, as: "list"
-        get  "calendar", to: "events#index", defaults: { variation: "calendar" }
-        get  "spreadsheet", to: "events#index", defaults: { variation: "spreadsheet" }
-        get  "calendar/:year/:month", to: "events#index", defaults: { variation: "calendar" }, as: "targeted_calendar"
-        get  "public", to: "events#public", as: "public"
+        get "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
+        get "public",      to: "events#public", as: "public"
+        get "signups",     to: "events#signups", as: "signups"
+        get "list",        to: "events#index", defaults: { variation: "list" }, as: "list"
+        get "spreadsheet", to: "events#index", defaults: { variation: "spreadsheet" }
+        get "calendar",    to: "events#index", defaults: { variation: "calendar" }
+        get "calendar/:year/:month", to: "events#index", defaults: { variation: "calendar" }, as: "targeted_calendar"
         post "bulk_publish"
       end
       get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"

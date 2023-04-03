@@ -1,7 +1,7 @@
 // This is a small layout for displaying an entry on the Events#organize page.
 // It's intended to be used by the two partials found in /views/events/partials/rsvps
 
-- @payments_service.member = @member
+- @payments_service&.member = @member
 
 li.member(id="unit_membership_#{@member.id}")
   - rsvp = @event.rsvp_for(@member)
@@ -32,13 +32,14 @@ li.member(id="unit_membership_#{@member.id}")
           / - if rsvp&.action_pending?
             / i.fa-triangle-exclamation.fas.text-red-500(title="Payment and/or documentation hasn't yet been received")
         
-          - case @payments_service.paid?
-          - when :in_full
-            i.fa-check-circle.fas.text-emerald-900(title="Payment has been received")
-          - when :partial
-            i.fa-exclamation-triangle.fas.text-yellow-500(title="Partial payment has been received")
-          - else
-            i.fa-exclamation-triangle.fas.text-red-500(title="Payment hasn't yet been received")
+          - if @event.requires_payment?
+            - case @payments_service&.paid?
+            - when :in_full
+              i.fa-check-circle.fas.text-emerald-900(title="Payment has been received")
+            - when :partial
+              i.fa-exclamation-triangle.fas.text-yellow-500(title="Partial payment has been received")
+            - else
+              i.fa-exclamation-triangle.fas.text-red-500(title="Payment hasn't yet been received")
 
         .little-buttons.w-6.inline-block.text-right
           .disclosure-button.hidden.text-right

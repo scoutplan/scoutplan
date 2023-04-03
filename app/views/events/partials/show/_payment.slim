@@ -15,10 +15,11 @@ section.py-4.font-bold.border-t.border-stone-800
     div
       - if Flipper.enabled?(:payments, @current_member) && @family_rsvps.any?
         - if @amount_due > 0
-          = link_to "Pay #{number_to_currency(@amount_due, precision: 0)} now",
-                    new_unit_event_payment_path(@unit, @event),
+          = link_to new_unit_event_payment_path(@unit, @event, payment_method: :stripe),
                     class: "rounded px-4 py-2 bg-lime-600 hover:bg-lime-700 text-lime-100",
-                    data: { turbo: false }
+                    data: { turbo: false } do
+            i.fa-solid.fa-credit-card.mr-2
+            = "Pay #{number_to_currency(@amount_due, precision: 0)} now"
         - else
           = link_to unit_event_payments_path(@unit, @event),
                     class: "text-lime-600" do
