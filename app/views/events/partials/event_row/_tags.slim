@@ -1,6 +1,5 @@
 - return unless event.tag_list.any?
 
-div.flex.flex-row.gap-1.mt-1.text-xs
-  - event.tag_list.each do |tag|
-    .text-sm.font-bold.inline-block.py-1.px-2.bg-rose-700.text-white.rounded-md
-      = tag
+- event.tag_list.each do |tag|
+  .text-xs.font-bold.border.rounded.px-2.py-1
+    = tag

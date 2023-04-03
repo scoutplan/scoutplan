@@ -11,7 +11,7 @@ require "humanize"
 # rubocop:disable Metrics/CyclomaticComplexity
 class EventsController < UnitContextController
   skip_before_action :authenticate_user!, only: [:public]
-  before_action :find_event, except: %i[index create new bulk_publish public my_rsvps]
+  before_action :find_event, except: %i[index create new bulk_publish public my_rsvps signups]
   before_action :collate_rsvps, only: [:show, :rsvps]
   layout :current_layout
 
@@ -157,6 +157,7 @@ class EventsController < UnitContextController
 
   def organize
     @attendees = @event.rsvps.accepted
+    @payments_service = PaymentsService.new(@event)
   end
 
   # GET /:unit_id/events/:event_id/edit
@@ -238,12 +239,30 @@ class EventsController < UnitContextController
     find_next_and_previous_events
     @page_title = [@event.title, "Organize"]
     @non_invitees = @event.unit.members.status_registered - @event.rsvps.collect(&:member)
-    @payments_service = PaymentsService.new(@event)
+    ap @non_invitees
   end
 
   # member-facing view showing all RSVPable events and their responses
   def my_rsvps
     @events = @unit.events.rsvp_required.published.future
+  end
+
+  def signups
+    @events = @unit.events.rsvp_required.published.future
+    respond_to do |format|
+      format.pdf do
+        render_printable_signups
+      end
+    end
+  end
+
+  def render_printable_signups
+    render(locals: { events: @events },
+           pdf: "#{@unit.name} Signups as of #{Date.today.strftime('%-d %B %Y')}",
+           layout: "pdf",
+           encoding: "utf8",
+           orientation: "landscape",
+           margin: { top: 20, bottom: 20 })
   end
 
   def publish
@@ -336,6 +355,9 @@ class EventsController < UnitContextController
   def weather
     # weather = WeatherService.new(@event).current
     # render partial: "events/partials/show/weather", locals: { weather: weather }
+  end
+
+  def rsvps
   end
 
   private

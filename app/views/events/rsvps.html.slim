@@ -120,7 +120,7 @@
         - else
           ul.mt-2.empty:mt-0
             #organize_category_accepted
-              = render partial:    "events/partials/rsvps/accepted_rsvp",
+              = render partial:   "events/partials/rsvps/accepted_rsvp",
                       collection: @event.rsvps.accepted.ordered,
                       as:         :rsvp,
                       layout:     "events/partials/rsvps/organize_entry"
@@ -171,7 +171,7 @@
 
           .font-bold.tracking-wide.mt-1
             span.px-2.py-1.bg-zinc-500.text-zinc-100.rounded#organize_count_family_and_friends
-              = @non_invitees.count   
+              = @non_invitees.count
 
         ul.mt-2.empty:mt-0
           #organize_category_family_and_friends

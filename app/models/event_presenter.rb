@@ -4,6 +4,8 @@
 # handling things like single- versus multi-day events,
 # events that span month boundaries, etc.
 class EventPresenter
+  include ActionView::Helpers
+
   attr_accessor :event, :current_member, :plain_text
 
   # EventPresenter.new(event: @event, current_member: @current_member)
@@ -19,6 +21,12 @@ class EventPresenter
     res = member&.display_first_name || ""
     res += " #{I18n.t('you_parenths')}" if current_member == member
     res
+  end
+
+  def cost
+    return "#{number_to_currency(event.cost_youth)} per person" if event.cost_youth == event.cost_adult
+
+    "#{number_to_currency(event.cost_youth)} per youth, #{number_to_currency(event.cost_adult)} per adult"
   end
 
   # single day: "13"
