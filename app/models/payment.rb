@@ -6,6 +6,6 @@ class Payment < ApplicationRecord
   belongs_to :unit_membership
 
   def amount_in_dollars
-    amount / 100.0
+    (amount || 0) / 100.0
   end
 end
