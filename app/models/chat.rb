@@ -14,7 +14,7 @@ class Chat < ApplicationRecord
   end
 
   def topic
-    return "#{chattable.title} on #{chattable.starts_at.strftime("%b %d")}" if chattable.is_a?(Event)
+    return "#{chattable.title} (scheduled for #{chattable.starts_at.strftime('%b %d')})" if chattable.is_a?(Event)
 
     "Chat"
   end

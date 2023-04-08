@@ -1,0 +1,10 @@
+= turbo_frame_tag "main"
+  .max-w-2xl.mx-auto(data-controller="event" class="w-full")
+    header.flex.flex-row.justify-between.items-center
+      h1.font-bold.text-4xl = @page.title
+
+      = link_to t("wiki_pages.show.edit"), edit_unit_wiki_page_path(@unit, @page), class: "rounded border border-brand-500 text-brand-500 px-4 py-2 hover:bg-stone-100 hover:text-brand-600 font-bold", data: { turbo_action: "advance" }
+
+    = render partial: "tag_list", locals: { tags: @page.wiki_page_tags, tag_class: "inline" }
+
+    == @page.body

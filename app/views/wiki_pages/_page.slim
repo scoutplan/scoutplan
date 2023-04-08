@@ -1,0 +1,9 @@
+li(class="#{page.wiki_page_tag_list.map{ |tag| "wiki-category-#{tag}" }.join(' ')}")
+  = link_to unit_wiki_page_path(@unit, page),
+            class: "text-lg block py-1 px-1 hover:bg-stone-100",
+            data: { turbo_action: "advance" } do
+
+    .flex.flex-row.justify-between.items-center
+      div = page.title
+      .flex.flex-row.gap-1.text-xs
+        = render partial: "tag_list", locals: { tags: page.wiki_page_tag_list, tag_class: "px-1" }

@@ -1,0 +1,9 @@
+p.text-center.mt-12.w-full.border.rounded.py-4
+  = t("wiki_pages.index.no_wiki_pages")
+
+  - if WikiPagePolicy.new(@current_member, @unit).create?
+    = link_to new_unit_wiki_page_path(@unit),
+              class: "text-blue-500 font-bold hover:underline",
+              data: { turbo_action: "advance" } do
+      = t("wiki_pages.index.new_cta")
+      i.fa-solid.fa-chevron-right.ml-2

@@ -15,6 +15,7 @@ class Unit < ApplicationRecord
   has_many :locations
   has_many :packing_lists, dependent: :destroy
   has_many :payments, through: :events
+  has_many :wiki_pages
   has_one_attached :logo
 
   validates_presence_of :name
