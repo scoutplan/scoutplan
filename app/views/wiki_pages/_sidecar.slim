@@ -1,0 +1,9 @@
+aside.xl:absolute.xl:-ml-48.xl:w-36.sidecar.py-6
+  .flex.flex-col.gap-1
+    h4.font-bold Filter by tags
+
+    ul
+      - @tags.each do |tag|
+        li
+          = check_box_tag :tag, tag.id, false, class: "mr-2"
+          = label_tag tag.name, tag.name

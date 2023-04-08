@@ -1,0 +1,34 @@
+= form_with model: @page, url: @page.new_record? ? unit_wiki_pages_path(@unit) : unit_wiki_page_path(@unit, @page), data: { turbo: false } do |f|
+
+  .py-2
+    = f.label :title, "Title", class: "block mb-1 font-bold"
+    = f.text_field :title,
+      class: "w-full border border-stone-300 rounded bg-white p-2 placeholder-stone-300 font-bold",
+      autofocus: true
+
+
+  = f.rich_text_area :body, class: "bg-white block border border-stone-300 overflow-auto h-96"
+  
+  .py-2
+    = f.label :tags, "Tags", class: "block mb-1 font-bold"
+    = f.text_field :wiki_page_tag_list,
+      class: "w-full border border-stone-300 rounded bg-white p-2 placeholder-stone-300 font-bold",
+      autocomplete: "off"
+
+  .py-2
+    = f.label :visibility, "Visibility", class: "block mb-1 font-bold"
+
+    = f.radio_button :visibility, :draft, class: "mr-2"
+    = f.label :visibility_draft, "Draft", class: "mr-4"
+
+    = f.radio_button :visibility, :members_only, class: "mr-2"
+    = f.label :visibility_private, "Private", class: "mr-4"
+
+    = f.radio_button :visibility, :anyone, class: "mr-2"
+    = f.label :visibility_public, "Public", class: "mr-4"
+
+  div.text-sm.text-stone-400.mt-1
+    | Tags limit who can see events. Separate with commas.
+
+  footer.my-4
+    = f.button :submit, class: "rounded bg-brand-500 text-white px-4 py-2 font-bold"

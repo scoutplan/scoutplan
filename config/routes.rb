@@ -129,6 +129,8 @@ Rails.application.routes.draw do
         post "import",      to: "unit_memberships_import#create"
       end
     end
+
+    resources :wiki_pages, path: "pages"
   end
   # end units
 

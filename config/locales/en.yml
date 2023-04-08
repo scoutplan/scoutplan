@@ -76,6 +76,7 @@ en:
     members:       "Members"
     planner:       "Planner"
     communication: "Announcements"
+    wiki:          "Pages"
 
   profile:
     edit: "Settings"
@@ -674,3 +675,10 @@ en:
 
     notices:
       update_success: "Your unit profile has been updated"
+  
+  wiki_pages:
+    index:
+      title:         "Pages"
+      new:           "Add a page"
+      no_wiki_pages: "You don't have any pages yet. "
+      new_cta:       "Start one now"

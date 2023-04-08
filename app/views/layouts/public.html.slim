@@ -14,4 +14,5 @@ html
     = yield :head
 
   body(class="text-gray-600 #{controller_name} #{action_name} #{yield :body_classes}")
-    = yield
+    .py-4
+      = yield
