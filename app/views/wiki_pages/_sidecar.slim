@@ -5,5 +5,36 @@ aside.xl:absolute.xl:-ml-48.xl:w-36.sidecar.py-6
     ul
       - @tags.each do |tag|
         li
-          = check_box_tag :tag, tag.id, false, class: "mr-2"
-          = label_tag tag.name, tag.name
+          = check_box_tag "tag_#{tag.name}", tag.name, false, class: "mr-2 tag-filter"
+          = label_tag "tag_#{tag.name}", tag.name
+
+javascript:
+  function applyWikiFilter() {
+    var tags = document.querySelectorAll(".tag-filter:checked");
+    var tagNames = [];
+    tags.forEach(function (elem) {
+      tagNames.push(elem.value);
+    });
+
+    document.querySelectorAll(".wiki-page").forEach(function (elem) {
+      var pageTags = elem.dataset.tags.split(" ");
+      var show = true;
+      tagNames.forEach(function (tagName) {
+        if (!pageTags.includes(tagName)) {
+          show = false;
+        }
+      });
+
+      if (show) {
+        elem.style.display = "block";
+      } else {
+        elem.style.display = "none";
+      }
+    });
+  }
+
+  document.querySelectorAll(".tag-filter").forEach(function (elem) {
+    elem.addEventListener("change", function (event) {
+      applyWikiFilter();
+    });
+  });

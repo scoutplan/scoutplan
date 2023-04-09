@@ -1,4 +1,4 @@
-li(class="#{page.wiki_page_tag_list.map{ |tag| "wiki-category-#{tag}" }.join(' ')}")
+li(class="wiki-page #{page.wiki_page_tag_list.map{ |tag| "wiki-category-#{tag}" }.join(' ')}" data-tags="#{page.wiki_page_tag_list.join(' ')}")
   = link_to unit_wiki_page_path(@unit, page),
             class: "text-lg block py-1 px-1 hover:bg-stone-100",
             data: { turbo_action: "advance" } do
