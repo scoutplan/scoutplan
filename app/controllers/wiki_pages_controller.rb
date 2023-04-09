@@ -1,8 +1,7 @@
 class WikiPagesController < UnitContextController
-  before_action :find_page, only: [:show, :edit, :update, :destroy]
+  before_action :find_page, only: [:show, :edit, :update, :destroy, :history]
   skip_before_action :authenticate_user!, only: [:index, :show]
   layout :select_layout
-
 
   def index
     @pages = find_pages
@@ -41,6 +40,10 @@ class WikiPagesController < UnitContextController
     end
   end
 
+  def history
+    authorize @page
+  end
+
   private
 
   def wiki_page_params
@@ -48,7 +51,7 @@ class WikiPagesController < UnitContextController
   end
 
   def find_page
-    @page = @unit.wiki_pages.find(params[:id])
+    @page = @unit.wiki_pages.find(params[:id] || params[:wiki_page_id])
   end
 
   def find_pages

@@ -1,10 +1,15 @@
 = turbo_frame_tag "main"
-  .max-w-2xl.mx-auto(data-controller="event" class="w-full")
+  .max-w-2xl.mx-auto.relative
+    = render partial: "return_link"
+    
     header.flex.flex-row.justify-between.items-center
       h1.font-bold.text-4xl = @page.title
 
       = link_to t("wiki_pages.show.edit"), edit_unit_wiki_page_path(@unit, @page), class: "rounded border border-brand-500 text-brand-500 px-4 py-2 hover:bg-stone-100 hover:text-brand-600 font-bold", data: { turbo_action: "advance" }
 
-    = render partial: "tag_list", locals: { tags: @page.wiki_page_tags, tag_class: "inline" }
+    .text-sm.font-bold.flex.flex-row.gap-1.py-2
+      = render partial: "tag_list", locals: { tags: @page.wiki_page_tags, tag_class: "inline border rounded py-1 px-2" }
 
-    == @page.body
+    .wiki-body.border-t.pt-4
+      == @page.body
+  

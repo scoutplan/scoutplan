@@ -2,18 +2,20 @@
   .max-w-2xl.mx-auto(data-controller="event" class="w-full")
     = render partial: "sidecar" if false
 
-    header.flex.flex-row.justify-between.items-center.pb-4
-      div
-        .text-sm.font-bold.text-stone-400.uppercase = @unit.name
-        h1.font-bold.text-4xl = t("wiki_pages.index.title")
+    header.py-4.px-1
+      = render partial: "components/unit_name"
 
-      div
-        - if WikiPagePolicy.new(@current_member, @unit).create?
-          = link_to new_unit_wiki_page_path,
-                    class: "rounded border border-brand-500 text-brand-500 px-4 py-2 hover:bg-stone-100 hover:text-brand-600 font-bold",
-                    data: { turbo_action: "advance" } do
-            i.fas.fa-plus-circle.text-brand-500.mr-2
-            = t("wiki_pages.index.new")
+      .flex.flex-row.justify-between.items-center
+        div
+          h1.font-bold.text-4xl = t("wiki_pages.index.title")
+
+        div
+          - if WikiPagePolicy.new(@current_member, @unit).create?
+            = link_to new_unit_wiki_page_path,
+                      class: "rounded border border-brand-500 text-brand-500 px-4 py-2 hover:bg-stone-100 hover:text-brand-600 font-bold",
+                      data: { turbo_action: "advance" } do
+              i.fas.fa-plus-circle.text-brand-500.mr-2
+              = t("wiki_pages.index.new")
 
     = render partial: "no_wiki_pages" if @pages.count.zero?
 

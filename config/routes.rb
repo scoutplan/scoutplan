@@ -130,7 +130,9 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :wiki_pages, path: "pages"
+    resources :wiki_pages, path: "pages" do
+      get "history"
+    end
   end
   # end units
 

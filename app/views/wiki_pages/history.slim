@@ -1,0 +1,23 @@
+= turbo_frame_tag "main"
+  .max-w-md.mx-auto
+    = link_to unit_wiki_page_path(@unit, @page),
+        class: "text-center font-bold no-underline inline-block w-full md:w-fit py-3 md:py-2 text-cyan-500 hover:text-cyan-600",
+        id: "cancel_location_button",
+        data: { turbo_action: "advance", turbo_frame: "main" } do
+        
+        i.fa-stack
+          i.fa-regular.fa-circle.fa-stack-2x
+          i.fa-solid.fa-arrow-left.fa-stack-1x
+
+        = "Back to #{@page.title} page"
+
+
+    header
+      h1.font-bold.mb-2.text-stone-600 = "#{@page.title} Page History"
+
+    section 
+      ul.w-full.divide-y
+        - @page.versions.each do |version|
+          li.w-full.py-1
+            p = "Updated by #{@unit.members.find(version.whodunnit).short_display_name}"
+            p = version.created_at.in_time_zone.strftime("%b %-d, %Y at %I:%M %p")
