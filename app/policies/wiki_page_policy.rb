@@ -33,4 +33,8 @@ class WikiPagePolicy < UnitContextPolicy
   def destroy?
     admin?
   end
+
+  def history?
+    @membership.present?
+  end
 end
