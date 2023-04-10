@@ -41,16 +41,6 @@ ul.list-none
         i.fa-solid.fa-bullhorn.fa-fw.mr-1
         = t("main_nav.communication")
 
-  // Unit settings
-  - if policy(:unit_settings).edit?
-    li#main_nav_item_unit_settings.md:inline-block
-      = link_to unit_settings_path(@current_unit),
-        class: "text-brand-500 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
-        data: { turbo_frame: "main", turbo_action: "advance" } do
-
-        i.fa-solid.fa-sliders-h.fa-fw.mr-1
-        = "Unit Settings"
-
   - if Flipper.enabled? :wiki_pages, @current_member
     - if policy(:wiki_page).index?
       li#main_nav_item_wiki.md:inline-block
@@ -60,6 +50,16 @@ ul.list-none
 
           i.fa-solid.fa-books.fa-fw.mr-1
           = t("main_nav.wiki")
+
+  // Unit settings
+  - if policy(:unit_settings).edit?
+    li#main_nav_item_unit_settings.md:inline-block
+      = link_to unit_settings_path(@current_unit),
+        class: "text-brand-500 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+        data: { turbo_frame: "main", turbo_action: "advance" } do
+
+        i.fa-solid.fa-sliders-h.fa-fw.mr-1
+        = "Unit Settings"
 
   - if Flipper.enabled? :global_search, @current_member
     li#main_nav_item_search.md:inline-block

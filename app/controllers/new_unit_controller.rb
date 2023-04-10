@@ -13,6 +13,8 @@ class NewUnitController < ApplicationController
     code = (1..6).inject("") { |str, n| str + rand(10).to_s }
 
     session[:email] = email
+    redirect_to "/new_unit/start" and return unless email =~ /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+
     session[:login_code] = code
 
     UserMailer.with(code: code, email: email).new_user_email.deliver_later
