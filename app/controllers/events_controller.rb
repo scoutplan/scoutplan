@@ -262,7 +262,8 @@ class EventsController < UnitContextController
            layout: "pdf",
            encoding: "utf8",
            orientation: "landscape",
-           margin: { top: 20, bottom: 20 })
+           margin: { top: 20, bottom: 20 },
+           header: { html: { template: "events/partials/index/signup_header" } } )
   end
 
   def publish
