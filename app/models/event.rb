@@ -83,7 +83,7 @@ class Event < ApplicationRecord
 
   def dates_are_subsequent
     errors.add(:ends_at, "must be after start_date") if starts_at > ends_at
-    errors.add(:rsvp_closes_at, "must be before start_date") if rsvp_closes_at > starts_at
+    errors.add(:rsvp_closes_at, "must be before start_date") if requires_rsvp && rsvp_closes_at > starts_at
   end
 
   def category_name

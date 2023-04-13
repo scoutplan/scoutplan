@@ -239,7 +239,6 @@ class EventsController < UnitContextController
     find_next_and_previous_events
     @page_title = [@event.title, "Organize"]
     @non_invitees = @event.unit.members.status_registered - @event.rsvps.collect(&:member)
-    ap @non_invitees
   end
 
   # member-facing view showing all RSVPable events and their responses

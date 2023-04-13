@@ -10,9 +10,6 @@ class UnitMembershipsImportController < ApplicationController
   end
 
   def create
-
-    ap params
-
     @current_unit = @unit = Unit.find(params[:unit_id])
     @current_member = @unit.membership_for(current_user)
     return unless @current_member.admin?
