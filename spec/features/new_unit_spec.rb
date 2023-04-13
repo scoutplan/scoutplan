@@ -90,7 +90,6 @@ describe "new unit", type: :feature do
 
         unit = Unit.last
 
-        ap unit
         expect(unit.email).to eq("#{unit.name.parameterize}#{unit.location.parameterize}".gsub("-", ""))
       end
 

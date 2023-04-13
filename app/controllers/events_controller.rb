@@ -239,7 +239,6 @@ class EventsController < UnitContextController
     find_next_and_previous_events
     @page_title = [@event.title, "Organize"]
     @non_invitees = @event.unit.members.status_registered - @event.rsvps.collect(&:member)
-    ap @non_invitees
   end
 
   # member-facing view showing all RSVPable events and their responses
@@ -257,7 +256,10 @@ class EventsController < UnitContextController
   end
 
   def render_printable_signups
-    render(locals: { events: @events },
+
+    events = @events.select(&:rsvp_open?)
+
+    render(locals: { events: events },
            pdf: "#{@unit.name} Signups as of #{Date.today.strftime('%-d %B %Y')}",
            layout: "pdf",
            encoding: "utf8",
@@ -413,7 +415,7 @@ class EventsController < UnitContextController
                                       :short_description, :requires_rsvp, :includes_activity, :activity_name,
                                       :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
-                                      :note, :cost_youth, :cost_adult, :online, :website, :tag_list,
+                                      :note, :cost_youth, :cost_adult, :online, :website, :tag_list, :rsvp_closes_at,
                                       :notify_members, :notify_recipients, :notify_message, :document_library_ids,
                                       packing_list_ids: [],
                                       event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy],

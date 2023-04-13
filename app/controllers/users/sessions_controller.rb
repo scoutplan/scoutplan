@@ -10,7 +10,6 @@ module Users
     end
 
     def create
-      ap params[:remember_me]
       if params[:login_code].present?
         if (magic_link = MagicLink.find_by(login_code: params[:login_code]))
           sign_in(magic_link.user)

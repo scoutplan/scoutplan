@@ -30,9 +30,6 @@ describe "events", type: :feature do
       starts_at = 13.days.from_now.in_time_zone
       ends_at   = 14.days.from_now.in_time_zone
       event_title = Faker::Music::Rush.album
-      ap starts_at
-      ap ends_at
-      ap event_title
 
       visit(new_unit_event_path(@unit))
 
