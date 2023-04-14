@@ -307,6 +307,12 @@ class EventsController < UnitContextController
                  else
                    values[:event_rsvp][:response]
                  end
+
+      if response == "nil"
+        @event.rsvps.find_by(unit_membership_id: member_id).destroy
+        next
+      end
+
       includes_activity = values[:event_rsvp][:includes_activity] == "1"
       rsvp = @event.rsvps.create_with(
         response: response,

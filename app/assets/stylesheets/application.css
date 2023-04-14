@@ -76,3 +76,24 @@ input.switch:checked + label.sm .switch-button {
 .sidecar a:hover {
   color: rgb(230, 100, 37);
 }
+
+.dt-switch-container .switch-button {
+  transform: translateX(100%);
+}
+
+input.dt-switch.left-value:checked ~ .dt-switch-container {
+  /* background: #e11d48; */
+  background: #dc2626;
+}
+
+input.dt-switch.right-value:checked ~ .dt-switch-container {
+  background: #4d7c0f;
+}
+
+input.dt-switch.left-value:checked ~ .dt-switch-container .switch-button {
+  transform: translateX(0);
+}
+
+input.dt-switch.right-value:checked ~ .dt-switch-container .switch-button {
+  transform: translateX(195%);
+}
