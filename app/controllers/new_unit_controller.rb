@@ -10,9 +10,10 @@ class NewUnitController < ApplicationController
 
   def confirm
     email = params[:email]
+    session[:email] = email
+
     code = (1..6).inject("") { |str, n| str + rand(10).to_s }
 
-    session[:email] = email
     redirect_to "/new_unit/start" and return unless email =~ /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 
     session[:login_code] = code
@@ -36,19 +37,26 @@ class NewUnitController < ApplicationController
   end
 
   def save_user_info
-    session[:user] = User.create_with(
+    email = session[:email]
+
+    user = User.create_with(
       first_name: params[:first_name],
       last_name: params[:last_name],
       phone: params[:phone],
       nickname: params[:nickname]
     ).find_or_create_by!(email: email)
+
+    session[:user_id] = user.id
+    redirect_to "/new_unit/unit_info"
   end
 
   def unit_info
   end
 
   def save_unit_info
-    service = NewUnitService.new(current_user)
+    user = User.find(session[:user_id])
+    sign_in user
+    service = NewUnitService.new(user)
     @unit = service.create(params[:unit_name], params[:location])
     redirect_to unit_welcome_path(@unit) and return if @unit
   end

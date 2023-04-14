@@ -7,6 +7,7 @@
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.configure do
+  config.middleware.use RackSessionAccess::Middleware
   config.hosts << "127.0.0.1"
   config.hosts << "www.example.com"
   # Settings specified here will take precedence over those in config/application.rb.
