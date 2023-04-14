@@ -5,7 +5,7 @@
 
   section
     = f.label :code, "Your code", class: "font-bold block mb-1"
-    = f.text_field :code, class: "text-2xl rounded border-stone-200 w-full placeholder-stone-300", placeholder: "123456"
+    = f.text_field :code, class: "text-2xl rounded border-stone-200 w-full placeholder-stone-300", placeholder: "123456", autofocus: true
 
   section.py-2
     = f.submit "Next", class: "block font-bold bg-brand-500 text-white px-8 py-2 rounded"

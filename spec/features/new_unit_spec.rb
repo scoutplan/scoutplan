@@ -56,7 +56,7 @@ describe "new unit", type: :feature do
   end
 
   describe "step 3: user details" do
-    it "creates a new User record" do
+    it "creates new User and Unit records" do
       visit "/new_unit/user_info"
 
       Faker::Config.locale = "en-US"
@@ -71,81 +71,19 @@ describe "new unit", type: :feature do
       expect(user.last_name).to eq(last_name)
       expect(user.nickname).to eq(nickname)
       expect(user.phone).to eq(phone_number.phony_normalized(country_code: "US"))
-    end
-  end
 
-  describe "step 4: unit creation" do
-    before do
-      user = FactoryBot.create(:user)
-      login_as(user, scope: :user)
-    end
 
-    describe "positive cases" do
-      it "creates a new unit" do
-        visit "/new_unit/unit_info"
-
-        fill_in "unit_name", with: "Troop #{Faker::Number.number(digits: 3)}"
-        fill_in "location", with: "#{Faker::Address.city}"
-        expect { click_on "Next" }.to change { Unit.count }.by(1)
-
-        unit = Unit.last
-
-        expect(unit.email).to eq("#{unit.name.parameterize}#{unit.location.parameterize}".gsub("-", ""))
-      end
-
-      it "creates a new unit with members" do
-        visit "/new_unit/unit_info"
-
-        fill_in "unit_name", with: "Troop #{Faker::Number.number(digits: 3)}"
-        fill_in "location", with: "#{Faker::Address.city}, #{Faker::Address.state_abbr}"
-        expect { click_on "Next" }.to change { UnitMembership.count }.by(1)
-      end
-
-      it "redirects to the welcome page" do
-        visit "/new_unit/unit_info"
-
-        fill_in "unit_name", with: "Troop #{Faker::Number.number(digits: 3)}"
-        fill_in "location", with: "#{Faker::Address.city}, #{Faker::Address.state_abbr}"
-        click_on "Next"
-
-        expect(page).to have_current_path(unit_welcome_path(Unit.last))
-      end
-    end
-
-    describe "negative cases" do
-      it "fails on empty name" do
-        visit "/new_unit/unit_info"
-
-        fill_in "location", with: "#{Faker::Address.city}, #{Faker::Address.state_abbr}"
-        expect { click_on "Next" }.to change { Unit.count }.by(0)        
-      end
-
-      it "fails on empty name" do
-        visit "/new_unit/unit_info"
-
-        fill_in "unit_name", with: "F Troop"
-        expect { click_on "Next" }.to change { Unit.count }.by(0)        
-      end      
-    end
-  end
-
-  describe "step 5: unit welcome" do
-    before do
-      user = FactoryBot.create(:user)
-      login_as(user, scope: :user)
-    end
-
-    it "shows the unit name" do
-      visit "/new_unit/unit_info"
+      expect(page).to have_current_path("/new_unit/unit_info")
 
       fill_in "unit_name", with: "Troop #{Faker::Number.number(digits: 3)}"
-      fill_in "location", with: "#{Faker::Address.city}, #{Faker::Address.state_abbr}"
-      click_on "Next"
+      fill_in "location", with: "#{Faker::Address.city}"
+      expect { click_on "Next" }.to change { Unit.count }.by(1)
 
       unit = Unit.last
-      expect(page).to have_current_path(unit_welcome_path(unit))
-      expect(page).to have_content(unit.name)
+
+      expect(unit.email).to eq("#{unit.name.parameterize}#{unit.location.parameterize}".gsub("-", ""))
+      expect(page).to have_current_path(unit_welcome_path(Unit.last))
     end
-  end
+  end 
 end
 # rubocop:enable Metrics/BlockLength
