@@ -3,7 +3,16 @@
 - @rsvps = rsvps
 - notes = rsvps.map(&:note).uniq.join(", ")
 
-.table.divide-y
+css:
+  .table-cell {
+    border-top: 1px solid #aaa;
+  }
+
+  .table-row:first-child .table-cell {
+    border: none;
+  }
+
+.table.w-full.divide-y-2.divide-red-500
   - @current_member.family.each do |family_member|
     .table-row.items-center
       - existing_rsvp = event.rsvps.find_by(unit_membership: family_member)
@@ -13,13 +22,13 @@
         event_shift_ids: existing_rsvp&.event_shift_ids)
 
       // family member name
-      .table-cell.border-0.pr-2.py-2.font-bold(class="#{ @event.shifts? ? 'align-top pt-4' : 'align-middle' }")
+      .table-cell.pr-2.py-2.font-bold(class="#{ @event.shifts? ? 'align-top pt-4' : 'align-middle' }")
         i.fa-user.fad.text-yellow-500
         |&nbsp;&nbsp;
         = presenter.family_context_name(family_member)
 
       // "Going" switch
-      .table-cell.px-3.py-2.border-0.response-wrapper
+      .table-cell.px-3.py-2.response-wrapper
         - if @event.shifts?
           - @event.shifts.each do |shift|
             .py-1
@@ -31,12 +40,16 @@
                                                               unchecked_value: "declined" }
 
         - else
-          = render partial: "components/switch", locals: { checked: existing_rsvp&.accepted?,
-                                                          label: t("rsvp_accepted"),
-                                                          object_name: "event[members][#{family_member.id}][event_rsvp]",
-                                                          method: "response",
-                                                          checked_value: "accepted",
-                                                          unchecked_value: "declined" }
+          = render partial: "components/double_throw_switch",
+                            locals: { checked_left: existing_rsvp&.declined?,
+                                      checked_right: existing_rsvp&.accepted?,
+                                      label: t("rsvp_accepted"),
+                                      object_name: "event[members][#{family_member.id}][event_rsvp]",
+                                      method:      "response",
+                                      left_value:  "declined",
+                                      right_value: "accepted",
+                                      left_label:  "Regrets",
+                                      right_label: "Going!" }
 
 // note field
 .mt-2
