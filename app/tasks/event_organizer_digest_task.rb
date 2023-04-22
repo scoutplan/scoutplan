@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-# Recurring task to send daily reminders to members
+# Recurring task to send daily reminders to event organizers
+# containing all RSVPs, flagging those that are new within
+# the last 24 hours.
 class EventOrganizerDigestTask < UnitTask
   # def initialize(unit)
   #   @unit = unit

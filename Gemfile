@@ -18,6 +18,7 @@ gem "blazer"
 gem "bootsnap", require: false
 gem "chroma"
 gem "colorize"
+gem "daypack", git: "https://github.com/scoutplan/daypack.git"
 gem "devise"
 gem "devise_invitable"
 gem "faraday"

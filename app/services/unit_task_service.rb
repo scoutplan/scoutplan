@@ -1,12 +1,25 @@
 # frozen_string_literal: true
 
 # class for managing a Unit's Tasks
+# called from UnitsController#update
+# to add a new Task type
+# 1. add a new key to TASK_KEYS, below
+# 2. add these values to en.yml:
+# 3. add a new translations to config/locales/en.yml under settings:
+#   a. descriptions
+#   b. icons
+#   c. icon_colors
+#   d. titles
+#   e. labels
+
 class UnitTaskService
-  TASK_KEYS = { communication:
-    { digest: "UnitDigestTask",
-      daily_reminder: "DailyReminderTask",
-      rsvp_nag: "RsvpNagTask",
-      event_organizer_digest: "EventOrganizerDigestTask" } }.freeze
+  TASK_KEYS = { communication: { 
+                  digest:                 "UnitDigestTask",
+                  daily_reminder:         "DailyReminderTask",
+                  rsvp_nag:               "RsvpNagTask",
+                  rsvp_last_call:         "RsvpLastCallTask",
+                  event_organizer_digest: "EventOrganizerDigestTask" }
+              }.freeze
 
   def initialize(unit)
     @unit = unit

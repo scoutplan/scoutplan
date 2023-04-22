@@ -6,7 +6,16 @@ require "sidekiq-scheduler"
 # basis, including scheduling, next run time, last run time,
 # etc.
 #
-# Subclass the Task class to do something specific.
+# To do something specific, subclass this class and implement
+# overrides for `description`, `perform`, and `setup_schedule`.
+#
+# To schedule a task, call `setup_schedule` from the subclass.
+#
+# To run a task, call `perform` from the subclass.
+#
+# To run all tasks, call `Task.perform_all_on_schedule` from
+# a cron or other task runner.
+#
 # Conversely, don't invoke this base class directly.
 #
 class Task < ApplicationRecord

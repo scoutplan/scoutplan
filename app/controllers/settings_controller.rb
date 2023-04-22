@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-# Controller for editing and updating Unit settings
-# TODO: factor this into a view model
-#
+# this has been superceded by the UnitsController + UnitTaskService
+
 class SettingsController < UnitContextController
   TASK_KEY_RSVP_NAG = "rsvp_nag"
   TASK_DAY_RSVP_NAG = 2 # Tuesday

@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/scoutplan/daypack.git
+  revision: 13f145ddfc3765d2681ae8a48f392011977b6cc1
+  specs:
+    daypack (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -499,6 +505,7 @@ DEPENDENCIES
   capybara
   chroma
   colorize
+  daypack!
   devise
   devise_invitable
   dotenv-rails (~> 2.7)

@@ -27,6 +27,6 @@ class UnitsController < UnitContextController
   end
 
   def settings_params
-    params.require(:settings).permit!
+    params.require(:settings).permit! # WARNING: the bang lets all [:settings][] params through
   end
 end
