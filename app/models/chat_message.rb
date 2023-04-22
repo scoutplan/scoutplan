@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# a ChatMessage is a message sent in a chat
+# a ChatMessage is a message sent in a Chat
 class ChatMessage < ApplicationRecord
   include Turbo::Broadcastable
   belongs_to :chat

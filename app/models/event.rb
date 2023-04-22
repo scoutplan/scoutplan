@@ -235,6 +235,16 @@ class Event < ApplicationRecord
     packing_lists.map(&:packing_list_items).flatten.uniq
   end
 
+  # @interface Chattable
+  def chat_recipients
+    result = rsvps.accepted.select { |r| r.member.smsable? }.collect(&:member)
+    result.flatten.uniq
+  end
+
+  def chat_topic
+    "#{title} (scheduled for #{starts_at.strftime('%b %d')})"
+  end
+
   private
 
   # create a weekly series based on @event
