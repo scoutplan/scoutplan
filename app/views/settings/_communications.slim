@@ -18,7 +18,7 @@ header.mb-6
     | Choose the types of messages you want to send.
 
   fieldset.divide-y
-    - %w(daily_reminder rsvp_nag digest event_organizer_digest).each do |task_key|
+    - UnitTaskService::TASK_KEYS[:communication].each do |task_key, _|
       = render partial: "settings/task", locals: { task_key: task_key }
 
   footer.py-4

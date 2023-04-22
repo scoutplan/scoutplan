@@ -70,6 +70,16 @@ class MemberMailer < ScoutplanMailer
     )
   end
 
+  def rsvp_last_call_email
+    @events = Event.find(params[:event_ids])
+    @unit = @events.first.unit
+    mail(
+      to: @to_address,
+      from: @from_address,
+      subject: annotated_subject(t("mailers.member_mailer.rsvp_nag.subject"))
+    )
+  end
+
   def rsvp_nag_email
     @event = Event.find(params[:event_id])
     @unit = @event.unit

@@ -68,8 +68,31 @@ class MemberMailerPreview < ActionMailer::Preview
     member.child_relationships.create(child_member: child1)
     member.child_relationships.create(child_member: child2)
     unit = member.unit
-    event = FactoryBot.create(:event, :requires_rsvp, unit: unit, location: "State Park")
+    event = FactoryBot.create(:event, :requires_rsvp, unit: unit)
     event.rsvps.create!(member: child2, response: :accepted, respondent: member)
     MemberMailer.with(event_id: event.id, member: member).rsvp_nag_email
   end
+
+  def rsvp_last_call_no_response
+    member = FactoryBot.create(:member)
+    unit = member.unit
+    child1 = FactoryBot.create(:member, unit: unit)
+    child2 = FactoryBot.create(:member, unit: unit)
+    member.child_relationships.create(child_member: child1)
+    member.child_relationships.create(child_member: child2)
+    event = FactoryBot.create(:event, :published, :requires_rsvp, unit: unit, rsvp_closes_at: 1.day.from_now)
+    MemberMailer.with(event_ids: [event.id], member: member).rsvp_last_call_email
+  end  
+
+  def rsvp_last_call_partial_response
+    member = FactoryBot.create(:member)
+    unit = member.unit
+    child1 = FactoryBot.create(:member, unit: unit)
+    child2 = FactoryBot.create(:member, unit: unit)
+    member.child_relationships.create(child_member: child1)
+    member.child_relationships.create(child_member: child2)
+    event = FactoryBot.create(:event, :published, :requires_rsvp, unit: unit, rsvp_closes_at: 1.day.from_now)
+    event.rsvps.create!(member: child2, response: :accepted, respondent: member)
+    MemberMailer.with(event_ids: [event.id], member: member).rsvp_last_call_email
+  end  
 end

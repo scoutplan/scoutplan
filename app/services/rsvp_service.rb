@@ -36,6 +36,15 @@ class RsvpService < ApplicationService
     family_rsvps.count.positive?
   end
 
+  # a list of events where the RSVPs are closing in the next 24 hours
+  def expiring_rsvp_events
+    start_time = Date.tomorrow.beginning_of_day
+    end_time = Date.tomorrow.end_of_day
+    result = unit.events.published.future.rsvp_required
+    result = result.select { |e| e.rsvp_closes_at.tomorrow? }
+    result
+  end
+
   def family_members
     @member.family(include_self: :prepend)
   end
