@@ -12,7 +12,9 @@ class RsvpLastCallNotifier < ApplicationNotifier
   # rubocop:disable Metrics/AbcSize
   def perform
     return unless member.contactable?
-    return unless (@events = RsvpService.new(member).expiring_rsvp_events)
+
+    @events = RsvpService.new(member).expiring_rsvp_events
+    return unless @events.present?
 
     send_text  { |recipient| RsvpLastCallTexter.new(recipient, @events).send_message }
     send_email { |recipient| MemberMailer.with(member: recipient, event_ids: @events.map(&:id)).rsvp_last_call_email.deliver_later }
