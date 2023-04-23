@@ -57,18 +57,16 @@
     - if @member.adult?
       div(style="text-align:center;margin-top:1rem;margin-bottom:1.5rem;")
         - if !event.rsvp_open?
-          = event.rsvp_closes_at
           = "RSVP is Closed"
           
-
-        - if family_rsvps.count.zero?
+        - elsif family_rsvps.count.zero?
           = magic_link_to @member,
             "RSVP Needed",
             unit_event_edit_rsvps_url(event.unit, event),
             class: "rsvp-needed-link",
             style: "background:#E66425;border:1px solid #E66425;color:white;display:inline-block;padding:0.5rem 3rem;border-radius:4px;text-align:center;text-decoration:none;font-weight:700;letter-spacing:1px;text-transform:uppercase;"
 
-        - elsif non_respondents.count < family_member_ids.count
+        - elsif !@service.family_fully_responded?
           = magic_link_to @member,
             "Complete your RSVP",
             unit_event_edit_rsvps_url(event.unit, event),
