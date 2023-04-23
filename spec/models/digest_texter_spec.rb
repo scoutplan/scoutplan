@@ -31,26 +31,26 @@ RSpec.describe DigestTexter, type: :model do
   describe "body" do
     # Hi, Scouty. Here's what's going on at Troop 231:
     it "contains the member greeting" do
-      texter = DigestTexter.new(@member)
+      texter = DigestTexter.new(@member, [@committee_meeting])
       member_greeting = "Hi, #{@member.display_first_name}. Coming up at #{@member.unit.name}:"
       expect(texter.body).to include member_greeting
     end
 
     # Make sure URLs are correctly formed: https://local.scoutplan.org
     it "contains the host" do
-      texter = DigestTexter.new @member
+      texter = DigestTexter.new(@member, [@committee_meeting])
       base_url = ENV["SCOUTPLAN_HOST"]
       expect(texter.body).to include base_url
     end
 
     it "ends with a period" do
-      texter = DigestTexter.new @member
+      texter = DigestTexter.new(@member, [@committee_meeting])
       expect(texter.body.last).to eq(".")
     end
 
     # * Hiking Trip on Friday
     it "contains event synopsis" do
-      texter = DigestTexter.new @member
+      texter = DigestTexter.new(@member, [@committee_meeting])
       event_synopsis = "* #{@committee_meeting.title} on #{@committee_meeting.starts_at.in_time_zone(@unit.time_zone).strftime('%A')}"
       expect(texter.body).to include event_synopsis
     end

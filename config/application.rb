@@ -10,6 +10,9 @@ Bundler.require(*Rails.groups)
 
 module Scoutplan
   class Application < Rails::Application
+    config.generators do |g|
+      g.test_framework :rspec, request_specs: false
+    end
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
     config.exceptions_app = self.routes # tee up custom errors

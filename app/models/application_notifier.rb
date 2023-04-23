@@ -21,7 +21,7 @@ class ApplicationNotifier
   # pipe all SMS through here to enforce common business rules
   def send_text(&block)
     return unless contactable.smsable?
-
+    
     block.call contactable
   rescue StandardError => e
     Rails.logger.error { e.message }
