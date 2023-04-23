@@ -42,5 +42,12 @@ RSpec.describe Message, type: :model do
       expect(@service.resolve_members.count).to eq(2)
       expect(@service.resolve_members).to include(@adult)
     end
+
+    it "limits to adults" do
+      another_adult = FactoryBot.create(:member, unit: @unit)
+      @event.rsvps.create!(member: another_adult, response: :accepted, respondent: another_adult)
+      @message.member_type = "adults_only"
+      expect(@service.resolve_members.count).to eq(1)
+    end
   end
 end

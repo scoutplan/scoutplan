@@ -4,6 +4,11 @@
 class DigestTexter < MemberTexter
   include RsvpHelper
 
+  def initialize(member, events)
+    @events = events
+    super(member)
+  end
+
   def body_text
     return nil unless events.count.positive?
 

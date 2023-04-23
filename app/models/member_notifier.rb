@@ -33,7 +33,8 @@ class MemberNotifier < ApplicationNotifier
                         this_week_events: @this_week_events,
                         upcoming_events: @upcoming_events).digest_email.deliver_later
     end
-    send_text { |recipient| DigestTexter.new(recipient).send_message(@upcoming_events) }
+
+    send_text { |recipient| DigestTexter.new(recipient, @this_week_events).send_message }
   end
 
   def send_daily_reminder

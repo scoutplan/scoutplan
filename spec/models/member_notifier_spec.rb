@@ -35,6 +35,9 @@ RSpec.describe MemberNotifier, type: :model do
     before do
       @member = FactoryBot.create(:member)
       @unit = @member.unit
+      @member.user.update(phone: "555-555-5555")
+      @member.settings(:communication).via_sms = true
+      @member.save!
       @event = FactoryBot.create(:event, unit: @unit, status: :published, starts_at: 5.days.from_now)
       @forbidden_event = FactoryBot.create(:event, unit: @unit, status: :published, starts_at: 5.days.from_now,
                                                    title: "Forbidden Donut")

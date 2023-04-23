@@ -22,7 +22,8 @@ RSpec.describe DigestTexter, type: :model do
   describe "DigestTexter" do
     it "can instantiate" do
       member = FactoryBot.build(:member)
-      expect(DigestTexter.new(member)).to be_a(DigestTexter)
+      event = FactoryBot.create(:event, unit: member.unit)
+      expect(DigestTexter.new(member, [event])).to be_a(DigestTexter)
     end
 
     it "renders digest from template" do
@@ -30,8 +31,8 @@ RSpec.describe DigestTexter, type: :model do
       member = FactoryBot.create(:unit_membership)
       unit = member.unit
       FactoryBot.create(:event, unit: unit, starts_at: 3.days.from_now, status: :published)
-      FactoryBot.create(:event, unit: member.unit)
-      texter = DigestTexter.new(member)
+      event = FactoryBot.create(:event, unit: member.unit)
+      texter = DigestTexter.new(member, [event])
       body = texter.body
       render_text_body_to_console(body)
       expect(body).to be_a(String)
@@ -42,8 +43,8 @@ RSpec.describe DigestTexter, type: :model do
       member = FactoryBot.create(:unit_membership)
       unit = member.unit
       FactoryBot.create(:event, unit: unit, starts_at: 3.days.from_now, status: :published)
-      FactoryBot.create(:event, unit: member.unit)
-      texter = DigestTexter.new(member)
+      event = FactoryBot.create(:event, unit: member.unit)
+      texter = DigestTexter.new(member, [event])
       expect { texter.send_message }.not_to raise_exception
     end
   end
