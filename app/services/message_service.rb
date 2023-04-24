@@ -33,9 +33,10 @@ class MessageService < ApplicationService
   end
 
   def resolve_event_cohort
+    adults_only = @message.member_type == "adults_only"
     acceptors = event.rsvps.accepted.map(&:member)
-    acceptors.select!(&:adult?) if @message.member_type == "adults_only"    
-    parents = acceptors.map(&:parents).flatten
+    acceptors.select!(&:adult?) if adults_only
+    parents = adults_only ? [] : acceptors.map(&:parents).flatten
     (acceptors + parents).uniq
   end
 end
