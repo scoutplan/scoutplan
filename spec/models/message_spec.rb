@@ -46,7 +46,13 @@ RSpec.describe Message, type: :model do
     it "limits to adults" do
       another_adult = FactoryBot.create(:member, unit: @unit)
       @event.rsvps.create!(member: another_adult, response: :accepted, respondent: another_adult)
-      @message.member_type = "adults_only"
+      
+      # this third adult is a 'parent' of another_adult, but shouldn't be included
+      # because they're not attending the event
+      third_adult = FactoryBot.create(:member, unit: @unit)
+      third_adult.child_relationships.create(child_member: another_adult)
+
+      @message.member_type = :adults_only
       expect(@service.resolve_members.count).to eq(1)
     end
   end
