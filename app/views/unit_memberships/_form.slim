@@ -9,7 +9,7 @@
 
   = form_with model: [@unit, @target_membership],
               id: "member_info_form",
-              data: {turbo: false } do |f|
+              data: { turbo: false, controller: "form-validation", action: "submit->form-validation#validate" } do |f|
     section.flex.flex-col.gap-4.divide-y.divide-stone-800
       = render partial: "unit_memberships/partials/modal/user_fields", locals: { f: f }
       = render partial: "unit_memberships/partials/modal/member_type_fields", locals: { f: f }

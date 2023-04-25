@@ -80,7 +80,10 @@
         .tab#messages_done.hidden
           .divide-y
             = render partial: "message", collection: @completed_messages
-          = render partial: "empty", locals: { message_type: "completed" } unless @completed_messages.present?          
+          = render partial: "empty", locals: { message_type: "completed" } unless @completed_messages.present?
+
+  javascript:
+      document.title = "Announcements · #{@unit.name}"          
 
 css:
   .message.older {

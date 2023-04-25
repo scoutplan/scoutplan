@@ -2,9 +2,9 @@ div.pt-4
   = label_tag "Type", nil, class: "block mb-1 font-bold"
 
   div
-    = f.radio_button :member_type, :youth, class: "mr-2"
+    = f.radio_button :member_type, :youth, required: true, class: "mr-2"
     = f.label :member_type, "Youth", value: "youth", class: ""
 
   div
-    = f.radio_button :member_type, :adult, class: "mr-2"
+    = f.radio_button :member_type, :adult, required: true, class: "mr-2"
     = f.label :member_type, "Adult", value: "adult", class: ""

@@ -4,6 +4,7 @@
 header.flex.flex-row.justify-between.py-4
   h1.font-bold.text-3xl
     = t("payments.titles.index")
+    = image_tag "powered_by_stripe", class: "inline ml-3 w-28"
 
 - unless @unit.payment_account.active?
   - link = Stripe::AccountLink.create({account: @unit.payment_account.account_id, refresh_url: refresh_unit_payments_url, return_url: unit_settings_url(@unit), type: "account_onboarding"})["url"]
@@ -26,7 +27,7 @@ header.flex.flex-row.justify-between.py-4
       = render partial: "payment", locals: { payment: payment }
 
   div.md:border-l.md:pl-4
-    = image_tag "powered_by_stripe"
+    
 
 
     - stripe_login_link = Stripe::Account.create_login_link(@unit.payment_account.account_id)

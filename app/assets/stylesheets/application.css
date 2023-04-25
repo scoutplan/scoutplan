@@ -97,3 +97,30 @@ input.dt-switch.left-value:checked ~ .dt-switch-container .switch-button {
 input.dt-switch.right-value:checked ~ .dt-switch-container .switch-button {
   transform: translateX(195%);
 }
+
+input[type="text"].is-invalid {
+  border-color: #ef4444;
+  background: url("octagon-exclamation.svg") no-repeat right 0.5rem center/1.5rem;
+  background-size: 1rem;
+}
+
+input[type="radio"].is-invalid {
+  border-color: #ef4444;
+}
+
+input[type="radio"].is-invalid + label {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+button:focus .idle-caption {
+  display: none;
+}
+
+.active-caption {
+  display: none;
+}
+
+button:focus .active-caption {
+  display: inline;
+}

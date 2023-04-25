@@ -42,4 +42,7 @@
                   class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100",
                   data: { turbo_action: "advance" } do
           i.fa-solid.fa-fw.fa-credit-card.mr-2
-          = "Payments"      
+          = "Payments"
+
+  javascript:
+    document.title = "Settings · #{@unit.name}"

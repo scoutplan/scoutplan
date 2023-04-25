@@ -1,5 +1,8 @@
 = turbo_frame_tag "main"
   .max-w-2xl.mx-auto
+    .px-3
+      = render partial: "settings/back_to_settings"
+
     header.relative.mt-8.mb-6.pl-4
       h1.font-bold.text-4xl
         = t("locations.titles.index")
@@ -16,5 +19,5 @@
     .flex.flex-col.divide-y
       = render @locations
 
-javascript:
-  document.title = "Address Book · #{@unit.name}"      
+  javascript:
+    document.title = "Address Book · #{@unit.name}"      

@@ -13,3 +13,6 @@
         = "Edit Announcement"
 
     = render partial: "form"
+
+  javascript:
+    document.title = "#{@message.title.presence || 'Announcement'} · #{@unit.name}"

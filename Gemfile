@@ -17,6 +17,7 @@ gem "aws-sdk-s3", require: false
 gem "blazer"
 gem "bootsnap", require: false
 gem "chroma"
+gem "client_side_validations"
 gem "colorize"
 gem "daypack", git: "https://github.com/scoutplan/daypack.git"
 gem "devise"
