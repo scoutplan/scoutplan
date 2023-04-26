@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :packing_list do
-    unit_id { 1 }
+    unit
     name { "MyString" }
   end
 end

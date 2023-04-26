@@ -1,5 +1,7 @@
 = turbo_frame_tag "main"
   .max-w-lg.mx-auto
+    = render partial: "settings/back_to_settings"
+
     header.relative.mb-4
       h1.text-4xl.font-bold.mb-2
         = t("event_categories.titles.index")
@@ -20,3 +22,6 @@
 
             i.fas(class="fa-#{ category.glyph } fa-fw mr-2" style="color: #{ category.color }")
             = category.name
+
+  javascript:
+    document.title = "Event Categories · #{@unit.name}"            
