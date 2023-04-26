@@ -35,7 +35,8 @@ table.wrapper
                   
                   td
                     h3.event-title
-                      = "#{event.title}#{event.draft? ? ' - DRAFT' : ''}"
+                      i.fa-regular.not-italic(class="fa-#{event.category.glyph}")
+                      = " #{event.title}#{event.draft? ? ' - DRAFT' : ''}"
 
                     location
                       = event.location

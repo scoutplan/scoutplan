@@ -19,7 +19,7 @@ RUN apk add --no-cache --update \
     poppler-utils \
     ttf-dejavu \
     ttf-opensans \
-    ttf-font-awesome \
+    font-awesome \
     vips  
 
 # copy Gemfile & then bundle install dependencies

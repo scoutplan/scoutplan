@@ -41,7 +41,8 @@
         = link_to unit_payments_path(@unit),
                   class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100",
                   data: { turbo_action: "advance" } do
-          i.fa-solid.fa-fw.fa-credit-card.mr-2
+          i.fa-solid.fa-fw.fa-credit-card.mr-2.active-hidden
+          i.fa-solid.fa-fw.fa-rotate-right.fa-spin.mr-2.active
           = "Payments"
 
   javascript:

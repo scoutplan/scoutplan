@@ -124,3 +124,15 @@ button:focus .idle-caption {
 button:focus .active-caption {
   display: inline;
 }
+
+a .active {
+  display: none;
+}
+
+a:focus .active {
+  display: inline;
+}
+
+a:focus .active-hidden {
+  display: none;
+}

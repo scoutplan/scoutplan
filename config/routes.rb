@@ -70,7 +70,8 @@ Rails.application.routes.draw do
     end
 
     get "my_rsvps", to: "events#my_rsvps", as: "my_rsvps"
-    get "welcome", to: "units#welcome", as: "welcome"
+    get "start",    to: "units#start",     as: "start"
+    get "welcome",  to: "units#welcome",   as: "welcome"
     resources :payments, module: :settings do
       collection do
         post "onboard"

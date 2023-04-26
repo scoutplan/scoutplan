@@ -58,7 +58,7 @@ class NewUnitController < ApplicationController
     sign_in user
     service = NewUnitService.new(user)
     @unit = service.create(params[:unit_name], params[:location])
-    redirect_to unit_welcome_path(@unit) and return if @unit
+    redirect_to unit_start_path(@unit) and return if @unit
   end
 
   def add_members

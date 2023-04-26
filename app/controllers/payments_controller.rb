@@ -7,7 +7,7 @@ class PaymentsController < ApplicationController
   layout false
 
   def create
-    Stripe.api_key = "sk_test_51MZ10LIoZhk6Wdzo4Sp7vT2FCVbLjPue0P3p7y00v4vix05yfInS2RH33Ysa95lOdf0KMcY4XYIDv96sl5QPx6V500MMnDVFv2"
+    Stripe.api_key = ENV.fetch("STRIPE_SECRET_KEY")
     @event = nil
 
     begin
@@ -42,7 +42,7 @@ class PaymentsController < ApplicationController
     stripe_status = object_data["payment_status"]
 
     payment = Payment.find(payment_id)
-    payment.update(amount: amount, stripe_id: stripe_id, stripe_status: stripe_status)
+    payment.update(amount: amount, stripe_id: stripe_id, stripe_status: stripe_status, status: "paid")
   end
 end
 

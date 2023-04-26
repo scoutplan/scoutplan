@@ -1,35 +1,32 @@
 - Stripe.api_key = ENV.fetch("STRIPE_SECRET_KEY")
 - account = Stripe::Account.retrieve(@unit.payment_account.account_id)
+- stripe_login_link = Stripe::Account.create_login_link(@unit.payment_account.account_id)
 
-header.flex.flex-row.justify-between.py-4
-  h1.font-bold.text-3xl
-    = t("payments.titles.index")
-    = image_tag "powered_by_stripe", class: "inline ml-3 w-28"
+header.mb-6
+  .flex.flex-row.justify-between.items-center
+    h1.font-bold.text-3xl
+      = t("payments.titles.index")
+
+    div
+      = link_to "Stripe Dashboard", stripe_login_link["url"], class: "text-brand-500 font-bold",
+                class: "border border-brand-500 rounded px-4 py-2 font-bold text-brand-500 hover:text-brand-600 hover:border-brand-600",
+                data: { turbo: false }
 
 - unless @unit.payment_account.active?
   - link = Stripe::AccountLink.create({account: @unit.payment_account.account_id, refresh_url: refresh_unit_payments_url, return_url: unit_settings_url(@unit), type: "account_onboarding"})["url"]
   = link_to "Complete your setup", link, class: "font-bold text-brand-500 hover:text-brand-600 border rounded border-brand-500 hover:border-brand-600 px-4 py-2", data: { turbo: false }
 
 
-.flex.flex-col.md:flex-row.md:justify-between
-  .table.w-full.md:mr-6
-    .table-row
-      .table-cell.p-2.pl-0.font-bold.text-sm.text-gray-500
-        = t("payments.labels.date")
-      .table-cell.p-2.font-bold.text-sm.text-gray-500
-        = t("payments.labels.member")
-      .table-cell.p-2.font-bold.text-sm.text-gray-500.text-right
-        = t("payments.labels.amount")
-      .table-cell.p-2.font-bold.text-sm.text-gray-500
-        = t("payments.labels.event")
+.table.w-full.md:mr-6
+  .table-row
+    .table-cell.p-2.pl-0.font-bold.text-sm.text-gray-500
+      = t("payments.labels.date")
+    .table-cell.p-2.font-bold.text-sm.text-gray-500
+      = t("payments.labels.member")
+    .table-cell.p-2.font-bold.text-sm.text-gray-500.text-right
+      = t("payments.labels.amount")
+    .table-cell.p-2.font-bold.text-sm.text-gray-500
+      = t("payments.labels.event")
 
-    - @unit.payments.order("updated_at DESC").each do |payment|
-      = render partial: "payment", locals: { payment: payment }
-
-  div.md:border-l.md:pl-4
-    
-
-
-    - stripe_login_link = Stripe::Account.create_login_link(@unit.payment_account.account_id)
-
-    = link_to "Stripe dashboard for #{@unit.name}", stripe_login_link["url"], class: "text-blue-500 font-bold", data: { turbo: false }
+  - @unit.payments.order("created_at DESC").each do |payment|
+    = render partial: "payment", locals: { payment: payment }

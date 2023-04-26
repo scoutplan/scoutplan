@@ -1,0 +1,34 @@
+.max-w-md.mx-auto
+  header.mb-4
+    h1.text-4xl.font-bold.mb-8
+      = "Welcome to Scoutplan, #{@unit.name}!"
+
+    p.text-lg Your unit's all set up in Scoutplan! From here you can:
+
+  .flex.flex-col.gap-2
+    = link_to new_unit_event_path(@unit),
+              class: "block rounded bg-stone-100 border border-stone-200 px-8 py-2 font-bold text-center hover:bg-stone-200",
+              data: { turbo_action: "advance" } do
+      i.fa-solid.fa-calendar-plus.mr-2.text-emerald-500
+      = "Add your first event"
+
+    = link_to new_unit_member_path(@unit),
+              class: "block rounded bg-stone-100 border border-stone-200 px-8 py-2 font-bold text-center hover:bg-stone-200",
+              data: { turbo_action: "advance" } do
+      i.fa-solid.fa-user-plus.mr-2.text-pink-500
+      = "Add a member to your unit"
+
+    = link_to import_unit_members_path(@unit),
+              class: "block rounded bg-stone-100 border border-stone-200 px-8 py-2 font-bold text-center hover:bg-stone-200",
+              data: { turbo_action: "advance" } do
+      i.fa-solid.fa-file-user.mr-2.text-amber-500
+      = "Import members from a file"
+
+    = link_to unit_setting_path(@unit, category: "unit_profile"),
+              class: "block rounded bg-stone-100 border border-stone-200 px-8 py-2 font-bold text-center hover:bg-stone-200",
+              data: { turbo_action: "advance" } do
+      i.fa-solid.fa-fw.fa-seal.mr-2.text-cyan-500
+      = "Upload a unit logo"      
+
+javascript:
+  document.title = "Welcome · #{@unit.name}!"

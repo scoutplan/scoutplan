@@ -82,7 +82,7 @@ describe "new unit", type: :feature do
       unit = Unit.last
 
       expect(unit.email).to eq("#{unit.name.parameterize}#{unit.location.parameterize}".gsub("-", ""))
-      expect(page).to have_current_path(unit_welcome_path(Unit.last))
+      expect(page).to have_current_path(unit_start_path(Unit.last))
     end
   end 
 end
