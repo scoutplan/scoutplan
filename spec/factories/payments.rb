@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :payment do
-    unit_membership_id { 1 }
-    event_id { 1 }
+    unit_membership
+    event
     amount { 1 }
   end
 end
