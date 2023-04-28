@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.0.2"
+ruby "3.2.2"
 
 gem "scout_apm" # needs to be first
 
@@ -29,7 +29,7 @@ gem "flipper-ui"
 gem "honeybadger", "~> 4.0"
 gem "humanize"
 gem "icalendar"
-gem "ice_cube"
+gem "ice_cube", github: "ice-cube-ruby/ice_cube", ref: "6b97e77c106cd6662cb7292a5f59b01e4ccaedc6"
 gem "image_processing"
 gem "importmap-rails"
 gem "ledermann-rails-settings"

@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/ice-cube-ruby/ice_cube.git
+  revision: 6b97e77c106cd6662cb7292a5f59b01e4ccaedc6
+  ref: 6b97e77c106cd6662cb7292a5f59b01e4ccaedc6
+  specs:
+    ice_cube (0.16.4)
+
+GIT
   remote: https://github.com/scoutplan/daypack.git
   revision: 13f145ddfc3765d2681ae8a48f392011977b6cc1
   specs:
@@ -201,7 +208,6 @@ GEM
       concurrent-ruby (~> 1.0)
     icalendar (2.8.0)
       ice_cube (~> 0.16)
-    ice_cube (0.16.4)
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
@@ -502,6 +508,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
@@ -534,7 +541,7 @@ DEPENDENCIES
   honeybadger (~> 4.0)
   humanize
   icalendar
-  ice_cube
+  ice_cube!
   image_processing
   importmap-rails
   launchy
@@ -587,7 +594,7 @@ DEPENDENCIES
   wicked_pdf
 
 RUBY VERSION
-   ruby 3.0.2p107
+   ruby 3.2.2p53
 
 BUNDLED WITH
    2.3.3
