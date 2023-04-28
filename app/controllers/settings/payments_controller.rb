@@ -38,7 +38,9 @@ module Settings
         }
       )
 
-      @unit.create_payment_account(account_id: account.id)
+      PaymentAccount.create_with(account_id: account.id).find_or_create_by(unit: @unit)
+
+      # @unit.payment_account.find_or_create_by(account_id: account.id)
     end
 
     def stripe_onboard_link
