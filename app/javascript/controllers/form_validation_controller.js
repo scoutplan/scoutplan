@@ -37,6 +37,7 @@ export default class extends Controller {
     if (invalidCount > 0) {
       event.preventDefault();
       event.stopPropagation();
+      event.target.blur();
     }
 
     // this.submitButton.disabled = (invalidCount > 0);
