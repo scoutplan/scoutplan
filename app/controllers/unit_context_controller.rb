@@ -11,14 +11,14 @@ class UnitContextController < ApplicationController
   attr_reader :current_membership
 
   def current_unit
-    @current_unit || (@current_unit = Unit.includes(
+    @current_unit ||= Unit.includes(
       :setting_objects,
       unit_memberships: [:user, :parent_relationships, :child_relationships]
-    ).find(params[:unit_id] || params[:id]))
+    ).find(unit_id_param)
   end
 
   def current_member
-    @current_member || (@current_member = current_unit.membership_for(current_user))
+    @current_member ||= current_unit.membership_for(current_user)
   end
 
   def pundit_user
@@ -43,6 +43,10 @@ class UnitContextController < ApplicationController
 
   def time_zone(&block)
     Time.use_zone(current_unit.time_zone, &block)
+  end
+
+  def unit_id_param
+    params[:unit_id] || params[:id]
   end
 
   def user_for_paper_trail

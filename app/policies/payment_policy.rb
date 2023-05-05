@@ -19,4 +19,14 @@ class PaymentPolicy < UnitContextPolicy
   def destroy?
     admin?
   end
+
+  def new?
+    return true if admin?
+    
+    Flipper.enabled?(:payments, @membership.unit) && Flipper.enabled?(:payments, @membership)
+  end
+
+  def receive?
+    admin?
+  end
 end

@@ -47,6 +47,10 @@ class User < ApplicationRecord
     where(email: auth.info.email).first
   end
 
+  def family
+    unit_memberships.map(&:family).flatten.uniq
+  end
+
   def full_name
     "#{first_name} #{last_name}"
   end

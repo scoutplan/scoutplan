@@ -44,13 +44,11 @@ class EventRsvp < ApplicationRecord
     true
   end
 
-  def paid?(payments_service = nil)
-    return false unless payments_service
-
-    false
-  end
-
   def action_pending?
     !done?
+  end
+
+  def cost
+    member.youth? ? event.cost_youth : event.cost_adult
   end
 end

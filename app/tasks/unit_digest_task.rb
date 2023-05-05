@@ -12,11 +12,11 @@ class UnitDigestTask < UnitTask
   def perform
     Rails.logger.warn { "Sending Unit Digest for #{unit.name}" }
 
+    super
+
     unit.members.find_each do |member|
       perform_for_member(member)
     end
-
-    super
   end
 
   def perform_for_member(member)

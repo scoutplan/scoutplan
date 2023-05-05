@@ -83,7 +83,11 @@ Rails.application.routes.draw do
     resources :events, path: "schedule" do
       resources :chat_messages, as: "discussion", path: "discussion"
       resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
-      resources :payments, module: :events
+      resources :payments, module: :events do
+        collection do
+          get :receive
+        end
+      end
       resources :event_attachments, path: "attachments", as: "attachments"
       resources :event_activities
       resources :event_organizers, as: "organizers", path: "organizers"
@@ -158,6 +162,7 @@ Rails.application.routes.draw do
   patch "user_settings/save_password", to: "profile#update_password", as: "update_credentials"
 
   get "profile/:user_id/edit", to: "profile#edit", as: "edit_profile"
+  get "profile/:user_id/payments", to: "profile#payments", as: "profile_payments"
 
   post "units/:unit_id/members/:member_id/test_communication", to: "test_communications#create", as: "create_test_communication"
 
@@ -169,6 +174,9 @@ Rails.application.routes.draw do
     mount Flipper::UI.app(Flipper) => "/flipper"
     mount Blazer::Engine, at: "blazer"
     get "a", to: "admin#index"
+    namespace :admin do
+      resources :users
+    end
   end
 
   get ":token", to: "magic_links#resolve", as: "magic_link", constraints: { token: /[0-9a-f]{12}/ }

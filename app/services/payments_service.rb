@@ -10,7 +10,7 @@ class PaymentsService
   end
 
   def paid?
-    return :in_full if family_amount_due.zero?
+    return :in_full if family_amount_due.zero? || family_amount_due.negative?
     return :partial if family_amount_paid.positive?
     return :none if family_amount_paid.zero?
 
