@@ -136,3 +136,16 @@ a:focus .active {
 a:focus .active-hidden {
   display: none;
 }
+
+.field_with_errors input {
+  border-color: red;
+  color: red;
+}
+
+.field_with_errors label {
+  color: red;
+}
+
+table.divide-y tr:not(:last-child) {
+  border-bottom: 1px solid #d2d6dc;
+}

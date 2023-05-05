@@ -16,6 +16,11 @@ class ProfileController < ApplicationController
     @user = current_user
   end
 
+  def payments
+    @user = current_user
+    @payments = Payment.where(unit_membership: @user.family.collect(&:id)).order(created_at: :desc)
+  end
+
   # rubocop:disable Style/GuardClause
   def update_password
     if current_user.update!(password_params)

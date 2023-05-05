@@ -15,6 +15,14 @@
       h1.text-4xl.font-bold.text-gray-900
         | Payments
 
-    .table
-      - @payments&.each do |payment|
-        = render "payment", payment: payment
+    table.w-full
+      thead
+        tr
+          th.text-left.p-2 = "Date"
+          th.text-left.p-2 = "Received From"
+          th.text-left.p-2 = "Received By"
+          th.text-left.p-2 = "Method"
+          th.text-right.p-2 = "Amount"
+      tbody
+        - @payments&.each do |payment|
+          = render "payment", payment: payment

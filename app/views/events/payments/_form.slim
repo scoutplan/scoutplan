@@ -1,0 +1,48 @@
+- error_attributes = @payment.errors.collect(&:attribute).uniq
+
+= form_with model: @payment, url: unit_event_payments_path(@unit, @event, member: params[:member]) do |f|
+  .mb-4
+    = f.label :amount, class: "block mb-1"
+    .w-full.font-bold.block.rounded.border.border-stone-300.flex.flex-row
+      .text-2xl.px-2.py-2.bg-stone-200.text-stone-900.border-r.border-stone-300 = "$"
+      = f.text_field :amount, placeholder: "Amount", inputmode: "numeric",
+                     value: number_to_currency(@payment.amount_in_dollars, format: "%n"),
+                     required: true, class: "border-0 text-2xl pr-0"
+
+    - if error_attributes.include?(:amount)
+      p.mt-1.font-bold.text-sm.text-red-500= @payment.errors[:amount].first
+
+  .mb-4
+    = f.label :unit_membership_id, "Received From", class: "block mb-1"
+    = f.select :unit_membership_id, @current_family.collect { |m| [m.short_display_name, m.id] }, {},
+              class: "font-bold block w-full rounded border border-stone-300"
+
+  .mb-4
+    h2.font-bold= "Payment Method"
+
+    p.py-1
+      = f.label :method_check do
+        = f.radio_button :method, :check, checked: true
+        i.fa-solid.fa-money-check-pen.fa-fw.text-sky-400.px-2
+        = "Check"
+
+    p.py-1
+      = f.label :method_cash, :check do
+        = f.radio_button :method, :cash
+        i.fa-solid.fa-money-bill.fa-fw.text-green-600.px-2
+        = "Cash"
+
+    p.py-1
+      = f.label :method_venmo, :venmo do
+        = f.radio_button :method, :venmo
+        i.fa-solid.fa-v.fa-fw.text-sky-600.px-2
+        = "Venmo"
+
+    p.py-1
+      = f.label :method_zelle, :zelle do
+        = f.radio_button :method, :zelle
+        i.fa-solid.fa-z.fa-fw.text-purple-600.px-2
+        = "Zelle"
+
+  footer.mt-4
+    = f.submit "Receive Payment", class: "block rounded px-4 py-2 bg-green-600 text-white font-bold hover:bg-green-700 hover:text-white"

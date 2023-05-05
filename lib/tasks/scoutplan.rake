@@ -58,4 +58,34 @@ namespace :sp do
       user.save!
     end
   end
+
+  desc "Advance events by one month"
+  task advance_events: :environment do
+    unit_id = ENV["SP_ADVANCE_UNIT_ID"]
+    unless unit_id
+      puts "Please set SP_ADVANCE_UNIT_ID"
+      exit
+    end
+
+    unit = Unit.find(unit_id)
+    unless unit.present?
+      puts "Unit #{unit_id} not found"
+      exit
+    end
+
+    puts "Advancing events for #{unit.name} by one month. Proceed? [Y/N]"
+    response = STDIN.gets.chomp.upcase
+    unless response == "Y"
+      puts "Aborting"
+      exit
+    end
+
+    # do the deed
+    unit.events.each do |event|
+      event.starts_at += 4.weeks
+      event.ends_at += 4.weeks
+      event.rsvp_closes_at += 4.weeks
+      event.save!
+    end
+  end
 end

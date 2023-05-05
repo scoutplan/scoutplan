@@ -32,14 +32,12 @@ li.member(id="unit_membership_#{@member.id}")
           / - if rsvp&.action_pending?
             / i.fa-triangle-exclamation.fas.text-red-500(title="Payment and/or documentation hasn't yet been received")
         
-          - if @event.requires_payment?
+          - if @event.requires_payment? && @rsvp.accepted?
             - case @payments_service&.paid?
             - when :in_full
-              i.fa-check-circle.fas.text-emerald-900(title="Payment has been received")
+              i.fa-badge-dollar.fa-solid.text-emerald-900(title="Payment has been received")
             - when :partial
-              i.fa-exclamation-triangle.fas.text-yellow-500(title="Partial payment has been received")
-            - else
-              i.fa-exclamation-triangle.fas.text-red-500(title="Payment hasn't yet been received")
+              i.fa-badge-dollar.fa-regular.text-yellow-500(title="Partial payment has been received")
 
         .little-buttons.w-6.inline-block.text-right
           .disclosure-button.hidden.text-right

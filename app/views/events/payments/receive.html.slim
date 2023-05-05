@@ -1,0 +1,38 @@
+= turbo_frame_tag "main"
+  .max-w-sm.mx-auto.w-full
+    = link_to unit_event_path(@unit, @event),
+              class: "block text-sky-800 hover:text-sky-900 mb-4",
+              data: { turbo_action: "advance" } do
+      i.fa-stack
+        i.fa-regular.fa-circle.fa-stack-2x
+        i.fa-solid.fa-arrow-left.fa-stack-1x
+      = "Back to #{@event.title}"    
+
+    .flex.flex-col.gap-4.divide-y
+
+      header.py-2
+        h1.font-bold.text-4xl = "Receive Payment"
+
+      section.py-2
+        p = @event.title
+        p = EventPresenter.new(@event, @current_member).full_dates_to_s
+        p = "#{number_to_currency(@event.cost_youth)} per youth, #{number_to_currency(@event.cost_adult)} per adult"
+
+      section.py-2
+        table.w-full
+          - @family_rsvps.each do |rsvp|
+            tr
+              td.py-1 = rsvp.member.short_display_name
+              td.text-right = number_to_currency(rsvp.cost)
+          
+          - @payments.each do |payment|
+            tr
+              td.py-1 = "#{payment.method.capitalize} payment by #{payment.unit_membership.short_display_name} on #{payment.created_at.strftime("%b %-d")}"
+              td.text-right = number_to_currency(- payment.amount / 100)
+
+          tr
+            td.py-1.font-bold = "Amount due"
+            td.text-right.font-bold = number_to_currency(@amount_due)
+
+      section.py-2
+        = render partial: "form"

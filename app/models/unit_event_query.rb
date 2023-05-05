@@ -10,7 +10,7 @@ class UnitEventQuery
   end
 
   def execute
-    scope = @unit.events.preload(
+    scope = @unit.events.includes(
       :event_category, :event_locations, :tags,
       [event_rsvps: :unit_membership]
     ).with_rich_text_description
