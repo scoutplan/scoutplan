@@ -26,6 +26,7 @@ table.wrapper
 
             table.month-events
               - events.each do |event|
+                - next if @excluded_categories.include?(event.category.id.to_s)
                 - presenter.event = event
 
                 tr(style="border-top:1px solid #ddd;")
@@ -35,7 +36,6 @@ table.wrapper
                   
                   td
                     h3.event-title
-                      i.fa-regular.not-italic(class="fa-#{event.category.glyph}")
                       = " #{event.title}#{event.draft? ? ' - DRAFT' : ''}"
 
                     location
