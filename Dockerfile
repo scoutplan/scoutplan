@@ -12,6 +12,7 @@ RUN apk add --no-cache --update \
     ttf-freefont \
     xvfb \
     libxrender-dev \
+    libssl1.1 \
     fontconfig \
     freetype \
     # wkhtmltopdf \

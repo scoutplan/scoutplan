@@ -1,1 +1,1 @@
-docker exec -it scoutplan_app_1 /bin/ash
+docker exec -it scoutplan-app-1 /bin/ash
