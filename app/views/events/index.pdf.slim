@@ -4,44 +4,58 @@
 - month_index = 0
 - month_count = events_by_month.count
 
-table.wrapper
-  - while month_index < month_count do
-    tr
-      - 3.times do
-        td.month-column
+- while month_index < month_count do
+  div(style="display: block; width:100%; overflow:auto;")
+    div(style="height:2rem; display: block;")
+    - 3.times.with_index do |i|
+      - if i > 0
+        div(style="width:2%; display: block; float:left;")
+          | &nbsp;
 
-          // if we're not out of data...
-          - if month_index < month_count
-            - month_and_year = events_by_month.keys[month_index]
-            - year = month_and_year.first
-            - month_number = month_and_year.second
-            - events = events_by_month.values[month_index]
-            - month_index += 1
+      div(style="width:32%; display: block; float:left;")
 
-            h2(style="font-weight: bold; font-size: 1.2rem;")
-              = Date::MONTHNAMES[month_number]
-              - if current_year != year
-                = " "
-                = current_year = year
+        // if we're not out of data...
+        - if month_index < month_count
+          - month_and_year = events_by_month.keys[month_index]
+          - year = month_and_year.first
+          - month_number = month_and_year.second
+          - events = events_by_month.values[month_index]
+          - month_index += 1
 
-            table.month-events
-              - events.each do |event|
-                - next if @excluded_categories.include?(event.category.id.to_s)
-                - presenter.event = event
+          h2(style="font-weight: bold; font-size: 2rem; border-bottom: 1px solid black;")
+            = Date::MONTHNAMES[month_number]
+            - if current_year != year
+              = " "
+              = current_year = year
 
-                tr(style="border-top:1px solid #ddd;")
-                  td
-                    .dates = presenter.dates_to_s
-                    .days  = presenter.days_to_s
-                  
-                  td
-                    h3.event-title
-                      = " #{event.title}#{event.draft? ? ' - DRAFT' : ''}"
+          table.month-events
+            - events.each do |event|
+              - next if @excluded_categories.include?(event.category.id.to_s)
+              - presenter.event = event
 
-                    location
-                      = event.location
+              tr(style="border-top:1px solid black;")
+                td
+                  .dates = presenter.dates_to_s
+                  .days  = presenter.days_to_s
+                
+                td
+                  h3.event-title
+                    = " #{event.title}#{event.draft? ? ' - DRAFT' : ''}"
+
+                  location
+                    = event.location
+
+  div(style="clear:both; page-break-after: always;")
 
 css:
+  .dates {
+    font-size: 2em !important;
+    line-height: 1.2;
+  }
+  .days {
+    font-size: 85%;
+  }
+
   table {
     width: 100%;
   }
@@ -50,15 +64,20 @@ css:
     border-spacing: 1rem;
     margin: 0 0;
     table-layout: fixed;
+    display: block;
+    clear: both;
+    page-break-after: always;
+    width: 100%;
+    border-collapse:collapse;
   }
 
   .month-column {
     padding-top: 1rem;
     padding-left: 1rem;
     padding-right: 1rem;
-  }
+    width: 33%;
+    background: blue;
 
-  .month-column {
     break-inside: avoid;
     vertical-align: top;
     padding-left: 0;
@@ -91,5 +110,5 @@ css:
   }
 
   .month-events td {
-    padding: 0.25rem 0;
+    padding: 0.5rem 0;
   }
