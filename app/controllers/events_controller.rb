@@ -100,8 +100,6 @@ class EventsController < UnitContextController
   def render_printable_calendar
     @excluded_categories = params[:exclude_event_categories]&.split(',') || []
 
-    ap @excluded_categories
-
     render(locals: { events_by_month: calendar_events },
            pdf: "#{@unit.name} Schedule as of #{Date.today.strftime('%-d %B %Y')}",
            layout: "pdf",
