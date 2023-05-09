@@ -74,7 +74,7 @@ RSpec.describe EventRsvpPolicy, type: :model do
         policy = EventRsvpPolicy.new(@member, rsvp)
         expect(policy.create?(@member)).to be_falsey
       end
-      
+
       it "prevents rsvps if the membership prevents it" do
         @unit.allow_youth_rsvps = true
         @event.allow_youth_rsvps = true
@@ -84,10 +84,11 @@ RSpec.describe EventRsvpPolicy, type: :model do
         policy = EventRsvpPolicy.new(@member, rsvp)
         expect(policy.create?(@member)).to be_falsey
       end
-      
+
       it "prevents rsvps if the event prevents it" do
         @member.allow_youth_rsvps = true
         @unit.allow_youth_rsvps = true
+        @event.allow_youth_rsvps = false
 
         rsvp = EventRsvp.new(unit_membership: @member, event: @event)
 
