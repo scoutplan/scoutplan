@@ -86,8 +86,20 @@ input.dt-switch.left-value:checked ~ .dt-switch-container {
   background: #dc2626;
 }
 
+input.dt-switch.left-value:disabled:checked ~ .dt-switch-container {
+  background: #ddd;
+}
+
 input.dt-switch.right-value:checked ~ .dt-switch-container {
   background: #4d7c0f;
+}
+
+input.dt-switch.right-value:disabled:checked ~ .dt-switch-container {
+  background: #ddd;
+}
+
+input.dt-switch:disabled ~ .dt-switch-container {
+  background: #ddd;
 }
 
 input.dt-switch.left-value:checked ~ .dt-switch-container .switch-button {
@@ -97,6 +109,7 @@ input.dt-switch.left-value:checked ~ .dt-switch-container .switch-button {
 input.dt-switch.right-value:checked ~ .dt-switch-container .switch-button {
   transform: translateX(195%);
 }
+
 
 input[type="text"].is-invalid {
   border-color: #ef4444;
@@ -148,4 +161,12 @@ a:focus .active-hidden {
 
 table.divide-y tr:not(:last-child) {
   border-bottom: 1px solid #d2d6dc;
+}
+
+.dirty-warning {
+  display: none;
+}
+
+form.is-dirty .dirty-warning {
+  display: block;
 }

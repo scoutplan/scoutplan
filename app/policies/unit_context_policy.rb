@@ -21,4 +21,8 @@ class UnitContextPolicy < ApplicationPolicy
   def active?
     @membership&.status_active?
   end
+
+  def organizer?
+    @membership&.role == "event_organizer"
+  end
 end

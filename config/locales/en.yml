@@ -211,6 +211,7 @@ en:
       no_response:      "No response"
       closed:           "RSVPs are closed"
       past:             "Event has already occurred"
+      youth_rsvp_warning:    "Scoutplan will ask %{names} to approve your RSVP"
 
     index:
       title:                "Event Schedule"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_04_133548) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_08_123329) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -279,6 +279,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_04_133548) do
     t.string "website"
     t.integer "packing_list_ids", default: [], array: true
     t.integer "cost_adult", default: 0
+    t.boolean "allow_youth_rsvps", default: true
   end
 
   create_table "flipper_features", force: :cascade do |t|
@@ -477,6 +478,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_04_133548) do
     t.string "role", null: false
     t.integer "member_type", default: 0
     t.jsonb "preferences", default: {}, null: false
+    t.boolean "allow_youth_rsvps", default: false
   end
 
   create_table "units", force: :cascade do |t|
@@ -485,6 +487,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_04_133548) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email"
+    t.boolean "allow_youth_rsvps", default: false
   end
 
   create_table "user_relationships", force: :cascade do |t|

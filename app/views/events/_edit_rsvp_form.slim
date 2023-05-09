@@ -3,23 +3,18 @@
 - @rsvps = rsvps
 - notes = rsvps.map(&:note).uniq.join(", ")
 
-css:
-  .table-cell {
-    border-top: 1px solid #aaa;
-  }
-
-  .table-row:first-child .table-cell {
-    border: none;
-  }
-
 .table.w-full.divide-y-2.divide-red-500
   - @current_member.family.each do |family_member|
-    .table-row.items-center
+    .table-row.items-center.relative
       - existing_rsvp = event.rsvps.find_by(unit_membership: family_member)
       - rsvp = event.rsvps.build(unit_membership: family_member,
         response: existing_rsvp&.response,
         includes_activity: existing_rsvp&.includes_activity,
         event_shift_ids: existing_rsvp&.event_shift_ids)
+
+      - policy = EventRsvpPolicy.new(@current_member, rsvp)  
+      - if policy.create? && @current_member.youth?
+        - @youth_respondent = true  
 
       // family member name
       .table-cell.pr-2.py-2.font-bold(class="#{ @event.shifts? ? 'align-top pt-4' : 'align-middle' }")
@@ -37,7 +32,8 @@ css:
                                                               object_name: "event[members][#{family_member.id}][shifts][#{shift.id}]",
                                                               method: "response",
                                                               checked_value: "accepted",
-                                                              unchecked_value: "declined" }
+                                                              unchecked_value: "declined",
+                                                              disabled: !policy.create? }
 
         - else
           = render partial: "components/double_throw_switch",
@@ -49,7 +45,8 @@ css:
                                       left_value:  "declined",
                                       right_value: "accepted",
                                       left_label:  "Regrets",
-                                      right_label: "Going!" }
+                                      right_label: "Going!",
+                                      disabled: !policy.create? }                                      
 
 // note field
 .mt-2
