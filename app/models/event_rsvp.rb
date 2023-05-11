@@ -12,7 +12,7 @@ class EventRsvp < ApplicationRecord
   validates_presence_of :response
   validate :common_unit?
 
-  enum response: { declined: 0, accepted: 1, accepted_pending: 2 }
+  enum response: { declined: 0, accepted: 1, declined_pending: 2, accepted_pending: 3 }
 
   alias_attribute :member, :unit_membership
 

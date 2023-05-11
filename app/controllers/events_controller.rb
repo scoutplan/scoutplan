@@ -157,6 +157,10 @@ class EventsController < UnitContextController
     end
   end
 
+  def nope
+    authorize @event
+  end
+
   def organize
     @attendees = @event.rsvps.accepted
     @payments_service = PaymentsService.new(@event)
@@ -258,7 +262,6 @@ class EventsController < UnitContextController
   end
 
   def render_printable_signups
-
     events = @events.select(&:rsvp_open?)
 
     render(locals: { events: events },
@@ -300,6 +303,7 @@ class EventsController < UnitContextController
   def create_or_update_rsvps
     note = params[:note]
     params[:event][:members].each do |member_id, values|
+      member = @current_unit.members.find(member_id)
       values[:event_rsvp] ||= {}
       shifts = values[:shifts]
       accepted_shifts = shifts.present? ? shifts.select { |_, v| v[:response] == "accepted" }.keys : []
@@ -313,6 +317,13 @@ class EventsController < UnitContextController
       if response == "nil"
         @event.rsvps.find_by(unit_membership_id: member_id).destroy
         next
+      end
+
+      # youth responses are always pending
+      if response == "accepted" && member.youth?
+        response = "accepted_pending"
+      elsif response == "declined" && member.youth?
+        response = "declined_pending"
       end
 
       includes_activity = values[:event_rsvp][:includes_activity] == "1"

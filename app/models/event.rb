@@ -245,6 +245,10 @@ class Event < ApplicationRecord
     "#{title} (scheduled for #{starts_at.strftime('%b %d')})"
   end
 
+  def organizer?(member)
+    organizers.map(&:member).include?(member)
+  end
+
   private
 
   # create a weekly series based on @event

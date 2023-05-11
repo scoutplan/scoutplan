@@ -1,43 +1,43 @@
 section.bg-stone-100.rounded.p-4.mb-2.mt-2.attention.border.border-yellow-200
-  = form_with model: event, url: unit_event_send_rsvps_path(@unit, event) do |f|
+  = form_with model: event, url: unit_event_send_rsvps_path(@unit, event), data: { controller: "dirt-detector" } do |f|
 
     // first row: RSVP panel
     - if event.requires_rsvp
         = render partial: "edit_rsvp_form", locals: { event: event, f: f, presenter: presenter }
 
+    - if @youth_respondent
+      - presenter = EventPresenter.new
+      - names = @current_member.parents.map(&:display_first_name)
+      .block.dirty-warning.pt-4.text-yellow-700.font-bold
+        i.fa-solid.fa-exclamation-triangle.mr-2
+        = t("events.rsvp.youth_rsvp_warning", names: presenter.grammatical_list(names, "or"))  
+
     // footer, containing right-justified buttons
-    .flex.flex-col.md:flex-row.md:justify-between.py-2
+    footer.flex.flex-col.md:flex-row.py-4.gap-2
+      - done_caption = @rsvps.present? ? "Update Your RSVPs" : t("events.edit_rsvps.captions.submit")
 
-      // left side (on desktop)
-      .block
+      // Done button
+      = f.submit done_caption,
+        id: "accept",
+        class: "font-bold no-underline text-center \
+                block md:inline-block \
+                w-full md:w-min \
+                px-4 py-2 \
+                bg-yellow-300 hover:bg-yellow-500 text-yellow-800 hover:text-yellow-900 \
+                border border-yellow-400 \
+                disabled:border-stone-300 disabled:bg-stone-200 disabled:text-stone-400 \
+                rounded",
+        data: { turbo_frame: "main", turbo_action: "restore" },
+        disabled: true
 
-      // right side (on desktop)
-      div.flex-auto.md:flex-none
-
-        // Cancel button
-        = link_to t("global.nevermind"),
-          unit_event_path(event.unit, event),
-          class:  " font-bold no-underline text-center " \
-                  " block md:inline-block" \
-                  " px-4 py-2 mr-0 md:mr-2 mb-2 md:mb-0" \
-                  " border border-yellow-800" \
-                  " text-yellow-800 hover:text-yellow-900" \
-                  " rounded" \
-                  "",
-          data: { turbo_action: "advance", turbo_frame: "main" }
-
-        - done_caption = @rsvps.present? ? "Update Your RSVPs" : t("events.edit_rsvps.captions.submit")
-
-        // Done button
-        = f.submit done_caption,
-          id: "accept",
-          class: "font-bold no-underline text-center \
-                  block md:inline-block \
-                  w-full md:w-min \
-                  px-4 py-2 \
-                  bg-yellow-300 hover:bg-yellow-500 text-yellow-800 hover:text-yellow-900 \
-                  border border-yellow-400 \
-                  disabled:border-gray-100 disabled:bg-gray-100 disabled:text-gray-200 \
-                  rounded",
-          data: { turbo_frame: "main", turbo_action: "restore" },
-          disabled: true
+      // Cancel button
+      = link_to t("global.nevermind"),
+        unit_event_path(event.unit, event),
+        class:  " font-bold no-underline text-center " \
+                " block md:inline-block" \
+                " px-4 py-2 mr-0 md:mr-2 mb-2 md:mb-0" \
+                " border border-yellow-800" \
+                " text-yellow-800 hover:text-yellow-900" \
+                " rounded" \
+                "",
+        data: { turbo_action: "advance", turbo_frame: "main" }        

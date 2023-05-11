@@ -46,7 +46,8 @@ describe "events", type: :feature do
       it "prevents access to non-organizers" do
         login_as(@normal_user, scope: :user)
         path = unit_event_rsvps_path(@unit, @rsvp_event1)
-        expect { visit path }.to raise_exception Pundit::NotAuthorizedError
+        visit path
+        expect(page).to have_current_path(list_unit_events_path(@unit))
       end
 
       it "allows access to admins" do

@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
   after_action :clear_session_view
   after_action :track_action
 
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   def new_session_path(_scope)
     new_user_session_path
   end
@@ -31,13 +33,13 @@ class ApplicationController < ActionController::Base
   end
 
   def page_title(*args)
-    if args.is_a?(Array)
-      @page_title = args
-    elsif args[0].is_a?(String)
-      @page_title = [args[0]]
-    else
-      @page_title = []
-    end
+    @page_title = if args.is_a?(Array)
+                    args
+                  elsif args[0].is_a?(String)
+                    [args[0]]
+                  else
+                    []
+                  end
   end
 
   # devise redirect after signout
@@ -46,6 +48,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_member; end
+
+  def user_not_authorized
+    flash[:alert] = "You are not authorized to perform this action."
+    redirect_to(root_path)
+  end
 
   protected
 

@@ -142,11 +142,13 @@ describe "events", type: :feature do
 
     it "prevents access a draft Event page" do
       path = unit_event_path(@unit, @event)
-      expect { visit path }.to raise_error Pundit::NotAuthorizedError
+      visit path
+      expect(page).to have_current_path(list_unit_events_path(@unit))
     end
 
     it "prevents access to the Organize page" do
-      expect { visit unit_event_rsvps_path(@unit, @event) }.to raise_error Pundit::NotAuthorizedError
+      visit unit_event_rsvps_path(@unit, @event)
+      expect(page).to have_current_path(list_unit_events_path(@unit))
     end
 
     it "hides the add event button on the Index page" do
@@ -163,7 +165,8 @@ describe "events", type: :feature do
 
     it "prevents non-admins from accessing" do
       event = FactoryBot.create(:event, :published, :past, unit: @unit)
-      expect { visit edit_unit_event_path(event.unit, event) }.to raise_error Pundit::NotAuthorizedError
+      visit edit_unit_event_path(event.unit, event)
+      expect(page).to have_current_path(list_unit_events_path(@unit))
     end
   end
 

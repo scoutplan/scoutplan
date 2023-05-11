@@ -38,6 +38,10 @@ class EventPolicy < UnitContextPolicy
     admin? || @membership.event_organizer? || @event.organizer?(@membership)
   end
 
+  def nope?
+    false
+  end
+
   def organize?
     rsvps?
   end
@@ -47,7 +51,12 @@ class EventPolicy < UnitContextPolicy
   end
 
   def rsvp?
-    @membership.adult?
+    rsvp = EventRsvp.new(event: @event, unit_membership: @membership)
+    EventRsvpPolicy.new(@membership, rsvp).create?
+
+    # return true if @membership.adult?
+    # return true if @membership.youth? && @membership.allow_youth_rsvps? && @event.unit.allow_youth_rsvps? && @event.allow_youth_rsvps?
+    # false
   end
 
   def plan?

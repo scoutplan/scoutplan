@@ -5,13 +5,13 @@
 .dt-switch-wrapper
   .flex.flex-row.items-center
     = radio_button object_name, method, left_value,
-                { class: "left-value hidden dt-switch", checked: checked_left, data: data }
+                { class: "left-value hidden dt-switch", checked: checked_left, data: data, disabled: disabled }
 
     = radio_button object_name, method, "nil",
-                { class: "center-value hidden dt-switch", data: data }
+                { class: "center-value hidden dt-switch", data: data, disabled: disabled }
 
     = radio_button object_name, method, right_value,
-                { class: "right-value hidden dt-switch", checked: checked_right, data: data }
+                { class: "right-value hidden dt-switch", checked: checked_right, data: data, disabled: disabled }
       
     = label object_name, method,
             value: left_value,
