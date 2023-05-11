@@ -38,6 +38,10 @@ class EventPolicy < UnitContextPolicy
     admin? || @membership.event_organizer? || @event.organizer?(@membership)
   end
 
+  def nope?
+    false
+  end
+
   def organize?
     rsvps?
   end

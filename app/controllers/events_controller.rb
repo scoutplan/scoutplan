@@ -157,6 +157,10 @@ class EventsController < UnitContextController
     end
   end
 
+  def nope
+    authorize @event
+  end
+
   def organize
     @attendees = @event.rsvps.accepted
     @payments_service = PaymentsService.new(@event)
@@ -258,7 +262,6 @@ class EventsController < UnitContextController
   end
 
   def render_printable_signups
-
     events = @events.select(&:rsvp_open?)
 
     render(locals: { events: events },

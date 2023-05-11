@@ -18,7 +18,8 @@ describe "unit settings", type: :feature do
     end
 
     it "prevents Unit Settings page navigation" do
-      expect { visit unit_settings_path(@unit) }.to raise_error(Pundit::NotAuthorizedError)
+      visit unit_settings_path(@unit)
+      expect(page).to have_current_path(list_unit_events_path(@unit))
     end
   end
 

@@ -18,7 +18,9 @@ describe "events", type: :feature do
 
   it "prevents non-admin from accessing the organize page" do
     login_as(@unit.members.first.user, scope: :user)
-    expect { visit(unit_event_rsvps_path(@unit, @event)) }.to raise_error Pundit::NotAuthorizedError
+    visit unit_event_rsvps_path(@unit, @event)
+    expect(page).to have_current_path(list_unit_events_path(@unit))
+    # expect { visit(unit_event_rsvps_path(@unit, @event)) }.to raise_error Pundit::NotAuthorizedError
   end
 
   it "contains all members without dupes" do
