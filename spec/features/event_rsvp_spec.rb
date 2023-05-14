@@ -4,25 +4,25 @@ require "rails_helper"
 
 describe "event_rsvp", type: :feature do
   before do
-    User.where(email: "test_admin@scoutplan.org").destroy_all
-    User.where(email: "test_normal@scoutplan.org").destroy_all
+    @member = FactoryBot.create(:member, :adult)
+    @unit = @member.unit
 
-    @admin_user  = FactoryBot.create(:user, email: "test_admin@scoutplan.org")
-    @normal_user = FactoryBot.create(:user, email: "test_normal@scoutplan.org")
+    @child = FactoryBot.create(:member, :youth, unit: @unit)
+    @member.child_relationships.create(child_unit_membership: @child)
 
-    @unit  = FactoryBot.create(:unit)
-    @event = FactoryBot.create(:event, :draft, unit: @unit, title: "Draft Event")
-
-    @admin_member = @unit.memberships.create(user: @admin_user, role: "admin", status: :active)
-    @normal_member = @unit.memberships.create(user: @normal_user, role: "member", status: :active)
-
-    login_as(@admin_user, scope: :user)
+    @event = FactoryBot.create(:event, :requires_rsvp, unit: @unit)
+    login_as(@member.user)
   end
 
-  it "visits the event RSVP page" do
+  it "records a youth rsvp" do
     path = unit_event_edit_rsvps_path(@unit, @event)
     visit path
     expect(page).to have_current_path(path)
+    radio = page.find("#event_members_#{@child.id}_event_rsvp_response_declined", visible: false)
+    radio.click
+
+    expect { page.find("#accept").click }.to change { EventRsvp.count }.by(1)
+    expect(EventRsvp.last.response).to eq("declined")
   end
 
   it "works with incomplete RSVPs" do
