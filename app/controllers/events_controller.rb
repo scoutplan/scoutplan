@@ -320,9 +320,10 @@ class EventsController < UnitContextController
       end
 
       # youth responses are always pending
-      if response == "accepted" && member.youth?
+      # TODO: move this logic elsewhere
+      if response == "accepted" && @current_member.youth?
         response = "accepted_pending"
-      elsif response == "declined" && member.youth?
+      elsif response == "declined" && @current_member.youth?
         response = "declined_pending"
       end
 
