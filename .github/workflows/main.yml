@@ -52,7 +52,7 @@ jobs:
         uses: azure/setup-kubectl@v3
 
       - name: Build container image
-        run: docker build -t registry.digitalocean.com/scoutplan/app:$(echo $GITHUB_SHA | head -c7) .
+        run: docker build -t registry.digitalocean.com/scoutplan/app:$(echo $GITHUB_SHA | head -c7) -t registry.digitalocean.com/scoutplan/app:latest .
 
       - name: Add run number to app deployment file
         run: sed -i 's|github-run-number|'${GITHUB_RUN_NUMBER}'|' $GITHUB_WORKSPACE/config/kube/deployment.yml
