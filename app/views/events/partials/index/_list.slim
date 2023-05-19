@@ -1,8 +1,9 @@
 #event_table_container.max-w-xl.mx-auto
   = form_tag bulk_publish_unit_events_path(@unit), id: "bulk_action_form"
-    = render partial: "events/partials/index/sidecar", layout: "layouts/sidecar"
+    .fixed
+      = render partial: "events/partials/index/sidecar", layout: "layouts/sidecar"
 
-    header.max-w-xl.mx-auto.relative.mt-8.mb-2.px-1
+    header.max-w-xl.mx-auto.relative.mt-8.mb-2.px-2
       = render partial: "components/unit_name"
 
       .flex.flex-row.justify-between.items-center

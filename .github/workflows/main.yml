@@ -21,6 +21,8 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Docker version
+        run: docker -v
 
       - name: Check out master
         uses: actions/checkout@main
@@ -93,3 +95,12 @@ jobs:
       - name: Report deployment to Honeybadger
         run: curl -g "https://api.honeybadger.io/v1/deploys?deploy[environment]=production&deploy[local_username]=system&deploy[revision]=$GITHUB_RUN_NUMBER&api_key=hbp_afiJuqUHfBDVMCvM3Kg3nO8T1vxvEV0KLTzi"
         
+      # https://weblog.yivoff.com/posts/2021-06/automatically-removing-old-images-from-digitalocean-container-registry/
+      # https://github.com/marketplace/actions/run-jq
+      # keep five images
+      - name: Prune the image repo
+        uses: sergeysova/jq-action@v2
+        with:
+          run: |
+            digests=$(doctl registry repository list-tags app --output json | jq ".[5:] | .[] | .tag " -r | tr '\n' ' ')
+            if [ -n "$digests" ]; then doctl registry repository delete-tag app $digests --force; fi

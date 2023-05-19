@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "deleteform", "fileinput", "documentLibraryIds" ];
+  static targets = [ "deleteform", "fileinput", "documentLibraryIds", "startsAtDate", "rsvpClosesAt" ];
 
   addAttachmentToPendingList(filename) {
     var attachment_list = document.querySelector("#existing_attachments");
@@ -36,6 +36,22 @@ export default class extends Controller {
   showLocation() {
     document.querySelector("#new_location_overlay").classList.remove("hidden");
     document.querySelector("#location_name").focus();
+  }
+
+  updateRsvpClosesAt() {
+    var startsAt = this.startsAtDateTarget.value;
+    var rsvpClosesAt = this.rsvpClosesAtTarget.value;
+    if (rsvpClosesAt > startsAt) {
+      this.rsvpClosesAtTarget.closest(".field-wrapper").classList.add("field_with_errors");
+    }
+  }
+
+  updateStartsAt() {
+    var startsAt = this.startsAtDateTarget.value;
+    var rsvpClosesAt = this.rsvpClosesAtTarget.value;
+    if (startsAt < rsvpClosesAt) {
+      this.rsvpClosesAtTarget.value = startsAt;
+    }
   }
 
   hideDocumentLibrary(event) {
