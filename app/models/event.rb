@@ -17,6 +17,7 @@ class Event < ApplicationRecord
 
   belongs_to :unit
   belongs_to :series_parent, class_name: "Event", optional: true
+  belongs_to :parent_event, class_name: "Event", optional: true
   belongs_to :event_category
 
   has_many :documents, as: :documentable, dependent: :destroy
@@ -31,6 +32,7 @@ class Event < ApplicationRecord
   has_many :payments
   has_many :members, through: :event_rsvps
   has_many :rsvp_tokens, dependent: :destroy
+  has_many :sub_events, class_name: "Event", foreign_key: "parent_event_id"
 
   has_one :chat, as: :chattable, dependent: :destroy
 
@@ -69,6 +71,7 @@ class Event < ApplicationRecord
   scope :coming_up,     -> { where("starts_at BETWEEN ? AND ?", 7.days.from_now, 35.days.from_now) }
   scope :rsvp_required, -> { where(requires_rsvp: true) }
   scope :today,         -> { where("starts_at BETWEEN ? AND ?", Time.zone.now.beginning_of_day, Time.zone.now.at_end_of_day) }
+  scope :top_level,     -> { where(parent_event_id: nil) }
 
   scope :imminent,      -> {
                           where("starts_at BETWEEN ? AND ?",

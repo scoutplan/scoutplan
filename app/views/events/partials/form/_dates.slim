@@ -1,6 +1,6 @@
 section.py-4
   .py-2
-    = f.label :from, "Starts", class: "font-bold block mb-1"
+    = f.label :starts_at, class: "font-bold block mb-1"
 
     .flex.flex-grow.gap-x-4.items-center
       = f.date_field :starts_at_date, class: "flex flex-grow border border-stone-300 rounded p-2", tabindex: -1,
@@ -13,7 +13,7 @@ section.py-4
         value: @event.starts_at.strftime("#{ @format_time }")
 
   .py-2
-    = f.label :to, "Ends", class: "font-bold block mb-1"
+    = f.label :ends_at, class: "font-bold block mb-1"
 
     .flex.flex-grow.gap-x-4.items-center
       = f.date_field :ends_at_date, class: "flex flex-grow border border-stone-300 rounded p-2", tabindex: -1
@@ -35,7 +35,7 @@ section.py-4
                       data: { body_class: "event-repeats" } }
 
   #repeat_fields.py-2
-    = f.label "Repeats until", class: "font-bold block mb-1"
+    = f.label :repeats_until, class: "font-bold block mb-1"
     = f.date_field :repeats_until,
                    value: (@event.starts_at + 6.months).strftime("#{ @format_date }"),
                    class: "bg-white rounded w-full p-2 inline-block"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_08_123329) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_19_163135) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -280,6 +280,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_08_123329) do
     t.integer "packing_list_ids", default: [], array: true
     t.integer "cost_adult", default: 0
     t.boolean "allow_youth_rsvps", default: true
+    t.integer "parent_event_id"
   end
 
   create_table "flipper_features", force: :cascade do |t|
