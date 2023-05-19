@@ -63,14 +63,14 @@ input.switch:checked + label.sm .switch-button {
 }
 
 .sidecar a {
-  color: #a8a29e;
+  color: #78716c;
   transition-property: color;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;  
 }
 
 .sidecar:hover a {
-  color: #44403c;
+  color: #292524;
 }
 
 .sidecar a:hover {
@@ -155,8 +155,12 @@ a:focus .active-hidden {
   color: red;
 }
 
-.field_with_errors label {
-  color: red;
+.error-message {
+  display: none;
+}
+
+.field_with_errors .error-message {
+  display: block;
 }
 
 table.divide-y tr:not(:last-child) {

@@ -10,10 +10,13 @@ section.py-4
                       data: { body_class: "event-requires-rsvp" } }
 
   #rsvp_fields
-    .py-2
+    .py-2.field-wrapper
       = f.label :rsvp_closes_at, t("events.form.rsvp_closes_at"), class: "block font-bold mb-2"
       = f.date_field :rsvp_closes_at,
-        class: "bg-white border border-stone-300 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300"
+        class: "bg-white border border-stone-300 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300",
+        data: { target: "event-edit.rsvpClosesAt", action: "change->event-edit#updateRsvpClosesAt" }
+      p.error-message.text-red-500.my-2.text-sm.font-bold
+        = "RSVP must close before the event starts"
 
     .table
       .table-row
