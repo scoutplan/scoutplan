@@ -2,7 +2,7 @@ section.py-4
   div.field.py-2
     = render partial: "components/switch",
             locals: { checked: @event.requires_rsvp,
-                      label: "Requires RSVP",
+                      label: t("helpers.label.event.requires_rsvp"),
                       object_name: "event",
                       method: "requires_rsvp",
                       checked_value: "true",

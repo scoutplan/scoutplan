@@ -15,7 +15,7 @@ section.py-4
       - organizers.each do |organizer|
         option(value="#{organizer.unit_membership_id}" selected="") = organizer.full_display_name
 
-    = f.label :organizers, "Organizers", class: "block font-bold mb-1"
+    = f.label :organizers, class: "block font-bold mb-1"
     
     div.rounded.border.border-stone-300.px-2.py-0
       .flex.flex-wrap.gap-1.items-center
