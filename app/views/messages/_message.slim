@@ -1,13 +1,32 @@
 - path = message.sent? ? unit_message_path(@unit, message) : edit_unit_message_path(@unit, message)
 
+- return unless MessagePolicy.new(@current_member, message).edit?
+
 article.hover:bg-stone-100
   = link_to path,
     class: "block px-2 py-4 message #{message.updated_at < 4.weeks.ago ? 'older' : 'current' }",
     data: { turbo_action: "advance" } do
 
     div
+      // TITLE
+      h3.text-xl.font-semibold
+        = message.title
+
+      // FROM -> TO
+      p.inline-block.text-brand-500.uppercase.font-semibold.tracking-wider.text-sm
+        // author name
+        = message.author == @current_member ? "You" : message.author.full_display_name
+        
+        // right arrow
+        i.fas.fa-arrow-right.mx-1
+        
+        // recipients
+        - if message.member_type == "adults_only"
+          = "Adult "        
+        = recipients_to_s(message)
+
       // LEFT
-      time.uppercase.text-sm.font-semibold.text-stone-400
+      time.block.text-sm.font-semibold.text-stone-400
         - if message.send_at&.future? && message.queued?
           i.fa-clock.fas
           | &nbsp;
@@ -20,27 +39,9 @@ article.hover:bg-stone-100
         - else
           = t("time_ago", value: distance_of_time_in_words_to_now(message.updated_at))
 
-      div.truncate
-        h3.text-xl.font-semibold
-          = message.title
+      .w-1/4.py-2
+        hr
 
-        p.inline-block.text-stone-500
-          // author name
-          = message.author.full_display_name
-          
-          // right arrow
-          i.fas.fa-arrow-right.mx-1
-          
-          // recipients
-          - if message.member_type == "adults_only"
-            = "Adult "        
-          = recipients_to_s(message)
-
-          // dash
-          | &nbsp;
-          | &mdash;
-          | &nbsp;
-
-          // body preview
-          span.message-preview(style="max-width: calc(100% - 12rem;")
-            = strip_tags(message.body)
+      // body preview
+      div.truncate.message-preview(style="max-width: calc(100% - 12rem;")
+        = strip_tags(message.body)          

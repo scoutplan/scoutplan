@@ -7,7 +7,13 @@
   = render partial: "events/partials/form/watermark"
 
   header.py-4
-    h2.font-bold.text-2xl = @event.new_record? ? t("events.titles.new") : t("events.titles.edit")
+    h2.font-bold.text-2xl
+      - if @parent_event.present?
+        = t("events.titles.sub_event", parent_event_title: @parent_event.title)
+      - elsif @event.new_record?
+        = t("events.titles.new")
+      - else
+        = t("events.titles.edit")
 
   = form_with model: @event, scope: "event",
               url: @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event),

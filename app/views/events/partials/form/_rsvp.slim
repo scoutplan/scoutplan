@@ -16,6 +16,7 @@ section.py-4
         class: "bg-white border border-stone-300 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300",
         data: { target: "event-edit.rsvpClosesAt", action: "change->event-edit#updateRsvpClosesAt" }
       p.error-message.text-red-500.my-2.text-sm.font-bold
+        i.fa-solid.fa-exclamation-circle.fas.mr-2
         = "RSVP must close before the event starts"
 
     .table

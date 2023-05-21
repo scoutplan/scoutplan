@@ -51,6 +51,7 @@ class UnitMembership < ApplicationRecord
   scope :active, -> { where(status: %i[active]) }
   scope :status_active_and_registered, -> { where(status: %i[active registered]) } # everyone except inactives
   scope :contactable, -> { joins(:user).where("email NOT LIKE 'anonymous-member-%@scoutplan.org'") }
+  scope :message_approver, -> { where(role: %i[admin]) }
 
   delegate :time_zone, to: :unit
   delegate :name, to: :unit, prefix: :unit

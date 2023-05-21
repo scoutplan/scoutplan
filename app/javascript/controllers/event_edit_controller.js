@@ -43,6 +43,8 @@ export default class extends Controller {
     var rsvpClosesAt = this.rsvpClosesAtTarget.value;
     if (rsvpClosesAt > startsAt) {
       this.rsvpClosesAtTarget.closest(".field-wrapper").classList.add("field_with_errors");
+    } else {
+      this.rsvpClosesAtTarget.closest(".field-wrapper").classList.remove("field_with_errors");
     }
   }
 

@@ -318,6 +318,7 @@ en:
 
       buttons:
         duplicate:              "Duplicate"
+        add_sub_event:          "Add an Activity"
 
       captions:
         done:                   "Back to Full Schedule"
@@ -392,6 +393,7 @@ en:
     titles:
       new:  "Add an Event"
       edit: "Change Event Details"
+      sub_event: "Add an activity to %{parent_event_title}"
         
   members:
     name:             "Name"
@@ -637,6 +639,7 @@ en:
       duplicate_success:  "Your Announcement has been duplicated"
       delete_success:     "Your Announcement has been deleted"
       unpin_success:      "Your Announcement has been taken down"
+      pending_success:    "Your Announcement has been sent for approval"
 
   settings:
     buttons:
