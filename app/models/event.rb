@@ -13,7 +13,7 @@ class Event < ApplicationRecord
     activity: "activity"
   }.freeze
 
-  default_scope { order(starts_at: :asc) }
+  default_scope { where(parent_event_id: nil).order(starts_at: :asc) }
 
   belongs_to :unit
   belongs_to :series_parent, class_name: "Event", optional: true
@@ -71,13 +71,11 @@ class Event < ApplicationRecord
   scope :coming_up,     -> { where("starts_at BETWEEN ? AND ?", 7.days.from_now, 35.days.from_now) }
   scope :rsvp_required, -> { where(requires_rsvp: true) }
   scope :today,         -> { where("starts_at BETWEEN ? AND ?", Time.zone.now.beginning_of_day, Time.zone.now.at_end_of_day) }
-  scope :top_level,     -> { where(parent_event_id: nil) }
-
-  scope :imminent,      -> {
-                          where("starts_at BETWEEN ? AND ?",
-                                Time.zone.now.hour < 12 ? Time.zone.now.middle_of_day : Time.zone.now.end_of_day,
-                                Time.zone.now.hour < 12 ? Time.zone.now.end_of_day : Time.zone.now.end_of_day + 12.hours)
-                        }
+  scope :imminent, -> {
+    where("starts_at BETWEEN ? AND ?",
+          Time.zone.now.hour < 12 ? Time.zone.now.middle_of_day : Time.zone.now.end_of_day,
+          Time.zone.now.hour < 12 ? Time.zone.now.end_of_day : Time.zone.now.end_of_day + 12.hours)
+  }
 
   scope :recent_and_future, -> { where("starts_at > ?", 4.weeks.ago) }
   scope :recent_and_upcoming, -> { where("starts_at BETWEEN ? AND ?", 4.weeks.ago, 35.days.from_now)}

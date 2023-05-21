@@ -187,6 +187,11 @@ class EventsController < UnitContextController
   def new
     authorize Event
 
+    if params[:parent_event_id]
+      @parent_event = @unit.events.find(params[:parent_event_id])
+      redirect_to unit_events_path(@unit), status: :user_not_authorized unless EventPolicy.new(current_member, @parent_event).edit?
+    end
+
     if (source_event_id = params[:source_event_id])
       @event = EventDuplicationService.new(@unit, source_event_id).build
     else

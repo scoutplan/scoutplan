@@ -10,7 +10,7 @@ class Message < ApplicationRecord
 
   alias_attribute :member, :unit_membership
 
-  enum status: { draft: 0, queued: 1, sent: 2 }
+  enum status: { draft: 0, queued: 1, sent: 2, pending: 3 }
 
   # serialize :recipient_details, Array
 
@@ -41,6 +41,10 @@ class Message < ApplicationRecord
 
   def editable?
     status != "sent"
+  end
+
+  def approvers
+    unit.unit_memberships.message_approver
   end
 
   # private

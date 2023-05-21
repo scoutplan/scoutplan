@@ -6,10 +6,11 @@ class MessagesController < UnitContextController
   before_action :find_message, except: [:index, :new, :create]
 
   def index
-    @draft_messages  = @unit.messages.draft
-    @queued_messages = @unit.messages.queued
-    @sent_messages   = @unit.messages.sent.order("updated_at DESC")
-    @pinned_messages = @sent_messages.select(&:active?)
+    @draft_messages   = @unit.messages.draft
+    @queued_messages  = @unit.messages.queued
+    @sent_messages    = @unit.messages.sent.order("updated_at DESC")
+    @pending_messages = @unit.messages.pending
+    @pinned_messages  = @sent_messages.select(&:active?)
     @completed_messages = @sent_messages.reject(&:active?)
   end
 
@@ -68,9 +69,18 @@ class MessagesController < UnitContextController
       send_preview
       @message.update(status: :draft) if @message.status.nil?
       @notice = t("messages.notices.preview_sent")
+    when t("Submit for Approval")
+      if MessagePolicy.new(current_member, @message).create_pending?
+        @message.update(status: :pending)
+        @notice = t("messages.notices.pending_success")
+      end
     when t("messages.captions.send_message")
-      @message.update(status: :queued)
-      @notice = t("messages.notices.#{@message.send_now? ? 'message_sent' : 'message_queued'}")
+      if MessagePolicy.new(current_member, @message).create?
+        @message.update(status: :queued)
+        @notice = t("messages.notices.#{@message.send_now? ? 'message_sent' : 'message_queued'}")
+      else
+        @notice = "You aren't authorized to do that"
+      end
     when t("messages.captions.delete_draft")
       @message.destroy
       @notice = t("messages.notices.delete_success")

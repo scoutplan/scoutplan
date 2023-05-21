@@ -88,6 +88,7 @@ Rails.application.routes.draw do
           get :receive
         end
       end
+
       resources :event_attachments, path: "attachments", as: "attachments"
       resources :event_activities
       resources :event_organizers, as: "organizers", path: "organizers"
