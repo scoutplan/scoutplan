@@ -4,7 +4,9 @@ aside.xl:absolute.xl:-ml-96.xl:w-80.text-stone-500.sidecar
       = render partial: "events/partials/show/sidecar/back_to_schedule"
       = render partial: "events/partials/show/sidecar/edit"
       = render partial: "events/partials/show/sidecar/duplicate"
-      = render partial: "events/partials/show/sidecar/add_sub_event" unless false
+      = render partial: "events/partials/show/sidecar/history"
+      - if false
+        = render partial: "events/partials/show/sidecar/add_sub_event"
       = render partial: "events/partials/show/sidecar/download_brief"
       = render partial: "events/partials/show/sidecar/adjacent_events"
   

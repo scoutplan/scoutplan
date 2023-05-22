@@ -319,6 +319,7 @@ en:
       buttons:
         duplicate:              "Duplicate"
         add_sub_event:          "Add an Activity"
+        history:                "Event change history"
 
       captions:
         done:                   "Back to Full Schedule"
