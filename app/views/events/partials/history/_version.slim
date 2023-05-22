@@ -1,13 +1,26 @@
-.table-row.font-bold
-  .table-cell.border-t.py-2.pr-2
-    p = version.created_at.in_time_zone.strftime("%b %d, %Y")
-    p.text-sm.text-stone-500 = version.created_at.in_time_zone.strftime("%I:%M %p")
-  .table-cell.border-t.py-2.px-2 = UnitMembership.find(version.whodunnit).short_display_name
-  .table-cell.border-t.py-2.pl-2
-    - YAML::load(version.object_changes).each do |key, value|
-      - next if key == "updated_at"
+- changes = version.object_changes
+- return unless changes
 
-      span = "changed #{key} from "
-      span.text-red-500 = value[0]
-      span = " to "
-      span.text-red-500 = value[1]
+div.py-2
+  h3.font-bold.text-lg.mb-2
+    = UnitMembership.find(version.whodunnit).short_display_name
+    = " made changes on "
+    = version.created_at.in_time_zone.strftime("%b %-d, %Y")
+    span.text-stone-500 = " at " + version.created_at.in_time_zone.strftime("%-I:%M %p")
+  p
+    - if changes.present?
+    - if changes.has_key?("id")
+      span = "Added this record"
+    - else
+      ul.list-disc
+        - changes.each do |key, value|
+          - next if key == "updated_at"
+
+          li
+            = "changed "
+            .inline.font-bold = "#{key}"
+            - if value[0].present?
+              = " from "
+              span.font-bold.text-red-500 = value[0]
+            span = " to "
+            span.font-bold.text-red-500 = value[1]
