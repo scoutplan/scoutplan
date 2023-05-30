@@ -20,7 +20,7 @@
 
       section.py-2
         table.w-full
-          - @family_rsvps.each do |rsvp|
+          - @family_rsvps.accepted.each do |rsvp|
             tr
               td.py-1 = rsvp.member.short_display_name
               td.text-right = number_to_currency(rsvp.cost)

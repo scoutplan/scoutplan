@@ -164,6 +164,7 @@ Rails.application.routes.draw do
   patch "user_settings/save_password", to: "profile#update_password", as: "update_credentials"
 
   get "profile/:user_id/edit", to: "profile#edit", as: "edit_profile"
+  get "member_profile/:unit_membership_id/calendar", to: "unit_membership_profiles#calendar", as: "calendar_options"
   get "profile/:user_id/payments", to: "profile#payments", as: "profile_payments"
 
   post "units/:unit_id/members/:member_id/test_communication", to: "test_communications#create", as: "create_test_communication"

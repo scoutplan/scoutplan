@@ -39,6 +39,11 @@ class UnitMembership < ApplicationRecord
     s.key :communication, defaults: {
       event_organizer_digest: true
     }
+    s.key :calendar, defaults: {
+      receive_event_invitations: [
+        { event_category_id: 1254, lead_time: 2.weeks }
+      ]
+    }
   end
 
   # alias_attribute :member, :user
