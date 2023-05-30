@@ -1,0 +1,10 @@
+section
+  h3 = event_category.name
+
+  = render partial: "components/switch",
+           locals: { checked: true,
+                     label: "Send me an email reminder",
+                     object_name: "blah",
+                     method: "response",
+                     checked_value: "accepted",
+                     unchecked_value: "declined" }

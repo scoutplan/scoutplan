@@ -61,10 +61,10 @@ See https://codewithhugo.com/docker-compose-local-https/ for inspiration
 * DO_STORAGE_KEY_ID
 * DO_STORAGE_REGION
 * FONT_AWESOME_KIT_ID (requires a Fontawesome subscription)
+* MAILGUN_INGRESS_SIGNING_KEY
 * RAILS_ENV
 * RAILS_SERVE_STATIC_FILES (set to true in production)
 * REDIS_URL
-* SKYLIGHT_ENABLED (set to true in production)
 * SMTP_ADDRESS
 * SMTP_DOMAIN
 * SMTP_PORT
