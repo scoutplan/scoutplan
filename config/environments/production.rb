@@ -1,20 +1,17 @@
 # frozen_string_literal: true
 
 Rails.application.default_url_options = {
-  host: ENV.fetch("SCOUTPLAN_HOST"),
-  protocol: ENV.fetch("SCOUTPLAN_PROTOCOL")
+  host: ENV["SCOUTPLAN_HOST"],
+  protocol: ENV["SCOUTPLAN_PROTOCOL"]
 }
 
 Rails.application.configure do
-  # Prepare the ingress controller used to receive mail
-  # config.action_mailbox.ingress = :relay
-
   config.hosts << "go.scoutplan.org"
   config.hosts << "kit.fontawesome.com"
-  config.hosts << ENV.fetch("RAILS_PRODUCTION_HOSTS", "")
+  config.hosts << ENV["RAILS_PRODUCTION_HOSTS"]
   config.hosts << /10\.\d+\.\d+\.\d+/ # internal IP addresses...leave this here
 
-  config.logger = RemoteSyslogLogger.new(ENV.fetch("LOGGER_HOST"), ENV.fetch("LOGGER_PORT"))
+  config.logger = RemoteSyslogLogger.new(ENV["LOGGER_HOST"], ENV["LOGGER_PORT"])
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -31,13 +28,13 @@ Rails.application.configure do
 
   config.action_controller.perform_caching = true
 
-  # Ensures that a master key has been made available in either ENV.fetch("RAILS_MASTER_KEY"]
+  # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
   config.require_master_key = true
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.public_file_server.enabled = ENV.fetch("RAILS_SERVE_STATIC_FILES").present?
+  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
   # Compress CSS using a preprocessor.
   config.assets.css_compressor = nil
@@ -83,24 +80,22 @@ Rails.application.configure do
   config.active_job.queue_adapter = :sidekiq
   # config.active_job.queue_adapter = :inline
 
-  config.action_mailbox.ingress = :mailgun  
-
   config.action_mailer.raise_delivery_errors  = true
   config.action_mailer.delivery_method        = :smtp
   config.action_mailer.perform_caching        = false
   config.action_mailer.default_url_options    = {
-    host:     ENV.fetch("SCOUTPLAN_HOST"),
-    protocol: ENV.fetch("SCOUTPLAN_PROTOCOL")
+    host: ENV["SCOUTPLAN_HOST"],
+    protocol: ENV["SCOUTPLAN_PROTOCOL"]
   }
 
   # RGB 10 Feb 2022: moved these settings from end of file, as recommended at
   # https://github.com/rails/rails/issues/44161
   config.action_mailer.smtp_settings = {
-    user_name: ENV.fetch("SMTP_USERNAME"),
-    password:  ENV.fetch("SMTP_PASSWORD"),
-    domain:    ENV.fetch("SMTP_DOMAIN"),
-    address:   ENV.fetch("SMTP_ADDRESS"),
-    port:      ENV.fetch("SMTP_PORT"),
+    user_name: ENV["SMTP_USERNAME"],
+    password: ENV["SMTP_PASSWORD"],
+    domain: ENV["SMTP_DOMAIN"],
+    address: ENV["SMTP_ADDRESS"],
+    port: ENV["SMTP_PORT"],
     authentication: :plain,
     enable_starttls_auto: true
   }
@@ -129,7 +124,7 @@ Rails.application.configure do
   # require "syslog/logger"
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
 
-  if ENV.fetch("RAILS_LOG_TO_STDOUT").present?
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
     logger           = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
@@ -163,11 +158,11 @@ end
 # moving SMTP configuration into mainline config, above, per https://github.com/rails/rails/issues/44161
 
 # ActionMailer::Base.smtp_settings = {
-#   user_name: ENV.fetch("SMTP_USERNAME"],
-#   password: ENV.fetch("SMTP_PASSWORD"],
-#   domain: ENV.fetch("SMTP_DOMAIN"],
-#   address: ENV.fetch("SMTP_ADDRESS"],
-#   port: ENV.fetch("SMTP_PORT"],
+#   user_name: ENV["SMTP_USERNAME"],
+#   password: ENV["SMTP_PASSWORD"],
+#   domain: ENV["SMTP_DOMAIN"],
+#   address: ENV["SMTP_ADDRESS"],
+#   port: ENV["SMTP_PORT"],
 #   authentication: :plain,
 #   enable_starttls_auto: true
 # }
