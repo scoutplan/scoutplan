@@ -18,6 +18,6 @@ class ForwardsMailbox < ApplicationMailbox
   end
 
   def unit
-    @unit ||= Unit.find_by(email: slug_from_recipient)
+    @unit ||= Unit.find_by(slug: slug_from_recipient)
   end
 end
