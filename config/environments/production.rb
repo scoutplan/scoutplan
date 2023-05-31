@@ -11,7 +11,7 @@ Rails.application.configure do
 
   config.hosts << "go.scoutplan.org"
   config.hosts << "kit.fontawesome.com"
-  config.hosts << ENV.fetch("RAILS_PRODUCTION_HOSTS")
+  config.hosts << ENV.fetch("RAILS_PRODUCTION_HOSTS", "")
   config.hosts << /10\.\d+\.\d+\.\d+/ # internal IP addresses...leave this here
 
   config.logger = RemoteSyslogLogger.new(ENV.fetch("LOGGER_HOST"), ENV.fetch("LOGGER_PORT"))
