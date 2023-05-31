@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.default_url_options = {
-  host: ENV.fetch("SCOUTPLAN_HOST"],
-  protocol: ENV.fetch("SCOUTPLAN_PROTOCOL"]
+  host: ENV.fetch("SCOUTPLAN_HOST"),
+  protocol: ENV.fetch("SCOUTPLAN_PROTOCOL")
 }
 
 Rails.application.configure do
@@ -11,10 +11,10 @@ Rails.application.configure do
 
   config.hosts << "go.scoutplan.org"
   config.hosts << "kit.fontawesome.com"
-  config.hosts << ENV.fetch("RAILS_PRODUCTION_HOSTS"]
+  config.hosts << ENV.fetch("RAILS_PRODUCTION_HOSTS")
   config.hosts << /10\.\d+\.\d+\.\d+/ # internal IP addresses...leave this here
 
-  config.logger = RemoteSyslogLogger.new(ENV.fetch("LOGGER_HOST"], ENV.fetch("LOGGER_PORT"])
+  config.logger = RemoteSyslogLogger.new(ENV.fetch("LOGGER_HOST"), ENV.fetch("LOGGER_PORT"))
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -37,7 +37,7 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.public_file_server.enabled = ENV.fetch("RAILS_SERVE_STATIC_FILES"].present?
+  config.public_file_server.enabled = ENV.fetch("RAILS_SERVE_STATIC_FILES").present?
 
   # Compress CSS using a preprocessor.
   config.assets.css_compressor = nil
@@ -129,7 +129,7 @@ Rails.application.configure do
   # require "syslog/logger"
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
 
-  if ENV.fetch("RAILS_LOG_TO_STDOUT"].present?
+  if ENV.fetch("RAILS_LOG_TO_STDOUT").present?
     logger           = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
