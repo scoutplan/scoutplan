@@ -38,6 +38,14 @@ class MemberMailerPreview < ActionMailer::Preview
     MemberMailer.with(member: member).daily_reminder_email
   end
 
+  def event_invitation_email
+    unit = Unit.first
+    member = unit.members.first
+    event = unit.events.future.first
+
+    MemberMailer.with(event_id: event.id, member: member).event_invitation_email
+  end
+
   def event_organizer_daily_digest_email
     unit = Unit.first
     organizer = unit.members.first

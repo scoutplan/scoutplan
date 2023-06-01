@@ -688,6 +688,11 @@ en:
 
     notices:
       update_success: "Your unit profile has been updated"
+
+  unit_membership_profiles:
+    index:
+      title:          "Your preferences"
+      calendar:       "Calendar"
   
   wiki_pages:
     index:

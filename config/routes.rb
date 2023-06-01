@@ -93,6 +93,7 @@ Rails.application.routes.draw do
       resources :event_activities
       resources :event_organizers, as: "organizers", path: "organizers"
       resources :document_types
+      resources :email_invitations, only: [:create]
       resources :locations, module: :events
       collection do
         # get "/", to: redirect("/units/%{unit_id}/schedule/list")
@@ -163,9 +164,15 @@ Rails.application.routes.draw do
   get   "user_settings/change_password", to: "profile#edit_password", as: "edit_credentials"
   patch "user_settings/save_password", to: "profile#update_password", as: "update_credentials"
 
+  # TODO: rationalize all this
   get "profile/:user_id/edit", to: "profile#edit", as: "edit_profile"
-  get "member_profile/:unit_membership_id/calendar", to: "unit_membership_profiles#calendar", as: "calendar_options"
   get "profile/:user_id/payments", to: "profile#payments", as: "profile_payments"
+
+  # Member profile settings
+  get "member_profile", to: "unit_membership_profiles#index", as: "member_profiles"
+  get "member_profile/:unit_membership_id", to: "unit_membership_profiles#index", as: "member_profile"
+  get "member_profile/:unit_membership_id/calendar", to: "unit_membership_profiles#calendar", as: "member_calendar_profile"
+  post "member_profile/:unit_membership_id", to: "unit_membership_profiles#update", as: "update_member_profile"
 
   post "units/:unit_id/members/:member_id/test_communication", to: "test_communications#create", as: "create_test_communication"
 

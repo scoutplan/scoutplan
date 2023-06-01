@@ -14,4 +14,5 @@ html.scroll-smooth
     = yield :head
 
   body(class="text-stone-800 #{controller_name} #{action_name} #{yield :body_classes}")
-    = yield
+    main.mx-auto.max-w-xl.mt-8
+      = yield

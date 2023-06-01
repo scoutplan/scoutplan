@@ -19,7 +19,7 @@ class UnitMembershipPolicy < UnitContextPolicy
   end
 
   def edit?
-    admin?
+    admin? || self? || child?
   end
 
   def new?
@@ -28,5 +28,19 @@ class UnitMembershipPolicy < UnitContextPolicy
 
   def invite?
     admin?
+  end
+
+  def calendar?
+    edit?
+  end
+
+  private
+
+  def child?
+    @membership.children.include?(@target)
+  end
+
+  def self?
+    @membership == @target
   end
 end

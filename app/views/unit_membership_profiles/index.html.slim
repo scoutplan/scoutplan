@@ -1,0 +1,19 @@
+= link_to unit_events_path(@unit),
+          class: "block text-sky-800 hover:text-sky-900 mb-4",
+          data: { turbo_action: "advance" } do
+  i.fa-stack
+    i.fa-regular.fa-circle.fa-stack-2x
+    i.fa-solid.fa-arrow-left.fa-stack-1x
+  = "Back to #{@unit.name}"
+
+h1.text-4xl.font-bold.mb-8 = t("unit_membership_profiles.index.title")
+
+.flex.flex-col.divide-y
+  = link_to member_calendar_profile_path(@member), class: "block py-2 font-bold" do
+    i.fa-solid.fa-calendar.mr-2
+    = t("unit_membership_profiles.index.calendar")
+
+h3 Your family
+ul
+  - @member.children.each do |child|
+    li = link_to child.first_name, member_profile_path(child), class: "block py-2 font-bold"

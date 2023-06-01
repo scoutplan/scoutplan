@@ -1,0 +1,13 @@
+- return unless Flipper.enabled? :email_invitations, @current_member
+
+li
+  = button_to unit_event_email_invitations_path(@unit, @event),
+              method: :post,
+              remote: true,
+              class: "block py-1 font-bold hover:text-brand-500",
+              data: { turbo_action: "advance" } do
+    .fa-stack
+      i.fa-regular.fa-circle.fa-stack-2x
+      i.fa-solid.fa-envelope.fa-stack-1x
+    
+    = "Send me an email invite"
