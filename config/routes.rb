@@ -93,6 +93,7 @@ Rails.application.routes.draw do
       resources :event_activities
       resources :event_organizers, as: "organizers", path: "organizers"
       resources :document_types
+      resources :email_invitations, only: [:create]
       resources :locations, module: :events
       collection do
         # get "/", to: redirect("/units/%{unit_id}/schedule/list")

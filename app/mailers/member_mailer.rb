@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 # mailer for sending Member communications
+
+require "icalendar"
 class MemberMailer < ScoutplanMailer
   before_action :set_addresses
   before_action :time_zone
@@ -30,6 +32,31 @@ class MemberMailer < ScoutplanMailer
       from: @from_address,
       subject: "#{@unit.name} Digest"
     )
+  end
+
+  # Sends an email that includes an event.ics attachment, so that the member's
+  # mail client will treat it like a calendar invitation
+  def event_invitation_email
+    @event = @unit.events.find(params[:event_id])
+
+    # Generate the ical attachment
+
+
+    cal = Icalendar::Calendar.new
+    exporter = IcalExporter.new(@member)
+    exporter.event = @event
+    cal.add_event(exporter.to_ical)
+
+    attachments["event.ics"] = {
+      mime_type: 'multipart/mixed', ## important because we are sending html and text files for the body in addition to the actual attachment
+      content_type: 'text/calendar; method=REQUEST; charset=UTF-8; component=VEVENT',
+      content_disposition: 'attachment; filename=event.ics',
+      content: cal.to_ical
+    }
+
+    mail(to: @member.email,
+         from: @unit.settings(:communication).from_email,
+         subject: "#{@unit.name} is inviting you to #{@event.title}")
   end
 
   def event_organizer_daily_digest_email
