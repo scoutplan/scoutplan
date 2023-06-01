@@ -1,0 +1,28 @@
+- default = event_category.nil?
+- category_preferences = @alert_preferences[event_category&.id || :default]
+
+div(id="event_category_#{event_category&.id || ''}_preferences" class="event-category panel #{default ? '' : 'hidden'}")
+  section.category-alert-preferences
+    = form_tag update_member_profile_path(@member.id) do |f|
+      .flex.flex-col.gap-4
+        - 2.times do |i|
+          div
+            label.font-bold.block.mb-1 #{(i + 1).ordinalize} alert
+            .flex.flex-row.gap-2.items-center
+              = select_tag "trigger_#{i}",
+                           options_for_select([["none", ""],
+                                               ["1 week before",     "-P7DT0H0M0S"],
+                                               ["1 day before",      "-P1DT0H0M0S"],
+                                               ["4 hours before",    "-PT240M"],
+                                               ["1 hour before",     "-PT60M"],
+                                               ["15 minutes before", "-PT15M"]]),
+                           class: "rounded text-sm font-bold",
+                           onclick: "this.nextElementSibling.classList.toggle('hidden', this.value == '')"
+
+              = select_tag "method_#{i}",
+                           options_for_select([["via device alert", "sound"], ["via email", "email"]]),
+                           class: "rounded text-sm font-bold hidden"
+
+        footer.pt-4
+          = hidden_field_tag :event_category_id, event_category&.id || ""
+          = button_tag "Save settings", type: "submit", class: "font-bold rounded bg-green-700 text-white px-4 py-2 block"

@@ -35,17 +35,6 @@ class UnitMembership < ApplicationRecord
   has_many :event_organizers
   has_many :organized_events, through: :event_organizers, source: :event
 
-  has_settings do |s|
-    s.key :communication, defaults: {
-      event_organizer_digest: true
-    }
-    s.key :calendar, defaults: {
-      receive_event_invitations: [
-        { event_category_id: 1254, lead_time: 2.weeks }
-      ]
-    }
-  end
-
   # alias_attribute :member, :user
   alias_attribute :rsvps, :event_rsvps
 
@@ -72,8 +61,10 @@ class UnitMembership < ApplicationRecord
     s.key :security, defaults: { enable_magic_links: true }
     s.key :communication, defaults: {
       via_email: true,
-      via_sms: false
+      via_sms: false,
+      event_organizer_digest: true 
     }
+    s.key :alerts
   end
 
   acts_as_taggable_on :tags

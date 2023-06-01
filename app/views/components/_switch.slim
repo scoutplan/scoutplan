@@ -4,7 +4,9 @@
 - data ||= {}
 - size ||= "md"
 
-.switch-wrapper
+/* The 'switch-on' class is toggled via JS */
+/* TODO: move to a stimulus controller */
+.switch-wrapper(class="#{checked ? 'switch-on' : ''} #{css_classes}")
   = check_box object_name, method,
               { multiple: multiple, class: "switch hidden", checked: checked, role: "switch", data: data },
               checked_value, unchecked_value
