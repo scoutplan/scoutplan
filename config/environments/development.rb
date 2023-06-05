@@ -55,12 +55,18 @@ Rails.application.configure do
   config.action_mailbox.ingress = :mailgun  
 
   # MAILER SETTINGS
-  # delivers to Mailcatcher running on 1025
   config.action_mailer.raise_delivery_errors  = true
   config.action_mailer.delivery_method        = :smtp
-  config.action_mailer.smtp_settings          = { address: "mailcatcher", port: 1025 }
   config.action_mailer.perform_caching        = false
   config.action_mailer.default_url_options    = { host: "local.scoutplan.org", protocol: :https }
+  config.action_mailer.smtp_settings = {
+    user_name: ENV["SMTP_USERNAME"],
+    password:  ENV["SMTP_PASSWORD"],
+    domain:    ENV["SMTP_DOMAIN"],
+    address:   ENV["SMTP_ADDRESS"],
+    port:      ENV["SMTP_PORT"],
+    authentication: :cram_md5
+  }
 
   config.active_job.queue_adapter = :sidekiq
   # config.active_job.queue_adapter = :sucker_punch
