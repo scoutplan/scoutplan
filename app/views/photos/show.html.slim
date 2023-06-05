@@ -1,0 +1,21 @@
+.mx-auto.max-w-4xl
+  header.mb-4
+    = link_to unit_photos_path(@unit), class: "" do
+      i.fa-solid.fa-grid.mr-1
+      = "Return to gallery"
+
+  .flex.flex-row.items-center
+    - if @previous_photo.present?
+      = link_to unit_photo_path(@unit, @previous_photo), class: "px-4", data: { turbo_action: "advance" } do
+        i.fa-solid.fa-chevron-left.text-4xl.text-stone-300.hover:text-stone-500
+
+    .flex.flex-col.gap-4
+      = image_tag @photo.image
+      dl
+        dd = "Posted by #{@photo.author.short_display_name} on #{@photo.created_at.strftime("%B %-d, %Y")}"
+        dd = @photo.caption
+        dd = @photo.description
+
+    - if @next_photo.present?
+      = link_to unit_photo_path(@unit, @next_photo), class: "px-4", data: { turbo_action: "advance" } do
+        i.fa-solid.fa-chevron-right.text-4xl.text-stone-300.hover:text-stone-500

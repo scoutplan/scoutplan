@@ -14,6 +14,7 @@ class Unit < ApplicationRecord
   has_many :tasks, as: :taskable
   has_many :locations
   has_many :packing_lists, dependent: :destroy
+  has_many :photos, dependent: :destroy
   has_many :payments, through: :events
   has_many :wiki_pages
   has_one_attached :logo
