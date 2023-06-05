@@ -1,0 +1,5 @@
+- return if @photos.any?
+
+p.block.text-center.my-12.font-bold
+  | #{@unit.name} hasn't added any photos yet. 
+  = link_to "Upload some now!", new_unit_photo_path(@unit), class: "text-blue-500 underline"

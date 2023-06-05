@@ -117,6 +117,8 @@ Rails.application.routes.draw do
       patch "rsvp", as: "send_rsvps", to: "events#create_or_update_rsvps"
     end
 
+    resources :photos
+
     post "search", to: "search#results", as: "search"
     get "search", to: "search#results"
     get "settings", to: "settings#index", as: "settings"
