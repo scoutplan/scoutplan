@@ -10,11 +10,20 @@
         i.fa-solid.fa-chevron-left.text-4xl.text-stone-300.hover:text-stone-500
 
     .flex.flex-col.gap-4
-      = image_tag @photo.image
-      dl
-        dd = "Posted by #{@photo.author.short_display_name} on #{@photo.created_at.strftime("%B %-d, %Y")}"
-        dd = @photo.caption
-        dd = @photo.description
+      = image_tag @photo.image.representation(resize_to_fill: [1000, 1000])
+
+      footer.flex.flex-row.justify-between.items-center
+        dl
+          dd = "Posted by #{@photo.author.short_display_name} on #{@photo.created_at.strftime("%B %-d, %Y")}"
+          dd = @photo.caption
+          dd = @photo.description
+          - if @photo.event.present?
+            dd = link_to @photo.event.title, unit_event_path(@unit, @photo.event), data: { turbo_action: "advance" }
+
+        .right-side
+          - if PhotoPolicy.new(@current_member, @photo).destroy?
+            = button_to unit_photo_path(@unit, @photo), method: :delete, data: { confirm: "Are you sure you want to delete this photo?" } do
+              i.fa-solid.fa-trash.text-stone-400.hover:text-stone-600
 
     - if @next_photo.present?
       = link_to unit_photo_path(@unit, @next_photo), class: "px-4", data: { turbo_action: "advance" } do

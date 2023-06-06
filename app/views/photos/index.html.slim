@@ -1,16 +1,3 @@
-.max-w-4xl.mx-auto
-  header.mb-8
-    .flex.flex-row.items-center.justify-between
-      h1.text-3xl.font-bold #{@unit.name} Unit Photo Gallery
-      = link_to new_unit_photo_path(@unit), class: "bg-green-600 hover:bg-green-700 text-white px-4 py-2 font-bold rounded" do
-        i.fa-solid.fa-plus-circle.mr-2
-        = "Post Photos"
-
-  .grid.sm:grid-cols-3.md:grid-cols-4.gap-4
-    - @photos.each do |photo|
-      = link_to unit_photo_path(@unit, photo), data: { turbo_action: "advance" } do
-        - if photo.image.representable?
-          = image_tag photo.image.representation(resize_to_fill: [300, 300]), class: ""
-        caption = photo.caption
-
+/ = render partial: "grid"
+= render partial: "feed"
 = render partial: "blank"
