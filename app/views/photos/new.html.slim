@@ -6,7 +6,7 @@
         = ff.file_field :image, multiple: true, class: "block w-full mt-1"
       .mb-4
         = ff.label :event, "Event (optional)", class: "block w-full mt-1 font-bold"
-        = ff.collection_select :event_id, @unit.events.published.recent.order(ends_at: :desc), :id, :title_and_date, { prompt: "Pick a recent event" }, class: "block w-full mt-1 rounded border-gray-300"
+        = ff.collection_select :event_id, @unit.events.published.recent.order(starts_at: :desc), :id, :title_and_date, { prompt: "Pick a recent event" }, class: "block w-full mt-1 rounded border-gray-300"
       .mb-4
         = ff.label :caption, class: "block font-bold"
         = ff.text_field :caption, class: "block w-full mt-1 rounded border-gray-300"

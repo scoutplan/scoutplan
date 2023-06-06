@@ -10,7 +10,8 @@
         i.fa-solid.fa-chevron-left.text-4xl.text-stone-300.hover:text-stone-500
 
     .flex.flex-col.gap-4
-      = image_tag @photo.image.representation(resize_to_fill: [1000, 1000])
+      - @photo.images.each do |image|
+        = image_tag image.representation(resize_to_fill: [1000, 1000])
 
       footer.flex.flex-row.justify-between.items-center
         dl
