@@ -30,6 +30,7 @@ class Event < ApplicationRecord
   has_many :locations, as: :locatable, dependent: :destroy
   has_many :locations, through: :event_locations
   has_many :payments
+  has_many :photos
   has_many :members, through: :event_rsvps
   has_many :rsvp_tokens, dependent: :destroy
   has_many :sub_events, class_name: "Event", foreign_key: "parent_event_id"
@@ -164,6 +165,10 @@ class Event < ApplicationRecord
     return [] unless series_parent_id.present?
 
     Event.where(series_parent_id: series_parent_id)
+  end
+
+  def title_and_date
+    "#{title} on #{starts_at.strftime('%b %d')}"
   end
 
   def destination

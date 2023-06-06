@@ -4,7 +4,14 @@
 
 class PhotosController < UnitContextController
   def index
-    @photos = @unit.photos.order(created_at: :desc)
+    if params[:event_id].present?
+      @event = @unit.events.find(params[:event_id])
+      @photos = @event.photos.order(created_at: :desc)
+      @gallery_title = "#{@event.title} Photos"
+    else
+      @photos = @unit.photos.order(created_at: :desc)
+      @gallery_title = "#{@unit.name} Photo Gallery"
+    end
   end
 
   def new
@@ -34,8 +41,17 @@ class PhotosController < UnitContextController
 
   def show
     @photo = @unit.photos.find(params[:id])
+    authorize @photo
 
     @next_photo = @unit.photos.where("id > ?", @photo.id)&.first
     @previous_photo = @unit.photos.where("id < ?", @photo.id)&.last
+  end
+
+  def destroy
+    @photo = @unit.photos.find(params[:id])
+    authorize @photo
+    @photo.destroy
+
+    redirect_to unit_photos_path(@unit)
   end
 end
