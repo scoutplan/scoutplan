@@ -1,10 +1,10 @@
-.max-w-xl.mx-auto
+.max-w-lg.mx-auto
   header.mb-8
     .flex.flex-col.md:flex-row.md:items-center.justify-between
       h1.text-3xl.font-bold.mb-2 = @gallery_title
       = link_to new_unit_photo_path(@unit), class: "w-full md:w-fit bg-green-600 hover:bg-green-700 text-white px-4 py-3 md:py-2 font-bold rounded text-center" do
         i.fa-solid.fa-plus-circle.mr-2
-        = "Post Photos"
+        = "Add"
 
   .grid.grid-cols-1.gap-4.divide-y
     - @photos.each do |photo|
@@ -18,9 +18,35 @@
             location.block
               = link_to photo.event.title, unit_event_photos_path(@unit, photo.event), data: { turbo_action: "advance" }, class: "text-blue-500 underline font-semibold"
 
-        = link_to unit_photo_path(@unit, photo), data: { turbo_action: "advance" } do
-          - if photo.image.representable?
-            = image_tag photo.image.representation(resize_to_fill: [600, 600]), class: "w-full"
+        .photo-wrapper.relative(data-photo-feed-carousel-image-index-value="0" data-photo-feed-carousel-image-count-value="#{photo.images.count}" data-controller="photo-feed-carousel")
+          - if photo.images.count > 1
+            .absolute.left-0.top-1/2.z-10
+              = button_tag class: "p-2 text-white/70 hover:text-white hidden", data: { action: "click->photo-feed-carousel#scrollLeft", "photo-feed-carousel-target" => "leftButton" } do
+                i.fa-solid.fa-circle-chevron-left.fa-2x.drop-shadow
+
+            .absolute.right-0.top-1/2.z-10
+              = button_tag class: "p-2 text-white/70 hover:text-white", data: { action: "click->photo-feed-carousel#scrollRight", "photo-feed-carousel-target" => "rightButton" } do
+                i.fa-solid.fa-circle-chevron-right.fa-2x.drop-shadow
+
+            .absolute.bottom-0.w-full.h-12.block.z-10
+              .flex.flex-row.justify-center.gap-1(data-photo-feed-carousel-target="indicator")
+                - photo.images.count.times do |i|
+                  - if i == 0
+                    i.fa-solid.fa-circle.text-white/100(style="font-size:0.5rem;")
+                  - else
+                    i.fa-solid.fa-circle.text-white/50(style="font-size:0.5rem;")
+
+          .scrollable.flex.overflow-x-scroll.relative(data-photo-feed-carousel-target="scrollable")
+            .flex.flex-nowrap
+              - photo.images.each do |image|
+                - if image.representable?
+                  .flex.items-center.bg-stone-300(style="width:512px;")
+                    = image_tag image.representation(resize_to_fit: [800, 800])
 
         caption = photo.caption
 
+
+css:
+  .scrollable {
+    scroll-behavior: smooth;
+  }

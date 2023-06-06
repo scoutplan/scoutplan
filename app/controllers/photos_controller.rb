@@ -18,23 +18,24 @@ class PhotosController < UnitContextController
   end
 
   def create
+    photo = @unit.photos.new
+    photo.event_id = params[:unit][:photos][:event_id]
+    photo.caption = params[:unit][:photos][:caption]
+    photo.description = params[:unit][:photos][:description]
+    photo.author = @current_member
+
     params[:unit][:photos][:image].each do |image|
       next unless image.is_a?(ActionDispatch::Http::UploadedFile)
-      photo = @unit.photos.new
-      photo.event_id = params[:unit][:photos][:event_id]
-      photo.caption = params[:unit][:photos][:caption]
-      photo.description = params[:unit][:photos][:description]
 
       if image.content_type == "image/heic"
         converted = ConvertApi.convert("jpg", { File: image.tempfile.path})
-        photo.image.attach(io: converted.file.io, filename: "#{image.original_filename}.jpg")
+        photo.images.attach(io: converted.file.io, filename: "#{image.original_filename}.jpg")
       else
-        photo.image.attach(image)
+        photo.images.attach(image)
       end
-
-      photo.author = @current_member
-      photo.save!
     end
+    
+    photo.save!
 
     redirect_to unit_photos_path(@unit)
   end
