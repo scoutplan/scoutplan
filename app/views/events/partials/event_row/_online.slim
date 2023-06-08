@@ -1,6 +1,6 @@
 - return unless event.online && website = event.website.presence
 
-.flex.flex-row.w-full(data-controller="clipboard")
+.text-sm.flex.flex-row.w-full(data-controller="clipboard")
   = link_to website,
             class: "inline-block font-bold text-blue-500 hover:underline py-2 overflow-x-hidden text-ellipsis whitespace-nowrap",
             target: "_new" do

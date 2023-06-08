@@ -49,7 +49,7 @@ article.px-2.py-3
             = " (not going)"
 
       - if !event.rsvp_open?
-        p = "RSVPs are closed"
+        p.font-bold = "RSVPs are closed"
 
       - elsif policy(event).rsvp?
         p.text-center.mt-2
