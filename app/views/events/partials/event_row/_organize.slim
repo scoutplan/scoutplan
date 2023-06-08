@@ -1,8 +1,9 @@
 - return unless event.requires_rsvp && EventPolicy.new(@current_member, event).organize?
 
 = link_to unit_event_rsvps_path(@unit, event),
-          class: "inline-block px-4 py-2 font-bold rounded text-center text-cyan-600 border border-cyan-600 hover:text-cyan-800 hover:border-cyan-800",
-          title: "Organize this event",
+          class: "inline-block px-4 py-3 md:py-2 font-bold rounded text-center text-cyan-600 border border-cyan-600 hover:text-white hover:bg-cyan-800 hover:border-cyan-800",
+          title: "View & organize RSVPs",
           id: "organize_#{dom_id(event)}_link",
           data: { turbo_action: "advance", turbo_frame: "main" }
-  = "View and organize RSVPs"
+  i.fa-solid.fa-clipboard
+  .inline.md:hidden.ml-2 = "View & organize RSVPs"
