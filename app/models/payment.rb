@@ -15,6 +15,7 @@ class Payment < ApplicationRecord
   enum method: { cash: "cash", check: "check", stripe: "stripe", other: "other", zelle: "zelle", venmo: "venmo" }
 
   delegate :unit, to: :event
+  delegate :payment_account, to: :unit
 
   def amount_in_dollars
     (amount || 0) / 100.0
@@ -22,7 +23,11 @@ class Payment < ApplicationRecord
 
   def transaction_fee
     return 0 unless method == "stripe"
+    return 0 if payment_account.transaction_fees_covered_by == "unit"
 
-    (amount * STRIPE_PERCENTAGE + STRIPE_BASE_FEE).to_i
+    fee = (amount * STRIPE_PERCENTAGE + STRIPE_BASE_FEE).to_i
+    return (fee * 0.5) if payment_account.transaction_fees_covered_by == "split_50_50"
+
+    fee
   end
 end
