@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   after_action :clear_session_view
   after_action :track_action
 
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized 
 
   def new_session_path(_scope)
     new_user_session_path

@@ -1,3 +1,9 @@
+- covered_by = @unit.payment_account.transaction_fees_covered_by
+- Stripe.api_key = ENV.fetch("STRIPE_SECRET_KEY")
+- account = Stripe::Account.retrieve(@unit.payment_account.account_id)
+- stripe_login_link = Stripe::Account.create_login_link(@unit.payment_account.account_id)
+
+
 .h-4
 
 = render partial: "settings/back_to_settings"
@@ -8,28 +14,52 @@ header.mb-6
     .text-sm.font-bold.uppercase.tracking-wider
       = @unit.name
 
-= form_with model: @unit do |f|
-  article.pb-8
+.flex.flex-col.gap-2.divide-y
+  = form_with model: @unit do |f|
+    article.pb-8
 
-    h3.text-xl.font-bold = "Credit card transaction fees"
+      h3.text-xl.font-bold.mb-1 = "Credit card transaction fees"
 
-    p
-      = "Stripe charges $0.30 plus 2.9% of each credit card transaction. You can choose to have your unit, your members, or both, pay the fees. Who will pay transaction fees?"
+      p.mb-4
+        | Stripe charges $0.30 plus 2.9% of each credit card transaction. A $50 charge, for example, would incur $1.75 in transaction fees.
+          You can choose to have your members, your unit, or both, pay those fees. Who will pay credit card transaction fees?
 
-    div
-      = f.label :transaction_fees_covered_by_unit do
-        = f.radio_button :transaction_fees_covered_by, :unit
-        = @unit.name
+      .flex.flex-col.gap-2
+        div
+          = f.label :transaction_fees_covered_by_member, class: "font-bold" do
+            = f.radio_button :transaction_fees_covered_by, :member, checked: (covered_by == "member"), class: "mr-1"
+            = "Members pay"
 
-    div
-      = f.label :transaction_fees_covered_by_member do
-        = f.radio_button :transaction_fees_covered_by, :member
-        = "Members"
+        div
+          = f.label :transaction_fees_covered_by_unit, class: "font-bold" do
+            = f.radio_button :transaction_fees_covered_by, :unit, checked: (covered_by == "unit"), class: "mr-1"
+            = "#{@unit.name} pays"
 
-    div
-      = f.label :transaction_fees_covered_by_split_50_50 do
-        = f.radio_button :transaction_fees_covered_by, :split_50_50
-        = "Split 50/50"
+        div
+          = f.label :transaction_fees_covered_by_split_50_50, class: "font-bold" do
+            = f.radio_button :transaction_fees_covered_by, :split_50_50, checked: (covered_by == "split_50_50"), class: "mr-1"
+            = "Split 50/50"
+
+
+      footer.mt-4
+        = f.submit t("settings.buttons.save"),
+                  class: "rounded font-bold bg-brand-500 hover:bg-brand-600 text-white px-4 py-2"
+
+  .py-4
+    p.mb-4
+      | The Stripe Dashboard allows authorized users to view and manage your unit's Stripe account balance, view and refund payments, and more.
+    = link_to stripe_login_link["url"], class: "text-brand-500 font-bold",
+              class: "inline-block border border-brand-500 rounded px-4 py-2 font-bold text-brand-500 hover:text-brand-600 hover:border-brand-600",
+              target: "_new",
+              data: { turbo: false } do
+
+              = t(".stripe_dashboard")
+              i.fa-solid.fa-arrow-up-right-from-square.ml-2
+
+  .py-4
+    = link_to unit_payments_path(@unit), class: "inline-block px-4 py-2 rounded border font-bold text-brand-500 border-brand-500 hover:text-brand-600 hover:border-brand-600" do
+      = "View #{@unit.name} transaction history"
+
 
 javascript:
   document.title = "Payment Settings · #{@unit.name}"
