@@ -1,0 +1,36 @@
+.h-4
+
+= render partial: "settings/back_to_settings"
+
+header.mb-6
+  h1.font-bold.text-4xl.mb-4
+    = t("settings.titles.payments")
+    .text-sm.font-bold.uppercase.tracking-wider
+      = @unit.name
+
+= form_with model: @unit do |f|
+  article.pb-8
+
+    h3.text-xl.font-bold = "Credit card transaction fees"
+
+    p
+      = "Stripe charges $0.30 plus 2.9% of each credit card transaction. You can choose to have your unit, your members, or both, pay the fees. Who will pay transaction fees?"
+
+    div
+      = f.label :transaction_fees_covered_by_unit do
+        = f.radio_button :transaction_fees_covered_by, :unit
+        = @unit.name
+
+    div
+      = f.label :transaction_fees_covered_by_member do
+        = f.radio_button :transaction_fees_covered_by, :member
+        = "Members"
+
+    div
+      = f.label :transaction_fees_covered_by_split_50_50 do
+        = f.radio_button :transaction_fees_covered_by, :split_50_50
+        = "Split 50/50"
+
+javascript:
+  document.title = "Payment Settings · #{@unit.name}"
+  

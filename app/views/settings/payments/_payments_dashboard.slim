@@ -8,9 +8,13 @@ header.mb-6
       = t("payments.titles.index")
 
     div
-      = link_to "Stripe Dashboard", stripe_login_link["url"], class: "text-brand-500 font-bold",
+      = link_to stripe_login_link["url"], class: "text-brand-500 font-bold",
                 class: "border border-brand-500 rounded px-4 py-2 font-bold text-brand-500 hover:text-brand-600 hover:border-brand-600",
-                data: { turbo: false }
+                target: "_new",
+                data: { turbo: false } do
+
+                = t(".stripe_dashboard")
+                i.fa-solid.fa-arrow-up-right-from-square.ml-2
 
 - unless @unit.payment_account.active?
   - link = Stripe::AccountLink.create({account: @unit.payment_account.account_id, refresh_url: refresh_unit_payments_url, return_url: unit_settings_url(@unit), type: "account_onboarding"})["url"]

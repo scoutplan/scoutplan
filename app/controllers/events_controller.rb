@@ -320,7 +320,7 @@ class EventsController < UnitContextController
                  end
 
       if response == "nil"
-        @event.rsvps.find_by(unit_membership_id: member_id).destroy
+        @event.rsvps.find_by(unit_membership_id: member_id)&.destroy
         next
       end
 
