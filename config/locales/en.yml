@@ -30,6 +30,12 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  settings:
+    payments:
+      index:
+        stripe_dashboard: "Stripe Dashboard"
+        pending:          "Pending"
+
   you_parenths: "(you)"
   app_name: "Scoutplan"
   administration: "Administration"
