@@ -31,9 +31,11 @@
 
 en:
   settings:
+    edit:
+      stripe_dashboard: "Visit Stripe Dashboard"
     payments:
       index:
-        stripe_dashboard: "Stripe Dashboard"
+        stripe_dashboard: "Visit Stripe Dashboard"
         pending:          "Pending"
 
   you_parenths: "(you)"

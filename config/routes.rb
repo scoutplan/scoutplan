@@ -189,6 +189,7 @@ Rails.application.routes.draw do
     get "a", to: "admin#index"
     namespace :admin do
       resources :users
+      get "become/:user_id", to: "users#become"
     end
   end
 
