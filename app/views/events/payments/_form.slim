@@ -44,5 +44,13 @@
         i.fa-solid.fa-z.fa-fw.text-purple-600.px-2
         = "Zelle"
 
+    p.py-1
+      = f.label :method_other, :other, class: "inline-block" do
+        = f.radio_button :method, :other, onfocus: "var e = document.getElementById('payment_note'); e.focus(); e.select();"
+        i.fa-solid.fa-tag.fa-fw.text-stone-500.px-2
+        = "Other"
+
+      = f.text_field :note, placeholder: "Note (e.g. sibling discount)", class: "px-2 py-1 border rounded border-stone-300 inline-block text-sm ml-2"
+
   footer.mt-4
     = f.submit "Receive Payment", class: "block rounded px-4 py-2 bg-green-600 text-white font-bold hover:bg-green-700 hover:text-white"

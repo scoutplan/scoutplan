@@ -35,7 +35,9 @@ module Events
       @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
       @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
       @item_amount = @event.cost_youth * 100
-      @total_cost = @family_rsvps.accepted.count * @item_amount
+      @subtotal = @family_rsvps.accepted.count * @item_amount
+      @transaction_fee = StripePaymentService.new(@unit).member_transaction_fee(@subtotal)
+      @total_cost = @subtotal + @transaction_fee
       @total_paid = @payments&.sum(:amount) || 0
       @amount_due = @total_cost - @total_paid
       @quantity = @amount_due / @item_amount

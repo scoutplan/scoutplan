@@ -6,6 +6,7 @@ require "rails_helper"
 describe "payments", type: :feature do
   before do
     @unit = FactoryBot.create(:unit_with_members)
+    PaymentAccount.create(unit: @unit)
     @member = FactoryBot.create(:member, :admin, unit: @unit)
     @child1 = FactoryBot.create(:member, :youth, unit: @unit)
     @child2 = FactoryBot.create(:member, :youth, unit: @unit)
@@ -16,6 +17,35 @@ describe "payments", type: :feature do
     @event.rsvps.create(unit_membership: @child1, response: :accepted, respondent: @member)
     @event.rsvps.create(unit_membership: @child2, response: :accepted, respondent: @member)
     login_as(@member.user, scope: :user)
+  end
+
+  describe "event payments page payment amount" do
+    before do
+      Flipper.enable :payments
+    end
+
+    it "shows full amount when members pay fees" do
+      visit unit_event_path(@unit, @event)
+      expect(page).to have_content("Pay $1,338.00 now")
+    end
+
+    it "shows no transaction fees when unit pays fees" do
+      @unit.payment_account.update(transaction_fees_covered_by: "unit")
+      visit unit_event_path(@unit, @event)
+      expect(page).to have_content("Pay $1,300.00 now")      
+    end
+
+    it "shows half fees when fees are split 50/50" do
+      @unit.payment_account.update(transaction_fees_covered_by: "split_50_50")
+      visit unit_event_path(@unit, @event)
+      expect(page).to have_content("Pay $1,319.00 now")      
+    end
+
+    it "reflects prior payments" do
+      Payment.create(event: @event, unit_membership: @member, amount: 50, received_by: @member, method: "check")
+      visit unit_event_path(@unit, @event)
+      expect(page).to have_content("Pay $1,288.00 now")
+    end
   end
 
   describe "received payments" do
