@@ -42,7 +42,7 @@ describe "payments", type: :feature do
     end
 
     it "reflects prior payments" do
-      Payment.create(event: @event, unit_membership: @member, amount: 50, received_by: @member, method: "check")
+      Payment.create!(event: @event, unit_membership: @member, amount: 5000, received_by: @member, method: "check", status: "paid")
       visit unit_event_path(@unit, @event)
       expect(page).to have_content("Pay $1,288.00 now")
     end

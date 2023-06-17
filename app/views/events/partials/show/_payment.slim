@@ -1,7 +1,7 @@
 - return unless @event.requires_payment?
 
 section.py-4.font-bold.border-t.border-stone-800
-  .flex.flex-row.justify-between.items-center
+  .flex.flex-col.md:flex-row.justify-between.md:items-center.gap-2
     div
       .fa-stack.mr-1
         i.fa-solid.fa-circle.fa-stack-2x.text-lime-600
@@ -15,15 +15,18 @@ section.py-4.font-bold.border-t.border-stone-800
     div
       - if Flipper.enabled?(:payments, @current_member) && Flipper.enabled?(:payments, @current_unit) && @family_rsvps.any?
         - if @amount_due > 0
-          = link_to new_unit_event_payment_path(@unit, @event, payment_method: :stripe),
-                    class: "rounded px-4 py-2 bg-lime-600 hover:bg-lime-700 text-lime-100",
-                    data: { turbo: false } do
-            i.fa-solid.fa-credit-card.mr-2
-            = "Pay #{number_to_currency(@amount_due, precision: 2)} now"
 
-            = link_to "#", title: "View payment breakout",
-                      onclick: "document.querySelector('#payment_breakout').classList.toggle('hidden'); return false;" do
-              i.fa-regular.fa-info-circle.text-stone-500.ml-2
+          .flex.flex-row.items-center
+            = link_to new_unit_event_payment_path(@unit, @event, payment_method: :stripe),
+                      class: "grow text-center inline-block rounded px-4 py-2 bg-lime-600 hover:bg-lime-700 text-lime-50",
+                      data: { turbo: false } do
+              i.fa-solid.fa-credit-card.mr-2
+              = "Pay #{number_to_currency(@amount_due, precision: 2)} now"
+
+              = link_to "#", title: "View payment breakout",
+                        class: "grow-0 px-2",
+                        onclick: "document.querySelector('#payment_breakout').classList.toggle('hidden'); return false;" do
+                i.fa-regular.fa-info-circle.text-stone-500.ml-2
 
         - else
           = link_to profile_payments_path(current_user),
@@ -32,7 +35,7 @@ section.py-4.font-bold.border-t.border-stone-800
             i.fa-solid.fa-circle-check.mr-1
             = "You've paid!"
 
-  #payment_breakout.rounded.p-4.bg-lime-100.text-lime-900.mt-4
+  #payment_breakout.rounded.p-4.bg-lime-100.text-lime-900.mt-4.hidden
 
     table.w-full.w-fixed
       tr
@@ -60,9 +63,7 @@ section.py-4.font-bold.border-t.border-stone-800
         td.text-right = number_to_currency(@subtotal, precision: 2)    
 
       tr.border-t.border-lime-300
-        td.pr-2 Transaction fee
-        td
-        td
+        td.pr-2(colspan="3") Transaction fee
         td.text-right(colspan="3")
           - if @transaction_fee.positive?
             = number_to_currency(@transaction_fee, precision: 2)
