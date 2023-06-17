@@ -4,11 +4,6 @@
 /               class: "block md:inline-block py-2 text-red-500 hover:text-red-600 font-bold",
 /               data: { action: "event-edit#delete" })
 
-= f.button t("events.form.delete_caption"),
-           type: "submit",
-           name: "event_action",
-           value: "delete",
-           class: "block md:inline-block px-4 py-2 font-bold bg-red-500 md:bg-transparent md:text-red-600 md:hover:bg-red-600 text-white rounded md:hover:bg-transparent md:px-0"
 
 / = f.button t("messages.captions.send_message"),
 /             type: "submit",
@@ -16,3 +11,17 @@
 /             value: t("messages.captions.send_message"),
 /             class: "inline-block px-4 py-2 font-bold text-white bg-brand-500 disabled:bg-brand-100 rounded",
 /             id: "send_message_button"           
+
+
+
+.flex.flex-col.md:flex-row.justify-between.items-center.gap-3
+  div
+    h4.font-bold Delete this event
+    p.text-sm The event is currently unpublished; your members currently don't see it on the calendar.
+      Deleting it will completely remove the event without the option of restoring it later.
+
+  = f.button t("events.form.delete_caption"),
+            type: "submit",
+            name: "event_action",
+            value: "delete",
+            class: "text-center inline-block px-4 py-2 text-red-500 font-bold bg-stone-100 hover:border-stone-300 border border-stone-200 rounded whitespace-nowrap"

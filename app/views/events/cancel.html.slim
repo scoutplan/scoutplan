@@ -1,7 +1,15 @@
 = turbo_frame_tag "main"
   .mx-auto.max-w-xl.py-8
     = form_with model: @event, url: unit_event_cancel_path(@unit, @event), method: :post, data: { turbo_action: "advance" } do |f|
+
       header.sticky.top-0.pb-4
+        .mb-4
+          = render partial: "components/back_link",
+                  locals: { path: :back,
+                            text_color: "text-sky-800",
+                            hover_text_color: "text-sky-900",
+                            text: "Back to #{@event.title}" }
+
         h1.font-bold.text-2xl Cancel Event
 
         - if @event.past?
@@ -71,35 +79,20 @@
           = f.label :message_audience_all_members, "Yes, to all #{@unit.members.contactable.count} registered, contactable members"
 
         = f.text_area :note,
-          class: "border rounded w-full h-24 p-2 placholder-stone-300 border-stone-500",
+          class: "border rounded w-full h-24 p-2 placholder-stone-400 border-stone-500",
           autofocus: true,
           placeholder: t("events.placeholders.cancellation_message")
 
       // footer, containing right-justified buttons
-      footer.py-4.sticky.bottom-0.flex.gap-2.flex-col.md:flex-row.md:justify-end
-          // Do Cancel button
+      footer.py-4.flex.gap-2.flex-col.md:flex-row
           = f.submit t("events.cancel.proceed"),
-            class: "text-sm font-bold tracking-wider uppercase no-underline  \
-                    inline-block px-4 py-3 md:py-2 \
-                    border border-red-500 hover:border-red-600 \
-                    text-red-500 hover:text-red-600 \
-                    w-full md:w-fit rounded cursor-pointer",
+            class: "font-bold inline-block bg-red-600 text-white px-4 py-3 md:py-2 w-full md:w-fit rounded cursor-pointer",
             data: { confirm: t("events.cancel.confirm") },
             onclick: "return confirm('Are you sure you want to cancel this event?');"
-            
-          // Don't Cancel button
-          = link_to t("events.cancel.abandon"),
-            unit_event_path(@unit, @event),
-            class: "text-white text-sm tracking-wider uppercase font-bold text-center \
-                    inline-block w-full md:w-fit \
-                    no-underline px-4 py-3 md:py-2 \
-                    bg-gray-500 hover:bg-gray-600 \
-                    rounded",
-            data: { turbo_frame: "main", turbo_action: "advance" }
 
 css:
   textarea::placeholder {
-    color: #D6D3D1;
+    color: #a8a29e;
     opacity: 1;
   }
 
