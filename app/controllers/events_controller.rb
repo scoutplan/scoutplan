@@ -242,8 +242,12 @@ class EventsController < UnitContextController
   # DELETE /:unit_id/events/:event_id
   def destroy
     authorize @event
-    @event.destroy!
-    redirect_to unit_events_path(@unit), notice: "#{@event.title} has been permanently deleted."
+    if @event.series_parent.present?
+      @unit.events.where(series_parent_id: @event.series_parent_id).destroy_all
+    else
+      @event.destroy!
+    end
+    redirect_to unit_events_path(@unit), notice: "#{@event.title} has been permanently removed from the schedule."
   end
 
   # organizer-facing view showing all RSVPs for an event
@@ -389,10 +393,6 @@ class EventsController < UnitContextController
 
   private
 
-  def collate_rsvps
-    @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
-  end
-
   # the default Event will start on the first Saturday at least 4 weeks (28 days) from today
   # from 10 AM to 4 PM with RSVPs closing a week before start
   def build_prototype_event
@@ -411,6 +411,16 @@ class EventsController < UnitContextController
     end
     set_default_times
     @member_rsvps = current_member.event_rsvps
+  end
+
+  def collate_rsvps
+    @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
+  end
+  
+  def destroy_series
+    return unless @event.series_parent.present?
+
+    @unit.events.where(series_parent_id: @event.series_parent_id).destroy_all
   end
 
   # set sensible default start and end times based on the day of the week

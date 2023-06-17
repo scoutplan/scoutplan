@@ -83,22 +83,26 @@ class Event < ApplicationRecord
 
   acts_as_taggable_on :tags
 
+  def category_name
+    event_category.name
+  end
+
   def dates_are_subsequent
     errors.add(:ends_at, "must be after start_date") if starts_at > ends_at
     errors.add(:rsvp_closes_at, "must be before start_date") if requires_rsvp && rsvp_closes_at > starts_at
-  end
-
-  def category_name
-    event_category.name
   end
 
   def full_title
     "#{unit.name} #{title}"
   end
 
-  # def to_param
-  #   [id, title].join(" ").parameterize
-  # end
+  def organizable?
+    requires_rsvp
+  end
+
+  def organizer?(member)
+    organizers.find_by(unit_membership_id: member.id).present?
+  end  
 
   def past?
     ends_at.past?
@@ -119,18 +123,6 @@ class Event < ApplicationRecord
 
   def rsvps?
     rsvps.accepted.count.positive?
-  end
-
-  def organizable?
-    requires_rsvp
-  end
-
-  def organizer?(member)
-    organizers.find_by(unit_membership_id: member.id).present?
-  end
-
-  def editable?
-    true
   end
 
   def shifts?
@@ -254,6 +246,10 @@ class Event < ApplicationRecord
   def organizer?(member)
     organizers.map(&:member).include?(member)
   end
+
+  # def to_param
+  #   [id, title].join(" ").parameterize
+  # end
 
   private
 
