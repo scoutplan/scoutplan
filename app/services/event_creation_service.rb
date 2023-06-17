@@ -31,6 +31,13 @@ class EventCreationService < ApplicationService
       new_event.starts_at += 7.days
       new_event.ends_at += 7.days
       new_event.save!
+
+      @event.event_locations.each do |el|
+        new_el = el.dup
+        new_el.event = new_event
+        new_el.save!
+      end
+
       new_event = new_event.dup
     end
   end

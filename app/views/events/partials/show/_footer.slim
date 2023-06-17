@@ -11,7 +11,7 @@ footer.mx-auto.max-w-2xl.sticky.bottom-0.border-t.border-stone-800
     // left side (on desktop)
     div
       // Edit button (if authorized)
-      - if policy(@event).edit? && @event.editable?
+      - if policy(@event).edit?
         = link_to t("event_edit"),
           edit_unit_event_path(@event.unit, @event),
           class:  " text-sm font-bold no-underline tracking-wider uppercase text-center" \

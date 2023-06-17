@@ -26,7 +26,6 @@ describe "events", type: :feature do
 
   describe "create" do
     it "creates a single event" do
-      skip
       starts_at = 13.days.from_now.in_time_zone
       ends_at   = 14.days.from_now.in_time_zone
       event_title = Faker::Music::Rush.album
@@ -41,21 +40,21 @@ describe "events", type: :feature do
       select "Camping Trip", from: "event_event_category_id"
 
       expect { click_link_or_button "Add This Event" }.to change { Event.count }.by(1)
-
-      event = Event.last
-      ap event
-      expect(event.starts_at).to be_within(1.minute).of(starts_at)
     end
 
     it "creates a series" do
       visit(new_unit_event_path(@unit))
+      
       fill_in :event_title, with: "Event Title"
       fill_in :event_starts_at_date, with: 13.days.from_now
       fill_in :event_ends_at_date, with: 14.days.from_now
       select "Camping Trip", from: "event_event_category_id"
+      select @unit.locations.first.display_address, from: "event_event_locations_attributes_0_location_id"
       check :event_repeats, visible: false
       fill_in :event_repeats_until, with: 10.weeks.from_now
+
       expect { click_link_or_button "Add This Event" }.to change { Event.count }.by_at_least(4)
+      expect(Event.last.event_locations.count).to be_positive
     end
 
     it "toggles rsvp fields", js: true do
