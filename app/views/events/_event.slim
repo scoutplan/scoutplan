@@ -21,6 +21,9 @@ article.py-2.hover:bg-stone-100(class="relative event #{row_classes(event)}" id=
               class: "event md:px-2 py-2 block",
               data: { turbo_action: "advance", turbo_frame: "main" } do
 
+      div.flex.flex-row.mb-2
+        = render partial: "events/partials/event_row/tags", locals: { event: event }
+
       div.flex.flex-row
         // date / day
         time.w-24.shrink-0
