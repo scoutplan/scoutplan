@@ -1,10 +1,11 @@
 .flex.flex-col.md:flex-row.justify-between.items-center.gap-3
   div
     h4.font-bold Cancel this event
-    p.text-sm Cancelling will remove this event from the calendar with an option to send a notification to your members.
+    p.text-sm Cancelling will remove this event from the schedule with an option to send a notification to your members.
+      You can restore a cancelled event later.
 
   = link_to unit_event_cancel_path(@unit, @event),
-            class: "text-center inline-block px-4 py-2 text-red-500 font-bold bg-stone-100 border border-stone-200 rounded whitespace-nowrap",
+            class: "text-center inline-block px-4 py-2 text-red-500 font-bold bg-stone-100 border border-stone-200 hover:border-stone-300 rounded whitespace-nowrap",
             data: { turbo_action: "advance" } do
 
     = I18n.t("events.show.cancel_title")

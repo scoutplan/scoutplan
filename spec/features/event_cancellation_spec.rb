@@ -31,7 +31,6 @@ describe "event_cancellation", type: :feature do
       click_link_or_button I18n.t("events.show.cancel_title")
       expect(page).to have_current_path(unit_event_cancel_path(@unit, @event))
       expect(page).to have_selector(:link_or_button, I18n.t("events.cancel.proceed"))
-      expect(page).to have_selector(:link_or_button, I18n.t("events.cancel.abandon"))
     end
 
     it "excludes acceptors option for events that do not have accepted RSVPs" do

@@ -286,7 +286,7 @@ en:
     form:
       timezone_prompt: "Dates and times are %{timezone_name}"
       rsvp_closes_at:  "RSVP closes on"
-      delete_caption:  "Delete This Event"
+      delete_caption:  "Delete event"
       delete_confirm:  "Are you sure you want to permanently delete this event and any RSVPs associated with it?"
       departure:   "Depart From"
       arrival:     "Arrive At"
@@ -360,7 +360,6 @@ en:
 
     cancel:
       proceed:        "Cancel This Event"
-      abandon:        "Don't Cancel Event"
       confirm:        "Are you sure you want to cancel?"
       message_prompt: "Send a cancellation message?"
       past_warning:   "Cancelling events that occurred in the past is not recommended."
