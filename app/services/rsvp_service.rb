@@ -77,8 +77,12 @@ class RsvpService < ApplicationService
   end
 
   def family_responses_in_words
-    family_accepted = family_rsvps.select(&:accepted?)
-    family_declined = family_rsvps.select(&:declined?)
+    family_accepted = family_rsvps.select(&:accepted?).sort_by { |r| r.member == @member ? 0 : 1 }
+    family_declined = family_rsvps.select(&:declined?).sort_by { |r| r.member == @member ? 0 : 1 }
+
+    # family_accepted.sort_by { |r| r.member == @member ? 0 : 1 }
+    # family_declined.sort_by { |r| r.member == @member ? 0 : 1 }
+
     return "No responses yet." unless family_accepted.any? || family_declined.any?
 
     going = "#{list_of_words(family_accepted.map { |r| r.display_first_name(@member) }, linking_verb: true)} going" if family_accepted.any?

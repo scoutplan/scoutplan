@@ -82,7 +82,7 @@ describe "event_cancellation", type: :feature do
 
       it "does not notify when none is selected" do
         choose :event_message_audience_none
-        click_link_or_button I18n.t("events.show.cancel_title")
+        click_link_or_button "Cancel This Event"
       end
 
       it "sends to acceptors" do

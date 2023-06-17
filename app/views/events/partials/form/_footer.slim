@@ -1,16 +1,4 @@
-footer.flex.flex-col.md:flex-row.md:justify-between.py-4.gap-2
-  div
-    = render partial: "events/partials/form/cancel_button" if event_cancellable?(@current_member, @event)
-    = render partial: "events/partials/form/delete_button", locals: { f: f } if event_deletable?(@current_member, @event)
-
-  .flex.flex-col.md:flex-row.md:justify-end.gap-2
-    // Discard Changes
-    = link_to t("global.discard_changes"),
-      @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event),
-      data: { turbo_action: "advance", turbo_frame: "main" },
-      class: "block md:inline-block px-4 py-2 text-center font-bold rounded border border-brand-500 text-brand-500"
-      
-    // Save Changes
-    = f.submit @event.new_record? ? t("events.new.add_this_event") : t("global.save_changes"),
-               class: "block md:inline-block px-4 py-2 font-bold bg-brand-500 hover:bg-brand-600 text-white rounded"
-    
+footer.flex.flex-col-reverse.md:flex-row.md:justify-between.py-4.gap-2
+  // Save Changes
+  = f.submit @event.new_record? ? t("events.new.add_this_event") : t("global.save_changes"),
+              class: "block md:inline-block px-4 py-2 font-bold bg-brand-500 hover:bg-brand-600 text-white rounded"

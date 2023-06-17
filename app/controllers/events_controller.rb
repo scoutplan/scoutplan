@@ -144,10 +144,12 @@ class EventsController < UnitContextController
     @can_organize = policy(@event).rsvps?
     @current_family = @current_member.family
     if @event.requires_payment?
-      @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
+      @payments = @event.payments.paid.where(unit_membership_id: @current_family.map(&:id))
       @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
-      @total_cost = (@family_rsvps.accepted.youth.count * @event.cost_youth) + (@family_rsvps.accepted.adult.count * @event.cost_adult)
-      @total_paid = ((@payments&.sum(:amount) || 0) / 100)
+      @subtotal = (@family_rsvps.accepted.youth.count * @event.cost_youth) + (@family_rsvps.accepted.adult.count * @event.cost_adult)
+      @transaction_fee = StripePaymentService.new(@unit).member_transaction_fee(@subtotal)
+      @total_cost = @subtotal + @transaction_fee
+      @total_paid = (@payments&.sum(:amount) || 0) / 100
       @amount_due = @total_cost - @total_paid
     end
     page_title @unit.name, @event.title
