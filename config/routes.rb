@@ -196,6 +196,8 @@ Rails.application.routes.draw do
   get ":token", to: "magic_links#resolve", as: "magic_link", constraints: { token: /[0-9a-f]{12}/ }
   get ":login_code", to: "magic_links#resolve", as: "login_code_link", constraints: { token: /[0-9]{6}/ }
   get "link_expired", to: "magic_links#expired", as: "expired_magic_link"
+
+  post "webhooks/mailgun/receive", to: "mailgun#receive"
 end
 # rubocop:enable Metrics/BlockLength
 # rubocop:enable Style/FormatStringToken

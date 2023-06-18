@@ -1,0 +1,59 @@
+{
+     "signature" => {
+            "token" => "6de58027526048e0b38586e402a48f302a6abf3aaa1364aa1c",
+        "timestamp" => "1687053371",
+        "signature" => "89ec4fe5cfcd7772b6bc88713d8aa906e5a364ca374124ccbbb917eb9eee1a6c"
+    },
+    "event-data" => {
+                      "id" => "G9Bn5sl1TC6nu79C8C0bwg",
+               "timestamp" => 1521233195.375624,
+               "log-level" => "error",
+                   "event" => "failed",
+                "severity" => "permanent",
+                  "reason" => "suppress-bounce",
+         "delivery-status" => {
+                 "attempt-no" => 1,
+                    "message" => "",
+                       "code" => 605,
+              "enhanced-code" => "",
+                "description" => "Not delivering to previously bounced address",
+            "session-seconds" => 0
+        },
+                   "flags" => {
+                   "is-routed" => false,
+            "is-authenticated" => true,
+              "is-system-test" => false,
+                "is-test-mode" => false
+        },
+                "envelope" => {
+               "sender" => "bob@mail.scoutplan.org",
+            "transport" => "smtp",
+              "targets" => "alice@example.com"
+        },
+                 "message" => {
+                "headers" => {
+                        "to" => "Alice <alice@example.com>",
+                "message-id" => "20130503192659.13651.20287@mail.scoutplan.org",
+                      "from" => "Bob <bob@mail.scoutplan.org>",
+                   "subject" => "Test permanent_fail webhook"
+            },
+            "attachments" => [],
+                   "size" => 111
+        },
+               "recipient" => "alice@example.com",
+        "recipient-domain" => "example.com",
+                 "storage" => {
+            "url" => "https://se.api.mailgun.net/v3/domains/mail.scoutplan.org/messages/message_key",
+            "key" => "message_key"
+        },
+               "campaigns" => [],
+                    "tags" => [
+            [0] "my_tag_1",
+            [1] "my_tag_2"
+        ],
+          "user-variables" => {
+            "my_var_1" => "Mailgun Variable #1",
+            "my-var-2" => "awesome"
+        }
+    }
+}
