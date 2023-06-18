@@ -4,13 +4,13 @@
 Rails.application.configure do
   config.web_console.permissions = "172.0.0.0/8"
 
-  # config.hosts = [
-  #   IPAddr.new("0.0.0.0/0"),        # All IPv4 addresses.
-  #   IPAddr.new("::/0"),             # All IPv6 addresses.
-  #   "localhost",                    # The localhost reserved domain.
-  #   "scoutplan.ngrok.io",
-  #   ENV["RAILS_DEVELOPMENT_HOSTS"]
-  # ]
+  config.hosts = [
+    IPAddr.new("0.0.0.0/0"),        # All IPv4 addresses.
+    IPAddr.new("::/0"),             # All IPv6 addresses.
+    "localhost",                    # The localhost reserved domain.
+    "scoutplan.ngrok.io",
+    ENV["RAILS_DEVELOPMENT_HOSTS"]
+  ]
 
   config.hosts.clear
 
