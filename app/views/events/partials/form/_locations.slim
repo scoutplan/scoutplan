@@ -54,3 +54,10 @@ css:
   .event-online #fields_offline {
     display: none;
   }
+
+javascript:
+  document.querySelector("#event_online").addEventListener("change", function(event) {
+    if (event.target.checked) {
+      document.querySelector("#event_website").select();
+    }
+  });

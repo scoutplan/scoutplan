@@ -236,7 +236,11 @@ class EventsController < UnitContextController
       end
     end
 
-    redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
+    if cookies[:event_index_variation] == "calendar"
+      redirect_to calendar_unit_events_path(@unit), notice: t("events.update_confirmation", title: @event.title)
+    else
+      redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
+    end
   end
 
   # DELETE /:unit_id/events/:event_id
