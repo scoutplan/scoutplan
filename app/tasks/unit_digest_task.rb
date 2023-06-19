@@ -15,6 +15,8 @@ class UnitDigestTask < UnitTask
     super
 
     unit.members.find_each do |member|
+      next if member.status_inactive?
+
       perform_for_member(member)
     end
   end
