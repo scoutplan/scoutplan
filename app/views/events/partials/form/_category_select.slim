@@ -1,0 +1,78 @@
+div(data-controller="fancy-select")
+  .hidden
+    = f.select :event_category_id,
+                @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
+                { prompt: t("events.placeholders.category"), selected: @event.event_category_id },
+                { class: "border border-stone-300 rounded py-2 bg-white w-full font-bold",
+                  required: "A category is required",
+                  data: { fancy_select_target: "select" } }
+
+  .relative.w-full.fancy-select
+    = text_field :event_category_proxy, :name,
+                value: @event&.category&.name || "Select an event category",
+                autocomplete: "off",
+                class: "w-full border border-stone-300 rounded bg-white px-3 p-2 placeholder-stone-300 font-bold",
+                data: { "1p-ignore" => "true", fancy_select_target: "text", action: "focus->fancy-select#searchFocus keyup->fancy-select#search keyup.up->fancy-select#moveUp keyup.down->fancy-select#moveDown" }
+
+    .absolute.right-0.top-0.flex.items-center.h-12.px-3.-mt-1.disclosure
+      i.fa-solid.fa-chevron-down.fa-fw.text-sm
+
+    .absolute.top-full.w-full.max-h-60.bg-stone-100.z-10.border.border-stone-300.rounded.drop-shadow-lg.overflow-scroll.options
+      ul.w-full
+        - @event.unit.event_categories.order(name: :asc).each do |category|
+          - classes = @event.category == category ? " selected focused" : ""
+          li.w-full.cursor-pointer(class="#{classes}" data-action="click->fancy-select#makeSelection mouseenter->fancy-select#hover" data-text="#{category.name}" data-value="#{category.id}")
+            .flex.flex-row.justify-between.items-center.w-full.block.p-2
+              div
+                .inline-block.w-10.text-center
+                  i.fa-solid.fa-fw(style="color: #{category.color}" class="fa-#{category.glyph}")
+                = category.name
+
+              div.justify-end.pr-4
+                i.fa-solid.fa-check.fa-fw.selection-indicator                
+
+
+css:
+  com-1password-menu {
+    display: none !important;
+  }
+
+  .options {
+    display: none;
+  }
+
+  .fancy-select.open .options {
+    display: block;
+  }
+
+  .options li:hover {
+    background-color: #E66425;
+    color: white;
+  }
+
+  .options li:hover svg path {
+    color: white;
+  }
+
+  .selection-indicator {
+    display: none;
+  }
+
+  .options .selected {
+    font-weight: bold;
+  }
+
+  .options .selected .selection-indicator {
+    display: block;
+  }
+
+  .options .focused {
+    background-color: #E66425;
+    color: white;
+  }
+
+  .options .focused svg path {
+    color: white;
+  }
+
+
