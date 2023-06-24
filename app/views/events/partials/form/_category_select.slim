@@ -1,4 +1,11 @@
-div(data-controller="fancy-select")
+.fancy-select(data-controller="fancy-select" data-action="
+  keydown.up->fancy-select#moveFocusUp
+  keydown.down->fancy-select#moveFocusDown
+  keydown.enter->fancy-select#selectFocusedOption
+  keydown.esc->fancy-select#closeMenu
+  keydown.tab->fancy-select#selectFocusedOption
+  keydown.shift->fancy-select#shiftPressed
+")
   .hidden
     = f.select :event_category_id,
                 @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
@@ -7,21 +14,25 @@ div(data-controller="fancy-select")
                   required: "A category is required",
                   data: { fancy_select_target: "select" } }
 
-  .relative.w-full.fancy-select
+  .relative.w-full
     = text_field :event_category_proxy, :name,
-                value: @event&.category&.name || "Select an event category",
+                value: @event&.category&.name,
+                placeholder: "Select an event category",
                 autocomplete: "off",
                 class: "w-full border border-stone-300 rounded bg-white px-3 p-2 placeholder-stone-300 font-bold",
-                data: { "1p-ignore" => "true", fancy_select_target: "text", action: "focus->fancy-select#searchFocus keyup->fancy-select#search keyup.up->fancy-select#moveUp keyup.down->fancy-select#moveDown" }
+                data: { "1p-ignore" => "true", fancy_select_target: "text", action: "blur->fancy-select#blur focus->fancy-select#searchFocus keyup->fancy-select#search" }
 
     .absolute.right-0.top-0.flex.items-center.h-12.px-3.-mt-1.disclosure
       i.fa-solid.fa-chevron-down.fa-fw.text-sm
 
     .absolute.top-full.w-full.max-h-60.bg-stone-100.z-10.border.border-stone-300.rounded.drop-shadow-lg.overflow-scroll.options
       ul.w-full
+        li.unmatched-prompt
+          .px-3.py-2 = "A new category will be added"
+
         - @event.unit.event_categories.order(name: :asc).each do |category|
           - classes = @event.category == category ? " selected focused" : ""
-          li.w-full.cursor-pointer(class="#{classes}" data-action="click->fancy-select#makeSelection mouseenter->fancy-select#hover" data-text="#{category.name}" data-value="#{category.id}")
+          li.option.w-full.cursor-pointer(class="#{classes}" data-action="click->fancy-select#makeSelection mouseover->fancy-select#hover" data-text="#{category.name}" data-value="#{category.id}")
             .flex.flex-row.justify-between.items-center.w-full.block.p-2
               div
                 .inline-block.w-10.text-center
@@ -33,8 +44,12 @@ div(data-controller="fancy-select")
 
 
 css:
-  com-1password-menu {
-    display: none !important;
+  .unmatched-prompt {
+    display:none;
+  }
+
+  .unmatched .unmatched-prompt {
+    display:block;
   }
 
   .options {
@@ -43,15 +58,6 @@ css:
 
   .fancy-select.open .options {
     display: block;
-  }
-
-  .options li:hover {
-    background-color: #E66425;
-    color: white;
-  }
-
-  .options li:hover svg path {
-    color: white;
   }
 
   .selection-indicator {

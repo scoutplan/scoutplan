@@ -21,8 +21,10 @@ section.py-4
                 id: "add_attachment",
                 data: { body_class: "adding-attachments" }
 
+  ul#existing_attachments
+
   #new_attachments.pt-4
-    = f.file_field :attachments, multiple: true, class: "hidden", id: "upload",
+    = f.file_field :attachments, multiple: true, class: "hiddenz", id: "upload",
                   data: { action: "change->event-edit#showAttachments", event_edit_target: "fileinput" }
 
     .flex.flex-col.md:flex-row.gap-2
@@ -44,7 +46,7 @@ section.py-4
 
 css:
   #new_attachments {
-    display: none;
+    
   }
 
   body.adding-attachments #new_attachments {

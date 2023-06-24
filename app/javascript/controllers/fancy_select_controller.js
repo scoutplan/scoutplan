@@ -29,17 +29,20 @@ export default class extends Controller {
       }
   
       // ...otherwise, close up shop
-      console.log("click outside");
       this.closeMenu();
     }.bind(this));
   
     this.syncWithSelect();
   }
 
-  clearFocus() {
-    this.element.querySelectorAll(".focused").forEach(function(elem) {
-      elem.classList.remove("focused");
-    });
+  blur() {
+    // if (!this.element.classList.contains("unmatched")) return;
+    this.unfilterOptions();
+    this.closeMenu();
+  }
+
+  shiftPressed() {
+    // do nothing
   }
 
   clearSelection() {
@@ -49,40 +52,50 @@ export default class extends Controller {
   }
 
   closeMenu() {
-    this.element.querySelector(".fancy-select").classList.remove("open");
+    this.element.classList.remove("open");
   }
 
   openMenu() {
-    this.element.querySelector(".fancy-select").classList.add("open");
-    var fancySelectElem = event.target.closest(".fancy-select");
-    var selectedElem = fancySelectElem.querySelector(".selected");
-    selectedElem?.scrollIntoView({ block: "end" });    
+    this.element.classList.add("open");
   }
 
+  // reveal all the options that were hidden by the search
   unfilterOptions() {
     this.element.querySelectorAll(".option").forEach(function(elem) {
       elem.classList.remove("hidden");
     });
   }
 
+  // fired when the search field receives focus
   searchFocus(event) {
     this.unfilterOptions();
+    this.setFocus(this.currentSelection());
     this.textTarget.select();
     this.openMenu();
   }
 
-  hover() {
-    this.clearFocus();
-    this.element.classList.add("focused");
+  hover(event) {
+    this.setFocus(event.currentTarget);
   }
 
   // when the user clicks on an option in the proxy dropdown
   makeSelection(event) {
-    var selectedValue = event.currentTarget.dataset.value;
-    event.currentTarget.classList.add("selected");
-    event.currentTarget.classList.add("focused");
-    console.log(event.currentTarget);
-
+    this.performSelection(event.currentTarget);
+  }
+  
+  selectFocusedOption(event) {
+    this.performSelection(this.currentFocus());
+    // event.stopPropagation();
+    // event.preventDefault();
+  }
+  
+  performSelection(elem) {
+    if (!elem) return;
+    
+    elem.classList.add("selected");
+    this.setFocus(elem);
+    var selectedValue = elem.dataset.value;
+    
     // set the value of the hidden select
     var sourceOptionElem = this.selectTarget.querySelector("option[value='" + selectedValue + "']");
     sourceOptionElem.selected = true;
@@ -92,18 +105,58 @@ export default class extends Controller {
     this.reveal
   }
 
-  moveUp() {
-    var targetElem = this.focusedElem().previousSibling(focusedElem, ":not(.hidden)");
-    targetElem?.classList.add("focused");
+  visibleOptions() {
+    return this.element.querySelectorAll("li.option:not(.hidden)");
   }
 
-  moveDown() {
-    var targetElem = this.focusedElem().nextSibling(focusedElem, ":not(.hidden)");
-    targetElem?.classList.add("focused");
+  //
+  // focus methods
+  //
+  moveFocusUp(e) {
+    this.moveFocus(-1);
   }
 
-  focusedElem() {
+  moveFocusDown(e) {
+    this.moveFocus(1);
+  }
+  
+  moveFocus(offset) {
+    this.openMenu();
+    var fe = this.currentFocus();
+    var visibleOptions = this.visibleOptions();
+    // var pos = visibleOptions.indexOf(fe);
+    var pos = Array.prototype.indexOf.call(visibleOptions, fe);
+    var targetElem = visibleOptions[pos + offset];
+    if (targetElem) this.setFocus(targetElem);
+
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  clearFocus() {
+    this.element.querySelectorAll(".focused").forEach(function(elem) {
+      elem.classList.remove("focused");
+    });
+  }
+  
+  setFocus(elem) {
+    if (!elem) return;
+    if (elem.classList.contains("hidden")) return;
+    
+    this.clearFocus();
+    elem.classList.add("focused");
+    elem.scrollIntoView({block: "nearest", inline: "nearest"});
+  }
+  
+  currentFocus() {
     return this.element.querySelector(".focused");
+  }
+  //
+  // end focus methods
+  //
+
+  currentSelection() {
+    return this.element.querySelector(".selected");
   }
 
   previousSibling(elem, selector) {
@@ -130,27 +183,37 @@ export default class extends Controller {
   
   // see https://tailwindui.com/components/application-ui/forms/comboboxes for inspiration
   search(event) {
-    if (event.keyCode == 9) return;
+    // ignore the tab, down, up, and shift keys
+    var ignoreKeyCodes = [9, 40, 38, 16];
+    if (ignoreKeyCodes.includes(event.keyCode)) return;
 
     var searchValue = this.textTarget.value.toLowerCase();
 
     // show/hide the proxy options based on the search value
-    var proxyOptions = this.element.querySelectorAll("li");
+    var proxyOptions = this.element.querySelectorAll("li.option");
+    var unmatched = true;
+
     proxyOptions.forEach(function(proxyOptionElem) {
+
       var optionText = proxyOptionElem.dataset.text.toLowerCase();
-      if (optionText.includes(searchValue)) {
+      if (optionText.startsWith(searchValue)) {
         proxyOptionElem.classList.remove("hidden");
+        unmatched = false;
       } else {
         proxyOptionElem.classList.add("hidden");
       }
     });
 
-    // select the first visible option
-    var firstVisibleOption = this.element.querySelector("li:not(.hidden)");
-    if (firstVisibleOption) {
-      this.clearSelection();
-      firstVisibleOption.classList.add("focused");
+    this.element.classList.toggle("unmatched", unmatched);
+
+    if (unmatched) {
+      this.element.querySelector(".unmatched-prompt *").innerText = "\"" + this.textTarget.value + "\" will be added as a new category";
+      this.clearFocus();
     }
+
+    // select the first visible option
+    var firstVisibleOption = this.visibleOptions()[0];
+    this.setFocus(firstVisibleOption);
   }
 
   syncWithSelect() {

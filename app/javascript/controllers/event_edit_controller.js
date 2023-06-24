@@ -9,6 +9,7 @@ export default class extends Controller {
   }
 
   attachFromLibrary(event) {
+    console.log("attach from library");
     var link = event.target.closest("a")
     var attachmentId = link.dataset.attachmentId;
     var filename = link.dataset.filename;
