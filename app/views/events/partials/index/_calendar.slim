@@ -110,15 +110,22 @@
 
               - if display_date.beginning_of_day >= event.starts_at.beginning_of_day && \
                 display_date.beginning_of_day <= event.ends_at.end_of_day
-                .cal-event.text-xs.overflow-hidden(class="#{css_classes}")
+                .cal-event.text-xs.overflow-hidden(class="p-1 block hover:bg-stone-100 #{css_classes}")
                   = link_to [ event.unit, event ],
-                    class: "block p-1 font-bold hover:bg-stone-100 rounded",
+                    class: "inline font-bold",
                     data: { turbo_action: "advance" },
                     style: "color: #{event.category.color}" do
 
                     = event.title
                     - if event.online
                       i.fa-solid.fa-laptop.ml-1(title="Online")
+
+                  // edit link
+                  = link_to edit_unit_event_path(@unit, event),
+                    class: "event-edit-link ml-1 inline-block text-stone-500 hover:text-black",
+                    data: { turbo_action: "advance" } do
+
+                    i.fa-solid.fa-pen-circle.mr-1
 
           - display_day += 1
 
@@ -147,4 +154,12 @@ javascript:
 css:
   .cal-weekend-cell {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23000000' fill-opacity='0.125' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");    
+  }
+
+  .event-edit-link {
+    visibility: hidden;
+  }
+
+  .cal-event:hover .event-edit-link {
+    visibility: visible;
   }

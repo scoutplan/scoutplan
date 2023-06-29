@@ -11,6 +11,11 @@ class EventCreationService < ApplicationService
     @event = @unit.events.new
     @event.assign_attributes(params)
 
+    category_name = params[:event_category_proxy_name]
+    unless @unit.event_categories.find_or_create_by(name: category_name)
+      @event.category = @unit.event_categories.create(name: category_name)
+    end
+
     # for some reason this isn't being assigned through assign_attributes,
     # so we'll brute-force it
     @event.repeats_until = params[:repeats_until]
@@ -21,6 +26,11 @@ class EventCreationService < ApplicationService
   end
 
   private
+
+  def create_category(name)
+    category = @unit.event_categories.create(name: name)
+    @event.category = category
+  end
 
   def create_series
     new_event = @event.dup

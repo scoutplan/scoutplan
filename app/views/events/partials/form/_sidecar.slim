@@ -1,0 +1,49 @@
+nav.relative
+  .absolute.h-full.w-4.py-3
+    .mx-auto.h-full.border-l.border-stone-200(style="width:1px;")
+  ul.font-bold.z-50.relative
+    li
+      = link_to "#basics", class: "block py-2 z-30", data: { turbo: false } do
+        i.fas.fa-sm.fa-circle.mr-2.text-brand-500
+        = "Basic information"
+
+    li
+      = link_to "#rsvps", class: "block py-2", data: { turbo: false } do
+        i.fas.fa-sm.fa-circle.mr-2.text-stone-200
+        = "Gather responses"
+
+    li
+      = link_to "#dates", class: "block py-2", data: { turbo: false } do
+        i.fas.fa-sm.fa-circle.mr-2.text-stone-200
+        = "Date & time"
+
+    li
+      = link_to "#locations", class: "block py-2", data: { turbo: false } do
+        i.fas.fa-sm.fa-circle.mr-2.text-stone-200
+        = "Locations"
+
+    li
+      = link_to "#description", class: "block py-2", data: { turbo: false } do
+        i.fas.fa-sm.fa-circle.mr-2.text-stone-200
+        = "Notes"
+
+    li
+      = link_to "#organizers", class: "block py-2", data: { turbo: false } do
+        i.fas.fa-sm.fa-circle.mr-2.text-stone-200
+        = "Organizers"
+
+    li
+      = link_to "#packlists", class: "block py-2", data: { turbo: false } do
+        i.fas.fa-sm.fa-circle.mr-2.text-stone-200
+        = "Packing lists"
+
+    li
+      = link_to "#attachments", class: "block py-2", data: { turbo: false } do
+        i.fas.fa-sm.fa-circle.mr-2.text-stone-200
+        = "Attachments"
+
+    li
+      = link_to "#canceldelete", class: "block py-2", data: { turbo: false } do
+        i.fas.fa-sm.fa-circle.mr-2.text-stone-200
+        = "Cancel this event"
+

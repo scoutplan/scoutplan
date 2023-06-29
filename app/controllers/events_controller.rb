@@ -69,7 +69,7 @@ class EventsController < UnitContextController
     @event_drafts = @unit.events.select(&:draft?).select { |e| e.ends_at.future? }
     @presenter = EventPresenter.new(nil, current_member)
 
-    if user_signed_in?
+    if user_signed_in? && @current_member.present?
       @current_family = @current_member.family
 
       # kludge alert: we shouldn't generate this here, now
@@ -227,6 +227,13 @@ class EventsController < UnitContextController
     authorize @event
     service = EventUpdateService.new(@event, @current_member, event_params)
     service.perform
+
+    category_name = params[:event_category_proxy][:name]
+    unless @unit.event_categories.find_by(name: category_name)
+      @event.category = @unit.event_categories.create(name: category_name)
+      @event.save!
+    end
+
     EventService.new(@event, params).process_event_shifts
     EventService.new(@event, params).process_library_attachments
     EventOrganizerService.new(@event).update(params[:event_organizers])

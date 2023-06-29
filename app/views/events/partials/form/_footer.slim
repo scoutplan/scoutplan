@@ -1,4 +1,5 @@
-footer.flex.flex-col-reverse.md:flex-row.md:justify-between.py-4.gap-2.sticky.bottom-0.bg-white.border-t.border-gray-200
-  // Save Changes
-  = f.submit @event.new_record? ? t("events.new.add_this_event") : t("global.save_changes"),
-              class: "block md:inline-block px-4 py-2 font-bold bg-green-600 hover:bg-green-700 text-white rounded"
+footer.sticky.-px-2.-mx-2.-my-6.left-0.right-0.bottom-0.bg-white.border-t.border-gray-200(style="filter: drop-shadow(0 -5px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 -2px 3px rgb(0 0 0 / 0.05));")
+  .mx-auto.max-w-xl
+    .flex.flex-col-reverse.md:flex-row.md:justify-between.py-4.gap-2
+      = f.submit @event.new_record? ? t("events.new.add_this_event") : t("global.save_changes"),
+                 class: "block md:inline-block mx-4 md:mx-0 px-6 py-2 font-bold bg-green-600 hover:bg-green-700 text-white rounded"
