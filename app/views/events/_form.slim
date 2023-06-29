@@ -6,39 +6,37 @@
 .form-wrapper(class="#{@event.online ? "online-event" : ""}" data-controller="body-classer event-edit")
   = render partial: "events/partials/form/watermark"
 
-  header.py-4
-    h2.font-bold.text-2xl
-      - if @parent_event.present?
-        = t("events.titles.sub_event", parent_event_title: @parent_event.title)
-      - elsif @event.new_record?
-        = t("events.titles.new")
-      - else
-        = t("events.titles.edit")
+  .mx-auto.max-w-xl.relative
+    header.py-4
+      aside.fixed
+        .absolute.-ml-60.top-0.w-48
+          = render partial: "events/partials/form/sidecar"
+
+      h2.font-bold.text-2xl
+        - if @parent_event.present?
+          = t("events.titles.sub_event", parent_event_title: @parent_event.title)
+        - elsif @event.new_record?
+          = t("events.titles.new")
+        - else
+          = t("events.titles.edit")
 
   = form_with model: @event, scope: "event",
               url: @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event),
               method: @event.new_record? ? "post" : "patch",
-              data: { turbo: false } do |f|
+              data: { turbo: false, action: "keydown->event-edit#keypress" } do |f|
               
-    .divide-y.divide-stone-800
-      = render partial: "events/partials/form/basics",      locals: { f: f }
-      = render partial: "events/partials/form/rsvp",        locals: { f: f }
-      = render partial: "events/partials/form/activity",    locals: { f: f }
-      = render partial: "events/partials/form/dates",       locals: { f: f }
-      = render partial: "events/partials/form/locations",   locals: { f: f }
-      = render partial: "events/partials/form/description", locals: { f: f }
-      = render partial: "events/partials/form/organizers",  locals: { f: f }
-      = render partial: "events/partials/form/packlists",   locals: { f: f }
-      = render partial: "events/partials/form/attachments", locals: { f: f }
-      = render partial: "events/partials/form/notify",      locals: { f: f }
+    .mx-auto.max-w-xl.pb-12
+      .divide-y.divide-stone-800
+        - %w[basics rsvp activity dates locations description organizers packlists attachments notify].each do |section|
+          = render partial: "events/partials/form/#{section}", layout: "layouts/event_form_section", locals: { f: f, section: section }
 
-    - if event_cancellable?(@current_member, @event) || event_deletable?(@current_member, @event)
-      .border.border-red-200.px-4.py-2.my-4.rounded
-        h3.font-bold.mb-2.text-red-600 = "Danger zone"
-        = render partial: "events/partials/form/cancel_button" if event_cancellable?(@current_member, @event)
-        = render partial: "events/partials/form/delete_button", locals: { f: f } if event_deletable?(@current_member, @event)
+      - if event_cancellable?(@current_member, @event) || event_deletable?(@current_member, @event)
+        .border.border-red-200.px-4.py-2.my-4.rounded
+          h3.font-bold.mb-2.text-red-600 = "Danger zone"
+          = render partial: "events/partials/form/cancel_button" if event_cancellable?(@current_member, @event)
+          = render partial: "events/partials/form/delete_button", layout: "layouts/event_form_section", locals: { f: f } if event_deletable?(@current_member, @event)
 
-    = render partial: "events/partials/form/footer",      locals: { f: f }
+    = render partial: "events/partials/form/footer",      layout: "layouts/event_form_section", locals: { f: f }
 
   = render partial: "events/partials/form/new_location_form" if Flipper.enabled? :inline_location_form, @current_member
   = render partial: "events/partials/form/document_library" if Flipper.enabled? :document_library, @current_member

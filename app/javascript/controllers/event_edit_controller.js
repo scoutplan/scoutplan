@@ -3,6 +3,10 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = [ "deleteform", "fileinput", "documentLibraryIds", "startsAtDate", "rsvpClosesAt" ];
 
+  connect() {
+    console.log("event edit controller connected");
+  }
+
   addAttachmentToPendingList(filename) {
     var attachment_list = document.querySelector("#existing_attachments");
     attachment_list.insertAdjacentHTML("beforeend", `<li class="pending-attachment py-1 font-bold text-green-600">${filename} (pending)</li>`);
@@ -87,5 +91,23 @@ export default class extends Controller {
     pending_attachments.forEach(function(attachment) {
       attachment_list.removeChild(attachment);
     });
+  }
+
+  uploadFiles(event) {
+    console.log("upload files");
+    this.fileinputTarget.click();
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  somethingElse() {
+    console.log("something else");
+  }
+
+  keypress(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      return false;
+    }
   }
 }
