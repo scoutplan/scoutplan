@@ -69,7 +69,7 @@ class EventsController < UnitContextController
     @event_drafts = @unit.events.select(&:draft?).select { |e| e.ends_at.future? }
     @presenter = EventPresenter.new(nil, current_member)
 
-    if user_signed_in?
+    if user_signed_in? && @current_member.present?
       @current_family = @current_member.family
 
       # kludge alert: we shouldn't generate this here, now

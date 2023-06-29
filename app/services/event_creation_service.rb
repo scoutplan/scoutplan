@@ -12,7 +12,7 @@ class EventCreationService < ApplicationService
     @event.assign_attributes(params)
 
     category_name = params[:event_category_proxy_name]
-    unless @unit.categories.find_or_create_by(name: category_name)
+    unless @unit.event_categories.find_or_create_by(name: category_name)
       @event.category = @unit.event_categories.create(name: category_name)
     end
 
