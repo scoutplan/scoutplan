@@ -2,7 +2,7 @@
 
 - family_has_rsvps = false
 - family_fully_responded = true
-- @current_family.each do |member|
+- @current_member.family.each do |member|
   - rsvp = event.rsvps.select { |r| r.unit_membership == member }&.first
   - family_has_rsvps = family_has_rsvps || rsvp.present?
   - family_fully_responded = family_fully_responded && rsvp.present?
