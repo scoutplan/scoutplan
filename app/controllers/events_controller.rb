@@ -143,7 +143,7 @@ class EventsController < UnitContextController
       @payments = @event.payments.paid.where(unit_membership_id: @current_family.map(&:id))
       @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
       @subtotal = (@family_rsvps.accepted.youth.count * @event.cost_youth) + (@family_rsvps.accepted.adult.count * @event.cost_adult)
-      @transaction_fee = StripePaymentService.new(@unit).member_transaction_fee(@subtotal)
+      @transaction_fee = @unit.payments_enabled? ? StripePaymentService.new(@unit).member_transaction_fee(@subtotal) : 0
       @total_cost = @subtotal + @transaction_fee
       @total_paid = (@payments&.sum(:amount) || 0) / 100
       @amount_due = @total_cost - @total_paid
