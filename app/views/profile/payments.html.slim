@@ -1,14 +1,15 @@
 = turbo_frame_tag "main"
-  .max-w-lg.mx-auto.w-full
+  .max-w-2xl.mx-auto.w-full
     header.mb-4
-      h1.text-4xl.font-bold = "Payment History"
+      h1.text-4xl.font-bold = "Family Payment History"
 
     table.w-full.divide-y(cellpadding="8")
       tbody
         - @payments.each do |payment|
           tr
-            td = payment.created_at.strftime("%B %-d, %Y")
+            td.pl-0 = payment.created_at.strftime("%B %-d, %Y")
             td = payment.unit.name
+            td = payment.status
             td = payment.method.capitalize
             td = link_to payment.event.title, unit_event_path(payment.unit, payment.event), class: "text-blue-500 underline", data: { turbo_action: "advance" }
-            td.text-right = number_to_currency(payment.amount_in_dollars)
+            td.pr-0.text-right = number_to_currency(payment.amount_in_dollars)

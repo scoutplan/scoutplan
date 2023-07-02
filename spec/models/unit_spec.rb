@@ -19,16 +19,33 @@ RSpec.describe Unit, type: :model do
 
       @category_count = EventCategory.seeds.count
 
-      unit = Unit.create!(name: "Troop 1234", location: "North Kilttown")
+      unit = Unit.create!(name: "Troop 1234", location: "North Kilttown", slug: "troop1234northkilttown")
 
       # unit = FactoryBot.create(:unit)
       expect(unit.event_categories.count).to eq(@category_count)
     end
   end
 
+  it "generates a valid slug" do
+    unit = Unit.new(name: "Troop 1234", location: "North Kilttown")
+    unit.save!
+    unit.reload
+    expect(unit.slug).to be_present
+  end
+
   context "validations" do
     it "requires a name" do
       expect(FactoryBot.build(:unit, name: nil)).not_to be_valid
+    end
+
+    it "requires a slug" do
+      expect(FactoryBot.build(:unit, slug: nil)).not_to be_valid
+    end
+
+    it "requires a unique slug" do
+      unit = FactoryBot.create(:unit)
+      dupe = FactoryBot.build(:unit, slug: unit.slug)
+      expect(dupe).not_to be_valid
     end
   end
 
