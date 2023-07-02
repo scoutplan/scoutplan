@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :unit do
     name     { "Troop 231" }
     location { "Peoria, IL" }
+    sequence(:slug) { |n| "troop-#{n}" }
     email
 
     after(:create) do |unit, _evaluator|

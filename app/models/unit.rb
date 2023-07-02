@@ -21,14 +21,15 @@ class Unit < ApplicationRecord
 
   validates_presence_of :name
   validates_presence_of :location
+  validates_presence_of :slug
   validates_uniqueness_of :email
-  # validates_uniqueness_of :slug
+  validates_uniqueness_of :slug
 
   alias_attribute :memberships, :unit_memberships
   alias_attribute :members, :unit_memberships
 
   after_create :populate_categories
-  after_create :generate_slug
+  before_validation :generate_slug
 
   has_settings do |s|
     s.key :security, defaults: { enable_magic_links: true }
@@ -109,6 +110,8 @@ class Unit < ApplicationRecord
   end
 
   def generate_slug
+    return if slug.present?
+
     candidate = base = name.parameterize
     
     while Unit.where(slug: candidate).exists?

@@ -58,6 +58,7 @@ module Events
       @total_paid = ((@payments&.sum(:amount) || 0) / 100)
       @amount_due = @total_cost - @total_paid
       @payment.amount = @amount_due * 100
+      @payment.status = :paid
       authorize @payment
     end
 
