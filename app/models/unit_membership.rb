@@ -91,6 +91,13 @@ class UnitMembership < ApplicationRecord
     user.display_first_name
   end
 
+  #
+  # returns the member's family, including self if desired
+  # member.family(include_self: true)     => [parent1, parent2, child1, child2, member]
+  # member.family                         => [parent1, parent2, child1, child2, member]  (same as true)
+  # member.family(include_self: :append)  => [parent1, parent2, child1, child2] (same as true)
+  # member.family(include_self: :prepend) => [member, parent1, parent2, child1, child2]
+  #
   def family(include_self: :append)
     res = (children | parents | siblings)
     res.append(self) if [true, :append].include?(include_self)

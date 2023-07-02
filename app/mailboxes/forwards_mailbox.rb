@@ -13,9 +13,11 @@ class ForwardsMailbox < ApplicationMailbox
     # TODO: send bounce email to sender
   end
 
+  #
   # Given an inbound email address, extract the slug from the recipient address
   # example:
   # slug_from_recipient("scoutmaster@troop28sanandreas.scoutplan.org") => "troop28sanandreas"
+  #
   def slug_from_recipient
     mail.to.first.split("@").second.split(".").first
   end

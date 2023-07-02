@@ -69,12 +69,8 @@ class EventsController < UnitContextController
     @event_drafts = @unit.events.select(&:draft?).select { |e| e.ends_at.future? }
     @presenter = EventPresenter.new(nil, current_member)
 
-    if user_signed_in?
-      @current_family = @current_member.family
-
-      # kludge alert: we shouldn't generate this here, now
-      @ical_magic_link = MagicLink.generate_non_expiring_link(@current_member, "icalendar") # create a MagicLink object
-    end
+    # kludge alert: we shouldn't generate this here, now
+    @ical_magic_link = MagicLink.generate_non_expiring_link(@current_member, "icalendar") if user_signed_in?
 
     if params[:scope].present?
       render partial: "event_year", locals: { turbo_frame_id: "#{params[:scope]}_events" } and return
