@@ -28,6 +28,7 @@ class Unit < ApplicationRecord
   alias_attribute :members, :unit_memberships
 
   after_create :populate_categories
+  after_create :generate_slug
 
   has_settings do |s|
     s.key :security, defaults: { enable_magic_links: true }
@@ -105,5 +106,15 @@ class Unit < ApplicationRecord
         color: category.color
       )
     end
+  end
+
+  def generate_slug
+    candidate = base = name.parameterize
+    
+    while Unit.where(slug: candidate).exists?
+      candidate = base + "-#{rand(100)}"
+    end
+
+    update(slug: candidate)
   end
 end

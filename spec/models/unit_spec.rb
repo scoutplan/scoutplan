@@ -48,4 +48,13 @@ RSpec.describe Unit, type: :model do
       expect(@unit.short_name).to eq("T123")
     end
   end
+
+  describe "creation" do
+    it "creates unique slugs" do
+      unit = FactoryBot.create(:unit, name: "Troop 1234")
+      second_unit = FactoryBot.create(:unit, name: "Troop 1234")
+      expect(unit.slug).to eq("troop-1234")
+      expect(second_unit.slug).to start_with("troop-1234-")
+    end
+  end
 end

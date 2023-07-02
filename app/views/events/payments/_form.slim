@@ -14,7 +14,7 @@
 
   .mb-4
     = f.label :unit_membership_id, "Received From", class: "block mb-1"
-    = f.select :unit_membership_id, @current_family.collect { |m| [m.short_display_name, m.id] }, {},
+    = f.select :unit_membership_id, @current_member.family.collect { |m| [m.short_display_name, m.id] }, {},
               class: "font-bold block w-full rounded border border-stone-300"
 
   .mb-4
