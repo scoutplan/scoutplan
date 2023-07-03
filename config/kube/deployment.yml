@@ -97,6 +97,11 @@ spec:
                 secretKeyRef:
                   name: scoutplan-production
                   key: SMTP_PASSWORD
+            - name: MAILGUN_INGRESS_SIGNING_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: MAPBOX_TOKEN                  
             - name: MAPBOX_TOKEN
               valueFrom:
                 secretKeyRef:
