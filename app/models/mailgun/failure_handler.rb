@@ -7,7 +7,7 @@ class Mailgun::FailureHandler
 
   def process
     reason = @data["reason"]
-    ap reason
+
     if reason == "suppress-bounce"
       ScoutplanAdminMailer.with(
         from_address: @data["message"]["headers"]["from"],

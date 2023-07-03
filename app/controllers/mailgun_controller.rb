@@ -19,13 +19,13 @@ class MailgunController < ApplicationController
   def receive
     data = JSON.parse(request.body.read)
     sig_data = data["signature"]
-    head :no_content, 500 and return unless verify(sig_data["token"], sig_data["timestamp"], sig_data["signature"])
+    head 500 and return unless verify(sig_data["token"], sig_data["timestamp"], sig_data["signature"])
 
     handler = create_handler(data["event-data"])
     head :no_content, status: 200 and return unless handler
 
     handler.process
-    head :no_content, status: 200
+    head 200
   end
 
   private
