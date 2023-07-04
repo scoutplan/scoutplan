@@ -6,7 +6,7 @@ class ApplicationMailbox < ActionMailbox::Base
   before_processing :parse_recipient
   before_processing :find_unit
 
-  routing ->(inbound_email) { @unit.present? } => :unit_overflow # fallback route for all email where a unit is identified
+  routing ->(inbound_email) { Rails.logger.warn("$$$ #{@unit&.name}"); @unit.present? } => :unit_overflow # fallback route for all email where a unit is identified
   routing :all => :global_overflow # fallback route for any email remaining
 
   protected
