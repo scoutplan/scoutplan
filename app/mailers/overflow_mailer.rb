@@ -14,6 +14,8 @@ class OverflowMailer < ApplicationMailer
     @email = inbound_email.mail
     subject = "[Delivered via Scoutplan] #{@email.subject}"
 
+    Rails.logger.warn "Sending overflow mail to #{recipient.email}"
+
     mail(to: recipient.email, from: @email.from.first, subject: subject)
   end  
 end
