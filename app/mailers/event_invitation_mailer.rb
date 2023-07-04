@@ -31,7 +31,7 @@ class EventInvitationMailer < ScoutplanMailer
 
     # Send the email
     mail(to: @member.email,
-         from: @unit.from_address,
+         from: unit_from_address_with_name,
          subject: "#{@unit.name} is inviting you to #{@event.title}")
   end
 end
