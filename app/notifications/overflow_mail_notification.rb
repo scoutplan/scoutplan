@@ -23,6 +23,7 @@ class OverflowMailNotification < Noticed::Base
   # end
 
   def email_notifications?
+    Rails.logger.warn "Proposed recipient #{recipient} emailablility: #{recipient.emailable?}"
     recipient.emailable?
   end
 end
