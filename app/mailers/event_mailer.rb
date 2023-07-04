@@ -11,7 +11,7 @@ class EventMailer < ScoutplanMailer
     @note = params[:note]
     mail(
       to: @member.email,
-      from: @unit.settings(:communication).from_email,
+      from: unit_from_address_with_name,
       subject: "#{@unit.name} #{@event.title} Cancelled"
     )
   end
@@ -23,7 +23,7 @@ class EventMailer < ScoutplanMailer
     @url = rsvp_response_url(@token.value)
     mail(
       to: @user.email,
-      from: @unit.settings(:communication).from_email,
+      from: unit_from_address_with_name,
       subject: "#{@unit.name} Event Invitation: #{@event.title}"
     )
   end
@@ -33,7 +33,7 @@ class EventMailer < ScoutplanMailer
     @user = params[:user]
     @url = unit_events_url(@unit)
     mail(to: @user.email,
-         from: @unit.settings(:communication).from_email,
+         from: unit_from_address_with_name,
          subject: "#{@unit.name}: New Events Have Been Added to the Calendar")
   end
 
@@ -41,7 +41,7 @@ class EventMailer < ScoutplanMailer
     @rsvp = params[:rsvp]
     user = @rsvp.user
     mail(to: email_address_with_name(user.email, user.full_display_name),
-         from: email_address_with_name(@rsvp.unit.settings(:communication).from_email, @rsvp.unit.name),
+         from: unit_from_address_with_name,
          subject: "#{@rsvp.unit.name} — Your RSVP for #{@rsvp.event.title} has been received")
   end
 
@@ -50,7 +50,7 @@ class EventMailer < ScoutplanMailer
     @event = params[:event]
     @unit = @member.unit
     mail(to: email_address_with_name(@member.email, @member.full_display_name),
-         from: email_address_with_name(@unit.settings(:communication).from_email, @unit.name),
+         from: unit_from_address_with_name,
          subject: "#{@unit.name}: RSVP needed!")
   end
 end
