@@ -101,7 +101,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: scoutplan-production
-                  key: MAPBOX_TOKEN                  
+                  key: MAILGUN_INGRESS_SIGNING_KEY      
             - name: MAPBOX_TOKEN
               valueFrom:
                 secretKeyRef:
