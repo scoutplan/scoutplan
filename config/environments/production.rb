@@ -80,6 +80,8 @@ Rails.application.configure do
   config.active_job.queue_adapter = :sidekiq
   # config.active_job.queue_adapter = :inline
 
+  config.action_mailbox.ingress = :mailgun 
+
   config.action_mailer.raise_delivery_errors  = true
   config.action_mailer.delivery_method        = :smtp
   config.action_mailer.perform_caching        = false
