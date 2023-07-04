@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_03_200855) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_04_194729) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -317,6 +317,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_200855) do
     t.string "website"
     t.string "map_name"
     t.integer "unit_id"
+    t.text "organizer_notes"
   end
 
   create_table "login_codes", force: :cascade do |t|
