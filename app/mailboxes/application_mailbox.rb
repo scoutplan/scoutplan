@@ -14,14 +14,14 @@ class ApplicationMailbox < ActionMailbox::Base
     # Note that not all email will route to a unit, so this may be nil.
     def find_unit
       @unit = Unit.find_by(slug: @slug)
-      Rails.logger.info "Unit: #{@unit}"
+      Rails.logger.warn "Unit: #{@unit}"
     end
 
     # Given an inbound email address, extract the slug from the recipient address
     # example:
     # slug_from_recipient("troop28sanandreas@mail.scoutplan.org") => "troop28sanandreas"
     def parse_recipient
-      Rails.logger.info "Inbound email: #{mail.to.first}"
+      Rails.logger.warn "Inbound email: #{mail.to.first}"
       sender = mail.to.first.split("@").first
       sender_parts = sender.split(".")
       @slug = sender_parts.first
