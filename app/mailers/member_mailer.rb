@@ -39,7 +39,7 @@ class MemberMailer < ScoutplanMailer
     @last_ran_at = params[:last_ran_at] || @event.created_at
 
     mail(to: @member.email,
-         from: @unit.settings(:communication).from_email,
+         from: @from_address,
          subject: "#{@event.unit.name} #{@event.title} RSVPs")
   end
 
