@@ -1,0 +1,10 @@
+div(style="margin-bottom: 2em;")
+  p
+    = "You're receiving this because you're a Scoutplan administrator for #{@unit.name}, which received the following email:"
+  p
+    = raw("From: <strong>#{@email.from.first}</strong>")
+  p
+    = raw("To: <strong>#{@email.to.first}</strong>.")
+
+div(style="border-top:1px solid #ddd; padding: 2em 0;")
+  = @email.body
