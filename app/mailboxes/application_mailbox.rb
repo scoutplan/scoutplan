@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
+# KLUDGE ALERT
+# We're monkey-patching InboundEmail to add an evaluator method so that we can analyze the email
+# before hitting the routing rules.
 module ActionMailbox
-  # KLUDGE ALERT
-  # monkey-patch InboundEmail to include our custom evaluator
-  class InboundEmail
-    attr_reader :evaluator
-
-    def initialize(args)
-      super(args)
-      @evaluator = EmailEvaluator.new(self)
+  InboundEmail.class_eval do
+    def evaluator
+      @evaluator ||= EmailEvaluator.new(self)
     end
   end
 end

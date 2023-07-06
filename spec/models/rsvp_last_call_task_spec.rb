@@ -3,7 +3,6 @@ require "active_job/test_helper"
 
 RSpec.describe RsvpLastCallTask, type: :model do
   include ActiveJob::TestHelper
-  
   describe "" do
     before do
       @member = FactoryBot.create(:member)

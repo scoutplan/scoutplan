@@ -5,7 +5,7 @@ require "active_job/test_helper"
 
 RSpec.describe UnitDigestTask, type: :model do
   include ActiveJob::TestHelper
-  
+
   before do
     @unit = FactoryBot.create(:unit)
     @task = @unit.tasks.create(key: "digest", type: "UnitDigestTask")
