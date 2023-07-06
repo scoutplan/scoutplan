@@ -9,6 +9,7 @@ module Contactable
   end
 
   def emailable?
+    ap self
     contactable_object.email.present? &&
       !contactable_object.anonymous_email? &&
       active

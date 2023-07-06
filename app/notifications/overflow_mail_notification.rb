@@ -7,7 +7,7 @@
 
 class OverflowMailNotification < Noticed::Base
   deliver_by :database
-  deliver_by :email, mailer: "OverflowMailer", if: :email_notifications?
+  deliver_by :email, mailer: "OverflowMailer" #, if: :email_notifications?
 
   param :inbound_email
   param :unit
@@ -23,7 +23,8 @@ class OverflowMailNotification < Noticed::Base
   # end
 
   def email_notifications?
-    Rails.logger.warn "Proposed recipient #{recipient} emailablility: #{recipient.emailable?}"
+    puts recipient.emailable?
+    Rails.logger.debug "Proposed recipient #{recipient} emailablility: #{recipient.emailable?}"
     recipient.emailable?
   end
 end

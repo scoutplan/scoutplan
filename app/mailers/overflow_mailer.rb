@@ -9,13 +9,16 @@ class OverflowMailer < ApplicationMailer
   def overflow_mail_notification
     inbound_email = params[:inbound_email]
     recipient = params[:recipient]
+    @mail = inbound_email.mail
 
-    @unit = params[:unit]
-    @email = inbound_email.mail
-    subject = "[Delivered via Scoutplan] #{@email.subject}"
+    Rails.logger.info "Sending overflow mail to #{recipient.email}"
 
-    Rails.logger.warn "Sending overflow mail to #{recipient.email}"
 
-    mail(to: recipient.email, from: @email.from.first, subject: subject)
+    # https://stackoverflow.com/questions/64140333/is-it-possible-to-forward-the-mail-object-in-action-mailer
+    @mail.to = recipient.email
+    @mail.from = @mail.from.first
+    @mail.subject = "[Forwarded from Scoutplan] #{@mail.subject}"
+    ActionMailer::Base.wrap_delivery_behavior(@mail)
+    @mail.deliver
   end  
 end
