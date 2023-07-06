@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # The EmailEvaluator is responsible for analyzing the email to determine the appropriate mailbox
 # to route to. It is used by the ApplicationMailbox.
 class EmailEvaluator
   AUTO_RESPONDER_HEADER = "Auto-Submitted"
-  AUTO_RESPONDER_VALUES = ["auto-replied", "auto-generated"]
+  AUTO_RESPONDER_VALUES = %w[auto-replied auto-generated].freeze
   attr_reader :unit
 
   def initialize(inbound_email)
@@ -12,7 +14,7 @@ class EmailEvaluator
 
   # returns true if the email is an auto-responder
   def auto_responder?
-    return false unless (val = @mail.header["Auto-Submitted"].present?)
+    return false unless (val = @mail.header[AUTO_RESPONDER_HEADER].present?)
 
     AUTO_RESPONDER_VALUES.include?(val.value)
   end
