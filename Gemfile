@@ -79,6 +79,7 @@ group :development, :test do
   gem "byebug", "~> 11.1", platforms: %i[mri mingw x64_mingw]
   gem "dotenv-rails", "~> 2.7", groups: %i[development test]
   gem "rspec-rails", "~> 5.0"
+  gem "standard", ">= 1.0"
 end
 
 group :development do

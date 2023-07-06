@@ -5,11 +5,16 @@
 # see ApplicationMailbox for routing logic
 #
 class UnitOverflowMailbox < ApplicationMailbox
+  before_processing :find_unit
+
   def process
-    Rails.logger.warn "Processing overflow mail for unit #{@unit}"
     admins = @unit.members.admin
-    Rails.logger.warn "Found #{admins.count} admins"
     notification = OverflowMailNotification.with(inbound_email: inbound_email, unit: @unit)
     notification.deliver_later(admins)
   end
+
+  private
+    def find_unit
+      @unit = EmailEvaluator.new(inbound_email).unit
+    end
 end
