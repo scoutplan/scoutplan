@@ -2,10 +2,10 @@ require "rails_helper"
 require "action_mailbox/test_helper"
 require "active_job/test_helper"
 
-include ActionMailbox::TestHelper
-include ActiveJob::TestHelper
-
 RSpec.describe UnitOverflowMailbox, type: :mailbox do
+  include ActiveJob::TestHelper
+  include ActionMailbox::TestHelper
+
   before do
     @unit = FactoryBot.create(:unit)
     3.times do

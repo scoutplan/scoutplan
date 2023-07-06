@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module ActionMailbox
+  # KLUDGE ALERT
   # monkey-patch InboundEmail to include our custom evaluator
   class InboundEmail
     attr_reader :evaluator

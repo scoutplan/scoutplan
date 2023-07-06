@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe 'events_notifications', type: :feature do
+describe "events_notifications", type: :feature do
   # TODO: these need to be refactored into request specs
 
   # it 'does not send notifications for drafts' do

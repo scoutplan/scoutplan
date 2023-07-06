@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 require "rails_helper"
+require "active_job/test_helper"
+
+include ActiveJob::TestHelper
 
 RSpec.describe EventNotifier, type: :model do
   describe "cancellation" do
@@ -13,7 +16,7 @@ RSpec.describe EventNotifier, type: :model do
     end
 
     it "sends an email and text" do
-      expect { @notifier.send_cancellation(@member) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      expect { @notifier.send_cancellation(@member) }.to change { enqueued_jobs.count }.by(1)
 
       # Texter doesn't have a "deliveries" concept and we're relying on Twilio test credentials here, so
       # we're going to assume that if we reach this point without an error, we're good. We'll have to check
