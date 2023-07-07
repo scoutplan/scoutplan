@@ -17,8 +17,11 @@ class ApplicationMailbox < ActionMailbox::Base
   # topmost: auto responders are ignored
   routing ->(inbound_email) { inbound_email.evaluator.auto_responder? } => :auto_responder
 
-  # fallback route for unit email
-  routing ->(inbound_email) { inbound_email.evaluator.unit? } => :unit_overflow
+  # if an Event is found, route to the EventMailbox
+  routing ->(inbound_email) { inbound_email.evaluator.event.present? } => :event
+
+  # if a Unit is found, route to the UnitMailbox
+  routing ->(inbound_email) { inbound_email.evaluator.unit.present? } => :unit
 
   # fallback route for anything not handled previously
   routing all: :global_overflow
