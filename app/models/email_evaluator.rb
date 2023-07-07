@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
+require "openai"
+
 # The EmailEvaluator is responsible for analyzing the email to determine the appropriate mailbox
 # to route to. It is used by the ApplicationMailbox.
 class EmailEvaluator
   AUTO_RESPONDER_HEADER = "Auto-Submitted"
   AUTO_RESPONDER_VALUES = %w[auto-replied auto-generated].freeze
-  attr_reader :unit
+  AI_PROMPT = "Extract the names of people and whether they're attending from the email text below.\n\nText: "
+
+  attr_reader :unit, :slug, :modifier
 
   def initialize(inbound_email)
     @mail = inbound_email.mail
@@ -32,5 +36,20 @@ class EmailEvaluator
     @slug = sender_parts.first
     @modifiers = sender_parts.drop(1)
     @unit = Unit.find_by(slug: @slug)
+    prompt = "#{AI_PROMPT}\n\nText: #{@mail.body}"
+
+    ap prompt
+
+    client = OpenAI::Client.new(access_token: ENV.fetch("OPENAI_ACCESS_TOKEN"))
+    response = client.completions(
+      parameters: {
+        model: "text-davinci-003",
+        prompt: prompt,
+        temperature: 0,
+        max_tokens: 1000
+      }
+    )
+
+    ap response
   end
 end

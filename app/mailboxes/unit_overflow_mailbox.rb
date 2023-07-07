@@ -5,16 +5,10 @@
 # see ApplicationMailbox for routing logic
 #
 class UnitOverflowMailbox < ApplicationMailbox
-  before_processing :find_unit
-
   def process
-    admins = @unit.members.admin
-    notification = OverflowMailNotification.with(inbound_email: inbound_email, unit: @unit)
+    unit = inbound_email.evaluator.unit
+    admins = unit.members.admin
+    notification = OverflowMailNotification.with(inbound_email: inbound_email, unit: inbound_email.evaluator.unit)
     notification.deliver_later(admins)
   end
-
-  private
-    def find_unit
-      @unit = EmailEvaluator.new(inbound_email).unit
-    end
 end
