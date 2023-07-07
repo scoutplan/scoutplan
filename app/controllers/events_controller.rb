@@ -455,6 +455,7 @@ class EventsController < UnitContextController
 
   # permitted parameters
   def event_params
+    ap params
     p = params.require(:event).permit(:title, :event_category_id, :location, :address, :description,
                                       :short_description, :requires_rsvp, :includes_activity, :activity_name,
                                       :all_day, :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
