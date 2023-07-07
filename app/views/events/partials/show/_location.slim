@@ -3,12 +3,19 @@
 - ["departure", "arrival", "activity"].each do |location_type|
   - location_count += 1 if @event.event_locations.exists?(location_type: location_type)
 
-section#location.py-4.border-t.border-stone-800
+section#location.pt-4.border-t.border-stone-800
   - if @event.online
     p = t("events.show.captions.online")
     p = link_to @event.website, @event.website, class: "text-blue-600 font-bold external-link"
 
   - elsif location_count.positive?
+    = link_to event_map_url(@event),
+              target: "_new",
+              class: "text-sm inline-block font-bold no-underline text-rose-600 hover:text-rose-700 py-2",
+              aria: { role: "link" } do
+      i.fa-solid.fa-map.text-rose-600.mr-2
+      = t("events.show.map")
+
     = render partial: "events/partials/show/map"
 
     - count = 0
@@ -29,14 +36,3 @@ section#location.py-4.border-t.border-stone-800
 
           .table-cell.pl-2
             = render partial: "events/partials/show/show_location", locals: { location: location, location_type: location_type, short_link: true }
-
-      .table-row
-        .table-cell
-        .table-cell.pl-2
-          = link_to event_map_url(@event),
-            target: "_new",
-            class: "inline-block font-bold no-underline text-rose-600 border border-rose-600 hover:text-rose-700 hover:border-rose-700 rounded px-4 py-2",
-            aria: { role: "link" } do
-
-            i.fa-map.fas.mr-2
-            = t("events.show.map")

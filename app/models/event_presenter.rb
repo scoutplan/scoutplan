@@ -85,6 +85,7 @@ class EventPresenter
     event.location || event.address
   end
 
+  # single day: "Friday, 13 February 2015"
   def full_dates_to_s(show_year: false)
     return event.starts_at.strftime("%A, %-d %b %Y").html_safe if single_day?
 

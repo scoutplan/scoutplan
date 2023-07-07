@@ -457,7 +457,7 @@ class EventsController < UnitContextController
   def event_params
     p = params.require(:event).permit(:title, :event_category_id, :location, :address, :description,
                                       :short_description, :requires_rsvp, :includes_activity, :activity_name,
-                                      :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
+                                      :all_day, :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
                                       :note, :cost_youth, :cost_adult, :online, :website, :tag_list, :rsvp_closes_at,
                                       :notify_members, :notify_recipients, :notify_message, :document_library_ids,
