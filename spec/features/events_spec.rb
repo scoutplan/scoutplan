@@ -105,6 +105,15 @@ describe "events", type: :feature do
         visit edit_unit_event_path(@unit, @event)
         expect(page).not_to have_link(I18n.t("events.show.cancel_title"))
       end
+
+      it "hides times for all-day events" do
+        path = unit_event_path(@unit, @event)
+        visit(path)
+        expect(page).to have_content(@event.starts_at.strftime("%-I:%M %p"))
+        @event.update!(all_day: true)
+        visit(path)
+        expect(page).not_to have_content(@event.starts_at.strftime("%-I:%M %p"))
+      end
     end
 
     describe "update" do
