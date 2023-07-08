@@ -4,8 +4,9 @@
 class EventOrganizerService
   attr_accessor :event
 
-  def initialize(event)
+  def initialize(event, assigned_by)
     @event = event
+    @assigned_by = assigned_by
   end
 
   def update(event_organizer_params = {})
@@ -19,7 +20,7 @@ class EventOrganizerService
   def create_if_needed(member_ids = [])
     member_ids ||= []
     member_ids.each do |member_id|
-      event.event_organizers.find_or_create_by(unit_membership_id: member_id)
+      event.event_organizers.create_with(assigned_by: @assigned_by).find_or_create_by(unit_membership_id: member_id)
     end
   end
 

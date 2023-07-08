@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
-# class for displaying Events, specifically
+# Service class for displaying Events, specifically
 # handling things like single- versus multi-day events,
 # events that span month boundaries, etc.
+
+# rubocop:disable Metrics/ClassLength
 class EventPresenter
   include ActionView::Helpers
 
@@ -58,6 +60,9 @@ class EventPresenter
   # rubocop:enable Metrics/AbcSize
 
   # rubocop:disable Metrics/AbcSize
+  # single day: "13 February 2015"
+  # multi-day: "13–15 February 2015"
+  # spanning month boundary: "31 January–2 February 2015"
   def months_and_dates
     return event.starts_at.strftime("%-d %b %Y").html_safe if single_day?
 
@@ -184,3 +189,4 @@ class EventPresenter
   def proper_noun_list(things)
   end
 end
+# rubocop:enable Metrics/ClassLength

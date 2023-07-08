@@ -203,7 +203,7 @@ class EventsController < UnitContextController
     authorize :event, :create?
     service = EventCreationService.new(@unit)
     @event = service.create(event_params)
-    EventOrganizerService.new(@event).update(params[:event_organizers])
+    EventOrganizerService.new(@event, @current_member).update(params[:event_organizers])
     EventService.new(@event, params).process_event_shifts
     return unless @event.present?
 
@@ -232,7 +232,7 @@ class EventsController < UnitContextController
 
     EventService.new(@event, params).process_event_shifts
     EventService.new(@event, params).process_library_attachments
-    EventOrganizerService.new(@event).update(params[:event_organizers])
+    EventOrganizerService.new(@event, @current_member).update(params[:event_organizers])
     if params[:event][:attachments].present?
       params[:event][:attachments].each do |attachment|
         @event.attachments.attach(attachment)
