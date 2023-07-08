@@ -127,6 +127,19 @@ describe "events", type: :feature do
         @event.reload
         expect(page).to have_current_path(unit_event_path(@unit, @event))
       end
+
+      it "updates all day" do
+        skip
+        visit edit_unit_event_path(@unit, @event)
+
+        find(css: "#event_all_day").click
+
+        # check "#event_all_day", allow_label_click: true
+        click_button "Save Changes"
+
+        @event.reload
+        expect(@event.all_day).to be_truthy
+      end
     end
   end
 
