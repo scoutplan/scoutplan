@@ -5,7 +5,7 @@
 #
 class OverflowMailer < ApplicationMailer
   layout "basic_mailer"
-  
+
   def overflow_mail_notification
     inbound_email = params[:inbound_email]
     recipient = params[:recipient]
@@ -13,12 +13,11 @@ class OverflowMailer < ApplicationMailer
 
     Rails.logger.info "Sending overflow mail to #{recipient.email}"
 
-
     # https://stackoverflow.com/questions/64140333/is-it-possible-to-forward-the-mail-object-in-action-mailer
     @mail.to = recipient.email
     @mail.from = @mail.from.first
     @mail.subject = "[Forwarded from Scoutplan] #{@mail.subject}"
     ActionMailer::Base.wrap_delivery_behavior(@mail)
     @mail.deliver
-  end  
+  end
 end

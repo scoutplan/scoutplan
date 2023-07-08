@@ -105,6 +105,15 @@ describe "events", type: :feature do
         visit edit_unit_event_path(@unit, @event)
         expect(page).not_to have_link(I18n.t("events.show.cancel_title"))
       end
+
+      it "hides times for all-day events" do
+        path = unit_event_path(@unit, @event)
+        visit(path)
+        expect(page).to have_content(@event.starts_at.strftime("%-I:%M %p"))
+        @event.update!(all_day: true)
+        visit(path)
+        expect(page).not_to have_content(@event.starts_at.strftime("%-I:%M %p"))
+      end
     end
 
     describe "update" do
@@ -118,6 +127,19 @@ describe "events", type: :feature do
         @event.reload
         expect(page).to have_current_path(unit_event_path(@unit, @event))
       end
+
+      it "updates all day" do
+        skip
+        visit edit_unit_event_path(@unit, @event)
+
+        find(css: "#event_all_day").click
+
+        # check "#event_all_day", allow_label_click: true
+        click_button "Save Changes"
+
+        @event.reload
+        expect(@event.all_day).to be_truthy
+      end
     end
   end
 
@@ -128,7 +150,7 @@ describe "events", type: :feature do
     it "can access the event page page" do
       login_as(@normal_member.user, scope: :user)
 
-      expect { @event.event_organizers.create!(unit_membership: @normal_member) }.to change { @event.organizers.count }.by(1)
+      expect { @event.event_organizers.create!(unit_membership: @normal_member, assigned_by: @admin_member) }.to change { @event.organizers.count }.by(1)
       expect(@event.organizer?(@normal_member)).to be_truthy
       visit unit_event_path(@unit, @event)
       expect(page).to have_current_path(unit_event_path(@unit, @event))

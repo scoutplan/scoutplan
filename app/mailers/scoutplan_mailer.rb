@@ -18,7 +18,7 @@ class ScoutplanMailer < ApplicationMailer
   end
 
   def find_unit
-    @unit = @member.unit
+    @unit = @member&.unit
   end
 
   def unit_from_address_with_name

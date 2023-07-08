@@ -31,7 +31,7 @@ section.py-4
           = t("locations.captions.address_book", unit_name: @unit.name)
 
       - if Flipper.enabled? :inline_location_form, @current_member
-        = button_tag class: "px-4 py-2 font-bold rounded border border-sky-600 text-sky-600 hover:border-sky-700 hover:text-sky-700",
+        = button_tag class: "text-sm px-4 py-2 font-bold rounded border border-sky-600 text-sky-600 hover:border-sky-700 hover:text-sky-700",
                     type: "button",
                     data: { action: "click->event-edit#showLocation" } do
 
