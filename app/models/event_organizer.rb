@@ -21,6 +21,8 @@ class EventOrganizer < ApplicationRecord
   private
 
   def notify_recipient
+    return if unit_membership.user == assigned_by.user
+
     EventOrganizerAssignmentNotification.with(
       event_organizer: self
     ).deliver_later(unit_membership)
