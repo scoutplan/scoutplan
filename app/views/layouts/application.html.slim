@@ -13,7 +13,7 @@ html.scroll-smooth
     = javascript_importmap_tags
     = yield :head
 
-  body(class="dark:bg-stone-800 dark:text-stone-50 text-stone-800 #{controller_name} #{action_name} #{yield :body_classes}")
+  body(class="dark:bg-stone-900 dark:text-stone-50 text-stone-800 #{controller_name} #{action_name} #{yield :body_classes}")
     = render partial: "layouts/nav"
     = render partial: "layouts/nav_mobile"
     = render partial: "layouts/flash"

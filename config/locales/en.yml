@@ -192,7 +192,7 @@ en:
     dates:                "Dates"
 
     captions:
-      new_short: "Add"
+      new_short: "New event"
       payment_amount: "Cost per member $"   
       next_event: "Next"
       previous_event: "Previous" 

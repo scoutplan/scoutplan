@@ -1,7 +1,7 @@
 - @presenter.event = event
 
 // START ROW
-article.py-2.hover:bg-stone-100(class="relative event #{row_classes(event)}" id="event_#{event.id}")
+article.py-2.hover:bg-stone-100.dark:hover:bg-stone-700(class="relative event #{row_classes(event)}" id="event_#{event.id}")
   // anchor for scroll-to purposes
   a(name="event_#{event.id}")
 

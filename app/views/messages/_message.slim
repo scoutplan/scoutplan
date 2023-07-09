@@ -2,7 +2,7 @@
 
 - return unless MessagePolicy.new(@current_member, message).edit?
 
-article.hover:bg-stone-100
+article.hover:bg-stone-100.dark:hover:bg-stone-700
   = link_to path,
     class: "block px-2 py-4 message #{message.updated_at < 4.weeks.ago ? 'older' : 'current' }",
     data: { turbo_action: "advance" } do

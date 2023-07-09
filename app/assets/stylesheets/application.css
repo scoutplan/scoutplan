@@ -71,10 +71,25 @@ input.switch:checked + label.sm .switch-button {
 
 .sidecar:hover a {
   color: #292524;
+
 }
 
 .sidecar a:hover {
   color: rgb(230, 100, 37);
+}
+
+@media (prefers-color-scheme: dark) {
+  .sidecar a {
+    color: #d1d5db;
+  }
+
+  .sidecar:hover a {
+    color: #f3f4f6;
+  }
+
+  .sidecar a:hover {
+    color: rgb(230, 100, 37);
+  }
 }
 
 .dt-switch-container .switch-button {
