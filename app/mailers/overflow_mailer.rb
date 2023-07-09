@@ -16,6 +16,6 @@ class OverflowMailer < ApplicationMailer
 
     Rails.logger.warn "Sending overflow mail to #{recipient.email}"
 
-    mail(to: recipient.email, from: @email.from.first, subject: subject)
+    mail(to: recipient.email, from: @email.from.first, subject: subject) # rubocop:disable Style/HashSyntax
   end
 end
