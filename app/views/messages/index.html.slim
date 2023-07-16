@@ -93,9 +93,4 @@
           = render partial: "empty", locals: { message_type: "completed" } unless @completed_messages.present?
 
   javascript:
-      document.title = "Announcements · #{@unit.name}"          
-
-css:
-  .message.older {
-    display: none;
-  }
+      document.title = "Announcements · #{@unit.name}"

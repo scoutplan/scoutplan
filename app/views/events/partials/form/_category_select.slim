@@ -19,7 +19,7 @@
                 value: @event&.category&.name,
                 placeholder: "Select an event category",
                 autocomplete: "off",
-                class: "w-full border border-stone-300 rounded bg-white px-3 p-2 placeholder-stone-300 font-bold",
+                class: "w-full border border-stone-300 rounded bg-white px-3 p-2 placeholder-stone-300 font-bold dark:bg-black",
                 data: { "1p-ignore" => "true", fancy_select_target: "text", action: "blur->fancy-select#blur focus->fancy-select#searchFocus keyup->fancy-select#search" }
 
     .absolute.right-0.top-0.flex.items-center.h-12.px-3.-mt-1.disclosure
@@ -32,7 +32,7 @@
 
         - @event.unit.event_categories.order(name: :asc).each do |category|
           - classes = @event.category == category ? " selected focused" : ""
-          li.option.w-full.cursor-pointer(class="#{classes}" data-action="click->fancy-select#makeSelection mouseover->fancy-select#hover" data-text="#{category.name}" data-value="#{category.id}")
+          li.option.w-full.cursor-pointer(class="#{classes} dark:bg-black" data-action="click->fancy-select#makeSelection mouseover->fancy-select#hover" data-text="#{category.name}" data-value="#{category.id}")
             .flex.flex-row.justify-between.items-center.w-full.block.p-2
               div
                 .inline-block.w-10.text-center

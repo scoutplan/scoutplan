@@ -17,7 +17,7 @@ section.py-4
 
     = f.label :organizers, class: "block font-bold mb-1"
     
-    div.rounded.border.border-stone-300.px-2.py-0
+    div.rounded.border.border-stone-300.dark:bg-black.px-2.py-0
       .flex.flex-wrap.gap-1.items-center
         // left part: list of organizers
         div.flex.flex-wrap.gap-1(data-autocomplete-target="list")
@@ -27,7 +27,7 @@ section.py-4
         // right part: input field
         .flex-initial.relative
           = text_field_tag :organizers, "",
-                            class: "w-full focus:ring-0 focus:outline-none focus:border-0 border-0 w-full placeholder:text-stone-300",
+                            class: "w-full focus:ring-0 focus:outline-none focus:border-0 border-0 w-full placeholder:text-stone-300 dark:bg-black",
                             autocomplete: "off",
                             placeholder: "Type a name",
                             data: { autocomplete_target: "query", action: "keyup->autocomplete#search" }
