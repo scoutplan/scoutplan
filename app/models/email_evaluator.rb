@@ -38,7 +38,7 @@ class EmailEvaluator
   # Should the event be parsed by AI? It costs money
   # so we should only do it if we can get meaningful insights
   def ai_parseable?
-    @event.present?
+    @event.present? && Flipper.enabled?(:ai_event_parsing)
   end
 
   def ai_prompt
@@ -63,14 +63,10 @@ class EmailEvaluator
   end
 
   def find_event
-    ap @mail.to.first
-    ap EVENT_REGEX
     @mail.to.first.match(EVENT_REGEX) do |m|
       event_uuid = m[1]
       @event = Event.find_by(uuid: event_uuid)
       @unit = @event&.unit
-      ap @event
-      ap @unit
     end
   end
 
