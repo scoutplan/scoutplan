@@ -55,6 +55,7 @@ gem "rails-html-sanitizer", ">= 1.4.4"
 gem "remote_syslog_logger"
 gem "rexml"
 gem "rubocop", require: false
+gem "sanitize", ">= 6.0.2"
 gem "sass-rails", "~> 6.0"
 gem "seedbank"
 gem "sentry-ruby"

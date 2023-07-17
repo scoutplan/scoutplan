@@ -433,7 +433,7 @@ GEM
     rufus-scheduler (3.9.1)
       fugit (~> 1.1, >= 1.1.6)
     safely_block (0.4.0)
-    sanitize (6.0.1)
+    sanitize (6.0.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     sass-rails (6.0.0)
@@ -612,6 +612,7 @@ DEPENDENCIES
   rspec-rails (~> 5.0)
   rubocop
   ruby-lsp (~> 0.3.7)
+  sanitize (>= 6.0.2)
   sass-rails (~> 6.0)
   scout_apm
   seedbank
