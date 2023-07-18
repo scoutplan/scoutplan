@@ -18,7 +18,13 @@ class ScoutplanMailer < ApplicationMailer
   end
 
   def find_unit
-    @unit = @member.unit
+    @unit = @member&.unit
+  end
+
+  def unit_from_address_with_name
+    return unless @unit
+
+    email_address_with_name(@unit.from_address, @unit.name)
   end
 
   # given a string, prepends with the unit name

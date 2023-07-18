@@ -317,7 +317,7 @@ en:
       departs_from:             "Departs From"
       series_count:             "%{count} events in this series"
       past_warning:             "This event has already occurred."
-      map:                      "View a Map"
+      map:                      "View a larger map"
       organize:                 "Current RSVPs"
       organizer:                "Questions?"
       payment_amount_prompt:    "%{amount} per person"

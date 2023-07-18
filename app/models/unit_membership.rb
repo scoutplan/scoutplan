@@ -34,6 +34,8 @@ class UnitMembership < ApplicationRecord
   has_many :visits, class_name: "Ahoy::Visit"
   has_many :event_organizers
   has_many :organized_events, through: :event_organizers, source: :event
+  has_many :notifications, as: :recipient, dependent: :destroy
+  has_noticed_notifications
 
   # alias_attribute :member, :user
   alias_attribute :rsvps, :event_rsvps

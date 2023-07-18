@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 require "rails_helper"
+require "active_job/test_helper"
 
 RSpec.describe UnitDigestTask, type: :model do
+  include ActiveJob::TestHelper
+
   before do
     @unit = FactoryBot.create(:unit)
     @task = @unit.tasks.create(key: "digest", type: "UnitDigestTask")
@@ -26,6 +29,6 @@ RSpec.describe UnitDigestTask, type: :model do
     @unit.members.each do |member|
       Flipper.enable(:digest, member)
     end
-    expect { @task.perform }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    expect { @task.perform }.to change { enqueued_jobs.count }.by(1)
   end
 end

@@ -34,7 +34,6 @@ class Unit < ApplicationRecord
   has_settings do |s|
     s.key :security, defaults: { enable_magic_links: true }
     s.key :communication, defaults: {
-      from_email: "reminders@scoutplan.org",
       digest: true,
       rsvp_nag: true,
       daily_reminder: true
@@ -50,6 +49,10 @@ class Unit < ApplicationRecord
 
   def attachments
     ActiveStorage::Attachment.includes(:blob).with_all_variant_records.where(record_type: "Event", record_id: events.collect(&:id))
+  end
+
+  def from_address
+    slug + "@" + ENV["EMAIL_DOMAIN"]
   end
 
   def messages

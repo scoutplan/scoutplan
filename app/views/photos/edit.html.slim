@@ -1,0 +1,19 @@
+= turbo_frame_tag "main" do
+  .max-w-lg.mx-auto
+    .flex.grid.cols-4
+      - @photo.images.each do |image|
+        = turbo_frame_tag "photo-#{image.id}" do
+          = image_tag image.representation(resize_to_fit: [100, 100])
+
+    = form_with model: @photo,
+                url: unit_photo_path(@unit, @photo, event_id: params[:event_id]),
+                method: :patch,
+                local: true,
+                multipart: true,
+                data: { turbo_action: "advance" } do |f|
+      .mb-4
+        = f.label :images, "Add images", class: "block font-bold"
+        = f.file_field :images, multiple: true, class: "block w-full mt-1"
+
+      .mb-4
+        = f.submit "Upload", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"        

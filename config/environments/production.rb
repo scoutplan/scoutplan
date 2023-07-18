@@ -63,7 +63,7 @@ Rails.application.configure do
 
   # Include generic and useful information about system operation, but avoid logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII).
-  config.log_level = :info
+  config.log_level = ENV.fetch("RAILS_LOG_LEVEL") { "info" }
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
@@ -79,6 +79,8 @@ Rails.application.configure do
   # When and as that issue resolves, we'll go back to Sidekiq.
   config.active_job.queue_adapter = :sidekiq
   # config.active_job.queue_adapter = :inline
+
+  config.action_mailbox.ingress = :mailgun 
 
   config.action_mailer.raise_delivery_errors  = true
   config.action_mailer.delivery_method        = :smtp

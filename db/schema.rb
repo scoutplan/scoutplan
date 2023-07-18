@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_16_134625) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_08_153125) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -241,6 +241,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_16_134625) do
     t.string "role", default: "organizer", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "assigned_by_id"
   end
 
   create_table "event_rsvps", force: :cascade do |t|
@@ -290,6 +291,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_16_134625) do
     t.integer "cost_adult", default: 0
     t.boolean "allow_youth_rsvps", default: true
     t.integer "parent_event_id"
+    t.boolean "all_day", default: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
   end
 
   create_table "flipper_features", force: :cascade do |t|
@@ -317,6 +320,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_16_134625) do
     t.string "website"
     t.string "map_name"
     t.integer "unit_id"
+    t.text "organizer_notes"
   end
 
   create_table "login_codes", force: :cascade do |t|
@@ -379,6 +383,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_16_134625) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.string "recipient_type", null: false
+    t.bigint "recipient_id", null: false
+    t.string "type", null: false
+    t.jsonb "params"
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["read_at"], name: "index_notifications_on_read_at"
+    t.index ["recipient_type", "recipient_id"], name: "index_notifications_on_recipient"
   end
 
   create_table "packing_list_items", force: :cascade do |t|

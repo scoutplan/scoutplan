@@ -3,7 +3,7 @@
 require "openssl"
 
 #
-# This controller implements endpoints for Mailgun webhooks, as described at 
+# This controller implements endpoints for Mailgun webhooks, as described at
 # https://documentation.mailgun.com/en/latest/user_manual.html#webhooks-1
 # test with https://scoutplan.ngrok.io/webhooks/mailgun/receive
 # see /spec/support for sample webhook payloads
@@ -29,28 +29,25 @@ class MailgunController < ApplicationController
   end
 
   private
-  
+
   #
   # pass in event data and get back a handler object, if one exists
   #
   def create_handler(event_data)
     event = event_data["event"]
-    ap event
     case event
     when "failed"
       Mailgun::FailureHandler.new(event_data)
-    else
-      nil
     end
   end
-  
+
   #
   # ensure that the request is from Mailgun
   #
   def verify(token, timestamp, signature)
     signing_key = ENV["MAILGUN_INGRESS_SIGNING_KEY"]
-    digest = OpenSSL::Digest::SHA256.new
+    digest = OpenSSL::Digest.new("SHA256")
     data = [timestamp, token].join
     signature == OpenSSL::HMAC.hexdigest(digest, signing_key, data)
-  end  
+  end
 end

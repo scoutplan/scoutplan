@@ -39,7 +39,7 @@ class MemberMailer < ScoutplanMailer
     @last_ran_at = params[:last_ran_at] || @event.created_at
 
     mail(to: @member.email,
-         from: @unit.settings(:communication).from_email,
+         from: @from_address,
          subject: "#{@event.unit.name} #{@event.title} RSVPs")
   end
 
@@ -102,7 +102,11 @@ class MemberMailer < ScoutplanMailer
 
   def set_addresses
     @to_address = email_address_with_name(@member.user.email, @member.user.full_display_name)
-    @from_address = email_address_with_name(@unit.settings(:communication).from_email, @unit.name)
+    @from_address = unit_from_address_with_name
+  end
+
+  def unit_email_address
+    @unit.slug + "@" + ENV["EMAIL_DOMAIN"]
   end
 
   def daily_reminder_subject

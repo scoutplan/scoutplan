@@ -1,0 +1,6 @@
+{ Expression type: Custom
+  Raw expression: (match_header("auto-submitted", "auto-generated") or match_header("auto-submitted", "auto-replied"))
+  Description: Trap auto responders
+  Priority: 0
+  Action: stop()
+}

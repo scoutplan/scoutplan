@@ -203,7 +203,7 @@ class EventsController < UnitContextController
     authorize :event, :create?
     service = EventCreationService.new(@unit)
     @event = service.create(event_params)
-    EventOrganizerService.new(@event).update(params[:event_organizers])
+    EventOrganizerService.new(@event, @current_member).update(params[:event_organizers])
     EventService.new(@event, params).process_event_shifts
     return unless @event.present?
 
@@ -232,7 +232,7 @@ class EventsController < UnitContextController
 
     EventService.new(@event, params).process_event_shifts
     EventService.new(@event, params).process_library_attachments
-    EventOrganizerService.new(@event).update(params[:event_organizers])
+    EventOrganizerService.new(@event, @current_member).update(params[:event_organizers])
     if params[:event][:attachments].present?
       params[:event][:attachments].each do |attachment|
         @event.attachments.attach(attachment)
@@ -457,7 +457,7 @@ class EventsController < UnitContextController
   def event_params
     p = params.require(:event).permit(:title, :event_category_id, :location, :address, :description,
                                       :short_description, :requires_rsvp, :includes_activity, :activity_name,
-                                      :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
+                                      :all_day, :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
                                       :note, :cost_youth, :cost_adult, :online, :website, :tag_list, :rsvp_closes_at,
                                       :notify_members, :notify_recipients, :notify_message, :document_library_ids,

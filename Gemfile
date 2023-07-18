@@ -41,6 +41,7 @@ gem "nokogiri", ">= 1.14.3"
 gem "omniauth"
 gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection", "~> 1.0"
+gem "ruby-openai"
 gem "openweathermap"
 gem "paper_trail"
 gem "pg"
@@ -55,6 +56,7 @@ gem "rails-html-sanitizer", ">= 1.4.4"
 gem "remote_syslog_logger"
 gem "rexml"
 gem "rubocop", require: false
+gem "sanitize", ">= 6.0.2"
 gem "sass-rails", "~> 6.0"
 gem "seedbank"
 gem "sentry-ruby"
@@ -79,6 +81,7 @@ group :development, :test do
   gem "byebug", "~> 11.1", platforms: %i[mri mingw x64_mingw]
   gem "dotenv-rails", "~> 2.7", groups: %i[development test]
   gem "rspec-rails", "~> 5.0"
+  gem "standard", ">= 1.0"
 end
 
 group :development do
@@ -106,3 +109,5 @@ end
 
 # Use Redis for Action Cable
 gem "redis", "~> 4.0"
+
+gem "noticed", "~> 1.6"
