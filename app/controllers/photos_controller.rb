@@ -3,6 +3,8 @@
 # https://hashtagjohnt.com/how-to-generage-heic-previews-in-rails-using-activestorage.html
 
 class PhotosController < UnitContextController
+  before_action :find_photo, only: [:edit, :update, :destroy]
+
   def index
     if params[:event_id].present?
       @event = @unit.events.find(params[:event_id])
@@ -14,8 +16,33 @@ class PhotosController < UnitContextController
     end
   end
 
-  def new
+  def edit; end
+
+  def update
+    authorize @photo
+
+    params[:photo][:images].each do |image|
+      next unless image.is_a?(ActionDispatch::Http::UploadedFile)
+
+      if image.content_type == "image/heic"
+        converted = ConvertApi.convert("jpg", { File: image.tempfile.path})
+        @photo.images.attach(io: converted.file.io, filename: "#{image.original_filename}.jpg")
+      else
+        @photo.images.attach(image)
+      end
+    end
+    
+    @photo.save!
+    flash[:notice] = "Photo updated"
+    
+    if (event_id = params[:event_id]).present?
+      redirect_to unit_event_photos_path(@unit, event_id)
+    else
+      redirect_to unit_photos_path(@unit)
+    end
   end
+
+  def new; end
 
   def create
     photo = @unit.photos.new
@@ -54,5 +81,11 @@ class PhotosController < UnitContextController
     @photo.destroy
 
     redirect_to unit_photos_path(@unit)
+  end
+
+  private
+
+  def find_photo
+    @photo = @unit.photos.find(params[:id])
   end
 end

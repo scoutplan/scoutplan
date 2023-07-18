@@ -11,14 +11,23 @@
   .grid.grid-cols-1.gap-4.divide-y
     - @photos.each do |photo|
       article.py-6
-        p.text-sm.block.mb-3
-          span.font-bold = photo.author.short_display_name(period: false)
-          span.mx-1 &bull;
-          span.text-stone-500.font-semibold = "#{time_ago_in_words(photo.created_at)} ago"
+        header.text-sm.block.mb-3.flex.justify-between
+          // left
+          div
+            span.font-bold = photo.author.short_display_name(period: false)
+            span.mx-1 &bull;
+            span.text-stone-500.font-semibold = "#{time_ago_in_words(photo.created_at)} ago"
 
-          - if photo.event.present?
-            location.block
-              = link_to photo.event.title, unit_event_photos_path(@unit, photo.event), data: { turbo_action: "advance" }, class: "text-blue-500 underline font-semibold"
+            - if photo.event.present?
+              location.block
+                = link_to photo.event.title, unit_event_photos_path(@unit, photo.event), data: { turbo_action: "advance" }, class: "text-blue-500 underline font-semibold"
+
+          // right
+          div
+            = link_to edit_unit_photo_path(@unit, photo, event_id: photo.event_id),
+                      data: { turbo_action: "advance" } do
+              i.fa-solid.fa-pencil-alt.mr-2
+              = "Edit"
 
         .photo-wrapper.relative(data-photo-feed-carousel-image-index-value="0" data-photo-feed-carousel-image-count-value="#{photo.images.count}" data-controller="photo-feed-carousel")
 
