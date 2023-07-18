@@ -3,7 +3,7 @@
     .flex.flex-col.md:flex-row.md:items-center.justify-between
       h1.text-3xl.font-bold.mb-2 = @gallery_title
       = link_to new_unit_photo_path(@unit),
-                class: "w-full md:w-fit bg-green-600 hover:bg-green-700 text-white px-4 py-3 md:py-2 font-bold rounded text-center",
+                class: "w-full md:w-fit bg-lime-600 hover:bg-lime-700 text-white px-4 py-3 md:py-2 font-bold rounded text-center",
                 data: { turbo_action: "advance" } do
         i.fa-solid.fa-plus-circle.mr-2
         = "Add"
