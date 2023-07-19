@@ -14,7 +14,7 @@ header.mb-6
 
     .flex.flex-row.items-center
       .flex.flex-shrink
-        = f.text_field :slug, class: "w-full border rounded border-stone-300 w-fit"
+        = f.text_field :slug, class: "w-full border rounded border-stone-300 w-fit dark:bg-black dark:border-stone-500"
       
       .flex.flex-col.flex-grow-0.ml-2.font-bold
         = "@#{ENV.fetch("EMAIL_DOMAIN", "mail.scoutplan.org")}"
@@ -25,13 +25,13 @@ header.mb-6
     | Scoutplan can automatically send messages via email and SMS (your members choose) at regular intervals. 
     | Choose the types of messages you want to send.
 
-  fieldset.divide-y
+  fieldset.divide-y.dark:divide-stone-500
     - UnitTaskService::TASK_KEYS[:communication].each do |task_key, _|
       = render partial: "settings/task", locals: { task_key: task_key }
 
   footer.py-4
     = f.submit t("settings.buttons.save"),
-               class: "rounded font-bold bg-brand-500 hover:bg-brand-600 text-white px-4 py-2"
+               class: "rounded font-bold bg-lime-600 hover:bg-lime-700 text-white px-4 py-2"
 
 javascript:
   document.title = "Communication Settings · #{@unit.name}"

@@ -21,7 +21,7 @@
 
 .trix-content a {
   text-decoration: underline;
-  color: rgb(230, 100, 37);
+  color: #3b82f6;
 }
 
 html:not(.fontawesome-i2svg-complete) .icon-substitute {

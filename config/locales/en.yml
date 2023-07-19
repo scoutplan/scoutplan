@@ -571,7 +571,7 @@ en:
   payments:
     titles:
       index: "Payments"
-      setup: "Set up payments for your unit"
+      setup: "Set up credit card payments for your unit"
 
   search:
     placeholders:

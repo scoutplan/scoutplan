@@ -5,7 +5,7 @@ ul.list-none
     // Events
     li#main_nav_item_events.md:inline-block
       = link_to unit_events_path(@current_unit),
-        class: "text-brand-500 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+        class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
         data: { turbo_frame: "main", turbo_action: "advance" } do
         
           i.fa-solid.fa-calendar.fa-fw.mr-1
@@ -15,7 +15,7 @@ ul.list-none
   - if policy(:unit_membership).index?
     li#main_nav_item_members.md:inline-block
       = link_to unit_members_path(@current_unit),
-        class: "text-brand-500 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+        class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
         data: { turbo_frame: "main", turbo_action: "advance" } do
 
         i.fa-solid.fa-users.fa-fw.mr-1
@@ -25,7 +25,7 @@ ul.list-none
   - if policy(:event).plan?
     li#main_nav_item_planner.md:inline-block
       = link_to unit_plans_path(@current_unit),
-        class: "text-brand-500 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+        class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
         data: { turbo_frame: "main", turbo_action: "advance" } do
 
         i.fa-solid.fa-pen-ruler.fa-fw.mr-1
@@ -35,7 +35,7 @@ ul.list-none
   - if policy(:message).new?
     li#main_nav_item_messages.md:inline-block
       = link_to unit_messages_path(@current_unit),
-        class: "text-brand-500 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+        class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
         data: { turbo_frame: "main", turbo_action: "advance" } do
 
         i.fa-solid.fa-bullhorn.fa-fw.mr-1
@@ -45,7 +45,7 @@ ul.list-none
     - if policy(:wiki_page).index?
       li#main_nav_item_wiki.md:inline-block
         = link_to unit_wiki_pages_path(@current_unit),
-          class: "text-brand-500 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+          class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
           data: { turbo_frame: "main", turbo_action: "advance" } do
 
           i.fa-solid.fa-books.fa-fw.mr-1
@@ -55,7 +55,7 @@ ul.list-none
   - if policy(:unit_settings).edit?
     li#main_nav_item_unit_settings.md:inline-block
       = link_to unit_settings_path(@current_unit),
-        class: "text-brand-500 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+        class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
         data: { turbo_frame: "main", turbo_action: "advance" } do
 
         i.fa-solid.fa-sliders-h.fa-fw.mr-1
@@ -64,7 +64,7 @@ ul.list-none
   - if Flipper.enabled? :global_search, @current_member
     li#main_nav_item_search.md:inline-block
       div(data-controller="search")
-        = button_tag class: "text-brand-500 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+        = button_tag class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
                   data: { action: "search#show" } do
 
           i.fa-solid.fa-magnifying-glass.fa-fw.mr-1
