@@ -24,7 +24,7 @@
       = render partial: "bulk_publish_panel"
 
       .divide-y.divide-stone-300
-        = turbo_frame_tag "past_events", src: list_unit_events_path(@unit, scope: "past")
+        = turbo_frame_tag "past_events", src: list_unit_events_path(@unit, scope: "past"), loading: "lazy"
 
         = turbo_frame_tag "current_events"
           = render partial: "event_year"
