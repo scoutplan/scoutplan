@@ -2,7 +2,7 @@ header.mb-4
   h3.font-bold.text-3xl.md:text-4xl
     = @event.title
     span.align-middle.ml-2.text-base = glyph_tag(@event)
-    .text-sm.py-1.uppercase.tracking-wider.text-stone-500 = @unit.name
+    .text-sm.py-1.uppercase.tracking-wider.text-stone-500.dark:text-stone-400 = @unit.name
 
   = content_tag(:p, @event.short_description, class: "mt-2 font-bold") if @event.short_description.present?          
 

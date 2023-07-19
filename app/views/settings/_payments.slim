@@ -3,7 +3,6 @@
 - account = Stripe::Account.retrieve(@unit.payment_account.account_id)
 - stripe_login_link = Stripe::Account.create_login_link(@unit.payment_account.account_id)
 
-
 .h-4
 
 = render partial: "settings/back_to_settings"

@@ -11,7 +11,9 @@ export default class extends Controller {
 
   togglePastEvents(event) {
     this.toggleBodyClass(event, "showing-past-events");
-    document.getElementById("event_month_current_0").scrollIntoView();
+    document.getElementById("event_month_current_0").scrollIntoView({
+      behavior: "instant"
+  });
   }
 
   toggleCancelledEvents(event) {

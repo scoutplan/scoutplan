@@ -3,12 +3,12 @@
     .flex.flex-col.md:flex-row.md:items-center.justify-between
       h1.text-3xl.font-bold.mb-2 = @gallery_title
       = link_to new_unit_photo_path(@unit),
-                class: "w-full md:w-fit bg-green-600 hover:bg-green-700 text-white px-4 py-3 md:py-2 font-bold rounded text-center",
+                class: "w-full md:w-fit bg-lime-600 hover:bg-lime-700 text-white px-4 py-3 md:py-2 font-bold rounded text-center",
                 data: { turbo_action: "advance" } do
         i.fa-solid.fa-plus-circle.mr-2
         = "Add"
 
-  .grid.grid-cols-1.gap-4.divide-y
+  .grid.grid-cols-1.gap-4.divide-y.divide-stone-300.dark:divide-stone-600
     - @photos.each do |photo|
       article.py-6
         header.text-sm.block.mb-3.flex.justify-between
@@ -25,9 +25,9 @@
           // right
           div
             = link_to edit_unit_photo_path(@unit, photo, event_id: photo.event_id),
+                      class: "text-stone-500 block p-1",
                       data: { turbo_action: "advance" } do
               i.fa-solid.fa-pencil-alt.mr-2
-              = "Edit"
 
         .photo-wrapper.relative(data-photo-feed-carousel-image-index-value="0" data-photo-feed-carousel-image-count-value="#{photo.images.count}" data-controller="photo-feed-carousel")
 

@@ -21,7 +21,7 @@
 
 .trix-content a {
   text-decoration: underline;
-  color: rgb(230, 100, 37);
+  color: #3b82f6;
 }
 
 html:not(.fontawesome-i2svg-complete) .icon-substitute {
@@ -71,10 +71,25 @@ input.switch:checked + label.sm .switch-button {
 
 .sidecar:hover a {
   color: #292524;
+
 }
 
 .sidecar a:hover {
   color: rgb(230, 100, 37);
+}
+
+@media (prefers-color-scheme: dark) {
+  .sidecar a {
+    color: #d1d5db;
+  }
+
+  .sidecar:hover a {
+    color: #f3f4f6;
+  }
+
+  .sidecar a:hover {
+    color: rgb(230, 100, 37);
+  }
 }
 
 .dt-switch-container .switch-button {

@@ -1,16 +1,16 @@
 - duration_in_days = (@event.ends_at.to_date - @event.starts_at.to_date).to_i
 - multiday = duration_in_days.positive?
 
-section#date_time_card.py-4.border-t.border-stone-800
+section#date_time_card.py-4.border-t.border-stone-500
   h2.font-bold.text-lg.mb-3
     = @presenter.month_name
 
   .relative
     - if multiday
-      .absolute.top-1/2.w-full.border-t.border-stone-800
+      .absolute.top-1/2.w-full.border-t.border-stone-800.dark:border-stone-500
 
     .flex.flex-row.justify-between.items-center.relative
-      .start-dayz.block.bg-white.pr-2
+      .start-dayz.block.bg-white.dark:bg-stone-900.pr-2
         .uppercase.text-sm.font-bold.tracking-wider = @event.starts_at.in_time_zone.strftime('%a')
         .font-bold.text-5xl = @event.starts_at.day
         - unless @event.all_day?
@@ -21,28 +21,28 @@ section#date_time_card.py-4.border-t.border-stone-800
               = @event.ends_at.in_time_zone.strftime('%-I:%M %p')
 
       - if multiday && duration_in_days < 5
-        .interim-day.bg-white.text-purple-500.px-2
+        .interim-day.bg-white.dark:bg-stone-900.dark:bg-transparent.text-purple-500.px-2
           i.fa-solid.fa-moon
 
         - interim_date = @event.starts_at + 1.day
         - while interim_date.beginning_of_day < @event.ends_at.beginning_of_day
-          .interim-day.bg-white.text-stone-500.px-2
+          .interim-day.bg-white.dark:bg-stone-900.text-stone-500.px-2
             .uppercase.text-xs.font-bold.tracking-wider = interim_date.in_time_zone.strftime('%a')
             .font-bold.text-2xl = interim_date.day
 
-          .interim-day.bg-white.text-purple-500.px-2
+          .interim-day.bg-white.dark:bg-stone-900.text-purple-500.px-2
             i.fa-solid.fa-moon
 
           - interim_date = interim_date + 1.day
 
       - elsif multiday
-        .interim-day.bg-white.px-2
+        .interim-day.bg-white.dark:bg-stone-900.px-2
           .uppercase.font-bold.tracking-wider
             i.fa-solid.fa-fw.fa-moon.text-purple-500.mr-1
             = "#{duration_in_days} Nights"
 
       - if multiday
-        .end-day.bg-white.pl-2
+        .end-day.bg-white.dark:bg-stone-900.pl-2
           .uppercase.text-sm.font-bold.tracking-wider = @event.ends_at.in_time_zone.strftime('%a')
           .font-bold.text-5xl = @event.ends_at.day
           - unless @event.all_day?

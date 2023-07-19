@@ -16,30 +16,35 @@ section.py-4
     = f.label :starts_at, class: "font-bold block mb-1"
 
     .flex.flex-grow.gap-x-4.items-center
-      = f.date_field :starts_at_date, class: "flex flex-grow border border-stone-300 rounded p-2", tabindex: -1,
+      = f.date_field :starts_at_date,
+                     class: "flex flex-grow border border-stone-300 rounded p-2 dark:bg-black",
+                     tabindex: -1,
                      data: { target: "event-edit.startsAtDate", action: "change->event-edit#updateStartsAt" }
+
       
       .not-all-day.inline-block.flex.flex-grow.items-center.gap-x-4
         span.font-bold = "at"
-        
         = f.time_field :starts_at_time,
-          class: "flex flex-grow border border-stone-300 rounded p-2",
+          class: "flex flex-grow border border-stone-300 rounded p-2 dark:bg-black",
           list: "suggested_times",
           tabindex: -1,
           value: @event.starts_at.strftime("#{ @format_time }")
+
 
   // ends at
   .py-2
     = f.label :ends_at, class: "font-bold block mb-1"
 
     .flex.flex-grow.gap-x-4.items-center
-      = f.date_field :ends_at_date, class: "flex flex-grow border border-stone-300 rounded p-2", tabindex: -1
+      = f.date_field :ends_at_date,
+                     class: "flex flex-grow border border-stone-300 rounded p-2 dark:bg-black",
+                     tabindex: -1
       
+
       .not-all-day.inline-block.flex.flex-grow.items-center.gap-x-4
         span.font-bold = "at"
-
         = f.time_field :ends_at_time,
-          class: "flex flex-grow border border-stone-300 rounded p-2",
+          class: "flex flex-grow border border-stone-300 rounded p-2 dark:bg-black",
           step: "900",
           tabindex: -1,
           value: @event.ends_at.strftime("#{ @format_time }")
@@ -63,7 +68,7 @@ section.py-4
                    class: "bg-white rounded w-full p-2 inline-block"
 
   // timezone message
-  p.text-gray-500
+  p.text-sm.text-stone-400.mt-1
     = t("events.form.timezone_prompt", timezone_name: @current_unit.settings(:locale).time_zone)
 
   datalist#suggested_times

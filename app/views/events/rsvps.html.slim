@@ -1,6 +1,6 @@
 = turbo_frame_tag "main"
   .max-w-6xl.mx-auto
-    header.sticky.top-0.bg-white.pt-4.pb-2.border-b
+    header.sticky.top-0.pt-4.pb-2.border-b
       .flex.justify-between
         // left side
         div
@@ -75,7 +75,7 @@
               placeholder: t("events.organize.placeholders.search"),
               id: "search_term",
               autocomplete: :off,
-              class: "max-w-full w-96 rounded border border-stone-200 bg-stone-100 focus:ring-brand-500 placeholder-stone-400",
+              class: "max-w-full w-96 rounded border border-stone-200 bg-stone-100 focus:ring-brand-500 placeholder-stone-400 dark:bg-black dark:border-stone-500",
               onkeyup: "performNameSearch();"
 
             i.fa-magnifying-glass.fas.absolute.right-4(style="top:50%;transform:translateY(-50%);") 
@@ -86,7 +86,7 @@
           i.fa-info-circle.fas.mr-2
           = flash[:notice]
 
-    section.max-w-6xl.mx-auto.grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-2.xl:grid-cols-4.gap-2.mt-2
+    section.max-w-6xl.mx-auto.grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-2.xl:grid-cols-4.gap-1.mt-2
       // ACCEPTED
       .bg-green-50.rounded.p-4#accepted_rsvp_container
         header
@@ -165,7 +165,7 @@
       // NON-INVITEES
       .bg-zinc-100.rounded.p-4
         header.flex.justify-between
-          h2.text-lg.font-bold
+          h2.text-lg.font-bold.text-zinc-700
             i.fa-hand-wave.fas.text-stone-500.mr-2
             = t("members.statuses.registered")
 

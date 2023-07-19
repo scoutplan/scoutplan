@@ -18,7 +18,7 @@
 
   .relative
     = f.text_area(:message,
-                  class: "w-full border border-stone-300 placeholder-stone-300 rounded p-2 text-sm text-stone-900 h-20 pr-10",
+                  class: "w-full border border-stone-300 dark:bg-black dark:border-stone-600 placeholder-stone-300 rounded p-2 text-sm text-stone-900 h-20 pr-10",
                   placeholder: "Type a new message",
                   maxlength: "120",
                   autocapitalize: "on",
@@ -28,7 +28,7 @@
       = f.button type: "submit", title: "Send message", id: "discussion_submit_button" do
         .fa-stack
           i.fa-solid.fa-circle.fa-stack-2x.text-sky-500
-          i.fa-solid.fa-paper-plane.fa-stack-1x.fa-inverse
+          i.fa-solid.fa-paper-plane.fa-stack-1x.fa-inverse.dark:text-sky-900
 
   kbd.text-xs.font-sans.font-semibold.text-right.text-stone-400.block
     - if request.headers["User-Agent"]&.include?("Macintosh")

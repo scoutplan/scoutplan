@@ -5,7 +5,7 @@
     = form_tag bulk_update_unit_members_path(@unit), id: "bulk_edit_form"
       = render "member_bulk_edit_panel"
 
-      .divide-y
+      .divide-y.divide-stone-300
         - ("A".."Z").each do |letter|
           - letter_memberships = @unit_memberships.select{ |m| m.first_name.first.downcase == letter.downcase }
           = render partial: "member_index", locals: { letter: letter, unit_memberships: letter_memberships } if letter_memberships.present?

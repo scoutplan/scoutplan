@@ -67,13 +67,13 @@
               i.fa-clock.fas.mr-2
               = t("messages.index.legend_queued")
 
-          .divide-y
+          .divide-y.dark:divide-stone-500
             = render partial: "message", collection: @queued_messages
           = render partial: "empty", locals: { message_type: "queued" } unless @queued_messages.present?
 
         // PENDING
         .tab#messages_pending.hidden
-          .divide-y
+          .divide-y.divide-y.dark:divide-stone-500
             = render partial: "message", collection: @pending_messages
           = render partial: "empty", locals: { message_type: "pending" } unless @pending_messages.present?
 
@@ -83,12 +83,12 @@
               i.fa-thumbtack.fas.mr-2
               = t("messages.index.legend_active")
 
-          .divide-y
+          .divide-y.divide-y.dark:divide-stone-500
             = render partial: "message", collection: @pinned_messages
           = render partial: "empty", locals: { message_type: "pinned" } unless @pinned_messages.present?
 
         .tab#messages_done.hidden
-          .divide-y
+          .divide-y.divide-y.dark:divide-stone-500
             = render partial: "message", collection: @completed_messages
           = render partial: "empty", locals: { message_type: "completed" } unless @completed_messages.present?
 
