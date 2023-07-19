@@ -47,13 +47,13 @@ class EventsController < UnitContextController
 
     case params[:scope]
     when "future"
-      query.start_date = 1.month.from_now.end_of_month + 1.day
+      query.start_date = 3.months.from_now.end_of_month + 1.day
     when "past"
       query.end_date = Date.today.at_beginning_of_month - 1.day
     else
       if variation == "list"
         query.start_date = Date.today.at_beginning_of_month
-        query.end_date = 1.month.from_now.end_of_month
+        query.end_date = 3.months.from_now.end_of_month
       end
     end
 
