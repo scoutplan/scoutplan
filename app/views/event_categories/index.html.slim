@@ -13,11 +13,11 @@
           i.fa-solid.fa-plus.mr-2
           = t("global.add")
 
-    ul.divide-y
+    ul.divide-y.dark:divide-stone-600
       - @unit.event_categories.order(:name).each do |category|
         li
           = link_to edit_unit_event_category_path(@unit, category),
-            class: "block px-2 py-2 hover:bg-stone-100",
+            class: "block px-2 py-2 hover:bg-stone-100 dark:hover:bg-black",
             data: { turbo_action: "advance" } do
 
             i.fas(class="fa-#{ category.glyph } fa-fw mr-2" style="color: #{ category.color }")

@@ -8,7 +8,10 @@ header.mb-8
 
 = form_for @unit, url: unit_path(@unit), class: 'w-full', builder: ApplicationFormBuilder do |f|
   div.text-center.mb-6
-    = image_tag(@unit.logo, class: "mx-auto mb-4") if @unit.logo.attached?
+    - if @unit.logo.attached?
+      = image_tag @unit.logo,
+                  class: "mx-auto mb-4 dark:invert"
+                  
     = f.file_field :logo, class: "hidden", id: "file_selection_input"
     = button_tag "Upload a logo",
                  class: "font-bold rounded border px-4 py-2 text-violet-600 border-violet-600 hover:text-violet-700 hover:border-violet-700",
@@ -18,7 +21,7 @@ header.mb-8
     article.mb-6
       = f.label :name, class: "block font-bold mb-1"
       = f.text_field :name,
-        class: "border border-stone-500 rounded p-2 w-full placeholder-stone-300",
+        class: "border border-stone-500 rounded p-2 w-full placeholder-stone-300 dark:bg-black",
         autocomplete: "off",
         autofocus: true,
         placeholder: "e.g. Troop 123"
@@ -26,15 +29,19 @@ header.mb-8
     article.mb-6
       = f.label :location, class: "block font-bold mb-1"
       = f.text_field :location,
-        class: "border border-stone-500 rounded p-2 w-full placeholder-stone-300",
+        class: "border border-stone-500 rounded p-2 w-full placeholder-stone-300 dark:bg-black",
         autocomplete: "off",
         autofocus: true,
         placeholder: "City name"
 
     article.mb-4
       = f.label :time_zone, class: "block font-bold mb-1"
-      = time_zone_select("settings", "locale[time_zone]", nil, { default: @unit.settings(:locale).time_zone }, { class: "w-full rounded border-stone-500" })
+      = time_zone_select "settings",
+                         "locale[time_zone]",
+                          nil,
+                          { default: @unit.settings(:locale).time_zone },
+                          { class: "w-full rounded border-stone-500  dark:bg-black" }
 
   footer.flex.flex-row.text-center.my-4
     div
-      = f.submit "Save changes", class: "px-6 py-2 rounded bg-brand-500 text-white font-bold"
+      = f.submit "Save changes", class: "px-6 py-2 rounded bg-lime-600 hover:bg-lime-700 text-white font-bold"

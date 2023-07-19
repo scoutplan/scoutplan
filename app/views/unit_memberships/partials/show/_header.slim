@@ -1,5 +1,13 @@
 // modal header
 header.mb-2.pb-2.border-b.border-stone-800
+  = link_to unit_members_path(@unit),
+            class: "block font-bold text-sky-800 dark:text-sky-300 hover:text-sky-900 dark:hover:text-sky-400 mb-4",
+            data: { turbo_action: "advance" } do
+    i.fa-stack
+      i.fa-regular.fa-circle.fa-stack-2x
+      i.fa-solid.fa-arrow-left.fa-stack-1x
+    = "Back to member list"  
+
   h3.font-bold.text-3xl.mb-2
     = @target_membership.full_display_name
 

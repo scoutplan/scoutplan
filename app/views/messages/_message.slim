@@ -39,9 +39,6 @@ article.hover:bg-stone-100.dark:hover:bg-stone-700
         - else
           = t("time_ago", value: distance_of_time_in_words_to_now(message.updated_at))
 
-      .w-1/4.py-2
-        hr
-
       // body preview
-      div.truncate.message-preview(style="max-width: calc(100% - 12rem;")
+      div.mt-1.truncate.message-preview(style="max-width: calc(100% - 12rem;")
         = strip_tags(message.body)          
