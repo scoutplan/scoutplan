@@ -83,11 +83,12 @@ en:
     events:        "Schedule"
     members:       "Members"
     planner:       "Planner"
-    communication: "Announcements"
+    communication: "Email"
     wiki:          "Wiki"
 
   profile:
     edit: "Settings"
+    settings: "Your Preferences"
     first_name: "First name"
     last_name: "Last name"
     nickname: "Nickname"
@@ -110,11 +111,11 @@ en:
 
   announcements:
     titles:
-      index: "Announcements"
+      index: "Email"
 
     index:
-      write_one_now: "Write one now..."
-      empty: "No %{message_type} announcements."      
+      write_one_now: "Write one now"
+      empty: "No %{message_type} emails."      
       
     title: "Messaging"
     new_item_description: "Announcements appear in the %{unit_name} weekly digest once they're approved"
@@ -592,17 +593,17 @@ en:
       will_send_on: "Will send on %{send_date}"
       sent_tab:     "Pinned"
       done_tab:     "Completed"
-      title:        "Announcements"
-      legend_active: "Pinned announcements appear in the weekly email newsletter."
-      legend_queued: "Queued announcements have a 'Don't send until' date in the future."
+      title:        "Email"
+      legend_active: "Pinned emails appear in the weekly email newsletter."
+      legend_queued: "Queued emails have a 'Don't send until' date in the future."
       pinned_until: "Pinned until %{pin_until}"
 
     new:
       buttons:
-        cancel: "Back to announcements list"
+        cancel: "Back to email list"
 
     tooltips:
-      new_message: "Write a new announcement"
+      new_message: "Write a new email"
 
     show:
       send_dates:   "Originally posted by %{author} from %{start_date} to %{end_date}"
@@ -611,9 +612,9 @@ en:
     captions:
       save_draft:   "Save Draft"
       send_preview: "Send Preview"
-      send_message: "Post Announcement"
-      new_message:  "New Announcement"
-      duplicate:    "Duplicate This Announcement"
+      send_message: "Send Email"
+      new_message:  "New Email"
+      duplicate:    "Duplicate This Email"
       delete_draft: "Delete Draft"
 
     form:
@@ -636,18 +637,18 @@ en:
         recipients: "Type member names"
 
       titles:
-        edit: "Edit Announcement"
-        new:  "New Announcement"
+        edit: "Edit Email"
+        new:  "New Email"
 
     notices:
       draft_saved:        "Draft message saved"
       preview_sent:       "Preview sent"
       message_sent:       "Message sent"
       message_queued:     "Message queued to send later"
-      duplicate_success:  "Your Announcement has been duplicated"
-      delete_success:     "Your Announcement has been deleted"
-      unpin_success:      "Your Announcement has been taken down"
-      pending_success:    "Your Announcement has been sent for approval"
+      duplicate_success:  "Your Email has been duplicated"
+      delete_success:     "Your Email has been deleted"
+      unpin_success:      "Your Email has been taken down"
+      pending_success:    "Your Email has been sent for approval"
 
   settings:
     buttons:

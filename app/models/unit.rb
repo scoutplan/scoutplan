@@ -114,6 +114,7 @@ class Unit < ApplicationRecord
 
   def generate_slug
     return if slug.present?
+    return unless name.present?
 
     candidate = base = name.parameterize
     
