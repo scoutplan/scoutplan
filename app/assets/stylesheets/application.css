@@ -24,6 +24,18 @@
   color: #3b82f6;
 }
 
+trix-toolbar .trix-button-row {
+  display: block;
+}
+
+.trix-button-group {
+  float: left;
+}
+
+.trix-button-group.trix-button-group--history-tools {
+  float: right;
+}
+
 html:not(.fontawesome-i2svg-complete) .icon-substitute {
   display: inherit;
 }

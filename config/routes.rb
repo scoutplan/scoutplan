@@ -53,6 +53,9 @@ Rails.application.routes.draw do
     resources :messages, path: "email" do
       post "duplicate"
       post "unpin", as: "unpin"
+      collection do
+        post "recipients", as: "recipients"
+      end
     end
 
     resources :locations

@@ -1,0 +1,33 @@
+aside.xl:absolute.xl:-ml-60.xl:w-48.sidecar
+  nav.flex.flex-col.tab-menu
+    = link_to "#drafts",
+      data: { tab_target: "#messages_drafts" },
+      class: "block tab-link py-1 font-bold" do
+
+        i.fa-solid.fa-fw.fa-file.mr-1
+        = "Drafts"
+        - if @draft_messages.present?
+          i.fa-solid.fa-circle.fa-sm.text-brand-500.ml-1(data-fa-transform="shrink-4 up-4")
+
+    = link_to "#pending",
+      data: { tab_target: "#messages_pending" },
+      class: "block tab-link py-1 0 font-bold" do
+
+        i.fa-solid.fa-fw.fa-thumbs-up.mr-1
+        = "Waiting for approval"
+        - if @pending_messages.present?
+          i.fa-solid.fa-circle.fa-sm.text-brand-500.ml-1(data-fa-transform="shrink-4 up-4")              
+
+    = link_to "#queued",
+      data: { tab_target: "#messages_queued" },
+      class: "block tab-link py-1 0 font-bold" do
+
+        i.fa-solid.fa-fw.fa-calendar-days.mr-1
+        = "Send Later"
+
+    = link_to "#done",
+      data: { tab_target: "#messages_done" },
+      class: "block tab-link py-1 0 font-bold" do
+
+        i.fa-solid.fa-fw.fa-paper-plane.mr-1
+        = t("messages.index.done_tab")    

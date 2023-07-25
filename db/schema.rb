@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_08_153125) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_23_205104) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -373,6 +373,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_08_153125) do
     t.string "recipient_details"
     t.boolean "deliver_via_digest", default: false
     t.boolean "deliver_via_notification", default: true
+    t.string "member_status", default: "active"
   end
 
   create_table "news_items", force: :cascade do |t|

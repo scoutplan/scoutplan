@@ -3,7 +3,6 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "trix"
 import "@rails/actiontext"
-import "@mapbox/mapbox-sdk"
 
 import * as ActionCable from "@rails/actioncable"
 ActionCable.logger.enabled = true

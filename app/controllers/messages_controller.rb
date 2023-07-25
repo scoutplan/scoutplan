@@ -3,7 +3,8 @@
 # Controller for sending messages. Interfaces between
 # UI and *Notifier classes (e.g. MemberNotifier)
 class MessagesController < UnitContextController
-  before_action :find_message, except: [:index, :new, :create]
+  EVENT_REGEXP = /event_(\d+)_attendees/.freeze
+  before_action :find_message, except: [:index, :new, :create, :recipients]
 
   def index
     @draft_messages   = @unit.messages.draft
@@ -56,6 +57,31 @@ class MessagesController < UnitContextController
   def unpin
     @message.update(pin_until: Time.now)
     redirect_to unit_messages_path(@unit), notice: t("messages.notices.unpin_success")
+  end
+
+  # compute the recipients for a message based on the params
+  # passed in the request
+  def recipients
+    # pull parameters
+    p = params.permit(:audience, :member_type, :member_status)
+    audience = p[:audience]
+    member_type = p[:member_type] == "youth_and_adults" ? %w[adult youth] : %w[adult]
+    member_status = p[:member_status] == "active_and_registered" ? %w[active registered] : %w[active]
+
+    # start building up the scope
+    scope = @unit.unit_memberships.joins(:user).order(:last_name)
+    scope = scope.where(member_type: member_type) # adult / youth
+    
+    # filter by audience
+    if audience =~ EVENT_REGEXP
+      event = Event.find($1)
+      scope = scope.where(id: event.rsvps.pluck(:unit_membership_id))
+    else
+      scope = scope.where(status: member_status) # active / friends & family
+    end
+
+    # now dump it
+    @recipients = scope.all
   end
 
   private

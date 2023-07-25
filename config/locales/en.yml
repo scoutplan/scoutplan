@@ -612,8 +612,8 @@ en:
     captions:
       save_draft:   "Save Draft"
       send_preview: "Send Preview"
-      send_message: "Send Email"
-      new_message:  "New Email"
+      send_message: "Send Now"
+      new_message:  "New email"
       duplicate:    "Duplicate This Email"
       delete_draft: "Delete Draft"
 
@@ -638,7 +638,7 @@ en:
 
       titles:
         edit: "Edit Email"
-        new:  "New Email"
+        new:  "New email"
 
     notices:
       draft_saved:        "Draft message saved"
