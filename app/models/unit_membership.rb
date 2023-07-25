@@ -8,7 +8,7 @@
 #
 class UnitMembership < ApplicationRecord
   ROLES = %w[member admin event_organizer].freeze
-  
+
   include Flipper::Identifier
   include Contactable
 

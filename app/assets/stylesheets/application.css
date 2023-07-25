@@ -201,3 +201,11 @@ table.divide-y tr:not(:last-child) {
 form.is-dirty .dirty-warning {
   display: block;
 }
+
+.dropdown .dropdown-menu {
+  display: none;
+}
+
+.dropdown.dropdown-active .dropdown-menu {
+  display: block;
+}

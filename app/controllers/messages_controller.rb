@@ -71,7 +71,7 @@ class MessagesController < UnitContextController
     # start building up the scope
     scope = @unit.unit_memberships.joins(:user).order(:last_name)
     scope = scope.where(member_type: member_type) # adult / youth
-    
+
     # filter by audience
     if audience =~ EVENT_REGEXP
       event = Event.find($1)
@@ -80,8 +80,18 @@ class MessagesController < UnitContextController
       scope = scope.where(status: member_status) # active / friends & family
     end
 
-    # now dump it
     @recipients = scope.all
+
+    # ensure that parents are included if any children are included
+    parent_relationships = MemberRelationship.where(child_unit_membership_id: @recipients.map(&:id))
+    parents = UnitMembership.where(id: parent_relationships.map(&:parent_unit_membership_id))
+    @recipients += parents
+
+    # de-dupe it
+    @recipients.uniq!
+
+    # filter out non-emailable members
+    @recipients = @recipients.select(&:emailable?)
   end
 
   private

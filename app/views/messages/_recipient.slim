@@ -1,1 +1,3 @@
-li = recipient.short_display_name
+li
+  = recipient.full_display_name
+  span.text-stone-500 = " <#{recipient.email}>"

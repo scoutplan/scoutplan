@@ -1,13 +1,13 @@
-- recipients = [ ["All #{@unit.name} Members", "everyone", "people-group", "#333"] ]
+- recipients = [ ["All #{@unit.name} Members", "everyone", "people-group", "#913F17"] ]
 
 - events = @unit.events.recent.rsvp_required.published
 / - recipients << ["", nil] if events.present?
 
 - events.each do |event|
-  - recipients << ["#{event.title} Attendees", "event_#{event.id}_attendees", event.category.glyph, event.category.color, "ended #{distance_of_time_in_words_to_now(event.ends_at)} ago"]
+  - recipients << ["#{event.title} Attendees & Guardians", "event_#{event.id}_attendees", event.category.glyph, event.category.color, "ended #{distance_of_time_in_words_to_now(event.ends_at)} ago"]
 
 - @unit.events.published.upcoming.rsvp_required.each do |event|
-  - recipients << ["#{event.title} Attendees", "event_#{event.id}_attendees", event.category.glyph, event.category.color, "starts in #{distance_of_time_in_words_to_now(event.starts_at)}"]
+  - recipients << ["#{event.title} Attendees & Guardians", "event_#{event.id}_attendees", event.category.glyph, event.category.color, "starts in #{distance_of_time_in_words_to_now(event.starts_at)}"]
 
 = form_with model: @message,
             url: @message.new_record? ? unit_messages_path(@unit) : unit_message_path(@unit, @message),
@@ -25,17 +25,33 @@
                     class: "font-bold w-full border border-stone-400 rounded bg-white dark:bg-black dark:border-stone-500 p-2 disabled:text-stone-400"
 
 
-    // TO
-    div.relative
+    // 'TO' SECTION
+    div#recipient_wrapper.dropdown.relative(data-controller="dropdown" data-action="keydown->dropdown#handleKeydown")
 
-      #audience_list.absolute.top-full.w-full.h-60.bg-white.dark:bg-black.drop-shadow-lg.border.border-stone-200
-        ul
+      // recipient dropdown box
+      #audience_list.dropdown-menu.absolute.top-full.w-full.h-60.bg-white.overflow-scroll.dark:bg-black.drop-shadow-lg.border.border-stone-200.dark:border-stone-700
+        #recipient_list.absolute.inset-0.bg-white.dark:bg-black.z-10.overflow-scroll.hidden(data-message-form-target="recipientList")
+          footer.fixed.bottom-0.w-full.bg-white.dark:bg-black.border-t.text-right
+
+            a.text-sm.block.p-2.text-blue-500.font-semibold(href="#" data-action="message-form#toggleRecipientList" )
+              = "Hide recipients"
+
+          #recipient_list_content
+
+        ul(data-message-form-target="audienceList")
           - recipients.each do |recipient|
-            li
-              = link_to "#",
-                        class: "block px-3 py-2 hover:bg-stone-200" do
+            - classes = recipient[1] == "everyone" ? "active" : ""
 
-                .flex.flex-row.gap-1.items-center
+            li.audience-item(class="#{classes}")
+
+              = label_tag nil do
+                = radio_button_tag :audience,
+                                    recipient[1],
+                                    recipient[1] == "everyone",
+                                    class: "hidden inline-block audience-checkbox",
+                                    data: { action: "message-form#updateRecipients", message_form_audience_name: recipient[0] }
+
+                span.flex.flex-row.gap-1.items-center.hover:bg-stone-200.dark:hover:bg-stone-700.py-3.px-2
                   i.fa-stack(style="color: #{recipient[3]}")
                     i.fa-solid.fa-circle.fa-stack-2x
                     i.fa-solid.fa-stack-1x.text-white(class="fa-#{recipient[2]}")
@@ -43,10 +59,10 @@
                   span
                     = recipient[0]
                     - if recipient[4]
-                      .text-sm.text-stone-500 = recipient[4]
+                      .text-sm = recipient[4]
 
         // switches
-        .flex.flex-col.md:flex-row.gap-0.md:gap-4.px-3.absolute.bottom-0.w-full.border-t
+        .flex.flex-col.md:flex-row.gap-0.md:gap-4.px-3.absolute.bottom-0.w-full.border-t.items-center
           = render partial: "components/switch", locals: { checked: @message.member_type == "adults_only",
                                                             label: "Only send to adults",
                                                             object_name: "message",
@@ -66,37 +82,37 @@
                                                             unchecked_value: "active",
                                                             css_classes: "py-2",
                                                             size: "sm",
-                                                            data: { action: "message-form#updateRecipients", "message-form-target" => "memberStatusCheckBox" } }                        
+                                                            data: { action: "message-form#updateRecipients", "message-form-target" => "memberStatusCheckBox" } }
 
-      #recipient_list.absolute.right-10.top-20.mt-1.w-48.h-80.p-2.bg-sky-600.text-sky-100.font-bold.rounded.z-20.overflow-scroll.hidden(data-message-form-target="recipientList")
+            #recipient_list.absolute.right-10.top-20.mt-1.w-48.h-80.p-2.bg-sky-600.text-sky-100.font-bold.rounded.z-20.overflow-scroll.hidden(data-message-form-target="recipientList")
+          
+          = link_to "#",
+                    class: "text-blue-500 text-sm font-bold ml-auto",
+                    data: { action: "message-form#toggleRecipientList" } do
+            
+            = "Show recipients"
 
+      // TO row
       .flex.flex-row.gap-6.items-center
-        = f.label :groups, "To", class: "inline-block py-2 font-bold"
 
-        // right
-        .w-full.cursor-pointer
-          .py-3.flex.flex-row.justify-between.items-center
-            div.left
-              = "Active #{@unit.name} members"
-              = link_to "#",
-                        title: "Click to see a list of recipients",
-                        class: "mx-2 text-sm rounded rounded-xl bg-stone-300 text-stone-800 px-3 py-1 font-semibold",
-                        data: { action: "message-form#toggleRecipientList" } do
-                span#recipient_count = "4"
+        // TO label
+        = f.label :groups, "To", class: "inline-block py-3 font-bold"
 
-            div.right
-              i.fa-solid.fa-chevron-down.text-stone-500
-          / // recipient count pill
+        // TO field (simulates a combo box)
 
-          / // dropdown
-          / = f.select :recipients,
-          /             recipients,
-          /             { },
-          /             data: { action: "message-form#updateRecipients", "message-form-target" => "audienceSelect" },
-          /             class: "px-0 inline-block font-bold w-full dark:bg-black border-0 focus:outline-none focus:ring-0"
+        = link_to "#",
+                  class: "block w-full flex flex-row justify-between items-center",
+                  data: { dropdown_target: "toggle", action: "dropdown#toggle" } do
 
+          div.left
+            span(data-message-form-target = "audienceName") = "Active #{@unit.name} members"
 
+            // recipient count pill
+            span#recipient_count.mx-2.text-sm.rounded.rounded-xl.bg-stone-300.text-stone-800.px-3.py-1.font-semibold
 
+          // chevron
+          div.right
+            i.fa-solid.fa-chevron-down.text-stone-500
 
     // SUBJECT
     div.flex.flex-row.gap-6.py-3.items-center
@@ -105,14 +121,16 @@
       = f.text_field :title,
                       autofocus: true,
                       autocomplete: "off",
-                      class: "py-0 w-full border-0 bg-white dark:bg-black placeholder-stone-400 dark:placeholder-stone-500 disabled:text-stone-300 disabled:placeholder-stone-200 ring-0 focus:ring-0 px-0",
-                      placeholder: t("messages.form.placeholders.subject")
+                      class: "p-0 w-full border-0 bg-transparent placeholder-stone-400 dark:placeholder-stone-500 disabled:text-stone-300 disabled:placeholder-stone-200 ring-0 focus:ring-0",
+                      placeholder: t("messages.form.placeholders.subject"),
+                      data: { message_form_target: "subjectTextBox", action: "message-form#validate" }
 
     // BODY
     div.py-2
       = f.rich_text_area :body,
-                         class: "p-0 focus:outline-none border-0 bg-white dark:bg-black overflow-auto h-48 border border-stone-400 dark:border-stone-500 placeholder-stone-400 dark:placeholder-stone-500",
-                         placeholder: "Type your message..."
+                         class: "p-0 focus:outline-none border-0 overflow-auto border border-stone-400 dark:border-stone-500 placeholder-stone-400 dark:placeholder-stone-500",
+                         placeholder: "Type your message...",
+                         data: { action: "message-form#validate" }
 
     // FOOTER
     footer.border-t.py-4.dark:border-stone-500
@@ -127,12 +145,17 @@
 
         // LEFT SIDE
         div.flex.flex-row.gap-0
+
+          // SEND NOW BUTTON
+
           = f.button submit_caption,
                     type: "submit",
                     name: "commit",
+                    disabled: true,
                     value: t("messages.captions.send_message"),
-                    class: "inline-block px-4 py-2 font-bold text-white bg-lime-600 hover:bg-lime-700 disabled:bg-lime-100 rounded",
-                    id: "send_message_button"    
+                    class: "inline-block px-4 py-2 font-bold text-white bg-lime-600 hover:bg-lime-700 disabled:bg-lime-200 rounded",
+                    id: "send_message_button",
+                    data: { message_form_target: "sendMessageButton" } do
 
           .spacer.w-6
         
@@ -169,13 +192,11 @@
                     class: "text-xl w-full md:w-fit px-3 py-2 text-lime-600 hover:text-lime-700 dark:hover:text-stone-300 cursor-pointer" do
               i.fa-solid.fa-paperclip
 
-          = f.button "Format",
-                    type: "button",
-                    title: "Show formatting options",
-                    value: "format",
-                    name: "format",
-                    class: "text-xl w-full md:w-fit px-3 py-2 text-lime-600 hover:text-lime-700 dark:hover:text-stone-300 cursor-pointer" do
-              i.fa-solid.fa-text-size                                    
+          = link_to "#",
+                    class: "text-xl w-full md:w-fit px-3 py-2 text-lime-600 hover:text-lime-700 dark:hover:text-stone-300 cursor-pointer",
+                    data: { action: "message-form#toggleFormatting" } do
+
+            i.fa-solid.fa-text-size
 
           - unless @message.new_record?
             = f.button t("messages.captions.delete_draft"),
@@ -219,6 +240,46 @@ css:
     display: none;
   }
 
+  .formatting-active trix-toolbar {
+    display: block;
+  }
+
+  trix-editor {
+    min-height: 20rem;
+  }
+
   trix-editor:empty:not(:focus)::before {
-    color: #aaa;
+    color: #a8a29e;
+  }
+
+  .audience-item.active a {
+    background-color: #E66425;
+    color: white;
+    font-weight: bold;
+  }
+
+  input[type='radio'].audience-checkbox:checked ~ span {
+    background-color: #E66425;
+    color: white;
+    font-weight: bold;
+  }
+
+  #recipient_list li {
+    display: inline-block;
+  }
+
+  #recipient_list li:after {
+    content: ";\00a0";
+  }
+
+  #recipient_list li:last-child:after {
+    content: "";
+  }
+
+  #recipient_list ul {
+    margin: 0.5rem 0.5rem 3rem 0.5rem;
+  }
+
+  #recipient_count:empty {
+    display: none;
   }
