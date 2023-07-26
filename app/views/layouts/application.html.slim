@@ -11,6 +11,12 @@ html.scroll-smooth
     = javascript_importmap_tags
     = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: "anonymous"
     = javascript_include_tag "main"
+
+    - if Rails.env.production?
+      = javascript_include_tag "https://cdn.lr-ingest.com/LogRocket.min.js", crossorigin: "anonymous"
+      javascript:
+        window.LogRocket && window.LogRocket.init('iii40u/scoutplan');
+
     = yield :head
 
   body(class="dark:bg-stone-900 dark:text-stone-200 text-stone-800 #{controller_name} #{action_name} #{yield :body_classes}")
