@@ -1,5 +1,7 @@
 = turbo_stream.update "recipient_count" do
-  = "#{@recipients.count} recipients"
+  = @recipients.count
+  span.hidden.md:inline
+    = " recipients"
 
 = turbo_stream.update "recipient_list_content" do
   ul

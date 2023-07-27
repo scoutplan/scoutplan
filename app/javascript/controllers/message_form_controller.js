@@ -3,11 +3,12 @@ import { post } from "@rails/request.js"
 
 export default class extends Controller {
   static targets = [ "audienceList", "audienceName", "ffCheckWrapper", "recipientList", "memberTypeCheckBox", "memberStatusCheckBox",
-    "subjectTextBox", "bodyTextArea", "sendMessageButton" ];
+    "subjectTextBox", "bodyTextArea", "sendMessageButton", "sendLaterButton", "sendPreviewButton" ];
   static values = { unitId: Number };
 
   connect() {
     this.updateRecipients();
+    this.validate();
   }
 
   updateRecipients() {
@@ -26,8 +27,6 @@ export default class extends Controller {
       "member_type":   memberType,
       "member_status": memberStatus,
     }
-
-    console.log(body);
 
     // hide the ff check box if the audience is not everyone
     this.ffCheckWrapperTarget.classList.toggle("hidden", audience !== "everyone");
@@ -55,15 +54,16 @@ export default class extends Controller {
 
   validate() {
     var valid = this.subjectTextBoxTarget.value.length > 0;
+    valid = valid && this.bodyTextAreaTarget.value.length > 0;
 
     this.sendMessageButtonTarget.disabled = !valid;
+    this.sendLaterButtonTarget.disabled   = !valid;
+    this.sendPreviewButtonTarget.disabled = !valid;
   }
 
   changeAudience(event) {
     const target = this.target;
     const audienceValue = target.dataset.messageFormAudienceValue;
-    
-    console.log(audienceValue)
     
     this.audienceListTarget.querySelectorAll("li").forEach((li) => {
       li.classList.toggle("active", false);

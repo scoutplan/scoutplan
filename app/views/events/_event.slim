@@ -1,7 +1,7 @@
 - @presenter.event = event
 
 // START ROW
-article.py-2.hover:bg-stone-100.dark:hover:bg-stone-700(class="relative event #{row_classes(event)}" id="event_#{event.id}")
+article.-ml-2.pl-2.hover:bg-stone-100.dark:hover:bg-stone-700(class="relative event #{row_classes(event)}" id="event_#{event.id}")
   // anchor for scroll-to purposes
   a(name="event_#{event.id}")
 
@@ -18,7 +18,7 @@ article.py-2.hover:bg-stone-100.dark:hover:bg-stone-700(class="relative event #{
 
     // link
     = link_to unit_event_path(@unit, event),
-              class: "event md:px-2 py-2 block",
+              class: "event py-2 block border-t w-full",
               data: { turbo_action: "advance", turbo_frame: "main" } do
 
       div.flex.flex-row.mb-2
@@ -38,7 +38,7 @@ article.py-2.hover:bg-stone-100.dark:hover:bg-stone-700(class="relative event #{
         div
           = render partial: "events/partials/event_row/title", locals: { event: event }
 
-  .flex.flex-col.gap-1.md:flex-row.md:px-2.md:justify-between.items-center
+  .flex.flex-col.gap-1.md:flex-row.md:px-2.pb-2.md:justify-between.items-center
     = render partial: "events/partials/event_row/rsvp", locals: { event: event }
     = render partial: "events/partials/event_row/organize", locals: { event: event }
     = render partial: "events/partials/event_row/online", locals: { event: event }

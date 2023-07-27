@@ -42,6 +42,9 @@ module.exports = {
       maxWidth: {
         '1/2': '50%',
       },
+      minWidth: {
+        '96': '24rem',
+      },
       animation: {
         'pop-open': 'pop-open 0.1s',
         'fade-out-after-load': 'fade-out-after-load 3s linear 1',

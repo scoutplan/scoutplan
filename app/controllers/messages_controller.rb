@@ -4,6 +4,7 @@
 # UI and *Notifier classes (e.g. MemberNotifier)
 class MessagesController < UnitContextController
   EVENT_REGEXP = /event_(\d+)_attendees/.freeze
+  TAG_REGEXP = /tag_(\d+)_members/.freeze
   before_action :find_message, except: [:index, :new, :create, :recipients]
 
   def index
@@ -20,10 +21,12 @@ class MessagesController < UnitContextController
 
   def new
     authorize current_member.messages.new
-    @message = current_member.messages.new(recipients: "active_members",
+    @message = current_member.messages.new(audience: "everyone",
                                            member_type: "youth_and_adults",
                                            recipient_details: ["active"],
                                            send_at: Date.today)
+
+    ap @message
   end
 
   def create
@@ -76,6 +79,9 @@ class MessagesController < UnitContextController
     if audience =~ EVENT_REGEXP
       event = Event.find($1)
       scope = scope.where(id: event.rsvps.pluck(:unit_membership_id))
+    elsif audience =~ TAG_REGEXP
+      tag = ActsAsTaggableOn::Tag.find($1)
+      scope = scope.tagged_with(tag.name)
     else
       scope = scope.where(status: member_status) # active / friends & family
     end
@@ -130,7 +136,7 @@ class MessagesController < UnitContextController
   end
 
   def message_params
-    params.require(:message).permit(:title, :body, :recipients, :member_type, :send_at,
+    params.require(:message).permit(:title, :body, :audience, :member_type, :send_at,
                                     :pin_until, :deliver_via_notification, :deliver_via_digest,
                                     recipient_details: [])
   end

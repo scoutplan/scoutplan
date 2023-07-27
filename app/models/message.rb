@@ -47,6 +47,42 @@ class Message < ApplicationRecord
     unit.unit_memberships.message_approver
   end
 
+  def recipients
+    # # pull parameters
+    # p = params.permit(:audience, :member_type, :member_status)
+    # audience = p[:audience]
+    # member_type = p[:member_type] == "youth_and_adults" ? %w[adult youth] : %w[adult]
+    # member_status = p[:member_status] == "active_and_registered" ? %w[active registered] : %w[active]
+
+    # # start building up the scope
+    # scope = @unit.unit_memberships.joins(:user).order(:last_name)
+    # scope = scope.where(member_type: member_type) # adult / youth
+
+    # # filter by audience
+    # if audience =~ EVENT_REGEXP
+    #   event = Event.find($1)
+    #   scope = scope.where(id: event.rsvps.pluck(:unit_membership_id))
+    # elsif audience =~ TAG_REGEXP
+    #   tag = ActsAsTaggableOn::Tag.find($1)
+    #   scope = scope.tagged_with(tag.name)
+    # else
+    #   scope = scope.where(status: member_status) # active / friends & family
+    # end
+
+    # @recipients = scope.all
+
+    # # ensure that parents are included if any children are included
+    # parent_relationships = MemberRelationship.where(child_unit_membership_id: @recipients.map(&:id))
+    # parents = UnitMembership.where(id: parent_relationships.map(&:parent_unit_membership_id))
+    # @recipients += parents
+
+    # # de-dupe it
+    # @recipients.uniq!
+
+    # # filter out non-emailable members
+    # @recipients = @recipients.select(&:emailable?)
+  end
+
   # private
 
   # def find_unit

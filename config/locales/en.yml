@@ -592,7 +592,7 @@ en:
     index:
       will_send_on: "Will send on %{send_date}"
       sent_tab:     "Pinned"
-      done_tab:     "Completed"
+      done_tab:     "Sent"
       title:        "Email"
       legend_active: "Pinned emails appear in the weekly email newsletter."
       legend_queued: "Queued emails have a 'Don't send until' date in the future."

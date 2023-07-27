@@ -90,6 +90,11 @@ input.switch:checked + label.sm .switch-button {
   color: rgb(230, 100, 37);
 }
 
+.sidecar .active {
+  background-color: #e7e5e4;
+  border-radius: 0.25rem;
+}
+
 @media (prefers-color-scheme: dark) {
   .sidecar a {
     color: #d1d5db;
