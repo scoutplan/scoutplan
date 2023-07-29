@@ -1,0 +1,8 @@
+- return unless event_cancellable?(@current_member, @event) || event_deletable?(@current_member, @event)
+
+section.py-4
+  a(id="canceldelete")
+  h3.font-bold.mb-2 = "Danger zone"
+  .border.border-red-200.my-4.rounded
+    = render partial: "events/partials/form/cancel_button" if event_cancellable?(@current_member, @event)
+    = render partial: "events/partials/form/delete_button", layout: "layouts/event_form_section", locals: { f: f } if event_deletable?(@current_member, @event)

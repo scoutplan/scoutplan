@@ -25,8 +25,6 @@ class MessagesController < UnitContextController
                                            member_type: "youth_and_adults",
                                            recipient_details: ["active"],
                                            send_at: Date.today)
-
-    ap @message
   end
 
   def create
@@ -116,9 +114,11 @@ class MessagesController < UnitContextController
         @message.update(status: :pending)
         @notice = t("messages.notices.pending_success")
       end
-    when t("messages.captions.send_message")
+    when t("messages.captions.send_message"), t("messages.captions.schedule_and_save")
+      ap @message
       if MessagePolicy.new(current_member, @message).create?
         @message.update(status: :queued)
+        ap @message
         @notice = t("messages.notices.#{@message.send_now? ? 'message_sent' : 'message_queued'}")
       else
         @notice = "You aren't authorized to do that"
@@ -136,7 +136,7 @@ class MessagesController < UnitContextController
   end
 
   def message_params
-    params.require(:message).permit(:title, :body, :audience, :member_type, :send_at,
+    params.require(:message).permit(:title, :body, :audience, :member_type, :member_status, :send_at,
                                     :pin_until, :deliver_via_notification, :deliver_via_digest,
                                     recipient_details: [])
   end

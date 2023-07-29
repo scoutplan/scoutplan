@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!-- https://webdesign.tutsplus.com/articles/creating-a-simple-responsive-html-email--webdesign-12978 -->
+<html lang="en" xmlns="https://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="x-apple-disable-message-reformatting">
+  <title></title>
+  <!--[if mso]>
+  <style>
+    table {border-collapse:collapse;border-spacing:0;border:none;margin:0;}
+    div, td {padding:0;color:#57534E;}
+    div {margin:0 !important;}
+    table, td, div, h1, p {
+      font-family: 'Proxima Nova', helvetica, arial, sans-serif;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <noscript>
+      <xml>
+          <o:OfficeDocumentSettings>
+          <o:PixelsPerInch>96</o:PixelsPerInch>
+          </o:OfficeDocumentSettings>
+      </xml>
+  </noscript>
+  <![endif]-->
+
+</head>
+<body style="margin:0;padding:0;word-spacing:normal;background-color:#fff;">
+  <div role="article" aria-roledescription="email" lang="en" style="text-size-adjust:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#ffffff;">
+    <table role="presentation" style="color:#57534E;width:100%;border:none;border-spacing:0;">
+      <tr>
+        <td align="center" style="padding:0;">
+          <!--[if mso]>
+          <table role="presentation" align="center" style="min-width:400px; width:400px;">
+          <tr>
+          <td>
+          <![endif]-->
+          <table role="presentation" style="background:#F5F5F4;color:#57534E;width:460px;border:none;border-spacing:0;text-align:left;font-family:'Proxima Nova',helvetica, arial,sans-serif;font-size:16px;line-height:22px;">
+
+<%# ---------------------------------------- %>
+<%# LOGO %>
+            <% if @unit&.logo&.attached? %>
+              <tr>
+                  <td style="padding:30px 30px 15px 30px;text-align:center;font-size:24px;font-weight:bold;">
+                      <%= link_to root_url do %>
+                        <%= image_tag "data:image/#{@unit&.logo.filename.extension};base64,#{Base64.encode64(@unit.logo.blob.download)}", style: "width:80%;max-width:150px;height:auto;border:none;text-decoration:none;color:rgb(255,255,255,1.0);" %>
+                      <% end %>
+                  </td>
+              </tr>
+            <% end %>
+
+            <tr>
+                <td style="padding:15px 70px;">
+
+<%# ---------------------------------------- %>
+<%# TITLE %>
+                  <% if content_for?(:title) %>
+                    <h1 style="color:#57534E;font-size:48px;line-height:100%;font-weight:700;font-style:normal;font-family:'Proxima Nova', helvetica, arial, sans-serif;margin-bottom:18px;margin-top:0;">
+                      <%= yield :title %>
+                    </h1>
+                  <% end %>
+
+
+<%# ---------------------------------------- %>
+<%# MAIN CONTENT %>
+                  <%= yield %>
+                </td>
+            </tr>
+
+<%# ---------------------------------------- %>
+<%# FOOTER %>
+            <% if content_for(:footer ) %>
+              <tr class="footer">
+                <td style="padding:40px 70px;background-color:#44403C;color:#E7E5E4;font-weight:800;">
+                  <%= link_to unit_events_url(@unit) do %>
+                    <%= @unit.name %>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+          <!--[if mso]>
+          </td>
+          </tr>
+          </table>
+          <![endif]-->
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

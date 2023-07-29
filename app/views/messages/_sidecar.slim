@@ -2,10 +2,12 @@ aside.xl:absolute.xl:-ml-72.xl:w-60.sidecar
   nav.flex.flex-col.tab-menu
     = link_to "#drafts",
       data: { tab_target: "#messages_drafts" },
-      class: "flex flex-row justify-between items-center block tab-link p-1 font-bold active" do
+      class: "flex flex-row justify-between items-center block tab-link py-1 active" do
 
         .left
-          i.fa-solid.fa-fw.fa-file.mr-1
+          .fa-stack
+            i.fa-regular.fa-circle.fa-stack-2x
+            i.fa-solid.fa-file.fa-stack-1x
           = "Drafts"
 
         .right
@@ -16,23 +18,45 @@ aside.xl:absolute.xl:-ml-72.xl:w-60.sidecar
 
     = link_to "#pending",
       data: { tab_target: "#messages_pending" },
-      class: "block tab-link p-1 0 font-bold" do
+      class: "flex flex-row justify-between items-center block tab-link py-1" do
 
-        i.fa-solid.fa-fw.fa-thumbs-up.mr-1
-        = "Waiting for approval"
-        - if @pending_messages.present?
-          i.fa-solid.fa-circle.fa-sm.text-brand-500.ml-1(data-fa-transform="shrink-4 up-4")              
+        .left
+          .fa-stack
+            i.fa-regular.fa-circle.fa-stack-2x
+            i.fa-solid.fa-thumbs-up.fa-stack-1x
+
+          = "Waiting for approval"
+
+        .right
+          - if @pending_messages.present?
+            i.fa-solid.fa-circle.fa-sm.text-brand-500.ml-1(data-fa-transform="shrink-4 up-4")              
 
     = link_to "#queued",
       data: { tab_target: "#messages_queued" },
-      class: "block tab-link p-1 0 font-bold" do
+      class: "flex flex-row justify-between items-center block tab-link py-1" do
 
-        i.fa-solid.fa-fw.fa-calendar-days.mr-1
-        = "Send Later"
+        .left
+          .fa-stack
+            i.fa-regular.fa-circle.fa-stack-2x
+            i.fa-solid.fa-calendar-days.fa-stack-1x
+          = "Scheduled for later"
 
-    = link_to "#done",
-      data: { tab_target: "#messages_done" },
-      class: "block tab-link p-1 0 font-bold" do
+        .right
+          - if @queued_messages.present?
+            .rounded-lg.bg-stone-200.text-stone-600.dark:bg-stone-500.dark:text-white.px-2.py-1.text-sm
+              = @queued_messages.count          
 
-        i.fa-solid.fa-fw.fa-paper-plane.mr-1
-        = t("messages.index.done_tab")
+    = link_to "#sent",
+      data: { tab_target: "#messages_sent" },
+      class: "flex flex-row justify-between items-center block tab-link py-1" do
+
+        .left
+          .fa-stack
+            i.fa-regular.fa-circle.fa-stack-2x
+            i.fa-solid.fa-paper-plane.fa-stack-1x
+          = t("messages.index.sent_tab")
+
+        .right
+          - if @completed_messages.present?
+            .rounded-lg.bg-stone-200.dark:bg-stone-500.dark:text-white.text-stone-600.px-2.py-1.text-sm
+              = @completed_messages.count

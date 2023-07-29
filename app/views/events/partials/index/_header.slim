@@ -16,12 +16,9 @@ header#page_header.w-full.px-0.bg-white.z-10.items-center
         // Add Event button
         - if policy(:event).create?
           = link_to new_unit_event_path(@unit),
-                    class:  " font-bold text-sm text-white tracking-wider uppercase" \
-                            " inline-block px-4 py-2 mr-2" \
-                            " bg-brand-500 hover:bg-brand-600" \
-                            " rounded" \
-                            "",
-            data: { turbo_frame: "main", turbo_action: "advance" } do
+                    class:  "block font-bold text-sm text-white tracking-wider uppercase inline-block px-2 py-2 bg-brand-500 hover:bg-brand-600 rounded",
+                    data: { turbo_frame: "main", turbo_action: "advance" } do
+
             i.fas.fa-calendar-plus
             .hidden.md:inline.ml-3
               = t(:event_add)

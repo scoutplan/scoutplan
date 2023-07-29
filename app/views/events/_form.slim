@@ -27,16 +27,10 @@
               
     .mx-auto.max-w-xl.pb-12
       .divide-y.divide-stone-800
-        - %w[basics rsvp activity dates locations description organizers packlists attachments notify].each do |section|
+        - %w[basics rsvp activity dates locations description organizers packlists attachments notify cancel_delete].each do |section|
           = render partial: "events/partials/form/#{section}", layout: "layouts/event_form_section", locals: { f: f, section: section }
 
-      - if event_cancellable?(@current_member, @event) || event_deletable?(@current_member, @event)
-        .border.border-red-200.px-4.py-2.my-4.rounded
-          h3.font-bold.mb-2.text-red-600 = "Danger zone"
-          = render partial: "events/partials/form/cancel_button" if event_cancellable?(@current_member, @event)
-          = render partial: "events/partials/form/delete_button", layout: "layouts/event_form_section", locals: { f: f } if event_deletable?(@current_member, @event)
-
-    = render partial: "events/partials/form/footer",      layout: "layouts/event_form_section", locals: { f: f }
+    = render partial: "events/partials/form/footer", layout: "layouts/event_form_section", locals: { f: f }
 
   = render partial: "events/partials/form/new_location_form" if Flipper.enabled? :inline_location_form, @current_member
   = render partial: "events/partials/form/document_library" if Flipper.enabled? :document_library, @current_member

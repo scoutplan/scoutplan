@@ -8,12 +8,12 @@
     protocol: "webcal" \
   )
 
-aside.md:absolute.md:-ml-72.text-stone-500.dark:text-white.sidecar
+aside.md:absolute.md:-ml-72.dark:text-white.sidecar
   nav.mb-8
     ul
       li
         = link_to calendar_unit_events_path(@unit),
-                  class: "block py-1 font-bold hover:text-brand-500",
+                  class: "block py-1 hover:text-brand-500",
                   data: { turbo_action: "advance" } do
           .fa-stack
             i.fa-regular.fa-circle.fa-stack-2x
@@ -23,7 +23,7 @@ aside.md:absolute.md:-ml-72.text-stone-500.dark:text-white.sidecar
 
       - if user_signed_in?
         li
-          = link_to "#", class: "block py-1 font-bold hover:text-brand-500",
+          = link_to "#", class: "block py-1 hover:text-brand-500",
                     data: { action: "event#togglePastEvents" },
                     id: "toggle_past_events_link" do
 
@@ -41,7 +41,7 @@ aside.md:absolute.md:-ml-72.text-stone-500.dark:text-white.sidecar
 
       li
         = link_to list_unit_events_path(@unit, format: :pdf),
-                  class: "block py-1 font-bold hover:text-brand-500",
+                  class: "block py-1 hover:text-brand-500",
                   data: { turbo_action: "advance" } do
           .fa-stack
             i.fa-regular.fa-circle.fa-stack-2x
@@ -52,7 +52,7 @@ aside.md:absolute.md:-ml-72.text-stone-500.dark:text-white.sidecar
       - if @current_member.admin?
         li
           = link_to list_unit_events_path(@unit, format: :pdf, season: "next"),
-                    class: "block py-1 font-bold hover:text-brand-500",
+                    class: "block py-1 hover:text-brand-500",
                     data: { turbo_action: "advance" } do
             .fa-stack
               i.fa-regular.fa-circle.fa-stack-2x
@@ -62,7 +62,7 @@ aside.md:absolute.md:-ml-72.text-stone-500.dark:text-white.sidecar
 
       li
         = link_to ics_url,
-                  class: "block py-1 font-bold hover:text-brand-500",
+                  class: "block py-1 hover:text-brand-500",
                   data: { turbo_action: "advance" } do
           .fa-stack
             i.fa-regular.fa-circle.fa-stack-2x
@@ -72,7 +72,7 @@ aside.md:absolute.md:-ml-72.text-stone-500.dark:text-white.sidecar
 
       - if @current_member.admin?
         li
-          = link_to "#", class: "block py-1 font-bold hover:text-brand-500",
+          = link_to "#", class: "block py-1 hover:text-brand-500",
                     data: { action: "event#toggleBulkPublish" } do
             .fa-stack
               i.fa-regular.fa-circle.fa-stack-2x
@@ -82,7 +82,7 @@ aside.md:absolute.md:-ml-72.text-stone-500.dark:text-white.sidecar
 
         li
           = link_to signups_unit_events_path(@unit, format: :pdf),
-                    class: "block py-1 font-bold hover:text-brand-500" do
+                    class: "block py-1 hover:text-brand-500" do
             .fa-stack
               i.fa-regular.fa-circle.fa-stack-2x
               i.fa-solid.fa-clipboard.fa-stack-1x

@@ -24,7 +24,7 @@ class Message < ApplicationRecord
   end
 
   def event_cohort?
-    recipients =~ /event_([0-9]+)_attendees/
+    recipients =~ /event_(\d+)_attendees/
   end
 
   def member_cohort?

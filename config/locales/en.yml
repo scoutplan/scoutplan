@@ -193,7 +193,7 @@ en:
     dates:                "Dates"
 
     captions:
-      new_short: "New event"
+      new_short: "Add an event"
       payment_amount: "Cost per member $"   
       next_event: "Next"
       previous_event: "Previous" 
@@ -287,7 +287,8 @@ en:
     form:
       timezone_prompt: "Dates and times are %{timezone_name}"
       rsvp_closes_at:  "RSVP closes on"
-      delete_caption:  "Delete event"
+      delete_caption:  "Delete this event"
+      delete_series_caption: "Delete this event series"
       delete_confirm:  "Are you sure you want to permanently delete this event and any RSVPs associated with it?"
       departure:   "Depart From"
       arrival:     "Arrive At"
@@ -307,7 +308,7 @@ en:
       confirm_publish:          "Publishing will make this event visible to all members. Are you sure you want to publish it?"
       published:                "This event is published"
       edit_description_title:   "Edit Event Description"
-      cancel_title:             "Cancel event"
+      cancel_title:             "Cancel this event"
       cancel_button:            "Yes, Cancel This Event"
       cancel_cancel:            "No, Don't Cancel"
       organize_button_caption:  "View RSVPs"
@@ -590,13 +591,13 @@ en:
 
   messages:
     index:
-      will_send_on: "Will send on %{send_date}"
-      sent_tab:     "Pinned"
-      done_tab:     "Sent"
+      will_send_on: "Scheduled to send on %{send_date}"
+      sent_tab:     "Sent"
       title:        "Email"
       legend_active: "Pinned emails appear in the weekly email newsletter."
       legend_queued: "Queued emails have a 'Don't send until' date in the future."
       pinned_until: "Pinned until %{pin_until}"
+      sent_at:      "Sent %{value} ago"
 
     new:
       buttons:
@@ -613,7 +614,8 @@ en:
       save_draft:   "Save Draft"
       send_preview: "Send Preview"
       send_message: "Send Now"
-      new_message:  "New email"
+      schedule_and_save: "Schedule and save"
+      new_message:  "Write an email"
       duplicate:    "Duplicate This Email"
       delete_draft: "Delete Draft"
 

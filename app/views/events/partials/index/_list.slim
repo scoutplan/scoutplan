@@ -4,13 +4,14 @@
       = render partial: "events/partials/index/sidecar", layout: "layouts/sidecar"
 
     header.max-w-xl.mx-auto.relative.mt-8.mb-2
-      = render partial: "components/unit_name"
+      .flex.flex-col.md:flex-row.justify-between
+        .left
+          = render partial: "components/unit_name"
 
-      .flex.flex-row.justify-between.items-center
-        h1.text-4xl.font-bold.mb-2
-          = t("events.index.page_title")
+          h1.text-4xl.font-bold.mb-2
+            = t("events.index.page_title")
 
-        div
+        .right
           = render partial: "new_event_button" if user_signed_in? && policy(:event).create?
 
     = render partial: "events/partials/index/empty_list"

@@ -52,7 +52,7 @@
               li.audience-item(class="#{classes}")
 
                 = label_tag nil do
-                  = f.radio_button :recipients,
+                  = f.radio_button :audience,
                                     recipient[1],
                                     class: "hidden inline-block audience-checkbox",
                                     checked: recipient[1] == @message.audience,
@@ -81,7 +81,7 @@
                                                             data: { action: "message-form#updateRecipients", "message-form-target" => "memberTypeCheckBox" } }
 
           div(data-message-form-target="ffCheckWrapper")
-            = render partial: "components/switch", locals: { checked: @message.member_type == "family_and_friends",
+            = render partial: "components/switch", locals: { checked: @message.member_type == "active_and_registered",
                                                             label: raw("<span class='hidden sm:inline'>Include family & friends</span><span class='sm:hidden inline'>Family & friends</span>"),
                                                             object_name: "message",
                                                             method: "member_status",
@@ -180,10 +180,11 @@
                 i.fa-solid.fa-times
               = f.label :send_at, "Send later", class: "block font-bold"
               = f.date_field :send_at, class: "w-full rounded border-stone-300"
-              = f.button "Schedule and save",
+              = f.button t("messages.captions.schedule_and_save"),
                          type: "submit",
                          title: "Schedule and save",
                          name: "commit",
+                         value: t("messages.captions.schedule_and_save"),
                          class: "block mt-2 px-3 py-2 bg-lime-600 text-white hover:bg-lime-700 dark:hover:text-stone-300 cursor-pointer whitespace-nowrap rounded font-bold"
 
             = f.button t("messages.captions.send_later"),

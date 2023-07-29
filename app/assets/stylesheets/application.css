@@ -74,25 +74,8 @@ input.switch:checked + label.sm .switch-button {
   display: inline-block;
 }
 
-.sidecar a {
-  color: #78716c;
-  transition-property: color;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;  
-}
-
-.sidecar:hover a {
-  color: #292524;
-
-}
-
-.sidecar a:hover {
+.sidecar a:hover, .sidecar .active {
   color: rgb(230, 100, 37);
-}
-
-.sidecar .active {
-  background-color: #e7e5e4;
-  border-radius: 0.25rem;
 }
 
 @media (prefers-color-scheme: dark) {
