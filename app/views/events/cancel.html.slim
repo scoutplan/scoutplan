@@ -86,7 +86,7 @@
       // footer, containing right-justified buttons
       footer.py-4.flex.gap-2.flex-col.md:flex-row
           = f.submit t("events.cancel.proceed"),
-            class: "font-bold inline-block bg-red-600 text-white px-4 py-3 md:py-2 w-full md:w-fit rounded cursor-pointer",
+            class: "font-bold inline-block bg-red-600 hover:bg-red-700 text-white px-4 py-3 md:py-2 w-full md:w-fit rounded cursor-pointer",
             data: { confirm: t("events.cancel.confirm") },
             onclick: "return confirm('Are you sure you want to cancel this event?');"
 

@@ -3,8 +3,6 @@
 # Controller for sending messages. Interfaces between
 # UI and *Notifier classes (e.g. MemberNotifier)
 class MessagesController < UnitContextController
-  EVENT_REGEXP = /event_(\d+)_attendees/.freeze
-  TAG_REGEXP = /tag_(\d+)_members/.freeze
   before_action :find_message, except: [:index, :new, :create, :recipients]
 
   def index
@@ -62,39 +60,19 @@ class MessagesController < UnitContextController
   # compute the recipients for a message based on the params
   # passed in the request
   def recipients
-    # pull parameters
     p = params.permit(:audience, :member_type, :member_status)
     audience = p[:audience]
-    member_type = p[:member_type] == "youth_and_adults" ? %w[adult youth] : %w[adult]
-    member_status = p[:member_status] == "active_and_registered" ? %w[active registered] : %w[active]
+    member_type = p[:member_type]
+    member_status = p[:member_status]
 
-    # start building up the scope
-    scope = @unit.unit_memberships.joins(:user).order(:last_name)
-    scope = scope.where(member_type: member_type) # adult / youth
-
-    # filter by audience
-    if audience =~ EVENT_REGEXP
-      event = Event.find($1)
-      scope = scope.where(id: event.rsvps.pluck(:unit_membership_id))
-    elsif audience =~ TAG_REGEXP
-      tag = ActsAsTaggableOn::Tag.find($1)
-      scope = scope.tagged_with(tag.name)
-    else
-      scope = scope.where(status: member_status) # active / friends & family
-    end
-
-    @recipients = scope.all
-
-    # ensure that parents are included if any children are included
-    parent_relationships = MemberRelationship.where(child_unit_membership_id: @recipients.map(&:id))
-    parents = UnitMembership.where(id: parent_relationships.map(&:parent_unit_membership_id))
-    @recipients += parents
-
-    # de-dupe it
-    @recipients.uniq!
-
-    # filter out non-emailable members
-    @recipients = @recipients.select(&:emailable?)
+    message = Message.new(
+      author: @unit.unit_memberships.first,
+      audience: audience,
+      member_type: member_type,
+      member_status: member_status
+    )
+    service = MessageService.new(message)
+    @recipients = service.resolve_members
   end
 
   private

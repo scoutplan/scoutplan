@@ -137,6 +137,14 @@ class Event < ApplicationRecord
     requires_rsvp
   end
 
+  def cancellable?(member)
+    published? && EventPolicy.new(member, self).cancel?
+  end
+
+  def deleteable?(member)
+    persisted? && (cancelled? || draft?) && EventPolicy.new(member, self).delete?
+  end
+
   def series?
     !new_record? && (series_children.count.positive? || series_siblings.count.positive?)
   end

@@ -5,6 +5,7 @@
 
     = link_to unit_event_cancel_path(@unit, @event),
               class: "text-center inline-block px-4 py-2 text-red-500 font-bold bg-stone-100 border border-stone-200 hover:border-stone-300 rounded whitespace-nowrap",
+              id: "cancel_event_button",
               data: { turbo_action: "advance" } do
 
       = I18n.t("events.show.cancel_title")

@@ -20,11 +20,6 @@ export default class extends Controller {
     const audience = selectedRadioButton.value;
     const memberType = this.memberTypeCheckBoxTarget.checked ? "adults_only" : "youth_and_adults";
     const memberStatus = this.memberStatusCheckBoxTarget.checked ? "active_and_registered" : "active";
-    const body = {
-      "audience":      audience,
-      "member_type":   memberType,
-      "member_status": memberStatus,
-    }
     
     var audienceName = selectedRadioButton.dataset.messageFormAudienceName;
 
@@ -48,6 +43,12 @@ export default class extends Controller {
     // https://www.reddit.com/r/rails/comments/rzne63/is_it_possible_to_trigger_turbo_stream_update/
 
     // post a call to an endpoint to compute the recipient list
+
+    const body = {
+      "audience":      audience,
+      "member_type":   memberType,
+      "member_status": memberStatus,
+    }    
 
     post(`/u/${this.unitIdValue}/email/recipients`, { body: body, responseKind: "turbo-stream" });
   }

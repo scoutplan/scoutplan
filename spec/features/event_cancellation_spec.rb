@@ -31,7 +31,7 @@ describe "event_cancellation", type: :feature do
       visit edit_unit_event_path(@unit, @event)
 
       expect(page).to have_selector(:link_or_button, I18n.t("events.show.cancel_title"))
-      click_link_or_button I18n.t("events.show.cancel_title")
+      find(:id, "cancel_event_button").click
       expect(page).to have_current_path(unit_event_cancel_path(@unit, @event))
       expect(page).to have_selector(:link_or_button, I18n.t("events.cancel.proceed"))
     end
@@ -57,7 +57,7 @@ describe "event_cancellation", type: :feature do
       event = FactoryBot.create(:event, :published, unit: @unit, title: "Published event")
       visit unit_event_cancel_path(@unit, event)
       choose :event_message_audience_none
-      expect { click_link_or_button "Cancel This Event" }.not_to raise_exception
+      expect { click_link_or_button I18n.t("events.cancel.proceed") }.not_to raise_exception
     end
 
     describe "default selections" do
@@ -84,24 +84,24 @@ describe "event_cancellation", type: :feature do
 
       it "does not notify when none is selected" do
         choose :event_message_audience_none
-        click_link_or_button "Cancel This Event"
+        click_link_or_button I18n.t("events.cancel.proceed")
       end
 
       it "sends to acceptors" do
         choose :event_message_audience_acceptors
-        expect { click_link_or_button "Cancel This Event" }.to change { enqueued_jobs.count }.by(1)
+        expect { click_link_or_button I18n.t("events.cancel.proceed") }.to change { enqueued_jobs.count }.by(1)
       end
 
       it "sends to actives" do
         skip
         choose :event_message_audience_active_members
-        expect { click_link_or_button "Cancel This Event" }.to change { enqueued_jobs.count }.by(2)
+        expect { click_link_or_button I18n.t("events.cancel.proceed") }.to change { enqueued_jobs.count }.by(2)
       end
 
       it "sends to everyone" do
         skip
         choose :event_message_audience_all_members
-        expect { click_link_or_button "Cancel This Event" }.to change { enqueued_jobs.count }.by(3)
+        expect { click_link_or_button I18n.t("events.cancel.proceed") }.to change { enqueued_jobs.count }.by(3)
       end
     end
   end

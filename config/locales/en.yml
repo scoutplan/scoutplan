@@ -361,7 +361,7 @@ en:
         adults:       "Adults"
 
     cancel:
-      proceed:        "Cancel This Event"
+      proceed:        "Cancel this event"
       confirm:        "Are you sure you want to cancel?"
       message_prompt: "Send a cancellation message?"
       past_warning:   "Cancelling events that occurred in the past is not recommended."

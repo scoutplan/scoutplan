@@ -195,11 +195,12 @@ div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}"
                             class: "block mt-2 px-3 py-2 bg-lime-600 text-white hover:bg-lime-700 dark:hover:text-stone-300 cursor-pointer whitespace-nowrap rounded font-bold"
 
                 = f.button t("messages.captions.send_later"),
-                          type: "button",
+                          type: "submit",
                           title: "Send later",
                           disabled: true,
                           value: t("messages.captions.send_preview"),
                           name: "commit",
+                          id: "send_later_button",
                           class: "text-xl px-3 py-2 text-lime-600 hover:text-lime-700 dark:hover:text-stone-300 cursor-pointer disabled:text-lime-200",
                           data: { message_form_target: "sendLaterButton", action: "dropdown#toggle" } do
                     i.fa-solid.fa-calendar-days
@@ -211,7 +212,8 @@ div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}"
                         disabled: true,
                         value: t("messages.captions.send_preview"),
                         name: "commit",
-                        class: "text-xl w-full md:w-fit px-3 py-2 text-lime-600 hover:text-lime-700 dark:hover:text-stone-300 cursor-pointer disabled:text-lime-200",
+                        id: "send_preview_button",
+                        class: "text-xl w-full md:w-fit px-3 py-2 text-lime-600 hover:text-lime-700 dark:hover:text-stone-300 cursor-pointer disabled:text-lime-200 disabled:hover:text-lime-200 disabled:cursor-not-allowed",
                         data: { message_form_target: "sendPreviewButton" } do
                   i.fa-solid.fa-glasses-round
 

@@ -19,7 +19,7 @@ class EventUpdateService < EventService
 
     message = Message.new(author: @current_member,
                           status: :queued,
-                          recipients: @event.notify_recipients,
+                          audience: @event.notify_recipients,
                           title: "Event Update",
                           body: notify_body)
     message.save!
