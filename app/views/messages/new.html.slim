@@ -1,6 +1,5 @@
 = turbo_frame_tag "main"
-  .max-w-3xl.mx-auto
-
+  .max-w-4xl.mx-auto
     = link_to unit_messages_path(@unit),
               class: "font-bold py-2 text-lime-600",
               data: { turbo_action: "advance" } do
@@ -9,10 +8,6 @@
         i.fa-regular.fa-circle.fa-stack-2x
         i.fa-solid.fa-arrow-left.fa-stack-1x
       = t("messages.new.buttons.cancel")
-
-    header.pt-8.pb-2
-      h1.font-bold.text-4xl.mb-2
-        = t("messages.form.titles.new")
 
     = render partial: "form"
 

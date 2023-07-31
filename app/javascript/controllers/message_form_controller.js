@@ -2,8 +2,10 @@ import { Controller } from "@hotwired/stimulus"
 import { post } from "@rails/request.js"
 
 export default class extends Controller {
-  static targets = [ "audienceList", "audienceName", "ffCheckWrapper", "recipientList", "memberTypeCheckBox", "memberStatusCheckBox",
-    "subjectTextBox", "bodyTextArea", "sendMessageButton", "sendLaterButton", "sendPreviewButton" ];
+  static targets = [ "attachmentList", "attachmentWrapper", "attachmentForm", "audienceList", "audienceName",
+                     "ffCheckWrapper", "fileInput",
+                     "recipientList", "memberTypeCheckBox", "memberStatusCheckBox", "subjectTextBox", "bodyTextArea",
+                     "sendMessageButton", "sendLaterButton", "sendPreviewButton", "tempFileInput" ];
   static values = { unitId: Number };
 
   connect() {
@@ -15,11 +17,7 @@ export default class extends Controller {
     // const audience = this.audienceSelectTarget.value;
 
     const selectedRadioButton = document.querySelector("input[type='radio']:checked");
-    const audienceName = selectedRadioButton.dataset.messageFormAudienceName;
     const audience = selectedRadioButton.value;
-
-    this.audienceNameTarget.textContent = audienceName;
-
     const memberType = this.memberTypeCheckBoxTarget.checked ? "adults_only" : "youth_and_adults";
     const memberStatus = this.memberStatusCheckBoxTarget.checked ? "active_and_registered" : "active";
     const body = {
@@ -27,6 +25,22 @@ export default class extends Controller {
       "member_type":   memberType,
       "member_status": memberStatus,
     }
+    
+    var audienceName = selectedRadioButton.dataset.messageFormAudienceName;
+
+    if (audience === "everyone") {
+      if (memberStatus === "active_and_registered") {
+        audienceName = "All " + audienceName;
+      } else {
+        audienceName = "Active " + audienceName;
+      } 
+    }
+
+    if (memberType === "adults_only") {
+      audienceName = "Adult " + audienceName;
+    }
+
+    this.audienceNameTarget.textContent = audienceName;    
 
     // hide the ff check box if the audience is not everyone
     this.ffCheckWrapperTarget.classList.toggle("hidden", audience !== "everyone");
@@ -47,9 +61,17 @@ export default class extends Controller {
     event.preventDefault();
   }
 
-  toggleFormatting (event) {
+  toggleFormattingToolbar (event) {
     this.element.classList.toggle("formatting-active");
     event.preventDefault();
+  }
+
+  addAttachments() {
+    this.attachmentFormTarget.requestSubmit();
+  }
+
+  uploadFiles() {
+    const files = this.fileInputTarget.click();
   }
 
   validate() {

@@ -2,15 +2,18 @@
 
 - return unless MessagePolicy.new(@current_member, message).edit?
 
-article.hover:bg-stone-100.dark:hover:bg-stone-700.-mx-2.px-2
+article.hover:bg-stone-100.dark:hover:bg-stone-800.-mx-2.px-2
   = link_to path,
-    class: "border-0 dark:border-stone-800 block py-2 message #{message.updated_at < 4.weeks.ago ? 'older' : 'current' }",
+    class: "border-t dark:border-stone-700 block py-2 message #{message.updated_at < 4.weeks.ago ? 'older' : 'current' }",
     data: { turbo_action: "advance" } do
 
     div
       // TITLE
       h3.text-xl.font-semibold
         = message.title.presence || "(no subject)"
+
+        - if message.attachments.any?
+          i.fa-regular.fa-paperclip.ml-2.text-stone-400
 
       // FROM -> TO
       p.inline-block.font-semibold.text-sm

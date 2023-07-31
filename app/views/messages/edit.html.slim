@@ -8,11 +8,7 @@
         i.fa-solid.fa-arrow-left.fa-stack-1x
       = t("messages.new.buttons.cancel")
 
-    header
-      h1.font-bold.text-4xl.mb-2
-        = "Edit Announcement"
-
     = render partial: "form"
 
   javascript:
-    document.title = "#{@message.title.presence || 'Announcement'} · #{@unit.name}"
+    document.title = "Edit Email · #{@unit.name}"

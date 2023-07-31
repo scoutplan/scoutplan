@@ -56,6 +56,7 @@ Rails.application.routes.draw do
       collection do
         post "recipients", as: "recipients"
       end
+      resources :attachments
     end
 
     resources :locations

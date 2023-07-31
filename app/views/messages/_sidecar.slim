@@ -2,7 +2,7 @@ aside.xl:absolute.xl:-ml-72.xl:w-60.sidecar
   nav.flex.flex-col.tab-menu
     = link_to "#drafts",
       data: { tab_target: "#messages_drafts" },
-      class: "flex flex-row justify-between items-center block tab-link py-1 active" do
+      class: "flex flex-row justify-between items-center block tab-link py-1 focus:text-brand-500 border-0 outline-none" do
 
         .left
           .fa-stack
@@ -18,7 +18,7 @@ aside.xl:absolute.xl:-ml-72.xl:w-60.sidecar
 
     = link_to "#pending",
       data: { tab_target: "#messages_pending" },
-      class: "flex flex-row justify-between items-center block tab-link py-1" do
+      class: "flex flex-row justify-between items-center block tab-link py-1 focus:text-brand-500" do
 
         .left
           .fa-stack
@@ -32,31 +32,34 @@ aside.xl:absolute.xl:-ml-72.xl:w-60.sidecar
             i.fa-solid.fa-circle.fa-sm.text-brand-500.ml-1(data-fa-transform="shrink-4 up-4")              
 
     = link_to "#queued",
-      data: { tab_target: "#messages_queued" },
-      class: "flex flex-row justify-between items-center block tab-link py-1" do
+              data: { tab_target: "#messages_queued" },
+              class: "flex flex-row justify-between items-center block tab-link py-1 focus:text-brand-500" do
 
-        .left
-          .fa-stack
-            i.fa-regular.fa-circle.fa-stack-2x
-            i.fa-solid.fa-calendar-days.fa-stack-1x
-          = "Scheduled for later"
+      .left
+        .fa-stack
+          i.fa-regular.fa-circle.fa-stack-2x
+          i.fa-solid.fa-calendar-days.fa-stack-1x
+        = "Scheduled for later"
 
-        .right
-          - if @queued_messages.present?
-            .rounded-lg.bg-stone-200.text-stone-600.dark:bg-stone-500.dark:text-white.px-2.py-1.text-sm
-              = @queued_messages.count          
+      .right
+        - if @queued_messages.present?
+          .rounded-lg.bg-stone-200.text-stone-600.dark:bg-stone-500.dark:text-white.px-2.py-1.text-sm
+            = @queued_messages.count          
 
     = link_to "#sent",
-      data: { tab_target: "#messages_sent" },
-      class: "flex flex-row justify-between items-center block tab-link py-1" do
+              data: { tab_target: "#messages_sent" },
+              class: "flex flex-row justify-between items-center block tab-link py-1 focus:text-brand-500" do
 
-        .left
-          .fa-stack
-            i.fa-regular.fa-circle.fa-stack-2x
-            i.fa-solid.fa-paper-plane.fa-stack-1x
-          = t("messages.index.sent_tab")
+      .left
+        .fa-stack
+          i.fa-regular.fa-circle.fa-stack-2x
+          i.fa-solid.fa-paper-plane.fa-stack-1x
+        = t("messages.index.sent_tab")
 
-        .right
-          - if @completed_messages.present?
-            .rounded-lg.bg-stone-200.dark:bg-stone-500.dark:text-white.text-stone-600.px-2.py-1.text-sm
-              = @completed_messages.count
+      .right
+        - if @sent_messages.present?
+          .rounded-lg.bg-stone-200.dark:bg-stone-500.dark:text-white.text-stone-600.px-2.py-1.text-sm
+            = @sent_messages.count
+
+javascript:
+  document.querySelector(".sidecar nav a:first-child").focus();

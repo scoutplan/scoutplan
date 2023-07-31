@@ -5,6 +5,7 @@ class Message < ApplicationRecord
   belongs_to :author, class_name: "UnitMembership"
   has_one :unit, through: :author
   after_initialize :set_defaults
+  has_many_attached :attachments
 
   # validates_presence_of :title
 

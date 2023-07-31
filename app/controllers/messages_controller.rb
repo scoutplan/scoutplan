@@ -8,23 +8,22 @@ class MessagesController < UnitContextController
   before_action :find_message, except: [:index, :new, :create, :recipients]
 
   def index
-    @draft_messages   = @unit.messages.draft
-    @queued_messages  = @unit.messages.queued
-    @sent_messages    = @unit.messages.sent.order("updated_at DESC")
-    @pending_messages = @unit.messages.pending
-    @pinned_messages  = @sent_messages.select(&:active?)
-    @completed_messages = @sent_messages.reject(&:active?)
+    @draft_messages   = @unit.messages.draft.with_attached_attachments
+    @queued_messages  = @unit.messages.queued.with_attached_attachments
+    @sent_messages    = @unit.messages.sent.order("updated_at DESC").with_attached_attachments
+    @pending_messages = @unit.messages.pending.with_attached_attachments
   end
 
-  def show
-  end
+  def show; end
 
   def new
     authorize current_member.messages.new
-    @message = current_member.messages.new(audience: "everyone",
-                                           member_type: "youth_and_adults",
-                                           recipient_details: ["active"],
-                                           send_at: Date.today)
+    @message = current_member.messages.create(audience: "everyone",
+                                              member_type: "youth_and_adults",
+                                              recipient_details: ["active"],
+                                              send_at: Date.today,
+                                              status: "draft")
+    redirect_to edit_unit_message_path(@unit, @message)
   end
 
   def create
@@ -115,10 +114,8 @@ class MessagesController < UnitContextController
         @notice = t("messages.notices.pending_success")
       end
     when t("messages.captions.send_message"), t("messages.captions.schedule_and_save")
-      ap @message
       if MessagePolicy.new(current_member, @message).create?
         @message.update(status: :queued)
-        ap @message
         @notice = t("messages.notices.#{@message.send_now? ? 'message_sent' : 'message_queued'}")
       else
         @notice = "You aren't authorized to do that"

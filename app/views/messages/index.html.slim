@@ -46,8 +46,8 @@
               h1.font-bold.text-lg.md:text-4xl = "Sent emails"
 
             div
-              = render partial: "message", collection: @completed_messages
-            = render partial: "empty", locals: { message_type: "completed" } unless @completed_messages.present?
+              = render partial: "message", collection: @sent_messages
+            = render partial: "empty", locals: { message_type: "completed" } unless @sent_messages.present?
 
   javascript:
       document.title = "Announcements · #{@unit.name}"
