@@ -3,7 +3,7 @@
 
 - return unless @event.organizable? && EventPolicy.new(@current_member, @event).rsvps?
 
-#manage_rsvps_card.mt-8.bg-cyan-700.text-cyan-50.px-4.py-4.relative.mb-4.w-full.xl:w-60
+#manage_rsvps_card.bg-cyan-700.text-cyan-50.px-4.py-4.relative.mb-4.w-full.xl:w-60.rounded
   header.mb-2
     - if @event.organizers.include?(@current_member)
       p.pb-2.font-bold.border-b

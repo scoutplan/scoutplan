@@ -58,7 +58,8 @@ class User < ApplicationRecord
   def display_first_name(user = nil)
     return "You" if user == self
 
-    nickname.blank? ? first_name : nickname
+    # nickname.blank? ? first_name : nickname
+    nickname.presence || first_name
   end
 
   def full_display_name

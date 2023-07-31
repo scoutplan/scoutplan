@@ -2,17 +2,56 @@
 
 # things for handling messages
 class MessageService < ApplicationService
+  EVENT_REGEXP = /event_(\d+)_attendees/.freeze
+  TAG_REGEXP = /tag_(\d+)_members/.freeze
+
   def initialize(message)
     @message = message
     super()
   end
 
   # determine which members should receive the current message
-  def resolve_members
+  def resolve_members_old
     members = resolve_member_cohort if @message.member_cohort?
     members = resolve_event_cohort  if @message.event_cohort?
     members.select!(&:adult?) if @message.member_type == "adults_only"
     members
+  end
+
+  # determine which members should receive the current message
+  def resolve_members
+    audience      = @message.audience
+    member_type   = @message.member_type == "youth_and_adults" ? %w[adult youth] : %w[adult]
+    member_status = @message.member_status == "active_and_registered" ? %w[active registered] : %w[active]
+    unit          = @message.unit
+
+    # start building up the scope
+    scope = unit.unit_memberships.joins(:user).order(:last_name)
+    scope = scope.where(member_type: member_type) # adult / youth
+
+    # filter by audience
+    if audience =~ EVENT_REGEXP
+      event = Event.find($1)
+      scope = scope.where(id: event.rsvps.pluck(:unit_membership_id))
+    elsif audience =~ TAG_REGEXP
+      tag = ActsAsTaggableOn::Tag.find($1)
+      scope = scope.tagged_with(tag.name)
+    else
+      scope = scope.where(status: member_status) # active / friends & family
+    end
+
+    @recipients = scope.all
+
+    # ensure that parents are included if any children are included
+    parent_relationships = MemberRelationship.where(child_unit_membership_id: @recipients.map(&:id))
+    parents = UnitMembership.where(id: parent_relationships.map(&:parent_unit_membership_id))
+    @recipients += parents
+
+    # de-dupe it
+    @recipients.uniq!
+
+    # filter out non-emailable members
+    @recipients = @recipients.select(&:emailable?)
   end
 
   # return the Event associated with a message, or nil if it's not an event-based Message

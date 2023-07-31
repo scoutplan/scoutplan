@@ -3,7 +3,7 @@ nav.sidecar.relative(data-controller="selectable-nav" data-sidecar-target="selec
     .h-full.bg-stone-200.border-stone-200(style="width:1px;")
   ul.font-bold.z-50.relative
     li
-      = link_to "#basics", class: "active block py-2 z-30", data: { turbo: false } do
+      = link_to "#basics", class: "block py-2 z-30", data: { turbo: false } do
         .glyph.inline
           i.fas.fa-sm.fa-circle.mr-2
         = "Basic information"
@@ -50,11 +50,12 @@ nav.sidecar.relative(data-controller="selectable-nav" data-sidecar-target="selec
           i.fas.fa-sm.fa-circle.mr-2
         = "Attachments"
 
-    li
-      = link_to "#canceldelete", class: "block py-2", data: { turbo: false } do
-        .glyph.inline
-          i.fas.fa-sm.fa-circle.mr-2
-        = "Cancel this event"
+    - if @event.persisted?
+      li
+        = link_to "#canceldelete", class: "block py-2", data: { turbo: false } do
+          .glyph.inline
+            i.fas.fa-sm.fa-circle.mr-2
+          = "Cancel this event"
 
 css:
   nav.sidecar .glyph svg {

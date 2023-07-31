@@ -14,6 +14,14 @@ header#main_header.sticky.top-0.z-30.bg-white/90.backdrop-blur-sm.dark:bg-stone-
       // RIGHT SIDE NAME / UNIT
     .absolute.right-0.top-0
       .flex
+        - if Flipper.enabled? :global_search, @current_member
+          li#main_nav_item_search.md:inline-block
+            div(data-controller="search")
+              = button_tag class: "font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+                        data: { action: "search#show" } do
+
+                i.fa-solid.fa-magnifying-glass.fa-fw.mr-1
+                = "Find"      
         = render partial: "layouts/partials/user_menu"
 
 css:

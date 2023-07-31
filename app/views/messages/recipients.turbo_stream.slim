@@ -1,0 +1,8 @@
+= turbo_stream.update "recipient_count" do
+  = @recipients.count
+  span.hidden.md:inline
+    = " recipient".pluralize(@recipients.count)
+
+= turbo_stream.update "recipient_list_content" do
+  ul
+    = render partial: "recipient", collection: @recipients

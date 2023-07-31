@@ -1,145 +1,258 @@
-- recipients = [ ["Active Members (#{@unit.members.status_active.count} total, #{@unit.members.status_active.adult.count} adults)", "active_members"],
-                 ["Active + Family & Friends (#{@unit.members.select{|m| !m.status_inactive?}.count} total, #{@unit.members.adult.select{|m| !m.status_inactive?}.count} adults)", "all_members"] ]
+- recipients = [ ["#{@unit.name} Members", "everyone", "people-group", "#913F17"] ]
 
 - events = @unit.events.recent.rsvp_required.published
 / - recipients << ["", nil] if events.present?
 
 - events.each do |event|
-  - recipients << ["#{event.title} Attendees — ended #{distance_of_time_in_words_to_now(event.ends_at)} ago (#{event.rsvps.accepted.count} total, #{event.rsvps.accepted.select{|r| r.member.adult?}.count} adults)", "event_#{event.id}_attendees"]
+  - recipients << ["#{event.title} Attendees & Guardians", "event_#{event.id}_attendees", event.category.glyph, event.category.color, "ended #{distance_of_time_in_words_to_now(event.ends_at)} ago"]
 
 - @unit.events.published.upcoming.rsvp_required.each do |event|
-  - recipients << ["#{event.title} Attendees — starts in #{distance_of_time_in_words_to_now(event.starts_at)} (#{event.rsvps.accepted.count} total, #{event.rsvps.accepted.select{|r| r.member.adult?}.count} adults)", "event_#{event.id}_attendees"]
+  - recipients << ["#{event.title} Attendees & Guardians", "event_#{event.id}_attendees", event.category.glyph, event.category.color, "starts in #{distance_of_time_in_words_to_now(event.starts_at)}"]
 
-= form_with model: @message,
-            url: @message.new_record? ? unit_messages_path(@unit) : unit_message_path(@unit, @message),
-            method: @message.new_record? ? "post" : "patch",
-            data: { turbo_action: "advance" } do |f|
+- @unit.members.tag_counts.each do |tag|
+  - recipients << ["#{tag.name.titleize} Members & Guardians", "tag_#{tag.id}_members", "tag", "#57534e"]
 
-  section.flex.flex-col.gap-4
-    // FROM
-    div.hidden
-      = f.label :from, class: "block py-1 text-sm font-bold"
-      = text_field_tag :from_address,
-        @unit.settings(:communication).from_email,
-        disabled: true,
-        class: "w-full border border-stone-200 rounded bg-white dark:bg-black p-2 placeholder-stone-400 disabled:text-stone-400 disabled:placeholder-stone-200"
+div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}")
+  // hidden form for attaching files
+  .hidden
+    = form_with model: @message,
+                url: unit_message_attachments_path(@unit, @message),
+                method: "post",
+                data: { message_form_target: "attachmentForm" } do |f|
+      = f.file_field :attachments,
+                    multiple: true,
+                    class: "hiddenz",
+                    data: { message_form_target: "fileInput", action: "message-form#addAttachments" }
 
-    // TO
-    div
-      = f.label :groups, t("messages.form.labels.groups"), class: "block py-2 font-bold"
-      = f.select :recipients, recipients, { }, class: "inline-block font-bold rounded border border-stone-200 w-full dark:bg-black dark:border-stone-500"
+  // visible form for composing
+  .md:border.md:rounded-xl.md:p-12.mt-12.md:drop-shadow-lg.bg-white.dark:bg-stone-800.dark:border-stone-700
+    = form_with model: @message,
+                url: @message.new_record? ? unit_messages_path(@unit) : unit_message_path(@unit, @message),
+                method: @message.new_record? ? "post" : "patch",
+                data: { turbo_action: "advance", "message-form-unit-id-value" => @unit.id } do |f|
 
-    div.py-2
-      = render partial: "components/switch", locals: { checked: @message.member_type == "adults_only",
-                                                        label: "Only send to adults",
-                                                        object_name: "message",
-                                                        method: "member_type",
-                                                        checked_value: "adults_only",
-                                                        unchecked_value: "youth_and_adults" }
+      section.flex.flex-col.divide-y.dark:divide-stone-600
 
+        // 'TO' SECTION
+        div#recipient_wrapper.dropdown.relative.z-20(data-controller="dropdown" data-action="keydown->dropdown#handleKeydown")
 
-    // DELIVERY VIA EMAIL
-    div.py-2.hidden
-      = render partial: "components/switch", locals: { checked: @message.deliver_via_notification,
-                                                       label: "Deliver via email",
-                                                       object_name: "message",
-                                                       method: "deliver_via_notification",
-                                                       checked_value: "true",
-                                                       unchecked_value: "false" }
+          // recipient dropdown box
+          #audience_list.dropdown-menu.absolute.top-full.w-full.h-72.bg-white.dark:bg-black.drop-shadow-lg.border.border-stone-200.dark:border-stone-700
 
+            // recipient list
+            #recipient_list.absolute.inset-0.bg-white.dark:bg-black.z-10.overflow-scroll.hidden(data-message-form-target="recipientList")
+              footer.fixed.bottom-0.w-full.bg-stone-100.dark:bg-black.border-t.text-right.h-12.flex.flex-row.items-center
 
-    // via newsletter
-    div.flex.flex-row.items-center.hidden
-      = render partial: "components/switch", locals: { checked: @message.deliver_via_digest,
-                                                       label: "Include in weekly newsletter",
-                                                       object_name: "message",
-                                                       method: "deliver_via_digest",
-                                                       checked_value: "true",
-                                                       unchecked_value: "false" }
+                a.ml-auto.text-sm.block.px-3.font-semibold.text-blue-500.font-semibold(href="#" data-action="message-form#toggleRecipientList" )
+                  = "Hide recipients"
 
-      #digest_fields.ml-1.inline.items-center
-        = label_tag :until, "until", class: "font-bold"
-        = f.date_field :pin_until, class: "ml-2 rounded border border-stone-200 "
+              #recipient_list_content
 
-    // SUBJECT
-    div
-      = f.label :subject, t("messages.form.labels.subject"), class: "block py-2 font-bold"
-      = f.text_field :title,
-                      autofocus: true,
-                      autocomplete: "off",
-                      class: "w-full border border-stone-300 rounded bg-white dark:bg-black dark:border-stone-500 p-2 placeholder-stone-300 dark:placeholder-stone-500 disabled:text-stone-300 disabled:placeholder-stone-200",
-                      placeholder: t("messages.form.placeholders.subject")
+            // group list
+            #group_list.absolute.inset-0.overflow-scroll
+              ul.mb-12(data-message-form-target="audienceList")
+                - recipients.each do |recipient|
+                  - classes = recipient[1] == "everyone" ? "active" : ""
 
-    // BODY
-    div
-      = f.rich_text_area :body, class: "bg-white dark:bg-black overflow-auto h-48 border border-stone-300 dark:border-stone-500 dark:placeholder-stone-500", placeholder: "Type your message..."
+                  li.audience-item(class="#{classes}")
 
-    // SEND LATER
-    .mt-4
-      = f.label :send_at, t("messages.form.labels.dont_sent_until")
-      = f.date_field :send_at, class: "rounded border-stone-200 ml-2"
+                    = label_tag nil do
+                      = f.radio_button :audience,
+                                        recipient[1],
+                                        class: "hidden inline-block audience-checkbox",
+                                        checked: recipient[1] == @message.audience,
+                                        data: { action: "message-form#updateRecipients", message_form_audience_name: recipient[0] }
 
+                      span.flex.flex-row.gap-1.items-center.hover:bg-stone-200.dark:hover:bg-stone-700.py-3.px-2
+                        i.fa-stack(style="color: #{recipient[3]}")
+                          i.fa-solid.fa-circle.fa-stack-2x
+                          i.fa-solid.fa-stack-1x.text-white(class="fa-#{recipient[2]}")
 
-    footer.border-t.py-4.dark:border-stone-500
-      - unless MessagePolicy.new(@current_member, @message).create?
-        p.text-sm.font-bold
-          i.fa-solid.fa-circle-info.mr-1
-          | Your message will be sent to unit leadership for approval before being sent.
+                        span
+                          = recipient[0]
+                          - if recipient[4]
+                            .text-sm = recipient[4]
 
-      .flex.flex-col.md:flex-row.mt-4.justify-between.mb-2.bottom-0.sticky
+            // switches
+            footer.fixed.bottom-0.w-full.border-t.flex.flex-row.gap-4.px-3.items-center.bg-stone-100.h-12.text-sm.sm:text-base
+              = render partial: "components/switch", locals: { checked: @message.member_type == "adults_only",
+                                                                label: raw("<span class='hidden sm:inline'>Only send to adults</span><span class='sm:hidden inline'>Adults only</span>"),
+                                                                object_name: "message",
+                                                                method: "member_type",
+                                                                checked_value: "adults_only",
+                                                                unchecked_value: "youth_and_adults",
+                                                                css_classes: "py-2",
+                                                                size: "sm",
+                                                                data: { action: "message-form#updateRecipients", "message-form-target" => "memberTypeCheckBox" } }
 
-        - submit_caption = MessagePolicy.new(@current_member, @message).create? ? t("messages.captions.send_message") : "Submit for Approval"
+              div(data-message-form-target="ffCheckWrapper")
+                = render partial: "components/switch", locals: { checked: @message.member_type == "active_and_registered",
+                                                                label: raw("<span class='hidden sm:inline'>Include family & friends</span><span class='sm:hidden inline'>Family & friends</span>"),
+                                                                object_name: "message",
+                                                                method: "member_status",
+                                                                checked_value: "active_and_registered",
+                                                                unchecked_value: "active",
+                                                                css_classes: "py-2",
+                                                                size: "sm",
+                                                                data: { action: "message-form#updateRecipients", "message-form-target" => "memberStatusCheckBox" } }
 
-        // LEFT SIDE
-        div
-          = f.button submit_caption,
-                    type: "submit",
-                    name: "commit",
-                    value: t("messages.captions.send_message"),
-                    class: "inline-block px-4 py-2 font-bold text-white bg-lime-600 disabled:bg-lime-100 rounded",
-                    id: "send_message_button"    
-        
-        // RIGHT SIDE
-        .flex.gap-1
-          = f.button t("messages.captions.save_draft"),
-                    type: "submit",
-                    class: "py-2 rounded uppercase text-stone-500 hover:text-stone-900 dark:hover:text-stone-300 cursor-pointer",
-                    value: t("messages.captions.save_draft"),
-                    name: "commit",
-                    title: "Save as a draft" do
-            .fa-stack
-              i.fa-regular.fa-circle.fa-stack-2x
-              i.fa-solid.fa-floppy-disk.fa-stack-1x
+                #recipient_list.absolute.right-10.top-20.mt-1.w-48.h-80.p-2.bg-sky-600.text-sky-100.font-bold.rounded.z-20.overflow-scroll.hidden(data-message-form-target="recipientList")
+              
+              = link_to "#",
+                        class: "text-blue-500 text-sm font-bold ml-auto",
+                        data: { action: "message-form#toggleRecipientList" } do
+                
+                .hidden.sm:inline-block
+                  = "Show recipients"
+                
+                .sm:hidden
+                  = "Recipients"
 
-          = f.button t("messages.captions.send_preview"),
-                    type: "submit",
-                    title: "Send a preview to yourself",
-                    value: t("messages.captions.send_preview"),
-                    name: "commit",
-                    class: "w-full md:w-fit py-2 text-stone-500 hover:text-stone-900 dark:hover:text-stone-300 cursor-pointer" do
-            .fa-stack
-              i.fa-regular.fa-circle.fa-stack-2x
-              i.fa-solid.fa-paper-plane.fa-stack-1x
+          // TO row
+          .flex.flex-row.gap-6.items-center
 
-          - unless @message.new_record?
-            = f.button t("messages.captions.delete_draft"),
-                      type: "submit",
-                      title: "Delete this draft",
-                      value: t("messages.captions.delete_draft"),
-                      name: "commit",
-                      onclick: "return confirm('Are you sure you want to delete this draft?');",
-                      class: "w-full md:w-fit py-2 text-stone-500 hover:text-stone-900 cursor-pointer" do
-              .fa-stack
-                i.fa-regular.fa-circle.fa-stack-2x
-                i.fa-solid.fa-trash.fa-stack-1x
+            // TO label
+            = f.label :groups, "To", class: "inline-block py-3 font-bold"
 
-- unless @message.new_record?
-  - service = MessageService.new(@message)
-  h3.font-bold Recipients
-  ol
-    - service.resolve_members.each do |member|
-      li = member.full_display_name
+            // TO field (simulates a combo box)
 
+            = link_to "#",
+                      class: "block w-full flex flex-row justify-between items-center",
+                      data: { dropdown_target: "toggle", action: "dropdown#toggle" } do
+
+              div.left
+                span(data-message-form-target = "audienceName") = "Active #{@unit.name} members"
+
+                // recipient count pill
+                span#recipient_count.mx-2.text-sm.rounded.rounded-xl.bg-stone-300.text-stone-800.px-3.py-1.font-semibold
+
+              // chevron
+              div.right
+                i.fa-solid.fa-chevron-down.text-stone-500
+
+        // SUBJECT
+        div.flex.flex-row.gap-6.py-3.items-center
+          = f.label :subject, t("messages.form.labels.subject"), class: "block font-bold"
+
+          = f.text_field :title,
+                          autofocus: true,
+                          autocomplete: "off",
+                          class: "p-0 w-full border-0 bg-transparent placeholder-stone-400 dark:placeholder-stone-500 disabled:text-stone-300 disabled:placeholder-stone-200 ring-0 focus:ring-0",
+                          placeholder: t("messages.form.placeholders.subject"),
+                          data: { message_form_target: "subjectTextBox", action: "message-form#validate" }
+
+        = render partial: "attachments", locals: { f: f, message: @message }
+
+        // BODY
+        div.py-2
+          = f.rich_text_area :body,
+                            class: "p-0 focus:outline-none border-0 overflow-auto border border-stone-400 dark:border-stone-500 placeholder-stone-400 dark:placeholder-stone-500",
+                            placeholder: "Type your message...",
+                            data: { message_form_target: "bodyTextArea", action: "trix-change->message-form#validate" }
+
+        // FOOTER
+        footer.border-t.pt-4.dark:border-stone-500
+          - unless MessagePolicy.new(@current_member, @message).create?
+            p.text-sm.font-bold
+              i.fa-solid.fa-circle-info.mr-1
+              | Your message will be sent to unit leadership for approval before being sent.
+
+          .flex.flex-col.md:flex-row.bottom-0.sticky.gap-2.md:gap-10
+
+            - submit_caption = MessagePolicy.new(@current_member, @message).create? ? "Send Now" : "Submit for Approval"
+
+            // LEFT SIDE
+            div.flex.flex-row
+
+              // SEND NOW BUTTON
+
+              = f.button submit_caption,
+                        type: "submit",
+                        name: "commit",
+                        disabled: true,
+                        value: t("messages.captions.send_message"),
+                        class: "w-full md:w-fit block px-4 py-2 font-bold text-white bg-lime-600 hover:bg-lime-700 disabled:bg-lime-200 rounded",
+                        id: "send_message_button",
+                        data: { message_form_target: "sendMessageButton" }
+            
+            // RIGHT SIDE
+            div.flex.flex-row
+              // send later
+              .relative.dropdown(data-controller="dropdown")
+                // send later dropdown ("dropup")
+                .dropdown-menu.absolute.p-3.bg-white.dark:bg-black.border.border-stone-300.dark:border-stone-600.rounded.drop-shadow-lg.flex.flex-col.gap-2.min-w-96.bottom-full.-translate-x-1/2.left-1/2.mb-2(data-dropdown-target="dropdown")
+                  = link_to "#",
+                            class: "absolute right-0 top-0 text-xl px-3 py-2 cursor-pointer",
+                            data: { action: "message-form#toggleSendLater" } do
+                    i.fa-solid.fa-times
+                  = f.label :send_at, "Send later", class: "block font-bold"
+                  = f.date_field :send_at, class: "w-full rounded border-stone-300"
+                  = f.button t("messages.captions.schedule_and_save"),
+                            type: "submit",
+                            title: "Schedule and save",
+                            name: "commit",
+                            value: t("messages.captions.schedule_and_save"),
+                            class: "block mt-2 px-3 py-2 bg-lime-600 text-white hover:bg-lime-700 dark:hover:text-stone-300 cursor-pointer whitespace-nowrap rounded font-bold"
+
+                = f.button t("messages.captions.send_later"),
+                          type: "submit",
+                          title: "Send later",
+                          disabled: true,
+                          value: t("messages.captions.send_preview"),
+                          name: "commit",
+                          id: "send_later_button",
+                          class: "text-xl px-3 py-2 text-lime-600 hover:text-lime-700 dark:hover:text-stone-300 cursor-pointer disabled:text-lime-200",
+                          data: { message_form_target: "sendLaterButton", action: "dropdown#toggle" } do
+                    i.fa-solid.fa-calendar-days
+
+              // send preview
+              = f.button t("messages.captions.send_preview"),
+                        type: "submit",
+                        title: "Send a preview to yourself",
+                        disabled: true,
+                        value: t("messages.captions.send_preview"),
+                        name: "commit",
+                        id: "send_preview_button",
+                        class: "text-xl w-full md:w-fit px-3 py-2 text-lime-600 hover:text-lime-700 dark:hover:text-stone-300 cursor-pointer disabled:text-lime-200 disabled:hover:text-lime-200 disabled:cursor-not-allowed",
+                        data: { message_form_target: "sendPreviewButton" } do
+                  i.fa-solid.fa-glasses-round
+
+              // save draft
+              = f.button t("messages.captions.save_draft"),
+                        type: "submit",
+                        class: "text-xl py-2 px-3 rounded uppercase text-lime-600 hover:text-lime-700 dark:hover:text-stone-300 cursor-pointer",
+                        value: t("messages.captions.save_draft"),
+                        name: "commit",
+                        title: "Save as a draft" do
+                  i.fa-solid.fa-floppy-disk
+
+              // attach files
+              = f.button "Attach",
+                        type: "button",
+                        title: "Attach files",
+                        value: "attach",
+                        name: "attach",
+                        class: "text-xl w-full md:w-fit px-3 py-2 text-lime-600 hover:text-lime-700 dark:hover:text-stone-300 cursor-pointer",
+                        data: { action: "message-form#uploadFiles" } do
+                  i.fa-solid.fa-paperclip
+
+              // toggle formatting
+              = link_to "#",
+                        class: "text-xl w-full md:w-fit px-3 py-2 text-lime-600 hover:text-lime-700 dark:hover:text-stone-300 cursor-pointer",
+                        data: { action: "message-form#toggleFormattingToolbar" } do
+
+                i.fa-solid.fa-text-size
+
+              - unless @message.new_record?
+                = f.button t("messages.captions.delete_draft"),
+                          type: "submit",
+                          title: "Delete this draft",
+                          value: t("messages.captions.delete_draft"),
+                          name: "commit",
+                          onclick: "return confirm('Are you sure you want to delete this draft?');",
+                          class: "w-full md:w-fit px-3 py-2 text-lime-600 hover:text-lime-700 cursor-pointer" do
+
+                  i.fa-solid.fa-trash
 
 javascript:
   document.querySelectorAll(".delivery-method-checkbox").forEach(function(elem) {
@@ -157,4 +270,57 @@ javascript:
 
     var sendMessageButton = document.querySelector("#send_message_button");
     sendMessageButton.disabled = !formValid;
+  }
+
+css:
+  trix-toolbar {
+    display: none;
+  }
+
+  .formatting-active trix-toolbar {
+    display: block;
+  }
+
+  trix-editor {
+    min-height: 20rem;
+  }
+
+  trix-editor:empty:not(:focus)::before {
+    color: #a8a29e;
+  }
+
+  .audience-item.active a {
+    background-color: #E66425;
+    color: white;
+    font-weight: bold;
+  }
+
+  input[type='radio'].audience-checkbox:checked ~ span {
+    background-color: #E66425;
+    color: white;
+    font-weight: bold;
+  }
+
+  #recipient_list li {
+    display: inline-block;
+  }
+
+  #recipient_list li:after {
+    content: ";\00a0";
+  }
+
+  #recipient_list li:last-child:after {
+    content: "";
+  }
+
+  #recipient_list ul {
+    margin: 0.5rem 0.5rem 3rem 0.5rem;
+  }
+
+  #recipient_count:empty {
+    display: none;
+  }
+
+  trix-toolbar .trix-button-group.trix-button-group--file-tools {
+    display: none;
   }

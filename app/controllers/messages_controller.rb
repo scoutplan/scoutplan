@@ -3,26 +3,25 @@
 # Controller for sending messages. Interfaces between
 # UI and *Notifier classes (e.g. MemberNotifier)
 class MessagesController < UnitContextController
-  before_action :find_message, except: [:index, :new, :create]
+  before_action :find_message, except: [:index, :new, :create, :recipients]
 
   def index
-    @draft_messages   = @unit.messages.draft
-    @queued_messages  = @unit.messages.queued
-    @sent_messages    = @unit.messages.sent.order("updated_at DESC")
-    @pending_messages = @unit.messages.pending
-    @pinned_messages  = @sent_messages.select(&:active?)
-    @completed_messages = @sent_messages.reject(&:active?)
+    @draft_messages   = @unit.messages.draft.with_attached_attachments
+    @queued_messages  = @unit.messages.queued.with_attached_attachments
+    @sent_messages    = @unit.messages.sent.order("updated_at DESC").with_attached_attachments
+    @pending_messages = @unit.messages.pending.with_attached_attachments
   end
 
-  def show
-  end
+  def show; end
 
   def new
     authorize current_member.messages.new
-    @message = current_member.messages.new(recipients: "active_members",
-                                           member_type: "youth_and_adults",
-                                           recipient_details: ["active"],
-                                           send_at: Date.today)
+    @message = current_member.messages.create(audience: "everyone",
+                                              member_type: "youth_and_adults",
+                                              recipient_details: ["active"],
+                                              send_at: Date.today,
+                                              status: "draft")
+    redirect_to edit_unit_message_path(@unit, @message)
   end
 
   def create
@@ -58,6 +57,24 @@ class MessagesController < UnitContextController
     redirect_to unit_messages_path(@unit), notice: t("messages.notices.unpin_success")
   end
 
+  # compute the recipients for a message based on the params
+  # passed in the request
+  def recipients
+    p = params.permit(:audience, :member_type, :member_status)
+    audience = p[:audience]
+    member_type = p[:member_type]
+    member_status = p[:member_status]
+
+    message = Message.new(
+      author: @unit.unit_memberships.first,
+      audience: audience,
+      member_type: member_type,
+      member_status: member_status
+    )
+    service = MessageService.new(message)
+    @recipients = service.resolve_members
+  end
+
   private
 
   def handle_commit
@@ -74,7 +91,7 @@ class MessagesController < UnitContextController
         @message.update(status: :pending)
         @notice = t("messages.notices.pending_success")
       end
-    when t("messages.captions.send_message")
+    when t("messages.captions.send_message"), t("messages.captions.schedule_and_save")
       if MessagePolicy.new(current_member, @message).create?
         @message.update(status: :queued)
         @notice = t("messages.notices.#{@message.send_now? ? 'message_sent' : 'message_queued'}")
@@ -94,7 +111,7 @@ class MessagesController < UnitContextController
   end
 
   def message_params
-    params.require(:message).permit(:title, :body, :recipients, :member_type, :send_at,
+    params.require(:message).permit(:title, :body, :audience, :member_type, :member_status, :send_at,
                                     :pin_until, :deliver_via_notification, :deliver_via_digest,
                                     recipient_details: [])
   end

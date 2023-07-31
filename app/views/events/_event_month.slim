@@ -14,13 +14,13 @@
   - css_class += " " + "month_#{month}"
 
   section(class="#{css_class}" id="event_month_current_#{@current_event_month_count - 1}")
-    header.border-t.border-stone-800.dark:border-stone-200
-      h3.text-brand-500.font-bold.uppercase.tracking-wider.md:px-1.py-4
+    header.border-t.border-stone-800.dark:border-stone-400
+      h3.text-brand-500.font-bold.uppercase.tracking-wider.py-4
         = Date::MONTHNAMES[month]
         = " "
         = year
     
-    .divide-y.divide-stone-200.dark:divide-stone-700
+    div.divide-stone-200.dark:divide-stone-700
       - events.each do |event|
         
         = render partial: "event", locals: { event: event }

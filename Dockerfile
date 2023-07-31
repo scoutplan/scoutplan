@@ -1,4 +1,5 @@
-FROM madnight/docker-alpine-wkhtmltopdf as wkhtmltopdf_image
+# https://stackoverflow.com/questions/71040681/qemu-x86-64-could-not-open-lib64-ld-linux-x86-64-so-2-no-such-file-or-direc
+FROM --platform=linux/amd64 madnight/docker-alpine-wkhtmltopdf as wkhtmltopdf_image
 
 FROM ruby:3.2.2-alpine
 

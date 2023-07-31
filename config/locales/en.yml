@@ -83,11 +83,12 @@ en:
     events:        "Schedule"
     members:       "Members"
     planner:       "Planner"
-    communication: "Announcements"
+    communication: "Email"
     wiki:          "Wiki"
 
   profile:
     edit: "Settings"
+    settings: "Your Preferences"
     first_name: "First name"
     last_name: "Last name"
     nickname: "Nickname"
@@ -110,11 +111,11 @@ en:
 
   announcements:
     titles:
-      index: "Announcements"
+      index: "Email"
 
     index:
-      write_one_now: "Write one now..."
-      empty: "No %{message_type} announcements."      
+      write_one_now: "Write one now"
+      empty: "No %{message_type} emails."      
       
     title: "Messaging"
     new_item_description: "Announcements appear in the %{unit_name} weekly digest once they're approved"
@@ -192,7 +193,7 @@ en:
     dates:                "Dates"
 
     captions:
-      new_short: "New event"
+      new_short: "Add an event"
       payment_amount: "Cost per member $"   
       next_event: "Next"
       previous_event: "Previous" 
@@ -286,7 +287,8 @@ en:
     form:
       timezone_prompt: "Dates and times are %{timezone_name}"
       rsvp_closes_at:  "RSVP closes on"
-      delete_caption:  "Delete event"
+      delete_caption:  "Delete this event"
+      delete_series_caption: "Delete this event series"
       delete_confirm:  "Are you sure you want to permanently delete this event and any RSVPs associated with it?"
       departure:   "Depart From"
       arrival:     "Arrive At"
@@ -306,7 +308,7 @@ en:
       confirm_publish:          "Publishing will make this event visible to all members. Are you sure you want to publish it?"
       published:                "This event is published"
       edit_description_title:   "Edit Event Description"
-      cancel_title:             "Cancel event"
+      cancel_title:             "Cancel this event"
       cancel_button:            "Yes, Cancel This Event"
       cancel_cancel:            "No, Don't Cancel"
       organize_button_caption:  "View RSVPs"
@@ -359,7 +361,7 @@ en:
         adults:       "Adults"
 
     cancel:
-      proceed:        "Cancel This Event"
+      proceed:        "Cancel this event"
       confirm:        "Are you sure you want to cancel?"
       message_prompt: "Send a cancellation message?"
       past_warning:   "Cancelling events that occurred in the past is not recommended."
@@ -589,20 +591,20 @@ en:
 
   messages:
     index:
-      will_send_on: "Will send on %{send_date}"
-      sent_tab:     "Pinned"
-      done_tab:     "Completed"
-      title:        "Announcements"
-      legend_active: "Pinned announcements appear in the weekly email newsletter."
-      legend_queued: "Queued announcements have a 'Don't send until' date in the future."
+      will_send_on: "Scheduled to send on %{send_date}"
+      sent_tab:     "Sent"
+      title:        "Email"
+      legend_active: "Pinned emails appear in the weekly email newsletter."
+      legend_queued: "Queued emails have a 'Don't send until' date in the future."
       pinned_until: "Pinned until %{pin_until}"
+      sent_at:      "Sent %{value} ago"
 
     new:
       buttons:
-        cancel: "Back to announcements list"
+        cancel: "Back to email list"
 
     tooltips:
-      new_message: "Write a new announcement"
+      new_message: "Write a new email"
 
     show:
       send_dates:   "Originally posted by %{author} from %{start_date} to %{end_date}"
@@ -611,9 +613,10 @@ en:
     captions:
       save_draft:   "Save Draft"
       send_preview: "Send Preview"
-      send_message: "Post Announcement"
-      new_message:  "New Announcement"
-      duplicate:    "Duplicate This Announcement"
+      send_message: "Send Now"
+      schedule_and_save: "Schedule and save"
+      new_message:  "Write an email"
+      duplicate:    "Duplicate This Email"
       delete_draft: "Delete Draft"
 
     form:
@@ -636,18 +639,18 @@ en:
         recipients: "Type member names"
 
       titles:
-        edit: "Edit Announcement"
-        new:  "New Announcement"
+        edit: "Edit Email"
+        new:  "New email"
 
     notices:
       draft_saved:        "Draft message saved"
       preview_sent:       "Preview sent"
       message_sent:       "Message sent"
       message_queued:     "Message queued to send later"
-      duplicate_success:  "Your Announcement has been duplicated"
-      delete_success:     "Your Announcement has been deleted"
-      unpin_success:      "Your Announcement has been taken down"
-      pending_success:    "Your Announcement has been sent for approval"
+      duplicate_success:  "Your Email has been duplicated"
+      delete_success:     "Your Email has been deleted"
+      unpin_success:      "Your Email has been taken down"
+      pending_success:    "Your Email has been sent for approval"
 
   settings:
     buttons:

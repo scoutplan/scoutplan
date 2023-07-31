@@ -63,9 +63,10 @@ document.addEventListener("turbo:load", function() {
     });
   });
 
-  document.querySelectorAll(".tab-menu a").forEach(function(elem) {
+  document.querySelectorAll("a.tab-link").forEach(function(elem) {
     elem.addEventListener("click", function(event) {
       var tabbedSectionElem = event.target.closest(".tabbed");
+      var clickedLinkElem = event.currentTarget;
 
       // hide all tabs
       tabbedSectionElem.querySelectorAll(".tab").forEach(function(elem) {
@@ -79,11 +80,11 @@ document.addEventListener("turbo:load", function() {
       });
 
       // current tab to selected
-      event.target.classList.remove("border-transparent");
-      event.target.classList.add("border-brand-500");
+      clickedLinkElem.classList.remove("border-transparent");
+      clickedLinkElem.classList.add("border-brand-500");
 
       // reveal target tab
-      targetTabElemId = event.target.dataset.tabTarget;
+      targetTabElemId = clickedLinkElem.dataset.tabTarget;
       targetTabElem = document.querySelector(targetTabElemId);
       targetTabElem.classList.remove("hidden");
 
@@ -93,7 +94,6 @@ document.addEventListener("turbo:load", function() {
 
   document.querySelectorAll("input.switch").forEach(function(elem) {
     elem.addEventListener("change", function(event) {
-      console.log(event);
       var wrapper = event.target.closest(".switch-wrapper");
       wrapper.classList.toggle("switch-on", event.target.checked);
     });

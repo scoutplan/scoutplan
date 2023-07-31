@@ -3,30 +3,25 @@
 # helpers for displaying Messages
 module MessagesHelper
   def recipients_to_s(message)
-    result = member_cohort_to_s(message) if message.member_cohort?
-    result = event_cohort_to_s(message) if message.event_cohort?
-    result
-  end
+    if message.audience == "everyone"
+      if message.member_status == "active_and_registered"
+        result = "#{message.unit.name} members, guardians, friends, and family"
+      else
+        result = "#{message.unit.name} members and guardians"
+      end
+      result = "Adult " + result if message.member_type == "adults_only"
 
-  def member_cohort_to_s(message)
-    case message.recipients
-    when "all_members"
-      "Active + Family & Friends"
-    when "active_members"
-      "Active Members"
-    else
-      "Unknown"
+      return result
     end
-  end
 
-  # Returns a string description of an event cohort
-  # Example: message.recipients = "event_1234_cohort"
-  # Event.find(1234) => { title: "March Camping Trip" }
-  # event_cohort_to_s(message) => "March Camping Trip Attendees"
-  def event_cohort_to_s(message)
-    recipient_parts = message.recipients.split("_")
-    event_id = recipient_parts.second
-    event = Event.find(event_id)
-    "#{event.title} Attendees"
+    if message.audience =~ /event_(\d+)_attendees/
+      event = Event.find($1)
+
+      return "#{event.title} attendees and guardians" if message.member_type == "youth_and_adults"
+
+      return "Adult #{event.title} attendees and guardians"
+    end
+
+    "Unknown"
   end
 end

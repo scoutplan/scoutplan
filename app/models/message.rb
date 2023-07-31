@@ -5,18 +5,11 @@ class Message < ApplicationRecord
   belongs_to :author, class_name: "UnitMembership"
   has_one :unit, through: :author
   after_initialize :set_defaults
-
-  # validates_presence_of :title
+  has_many_attached :attachments
 
   alias_attribute :member, :unit_membership
 
   enum status: { draft: 0, queued: 1, sent: 2, pending: 3 }
-
-  # serialize :recipient_details, Array
-
-  # def author
-  #   UnitMembership.unscoped { super }
-  # end
 
   # https://stackoverflow.com/a/56437977/6756943
   def set_defaults
@@ -24,7 +17,7 @@ class Message < ApplicationRecord
   end
 
   def event_cohort?
-    recipients =~ /event_([0-9]+)_attendees/
+    audience =~ /event_(\d+)_attendees/
   end
 
   def member_cohort?
@@ -46,10 +39,4 @@ class Message < ApplicationRecord
   def approvers
     unit.unit_memberships.message_approver
   end
-
-  # private
-
-  # def find_unit
-  #   @unit = author.unit
-  # end
 end

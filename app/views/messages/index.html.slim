@@ -1,96 +1,53 @@
 = turbo_frame_tag "main"
-  .max-w-3xl.mx-auto
-    header.mt-8.mb-8.relative.flex.flex-row
-      h1.font-bold.text-lg.md:text-4xl
-        = t("messages.index.title", unit_name: @unit.name)
+
+  .max-w-xl.mx-auto
+    .tabbed.relative
+      = render partial: "sidecar"
 
       - if policy(:message).new?
         = link_to new_unit_message_path(@unit),
-          class: "font-bold rounded text-white bg-lime-600 hover:bg-lime-700 px-4 py-2 inline-block absolute right-0 top-0",
-          data: { turbo_frame: "main", turbo_action: "advance" },
-          title: t("messages.tooltips.new_message") do
+                  class: "absolute top-0 right-0 font-bold rounded text-white bg-lime-600 hover:bg-lime-700 px-4 py-2 inline-block absolute right-0 top-0 z-10",
+                  data: { turbo_frame: "main", turbo_action: "advance" },
+                  title: t("messages.tooltips.new_message") do
+                  
           i.fa-plus.fas.mr-2
           = t("messages.captions.new_message")
 
-    section.tabbed.mx-auto
-      nav.tab-menu.mb-4.border-b-2.border-brand-200
-        ul(style="margin-bottom: -2px")
-          // DRAFTS
-          li.inline-block
-            = link_to "#drafts",
-              data: { tab_target: "#messages_drafts" },
-              class: "inline-block tab-link px-2 md:px-6 py-3 border-b-2 border-brand-500 hover:border-brand-500 font-bold" do
-              = "Drafts"
-              - if @draft_messages.present?
-                i.fa-solid.fa-circle.fa-sm.text-brand-500.ml-1(data-fa-transform="shrink-4 up-4")
+      section.tabbed.mx-auto
+        .tabs
+          .tab#messages_drafts
+            header.mt-8.mb-8.relative.flex.flex-row
+              h1.font-bold.text-lg.md:text-4xl = "Draft emails"
 
-          // PENDING
-          li.inline-block
-            = link_to "#pending",
-              data: { tab_target: "#messages_pending" },
-              class: "inline-block tab-link px-2 md:px-6 py-3 border-b-2 border-transparent hover:border-brand-500 font-bold" do
-              = "Waiting for approval"
-              - if @pending_messages.present?
-                i.fa-solid.fa-circle.fa-sm.text-brand-500.ml-1(data-fa-transform="shrink-4 up-4")              
+            div
+              = render partial: "message", collection: @draft_messages
+            = render partial: "empty", locals: { message_type: "draft" } unless @draft_messages.present?
 
           // QUEUED
-          li.inline-block
-            = link_to "#queued",
-              data: { tab_target: "#messages_queued" },
-              class: "inline-block tab-link px-2 md:px-6 py-3 border-b-2 border-transparent hover:border-brand-500 font-bold" do
-              = "Queued"
+          .tab#messages_queued.hidden
+            header.mt-8.mb-8.relative.flex.flex-row
+              h1.font-bold.text-lg.md:text-4xl = "Scheduled emails"
 
-          // SENT (ACTIVE)
-          li.inline-block
-            = link_to "#sent",
-              data: { tab_target: "#messages_sent" },
-              class: "inline-block tab-link px-2 md:px-6 py-3 border-b-2 border-transparent hover:border-brand-500 font-bold" do                    
-              = t("messages.index.sent_tab")
+            div
+              = render partial: "message", collection: @queued_messages
+            = render partial: "empty", locals: { message_type: "queued" } unless @queued_messages.present?
 
-          // COMPLETED
-          li.inline-block
-            = link_to "#done",
-              data: { tab_target: "#messages_done" },
-              class: "inline-block tab-link px-2 md:px-6 py-3 border-b-2 border-transparent hover:border-brand-500 font-bold" do
-              = t("messages.index.done_tab")
+          // PENDING
+          .tab#messages_pending.hidden
+            header.mt-8.mb-8.relative.flex.flex-row
+              h1.font-bold.text-lg.md:text-4xl = "Waiting for approval"
 
-      .tabs
-        .tab#messages_drafts
-          .divide-y
-            = render partial: "message", collection: @draft_messages
-          = render partial: "empty", locals: { message_type: "draft" } unless @draft_messages.present?
+            div
+              = render partial: "message", collection: @pending_messages
+            = render partial: "empty", locals: { message_type: "pending" } unless @pending_messages.present?
 
-        // QUEUED
-        .tab#messages_queued.hidden
-          .flex.justify-center.mb-2
-            .text-center.text-sky-700.bg-sky-100.rounded.px-4.py-2.font-semibold.text-sm
-              i.fa-clock.fas.mr-2
-              = t("messages.index.legend_queued")
+          .tab#messages_sent.hidden
+            header.mt-8.mb-8.relative.flex.flex-row
+              h1.font-bold.text-lg.md:text-4xl = "Sent emails"
 
-          .divide-y.dark:divide-stone-500
-            = render partial: "message", collection: @queued_messages
-          = render partial: "empty", locals: { message_type: "queued" } unless @queued_messages.present?
-
-        // PENDING
-        .tab#messages_pending.hidden
-          .divide-y.divide-y.dark:divide-stone-500
-            = render partial: "message", collection: @pending_messages
-          = render partial: "empty", locals: { message_type: "pending" } unless @pending_messages.present?
-
-        .tab#messages_sent.hidden
-          .flex.justify-center.mb-2
-            .text-center.text-purple-700.bg-purple-100.rounded.px-4.py-2.font-semibold.text-sm
-              i.fa-thumbtack.fas.mr-2
-              = t("messages.index.legend_active")
-
-          .divide-y.divide-y.dark:divide-stone-500
-            = render partial: "message", collection: @pinned_messages
-          = render partial: "empty", locals: { message_type: "pinned" } unless @pinned_messages.present?
-
-        .tab#messages_done.hidden
-          .divide-y.divide-y.dark:divide-stone-500
-            = render partial: "message", collection: @completed_messages
-          = render partial: "empty", locals: { message_type: "completed" } unless @completed_messages.present?
+            div
+              = render partial: "message", collection: @sent_messages
+            = render partial: "empty", locals: { message_type: "completed" } unless @sent_messages.present?
 
   javascript:
       document.title = "Announcements · #{@unit.name}"

@@ -1,0 +1,12 @@
+// ATTACHMENTS
+div#attachments_section.flex.flex-row.gap-6.py-2.items-center(data-message-form-target="attachmentWrapper" class="#{ 'hidden' unless message.attachments.any? }")
+  = label nil, :attachments, t("messages.form.labels.attachments"), class: "block font-bold"
+  .flex.flex-row.flex-wrap.gap-1.(data-message-form-target="attachmentList")
+    - message.attachments.each do |attachment|
+      div.pl-2.py-0.rounded.bg-stone-200.dark:bg-stone-700.inline-block.flex.flex-row.items-center.gap-1
+        .inline-block.text-ellipsis.whitespace-nowrap.overflow-hidden(style="max-width: 12rem;")
+          = attachment.filename
+        = link_to raw("&times;"),
+                    unit_message_attachment_path(message.unit, message, attachment),
+                    class: "inline-block py-1 px-3 ml-1 hover:text-red-500",
+                    data: { turbo_method: "delete", turbo_stream: true }

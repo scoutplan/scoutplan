@@ -50,9 +50,13 @@ Rails.application.routes.draw do
 
   # begin units
   resources :units, path: "u", only: %i[show index update] do
-    resources :messages, path: "announcements" do
+    resources :messages, path: "email" do
       post "duplicate"
       post "unpin", as: "unpin"
+      collection do
+        post "recipients", as: "recipients"
+      end
+      resources :attachments
     end
 
     resources :locations

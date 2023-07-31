@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_08_153125) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_26_233359) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -368,11 +368,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_08_153125) do
     t.date "pin_until"
     t.boolean "include_in_digest", default: false
     t.boolean "notify_recipients", default: false
-    t.string "recipients"
+    t.string "audience"
     t.string "member_type"
     t.string "recipient_details"
     t.boolean "deliver_via_digest", default: false
     t.boolean "deliver_via_notification", default: true
+    t.string "member_status", default: "active"
   end
 
   create_table "news_items", force: :cascade do |t|

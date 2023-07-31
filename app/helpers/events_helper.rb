@@ -34,29 +34,6 @@ module EventsHelper
     result.join(" ")
   end
 
-  # TODO: shouldn't this whole thing just move to EventPolicy?
-  # can a given member cancel a given event?
-  # Three things have to be true:
-  # (a) event is persisted,
-  # (b) event isn't in a cancelled state already,
-  # (c) member is authorized
-  # TODO: should we also prevent past events from being cancelled?
-  def event_cancellable?(event, member)
-    !@event.new_record? &&
-      @event.published? &&
-      EventPolicy.new(event, member).cancel?
-  end
-
-  # TODO: shouldn't this whole thing just move to EventPolicy?
-  # can a given member cancel a given event?
-  # Three things have to be true: (a) event is persisted, (b) event is cancelled or draft, (c) member is authorized
-  # TODO: should we also prevent past events from being cancelled?
-  def event_deletable?(event, member)
-    !@event.new_record? &&
-      (@event.cancelled? || @event.draft?) &&
-      EventPolicy.new(event, member).delete?
-  end
-
   # given an EventRsvp object, return a fully-formed span tag containing the correct
   # FontAwesome glphy
   def rsvp_glyph_tag(member, rsvp)
