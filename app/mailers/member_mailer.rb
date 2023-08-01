@@ -47,9 +47,14 @@ class MemberMailer < ScoutplanMailer
     @message = Message.find(params[:message_id])
     subject = params[:preview] ? "[PREVIEW] " : ""
     subject += "#{@unit.name} — #{@message.title}"
+
+    @message.attachments.each do |attachment|
+      attachments[attachment.filename.to_s] = attachment.download
+    end
+
     mail(
       to: @to_address,
-      from: @from_address,
+      from: unit_from_address_with_name(@message.author.short_display_name),
       subject: subject
     )
   end

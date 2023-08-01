@@ -21,10 +21,12 @@ class ScoutplanMailer < ApplicationMailer
     @unit = @member&.unit
   end
 
-  def unit_from_address_with_name
+  def unit_from_address_with_name(person_name = nil)
     return unless @unit
 
-    email_address_with_name(@unit.from_address, @unit.name)
+    name = @unit.name
+    name = "#{person_name} at #{name}" if person_name
+    email_address_with_name(@unit.from_address, name)
   end
 
   # given a string, prepends with the unit name
