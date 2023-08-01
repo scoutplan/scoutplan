@@ -2,34 +2,18 @@
 
 # represents a communication from a person to one or more recipients
 class Message < ApplicationRecord
+  include Sendable
+
   belongs_to :author, class_name: "UnitMembership"
   has_one :unit, through: :author
-  after_initialize :set_defaults
   has_many_attached :attachments
 
   alias_attribute :member, :unit_membership
 
-  enum status: { draft: 0, queued: 1, sent: 2, pending: 3 }
-
-  # https://stackoverflow.com/a/56437977/6756943
-  def set_defaults
-    self&.pin_until ||= 1.week.from_now
-  end
-
-  def event_cohort?
-    audience =~ /event_(\d+)_attendees/
-  end
-
-  def member_cohort?
-    !event_cohort?
-  end
+  enum status: { draft: 0, queued: 1, sent: 2, pending: 3, outbox: 4 }
 
   def send_now?
-    !send_at&.future?
-  end
-
-  def active?
-    sent? && deliver_via_digest && pin_until > Time.now
+    send_at&.past? && (queued? || outbox?)
   end
 
   def editable?
@@ -38,5 +22,9 @@ class Message < ApplicationRecord
 
   def approvers
     unit.unit_memberships.message_approver
+  end
+
+  def mark_as_sent!
+    update(status: :sent)
   end
 end

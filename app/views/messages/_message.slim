@@ -32,10 +32,6 @@ article.hover:bg-stone-100.dark:hover:bg-stone-800.-mx-2.px-2
           | &nbsp;
           = t("messages.index.will_send_on", send_date: message.send_at.strftime('%b %-d'))
 
-        - elsif message.active?
-          .inline.text-purple-500
-            = t("messages.index.pinned_until", pin_until: message.pin_until.strftime('%B %-d'))
-
         - elsif message.sent?
           = t("messages.index.sent_at", value: distance_of_time_in_words_to_now(message.updated_at))
 

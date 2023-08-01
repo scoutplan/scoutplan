@@ -2,7 +2,7 @@
 
   .max-w-xl.mx-auto
     .tabbed.relative
-      = render partial: "sidecar"
+      = render partial: "sidecar", locals: { unit: @unit }
 
       - if policy(:message).new?
         = link_to new_unit_message_path(@unit),
