@@ -12,7 +12,7 @@ aside.xl:absolute.xl:-ml-72.xl:w-60.sidecar
 
         .right
           - if @draft_messages.present?
-            .rounded-lg.bg-stone-200.text-stone-600.px-2.py-1.text-sm
+            .rounded-lg.bg-stone-200.text-stone-600.dark:bg-stone-500.dark:text-white.px-2.py-1.text-sm
               = @draft_messages.count
 
 
@@ -29,7 +29,8 @@ aside.xl:absolute.xl:-ml-72.xl:w-60.sidecar
 
         .right
           - if @pending_messages.present?
-            i.fa-solid.fa-circle.fa-sm.text-brand-500.ml-1(data-fa-transform="shrink-4 up-4")              
+            .rounded-lg.bg-stone-200.dark:bg-stone-500.dark:text-white.text-stone-600.px-2.py-1.text-sm
+              = @pending_messages.count
 
     = link_to "#queued",
               data: { tab_target: "#messages_queued" },
