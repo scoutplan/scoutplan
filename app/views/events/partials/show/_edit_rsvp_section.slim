@@ -1,4 +1,4 @@
-section.bg-stone-100.rounded.p-4.mb-2.mt-2.attention.border.border-yellow-200
+section.bg-stone-100.dark:bg-stone-800.rounded.p-4.mb-2.mt-2.border.dark:border-stone-800
   = form_with model: event, url: unit_event_send_rsvps_path(@unit, event), data: { controller: "dirt-detector" } do |f|
 
     // first row: RSVP panel
@@ -13,7 +13,7 @@ section.bg-stone-100.rounded.p-4.mb-2.mt-2.attention.border.border-yellow-200
         = t("events.rsvp.youth_rsvp_warning", names: presenter.grammatical_list(names, "or"))  
 
     // footer, containing right-justified buttons
-    footer.flex.flex-col.md:flex-row.py-4.gap-2
+    footer.flex.flex-col.md:flex-row.pt-4.gap-2
       - done_caption = @rsvps.present? ? "Update Your RSVPs" : t("events.edit_rsvps.captions.submit")
 
       // Done button
@@ -25,7 +25,7 @@ section.bg-stone-100.rounded.p-4.mb-2.mt-2.attention.border.border-yellow-200
                 px-4 py-2 \
                 bg-yellow-300 hover:bg-yellow-500 text-yellow-800 hover:text-yellow-900 \
                 border border-yellow-400 \
-                disabled:border-stone-300 disabled:bg-stone-200 disabled:text-stone-400 \
+                disabled:border-stone-300 disabled:bg-yellow-200 disabled:text-yellow-400 disabled:border-yellow-200 \
                 rounded",
         data: { turbo_frame: "main", turbo_action: "restore" },
         disabled: true
@@ -38,6 +38,7 @@ section.bg-stone-100.rounded.p-4.mb-2.mt-2.attention.border.border-yellow-200
                 " px-4 py-2 mr-0 md:mr-2 mb-2 md:mb-0" \
                 " border border-yellow-800" \
                 " text-yellow-800 hover:text-yellow-900" \
+                " dark:text-yellow-300 dark:hover:text-yellow-400 dark:border-yellow-300 " \
                 " rounded" \
                 "",
         data: { turbo_action: "advance", turbo_frame: "main" }        

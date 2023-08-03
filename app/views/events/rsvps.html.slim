@@ -1,6 +1,6 @@
 = turbo_frame_tag "main"
   .max-w-6xl.mx-auto
-    header.sticky.top-0.pt-4.pb-2.border-b
+    header.pt-4.pb-2.border-b
       .flex.justify-between
         // left side
         div
@@ -86,20 +86,15 @@
           i.fa-info-circle.fas.mr-2
           = flash[:notice]
 
-    section.max-w-6xl.mx-auto.grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-2.xl:grid-cols-4.gap-1.mt-2
+    section.max-w-6xl.mx-auto.grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-2.xl:grid-cols-4.gap-1.mt-2(data-controller="event-organize")
       // ACCEPTED
-      .bg-green-50.rounded.p-4#accepted_rsvp_container
-        header
-          = link_to unit_event_organize_path(@unit, @event),
-                    class: "inline-block flex justify-between",
-                    data: { turbo_action: "advance" } do
-                    
-            h2.text-lg.font-bold.text-green-700
-              i.fa-person-hiking.fas.text-green-600.mr-2
-              = t("events.organize.accepts")
-              i.fa-chevron-right.fas.text-stone-500.ml-2
+      .dark:text-stone-100.bg-green-50.dark:bg-green-900/50.rounded.p-4#accepted_rsvp_container(data-action="drop->event-organize#drop dragover->event-organize#dragover dragenter->event-organize#dragenter dragleave->event-organize#dragleave")
+        header.flex.justify-between
+          h2.text-lg.font-bold.text-green-700.dark:text-green-200
+            i.fa-person-hiking.fa-solid.mr-2
+            = t("events.organize.accepts")
 
-            = render partial: "events/partials/rsvps/attendance_badges", locals: { event: @event }
+          = render partial: "events/partials/rsvps/attendance_badges", locals: { event: @event }
 
 
         // Who's going?
@@ -126,10 +121,10 @@
                       layout:     "events/partials/rsvps/organize_entry"
 
       // DECLINED
-      .bg-red-50.rounded.p-4#declined_rsvp_container
+      .bg-red-50.dark:bg-red-900/40.rounded.p-4#declined_rsvp_container
         header.flex.justify-between
-          h2.text-lg.font-bold.text-red-700
-            i.fa-couch.fas.text-red-500.mr-2
+          h2.text-lg.font-bold.text-red-700.dark:text-red-200
+            i.fa-couch.fas.mr-2
             = t("events.organize.declines")
 
           .font-bold.tracking-wide.pt-1
@@ -145,10 +140,10 @@
                      as:         :rsvp
 
       // NO RESPONSE
-      .bg-orange-50.rounded.p-4
+      .bg-orange-50.dark:bg-orange-900/60.rounded.p-4
         header.flex.justify-between
-          h2.text-lg.font-bold.text-orange-700
-            i.fa-ghost.fas.text-orange-500.mr-2
+          h2.text-lg.font-bold.text-orange-700.dark:text-orange-200
+            i.fa-ghost.fa-solid.mr-2
             = t("events.organize.non_respondents")
 
           .font-bold.tracking-wide.pt-1
@@ -163,10 +158,10 @@
                      as:         :member
 
       // NON-INVITEES
-      .bg-zinc-100.rounded.p-4
+      .bg-zinc-100.dark:bg-zinc-800.rounded.p-4
         header.flex.justify-between
-          h2.text-lg.font-bold.text-zinc-700
-            i.fa-hand-wave.fas.text-stone-500.mr-2
+          h2.text-lg.font-bold.text-zinc-700.dark:text-zinc-200
+            i.fa-hand-wave.fas.mr-2
             = t("members.statuses.registered")
 
           .font-bold.tracking-wide.mt-1
@@ -272,3 +267,9 @@
     }
 
     document.title = "Organize: #{@event.title} · #{@unit.name}"
+
+  css:
+    #accepted_rsvp_container.droptarget {
+      box-shadow: 0 0 0 1px #4dc0b5;
+    }
+

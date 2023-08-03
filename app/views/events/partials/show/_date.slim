@@ -1,7 +1,7 @@
 - duration_in_days = (@event.ends_at.to_date - @event.starts_at.to_date).to_i
 - multiday = duration_in_days.positive?
 
-section#date_time_card.py-4.border-t.border-stone-500
+section#date_time_card.py-4.border-t.border-stone-500.dark:border-stone-700
   h2.font-bold.text-lg.mb-3
     = @presenter.month_name
 
@@ -21,7 +21,7 @@ section#date_time_card.py-4.border-t.border-stone-500
               = @event.ends_at.in_time_zone.strftime('%-I:%M %p')
 
       - if multiday && duration_in_days < 5
-        .interim-day.bg-white.dark:bg-stone-900.dark:bg-transparent.text-purple-500.px-2
+        .interim-day.bg-white.dark:bg-stone-900.text-purple-500.px-2
           i.fa-solid.fa-moon
 
         - interim_date = @event.starts_at + 1.day
