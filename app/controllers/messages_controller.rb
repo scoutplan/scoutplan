@@ -18,7 +18,6 @@ class MessagesController < UnitContextController
     authorize current_member.messages.new
     @message = current_member.messages.create(audience: "everyone",
                                               member_type: "youth_and_adults",
-                                              recipient_details: ["active"],
                                               send_at: Date.today,
                                               status: "draft")
     redirect_to edit_unit_message_path(@unit, @message)
@@ -79,31 +78,50 @@ class MessagesController < UnitContextController
 
   def handle_commit
     case params[:commit]
+
+    # save draft
     when t("messages.captions.save_draft")
       @message.update(status: :draft)
       @notice = t("messages.notices.draft_saved")
+
+    # send preview
     when t("messages.captions.send_preview")
       send_preview
       @message.update(status: :draft) if @message.status.nil?
       @notice = t("messages.notices.preview_sent")
+
+    # submit for approval
     when t("Submit for Approval")
       if MessagePolicy.new(current_member, @message).create_pending?
         @message.update(status: :pending)
         @notice = t("messages.notices.pending_success")
       end
-    when t("messages.captions.send_message"), t("messages.captions.schedule_and_save")
+
+    # schedule
+    when t("messages.captions.schedule_and_save")
       if MessagePolicy.new(current_member, @message).create?
         @message.update(status: :queued)
         @notice = t("messages.notices.#{@message.send_now? ? 'message_sent' : 'message_queued'}")
       else
         @notice = "You aren't authorized to do that"
       end
+
+    # send now
+    when t("messages.captions.send_message")
+      if MessagePolicy.new(current_member, @message).create?
+        @message.update(status: :outbox)
+        @notice = t("messages.notices.#{@message.send_now? ? 'message_sent' : 'message_queued'}")
+      else
+        @notice = "You aren't authorized to do that"
+      end
+
+    # delete
     when t("messages.captions.delete_draft")
       @message.destroy
       @notice = t("messages.notices.delete_success")
     end
 
-    SendMessageJob.perform_later(@message) if @message.queued?
+    SendMessageJob.perform_later(@message) if @message.queued? || @message.outbox?
   end
 
   def send_preview

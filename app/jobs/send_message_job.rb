@@ -1,33 +1,26 @@
 # frozen_string_literal: true
 
-# An ActiveJob for sending Messages asynchronously
+# An ActiveJob for sending email asynchronously
 class SendMessageJob < ApplicationJob
   queue_as :default
 
   def perform(message)
     return unless message.send_now?
 
-    @message = message
-    @members = MessageService.new(@message).resolve_members
-    send_to_members
-    mark_as_sent
-  end
+    message.recipients.each do |recipient|
+      next unless Flipper.enabled? :messages, recipient
 
-  private
-
-  def send_to_members
-    @members.each do |member|
-      send_to_member(member)
+      MemberNotifier.new(recipient).send_message(message)
     end
-  end
 
-  def send_to_member(member)
-    return unless Flipper.enabled? :messages, member
+    message.mark_as_sent!
 
-    MemberNotifier.new(member).send_message(@message)
-  end
-
-  def mark_as_sent
-    @message.update(status: "sent")
+    Turbo::StreamsChannel.broadcast_replace_later_to(
+      message.unit,
+      :message_folders,
+      partial: "messages/sidecar",
+      target: "message_folders",
+      locals: { unit: message.unit }
+    )
   end
 end
