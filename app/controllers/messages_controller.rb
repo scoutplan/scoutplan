@@ -45,14 +45,12 @@ class MessagesController < UnitContextController
     new_message = @message.dup
     new_message.title = "DUPLICATE - #{@message.title}"
     new_message.status = "draft"
-    new_message.pin_until = 7.days.from_now
     new_message.send_at = Time.now
     new_message.save
     redirect_to edit_unit_message_path(@unit, new_message), notice: t("messages.notices.duplicate_success")
   end
 
   def unpin
-    @message.update(pin_until: Time.now)
     redirect_to unit_messages_path(@unit), notice: t("messages.notices.unpin_success")
   end
 
@@ -129,9 +127,7 @@ class MessagesController < UnitContextController
   end
 
   def message_params
-    params.require(:message).permit(:title, :body, :audience, :member_type, :member_status, :send_at,
-                                    :pin_until, :deliver_via_notification, :deliver_via_digest,
-                                    recipient_details: [])
+    params.require(:message).permit(:title, :body, :audience, :member_type, :member_status, :send_at)
   end
 
   def find_message
