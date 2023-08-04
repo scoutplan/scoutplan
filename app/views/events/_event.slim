@@ -20,9 +20,6 @@ article.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="relative ev
               class: "event py-2 block border-t w-full dark:border-stone-700",
               data: { turbo_action: "advance", turbo_frame: "main" } do
 
-      div.flex.flex-row.mb-2
-        = render partial: "events/partials/event_row/tags", locals: { event: event }
-
       div.flex.flex-row
         // date / day
         time.w-24.shrink-0

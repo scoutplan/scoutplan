@@ -70,6 +70,10 @@ class User < ApplicationRecord
     "#{display_first_name} #{last_name&.first}#{period ? '.' : ''}"
   end
 
+  def multiple_units?
+    units.count > 1
+  end
+
   def smsable?
     phone.present?
   end

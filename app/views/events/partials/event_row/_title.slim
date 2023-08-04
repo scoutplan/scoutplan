@@ -2,6 +2,7 @@ div
   .flex.flex-row.gap-1.items-center
     h4.font-bold.text-xl.event-title.mr-2 = event.title
     = render partial: "events/partials/event_row/title_badge", locals: { event: event }
+    = render partial: "events/partials/event_row/tags", locals: { event: event }
 
   = render partial: "events/partials/index/short_description", locals: { event: event }
   = render partial: "event_location", locals: { event: event }
