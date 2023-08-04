@@ -29,10 +29,7 @@ li.member(id="unit_membership_#{@member.id}")
           - if @event.includes_activity && @rsvp&.includes_activity
             i.fa-check-circle.fas.text-emerald-900.ml-1(title="Will be #{@event.activity_name}")
 
-          / - if rsvp&.action_pending?
-            / i.fa-triangle-exclamation.fas.text-red-500(title="Payment and/or documentation hasn't yet been received")
-        
-          - if @event.requires_payment? && @rsvp.accepted?
+          - if @event.requires_payment? && rsvp&.accepted?
             - case @payments_service&.paid?
             - when :in_full
               i.fa-badge-dollar.fa-solid.text-emerald-900(title="Payment has been received")

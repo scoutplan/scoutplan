@@ -5,22 +5,24 @@
 
 - rsvp_service = RsvpService.new(@current_member, @event)
 
-section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800
+section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800.dark:border-stone-600
   - if rsvp_service.any_responses?
     .flex.flex-col.md:flex-row.justify-between.md:items-center.gap-3
-      div
+      div.left
         - if rsvp_service.family_fully_responded?
-          i.fa-circle-check.fas.text-green-500.mr-1(title="Your RSVP is complete")
+          i.fa-stack.mr-2
+            i.fa-solid.fa-circle.fa-stack-2x.text-green-500
+            i.fa-solid.fa-check.fa-stack-1x.text-white
 
         - if rsvp_service.family_fully_declined?
           = t("events.show.full_decline")
         - else
           = rsvp_service.family_responses_in_words
 
-      div
+      div.right
         // Update RSVPs button (if allowed)
         - if policy(@event).rsvp? && @event.rsvp_open?
-          = link_to "Change", unit_event_edit_rsvps_path(@event.unit, @event),
+          = link_to "Change your RSVP", unit_event_edit_rsvps_path(@event.unit, @event),
                     class: "cta-button text-center block md:inline-block font-bold bg-amber-300 text-amber-900 hover:bg-yellow-400 rounded px-4 py-2",
                     data: { turbo_action: "advance", turbo_frame: "main" }
         - else

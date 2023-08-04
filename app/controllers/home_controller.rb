@@ -7,16 +7,8 @@ class HomeController < ApplicationController
 
   # GET /
   def index
-    redirect_to "/new_unit/start" and return unless current_user.present?
-
     unit_id = cookies[:current_unit_id] || current_user.unit_memberships.first.unit.id
-
-    begin
-      unit = Unit.find(unit_id)
-      redirect_to unit
-    rescue ActiveRecord::RecordNotFound
-      cookies[:current_unit_id]
-      sign_out_and_redirect(current_user)
-    end
+    unit = Unit.find(unit_id)
+    redirect_to unit
   end
 end

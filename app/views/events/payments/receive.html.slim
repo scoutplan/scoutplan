@@ -14,9 +14,9 @@
         h1.font-bold.text-4xl = "Receive Payment"
 
       section.py-2
-        p = @event.title
+        p.font-bold = @event.title
         p = EventPresenter.new(@event, @current_member).full_dates_to_s
-        p = "#{number_to_currency(@event.cost_youth)} per youth, #{number_to_currency(@event.cost_adult)} per adult"
+        p = event_prices(@event)
 
       section.py-2
         table.w-full

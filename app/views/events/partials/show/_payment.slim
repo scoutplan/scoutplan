@@ -1,6 +1,6 @@
 - return unless @event.requires_payment? && Flipper.enabled?(:payments, @current_member) && Flipper.enabled?(:payments, @current_unit)
 
-section.py-4.font-bold.border-t.border-stone-800
+section.py-4.font-bold.border-t.border-stone-800.dark:border-stone-700
   .flex.flex-col.md:flex-row.justify-between.md:items-center.gap-2
     div
       .fa-stack.mr-1
@@ -63,8 +63,8 @@ section.py-4.font-bold.border-t.border-stone-800
         td.text-right = number_to_currency(@subtotal, precision: 2)    
 
       tr.border-t.border-lime-300
-        td.pr-2(colspan="2") Transaction fee
-        td.text-right(colspan="4")
+        td.pr-2(colspan="1") Transaction fee
+        td.text-right(colspan="5")
           - if @transaction_fee.positive?
             = number_to_currency(@transaction_fee, precision: 2)
           - else

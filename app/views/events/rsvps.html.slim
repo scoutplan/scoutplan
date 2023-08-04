@@ -94,7 +94,11 @@
             i.fa-person-hiking.fa-solid.mr-2
             = t("events.organize.accepts")
 
-          = render partial: "events/partials/rsvps/attendance_badges", locals: { event: @event }
+          / = render partial: "events/partials/rsvps/attendance_badges", locals: { event: @event }
+
+          .font-bold.tracking-wide.pt-1
+            span.px-2.py-1.rounded.bg-green-500.text-green-100#organize_count_accepted
+              = @event.rsvps.accepted.count
 
 
         // Who's going?

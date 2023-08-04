@@ -2,9 +2,9 @@
 
 = form_with model: @payment, url: unit_event_payments_path(@unit, @event, member: params[:member]) do |f|
   .mb-4
-    = f.label :amount, class: "block mb-1"
+    = f.label :amount, "Amount received", class: "block mb-1"
+
     .w-full.font-bold.block.rounded.border.border-stone-300.flex.flex-row
-      .text-2xl.px-2.py-2.bg-stone-200.text-stone-900.border-r.border-stone-300 = "$"
       = f.text_field :amount, placeholder: "Amount", inputmode: "numeric",
                      value: number_to_currency(@payment.amount_in_dollars, format: "%n"),
                      required: true, class: "border-0 text-2xl pr-0"
@@ -44,13 +44,13 @@
         i.fa-solid.fa-z.fa-fw.text-purple-600.px-2
         = "Zelle"
 
-    p.py-1
+    p.py-0
       = f.label :method_other, :other, class: "inline-block" do
         = f.radio_button :method, :other, onfocus: "var e = document.getElementById('payment_note'); e.focus(); e.select();"
         i.fa-solid.fa-tag.fa-fw.text-stone-500.px-2
         = "Other"
 
-      = f.text_field :note, placeholder: "Note (e.g. sibling discount)", class: "px-2 py-1 border rounded border-stone-300 inline-block text-sm ml-2"
+      = f.text_field :note, placeholder: "Note (e.g. sibling discount)", class: "px-2 py-1 border rounded border-stone-300 inline-block ml-2"
 
-  footer.mt-4
-    = f.submit "Receive Payment", class: "block rounded px-4 py-2 bg-green-600 text-white font-bold hover:bg-green-700 hover:text-white"
+  footer.mt-6
+    = f.submit "Record payment", class: "block rounded px-4 py-2 bg-green-600 text-white font-bold hover:bg-green-700 hover:text-white"
