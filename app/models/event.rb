@@ -100,10 +100,6 @@ class Event < ApplicationRecord
     requires_rsvp
   end
 
-  def organizer?(member)
-    organizers.find_by(unit_membership_id: member.id).present?
-  end
-
   def past?
     ends_at.past?
   end
@@ -253,6 +249,14 @@ class Event < ApplicationRecord
 
   def organizer?(member)
     organizers.map(&:member).include?(member)
+  end
+
+  # used by Sendable to compute message recipients
+  def audience
+    "event_#{id}_attendees"
+  end
+
+  def remind!
   end
 
   # def to_param
