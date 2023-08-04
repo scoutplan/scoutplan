@@ -10,19 +10,22 @@ header.relative.mb-4
     /     i.fa-solid.fa-tag.mr-2
     /     = tag
 
-  .flex.flex-row.items-center.gap-2.relative.dropdown(data-controller="dropdown")
-    i.fa-stack
-      i.fa-solid.fa-circle.fa-stack-2x(style="color: #{@event&.category&.color}")
-      i.fa-solid.fa-stack-1x.text-white(class="fa-#{@event&.category&.glyph}")
+  .flex.flex-row.items-start.gap-2.relative.dropdown(data-controller="dropdown")
+    div
+      i.fa-stack
+        i.fa-solid.fa-circle.fa-stack-2x(style="color: #{@event&.category&.color}")
+        i.fa-solid.fa-stack-1x.text-white(class="fa-#{@event&.category&.glyph}")
 
-    h3.font-bold.text-3xl.md:text-5xl.mr-1 = @event.title
+    h3.font-bold.text-3xl.md:text-5xl.-mt-2
+      = @event.title
 
-    - @event.tag_list.each do |tag|
-      .block.font-bold.border-rose-700.text-rose-700.border.rounded-md.py-1.px-2.text-sm.dark:text-rose-400.dark:border-rose-400
-        i.fa-solid.fa-tag.mr-2
-        = tag      
 
     .ml-auto.right.relative.flex.flex-row.gap-3.items-center
+      - @event.tag_list.each do |tag|
+        .inline-block.whitespace-nowrap.font-bold.border-rose-700.text-rose-700.border.rounded-md.py-1.px-2.text-sm.dark:text-rose-400.dark:border-rose-400
+          i.fa-solid.fa-tag.mr-2
+          = tag
+
       = link_to "#", class: "text-stone-500", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
         i.fa-regular.fa-circle-ellipsis.fa-2xl
 
