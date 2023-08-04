@@ -10,7 +10,7 @@
     = f.select :event_category_id,
                 @event.unit.event_categories.collect { |c| [ c.name, c.id ] },
                 { prompt: t("events.placeholders.category"), selected: @event.event_category_id },
-                { class: "border border-stone-300 rounded py-2 bg-white w-full font-bold",
+                { class: "border border-stone-300 dark:border-stone-700 rounded py-2 bg-white w-full font-bold",
                   required: "A category is required",
                   data: { fancy_select_target: "select" } }
 
@@ -19,13 +19,13 @@
                 value: @event&.category&.name,
                 placeholder: "Select an event category",
                 autocomplete: "off",
-                class: "w-full border border-stone-300 rounded bg-white px-3 p-2 placeholder-stone-300 font-bold dark:bg-black",
+                class: "w-full border border-stone-300 dark:border-stone-700 rounded bg-white px-3 p-2 placeholder-stone-300 font-bold dark:bg-black",
                 data: { "1p-ignore" => "true", fancy_select_target: "text", action: "blur->fancy-select#blur focus->fancy-select#searchFocus keyup->fancy-select#search" }
 
     .absolute.right-0.top-0.flex.items-center.h-12.px-3.-mt-1.disclosure
       i.fa-solid.fa-chevron-down.fa-fw.text-sm
 
-    .absolute.top-full.w-full.max-h-60.bg-stone-100.z-10.border.border-stone-300.rounded.drop-shadow-lg.overflow-scroll.options
+    .absolute.top-full.w-full.max-h-60.bg-stone-100.z-10.border.border-stone-300.dark:border-stone-700.rounded.drop-shadow-lg.overflow-scroll.options
       ul.w-full
         li.unmatched-prompt
           .px-3.py-2 = "A new category will be added"

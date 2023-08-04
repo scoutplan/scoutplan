@@ -575,6 +575,9 @@ en:
       index: "Payments"
       setup: "Set up credit card payments for your unit"
 
+    receive:
+      record_payment: "Record payment"      
+
   search:
     placeholders:
       query_term: "Type an event or member name"
@@ -596,7 +599,6 @@ en:
       title:        "Email"
       legend_active: "Pinned emails appear in the weekly email newsletter."
       legend_queued: "Queued emails have a 'Don't send until' date in the future."
-      pinned_until: "Pinned until %{pin_until}"
       sent_at:      "Sent %{value} ago"
 
     new:
@@ -608,7 +610,6 @@ en:
 
     show:
       send_dates:   "Originally posted by %{author} from %{start_date} to %{end_date}"
-      legend_pinned: "This announcement will remain pinned until %{pin_until}"
     
     captions:
       save_draft:   "Save Draft"

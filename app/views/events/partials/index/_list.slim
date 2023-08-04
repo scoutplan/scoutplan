@@ -1,12 +1,12 @@
-#event_table_container.max-w-xl.mx-auto
+#event_table_container.max-w-2xl.mx-auto
   = form_tag bulk_publish_unit_events_path(@unit), id: "bulk_action_form"
     .md:fixed
       = render partial: "events/partials/index/sidecar", layout: "layouts/sidecar"
 
-    header.max-w-xl.mx-auto.relative.mt-8.mb-2
+    header.mx-auto.relative.mt-8.mb-2
       .flex.flex-col.md:flex-row.justify-between
         .left
-          = render partial: "components/unit_name"
+          = render partial: "components/unit_name" if @current_user.multiple_units?
 
           h1.text-4xl.font-bold.mb-2
             = t("events.index.page_title")
@@ -17,7 +17,7 @@
     = render partial: "events/partials/index/empty_list"
 
     // LIST WRAPPER
-    .max-w-xl.mx-auto
+    div
       // iterate by month
       - @event_month_count = 0
       - @current_event_month_count = 0

@@ -2,10 +2,8 @@
 
 li
   = link_to new_unit_event_path(@unit, source_event_id: @event.id),
-            class: "block py-1 font-bold hover:text-brand-500",
+            class: "block p-2 rounded font-bold hover:bg-brand-700",
             data: { turbo_action: "advance" } do
-    .fa-stack
-      i.fa-regular.fa-circle.fa-stack-2x
-      i.fa-solid.fa-calendars.fa-stack-1x
-    
+
+    i.fa-solid.fa-calendars.fa-fw.mr-2
     = t("events.show.buttons.duplicate")     

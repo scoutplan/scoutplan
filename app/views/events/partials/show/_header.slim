@@ -1,13 +1,43 @@
-header.mb-4
-  h3.font-bold.text-3xl.md:text-4xl
-    = @event.title
-    span.align-middle.ml-2.text-base = glyph_tag(@event)
-    .text-sm.py-1.uppercase.tracking-wider.text-stone-500.dark:text-stone-400 = @unit.name
+header.relative.mb-4
+  // icon and tag row
+  / .flex.flex-row.mb-2
+    / i.fa-stack
+    /   i.fa-solid.fa-circle.fa-stack-2x(style="color: #{@event&.category&.color}")
+    /   i.fa-fw.fa-solid.fa-stack-1x.text-white(class="fa-#{@event&.category&.glyph}")
 
-  = content_tag(:p, @event.short_description, class: "mt-2 font-bold") if @event.short_description.present?          
+    / - @event.tag_list.each do |tag|
+    /   .font-bold.text-sm.border-rose-700.text-rose-700.border.rounded-md.py-1.px-2.inline-block.mx-1
+    /     i.fa-solid.fa-tag.mr-2
+    /     = tag
 
-  .flex.flex-row.gap-1
+  .flex.flex-row.items-center.gap-2.relative.dropdown(data-controller="dropdown")
+    i.fa-stack
+      i.fa-solid.fa-circle.fa-stack-2x(style="color: #{@event&.category&.color}")
+      i.fa-solid.fa-stack-1x.text-white(class="fa-#{@event&.category&.glyph}")
+
+    h3.font-bold.text-3xl.md:text-5xl.mr-1 = @event.title
+
     - @event.tag_list.each do |tag|
-      .font-bold.text-sm.bg-rose-700.text-white.rounded-md.py-1.px-2
+      .block.font-bold.border-rose-700.text-rose-700.border.rounded-md.py-1.px-2.text-sm.dark:text-rose-400.dark:border-rose-400
         i.fa-solid.fa-tag.mr-2
-        = tag
+        = tag      
+
+    .ml-auto.right.relative.flex.flex-row.gap-3.items-center
+      = link_to "#", class: "text-stone-500", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
+        i.fa-regular.fa-circle-ellipsis.fa-2xl
+
+    .dropdown-menu.absolute.right-0.bg-brand-500.z-10.px-4.py-3.rounded.text-white.top-full.animate-pop-open
+      ul
+        = render partial: "events/partials/show/sidecar/edit"
+        = render partial: "events/partials/show/sidecar/duplicate"
+        = render partial: "events/partials/show/sidecar/history"
+        - if false
+          = render partial: "events/partials/show/sidecar/add_sub_event"
+        = render partial: "events/partials/show/sidecar/download_brief"
+        = render partial: "events/partials/show/sidecar/send_email_invite"
+        = render partial: "events/partials/show/sidecar/adjacent_events"  
+
+  / .text-sm.py-1.uppercase.tracking-wider.text-stone-500.dark:text-stone-400.font-bold
+  /   = @unit.name
+
+  = content_tag(:p, @event.short_description, class: "mt-2 font-bold") if @event.short_description.present?

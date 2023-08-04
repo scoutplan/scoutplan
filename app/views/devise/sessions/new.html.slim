@@ -51,9 +51,9 @@
       .pt-2
         - if @manual_login_available
           .inline.passwordless-login
-            | We'll email you a link so you can sign in without a password. Or you can 
+            | We'll email you a code so you can sign in without a password. Or you can 
             = link_to "sign in with a password", "#", class: "font-bold hover:underline text-blue-500 toggle-password-link"
-            | .
+            | &nbsp;if you've set one up.
           .inline.password-login
             | Don't know your password? You can 
             = link_to "sign in with a code sent via email", "#", class: "font-bold hover:underline text-blue-500 toggle-password-link"

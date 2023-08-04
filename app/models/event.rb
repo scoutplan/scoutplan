@@ -102,7 +102,7 @@ class Event < ApplicationRecord
 
   def organizer?(member)
     organizers.find_by(unit_membership_id: member.id).present?
-  end  
+  end
 
   def past?
     ends_at.past?

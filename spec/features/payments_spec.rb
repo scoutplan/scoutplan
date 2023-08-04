@@ -52,9 +52,9 @@ describe "payments", type: :feature do
     it "records a payment" do
       visit receive_unit_event_payments_path(@unit, @event, member: @member.id)
       expect(page).to have_content("$1,300.00")
-      expect(page).to have_content("Receive Payment")
+      expect(page).to have_content(I18n.t("payments.receive.record_payment"))
       fill_in("payment_amount", with: 1300)
-      expect { click_button "Receive Payment" }.to change { Payment.count }.by(1)
+      expect { click_button I18n.t("payments.receive.record_payment") }.to change { Payment.count }.by(1)
       expect(page).to have_current_path(unit_event_payments_path(@unit, @event))
       expect(Payment.last.amount).to eq(130000)
     end
@@ -62,7 +62,7 @@ describe "payments", type: :feature do
     it "rejects bad input" do
       visit receive_unit_event_payments_path(@unit, @event, member: @member.id)
       fill_in("payment_amount", with: -1300)
-      click_button "Receive Payment"
+      click_button(I18n.t("payments.receive.record_payment"))
     end
   end
 end

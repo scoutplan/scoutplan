@@ -13,7 +13,7 @@ section.py-4
     .py-2.field-wrapper
       = f.label :rsvp_closes_at, t("events.form.rsvp_closes_at"), class: "block font-bold mb-2"
       = f.date_field :rsvp_closes_at,
-        class: "bg-white border border-stone-300 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300",
+        class: "bg-white dark:bg-black border border-stone-300 dark:border-stone-700 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300",
         data: { target: "event-edit.rsvpClosesAt", action: "change->event-edit#updateRsvpClosesAt" }
       p.error-message.text-red-500.my-2.text-sm.font-bold
         i.fa-solid.fa-exclamation-circle.fas.mr-2
@@ -25,7 +25,7 @@ section.py-4
           = f.label :cost_youth, t("events.captions.cost_youth"), class: "font-bold mr-2"
         .table-cell.py-1
           = f.number_field :cost_youth,
-                            class: "w-24 border border-stone-300 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
+                            class: "w-24 border border-stone-300 dark:border-stone-700 rounded bg-white dark:bg-black p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
                             min: 0
 
       .table-row
@@ -33,7 +33,7 @@ section.py-4
           = f.label :cost_adult, t("events.captions.cost_adult"), class: "font-bold mr-2"
         .table-cell.py-1
           = f.number_field :cost_adult,
-                            class: "w-24 border border-stone-300 rounded bg-white p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
+                            class: "w-24 border border-stone-300 dark:border-stone-700 rounded bg-white dark:bg-black p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
                             min: 0        
 
     = render partial: "events/partials/form/event_shifts", locals: { member: @current_member, f: f }

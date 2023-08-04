@@ -3,18 +3,11 @@
     header.mb-2
       h1.text-3xl.font-bold = @message.title
 
-      - if @message.active?
-        div
-          = t("messages.show.legend_pinned", pin_until: @message.pin_until.strftime('%B %-d'))
-          = button_to unit_message_unpin_path(@unit, @message), class: "ml-2 text-sm font-semibold text-purple-500 hover:text-purple-600 rounded border border-purple-500 hover:border-purple-600 px-2 py-1", form: { class: "inline" } do
-            i.fa-box-archive.fas.mr-2
-            = "Unpin now"
-
     article.text-lg
       == @message.body
 
     p.border-t.py-4.text-stone-500.text-sm.font-bold
-      = t("messages.show.send_dates", author: @message.author.display_first_name, start_date: @message.updated_at, end_date: @message.pin_until)
+      = t("messages.show.send_dates", author: @message.author.display_first_name, start_date: @message.updated_at, end_date: nil)
 
     footer.py-4
       = button_to t("messages.captions.duplicate"), unit_message_duplicate_path(@unit, @message),

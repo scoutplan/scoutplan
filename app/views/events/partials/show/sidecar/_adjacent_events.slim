@@ -1,25 +1,18 @@
 - return unless @event.next.present? || @event.previous.present?
 
-li.flex.flex-row.justify-between.border-t.border-stone-500.mt-2.py-2
+li.flex.flex-row.justify-between.border-t.border-brand-300.mt-2.pt-2
   - if @event.previous.present?
     = link_to unit_event_path(@event.previous.unit, @event.previous),
-              class: "block py-1 font-bold hover:text-brand-500",
+              class: "block p-2 rounded font-bold hover:bg-brand-700",
               title: "#{@event.previous.title} on #{@event.previous.starts_at.strftime('%B %-d')}",
               data: { turbo_action: "advance" } do
-      .fa-stack
-        i.fa-regular.fa-circle.fa-stack-2x
-        i.fa-solid.fa-arrow-left.fa-stack-1x
-      
+      i.fa-solid.fa-arrow-left.fa-fw.mr-2
       = t("events.captions.previous_event")
 
   - if @event.next.present?
     = link_to unit_event_path(@unit, @event.next),
-              class: "block py-1 font-bold hover:text-brand-500",
+              class: "block p-2 rounded font-bold hover:bg-brand-700",
               title: "#{@event.next.title} on #{@event.next.starts_at.strftime('%B %-d')}",
               data: { turbo_action: "advance" } do
       = t("events.captions.next_event")
-
-      .fa-stack
-        i.fa-regular.fa-circle.fa-stack-2x
-        i.fa-solid.fa-arrow-right.fa-stack-1x
-      
+      i.fa-solid.fa-arrow-right.fa-fw.ml-2
