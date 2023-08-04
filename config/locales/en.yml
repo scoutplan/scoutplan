@@ -575,6 +575,9 @@ en:
       index: "Payments"
       setup: "Set up credit card payments for your unit"
 
+    receive:
+      record_payment: "Record payment"      
+
   search:
     placeholders:
       query_term: "Type an event or member name"

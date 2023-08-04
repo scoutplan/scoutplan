@@ -3,7 +3,6 @@
 # controller for handling base URL naviations. For now it just
 # bounces the user to the most recent or first Unit they're a member of
 class HomeController < ApplicationController
-  skip_before_action :authenticate_user!
 
   # GET /
   def index
