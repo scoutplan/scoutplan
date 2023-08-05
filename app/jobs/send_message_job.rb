@@ -14,7 +14,12 @@ class SendMessageJob < ApplicationJob
     end
 
     message.mark_as_sent!
+    send_broadcast(message)
+  end
 
+  private
+
+  def send_broadcast(message)
     Turbo::StreamsChannel.broadcast_replace_later_to(
       message.unit,
       :message_folders,
