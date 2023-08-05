@@ -1,15 +1,4 @@
 header.relative.mb-4
-  // icon and tag row
-  / .flex.flex-row.mb-2
-    / i.fa-stack
-    /   i.fa-solid.fa-circle.fa-stack-2x(style="color: #{@event&.category&.color}")
-    /   i.fa-fw.fa-solid.fa-stack-1x.text-white(class="fa-#{@event&.category&.glyph}")
-
-    / - @event.tag_list.each do |tag|
-    /   .font-bold.text-sm.border-rose-700.text-rose-700.border.rounded-md.py-1.px-2.inline-block.mx-1
-    /     i.fa-solid.fa-tag.mr-2
-    /     = tag
-
   .flex.flex-row.items-start.gap-2.relative.dropdown(data-controller="dropdown")
     div
       i.fa-stack
@@ -39,8 +28,5 @@ header.relative.mb-4
         = render partial: "events/partials/show/sidecar/download_brief"
         = render partial: "events/partials/show/sidecar/send_email_invite"
         = render partial: "events/partials/show/sidecar/adjacent_events"  
-
-  / .text-sm.py-1.uppercase.tracking-wider.text-stone-500.dark:text-stone-400.font-bold
-  /   = @unit.name
 
   = content_tag(:p, @event.short_description, class: "mt-2 font-bold") if @event.short_description.present?
