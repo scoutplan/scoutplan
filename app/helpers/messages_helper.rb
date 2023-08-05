@@ -22,6 +22,13 @@ module MessagesHelper
       return "Adult #{event.title} attendees and guardians"
     end
 
+    if message.audience =~ /tag_(\d+)_members/
+      tag = ActsAsTaggableOn::Tag.find($1)
+      result = "#{tag.name.titleize} Members"
+      result = "Adult #{result}" if message.member_type == "adults_only"
+      return result
+    end
+
     "Unknown"
   end
 end
