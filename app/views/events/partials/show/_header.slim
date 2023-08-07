@@ -1,5 +1,5 @@
 header.relative.mb-4
-  .flex.flex-row.items-start.gap-2.relative.dropdown(data-controller="dropdown")
+  .flex.flex-row.items-start.relative.gap-2.dropdown(data-controller="dropdown")
     div
       i.fa-stack
         i.fa-solid.fa-circle.fa-stack-2x(style="color: #{@event&.category&.color}")
@@ -8,8 +8,17 @@ header.relative.mb-4
     h3.font-bold.text-3xl.md:text-5xl.-mt-2
       = @event.title
 
+    .ml-auto.right.flex.flex-row.gap-3.items-center.relative
 
-    .ml-auto.right.relative.flex.flex-row.gap-3.items-center
+      .dropdown-menu.absolute.right-0.top-full.bg-brand-500.z-50.px-4.py-3.mt-2.rounded.text-white.top-full.animate-pop-open.w-80(style="z-index:1000;")
+        ul
+          = render partial: "events/partials/show/sidecar/edit"
+          = render partial: "events/partials/show/sidecar/duplicate"
+          = render partial: "events/partials/show/sidecar/history"
+          = render partial: "events/partials/show/sidecar/download_brief"
+          = render partial: "events/partials/show/sidecar/send_email_invite"
+          = render partial: "events/partials/show/sidecar/adjacent_events"
+
       - @event.tag_list.each do |tag|
         .inline-block.whitespace-nowrap.font-bold.border-rose-700.text-rose-700.border.rounded-md.py-1.px-2.text-sm.dark:text-rose-400.dark:border-rose-400
           i.fa-solid.fa-tag.mr-2
@@ -17,16 +26,5 @@ header.relative.mb-4
 
       = link_to "#", class: "text-stone-500", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
         i.fa-regular.fa-circle-ellipsis.fa-2xl
-
-    .dropdown-menu.absolute.right-0.bg-brand-500.z-10.px-4.py-3.rounded.text-white.top-full.animate-pop-open
-      ul
-        = render partial: "events/partials/show/sidecar/edit"
-        = render partial: "events/partials/show/sidecar/duplicate"
-        = render partial: "events/partials/show/sidecar/history"
-        - if false
-          = render partial: "events/partials/show/sidecar/add_sub_event"
-        = render partial: "events/partials/show/sidecar/download_brief"
-        = render partial: "events/partials/show/sidecar/send_email_invite"
-        = render partial: "events/partials/show/sidecar/adjacent_events"  
 
   = content_tag(:p, @event.short_description, class: "mt-2 font-bold") if @event.short_description.present?

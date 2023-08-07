@@ -224,12 +224,6 @@ class EventsController < UnitContextController
     service = EventUpdateService.new(@event, @current_member, event_params)
     service.perform
 
-    category_name = params[:event_category_proxy][:name]
-    unless @unit.event_categories.find_by(name: category_name)
-      @event.category = @unit.event_categories.create(name: category_name)
-      @event.save!
-    end
-
     EventService.new(@event, params).process_event_shifts
     EventService.new(@event, params).process_library_attachments
     EventOrganizerService.new(@event, @current_member).update(params[:event_organizers])

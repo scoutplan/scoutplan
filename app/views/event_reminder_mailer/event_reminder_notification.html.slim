@@ -1,0 +1,38 @@
+- presenter = EventPresenter.new(@event)
+
+h3(style="margin-bottom: 1rem; color:#E66425;") = deictic_string_for_time_interval_from_day(@event.starts_at).capitalize
+
+section(style="font-weight:bold;")
+  p = link_to @event.title, unit_event_url(@unit.id, @event.id), style: "display: block; font-weight: bold; margin-top: 1rem;"
+  p = @event.starts_at.strftime("%A, %b %-d")
+  p
+    - if @event.starts_at.in_time_zone(@unit.time_zone).strftime('%p') == @event.ends_at.in_time_zone(@unit.time_zone).strftime('%p')
+      = @event.starts_at.in_time_zone(@unit.time_zone).strftime('%-I:%M')
+    - else
+      = @event.starts_at.in_time_zone(@unit.time_zone).strftime('%-I:%M %p')
+    |&thinsp;&ndash;&thinsp;
+    = @event.ends_at.in_time_zone(@unit.time_zone).strftime('%-I:%M %p')
+  p = @event.location
+
+- if @event.requires_rsvp?
+  section#rsvps(style="border-top: 1px solid #ddd; padding-top: 1rem;")
+    h4(style="margin: 0 0 0.5rem;") Your family's RSVPs
+
+    - @family_rsvps.each do |rsvp|
+      div(style="padding:0.2rem 0;")
+        - if rsvp.response == "accepted"
+          span(style="color:#16a34a;")
+            | &#10004;
+        - elsif rsvp.response == "declined"
+          span(style="color:#dc2626; font-weight: bold;")
+            | &times;
+
+        = " #{rsvp.member.first_name}: #{rsvp.response}"
+
+div(style="margin-top:1rem; line-height:140%; border-top:1px solid #ddd; padding-top:1rem;")
+  == @event.description
+
+css:
+  p {
+    margin: 0 0 0.25rem 0;
+  }
