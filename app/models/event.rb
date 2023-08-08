@@ -24,7 +24,7 @@ class Event < ApplicationRecord
   has_many :documents, as: :documentable, dependent: :destroy
   has_many :document_types, as: :document_typeable, dependent: :destroy
   has_many :event_activities, dependent: :destroy
-  has_many :event_locations, inverse_of: :event
+  has_many :event_locations, inverse_of: :event, dependent: :destroy
   has_many :event_organizers, dependent: :destroy
   has_many :event_rsvps, dependent: :destroy
   has_many :event_shifts, dependent: :destroy

@@ -5,9 +5,11 @@ header.relative.mb-4
         i.fa-solid.fa-circle.fa-stack-2x(style="color: #{@event&.category&.color}")
         i.fa-solid.fa-stack-1x.text-white(class="fa-#{@event&.category&.glyph}")
 
-    h3.font-bold.text-3xl.md:text-5xl.-mt-2
-      = @event.title
+    div
+      h3.font-bold.text-3xl.md:text-5xl.-mt-2
+        = @event.title
 
+      = content_tag(:p, @event.short_description, class: "mt-2 font-bold") if @event.short_description.present?
 
     .ml-auto.right.relative.flex.flex-row.gap-3.items-center
       - @event.tag_list.each do |tag|
@@ -15,18 +17,17 @@ header.relative.mb-4
           i.fa-solid.fa-tag.mr-2
           = tag
 
-      = link_to "#", class: "text-stone-500", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
-        i.fa-regular.fa-circle-ellipsis.fa-2xl
+      .relative
+        = link_to "#", class: "text-stone-500", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
+          i.fa-regular.fa-circle-ellipsis.fa-2xl
 
-    .dropdown-menu.absolute.right-0.bg-brand-500.z-10.px-4.py-3.rounded.text-white.top-full.animate-pop-open
-      ul
-        = render partial: "events/partials/show/sidecar/edit"
-        = render partial: "events/partials/show/sidecar/duplicate"
-        = render partial: "events/partials/show/sidecar/history"
-        - if false
-          = render partial: "events/partials/show/sidecar/add_sub_event"
-        = render partial: "events/partials/show/sidecar/download_brief"
-        = render partial: "events/partials/show/sidecar/send_email_invite"
-        = render partial: "events/partials/show/sidecar/adjacent_events"  
-
-  = content_tag(:p, @event.short_description, class: "mt-2 font-bold") if @event.short_description.present?
+        .dropdown-menu.absolute.right-0.bg-brand-500.z-10.px-4.py-3.rounded.text-white.top-full.animate-pop-open.w-72.mt-1
+          ul
+            = render partial: "events/partials/show/sidecar/edit"
+            = render partial: "events/partials/show/sidecar/duplicate"
+            = render partial: "events/partials/show/sidecar/history"
+            - if false
+              = render partial: "events/partials/show/sidecar/add_sub_event"
+            = render partial: "events/partials/show/sidecar/download_brief"
+            = render partial: "events/partials/show/sidecar/send_email_invite"
+            = render partial: "events/partials/show/sidecar/adjacent_events"  
