@@ -1,28 +1,12 @@
 - return unless @current_member.admin?
 
-li
-  = link_to "#", class: "block py-1 hover:text-brand-500",
-            data: { action: "event#toggleCancelledEvents" } do
-    .fa-stack
-      i.fa-regular.fa-circle.fa-stack-2x
-      i.fa-solid.fa-calendar-xmark.fa-stack-1x
+= link_to "#", class: "block py-1 hover:text-brand-500",
+          data: { action: "event#toggleCancelledEvents" } do
 
-    #toggle_cancelled_events_link.inline-block
-      .normal
-        = "Show cancelled events"
-      .showing-cancelled-events
-        = "Hide cancelled events"
+  i.fa-fw.fa-solid.fa-calendar-xmark.mr-2
 
-
-css:
-  #toggle_cancelled_events_link .showing-cancelled-events {
-    display: none;
-  }
-
-  body.showing-cancelled-events  #toggle_cancelled_events_link .showing-cancelled-events {
-    display: block;
-  }
-
-  body.showing-cancelled-events  #toggle_cancelled_events_link .normal {
-    display: none;
-  }
+  #toggle_cancelled_events_link.inline-block
+    .normal
+      = "Show cancelled events"
+    .showing-cancelled-events
+      = "Hide cancelled events"

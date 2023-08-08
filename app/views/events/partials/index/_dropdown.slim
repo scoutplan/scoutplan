@@ -1,0 +1,93 @@
+- return unless user_signed_in?
+
+- ics_url = calendar_feed_unit_events_url( \
+    token: @ical_magic_link.token,
+    unit_id: @unit.to_param,
+    format: :ics,
+    only_path: false,
+    protocol: "webcal" \
+  )
+
+aside.md:absolute.bg-brand-500.text-white.right-0.z-10.p-4.rounded.dropdown-menu.animate-pop-open.drop-shadow.md:w-80
+  nav
+    - if @current_member.admin?
+      = link_to new_unit_event_path(@unit),
+                class: "block p-2 rounded hover:bg-brand-600",
+                data: { turbo_action: "advance" } do
+
+        i.fa-fw.fa-solid.fa-calendar-plus.mr-2
+        = t("events.captions.new_short")
+
+    = link_to calendar_unit_events_path(@unit),
+              class: "block p-2 rounded hover:bg-brand-600",
+              data: { turbo_action: "advance" } do
+
+      i.fa-fw.fa-solid.fa-calendar.mr-2
+      = t("events.index.buttons.calendar")
+
+    - if user_signed_in?
+      = link_to "#", class: "block p-2 rounded hover:bg-brand-600",
+                data: { action: "event#togglePastEvents" },
+                id: "toggle_past_events_link" do
+
+        #show_past_events_caption
+          i.fa-fw.fa-solid.fa-calendar-clock.mr-2
+          = "Show past events"
+
+        #hide_past_events_caption
+          i.fa-fw.fa-solid.fa-calendar-check.mr-2
+          = "Hide past events"          
+
+      = link_to list_unit_events_path(@unit, format: :pdf),
+                class: "block p-2 rounded hover:bg-brand-600",
+                data: { turbo_action: "advance" } do
+
+        i.fa-fw.fa-solid.fa-print.mr-2
+
+        = t("events.index.buttons.print")
+
+    - if @current_member.admin?
+        = link_to list_unit_events_path(@unit, format: :pdf, season: "next"),
+                  class: "block p-2 rounded hover:bg-brand-600",
+                  data: { turbo_action: "advance" } do
+          
+          i.fa-fw.fa-solid.fa-rotate-right.mr-2
+          = t("events.index.buttons.next_season")
+
+    = link_to ics_url,
+              class: "block p-2 rounded hover:bg-brand-600",
+              data: { turbo_action: "advance" } do
+
+      i.fa-fw.fa-regular.fa-mobile.mr-2
+      = t("events.index.buttons.subscribe")
+
+    - if @current_member.admin?
+        = link_to "#", class: "block p-2 rounded hover:bg-brand-600",
+                  data: { action: "event#toggleBulkPublish" } do
+          
+          i.fa-fw.fa-solid.fa-layer-group.mr-2
+          = t("events.index.buttons.bulk_publish")
+
+        = link_to "#", class: "block p-2 rounded hover:bg-brand-600",
+                  data: { action: "event#toggleCancelledEvents" } do
+
+          i.fa-fw.fa-solid.fa-calendar-xmark.mr-2
+
+          #toggle_cancelled_events_link.inline-block
+            .normal
+              = "Show cancelled events"
+            .showing-cancelled-events
+              = "Hide cancelled events"
+
+css:
+  #toggle_cancelled_events_link .showing-cancelled-events {
+    display: none;
+  }
+
+  body.showing-cancelled-events  #toggle_cancelled_events_link .showing-cancelled-events {
+    display: block;
+  }
+
+  body.showing-cancelled-events  #toggle_cancelled_events_link .normal {
+    display: none;
+  }    

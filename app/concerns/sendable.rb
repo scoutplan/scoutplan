@@ -5,15 +5,19 @@ module Sendable
   def recipients
     # start building up the scope
     scope = unit.unit_memberships.joins(:user).order(:last_name)
-    scope = scope.where(member_type: member_type == "youth_and_adults" ? %w[adult youth] : %w[adult]) # adult / youth
+    if object.responds_to? :member_type
+      scope = scope.where(member_type: member_type == "youth_and_adults" ? %w[adult youth] : %w[adult]) # adult / youth
+    end
 
     # filter by audience
     if event_cohort?
       event = Event.find($1)
       scope = scope.where(id: event.rsvps.pluck(:unit_membership_id))
+
     elsif tag_cohort?
       tag = ActsAsTaggableOn::Tag.find($1)
       scope = scope.tagged_with(tag.name)
+
     else
       scope = scope.where(status: member_status == "active_and_registered" ? %w[active registered] : %w[active])
     end

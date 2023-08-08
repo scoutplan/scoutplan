@@ -96,4 +96,8 @@ RSpec.describe Event, type: :model do
       end
     end
   end
+
+  describe "remindable" do
+    it_behaves_like "remindable"
+  end
 end

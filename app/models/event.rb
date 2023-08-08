@@ -3,6 +3,7 @@
 # a calendar event
 # rubocop:disable Metrics/ClassLength
 class Event < ApplicationRecord
+  include Remindable
   extend DateTimeAttributes
   date_time_attrs_for :starts_at, :ends_at
   attr_accessor :repeats, :notify_members, :notify_recipients, :notify_message, :document_library_ids
@@ -23,7 +24,7 @@ class Event < ApplicationRecord
   has_many :documents, as: :documentable, dependent: :destroy
   has_many :document_types, as: :document_typeable, dependent: :destroy
   has_many :event_activities, dependent: :destroy
-  has_many :event_locations, inverse_of: :event
+  has_many :event_locations, inverse_of: :event, dependent: :destroy
   has_many :event_organizers, dependent: :destroy
   has_many :event_rsvps, dependent: :destroy
   has_many :event_shifts, dependent: :destroy
@@ -98,10 +99,6 @@ class Event < ApplicationRecord
 
   def organizable?
     requires_rsvp
-  end
-
-  def organizer?(member)
-    organizers.find_by(unit_membership_id: member.id).present?
   end
 
   def past?
@@ -253,6 +250,11 @@ class Event < ApplicationRecord
 
   def organizer?(member)
     organizers.map(&:member).include?(member)
+  end
+
+  # used by Sendable to compute message recipients
+  def audience
+    "event_#{id}_attendees"
   end
 
   # def to_param
