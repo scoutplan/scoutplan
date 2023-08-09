@@ -1,6 +1,20 @@
+# methods for dealing with cohorts and recipient lists
+# implementing classes need to define audience
 module Sendable
+  extend ActiveSupport::Concern
+
   EVENT_REGEXP = /event_(\d+)_attendees/
   TAG_REGEXP = /tag_(\d+)_members/
+
+  # given a list of members, return a list of members and their guardians
+  def with_guardians(members)
+    parent_relationships = MemberRelationship.where(child_unit_membership_id: members.map(&:id))
+    parents = UnitMembership.where(id: parent_relationships.pluck(:parent_unit_membership_id))
+    results = members + parents
+
+    # de-dupe it
+    results.uniq
+  end
 
   def recipients
     # start building up the scope
@@ -22,15 +36,8 @@ module Sendable
       scope = scope.where(status: member_status == "active_and_registered" ? %w[active registered] : %w[active])
     end
 
-    results = scope.all
-
-    # ensure that parents are included if any children are included
-    parent_relationships = MemberRelationship.where(child_unit_membership_id: results.map(&:id))
-    parents = UnitMembership.where(id: parent_relationships.map(&:parent_unit_membership_id))
-    results += parents
-
-    # de-dupe & filter it
-    results.uniq.select(&:emailable?)
+    results = with_guardians(scope.all)
+    results.select(&:emailable?)
   end
 
   def event_cohort?

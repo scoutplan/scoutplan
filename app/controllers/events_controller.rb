@@ -21,25 +21,25 @@ class EventsController < UnitContextController
 
   # TODO: refactor this mess
   def index
-    variation = params[:variation]
-    if variation.nil? && request.format.html?
-      variation = cookies[:event_index_variation] || "list"
+    # variation = params[:variation]
+    # if variation.nil? && request.format.html?
+    #   variation = cookies[:event_index_variation] || "list"
 
-      # this redirection can probably happen in routes.rb
-      case variation
-      when "list"
-        redirect_to list_unit_events_path(@unit)
-        return
-      when "calendar"
-        redirect_to calendar_unit_events_path(@unit)
-        return
-      when "spreadsheet"
-        redirect_to spreadsheet_unit_events_path(@unit)
-      end
-    end
+    #   # this redirection can probably happen in routes.rb
+    #   case variation
+    #   when "list"
+    #     redirect_to list_unit_events_path(@unit)
+    #     return
+    #   when "calendar"
+    #     redirect_to calendar_unit_events_path(@unit)
+    #     return
+    #   when "spreadsheet"
+    #     redirect_to spreadsheet_unit_events_path(@unit)
+    #   end
+    # end
 
     # TODO: move this to a service object
-    cookies[:event_index_variation] = variation
+    cookies[:event_index_variation] = variation = params[:variation]
     cookies[:calendar_display_month] = params[:month] if params[:month]
     cookies[:calendar_display_year] = params[:year] if params[:year]
 
@@ -224,20 +224,9 @@ class EventsController < UnitContextController
     service = EventUpdateService.new(@event, @current_member, event_params)
     service.perform
 
-    category_name = params[:event_category_proxy][:name]
-    unless @unit.event_categories.find_by(name: category_name)
-      @event.category = @unit.event_categories.create(name: category_name)
-      @event.save!
-    end
-
     EventService.new(@event, params).process_event_shifts
     EventService.new(@event, params).process_library_attachments
     EventOrganizerService.new(@event, @current_member).update(params[:event_organizers])
-    if params[:event][:attachments].present?
-      params[:event][:attachments].each do |attachment|
-        @event.attachments.attach(attachment)
-      end
-    end
 
     if cookies[:event_index_variation] == "calendar"
       redirect_to calendar_unit_events_path(@unit), notice: t("events.update_confirmation", title: @event.title)
@@ -369,7 +358,7 @@ class EventsController < UnitContextController
     if (member_id = params[:member_id].presence)
       redirect_to unit_member_path(@unit, member_id), notice: t("events.edit_rsvps.notices.update")
     else
-      redirect_to [@unit, @event], notice: t("events.edit_rsvps.notices.update")
+      redirect_to unit_event_path(@unit, @event), notice: t("events.edit_rsvps.notices.update")
     end
   end
 
@@ -423,7 +412,7 @@ class EventsController < UnitContextController
   def collate_rsvps
     @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
   end
-  
+
   def destroy_series
     return unless @event.series_parent.present?
 
@@ -461,7 +450,7 @@ class EventsController < UnitContextController
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
                                       :note, :cost_youth, :cost_adult, :online, :website, :tag_list, :rsvp_closes_at,
                                       :notify_members, :notify_recipients, :notify_message, :document_library_ids,
-                                      packing_list_ids: [],
+                                      packing_list_ids: [], attachments: [],
                                       event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy],
                                       event_organizers_attributes: [:unit_membership_id])
     p[:packing_list_ids] = p[:packing_list_ids].reject(&:blank?) if p[:packing_list_ids].present?
