@@ -7,6 +7,8 @@ class DailyReminderTask < UnitTask
   end
 
   def perform
+    return if Flipper.enabled?(:event_reminder_jobs, unit)
+
     Time.zone = unit.settings(:locale).time_zone
     find_events
     send_reminders if @events.count.positive?

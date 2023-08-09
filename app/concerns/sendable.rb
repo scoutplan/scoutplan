@@ -1,4 +1,5 @@
 # methods for dealing with cohorts and recipient lists
+# implementing classes need to define audience
 module Sendable
   extend ActiveSupport::Concern
 

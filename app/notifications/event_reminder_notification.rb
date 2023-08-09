@@ -29,6 +29,6 @@ class EventReminderNotification < Noticed::Base
   # end
 
   def emailable?
-    recipient.emailable?
+    recipient.emailable? && recipient.unit.settings(:communication).daily_reminder == "yes"
   end
 end

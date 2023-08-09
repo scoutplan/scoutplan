@@ -101,7 +101,7 @@ Rails.application.routes.draw do
       resources :email_invitations, only: [:create]
       resources :locations, module: :events
       collection do
-        # get "/", to: redirect("/units/%{unit_id}/schedule/list")
+        get "/", to: redirect("/units/%{unit_id}/schedule/list")
         get "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
         get "public",      to: "events#public", as: "public"
         get "signups",     to: "events#signups", as: "signups"

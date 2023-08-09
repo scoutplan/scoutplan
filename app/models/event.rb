@@ -16,7 +16,7 @@ class Event < ApplicationRecord
     activity: "activity"
   }.freeze
 
-  after_commit :create_reminder_job
+  after_commit :create_reminder_job!
 
   default_scope { where(parent_event_id: nil).order(starts_at: :asc) }
 
@@ -260,7 +260,7 @@ class Event < ApplicationRecord
     organizers.map(&:member).include?(member)
   end
 
-  # used by Sendable to compute message recipients
+  # implemented for Sendable to compute message recipients
   def audience
     "event_#{id}_attendees"
   end
@@ -270,8 +270,13 @@ class Event < ApplicationRecord
     return unless published? # belt & suspenders
     return if ended?
 
-    attendees_and_guardians = with_guardians(rsvps.accepted.collect(&:member))
-    EventReminderNotification.with(event: self).deliver_later(attendees_and_guardians)
+    recipients_with_guardians = with_guardians(notification_recipients)
+
+    EventReminderNotification.with(event: self).deliver_later(recipients_with_guardians)
+  end
+
+  def notification_recipients
+    requires_rsvp ? rsvps.accepted.collect(&:member) : unit.members.status_active
   end
 
   # create a job to send a reminder. We do this after every commit,
@@ -279,15 +284,11 @@ class Event < ApplicationRecord
   # with multiple jobs. The job itself checks the event timestamp
   # and only continues if the timestamps match. Jobs with mismatched
   # timestamps will silently quit.
-  def create_reminder_job
-    ap "creating reminder job for #{id}"
+  def create_reminder_job!
+    return unless published? && !ended?
 
-    return unless published? # no need to remind if the event is not published
-
-    ap "creating reminder job for #{id}"
-
-    # EventReminderJob.set(wait_until: starts_at - 12.hours).perform_later(id, starts_at)
-    EventReminderJob.set(wait_until: 1.second.from_now).perform_later(id, updated_at)
+    run_time = unit.in_business_hours(starts_at - EventReminderJob::REMINDER_INTERVAL)
+    EventReminderJob.set(wait_until: run_time).perform_later(id, updated_at)
   end
 
   private
