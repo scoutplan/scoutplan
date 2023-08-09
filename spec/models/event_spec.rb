@@ -17,6 +17,30 @@ RSpec.describe Event, type: :model do
     end
   end
 
+  describe "callbacks" do
+    describe "after_commit" do
+      before do
+        @unit = FactoryBot.create(:unit)
+        @unit.settings(:communication).daily_reminder = "yes"
+        @unit.save!
+      end
+
+      it "creates an EventReminderJob if event is published" do
+        expect { FactoryBot.create(:event, :published, unit: @unit) }.to have_enqueued_job(EventReminderJob)
+      end
+
+      it "doesn't create an EventReminderJob if event is published" do
+        expect { FactoryBot.create(:event, unit: @unit) }.not_to have_enqueued_job(EventReminderJob)
+      end
+
+      it "doesn't create an EventReminderJob if event is ended" do
+        expect { FactoryBot.create(:event, :published, unit: @unit, starts_at: 3.days.ago, ends_at: 2.days.ago) }
+          .not_to have_enqueued_job(EventReminderJob)
+      end
+    end
+  end
+
+  # rubocop:disable Metrics/BlockLength
   describe "methods" do
     it "is past when end date is before now" do
       expect(FactoryBot.build(:event, :past).past?).to be_truthy
@@ -58,6 +82,7 @@ RSpec.describe Event, type: :model do
       end
     end
   end
+  # rubocop:enable Metrics/BlockLength
 
   describe "extensions" do
     describe "date and time attributes" do

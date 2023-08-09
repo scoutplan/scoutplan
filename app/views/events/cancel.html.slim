@@ -12,7 +12,7 @@
 
         h1.font-bold.text-2xl Cancel Event
 
-        - if @event.past?
+        - if @event.ended?
           p.bg-yellow-300.text-yellow-800.p-4.mt-2.rounded
             i.fa-exclamation-triangle.fas.mr-2
             = t("events.cancel.past_warning")

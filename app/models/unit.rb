@@ -84,6 +84,23 @@ class Unit < ApplicationRecord
     settings(:locale).time_zone
   end
 
+  def business_hours
+    [9, 18]
+  end
+
+  # given a datetime, returns the nearest datetime that is within business hours
+  def in_business_hours(datetime)
+    Time.use_zone(time_zone) do
+      if datetime.hour < business_hours.first
+        datetime.change(hour: business_hours.first, min: 0, sec: 0)
+      elsif datetime.hour >= business_hours.last
+        datetime.change(hour: business_hours.last, min: 0, sec: 0)
+      else
+        datetime
+      end
+    end
+  end
+
   # def to_param
   #   [id, name, location].join(" ").parameterize
   # end
@@ -113,14 +130,10 @@ class Unit < ApplicationRecord
   end
 
   def generate_slug
-    return if slug.present?
-    return unless name.present?
+    return if slug.present? || name.blank?
 
     candidate = base = name.parameterize
-    
-    while Unit.where(slug: candidate).exists?
-      candidate = base + "-#{rand(100)}"
-    end
+    candidate = base + "-#{rand(100)}" while Unit.where(slug: candidate).exists?
 
     update(slug: candidate)
   end

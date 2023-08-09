@@ -1,10 +1,10 @@
 doctype html
 head
-body(style="font-family: sans-serif;")
-  table(style="width: 500px; margin: 0 auto; line-height: 160%;")
+body(style="font-family: sans-serif; color: #57534e;")
+  table(style="width: 500px; line-height: 110%;")
     - if @unit.present?
       tr
-        td(style="text-align: center; padding: 20px 0; border-bottom: 1px solid #ddd;")
+        td(style="padding: 20px 0; border-bottom: 1px solid #ddd;")
           = link_to root_url do
             = image_tag "data:image/#{@unit&.logo.filename.extension};base64,#{Base64.encode64(@unit.logo.blob.download)}",
                         style: "width:80%;max-width:150px;height:auto;border:none;text-decoration:none;color:rgb(255,255,255,1.0);"
@@ -12,3 +12,8 @@ body(style="font-family: sans-serif;")
     tr
       td(style="")
         = yield
+
+css:
+  body {
+    color: #333;
+  }
