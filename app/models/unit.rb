@@ -90,14 +90,12 @@ class Unit < ApplicationRecord
 
   # given a datetime, returns the nearest datetime that is within business hours
   def in_business_hours(datetime)
-    Time.use_zone(time_zone) do
-      if datetime.hour < business_hours.first
-        datetime.change(hour: business_hours.first, min: 0, sec: 0)
-      elsif datetime.hour >= business_hours.last
-        datetime.change(hour: business_hours.last, min: 0, sec: 0)
-      else
-        datetime
-      end
+    if datetime.in_time_zone(time_zone).hour < business_hours.first
+      datetime.in_time_zone(time_zone).change(hour: business_hours.first, min: 0, sec: 0).utc
+    elsif datetime.in_time_zone(time_zone).hour >= business_hours.last
+      datetime.in_time_zone(time_zone).change(hour: business_hours.last, min: 0, sec: 0).utc
+    else
+      datetime
     end
   end
 
