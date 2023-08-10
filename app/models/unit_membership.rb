@@ -38,8 +38,8 @@ class UnitMembership < ApplicationRecord
   has_many :notifications, as: :recipient, dependent: :destroy
   has_noticed_notifications
 
-  # alias_attribute :member, :user
   alias_attribute :rsvps, :event_rsvps
+  alias_attribute :phone_number, :phone
 
   enum status: { inactive: 0, active: 1, registered: 2 }, _prefix: true
   enum role: ROLES.zip(ROLES).to_h

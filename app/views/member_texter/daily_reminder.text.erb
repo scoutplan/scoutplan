@@ -1,13 +1,3 @@
-<% if @events.count == 1 %>
-<% event = @events.first %>
-Hi, <%= @member.display_first_name %>. As a reminder, <%= event.title %> is <%= deictic_string_for_time_interval_from_day(event.starts_at) %> at <%= event.starts_at.in_time_zone.strftime("%-I:%M %p") %> <% loc = event.find_location(:departure).present? ? "leaving from #{loc}" : "at #{event.full_address}" %>.
-<% else %>
-<%- deictic = Time.now.in_time_zone.hour > 12 ? "Tomorrow" : "Today" %>
-Hi, <%= @member.display_first_name %>. <%= deictic %> at <%= @member.unit.name %>:
+A friendly reminder from <%= @unit.name %>: <%= @event.title %> starts <%= deictic_string_for_time_interval_from_day(@event.starts_at) %> at <%= @event.starts_at.in_time_zone.strftime("%-I:%M %p") %> <% loc = @event.find_location(:departure).present? ? "leaving from #{loc}" : "at #{@event.full_address}" %>.
 
-<% @events.each do |event| %>
-<%= "* #{event.title} at #{event.starts_at.in_time_zone.strftime('%-I:%M %p')}\n" %> at <%= event.full_address %>.
-<% end %>
-<% end %>
-
-See the full <%= @member.unit.name %> calendar at <%= magic_url_for(@member, unit_events_path(@member.unit)) %>.
+For details visit <%= unit_event_url(@unit, @event) %>.
