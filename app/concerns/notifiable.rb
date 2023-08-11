@@ -37,7 +37,8 @@ module Notifiable
     end
 
     results = with_guardians(scope.all)
-    results.select(&:emailable?)
+
+    results.select { |r| r.contactable?(via: :email) }
   end
 
   def event_cohort?

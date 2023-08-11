@@ -2,7 +2,7 @@
 
 # job to send reminder to unit members
 class EventReminderJob < ApplicationJob
-  include Sendable
+  include Notifiable
   REMINDER_INTERVAL = 12.hours
 
   queue_as :default
@@ -19,8 +19,8 @@ class EventReminderJob < ApplicationJob
   private
 
   def remind!
-    return unless published? # belt & suspenders
-    return if ended?
+    return unless @event.published? # belt & suspenders
+    return if @event.ended?
 
     EventReminderNotification.with(
       event: @event,
@@ -29,10 +29,11 @@ class EventReminderJob < ApplicationJob
   end
 
   def sms_message
-    renderer.render(
-      template: "member_texter/daily_reminder",
-      format: "text",
-      assigns: { event: @event, unit: @event.unit }
-    )
+    ""
+    # renderer.render(
+    #   template: "member_texter/daily_reminder",
+    #   format: "text",
+    #   assigns: { event: @event, unit: @event.unit }
+    # )
   end
 end

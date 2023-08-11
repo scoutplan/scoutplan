@@ -266,7 +266,7 @@ class Event < ApplicationRecord
   end
 
   def notification_recipients
-    with_guardiants(requires_rsvp ? rsvps.accepted.collect(&:member) : unit.members.status_active)
+    with_guardians(requires_rsvp ? rsvps.accepted.collect(&:member) : unit.members.status_active)
   end
 
   def create_reminder_job!

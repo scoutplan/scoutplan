@@ -51,7 +51,7 @@ class MessageService < ApplicationService
     @recipients.uniq!
 
     # filter out non-emailable members
-    @recipients = @recipients.select(&:emailable?)
+    @recipients = @recipients.select { |r| r.contactable?(via: :email) }
   end
 
   # return the Event associated with a message, or nil if it's not an event-based Message

@@ -1,4 +1,4 @@
-- return unless unit_membership.emailable?
+- return unless unit_membership.contactable?(via: :email)
 
 .mb-2.font-bold
   = unit_membership.email
