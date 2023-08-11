@@ -49,23 +49,6 @@ RSpec.describe DigestTexter, type: :model do
     end
   end
 
-  describe "DailyReminderTexter" do
-    it "can instantiate" do
-      member = FactoryBot.build(:member)
-      expect(DailyReminderTexter.new(member)).to be_a(DailyReminderTexter)
-    end
-
-    it "renders reminders from template" do
-      User.destroy_all
-      member = FactoryBot.create(:unit_membership)
-      FactoryBot.create(:event, :published, unit: member.unit, starts_at: 8.hours.from_now)
-      texter = DailyReminderTexter.new(member)
-      body = texter.body
-      render_text_body_to_console(body)
-      expect(body).to be_a(String)
-    end
-  end
-
   describe "TestTexter" do
     it "can instantiate" do
       member = FactoryBot.build(:member)

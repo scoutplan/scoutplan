@@ -1,3 +1,0 @@
-A friendly reminder from <%= @unit.name %>: <%= @event.title %> starts <%= deictic_string_for_time_interval_from_day(@event.starts_at) %> at <%= @event.starts_at.in_time_zone.strftime("%-I:%M %p") %> <% loc = @event.find_location(:departure).present? ? "leaving from #{loc}" : "at #{@event.full_address}" %>.
-
-For details visit <%= unit_event_url(@unit, @event) %>.
