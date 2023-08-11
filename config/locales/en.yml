@@ -661,7 +661,7 @@ en:
       back:           "Back to unit setup"
 
     descriptions:
-      daily_reminder: "Send a reminder message the evening before a morning event; send a message in the morning for an event later the same day."
+      daily_reminder: "Send a reminder 12 hours before an event starts."
       digest:         "Send a message on Sunday mornings with the coming week's schedule, news, and RSVPs."
       rsvp_nag:       "Send a message on Tuesday mornings, gently reminding members with outstanding RSVPs to respond."
       rsvp_last_call: "Send a message to members the day before RSVPs close for an event."
@@ -682,7 +682,7 @@ en:
       event_organizer_digest: "text-cyan-500"
 
     labels:
-      daily_reminder: "Turn on daily reminders"
+      daily_reminder: "Turn on event reminders"
       digest:         "Turn on weekly newsletters"
       rsvp_nag:       "Turn on RSVP prompts"
       rsvp_last_call: "Turn on RSVP last call reminders"

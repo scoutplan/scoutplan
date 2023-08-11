@@ -272,7 +272,8 @@ class Event < ApplicationRecord
   def create_reminder_job!
     return unless published? && !ended?
 
-    run_time = unit.in_business_hours(starts_at - EventReminderJob::REMINDER_INTERVAL)
+    run_time = starts_at - EventReminderJob::LEAD_TIME
+    run_time = unit.in_business_hours(run_time) if ENV["RAILS_ENV"] == "production"
     EventReminderJob.set(wait_until: run_time).perform_later(id, updated_at)
   end
 

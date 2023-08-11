@@ -15,10 +15,15 @@ class EventReminderNotification < Noticed::Base
   param :message
 
   def email?
-    recipient.contactable?(via: :email) && recipient.unit.settings(:communication).daily_reminder == "yes"
+    recipient.contactable?(via: :email) && daily_reminder?
   end
 
   def sms?
-    recipient.contactable?(via: :sms) && recipient.unit.settings(:communication).daily_reminder == "yes"
+    # recipient.contactable?(via: :sms) && daily_reminder?
+    false
+  end
+
+  def daily_reminder?
+    recipient.unit.settings(:communication).daily_reminder == "true"
   end
 end

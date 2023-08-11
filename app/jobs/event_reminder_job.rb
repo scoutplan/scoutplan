@@ -3,7 +3,7 @@
 # job to send reminder to unit members
 class EventReminderJob < ApplicationJob
   include Notifiable
-  REMINDER_INTERVAL = 12.hours
+  LEAD_TIME = 12.hours.freeze
 
   queue_as :default
 
