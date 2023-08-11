@@ -1,34 +1,29 @@
 # frozen_string_literal: true
 
-# To deliver this notification:
+# This notification is sent to all attendees of an event 12 hours before the event starts.
+# Invoke like so:
 #
 # EventReminderNotification.with(event: @event).deliver_later(@event.attendees)
-
 class EventReminderNotification < Noticed::Base
-  # Add your delivery methods
-  #
-  deliver_by :database
-  deliver_by :email, mailer: "EventReminderMailer", if: :emailable?
-  # deliver_by :slack
-  # deliver_by :custom, class: "MyDeliveryMethod"
+  LEAD_TIME = 12.hours.freeze
 
-  # Add required params
-  #
-  # param :post
+  deliver_by :database
+  deliver_by :email, mailer: "EventReminderMailer", if: :email?
+  deliver_by :twilio, if: :sms?
 
   param :event
+  param :message
 
-  # Define helper methods to make rendering easier.
-  #
-  # def message
-  #   t(".message")
-  # end
-  #
-  # def url
-  #   post_path(params[:post])
-  # end
+  def email?
+    recipient.contactable?(via: :email) && daily_reminder?
+  end
 
-  def emailable?
-    recipient.emailable? && recipient.unit.settings(:communication).daily_reminder == "yes"
+  def sms?
+    # recipient.contactable?(via: :sms) && daily_reminder?
+    false
+  end
+
+  def daily_reminder?
+    recipient.unit.settings(:communication).daily_reminder == "true"
   end
 end

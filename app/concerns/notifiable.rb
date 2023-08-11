@@ -1,6 +1,6 @@
 # methods for dealing with cohorts and recipient lists
 # implementing classes need to define audience
-module Sendable
+module Notifiable
   extend ActiveSupport::Concern
 
   EVENT_REGEXP = /event_(\d+)_attendees/
@@ -37,7 +37,8 @@ module Sendable
     end
 
     results = with_guardians(scope.all)
-    results.select(&:emailable?)
+
+    results.select { |r| r.contactable?(via: :email) }
   end
 
   def event_cohort?

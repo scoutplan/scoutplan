@@ -7,7 +7,7 @@ article.py-4
     i(class="fa-solid fa-fw mr-1 #{icon_class} #{icon_color}")
     = t("settings.titles.#{task_key}")
 
-  p.text-md.text-stone-600.mb-3
+  p.text-md.text-stone-600.dark:text-stone-400.mb-3
     = t("settings.descriptions.#{task_key}")
 
   = render partial: "components/switch", locals: { checked: enabled,

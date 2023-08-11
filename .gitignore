@@ -60,3 +60,4 @@ act.sh
 .DS_Store
 
 jmeter.log
+/config/credentials/development.key

@@ -3,7 +3,7 @@
 # a calendar event
 # rubocop:disable Metrics/ClassLength
 class Event < ApplicationRecord
-  include Sendable
+  include Notifiable
   extend DateTimeAttributes
 
   date_time_attrs_for :starts_at, :ends_at
@@ -265,29 +265,15 @@ class Event < ApplicationRecord
     "event_#{id}_attendees"
   end
 
-  # called by EventReminderJob
-  def remind!
-    return unless published? # belt & suspenders
-    return if ended?
-
-    recipients_with_guardians = with_guardians(notification_recipients)
-
-    EventReminderNotification.with(event: self).deliver_later(recipients_with_guardians)
-  end
-
   def notification_recipients
-    requires_rsvp ? rsvps.accepted.collect(&:member) : unit.members.status_active
+    with_guardians(requires_rsvp ? rsvps.accepted.collect(&:member) : unit.members.status_active)
   end
 
-  # create a job to send a reminder. We do this after every commit,
-  # meaning that if the event is updated multiple times, we'll end up
-  # with multiple jobs. The job itself checks the event timestamp
-  # and only continues if the timestamps match. Jobs with mismatched
-  # timestamps will silently quit.
   def create_reminder_job!
     return unless published? && !ended?
 
-    run_time = unit.in_business_hours(starts_at - EventReminderJob::REMINDER_INTERVAL)
+    run_time = starts_at - EventReminderJob::LEAD_TIME
+    run_time = unit.in_business_hours(run_time) if ENV["RAILS_ENV"] == "production"
     EventReminderJob.set(wait_until: run_time).perform_later(id, updated_at)
   end
 

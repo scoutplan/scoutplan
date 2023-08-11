@@ -44,4 +44,4 @@
     = render partial: "events/partials/show/watermarks"
 
 javascript:
-  document.title = "#{@event.title} · #{@unit.name}"
+  document.title = "#{@event.title.html_safe} · #{@unit.name.html_safe}"
