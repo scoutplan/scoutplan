@@ -18,8 +18,9 @@ module Contactable
     contactable_object.phone.present?
   end
 
-  def contactable?
-    contactable_object.emailable?
+  def contactable?(via: :email)
+    return contactable_object.emailable? if via == :email
+    return contactable_object.smsable? if via == :sms
   end
 
   private

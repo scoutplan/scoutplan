@@ -1,6 +1,6 @@
 # methods for dealing with cohorts and recipient lists
 # implementing classes need to define audience
-module Sendable
+module Notifiable
   extend ActiveSupport::Concern
 
   EVENT_REGEXP = /event_(\d+)_attendees/

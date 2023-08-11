@@ -2,7 +2,7 @@
 
 # represents a communication from a person to one or more recipients
 class Message < ApplicationRecord
-  include Sendable
+  include Notifiable
 
   belongs_to :author, class_name: "UnitMembership"
   has_one :unit, through: :author
