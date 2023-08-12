@@ -11,8 +11,8 @@ Rails.application.configure do
   config.hosts << ENV["RAILS_PRODUCTION_HOSTS"]
   config.hosts << /10\.\d+\.\d+\.\d+/ # internal IP addresses...leave this here
 
-  # config.logger = RemoteSyslogLogger.new(ENV["LOGGER_HOST"], ENV["LOGGER_PORT"])
-  config.logger = Logtail::Logger.create_default_logger(ENV.fetch("LOGTAIL_TOKEN"))
+  config.logger = RemoteSyslogLogger.new(ENV["LOGGER_HOST"], ENV["LOGGER_PORT"])
+  # config.logger = Logtail::Logger.create_default_logger(ENV.fetch("LOGTAIL_TOKEN"))
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
