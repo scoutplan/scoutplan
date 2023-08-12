@@ -6,8 +6,8 @@ Rails.application.default_url_options = {
 }
 
 Rails.application.configure do
-  # config.logger = RemoteSyslogLogger.new(ENV["LOGGER_HOST"], ENV["LOGGER_PORT"])
-  config.logger = Logtail::Logger.create_default_logger(ENV.fetch("LOGTAIL_TOKEN"))
+  config.logger = RemoteSyslogLogger.new(ENV["LOGGER_HOST"], ENV["LOGGER_PORT"])
+  # config.logger = Logtail::Logger.create_default_logger(ENV.fetch("LOGTAIL_TOKEN"))
 
   config.hosts << "go.scoutplan.org"
   config.hosts << "kit.fontawesome.com"
