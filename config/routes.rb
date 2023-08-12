@@ -48,6 +48,10 @@ Rails.application.routes.draw do
 
   resources :payments, only: [:create]
 
+  namespace :base, path: "/" do
+    resources :events, only: [:show]
+  end
+
   # begin units
   resources :units, path: "u", only: %i[show index update] do
     resources :messages, path: "email" do

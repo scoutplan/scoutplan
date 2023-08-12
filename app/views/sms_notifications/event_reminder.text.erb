@@ -1,0 +1,1 @@
+Hi, <%= @recipient.first_name %>. <%= @event.title %> is coming up on <%= @event.starts_at.in_time_zone.strftime('%A') %>. Visit <%= unit_event_url(@event.unit, @event) %> for details.

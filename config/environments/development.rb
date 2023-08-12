@@ -2,6 +2,8 @@
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.configure do
+  # config.logger = Logtail::Logger.create_default_logger(ENV.fetch("LOGTAIL_TOKEN"))
+
   config.web_console.permissions = "172.0.0.0/8"
 
   config.hosts = [
@@ -13,28 +15,11 @@ Rails.application.configure do
   ]
 
   config.hosts.clear
-
-  # Settings specified here will take precedence over those in config/application.rb.
-
   config.force_ssl = true
-
-  # In the development environment your application's code is reloaded any time
-  # it changes. This slows down response time but is perfect for development
-  # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
-
-  # Do not eager load code on boot.
   config.eager_load = false
-
-  # Show full error reports.
   config.consider_all_requests_local = true
-  # config.consider_all_requests_local = false
 
-  # set to false to see production-like error handling
-  # config.consider_all_requests_local = false
-
-  # Enable/disable caching. By default caching is disabled.
-  # Run rails dev:cache to toggle caching.
   if Rails.root.join("tmp", "caching-dev.txt").exist?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
