@@ -97,6 +97,11 @@ spec:
                 secretKeyRef:
                   name: scoutplan-production
                   key: SMTP_PASSWORD
+            - name: LOGTAIL_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: LOGTAIL_TOKEN
             - name: MAILGUN_INGRESS_SIGNING_KEY
               valueFrom:
                 secretKeyRef:

@@ -12,3 +12,9 @@ Style/SymbolArray:
 
 Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
+
+Style/MixinGrouping:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false  

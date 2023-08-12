@@ -3,7 +3,7 @@
 # a calendar event
 # rubocop:disable Metrics/ClassLength
 class Event < ApplicationRecord
-  include Notifiable
+  include Notifiable, Remindable
   extend DateTimeAttributes
 
   date_time_attrs_for :starts_at, :ends_at
@@ -267,14 +267,6 @@ class Event < ApplicationRecord
 
   def notification_recipients
     with_guardians(requires_rsvp ? rsvps.accepted.collect(&:member) : unit.members.status_active)
-  end
-
-  def create_reminder_job!
-    return unless published? && !ended?
-
-    run_time = starts_at - EventReminderJob::LEAD_TIME
-    run_time = unit.in_business_hours(run_time) if ENV["RAILS_ENV"] == "production"
-    EventReminderJob.set(wait_until: run_time).perform_later(id, updated_at)
   end
 
   private
