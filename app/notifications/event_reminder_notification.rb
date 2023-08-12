@@ -9,7 +9,7 @@ class EventReminderNotification < ScoutplanNotification
 
   deliver_by :database
   deliver_by :email, mailer: "EventReminderMailer", if: :email?
-  deliver_by :twilio, if: :sms?
+  # deliver_by :twilio, if: :sms?
 
   param :event
 

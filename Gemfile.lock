@@ -252,6 +252,17 @@ GEM
       activesupport (>= 4)
       railties (>= 4)
       request_store (~> 1.0)
+    logtail (0.1.11)
+      msgpack (~> 1.0)
+    logtail-rack (0.2.1)
+      logtail (~> 0.1)
+      rack (>= 1.2, < 4.0)
+    logtail-rails (0.2.4)
+      actionpack (>= 5.0.0)
+      activerecord (>= 5.0.0)
+      logtail (~> 0.1)
+      logtail-rack (~> 0.1)
+      railties (>= 5.0.0)
     loofah (2.21.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -592,6 +603,7 @@ DEPENDENCIES
   ledermann-rails-settings
   listen (~> 3.7)
   lograge
+  logtail-rails (~> 0.2.4)
   loofah (>= 2.19.1)
   mixpanel-ruby
   nokogiri (>= 1.14.3)
@@ -618,8 +630,8 @@ DEPENDENCIES
   rspec-rails (~> 5.0)
   rubocop
   ruby-lsp (~> 0.3.7)
-  sanitize (>= 6.0.2)
   ruby-openai
+  sanitize (>= 6.0.2)
   sass-rails (~> 6.0)
   scout_apm
   seedbank

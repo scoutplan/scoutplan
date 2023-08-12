@@ -111,3 +111,5 @@ end
 gem "redis", "~> 4.0"
 
 gem "noticed", "~> 1.6"
+
+gem "logtail-rails", "~> 0.2.4"
