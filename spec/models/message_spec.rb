@@ -35,7 +35,6 @@ RSpec.describe Message, type: :model do
     end
 
     it "has an event cohort" do
-      ap @message
       expect(@message.event_cohort?).to be_truthy
     end
 

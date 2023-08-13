@@ -91,8 +91,6 @@ class EmailEvaluator
 
       name = line_parts.first
       attending = line_parts.last != "No"
-
-      ap "#{name} is #{attending ? 'attending' : 'not attending'}"
     end
   end
 end

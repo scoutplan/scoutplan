@@ -8,7 +8,6 @@ class EventReminderMailer < ApplicationMailer
 
   # called from EventReminderNotification
   def event_reminder_notification
-    ap "sdfsdfs"
     @recipient = params[:recipient]
     @event = params[:event]
     @unit = @event.unit
