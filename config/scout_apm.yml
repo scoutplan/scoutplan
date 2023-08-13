@@ -22,6 +22,7 @@ common: &defaults
 
 production:
   <<: *defaults
+  auto_instrument: true
 
 development:
   <<: *defaults

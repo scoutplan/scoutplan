@@ -41,8 +41,6 @@ javascript:
     document.body.classList.add("showing-as-list");
     document.body.classList.remove("showing-as-calendar");
     prepareEventLinks();
-    // hideEmptyMonthHeaders();
-    // toggleMonthSections(".event-month", ".event");
     setUpBulkPublish();
   });
 
@@ -52,15 +50,6 @@ javascript:
       document.querySelector('#bulk_action_form').submit();
       event.preventDefault();
     });
-
-    // wire up the check/uncheck all box
-    // document.querySelector('#select_all_events_checkbox')?.addEventListener('click', function(event) {
-    //   const checked = this.checked;
-    //   document.querySelectorAll('.bulk-publish-checkbox').forEach(function (elem) {
-    //       elem.checked = checked && elem.offsetParent !== null;
-    //   });
-    //   validateBulkPublishState();
-    // });
 
     document.querySelector("#check_all_button")?.addEventListener("click", function(event) {
       selectAllBulkPublish(true);
@@ -143,10 +132,6 @@ javascript:
     document.querySelectorAll(parentClass).forEach(function(elem) {
       elem.style.display = "none";
 
-      // ...then, iterate over all visible event rows, traverse backward until we
-      // hit a month header, and reveal it. There's an inefficiency here in that
-      // we're iterating on every visible event row, meaning we'll repeatedly
-      // unhide the same month headers.
       // TODO: traverse forward to next month header, then traverse from there to the next visible event row
       var visibleCount = 0;
 
