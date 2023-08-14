@@ -16,14 +16,12 @@
     p
       | If that's not right, or if your plans change, please let us know: 
 
-      = magic_link_to @member, unit_event_edit_rsvps_url(@rsvp.unit, @rsvp.event) do
+      = link_to unit_event_edit_rsvps_url(@rsvp.unit, @rsvp.event) do
         strong
           = "Change your response"
 
 - content_for :footer do
-  = magic_link_to \
-    @member,
-    "View the full #{ @unit.name} schedule",
-    unit_events_url(@unit),
-    class: "button-light-on-dark",
-    style: "color: #fff; text-decoration: underline;"
+  = link_to "View the full #{ @unit.name} schedule",
+            unit_events_url(@unit),
+            class: "button-light-on-dark",
+            style: "color: #fff; text-decoration: underline;"

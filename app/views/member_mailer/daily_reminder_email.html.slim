@@ -19,7 +19,7 @@
         br
         = event.location
 
-    = magic_link_to(@member, [event.unit, event]) do
+    = link_to [event.unit, event] do
       h3(style="margin-bottom: 4px;") = event.title
 
     p(style="margin-top: 4px; margin-bottom: 0; font-weight: 600;")
@@ -32,11 +32,9 @@
     == event.description
 
 p(style="text-align: center; padding-top: 30px;")
-  = magic_link_to( @member,
-                   "View the entire #{@unit.name} calendar",
-                   unit_events_url(@unit),
-                   style: "background-color: #{@unit.settings(:appearance).main_color}; text-decoration: none; padding: 12px 24px; border-radius: 5px; color: #fff;")
-
+  = link_to "View the entire #{@unit.name} calendar",
+            unit_events_url(@unit),
+            style: "background-color: #{@unit.settings(:appearance).main_color}; text-decoration: none; padding: 12px 24px; border-radius: 5px; color: #fff;"
 
 scss:
   .trix-content div {

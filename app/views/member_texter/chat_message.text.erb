@@ -7,4 +7,4 @@
 
 <%= @chat_message.message %>
 
-Visit <%= magic_url_for(@member, unit_event_discussion_index_path(@unit, @event)) %> to view the full discussion and reply.
+Visit <%= url_for(unit_event_discussion_index_path(@unit, @event)) %> to view the full discussion and reply.

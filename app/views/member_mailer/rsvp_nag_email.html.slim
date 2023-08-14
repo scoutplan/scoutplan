@@ -8,10 +8,9 @@
 
 - content_for :footer do
   div(style="text-align:center;")
-    = magic_link_to @member,
-      "Full #{ @unit.name} schedule",
-      unit_events_url(@unit),
-      style: "border:1px solid #F5F5F4;color:#F5F5F4;display:inline-block;padding:0.5rem 2rem;border-radius:4px;text-align:center;text-decoration:none;font-size:80%;font-weight:600;letter-spacing:1px;text-transform:uppercase;"
+    = link_to "Full #{ @unit.name} schedule",
+              unit_events_url(@unit),
+              style: "border:1px solid #F5F5F4;color:#F5F5F4;display:inline-block;padding:0.5rem 2rem;border-radius:4px;text-align:center;text-decoration:none;font-size:80%;font-weight:600;letter-spacing:1px;text-transform:uppercase;"
 
 css:
   a:hover {
