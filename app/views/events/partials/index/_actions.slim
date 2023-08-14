@@ -1,11 +1,9 @@
 // ICAL SUBSCRIBE
-- ics_url = calendar_feed_unit_events_url( \
-    token: @ical_magic_link.token,
-    unit_id: @unit.to_param,
-    format: :ics,
-    only_path: false,
-    protocol: "webcal" \
-  )
+- ics_url = calendar_feed_unit_events_url(token: @current_member.token,
+                                          unit_id: @unit.to_param,
+                                          format: :ics,
+                                          only_path: false,
+                                          protocol: "webcal")
 
 - current_variation ||= "list"
 

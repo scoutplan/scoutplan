@@ -14,4 +14,9 @@ namespace :sp do
       end
     end
   end
+
+  desc "Delete ical magic links"
+  task delete_ical_magic_links: :environment do
+    MagicLink.where(path: "icalendar").destroy_all
+  end
 end
