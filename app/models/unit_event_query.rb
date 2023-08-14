@@ -19,8 +19,6 @@ class UnitEventQuery
 
     # limit non-admins to only published events
     scope = scope.where(status: :published) unless @membership&.admin?
-
-    # scope = scope.limit(10)
     filter_by_tag(scope.all)
   end
 
