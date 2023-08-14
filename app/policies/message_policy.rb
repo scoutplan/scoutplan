@@ -15,20 +15,18 @@ class MessagePolicy < UnitContextPolicy
   end
 
   def create_pending?
-    admin? || members_can_write_announcements?
+    draft?
   end
 
   def new?
-    admin? || members_can_write_announcements?
+    draft?
   end
 
   def edit?
     (admin? && @message.editable?) || @message.author == @membership
   end
 
-  private
-
-  def members_can_write_announcements?
-    false
+  def draft?
+    admin?
   end
 end

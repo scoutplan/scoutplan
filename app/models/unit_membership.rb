@@ -17,6 +17,7 @@ class UnitMembership < ApplicationRecord
 
   validates_uniqueness_of :user, scope: :unit
   validates_presence_of :user, :status
+  validates_uniqueness_of :token, allow_nil: true
 
   has_many  :parent_relationships,
             foreign_key: "child_unit_membership_id",
@@ -40,6 +41,7 @@ class UnitMembership < ApplicationRecord
   has_many :organized_events, through: :event_organizers, source: :event
   has_many :notifications, as: :recipient, dependent: :destroy
   has_noticed_notifications
+  has_secure_token
 
   alias_attribute :rsvps, :event_rsvps
   alias_attribute :phone_number, :phone

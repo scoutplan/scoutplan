@@ -92,6 +92,7 @@ group :development do
   # Can be configured to work on production as well see: https://github.com/MiniProfiler/rack-mini-profiler/blob/master/README.md
   gem "listen", "~> 3.7"
   gem "rack-mini-profiler", "~> 2.3"
+  gem "pry-rails"
   gem "stackprof"
   gem "ruby-lsp", "~> 0.3.7"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
