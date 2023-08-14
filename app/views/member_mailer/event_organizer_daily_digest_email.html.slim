@@ -1,5 +1,5 @@
 - content_for :left_column do
-  p Hi, #{@member.display_first_name}. In the past #{distance_of_time_in_words_to_now(@last_ran_at)} you've received new RSVPs for #{magic_link_to @member, "#{@event.title} on #{@event.starts_at.strftime("%A, %b %-d")}", unit_event_rsvps_url(@event.unit, @event)}:
+  p Hi, #{@member.display_first_name}. In the past #{distance_of_time_in_words_to_now(@last_ran_at)} you've received new RSVPs for #{link_to "#{@event.title} on #{@event.starts_at.strftime("%A, %b %-d")}", unit_event_rsvps_url(@event.unit, @event)}:
 
   - ["accepted", "declined"].each do |k|
     - rsvps = @rsvps[k]

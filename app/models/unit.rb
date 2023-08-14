@@ -32,7 +32,6 @@ class Unit < ApplicationRecord
   before_validation :generate_slug
 
   has_settings do |s|
-    s.key :security, defaults: { enable_magic_links: true }
     s.key :communication, defaults: {
       digest: true,
       rsvp_nag: true,
