@@ -28,6 +28,9 @@ class UnitMembership < ApplicationRecord
             class_name: "MemberRelationship",
             dependent: :destroy
 
+  has_many :parents, through: :parent_relationships, source: :parent_unit_membership
+  has_many :children, through: :child_relationships, source: :child_unit_membership
+
   has_many :rsvp_tokens, dependent: :destroy
   has_many :event_rsvps, dependent: :destroy
   has_many :magic_links, dependent: :destroy
@@ -76,13 +79,13 @@ class UnitMembership < ApplicationRecord
   #   [id, user&.full_display_name].join("-").parameterize
   # end
 
-  def parents
-    parent_relationships.map(&:parent_member)
-  end
+  # def parents
+  #   parent_relationships.map(&:parent_member)
+  # end
 
-  def children
-    child_relationships.map(&:child_member)
-  end
+  # def children
+  #   child_relationships.map(&:child_member)
+  # end
 
   def siblings
     parents.flat_map(&:children) - [self]

@@ -20,9 +20,7 @@
         = " "
         = year
     
-    div.divide-stone-200.dark:divide-stone-700
-      - events.each do |event|
-        
-        = render partial: "event", locals: { event: event }
+    div.divide-stone-200.dark:divide-stone-700        
+      = render partial: "event", collection: events, cached: true
 
   - @event_month_count += 1
