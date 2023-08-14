@@ -11,8 +11,8 @@
         .right
           / = render partial: "new_event_button" if user_signed_in? && policy(:event).create?
           .dropdown
-            = link_to "#", class: "dropdown-button inline-block text-2xl" do
-              i.fa-circle-ellipsis.far.text-stone-500.dark:text-stone-300
+            = link_to "#", class: "dropdown-button inline-block" do
+              i.fa-circle-ellipsis.far.fa-2xl.text-stone-500.dark:text-stone-300
             = render partial: "events/partials/index/dropdown"
 
 

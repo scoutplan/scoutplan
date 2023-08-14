@@ -32,8 +32,7 @@ describe "events", type: :feature do
         starts_at: starts_at,
         ends_at: ends_at \
       )
-      magic_link = MagicLink.generate_link(@normal_member, "icalendar")
-      visit(calendar_feed_unit_events_path(@unit, magic_link.token))
+      visit(calendar_feed_unit_events_path(@unit, @normal_member.token))
 
       cals = Icalendar::Calendar.parse(page.body)
       cal = cals.first
@@ -76,8 +75,7 @@ describe "events", type: :feature do
         ends_at: 52.hours.from_now \
       )
       expect(@unit.events.count).to eq(3)
-      magic_link = MagicLink.generate_link(@admin_member, "icalendar")
-      visit(calendar_feed_unit_events_path(@unit, magic_link.token))
+      visit(calendar_feed_unit_events_path(@unit, @admin_member.token))
       cals = Icalendar::Calendar.parse(page.body)
       cal = cals.first
       expect(cal.events.count).to eq(3)
