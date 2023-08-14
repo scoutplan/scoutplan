@@ -29,6 +29,6 @@ class MessagePolicy < UnitContextPolicy
   private
 
   def members_can_write_announcements?
-    true
+    false
   end
 end

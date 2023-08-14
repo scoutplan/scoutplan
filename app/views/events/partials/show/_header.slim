@@ -6,7 +6,7 @@ header.relative.mb-4
         i.fa-solid.fa-stack-1x.text-white(class="fa-#{@event&.category&.glyph}")
 
     div
-      h3.font-bold.text-3xl.md:text-5xl.-mt-2
+      h3.font-bold.text-3xl.md:text-4xl.-mt-2
         = @event.title
 
       = content_tag(:p, @event.short_description, class: "mt-2 font-bold") if @event.short_description.present?
