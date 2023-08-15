@@ -110,7 +110,11 @@ Rails.application.routes.draw do
         get "public",      to: "events#public", as: "public"
         get "signups",     to: "events#signups", as: "signups"
         get "list"
-        get "calendar"
+        get "calendar",
+            to: redirect { |path_params, _|
+              "/units/#{ path_params[:unit_id] }/schedule/calendar/#{Date.today.year}/#{Date.today.month}"
+            }, as: "calendar_redirect"
+        get "calendar/:year/:month", to: "events#calendar", as: "calendar"
         get "spreadsheet", to: "events#index", defaults: { variation: "spreadsheet" }
         post "bulk_publish"
       end

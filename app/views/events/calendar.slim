@@ -1,13 +1,14 @@
-- display_year = (params[:year] || cookies[:calendar_display_year] || Date.today.year).to_i
-- display_month = (params[:month] || cookies[:calendar_display_month] || Date.today.month).to_i
-- first_day_of_month = Date.new(display_year, display_month, 1)
+
+
+
+- first_day_of_month = Date.new(@current_year, @current_month, 1)
 - first_day_of_last_month = first_day_of_month.last_month
 - days_in_month = first_day_of_month.end_of_month.day
 - days_in_last_month = first_day_of_last_month.end_of_month.day
 - display_day = - first_day_of_month.wday + 1
 - done = false
 
-.mx-4.md:mx-0
+.max-w-7xl.mx-auto
   header.flex.justify-between.py-2.border-b.relative.mt-12
     // LEFT SIDE
     div.relative
@@ -27,9 +28,9 @@
           = render partial: "events/partials/index/month_picker", locals: { display_date: first_day_of_month }
 
       // prev button
-      = link_to targeted_calendar_unit_events_path(@unit,
-          month: "%02i" % ((display_month > 1) ? display_month - 1 : 12),
-          year: (display_month > 1) ? display_year : display_year - 1),
+      = link_to calendar_unit_events_path(@unit,
+          month: @current_month > 1 ? @current_month - 1 : 12,
+          year: @current_month > 1 ? @current_year : @current_year - 1),
         title: t("events.calendar_view.prev_month"),
         data: { turbo_action: "advance" },
         class: "font-bold inline-block py-1 px-2 md:px-4 rounded-l border hover:bg-stone-100" do
@@ -38,9 +39,9 @@
             = "Prev"
 
       // next button
-      = link_to targeted_calendar_unit_events_path(@unit,
-          month: "%02i" % ((display_month == 12) ? 1 : display_month + 1),
-          year: (display_month == 12) ? display_year + 1 : display_year),
+      = link_to calendar_unit_events_path(@unit,
+          month: @current_month == 12 ? 1 : @current_month + 1,
+          year: @current_month == 12 ? @current_year + 1 : @current_year),
         data: { turbo_action: "advance" },
         class: "font-bold inline-block py-1 px-2 md:px-4 rounded-r border hover:bg-stone-100 border-l-0" do
           .hidden.md:inline
@@ -49,8 +50,8 @@
 
       // today button
       = link_to "Today",
-        targeted_calendar_unit_events_path(@unit,
-          month: "%02i" % Time.now.month,
+        calendar_unit_events_path(@unit,
+          month: Time.now.month,
           year: Time.now.year),
         data: { turbo_action: "advance" },
         class: "inline-block font-bold hover:bg-stone-100 border rounded px-2 py-1 ml-2"
@@ -82,10 +83,10 @@
             - day_number = days_in_last_month + display_day
           - else
             - day_number = display_day
-            - month_number = display_month
+            - month_number = @current_month
 
           // now render the cell
-          .table-cell.border-t.p-1.h-32.select-none.cal-cell.(class="#{cell_class}" data-cal-date="#{display_date}")
+          .table-cell.border-t.p-1.h-32.md:h-40.select-none.cal-cell.(class="#{cell_class}" data-cal-date="#{display_date}")
             - if display_date.today?
               - if day_number == 1
                 .text-brand-500.font-bold

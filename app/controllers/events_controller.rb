@@ -28,14 +28,24 @@ class EventsController < UnitContextController
   end
 
   def list
-    @current_month = params[:current_month]&.to_i
     @current_year = params[:current_year]&.to_i
+    @current_month = params[:current_month]&.to_i
+
     scope = @unit.events.includes(:tags).future.order(starts_at: :asc)
     scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
     set_page_and_extract_portion_from scope
   end
 
   def calendar
+    @current_year = params[:year]&.to_i || Date.today.year
+    @current_month = params[:month]&.to_i || Date.today.month
+
+    start_date = Date.new(@current_year.to_i, @current_month.to_i, 1)
+    end_date = start_date.end_of_month
+
+    scope = @unit.events
+    scope = scope.where("starts_at BETWEEN ? AND ?", start_date, end_date)
+    @events = scope.all
   end
 
   def public

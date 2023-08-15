@@ -200,7 +200,7 @@ describe "events", type: :feature do
     end
 
     it "shows as a calendar" do
-      path = calendar_unit_events_path(@unit)
+      path = calendar_unit_events_path(@unit, year: Date.today.year, month: Date.today.month)
       visit(path)
       expect(page).to have_current_path(path)
     end
