@@ -1,5 +1,0 @@
-- turbo_frame_id ||= "current_events"
-= turbo_frame_tag turbo_frame_id
-  - @events_by_year.each do |year, yearly_events|
-    - monthly_events = yearly_events.group_by { |e| e.starts_at.month }
-    = render partial: "event_month", locals: { event_month: monthly_events, year: year }

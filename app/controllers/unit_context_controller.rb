@@ -11,10 +11,12 @@ class UnitContextController < ApplicationController
   attr_reader :current_membership
 
   def current_unit
-    @current_unit ||= Unit.includes(
-      :setting_objects,
-      unit_memberships: [:user, :parent_relationships, :child_relationships]
-    ).find(unit_id_param)
+    # @current_unit ||= Unit.includes(
+    #   :setting_objects,
+    #   unit_memberships: [:user, :parent_relationships, :child_relationships]
+    # ).find(unit_id_param)
+
+    @current_unit ||= Unit.find(unit_id_param)
   end
 
   def current_member

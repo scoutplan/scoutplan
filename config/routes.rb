@@ -109,10 +109,13 @@ Rails.application.routes.draw do
         get "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
         get "public",      to: "events#public", as: "public"
         get "signups",     to: "events#signups", as: "signups"
-        get "list",        to: "events#index", defaults: { variation: "list" }, as: "list"
+        get "list"
+        get "calendar",
+            to: redirect { |path_params, _|
+              "/units/#{ path_params[:unit_id] }/schedule/calendar/#{Date.today.year}/#{Date.today.month}"
+            }, as: "calendar_redirect"
+        get "calendar/:year/:month", to: "events#calendar", as: "calendar"
         get "spreadsheet", to: "events#index", defaults: { variation: "spreadsheet" }
-        get "calendar",    to: "events#index", defaults: { variation: "calendar" }
-        get "calendar/:year/:month", to: "events#index", defaults: { variation: "calendar" }, as: "targeted_calendar"
         post "bulk_publish"
       end
       get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"

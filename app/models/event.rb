@@ -70,7 +70,7 @@ class Event < ApplicationRecord
 
   # TODO: clean up this mess
   scope :past,          -> { where("starts_at < ?", Date.today) }
-  scope :future,        -> { where("starts_at > ?", Date.today) }
+  scope :future,        -> { where("ends_at >= ?", Date.today) }
   scope :recent,        -> { where("starts_at BETWEEN ? AND ?", 4.weeks.ago, Date.today)}
   scope :this_week,     -> { where("starts_at BETWEEN ? AND ?", Time.now, 7.days.from_now.at_end_of_day.in_time_zone) }
   scope :upcoming,      -> { where("starts_at BETWEEN ? AND ?", Time.now, 35.days.from_now) }
