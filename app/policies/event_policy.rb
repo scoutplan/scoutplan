@@ -4,7 +4,7 @@
 class EventPolicy < UnitContextPolicy
   attr_accessor :event
 
-  def initialize(membership, event)
+  def initialize(membership, event = nil)
     super
     @membership = membership
     @event = event
@@ -53,10 +53,6 @@ class EventPolicy < UnitContextPolicy
   def rsvp?
     rsvp = EventRsvp.new(event: @event, unit_membership: @membership)
     EventRsvpPolicy.new(@membership, rsvp).create?
-
-    # return true if @membership.adult?
-    # return true if @membership.youth? && @membership.allow_youth_rsvps? && @event.unit.allow_youth_rsvps? && @event.allow_youth_rsvps?
-    # false
   end
 
   def plan?
@@ -87,5 +83,4 @@ class EventPolicy < UnitContextPolicy
 
     @membership.tag_list.any? { |tag| @event.tag_list.include?(tag) }
   end
-
 end
