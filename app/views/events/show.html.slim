@@ -1,17 +1,8 @@
-- content_for :title do
-  = [@event.title, " · ", @unit.name].join
-
-= content_for :home_nav do
-  = link_to unit_events_path(@unit), class: "inline-block font-bold rounded bg-brand-500 hover:bg-brand-600 text-white px-4 py-2" do
-    i.fa-solid.fa-chevron-left.fas.mr-2
-    / = "#{@unit.name} Event Schedule"
-    = "Back"
-
-
 = turbo_frame_tag "main"
   article.event.mx-auto.max-w-2xl.md:mt-8.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
     section#informative.flex.flex-col
       = render partial: "events/partials/show/header"
+      = render partial: "events/partials/show/chat"
       = render partial: "events/partials/show/rsvp"
 
 
@@ -30,7 +21,6 @@
                         class: "block bg-sky-600 hover:bg-sky-700 text-sky-100 py-2 px-3 rounded ml-3" do
                 = "See all RSVPs"
 
-      = render partial: "events/partials/show/chat_mobile"
       = render partial: "events/partials/show/date"
       = render partial: "events/partials/show/location"
       = render partial: "events/partials/show/payment"

@@ -1,7 +1,7 @@
 #event_table_container.max-w-2xl.mx-auto
-  = form_tag bulk_publish_unit_events_path(@unit), id: "bulk_action_form"
+    / unindent = form_tag bulk_publish_unit_events_path(@unit), id: "bulk_action_form"
     header.relative.mt-8.mb-2
-      = render partial: "components/unit_name" if @current_user.multiple_units?
+      = render partial: "components/unit_name"
 
       .flex.flex-col.md:flex-row.justify-between.items-center
         .left
@@ -15,26 +15,15 @@
               i.fa-circle-ellipsis.far.fa-2xl.text-stone-500.dark:text-stone-300
             = render partial: "events/partials/index/dropdown"
 
+    div(data-controller="pagination")
+      ol
+        = render @page.records
 
-    = render partial: "events/partials/index/empty_list"
-
-    // LIST WRAPPER
-    div
-      // iterate by month
-      - @event_month_count = 0
-      - @current_event_month_count = 0
-
-      = render partial: "bulk_publish_panel"
-
-      div
-        = turbo_frame_tag "past_events", src: list_unit_events_path(@unit, scope: "past"), loading: "lazy"
-
-        = turbo_frame_tag "current_events"
-          = render partial: "event_year"
-
-        = turbo_frame_tag "future_events", src: list_unit_events_path(@unit, scope: "future")
-          .text-center
-            i.text-stone-300.text-lg.fa-solid.fa-circle-notch.fa-spin
+      - unless @page.last?
+        = link_to "Next page",
+                  list_unit_events_path(@unit, page: @page.next_param, current_month: @current_month, current_year: @current_year),
+                  data: { pagination_target: "nextPageLink" }
+      
 
 javascript:
   document.addEventListener("turbo:load", function() {

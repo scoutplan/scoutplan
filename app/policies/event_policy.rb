@@ -75,6 +75,10 @@ class EventPolicy < UnitContextPolicy
     admin?
   end
 
+  def view_drafts?
+    admin?
+  end
+
   private
 
   # if the event is tagged, does the member possess those tags?
@@ -83,4 +87,5 @@ class EventPolicy < UnitContextPolicy
 
     @membership.tag_list.any? { |tag| @event.tag_list.include?(tag) }
   end
+
 end

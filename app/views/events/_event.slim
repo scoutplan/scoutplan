@@ -1,7 +1,21 @@
 - @presenter.event = event
 
+/ - if @current_month.nil? || @current_month != event.starts_at.month
+/   section.event-month-boundary(id="month_header_#{event.starts_at.strftime('%Y')}_#{event.starts_at.strftime('%m')}")
+/     h3(class= "text-brand-500 leading-none base font-bold text-base mb-0 w-full pl-0 py-2 uppercase tracking-wider", role="heading", aria-level="3")
+/       = event.starts_at.strftime('%B')
+/       - if @current_year.nil? || @current_year != event.starts_at.year
+/         = event.starts_at.strftime(' %Y')
+
+/     .flex.flex-col.divide-y
+
+/ - @current_month = event.starts_at.month
+/ - @current_year = event.starts_at.year
+
+= render partial: "month_header", locals: { event: event }
+
 // START ROW
-article.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="relative event #{row_classes(event)}" id="event_#{event.id}")
+li.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="relative event #{row_classes(event)}" id="event_#{event.id}")
   // anchor for scroll-to purposes
   a(name="event_#{event.id}")
 

@@ -17,14 +17,13 @@
                 { class: "block w-full border border-red-500 placeholder-stone-300 rounded p-2 text-xs font-bold text-red-500" }
 
   .relative
-    = f.text_area(:message,
-                  class: "w-full border border-stone-300 dark:bg-black dark:border-stone-600 placeholder-stone-300 rounded p-2 text-sm text-stone-900 h-20 pr-10",
+    = f.text_field(:message,
+                  class: "w-full border border-stone-300 dark:bg-black dark:border-stone-600 placeholder-stone-300 rounded p-2 text-sm text-stone-900 pr-10",
                   placeholder: "Type a new message",
-                  maxlength: "120",
                   autocapitalize: "on",
                   onkeydown: "if (event.keyCode == 13 && !event.shiftKey) { event.preventDefault(); document.querySelector('#discussion_submit_button').click(); }")
 
-    .absolute.right-2.bottom-3.(style="font-size: 0.75rem;")
+    .absolute.right-2.top-2(style="font-size: 0.75rem;")
       = f.button type: "submit", title: "Send message", id: "discussion_submit_button" do
         .fa-stack
           i.fa-solid.fa-circle.fa-stack-2x.text-sky-500

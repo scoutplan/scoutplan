@@ -1,6 +1,6 @@
 - if @current_month.nil? || @current_month != event.starts_at.month
-  section.event-month-boundary(id="month_header_#{event.starts_at.strftime('%Y')}_#{event.starts_at.strftime('%m')}")
-    h3(class= "text-brand-500 leading-none base font-bold text-base mb-0 w-full pl-0 py-2 uppercase tracking-wider", role="heading", aria-level="3")
+  li.border-t.border-stone-800.dark:border-stone-400.py-4.event-month-boundary(id="month_header_#{event.starts_at.strftime('%Y')}_#{event.starts_at.strftime('%m')}")
+    h3.text-brand-500.uppercase.tracking-wider(role="heading", aria-level="3")
       = event.starts_at.strftime('%B')
       - if @current_year.nil? || @current_year != event.starts_at.year
         = event.starts_at.strftime(' %Y')

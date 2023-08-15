@@ -11,7 +11,7 @@ require "humanize"
 # rubocop:disable Metrics/CyclomaticComplexity
 class EventsController < UnitContextController
   skip_before_action :authenticate_user!, only: [:public]
-  before_action :find_event, except: %i[index create new bulk_publish public my_rsvps signups]
+  before_action :find_event, except: %i[index list calendar spreadsheet create new bulk_publish public my_rsvps signups]
   before_action :collate_rsvps, only: [:show, :rsvps]
   layout :current_layout
 
@@ -19,67 +19,23 @@ class EventsController < UnitContextController
     @versions = @event.versions
   end
 
-  # TODO: refactor this mess
   def index
-    # variation = params[:variation]
-    # if variation.nil? && request.format.html?
-    #   variation = cookies[:event_index_variation] || "list"
-
-    #   # this redirection can probably happen in routes.rb
-    #   case variation
-    #   when "list"
-    #     redirect_to list_unit_events_path(@unit)
-    #     return
-    #   when "calendar"
-    #     redirect_to calendar_unit_events_path(@unit)
-    #     return
-    #   when "spreadsheet"
-    #     redirect_to spreadsheet_unit_events_path(@unit)
-    #   end
-    # end
-
-    # TODO: move this to a service object
-    cookies[:event_index_variation] = variation = params[:variation]
-    cookies[:calendar_display_month] = params[:month] if params[:month]
-    cookies[:calendar_display_year] = params[:year] if params[:year]
-
-    query = UnitEventQuery.new(current_member, current_unit)
-
-    case params[:scope]
-    when "future"
-      query.start_date = 3.months.from_now.end_of_month + 1.day
-    when "past"
-      query.end_date = Date.today.at_beginning_of_month - 1.day
-    else
-      if variation == "list"
-        query.start_date = Date.today.at_beginning_of_month
-        query.end_date = 3.months.from_now.end_of_month
-      end
-    end
-
-    @events = query.execute
-    # @locations = Location.where("locatable_type = 'Event' AND locatable_id IN (?)", @events.map(&:id))
-    # @locations_cache = @locations.each_with_object({}) do |location, cache|
-    #   key = [location.locatable_id, location.key]
-    #   cache[key] = location
-    #   cache
-    # end
-
-    @events_by_year = @events.group_by { |e| e.starts_at.year }
-    @event_drafts = @unit.events.select(&:draft?).select { |e| e.ends_at.future? }
-    @presenter = EventPresenter.new(nil, current_member)
-
-    if params[:scope].present?
-      render partial: "event_year", locals: { turbo_frame_id: "#{params[:scope]}_events" } and return
-    end
-
-    page_title @unit.name, t("events.index.title")
     respond_to do |format|
-      format.html
       format.pdf do
         render_printable_calendar
       end
     end
+  end
+
+  def list
+    @current_month = params[:current_month]&.to_i
+    @current_year = params[:current_year]&.to_i
+    scope = @unit.events.includes(:tags).future.order(starts_at: :asc)
+    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    set_page_and_extract_portion_from scope
+  end
+
+  def calendar
   end
 
   def public

@@ -1,15 +1,9 @@
 - return unless @event.chat?
 - return unless Flipper.enabled?(:event_chat, @current_member) || ENV["RAILS_ENV"] == "test"
 - return unless ChatMessagePolicy.new(@current_member, ChatMessage.new).index?
+- placeholder = @event.chat.chat_messages.present? ? "Type a message" : "Type to start a conversation about this event..."
 
-.hidden.xl:block
-  header.border-t.border-stone-600.pt-4.pb-2
-    = link_to unit_event_discussion_index_path(@unit, @event),
-              data: { turbo_action: "advance" } do
-      h3.font-bold.text-stone-600
-        i.fa-comments.fa-solid.text-sky-500.mr-2
-        = "#{@event.title} Discussion"
-
+.block.py-4
   = turbo_frame_tag :chat, src: unit_event_discussion_index_path(@unit, @event, suppress_header: true, limit: 16)
     .text-center
       = "Loading "
