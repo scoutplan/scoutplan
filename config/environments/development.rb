@@ -2,8 +2,6 @@
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.configure do
-  # config.logger = Logtail::Logger.create_default_logger(ENV.fetch("LOGTAIL_TOKEN"))
-
   config.web_console.permissions = "172.0.0.0/8"
 
   config.hosts = [
