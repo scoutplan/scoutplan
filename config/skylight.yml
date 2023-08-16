@@ -1,0 +1,8 @@
+ignored_endpoints:
+  - Blazer::QueriesController#show
+  - Blazer::QueriesController#home
+  - Blazer::QueriesController#tables
+  - Blazer::QueriesController#edit
+  - Blazer::QueriesController#destroy
+  - Blazer::DashboardsController#show
+  - Blazer::QueriesController#cancel
