@@ -2,8 +2,9 @@
 
 - family_has_rsvps = false
 - family_fully_responded = true
+- event_rsvps = event.rsvps.includes(:unit_membership)
 - @current_member.family.each do |member|
-  - rsvp = event.rsvps.select { |r| r.unit_membership == member }&.first
+  - rsvp = event_rsvps.select { |r| r.unit_membership == member }&.first
   - family_has_rsvps = family_has_rsvps || rsvp.present?
   - family_fully_responded = family_fully_responded && rsvp.present?
 
@@ -29,7 +30,6 @@
                 unit_event_edit_rsvps_path(@unit, event),
                 class: "inline-block text-center bg-yellow-300 border border-yellow-300 hover:border-yellow-400 hover:bg-yellow-400 px-4 py-2 font-bold rounded text-yellow-800",
                 data: { turbo_action: "advance", turbo_frame: "main" }
-
 
 - else
   .font-bold.text-sm
