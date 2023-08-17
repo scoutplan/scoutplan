@@ -33,3 +33,5 @@ li.relative.event.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#
     = render partial: "events/partials/event_row/rsvp", locals: { event: event }
     = render partial: "events/partials/event_row/organize", locals: { event: event }
     = render partial: "events/partials/event_row/online", locals: { event: event }
+
+  /! Current year / month: #{@current_year} / #{@current_month}
