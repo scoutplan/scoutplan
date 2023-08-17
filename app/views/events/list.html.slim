@@ -16,9 +16,13 @@
 
     div(data-controller="pagination")
       ol
-        - @page.records.each do |event|
-          - cache event do
-            = render event
+        / - @page.records.each do |event|
+        /   - cache event do
+        /     = render event
+
+        = render @page.records
+
+      /! Current year / month: #{@current_year} / #{@current_month}
 
       - unless @page.last?
         = link_to "Next page",
