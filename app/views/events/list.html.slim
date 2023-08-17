@@ -1,32 +1,29 @@
-= turbo_frame_tag "main"
-  .max-w-2xl.mx-auto
-    header.relative.my-2
-      .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
+.max-w-2xl.mx-auto
+  header.relative.my-2
+    .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
 
-      .flex.flex-row.justify-between.items-center
-        .left
-          h1.text-4xl.font-bold.mb-2
-            = t("events.index.page_title")
+    .flex.flex-row.justify-between.items-center
+      .left
+        h1.text-4xl.font-bold.mb-2
+          = t("events.index.page_title")
 
-        .right
-          .dropdown
-            = link_to "#", class: "dropdown-button inline-block" do
-              i.fa-circle-ellipsis.far.fa-2xl.text-stone-500.dark:text-stone-300
-            = render partial: "events/partials/index/dropdown"
+      .right
+        .dropdown
+          = link_to "#", class: "dropdown-button inline-block" do
+            i.fa-circle-ellipsis.far.fa-2xl.text-stone-500.dark:text-stone-300
+          = render partial: "events/partials/index/dropdown"
 
-    div(data-controller="pagination")
-      ol
-        - @page.records.each do |event|
-          - cache event do
-            = render event
-            
-        = render @page.records
+  div(data-controller="pagination")
+    ol
+      - @page.records.each do |event|
+        - cache event do
+          = render event
 
-      - unless @page.last?
-        = link_to "Next page",
-                  list_unit_events_path(@unit, page: @page.next_param, current_month: @current_month, current_year: @current_year),
-                  class: "text-transparent",
-                  data: { pagination_target: "nextPageLink" }
+    - unless @page.last?
+      = link_to "Next page",
+                list_unit_events_path(@unit, page: @page.next_param, current_month: @current_month, current_year: @current_year),
+                class: "text-transparent",
+                data: { pagination_target: "nextPageLink" }
     
 
   javascript:

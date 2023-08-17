@@ -11,9 +11,7 @@ export default class extends Controller {
   }
 
   async observeNextPageLink() {
-    console.log("here");
     if (!this.hasNextPageLinkTarget) return;
-    console.log("there");
 
     await nextIntersection(this.nextPageLinkTarget);
     this.getNextPage();
