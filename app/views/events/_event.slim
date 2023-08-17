@@ -3,7 +3,7 @@
 
 = render partial: "month_header", locals: { event: event }
 
-li.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="relative event #{row_classes(event)}" id="event_#{event.id}")
+li.relative.event.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#{row_classes(event)}" id="event_#{event.id}")
   a(name="event_#{event.id}")
 
   .flex.flex-row.items-center
@@ -11,11 +11,15 @@ li.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="relative event #
               class: "event py-2 block border-t w-full dark:border-stone-700",
               data: { turbo_action: "advance", turbo_frame: "main" } do
 
-      div.flex.flex-row
+      .flex.flex-col.md:flex-row
         // date / day
-        time.w-24.shrink-0
-          .font-bold.text-2xl.md:text-3xl = raw(@presenter.dates_to_s)
-          .font-bold.text-sm.uppercase.tracking-wider.text-stone-500 = raw(@presenter.days_to_s)
+        time.md:w-24.flex.flex-row.md:flex-col.gap-1.md:gap-0.items-baseline.md:items-start
+          .date.font-bold.text-2xl.md:text-3xl.leading-0.text-stone-500.md:text-stone-900
+            = raw(@presenter.dates_to_s)
+            
+          .day.font-bold.text-sm.uppercase.tracking-wider.text-stone-500.leading-0
+            = raw(@presenter.days_to_s)
+          
           = render partial: "events/partials/event_row/today", locals: { event: event }
 
         // icon
@@ -25,7 +29,7 @@ li.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="relative event #
         div
           = render partial: "events/partials/event_row/title", locals: { event: event }
 
-  .flex.flex-col.gap-1.md:flex-row.pb-2.md:justify-between.items-center
+  .flex.flex-col.gap-1.md:flex-row.pb-2.md:justify-between.md:items-center
     = render partial: "events/partials/event_row/rsvp", locals: { event: event }
     = render partial: "events/partials/event_row/organize", locals: { event: event }
     = render partial: "events/partials/event_row/online", locals: { event: event }
