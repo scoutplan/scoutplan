@@ -42,7 +42,7 @@ class EventsController < UnitContextController
     @current_month = params[:month]&.to_i || Date.today.month
 
     start_date = Date.new(@current_year.to_i, @current_month.to_i, 1)
-    end_date = start_date.end_of_month
+    end_date = start_date.end_of_month.end_of_day
 
     scope = @unit.events
     scope = scope.where("starts_at BETWEEN ? AND ?", start_date, end_date)
