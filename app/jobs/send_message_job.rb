@@ -8,8 +8,6 @@ class SendMessageJob < ApplicationJob
     return unless message.send_now?
 
     message.recipients.each do |recipient|
-      next unless Flipper.enabled? :messages, recipient
-
       MemberNotifier.new(recipient).send_message(message)
     end
 

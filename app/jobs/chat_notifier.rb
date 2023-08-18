@@ -7,7 +7,6 @@ class ChatNotifier < ApplicationJob
 
     chat.participants.each do |member|
       next unless member.smsable?
-      next unless Flipper.enabled?(:chat_notifications, member)
       next if chat_message.author == member # no sense sending to oneself
 
       ChatMemberTexter.new(member, chat_message).send_message

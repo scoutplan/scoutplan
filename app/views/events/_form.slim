@@ -32,5 +32,5 @@
 
     = render partial: "events/partials/form/footer", layout: "layouts/event_form_section", locals: { f: f }
 
-  = render partial: "events/partials/form/new_location_form" if Flipper.enabled? :inline_location_form, @current_member
-  = render partial: "events/partials/form/document_library" if Flipper.enabled? :document_library, @current_member
+  = render partial: "events/partials/form/new_location_form"
+  = render partial: "events/partials/form/document_library"

@@ -43,9 +43,6 @@ class DailyReminderTask < UnitTask
   end
 
   def perform_for_member(member)
-    return unless Flipper.enabled? :daily_reminder, member
-
-    # Time.zone = member.unit.settings(:locale).time_zone
     Rails.logger.warn { "Sending Daily Reminder to #{member.flipper_id}" }
     MemberNotifier.new(member).send_daily_reminder
   end
