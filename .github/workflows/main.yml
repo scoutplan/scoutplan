@@ -71,7 +71,7 @@ jobs:
         run: kubectl rollout status deployment/scoutplan-app
 
       - name: Report deployment to Honeybadger
-        run: curl -G "https://api.honeybadger.io/v1/deploys?deploy[environment]=production&deploy[local_username]=system&deploy[revision]=$GITHUB_RUN_NUMBER&api_key=hbp_afiJuqUHfBDVMCvM3Kg3nO8T1vxvEV0KLTzi"
+        run: curl -g "https://api.honeybadger.io/v1/deploys?deploy[environment]=production&deploy[local_username]=system&deploy[revision]=$GITHUB_RUN_NUMBER&api_key=hbp_afiJuqUHfBDVMCvM3Kg3nO8T1vxvEV0KLTzi"
         
       - name: Prune the image repo
         uses: sergeysova/jq-action@v2
