@@ -7,7 +7,6 @@ class HomeController < ApplicationController
   # GET /
   def index
     unit_id = cookies[:current_unit_id] || current_user.unit_memberships.first.unit.id
-    unit = Unit.find(unit_id)
-    redirect_to unit
+    redirect_to unit_events_path(unit_id)
   end
 end
