@@ -19,14 +19,6 @@ class EventsController < UnitContextController
     @versions = @event.versions
   end
 
-  def index
-    respond_to do |format|
-      format.pdf do
-        render_printable_calendar
-      end
-    end
-  end
-
   def list
     @current_year = params[:current_year]&.to_i
     @current_month = params[:current_month]&.to_i
@@ -37,7 +29,7 @@ class EventsController < UnitContextController
 
     respond_to do |format|
       format.html { set_page_and_extract_portion_from scope }
-      format.pdf { render_printable_calendar }
+      format.pdf { send_data(CalendarPrintRenderer.new(@unit, scope.all).generate_pdf) }
     end
   end
 
