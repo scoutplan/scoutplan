@@ -16,7 +16,7 @@ RUN apk add --no-cache --update \
     libssl1.1 \
     fontconfig \
     freetype \
-    # wkhtmltopdf \
+    wkhtmltopdf \
     poppler \
     poppler-utils \
     ttf-dejavu \
@@ -33,7 +33,7 @@ RUN rake assets:precompile
 
 # pull over an Alpine-friendly wkhtmltopdf binary, as described here:
 # https://github.com/mileszs/wicked_pdf/issues/841#issuecomment-507759176
-COPY --from=wkhtmltopdf_image /bin/wkhtmltopdf /usr/bin/wkhtmltopdf
+# COPY --from=wkhtmltopdf_image /bin/wkhtmltopdf /usr/bin/wkhtmltopdf
 
 EXPOSE 3000
 
