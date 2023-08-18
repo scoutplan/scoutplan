@@ -13,10 +13,9 @@ header.w-full.px-9.pb-2.pt-6.overflow-auto.fixed.z-40.bg-gray-600
         = link_to unit_events_path(@current_unit), class: 'text-white px-2 py-1 hover:bg-white hover:bg-opacity-30' do
           i.fa-house.far
 
-      - if Flipper.enabled? :global_search, @current_member
-        li.inline-block
-          .px-2.py-1
-            = text_field_tag :search_term, '', class: 'rounded-sm'
+      li.inline-block
+        .px-2.py-1
+          = text_field_tag :search_term, '', class: 'rounded-sm'
 
   .float-right
     ul.list-none.m-0.p-0

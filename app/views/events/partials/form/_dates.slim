@@ -1,15 +1,14 @@
 section.py-4
   // all day
-  - if Flipper.enabled?(:all_day_events)
-    .py-2
-      = render partial: "components/switch",
-               locals: { checked: @event.all_day?,
-                         label: "All day",
-                         object_name: "event",
-                         method: "all_day",
-                         checked_value: "true",
-                         unchecked_value: "false",
-                         data: { body_class: "event-all-day" } }
+  .py-2
+    = render partial: "components/switch",
+              locals: { checked: @event.all_day?,
+                        label: "All day",
+                        object_name: "event",
+                        method: "all_day",
+                        checked_value: "true",
+                        unchecked_value: "false",
+                        data: { body_class: "event-all-day" } }
 
   // starts at
   .py-2

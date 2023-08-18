@@ -22,21 +22,19 @@ section.py-4
       = render partial: "events/partials/form/location_dropdowns", locals: { unit: @unit, event: @event }
 
     .py-4
-      - unless Flipper.enabled? :inline_location_form, @current_member
-        = link_to unit_locations_path(@event.unit),
-                  class: "text-blue-600 hover:text-blue-600 font-bold",
-                  data: { turbo_action: "advance" } do
+      = link_to unit_locations_path(@event.unit),
+                class: "text-blue-600 hover:text-blue-600 font-bold",
+                data: { turbo_action: "advance" } do
 
-          i.fa-solid.fa-book-atlas.mr-1
-          = t("locations.captions.address_book", unit_name: @unit.name)
+        i.fa-solid.fa-book-atlas.mr-1
+        = t("locations.captions.address_book", unit_name: @unit.name)
 
-      - if Flipper.enabled? :inline_location_form, @current_member
-        = button_tag class: "text-sm px-4 py-2 font-bold rounded border border-sky-600 text-sky-600 hover:border-sky-700 hover:text-sky-700",
-                    type: "button",
-                    data: { action: "click->event-edit#showLocation" } do
+      = button_tag class: "text-sm px-4 py-2 font-bold rounded border border-sky-600 text-sky-600 hover:border-sky-700 hover:text-sky-700",
+                  type: "button",
+                  data: { action: "click->event-edit#showLocation" } do
 
-          i.fa-solid.fa-plus.mr-1
-          = t("locations.buttons.add_location")
+        i.fa-solid.fa-plus.mr-1
+        = t("locations.buttons.add_location")
 
 css:
   #fields_offline {

@@ -22,9 +22,6 @@ class UnitDigestTask < UnitTask
   end
 
   def perform_for_member(member)
-    return unless Flipper.enabled? :digest, member
-
-    # Time.zone = member.unit.settings(:locale).time_zone
     Rails.logger.warn { "Sending Unit Digest to #{member.flipper_id}" }
     MemberNotifier.new(member).send_digest
   end

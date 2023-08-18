@@ -8,7 +8,6 @@ RSpec.describe EventReminderJob, type: :job do
     @unit.settings(:communication).daily_reminder = "yes"
     @event = FactoryBot.create(:event, :published, unit: @unit)
     @event_with_rsvps = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit)
-    Flipper.enable(:event_reminder_jobs, @unit)
 
     5.times do
       FactoryBot.create(:unit_membership, unit: @unit)
