@@ -74,7 +74,7 @@ div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}"
                             .text-sm = recipient[4]
 
             // switches
-            footer.fixed.bottom-0.w-full.border-t.flex.flex-row.gap-4.px-3.items-center.bg-stone-100.h-12.text-sm.sm:text-base
+            footer.fixed.bottom-0.w-full.border-t.flex.flex-row.gap-4.px-3.items-center.bg-stone-100.dark:bg-stone-800.dark:border-stone-700.h-12.text-sm.sm:text-base
               = render partial: "components/switch", locals: { checked: @message.member_type == "adults_only",
                                                                 label: raw("<span class='hidden sm:inline'>Only send to adults</span><span class='sm:hidden inline'>Adults only</span>"),
                                                                 object_name: "message",
@@ -171,7 +171,7 @@ div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}"
                         name: "commit",
                         disabled: true,
                         value: t("messages.captions.send_message"),
-                        class: "w-full md:w-fit block px-4 py-2 font-bold text-white bg-lime-600 hover:bg-lime-700 disabled:bg-lime-200 rounded",
+                        class: "w-full md:w-fit block px-4 py-2 font-bold text-white bg-lime-600 hover:bg-lime-700 disabled:bg-lime-900 disabled:text-lime-700 rounded disabled:cursor-not-allowed",
                         id: "send_message_button",
                         data: { message_form_target: "sendMessageButton" }
             
@@ -201,7 +201,7 @@ div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}"
                           value: t("messages.captions.send_preview"),
                           name: "commit",
                           id: "send_later_button",
-                          class: "text-xl px-3 py-2 text-lime-600 hover:text-lime-700 dark:hover:text-stone-300 cursor-pointer disabled:text-lime-200",
+                          class: "text-xl px-3 py-2 text-lime-600 hover:text-lime-700 dark:hover:text-stone-300 disabled:hover:text-lime-900 cursor-pointer disabled:text-lime-900 disabled:cursor-not-allowed",
                           data: { message_form_target: "sendLaterButton", action: "dropdown#toggle" } do
                     i.fa-solid.fa-calendar-days
 
@@ -213,7 +213,7 @@ div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}"
                         value: t("messages.captions.send_preview"),
                         name: "commit",
                         id: "send_preview_button",
-                        class: "text-xl w-full md:w-fit px-3 py-2 text-lime-600 hover:text-lime-700 dark:hover:text-stone-300 cursor-pointer disabled:text-lime-200 disabled:hover:text-lime-200 disabled:cursor-not-allowed",
+                        class: "text-xl w-full md:w-fit px-3 py-2 text-lime-600 hover:text-lime-700 dark:hover:text-stone-300 cursor-pointer disabled:text-lime-900 disabled:hover:text-lime-900 disabled:cursor-not-allowed",
                         data: { message_form_target: "sendPreviewButton" } do
                   i.fa-solid.fa-glasses-round
 
