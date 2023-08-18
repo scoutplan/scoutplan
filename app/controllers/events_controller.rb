@@ -34,7 +34,11 @@ class EventsController < UnitContextController
     scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = scope.future.order(starts_at: :asc)
     scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
-    set_page_and_extract_portion_from scope
+
+    respond_to do |format|
+      format.html { set_page_and_extract_portion_from scope }
+      format.pdf { render_printable_calendar }
+    end
   end
 
   def calendar
