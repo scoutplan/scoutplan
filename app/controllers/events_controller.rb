@@ -19,25 +19,16 @@ class EventsController < UnitContextController
     @versions = @event.versions
   end
 
-  def index
-    respond_to do |format|
-      format.pdf do
-        render_printable_calendar
-      end
-    end
-  end
-
   def list
     @current_year = params[:current_year]&.to_i
     @current_month = params[:current_month]&.to_i
 
-    scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
-    scope = scope.future.order(starts_at: :asc)
-    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
-
     respond_to do |format|
-      format.html { set_page_and_extract_portion_from scope }
-      format.pdf { render_printable_calendar }
+      format.html { set_page_and_extract_portion_from scope_for_list }
+      format.pdf do
+        pdf = Pdf::FridgeCalendar.new(@unit, scope_for_list.all)
+        send_data(pdf.render, filename: pdf.filename, type: "application/pdf")
+      end
     end
   end
 
@@ -59,47 +50,6 @@ class EventsController < UnitContextController
     # TODO: limit this to the unit's designated site(s)
     response.headers["X-Frame-Options"] = "ALLOW"
     render "public_index", layout: "public"
-  end
-
-  def render_printable_calendar
-    @excluded_categories = params[:exclude_event_categories]&.split(',') || []
-
-    render(locals: { events_by_month: calendar_events },
-           pdf: "#{@unit.name} Schedule as of #{Date.today.strftime('%-d %B %Y')}",
-           layout: "pdf",
-           encoding: "utf8",
-           orientation: "landscape",
-           header: { html: { template: "events/partials/index/calendar_header",
-                             locals: { events_by_month: calendar_events } } },
-           margin: { top: 20, bottom: 20 })
-  end
-
-  def render_event_brief
-    filename = "#{@unit.name} #{@event.starts_at.strftime('%B %Y')} #{@event.title} Brief"
-    filename.concat " as of #{DateTime.now.in_time_zone(@unit.settings(:locale).time_zone).strftime('%d %B %Y')}"
-    render(pdf: filename,
-           layout: "pdf",
-           encoding: "utf8",
-           orientation: "landscape",
-           margin: { top: 20, bottom: 20 })
-  end
-
-  def calendar_events
-    if params[:season] == "next"
-      events = @unit.events.includes(:event_category).where(
-        "starts_at BETWEEN ? AND ?",
-        @unit.next_season_starts_at,
-        @unit.next_season_ends_at
-      )
-    else
-      events = @unit.events.includes(:event_category).published.where(
-        "starts_at BETWEEN ? AND ?",
-        @unit.this_season_starts_at,
-        @unit.this_season_ends_at
-      )
-    end
-    # events = events.reject { |e| e.category.name == "Troop Meeting" } # TODO: not hard-wire this
-    events.group_by { |e| [e.starts_at.year, e.starts_at.month] }
   end
 
   def show
@@ -385,6 +335,18 @@ class EventsController < UnitContextController
     return unless @event.series_parent.present?
 
     @unit.events.where(series_parent_id: @event.series_parent_id).destroy_all
+  end
+
+  def scope_for_list
+    scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = if params[:season] == "next"
+              scope.where("starts_at BETWEEN ? AND ?", @unit.next_season_starts_at, @unit.next_season_ends_at)
+            else
+              scope.future
+            end
+    scope = scope.order(starts_at: :asc)
+    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope
   end
 
   # set sensible default start and end times based on the day of the week

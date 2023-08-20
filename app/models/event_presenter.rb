@@ -45,7 +45,7 @@ class EventPresenter
   def days_to_s
     return event.starts_at.strftime("%a") if single_day?
 
-    "#{event.starts_at.strftime('%a')}&ndash;#{event.ends_at.strftime('%a')}".html_safe
+    "#{event.starts_at.strftime('%a')}#{plain_text ? '-' : '&ndash;'}#{event.ends_at.strftime('%a')}".html_safe
   end
 
   # within same month: "February"

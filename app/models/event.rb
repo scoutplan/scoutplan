@@ -85,9 +85,12 @@ class Event < ApplicationRecord
 
   scope :recent_and_future, -> { where("starts_at > ?", 4.weeks.ago) }
   scope :recent_and_upcoming, -> { where("starts_at BETWEEN ? AND ?", 4.weeks.ago, 35.days.from_now)}
+  scope :next_season, -> { where("starts_at BETWEEN ? AND ?", next_season_starts_at, next_season_ends_at) }
 
   acts_as_taggable_on :tags
   acts_as_taggable_tenant :unit_id
+
+  delegate :next_season_starts_at, :next_season_ends_at, to: :unit
 
   def category_name
     event_category.name
@@ -195,7 +198,6 @@ class Event < ApplicationRecord
   end
 
   def primary_location
-    # (event_locations.find_by(location_type: "arrival")&.location || event_locations.find_by(location_type: "activity")&.location)
     event_locations.select { |el| el.location_type == "arrival" || el.location_type == "activity" }.first&.location
   end
 

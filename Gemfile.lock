@@ -324,11 +324,15 @@ GEM
     parser (3.2.2.3)
       ast (~> 2.4.1)
       racc
+    pdf-core (0.9.0)
     pg (1.5.3)
     phony (2.20.5)
     phony_rails (0.15.0)
       activesupport (>= 3.0)
       phony (>= 2.18.12)
+    prawn (2.4.0)
+      pdf-core (~> 0.9.0)
+      ttfunk (~> 1.7)
     prettier_print (1.2.1)
     pry (0.14.2)
       coderay (~> 1.1)
@@ -528,6 +532,7 @@ GEM
     timeout (0.4.0)
     trix (0.10.1)
       rails
+    ttfunk (1.7.0)
     turbo-rails (1.4.0)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
@@ -614,6 +619,7 @@ DEPENDENCIES
   paper_trail
   pg
   phony_rails
+  prawn
   pry-rails
   puma (~> 5.0)
   pundit
