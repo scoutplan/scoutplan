@@ -1,6 +1,3 @@
-# https://stackoverflow.com/questions/71040681/qemu-x86-64-could-not-open-lib64-ld-linux-x86-64-so-2-no-such-file-or-direc
-FROM --platform=linux/amd64 madnight/docker-alpine-wkhtmltopdf as wkhtmltopdf_image
-
 FROM ruby:3.2.2-alpine
 
 RUN apk add --no-cache --update \
@@ -16,7 +13,6 @@ RUN apk add --no-cache --update \
     libssl1.1 \
     fontconfig \
     freetype \
-    # wkhtmltopdf \
     poppler \
     poppler-utils \
     ttf-dejavu \
@@ -30,10 +26,6 @@ COPY Gemfile Gemfile.lock /app/
 RUN bundle install
 COPY . /app
 RUN rake assets:precompile
-
-# pull over an Alpine-friendly wkhtmltopdf binary, as described here:
-# https://github.com/mileszs/wicked_pdf/issues/841#issuecomment-507759176
-COPY --from=wkhtmltopdf_image /bin/wkhtmltopdf /usr/bin/wkhtmltopdf
 
 EXPOSE 3000
 
