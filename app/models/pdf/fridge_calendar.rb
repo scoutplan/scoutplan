@@ -22,7 +22,18 @@ class Pdf::FridgeCalendar < Prawn::Document
     "#{@unit.name} Schedule as of #{DateTime.now.in_time_zone(@unit.settings(:locale).time_zone).strftime('%d %B %Y')}.pdf"
   end
 
+  def embed_fonts
+    return
+
+    font_families.update(
+      "FontAwesome" => {
+        normal: Rails.root.join("app/assets/webfonts/fa-solid-900.ttf")
+      }
+    )
+  end
+
   def render_calendar
+    embed_fonts
     define_grid(columns: 3, rows: 1, gutter: 20)
     @current_column = 0
 
@@ -140,6 +151,7 @@ class Pdf::FridgeCalendar < Prawn::Document
     # title and location
     formatted_text_box(
       [
+        # { text: "\uf015 ", size: 10, font: "FontAwesome", color: COLOR_BRAND },
         { text: @event.title, size: 10, styles: [:bold] },
         { text: "\n#{@event.location}", styles: [:bold], size: 10, color: COLOR_TEXT_LIGHT }
       ],
@@ -147,7 +159,6 @@ class Pdf::FridgeCalendar < Prawn::Document
     )
 
     move_down 25
-
   end
 end
 
