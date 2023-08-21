@@ -3,7 +3,6 @@
 require "humanize"
 
 # controller for Events
-
 # rubocop:disable Metrics/ClassLength
 # rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/MethodLength
@@ -13,35 +12,24 @@ class EventsController < UnitContextController
   skip_before_action :authenticate_user!, only: [:public]
   before_action :find_event, except: %i[index list calendar spreadsheet create new bulk_publish public my_rsvps signups]
   before_action :collate_rsvps, only: [:show, :rsvps]
+  before_action :set_calendar_dates, only: [:calendar, :list]
   layout :current_layout
+
+  def calendar
+    scope = @unit.events
+    scope = scope.where("starts_at BETWEEN ? AND ?", @start_date, @end_date)
+    @events = scope.all
+  end
 
   def history
     @versions = @event.versions
   end
 
   def list
-    @current_year = params[:current_year]&.to_i
-    @current_month = params[:current_month]&.to_i
-
     respond_to do |format|
       format.html { set_page_and_extract_portion_from scope_for_list }
-      format.pdf do
-        pdf = Pdf::FridgeCalendar.new(@unit, scope_for_list.all)
-        send_data(pdf.render, filename: pdf.filename, type: "application/pdf")
-      end
+      format.pdf { send_fridge_calendar }
     end
-  end
-
-  def calendar
-    @current_year = params[:year]&.to_i || Date.today.year
-    @current_month = params[:month]&.to_i || Date.today.month
-
-    start_date = Date.new(@current_year.to_i, @current_month.to_i, 1)
-    end_date = start_date.end_of_month.end_of_day
-
-    scope = @unit.events
-    scope = scope.where("starts_at BETWEEN ? AND ?", start_date, end_date)
-    @events = scope.all
   end
 
   def public
@@ -71,10 +59,6 @@ class EventsController < UnitContextController
       format.html
       format.pdf { render_event_brief }
     end
-  end
-
-  def nope
-    authorize @event
   end
 
   def organize
@@ -430,9 +414,9 @@ class EventsController < UnitContextController
     ).utc
   end
 
-  def store_path
-    cookies[:events_index_path] = request.original_fullpath
-  end
+  # def store_path
+  #   cookies[:events_index_path] = request.original_fullpath
+  # end
 
   def find_next_and_previous_events
     @next_event = @unit.events.published.rsvp_required.where("starts_at > ?", @event.starts_at)&.first
@@ -441,6 +425,18 @@ class EventsController < UnitContextController
 
   def current_layout
     user_signed_in? ? "application" : "public"
+  end
+
+  def send_fridge_calendar
+    pdf = Pdf::FridgeCalendar.new(@unit, scope_for_list.all)
+    send_data(pdf.render, filename: pdf.filename, type: "application/pdf", disposition: "inline")
+  end
+
+  def set_calendar_dates
+    @current_year = params[:year]&.to_i || Date.today.year
+    @current_month = params[:month]&.to_i || Date.today.month
+    @start_date = Date.new(@current_year.to_i, @current_month.to_i, 1)
+    @end_date = @start_date.end_of_month.end_of_day
   end
 end
 # rubocop:enable Metrics/ClassLength
