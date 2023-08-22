@@ -2,7 +2,11 @@
 
 class ScoutplanNotification < Noticed::Base
   def format_for_twilio
+<<<<<<< HEAD
     res = {
+=======
+    {
+>>>>>>> 68940b7f (Initial commit)
       From: ENV.fetch("TWILIO_NUMBER"),
       To: recipient.phone_number,
       Body: sms_body(recipient: recipient, event: params[:event])

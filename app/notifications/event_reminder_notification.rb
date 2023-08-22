@@ -5,7 +5,11 @@ class EventReminderNotification < ScoutplanNotification
 
   deliver_by :database
   deliver_by :email, mailer: "EventReminderMailer", if: :email?
+<<<<<<< HEAD
   deliver_by :twilio, if: :sms?, format: :format_for_twilio, credentials: :twilio_credentials, ignore_failure: true
+=======
+  deliver_by :twilio, if: :sms?, format: :format_for_twilio, credentials: :twilio_credentials
+>>>>>>> 68940b7f (Initial commit)
 
   param :event
 
