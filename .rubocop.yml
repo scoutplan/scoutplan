@@ -27,3 +27,6 @@ Style/HashSyntax:
 
 Style/Documentation:
   Enabled: false
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: consistent
