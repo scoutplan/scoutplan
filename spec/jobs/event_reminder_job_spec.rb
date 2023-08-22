@@ -14,15 +14,18 @@ RSpec.describe EventReminderJob, type: :job do
     end
 
     3.times do
-      member = FactoryBot.create(:unit_membership, unit: @unit)
-      @event.rsvps.create!(unit_membership: member, response: "accepted", respondent: member)
+      @member = FactoryBot.create(:unit_membership, unit: @unit)
+      @event.rsvps.create!(unit_membership: @member, response: "accepted", respondent: @member)
     end
 
     expect(@unit.members.count).to eq(8)
     Sidekiq::Testing.inline!
   end
 
-  it "sends email to attendees" do
+  it "enqueues a job" do
+    expect(@member.contactable?(via: :email)).to be_truthy
+    expect(@member.contactable?(via: :sms)).to be_truthy
+
     expect { EventReminderJob.perform_now(@event_with_rsvps.id, @event_with_rsvps.updated_at) }
       .to change { ActiveJob::Base.queue_adapter.enqueued_jobs.count }.by(@event_with_rsvps.rsvps.accepted.count)
   end

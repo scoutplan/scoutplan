@@ -2,11 +2,19 @@
 
 # A subclass of Noticed::Base with additional methods for sending SMS
 class ScoutplanNotification < Noticed::Base
-  def format
+  def format_for_twilio
     {
-      From: ENV.fetch("TWILIO_PHONE_NUMBER"),
+      From: ENV.fetch("TWILIO_NUMBER"),
       To: recipient.phone_number,
       Body: sms_body(recipient: recipient, event: params[:event])
+    }
+  end
+
+  def twilio_credentials
+    {
+      account_sid: ENV.fetch("TWILIO_SID"),
+      auth_token: ENV.fetch("TWILIO_TOKEN"),
+      phone_number: ENV.fetch("TWILIO_NUMBER")
     }
   end
 
@@ -14,7 +22,7 @@ class ScoutplanNotification < Noticed::Base
     renderer.render(
       template: "sms_notifications/#{base_name}",
       format: "text",
-      assigns: assigns # rubocop:disable Style/HashSyntax
+      assigns: assigns
     )
   end
 
