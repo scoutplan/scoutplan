@@ -14,7 +14,7 @@
 
   - if @rsvp.event.rsvp_open?
     p
-      | If that's not right, or if your plans change, please let us know: 
+      | If that's not right or if your plans change, please let us know: 
 
       = link_to unit_event_edit_rsvps_url(@rsvp.unit, @rsvp.event) do
         strong
@@ -22,6 +22,6 @@
 
 - content_for :footer do
   = link_to "View the full #{ @unit.name} schedule",
-            unit_events_url(@unit),
+            list_unit_events_url(@unit),
             class: "button-light-on-dark",
             style: "color: #fff; text-decoration: underline;"

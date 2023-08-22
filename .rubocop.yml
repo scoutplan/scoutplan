@@ -17,7 +17,10 @@ Style/MixinGrouping:
   Enabled: false
 
 Style/ClassAndModuleChildren:
-  Enabled: false
+  EnforcedStyle: consistent
 
 Style/Documentation:
   Enabled: false
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: consistent
