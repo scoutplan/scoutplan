@@ -284,11 +284,6 @@ class EventsController < UnitContextController
     @current_member
   end
 
-  def weather
-    # weather = WeatherService.new(@event).current
-    # render partial: "events/partials/show/weather", locals: { weather: weather }
-  end
-
   private
 
   # the default Event will start on the first Saturday at least 4 weeks (28 days) from today

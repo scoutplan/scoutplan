@@ -123,10 +123,15 @@ Rails.application.routes.draw do
       get   "cancel"
       get   "organize"
       get   "history"
-      get   "weather"
-      get   "nope"
       post  "cancel", to: "events#perform_cancellation"
       patch "rsvp", as: "send_rsvps", to: "events#create_or_update_rsvps"
+
+      constraints CanAccessFlipperUI do
+        namespace :admin, module: :events do
+          get   "/", to: "admin#index"
+          post  "/remind", to: "admin#remind"
+        end
+      end
     end
 
     resources :photos
