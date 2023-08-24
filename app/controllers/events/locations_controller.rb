@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# frozen_string_literal: true
-
 # namespaced for Event-specific behavior.
 # Only applies to #create action.
 module Events

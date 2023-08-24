@@ -5,11 +5,12 @@ class EventReminderNotification < ScoutplanNotification
 
   deliver_by :database
   deliver_by :email, mailer: "EventReminderMailer", if: :email?
-  deliver_by :twilio, if: :sms?, format: :format_for_twilio, credentials: :twilio_credentials
+  deliver_by :twilio, if: :sms?, format: :format_for_twilio, credentials: :twilio_credentials, ignore_failure: true
 
   param :event
 
   def feature_enabled?
-    recipient.unit.settings(:communication).daily_reminder == "true"
+    recipient.unit.settings(:communication).daily_reminder == "true" &&
+      (Flipper.enabled?(:sms_event_reminders, recipient) || ENV["RAILS_ENV"] == "test")
   end
 end

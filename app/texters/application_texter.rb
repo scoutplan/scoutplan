@@ -6,16 +6,16 @@ class ApplicationTexter
     raise "Cannot directly instantiate an ApplicationTexter" if instance_of? ApplicationTexter
 
     super()
-    @sid   = Rails.application.credentials.twilio[:account_sid]
-    @token = Rails.application.credentials.twilio[:auth_token]
-    @from = ENV["TWILIO_NUMBER"]
+    @sid    = ENV.fetch("TWILIO_SID")
+    @token  = ENV.fetch("TWILIO_TOKEN")
+    @from   = ENV.fetch("TWILIO_NUMBER")
     @client = Twilio::REST::Client.new(@sid, @token)
   end
 
   def renderer
     ApplicationController.renderer.new(
-      http_host: ENV["SCOUTPLAN_HOST"],
-      https: ENV["SCOUTPLAN_PROTOCOL"] == "https"
+      http_host: ENV.fetch("SCOUTPLAN_HOST"),
+      https: ENV.fetch("SCOUTPLAN_PROTOCOL") == "https"
     )
   end
 

@@ -4,7 +4,6 @@
 <%- verb = @chat_message.message.question? ? "asked" : ["said", "added", "opined", "remarked"].sample %>
 <%= @chat_message.author.short_display_name(period: false) %>, discussing <%= @chat_message.chat.topic %>, <%= verb %>:
 <%- end %>
-
 <%= @chat_message.message %>
 
 Visit <%= unit_event_discussion_index_url(@unit, @event) %> to view the full discussion and reply.
