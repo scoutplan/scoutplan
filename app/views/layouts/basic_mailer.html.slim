@@ -2,7 +2,7 @@ doctype html
 head
 body(style="font-family: sans-serif; color: #57534e;")
   table(style="width: 500px; line-height: 110%;")
-    - if @unit.present?
+    - if @unit&.logo&.attached?
       tr
         td(style="padding: 20px 0; border-bottom: 1px solid #ddd;")
           = link_to root_url do
