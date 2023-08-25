@@ -31,11 +31,13 @@ class Unit < ApplicationRecord
   after_create :populate_categories
   before_validation :generate_slug
 
-  has_settings do |s|
+  has_settings class_name: "UnitSettings" do |s|
     s.key :communication, defaults: {
       digest: true,
       rsvp_nag: true,
-      daily_reminder: true
+      daily_reminder: true,
+      digest_day_of_week: :sunday,
+      digest_hour_of_day: 8
     }
     s.key :appearance, defaults: { main_color: "#003F87" }
     s.key :locale, defaults: {

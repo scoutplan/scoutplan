@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# A subclass of Noticed::Base with additional methods for sending SMS
 class ScoutplanNotification < Noticed::Base
   def format
     {

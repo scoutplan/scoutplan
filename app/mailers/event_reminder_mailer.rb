@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# EventReminderMailer is responsible for sending email reminders to users
 class EventReminderMailer < ApplicationMailer
   layout "basic_mailer"
 

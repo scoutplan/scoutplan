@@ -17,4 +17,7 @@ Style/MixinGrouping:
   Enabled: false
 
 Style/ClassAndModuleChildren:
-  Enabled: false  
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false

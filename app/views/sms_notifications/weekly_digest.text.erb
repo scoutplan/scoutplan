@@ -1,0 +1,7 @@
+Hi, <%= @recipient.first_name %>. Coming up at <%= @unit.name %>:
+
+<% @unit.events.imminent.each do |event| %>
+* <%= event.title %> on <%= event.starts_at.in_time_zone.strftime('%A') %>
+<% end %>
+
+Visit <%= unit_events_url(@event.unit) %> for the full schedule.
