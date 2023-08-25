@@ -31,3 +31,5 @@ Style/Documentation:
 Style/HashSyntax:
   EnforcedShorthandSyntax: consistent
 
+Style/Documentation:
+  Enabled: false
