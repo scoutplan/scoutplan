@@ -32,4 +32,7 @@ Style/HashSyntax:
   EnforcedShorthandSyntax: consistent
 
 Style/Documentation:
-  Enabled: false
+  Enabled: false  
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: consistent

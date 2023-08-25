@@ -25,6 +25,14 @@ class ScoutplanNotification < Noticed::Base
     }
   end
 
+  def twilio_credentials
+    {
+      account_sid: ENV.fetch("TWILIO_SID"),
+      auth_token: ENV.fetch("TWILIO_TOKEN"),
+      phone_number: ENV.fetch("TWILIO_NUMBER")
+    }
+  end
+
   def sms_body(**assigns)
     renderer.render(
       template: "sms_notifications/#{base_name}",
