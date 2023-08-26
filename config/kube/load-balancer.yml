@@ -10,7 +10,7 @@ metadata:
     kubectl.kubernetes.io/last-applied-configuration: >
       {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"scoutplan-load-balancer","namespace":"default"},"spec":{"ports":[{"name":"http","port":80,"protocol":"TCP","targetPort":3000}],"selector":{"app":"scoutplan-app"},"type":"LoadBalancer"}}
     kubernetes.digitalocean.com/load-balancer-id: 85b3e76a-ac97-46e3-95a6-5870f368e343
-    service.beta.kubernetes.io/do-loadbalancer-certificate-id: ff5975b0-c855-4147-b604-1fa3f7d85f59
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: 05fcd70a-0264-4511-ad7e-31a866ddac00
     service.beta.kubernetes.io/do-loadbalancer-protocol: http2
     service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
   finalizers:
