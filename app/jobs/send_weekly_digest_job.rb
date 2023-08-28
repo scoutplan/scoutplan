@@ -3,14 +3,20 @@
 class SendWeeklyDigestJob < ApplicationJob
   queue_as :default
 
-  def perform(unit_id)
-    @unit = Unit.find(unit_id)
-    WeeklyDigestNotification.with(unit: @unit).deliver_later(@unit.members)
-    SendWeeklyDigestJob.schedule_next_job(@unit)
+  def perform(unit_id, timestamp)
+    unit = Unit.find(unit_id)
+    return unless timestamp == unit.settings(:communication).digest_config_timestamp
+    return unless unit.settings(:communication).digest == "true"
+
+    WeeklyDigestNotification.with(unit: unit).deliver_later(unit.members)
+    SendWeeklyDigestJob.schedule_next_job(unit)
   end
 
   def self.schedule_next_job(unit)
-    SendWeeklyDigestJob.set(wait_until: next_run_time(unit)).perform_later(unit.id)
+    timestamp = Time.now.utc
+    ap timestamp
+    unit.settings(:communication).update!(digest_config_timestamp: timestamp)
+    SendWeeklyDigestJob.set(wait_until: next_run_time(unit)).perform_later(unit.id, timestamp)
   end
 
   def self.next_run_time(unit)

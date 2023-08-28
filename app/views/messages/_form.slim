@@ -25,7 +25,7 @@ div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}"
                     data: { message_form_target: "fileInput", action: "message-form#addAttachments" }
 
   // visible form for composing
-  .md:border.md:rounded-xl.md:p-12.mt-12.md:drop-shadow-lg.bg-white.dark:bg-stone-800.dark:border-stone-700
+  .md:border.md:rounded-xl.md:p-12.mt-6.md:drop-shadow-lg.bg-white.dark:bg-stone-800.dark:border-stone-700
     = form_with model: @message,
                 url: @message.new_record? ? unit_messages_path(@unit) : unit_message_path(@unit, @message),
                 method: @message.new_record? ? "post" : "patch",
@@ -121,10 +121,10 @@ div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}"
                       data: { dropdown_target: "toggle", action: "dropdown#toggle" } do
 
               div.left
-                span(data-message-form-target = "audienceName") = "Active #{@unit.name} members"
+                span.text-ellipsis.overflow-hidden.whitespace-nowrap(data-message-form-target = "audienceName") = "Active #{@unit.name} members"
 
                 // recipient count pill
-                span#recipient_count.mx-2.text-sm.rounded.rounded-xl.bg-stone-300.text-stone-800.px-3.py-1.font-semibold
+                span#recipient_count.mx-2.text-sm.rounded.rounded-xl.bg-stone-300.text-stone-800.px-3.py-1.font-semibold.whitespace-nowrap
 
               // chevron
               div.right

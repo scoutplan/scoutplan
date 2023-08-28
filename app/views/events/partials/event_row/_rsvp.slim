@@ -22,13 +22,13 @@
     - elsif family_has_rsvps
       = link_to t("events.index.event_row.rsvp_complete"),
                 unit_event_edit_rsvps_path(@unit, event),
-                class: "inline-block text-center bg-yellow-300 dark:bg-yellow-700 dark:text-yellow-100 dark:hover:bg-yellow-800 hover:bg-yellow-400 px-2 py-2 font-bold rounded text-yellow-800",
+                class: "inline-block text-center bg-yellow-300 dark:bg-yellow-800 dark:text-yellow-200 dark:hover:bg-yellow-900 hover:bg-yellow-400 px-2 py-2 font-bold rounded text-yellow-800",
                 data: { turbo_action: "advance", turbo_frame: "main" }
 
     - else
       = link_to t("events.index.event_row.rsvp_respond"),
                 unit_event_edit_rsvps_path(@unit, event),
-                class: "inline-block text-center bg-yellow-300 dark:bg-yellow-700 dark:text-yellow-100 dark:hover:bg-yellow-800 hover:bg-yellow-400 px-2 py-2 font-bold rounded text-yellow-800",
+                class: "inline-block text-center bg-yellow-300 dark:bg-yellow-800 dark:text-yellow-200 dark:hover:bg-yellow-900 hover:bg-yellow-400 px-2 py-2 font-bold rounded text-yellow-800",
                 data: { turbo_action: "advance", turbo_frame: "main" }
 
 - else
