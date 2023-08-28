@@ -57,7 +57,7 @@ class EventsController < UnitContextController
     page_title @unit.name, @event.title
     respond_to do |format|
       format.html
-      format.pdf { render_event_brief }
+      format.pdf { send_event_brief }
     end
   end
 
@@ -427,9 +427,14 @@ class EventsController < UnitContextController
     send_data(pdf.render, filename: pdf.filename, type: "application/pdf", disposition: "inline")
   end
 
+  def send_event_brief
+    pdf = Pdf::EventBrief.new(@event)
+    send_data(pdf.render, filename: pdf.filename, type: "application/pdf", disposition: "inline")
+  end
+
   def set_calendar_dates
-    @current_year = params[:year]&.to_i || Date.today.year
-    @current_month = params[:month]&.to_i || Date.today.month
+    @current_year = params[:current_year]&.to_i || Date.today.year
+    @current_month = params[:current_month]&.to_i || Date.today.month
     @start_date = Date.new(@current_year.to_i, @current_month.to_i, 1)
     @end_date = @start_date.end_of_month.end_of_day
   end

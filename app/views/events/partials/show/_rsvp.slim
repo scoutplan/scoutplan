@@ -52,7 +52,7 @@ section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800.dark:bord
       div
         - if policy(@event).rsvp? && @event.rsvp_open?
           = link_to "Respond Now", unit_event_edit_rsvps_path(@event.unit, @event),
-                    class: "cta-button block md:inline-block font-bold text-center bg-yellow-400 rounded text-yellow-800 hover:bg-yellow-500 hover:text-yellow-900 px-4 py-2",
+                    class: "cta-button block md:inline-block font-bold text-center bg-yellow-400 rounded text-yellow-800 hover:bg-yellow-500 hover:text-yellow-900 px-4 py-2 dark:bg-yellow-800 dark:text-yellow-100 dark:hover:bg-yellow-900 dark:hover:text-yellow-100",
                     data: { turbo_action: "advance", turbo_frame: "main" }
 
   - elsif !@event.rsvp_open?

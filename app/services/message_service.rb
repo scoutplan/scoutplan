@@ -32,7 +32,7 @@ class MessageService < ApplicationService
     # filter by audience
     if audience =~ EVENT_REGEXP
       event = Event.find($1)
-      scope = scope.where(id: event.rsvps.pluck(:unit_membership_id))
+      scope = scope.where(id: event.rsvps.accepted.pluck(:unit_membership_id))
     elsif audience =~ TAG_REGEXP
       tag = ActsAsTaggableOn::Tag.find($1)
       scope = scope.tagged_with(tag.name)
