@@ -44,9 +44,11 @@ section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800.dark:bord
 
 
   - elsif policy(@event).rsvp? && @event.rsvp_open?
-    .flex.flex-col.md:flex-row.md:items-center.gap-2
+    .flex.flex-col.md:flex-row.md:justify-between.md:items-center.gap-2
       div
-        i.fa-solid.fa-exclamation-triangle.mr-1.text-yellow-400.text-lg
+        i.fa-stack.mr-1
+          i.fa-solid.fa-circle.fa-stack-2x.text-yellow-500
+          i.fa-solid.fa-exclamation-triangle.mr-1.text-white.fa-stack-1x
         = t("events.index.rsvp.none_cta")
       
       div

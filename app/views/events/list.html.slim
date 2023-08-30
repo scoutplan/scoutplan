@@ -15,7 +15,7 @@
             = render partial: "events/partials/index/dropdown"
 
     div(data-controller="pagination")
-      ol
+      ol#events_list
         = render @page.records
 
       /! Current year / month: #{@current_year} / #{@current_month}
@@ -29,3 +29,12 @@
 
     javascript:
       document.title = "Event Schedule · #{@unit.name}"   
+
+    css:
+      #events_list .more-past-events-item {
+        display: none;
+      }
+
+      #events_list .more-past-events-item:first-of-type {
+        display: block;
+      }

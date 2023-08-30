@@ -12,14 +12,6 @@
     display: inline-block;
     width: 100%; }
 
-.event-past, .event-cancelled {
-  display: none;
-}
-
-.event-past .event-title {
-  text-decoration: strikethrough;
-}
-
 .event-draft .event-title:after {
   content: "Draft";
   font-size: 12px;

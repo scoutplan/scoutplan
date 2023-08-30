@@ -238,7 +238,7 @@ en:
 
       buttons:
         calendar:           "View as calendar"
-        print:              "Download for print"
+        print:              "Download printable PDF"
         next_season:        "Download next season"
         subscribe:          "Add to your calendar"
         bulk_publish:       "Bulk publish drafts"
@@ -333,10 +333,13 @@ en:
 
       captions:
         done:                   "Back to Full Schedule"
-        online:                 "This event is online at"
+        online:                 "This event is online"
+        join:                   "Join"
         download_brief:         "Print a Trip Brief"
         rsvp_empty_youth:       "No youth members have RSVP'd yet."
         rsvp_empty_adult:       "No adult members have RSVP'd yet."
+        open_link:              "Open link"
+        copy_link:              "Copy link"
 
       cancel:
         notice:       "Cancelling a published event will remove it from the calendar. Are you sure you want to proceed?"
@@ -672,7 +675,7 @@ en:
       digest:         "fa-calendar-week"
       rsvp_nag:       "fa-hand-point-ribbon"
       rsvp_last_call: "fa-door-open"
-      event_organizer_digest: "fa-clipboard-check"
+      event_organizer_digest: "fa-clipboard-list"
 
     icon_colors:
       daily_reminder: "text-yellow-400"
