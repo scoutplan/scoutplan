@@ -24,17 +24,11 @@ aside.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.p-4.rounded.dropdo
       = t("events.index.buttons.calendar")
 
     - if user_signed_in?
-      = link_to "#", class: "block p-2 rounded hover:bg-brand-600",
-                data: { action: "event#togglePastEvents" },
-                id: "toggle_past_events_link" do
+      = link_to list_unit_events_path(@unit, page: -1, format: :turbo_stream),
+                class: "block p-2 rounded hover:bg-brand-600" do
 
-        #show_past_events_caption
-          i.fa-fw.fa-solid.fa-calendar-clock.mr-2
-          = "Show past events"
-
-        #hide_past_events_caption
-          i.fa-fw.fa-solid.fa-calendar-check.mr-2
-          = "Hide past events"          
+        i.fa-fw.fa-solid.fa-calendar-clock.mr-2
+        = "Show past events"      
 
       = link_to list_unit_events_path(@unit, format: :pdf),
                 class: "block p-2 rounded hover:bg-brand-600",

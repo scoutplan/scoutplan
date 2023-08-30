@@ -25,7 +25,7 @@
             li.list-group-item
               = link_to organize_event_path(@event), class: 'dropdown-item' do
                 .glyph
-                  i.far.fa-clipboard-check(style="color: darkcyan;")
+                  i.far.fa-clipboard-list(style="color: darkcyan;")
                 = t(:event_organize)
 
           - if @can_edit

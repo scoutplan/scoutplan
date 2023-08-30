@@ -29,6 +29,7 @@ class EventsController < UnitContextController
     respond_to do |format|
       format.html { set_page_and_extract_portion_from scope_for_list }
       format.pdf { send_fridge_calendar }
+      format.turbo_stream { process_turbo_stream_request }
     end
   end
 
@@ -316,18 +317,6 @@ class EventsController < UnitContextController
     @unit.events.where(series_parent_id: @event.series_parent_id).destroy_all
   end
 
-  def scope_for_list
-    scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
-    scope = if params[:season] == "next"
-              scope.where("starts_at BETWEEN ? AND ?", @unit.next_season_starts_at, @unit.next_season_ends_at)
-            else
-              scope.future
-            end
-    scope = scope.order(starts_at: :asc)
-    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
-    scope
-  end
-
   # set sensible default start and end times based on the day of the week
   def set_default_times
     case @event.starts_at.wday
@@ -420,6 +409,18 @@ class EventsController < UnitContextController
 
   def current_layout
     user_signed_in? ? "application" : "public"
+  end
+
+  def scope_for_list
+    scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = if params[:season] == "next"
+              scope.where("starts_at BETWEEN ? AND ?", @unit.next_season_starts_at, @unit.next_season_ends_at)
+            else
+              scope.future
+            end
+    scope = scope.order(starts_at: :asc)
+    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope
   end
 
   def send_fridge_calendar

@@ -1,18 +1,28 @@
 - return unless event.online && website = event.website.presence
 
-.flex.flex-row.gap-3(data-controller="clipboard")
-  = "This event is online"
-  = link_to website,
-            class: "border rounded border-blue-500 block text-blue-500 px-2 hover:border-blue-900 hover:bg-blue-900 hover:text-blue-200",
-            target: "_new" do
-    span(data-clipboard-target="source")            
-      = "Join"
+.flex.flex-row.gap-3.items-center.my-1
+  div.-ml-1.relative.dropdown.group
+    = link_to "#",
+              class: "dropdown-button px-1 py-1 rounded font-bold hover:bg-blue-100 dark:hover:bg-blue-900 group-[&.menu-open]:bg-blue-100 dark:group-[&.menu-open]:bg-blue-600" do
+      i.fa-solid.fa-video.mr-2
+      = event.hostname
+      i.fa-solid.fa-chevron-down.ml-1
 
-  = link_to "#",
-            id: "copy_link_button",
-            title: "Copy link to clipboard",
-            class: "inline-block text-stone-500 hover:text-blue-500 dark:text-stone-300",
-            data: { action: "clipboard#copy" } do
-    
-    i.fa-solid.fa-clipboard.mr-1
-    = "Copy link"
+    .dropdown-menu.absolute.top-full.w-full.z-10.drop-shadow.rounded.ml-2.mt-2.bg-white.dark:bg-stone-900.border.border-stone-300.dark:border-stone-700
+      - if event.joinable?
+        = link_to website,
+                  class: "block px-2 py-1 hover:bg-blue-800 hover:text-white",
+                  target: "_new"
+          = t("events.show.captions.open_link")
+
+      div(data-controller="clipboard" data-clipboard-text-value="#{website}")
+        = link_to "#",
+                  class: "block px-2 py-1 hover:bg-blue-800 hover:text-white",
+                  data: { action: "clipboard#copy" }
+          = t("events.show.captions.copy_link")
+
+  - if event.joinable?
+    = link_to t("events.show.captions.join"), website,
+              class: "bg-blue-800 text-blue-50 hover:bg-blue-700 rounded block px-4 py-2 font-bold",
+              target: "_new"
+
