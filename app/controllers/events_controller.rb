@@ -16,6 +16,8 @@ class EventsController < UnitContextController
   layout :current_layout
 
   def calendar
+    @current_year = params[:year]&.to_i || Date.today.year
+    @current_month = params[:month]&.to_i || Date.today.month
     scope = @unit.events
     scope = scope.where("starts_at BETWEEN ? AND ?", @start_date, @end_date)
     @events = scope.all
