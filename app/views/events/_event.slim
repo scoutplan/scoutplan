@@ -6,7 +6,6 @@
 
 li.relative.event.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#{row_classes(event)}" id="event_#{event.id}")
   a(name="event_#{event.id}")
-  = event.unit.id
 
   .flex.flex-row.items-center
     = link_to unit_event_path(@unit, event),
