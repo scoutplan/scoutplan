@@ -29,7 +29,7 @@ class EventsController < UnitContextController
     respond_to do |format|
       format.html { set_page_and_extract_portion_from scope_for_list }
       format.pdf { send_fridge_calendar }
-      format.turbo_stream { process_turbo_stream_request }
+      format.turbo_stream { prepare_turbo_stream }
     end
   end
 
@@ -411,6 +411,17 @@ class EventsController < UnitContextController
     user_signed_in? ? "application" : "public"
   end
 
+  def prepare_turbo_stream
+    page_size = 10
+    @page = params[:page].to_i
+    scope = @unit.events.unscoped.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = scope.where("starts_at < ?", Time.now)
+    scope = scope.order(starts_at: :desc)
+    scope = scope.offset((@page - 1).abs * page_size).limit(page_size)
+    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    @events = scope.all.reverse
+  end
+
   def scope_for_list
     scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = if params[:season] == "next"
@@ -434,9 +445,9 @@ class EventsController < UnitContextController
   end
 
   def set_calendar_dates
-    @current_year = params[:current_year]&.to_i || Date.today.year
-    @current_month = params[:current_month]&.to_i || Date.today.month
-    @start_date = Date.new(@current_year.to_i, @current_month.to_i, 1)
+    @current_year = params[:current_year]&.to_i
+    @current_month = params[:current_month]&.to_i
+    @start_date = Date.new(Date.today.year, Date.today.month, 1)
     @end_date = @start_date.end_of_month.end_of_day
   end
 end

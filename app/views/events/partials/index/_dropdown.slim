@@ -24,8 +24,9 @@ aside.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.p-4.rounded.dropdo
       = t("events.index.buttons.calendar")
 
     - if user_signed_in?
-      = link_to list_unit_events_path(@unit, page: -1, format: :turbo_stream),
-                class: "block p-2 rounded hover:bg-brand-600" do
+      = link_to list_unit_events_path(@unit, page: -1),
+                class: "block p-2 rounded hover:bg-brand-600",
+                data: { turbo_stream: "true" } do
 
         i.fa-fw.fa-solid.fa-calendar-clock.mr-2
         = "Show past events"      
