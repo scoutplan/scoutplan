@@ -416,7 +416,9 @@ class EventsController < UnitContextController
   def prepare_turbo_stream
     page_size = 10
     @page = params[:page].to_i
-    scope = @unit.events.unscoped.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+
+    scope = Event.unscoped.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = scope.where(unit_id: @unit.id)
     scope = scope.where("starts_at < ?", Time.now)
     scope = scope.order(starts_at: :desc)
     scope = scope.offset((@page - 1).abs * page_size).limit(page_size)
