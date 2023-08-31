@@ -6,18 +6,18 @@
                                           only_path: false,
                                           protocol: "webcal")
 
-aside.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.p-4.rounded.dropdown-menu.animate-pop-open.drop-shadow.md:w-80
+aside.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.rounded.dropdown-menu.border.border-brand-600.dark:border-brand-800.animate-pop-open.drop-shadow.md:w-80
   nav
     - if @current_member.admin?
       = link_to new_unit_event_path(@unit),
-                class: "block p-2 rounded hover:bg-brand-600",
+                class: "block px-4 py-2 rounded hover:bg-brand-600",
                 data: { turbo_action: "advance" } do
 
         i.fa-fw.fa-solid.fa-calendar-plus.mr-2
         = t("events.captions.new_short")
 
     = link_to calendar_unit_events_path(@unit, year: Date.today.year, month: Date.today.month),
-              class: "block p-2 rounded hover:bg-brand-600",
+              class: "block px-4 py-2 rounded hover:bg-brand-600",
               data: { turbo_action: "advance" } do
 
       i.fa-fw.fa-solid.fa-calendar.mr-2
@@ -25,14 +25,14 @@ aside.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.p-4.rounded.dropdo
 
     - if user_signed_in?
       = link_to list_unit_events_path(@unit, page: -1),
-                class: "block p-2 rounded hover:bg-brand-600",
+                class: "block px-4 py-2 rounded hover:bg-brand-600",
                 data: { turbo_stream: "true" } do
 
         i.fa-fw.fa-solid.fa-calendar-clock.mr-2
         = "Show past events"      
 
       = link_to list_unit_events_path(@unit, format: :pdf),
-                class: "block p-2 rounded hover:bg-brand-600",
+                class: "block px-4 py-2 rounded hover:bg-brand-600",
                 data: { turbo_action: "advance" } do
 
         i.fa-fw.fa-solid.fa-print.mr-2
@@ -41,27 +41,27 @@ aside.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.p-4.rounded.dropdo
 
     - if @current_member.admin?
         = link_to list_unit_events_path(@unit, format: :pdf, season: "next"),
-                  class: "block p-2 rounded hover:bg-brand-600",
+                  class: "block px-4 py-2 rounded hover:bg-brand-600",
                   data: { turbo_action: "advance" } do
           
           i.fa-fw.fa-solid.fa-rotate-right.mr-2
           = t("events.index.buttons.next_season")
 
     = link_to ics_url,
-              class: "block p-2 rounded hover:bg-brand-600",
+              class: "block px-4 py-2 rounded hover:bg-brand-600",
               data: { turbo_action: "advance" } do
 
       i.fa-fw.fa-regular.fa-mobile.mr-2
       = t("events.index.buttons.subscribe")
 
     / - if @current_member.admin?
-    /     = link_to "#", class: "block p-2 rounded hover:bg-brand-600",
+    /     = link_to "#", class: "block px-4 py-2 rounded hover:bg-brand-600",
     /               data: { action: "event#toggleBulkPublish" } do
           
     /       i.fa-fw.fa-solid.fa-layer-group.mr-2
     /       = t("events.index.buttons.bulk_publish")
 
-    /     = link_to "#", class: "block p-2 rounded hover:bg-brand-600",
+    /     = link_to "#", class: "block px-4 py-2 rounded hover:bg-brand-600",
     /               data: { action: "event#toggleCancelledEvents" } do
 
     /       i.fa-fw.fa-solid.fa-calendar-xmark.mr-2

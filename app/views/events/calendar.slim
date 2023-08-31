@@ -9,13 +9,9 @@
 - done = false
 
 .max-w-7xl.mx-auto
-  header.flex.justify-between.py-2.border-b.relative.mt-12
+  header.flex.flex-row.justify-between.py-2.border-b.relative.mt-12
     // LEFT SIDE
     div.relative
-      // ellipsis menu
-      .hidden.md:block.absolute.left-0.top-0
-        = render partial: "events_dropdown", locals: { current_variation: "calendar" }
-
       // clickable month name launches month picker
       .inline-block.dropdown.pl-8
         = link_to "#",
@@ -58,7 +54,9 @@
     
     // RIGHT SIDE
     div
-      = render partial: "new_event_button" if policy(:event).create?
+      // ellipsis menu
+      .hidden.md:block.absolute.left-0.top-0
+        = render partial: "events_dropdown", locals: { current_variation: "calendar" }
 
     // END HEADER
 
