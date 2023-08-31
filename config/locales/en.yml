@@ -235,6 +235,7 @@ en:
       cancelled:            "Cancelled"
       description_present:  "This event has notes to read"
       download_pdf:         "Download a Printable PDF"
+      show_earlier:         "See earlier past events"
 
       buttons:
         calendar:           "View as calendar"
