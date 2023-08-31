@@ -1,15 +1,18 @@
 - current_year = Time.now.year
 
-.flex.flex-row.gap-3
+.p-2.flex.flex-row.gap-3
   - (-1..1).each do |offset|
     - year = current_year + offset
     div
-      .font-bold = year
+      h4.block.px-1.font-bold
+        = year
+
       ul
         - (1..12).each do |month|
           li
             = link_to calendar_unit_events_path(@unit, month: "%02i" % month, year: year),
-              data: { turbo_action: "advance" } do
+                      class: "block hover:text-brand-500 px-1 pt-1",
+                      data: { turbo_action: "advance" } do
               - if year == display_date.year && month == display_date.month
                 .text-brand-500
                   = Date::MONTHNAMES[month]

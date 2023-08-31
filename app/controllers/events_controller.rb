@@ -61,6 +61,7 @@ class EventsController < UnitContextController
     respond_to do |format|
       format.html
       format.pdf { send_event_brief }
+      format.ics { send_ical }
     end
   end
 
@@ -446,6 +447,10 @@ class EventsController < UnitContextController
   def send_event_brief
     pdf = Pdf::EventBrief.new(@event)
     send_data(pdf.render, filename: pdf.filename, type: "application/pdf", disposition: "inline")
+  end
+
+  def send_ical
+    send_data(@event.to_ical, filename: @event.ical_filename, type: "text/calendar", disposition: "inline")
   end
 
   def set_calendar_dates

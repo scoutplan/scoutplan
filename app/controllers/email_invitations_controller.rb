@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmailInvitationsController < UnitContextController
   def create
     @event = @unit.events.find(params[:event_id])

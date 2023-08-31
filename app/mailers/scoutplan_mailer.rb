@@ -25,7 +25,7 @@ class ScoutplanMailer < ApplicationMailer
     return unless @unit
 
     name = @unit.name
-    name = "#{person_name} at #{name}" if person_name
+    name = "#{person_name} at #{name}" if person_name.present?
     email_address_with_name(@unit.from_address, name)
   end
 

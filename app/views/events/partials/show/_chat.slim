@@ -2,7 +2,7 @@
 - return unless ChatMessagePolicy.new(@current_member, ChatMessage.new).index?
 - placeholder = @event.chat.chat_messages.present? ? "Type a message" : "Type to start a conversation about this event..."
 
-.block.py-4
+.block.py-4.border-t.border-stone-500
   = turbo_frame_tag :chat, src: unit_event_discussion_index_path(@unit, @event, suppress_header: true, limit: 16)
     .text-center
       = "Loading "

@@ -3,7 +3,7 @@
 # a calendar event
 # rubocop:disable Metrics/ClassLength
 class Event < ApplicationRecord
-  include Notifiable, Remindable, Onlineable
+  include Notifiable, Remindable, Onlineable, Calendarable
   extend DateTimeAttributes
 
   date_time_attrs_for :starts_at, :ends_at

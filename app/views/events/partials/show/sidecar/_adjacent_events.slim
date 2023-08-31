@@ -1,9 +1,9 @@
 - return unless @event.next.present? || @event.previous.present?
 
-li.flex.flex-row.justify-between.border-t.border-brand-300.mt-2.pt-2
+li.flex.flex-row.justify-between.border-t.border-brand-300.mt-2.px-2.py-2
   - if @event.previous.present?
     = link_to unit_event_path(@event.previous.unit, @event.previous),
-              class: "block p-2 rounded font-bold hover:bg-brand-700",
+              class: "block p-2 rounded hover:bg-brand-600",
               title: "#{@event.previous.title} on #{@event.previous.starts_at.strftime('%B %-d')}",
               data: { turbo_action: "advance" } do
       i.fa-solid.fa-arrow-left.fa-fw.mr-2
@@ -11,7 +11,7 @@ li.flex.flex-row.justify-between.border-t.border-brand-300.mt-2.pt-2
 
   - if @event.next.present?
     = link_to unit_event_path(@unit, @event.next),
-              class: "block p-2 rounded font-bold hover:bg-brand-700",
+              class: "block p-2 rounded hover:bg-brand-600",
               title: "#{@event.next.title} on #{@event.next.starts_at.strftime('%B %-d')}",
               data: { turbo_action: "advance" } do
       = t("events.captions.next_event")
