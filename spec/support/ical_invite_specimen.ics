@@ -1,0 +1,70 @@
+BEGIN:VCALENDAR
+PRODID:-//Google Inc//Google Calendar 70.9054//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:REQUEST
+BEGIN:VTIMEZONE
+TZID:America/New_York
+X-LIC-LOCATION:America/New_York
+BEGIN:DAYLIGHT
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0400
+TZNAME:EDT
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:-0400
+TZOFFSETTO:-0500
+TZNAME:EST
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTART;TZID=America/New_York:20230906T121500
+DTEND;TZID=America/New_York:20230906T130000
+DTSTAMP:20230831T201008Z
+ORGANIZER;CN=zach@aegisventures.com:mailto:zach@aegisventures.com
+UID:3ohifc24t60rjm1ftknja3gj76@google.com
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=
+ TRUE;CN=mark@aegisventures.com;X-NUM-GUESTS=0:mailto:mark@aegisventures.com
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=
+ TRUE;CN=rgb@fastmail.com;X-NUM-GUESTS=0:mailto:rgb@fastmail.com
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=OPT-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=TRUE
+ ;CN=zach@aegisventures.com;X-NUM-GUESTS=0:mailto:zach@aegisventures.com
+X-MICROSOFT-CDO-OWNERAPPTID:638032436
+CREATED:20230831T201006Z
+DESCRIPTION:-::~:~::~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~
+ :~:~:~:~:~:~:~:~::~:~::-\nJoin Zoom Meeting\nhttps://aegisventures.zoom.us/
+ j/88264371907?pwd=N24xRUE4VFBzdHJSQjVEWUdYTkF5Zz09 (ID: 88264371907\, passc
+ ode: 564243)\n\nJoin by phone\n(US) +1 301-715-8592 (passcode: 564243)\n\nJ
+ oining instructions: https://www.google.com/url?q=https://applications.zoom
+ .us/addon/invitation/detail?meetingUuid%3DO2YWGWDeQrCu5dLTtu6z8A%253D%253D%
+ 26signature%3D617ede2b44063c5249168ac0d7f0c9ba1df45fdb698d363f161d1776d4773
+ 0d7%26v%3D1&sa=D&source=calendar&usg=AOvVaw2eJOnVJ6qsJHv7F59aLImk\n\n------
+ ------<br /><a href="https://www.google.com/url?q=https://support.zoom.us/h
+ c/en-us/articles/360020187492-Zoom-for-GSuite-add-on-Troubleshooting%23h_01
+ FRGZTWJYRGRDMPQW4N041QF7&amp\;sa=D&amp\;source=calendar&amp\;usg=AOvVaw3pOl
+ mJKYg-DG37_G4Qn9Q2" target="_blank">Zoom for G Suite Add-On Help</a><br />-
+ -----------<br /><br />Meeting host: <a href="mailto:zach@aegisventures.com
+ " target="_blank">zach@aegisventures.com</a><br /><br />Join Zoom Meeting: 
+ <br /><a href="https://www.google.com/url?q=https://aegisventures.zoom.us/j
+ /88264371907?pwd%3DN24xRUE4VFBzdHJSQjVEWUdYTkF5Zz09&amp\;sa=D&amp\;source=c
+ alendar&amp\;usg=AOvVaw0KtrBt2Zbz2bjrJHEN6aRZ" target="_blank">https://aegi
+ sventures.zoom.us/j/88264371907?pwd=N24xRUE4VFBzdHJSQjVEWUdYTkF5Zz09</a>\n\
+ nPlease do not edit this section.\n-::~:~::~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:
+ ~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~::~:~::-
+LAST-MODIFIED:20230831T201006Z
+LOCATION:
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Ray/Mark | Head of Engineering
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:This is an event reminder
+TRIGGER:-P0DT0H10M0S
+END:VALARM
+END:VEVENT
+END:VCALENDAR

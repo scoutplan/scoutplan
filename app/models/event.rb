@@ -3,7 +3,7 @@
 # a calendar event
 # rubocop:disable Metrics/ClassLength
 class Event < ApplicationRecord
-  include Notifiable, Remindable, Onlineable, Calendarable
+  include Notifiable, Remindable, Onlineable, Icalendarable, Replyable, Invitations
   extend DateTimeAttributes
 
   date_time_attrs_for :starts_at, :ends_at
@@ -12,8 +12,8 @@ class Event < ApplicationRecord
 
   LOCATION_TYPES = {
     departure: "departure",
-    staging: "staging",
-    activity: "activity"
+    staging:   "staging",
+    activity:  "activity"
   }.freeze
 
   after_commit :create_reminder_job!
@@ -43,10 +43,12 @@ class Event < ApplicationRecord
   has_one :chat, as: :chattable, dependent: :destroy
 
   has_rich_text :description
+
   has_many_attached :attachments
-  has_paper_trail versions: {
-    scope: -> { order("id desc") }
-  }
+
+  has_paper_trail versions: { scope: -> { order("id desc") } }
+
+  has_secure_token
 
   accepts_nested_attributes_for :event_locations, allow_destroy: true
   accepts_nested_attributes_for :event_organizers, allow_destroy: true
@@ -127,7 +129,7 @@ class Event < ApplicationRecord
   end
 
   def rsvp_open?
-    status == "published" && requires_rsvp && rsvp_closes_at > DateTime.now
+    status == "published" && requires_rsvp && rsvp_closes_at.future?
   end
 
   def rsvps?

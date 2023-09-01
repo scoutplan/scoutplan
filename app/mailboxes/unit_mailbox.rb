@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UnitMailbox < ApplicationMailbox
   routing ->(inbound_email) { inbound_email.evaluator.event.present? } => :event
   routing ->(inbound_email) { inbound_email.evaluator.modifier.present? } => :unit_list

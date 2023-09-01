@@ -3,10 +3,11 @@
 - ["departure", "arrival", "activity"].each do |location_type|
   - location_count += 1 if @event.event_locations.exists?(location_type: location_type)
 
-section#location.pt-4.border-t.border-stone-800.dark:border-stone-700
+section#location.py-4.border-t.border-stone-800.dark:border-stone-700
   - if @event.online
-    p = t("events.show.captions.online")
-    p = link_to @event.website, @event.website, class: "text-blue-600 font-bold external-link"
+    = t("events.show.captions.online")
+    .inline-block.ml-2
+      = render partial: "events/partials/event_row/online", locals: { event: @event }
 
   - elsif location_count.positive?
     = link_to event_map_url(@event),

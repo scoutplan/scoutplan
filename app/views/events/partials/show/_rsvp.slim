@@ -10,8 +10,8 @@ section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800.dark:bord
     .flex.flex-col.md:flex-row.justify-between.md:items-center.gap-3
       div.left
         - if rsvp_service.family_fully_responded?
-          i.fa-stack.mr-2
-            i.fa-solid.fa-circle.fa-stack-2x.text-green-500
+          i.fa-stack.mr-2(title="#{t('events.show.captions.full_response')}")
+            i.fa-solid.fa-circle.fa-stack-2x.text-yellow-500
             i.fa-solid.fa-check.fa-stack-1x.text-white
 
         - if rsvp_service.family_fully_declined?
@@ -39,7 +39,7 @@ section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800.dark:bord
               - rsvp.event_shift_ids.each do |shift_id|
                 - shift = @event.shifts.find_by(id: shift_id)
                 .inline-block.px-2.py-1.mr-1.border.border-sky-300.rounded
-                  i.fa-solid.fa-circle-check.text-green-500.mr-1
+                  i.fa-solid.fa-circle-check.text-yellow-500.mr-1
                   = shift.name
 
 

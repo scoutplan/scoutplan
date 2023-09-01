@@ -1,46 +1,55 @@
 header.relative.mb-4
   .mb-4
     = link_to unit_events_path(@unit),
-      class: "inline-block px-4 py-3 rounded font-bold text-cyan-900 bg-cyan-200 hover:bg-cyan-400 hover:text-black" do
+      class: "inline-block py-3 rounded font-bold text-cyan-600",
+      data: { turbo_action: "advance" } do
 
       i.fa-solid.fa-chevron-left.mr-2
       = t("events.show.buttons.back")
 
-  .mb-2
-    i.fa-stack.mr-1
-      i.fa-solid.fa-circle.fa-stack-2x(style="color: #{@event&.category&.color}")
-      i.fa-solid.fa-stack-1x.text-white(class="fa-#{@event&.category&.glyph}")
+  .flex.flex-row.gap-1.items-center
+    .block
+      i.fa-stack(title="#{@event.category.name}")
+        i.fa-solid.fa-circle.fa-stack-2x(style="color: #{@event&.category&.color}")
+        i.fa-solid.fa-stack-1x.text-white(class="fa-#{@event&.category&.glyph}")
 
-    = @event.category.name
+    h3.font-bold.leading-none.text-3xl.md:text-4xl.whitespace-nowrap.overflow-hidden.mr-2.text-ellipsis
+      = @event.title
 
-  .flex.flex-row.justify-between.gap-2.relative.dropdown(data-controller="dropdown")
-    div
-      h3.font-bold.text-3xl.md:text-4xl.-mt-2.mr-2.inline = @event.title
+    .ml-auto.flex.flex-row.gap-3.items-center
+      / = link_to unit_event_discussion_index_path(@unit, @event),
+      /           data: { turbo_action: "advance" } do
+      /   - if @event.chat.present?
+      /     i.fa-solid.fa-bell.text-sky-500.dark:text-sky-800
+      /   - else
+      /     i.fa-regular.fa-bell.text-sky-500.dark:text-sky-800
 
-      - @event.tag_list.each do |tag|
-        .inline-block.align-bottom.mx-1.whitespace-nowrap.font-bold.border-rose-700.text-rose-700.border.rounded-md.py-1.px-2.text-sm.dark:text-rose-400.dark:border-rose-400
-          i.fa-solid.fa-tag.mr-1
-          = tag
+      .dropdown.relative(data-controller="dropdown")
+        = link_to "#", class: "text-stone-500 hover:text-stone-900 dark:hover:text-stone-400", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
+          i.fa-regular.fa-circle-ellipsis.fa-2xl
 
-    .mt-2.relative
-      = link_to "#", class: "text-stone-500 hover:text-stone-900 dark:hover:text-stone-400", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
-        i.fa-regular.fa-circle-ellipsis.fa-2xl
+        .dropdown-menu.absolute.right-0.bg-brand-500.z-20.rounded.text-white.top-full.animate-pop-open.w-80.mt-1
+          ul
+            = render partial: "events/partials/show/sidecar/edit"
+            = render partial: "events/partials/show/sidecar/duplicate"
+            = render partial: "events/partials/show/sidecar/history"
+            = render partial: "events/partials/show/sidecar/download_brief"
+            = render partial: "events/partials/show/sidecar/send_email_invite"
 
-      .dropdown-menu.absolute.right-0.bg-brand-500.z-20.rounded.text-white.top-full.animate-pop-open.w-80.mt-1
-        ul
-          = render partial: "events/partials/show/sidecar/edit"
-          = render partial: "events/partials/show/sidecar/duplicate"
-          = render partial: "events/partials/show/sidecar/history"
-          = render partial: "events/partials/show/sidecar/download_brief"
-          = render partial: "events/partials/show/sidecar/send_email_invite"
+            li
+              = link_to unit_event_path(@unit, @event, format: :ics),
+                        class: "block px-4 py-2 hover:bg-brand-600",
+                        data: { action: "dropdown#close" } do
 
-          li
-            = link_to unit_event_path(@unit, @event, format: :ics),
-                      class: "block px-4 py-2 hover:bg-brand-600" do
+                i.fa-fw.fa-solid.fa-calendar-arrow-down.mr-2
+                = "Download a calendar invite"
 
-              i.fa-fw.fa-solid.fa-calendar-xmark.mr-2
-              = "Download a calendar invite"
+            = render partial: "events/partials/show/sidecar/adjacent_events"
 
-          = render partial: "events/partials/show/sidecar/adjacent_events"
-
+  ul.tag-list.py-2
+    - @event.tag_list.each do |tag|
+      li.inline-block.align-bottom.mx-1.whitespace-nowrap.font-bold.border-rose-700.text-rose-700.border.rounded-md.py-1.px-2.text-sm.dark:text-rose-400.dark:border-rose-400
+        i.fa-solid.fa-tag.mr-1
+        = tag
+  
   = content_tag(:p, @event.short_description, class: "mt-2 font-bold") if @event.short_description.present?          

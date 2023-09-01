@@ -2,11 +2,11 @@
   article.event.mx-auto.max-w-2xl.md:mt-0.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
     section#informative.flex.flex-col
       = render partial: "events/partials/show/header"
-      = render partial: "events/partials/show/chat"
+      = render partial: "events/partials/show/date"
       = render partial: "events/partials/show/rsvp"
       = render partial: "events/partials/show/organize"
-      = render partial: "events/partials/show/date"
       = render partial: "events/partials/show/location"
+      = render partial: "events/partials/show/chat"
       = render partial: "events/partials/show/payment"
       = render partial: "events/partials/show/weather"
       = render partial: "events/partials/show/description"
@@ -14,8 +14,9 @@
       = render partial: "events/partials/show/attachments"
 
     = render partial: "events/partials/show/packing_lists"
-    = render partial: "events/partials/show/new_footer"
     = render partial: "events/partials/show/watermarks"
+
+    /! #{@event.email}
 
 javascript:
   document.title = "#{@event.title.html_safe} · #{@unit.name.html_safe}"

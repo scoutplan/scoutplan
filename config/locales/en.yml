@@ -340,19 +340,21 @@ en:
         add_sub_event:  "Add an Activity"
         history:        "Event change history"
         organize:       "See all RSVPs"
-        back:           "Back to event schedule"
+        back:           "Event schedule"
 
       captions:
-        done:                   "Back to Full Schedule"
-        online:                 "This event is online"
-        join:                   "Join"
-        download_brief:         "Print a Trip Brief"
-        rsvp_empty_youth:       "No youth members have RSVP'd yet."
-        rsvp_empty_adult:       "No adult members have RSVP'd yet."
-        open_link:              "Open link"
-        copy_link:              "Copy link"
-        organize_reason:        "This section is visible to you because you're a unit administrator or event organizer"
-        attendees_zero:         "No one's signed up yet."
+        done:             "Back to Full Schedule"
+        online:           "Video call"
+        join:             "Join"
+        download_brief:   "Print a Trip Brief"
+        rsvp_empty_youth: "No youth members have RSVP'd yet."
+        rsvp_empty_adult: "No adult members have RSVP'd yet."
+        open_link:        "Open link"
+        copy_link:        "Copy link"
+        organize_reason:  "This section is visible to you because you're a unit administrator or an event organizer"
+        organize_title:   "You have elevated permissions"
+        attendees_zero:   "No one's signed up yet."
+        full_response:    "Your family has responded"
 
       cancel:
         notice:       "Cancelling a published event will remove it from the calendar. Are you sure you want to proceed?"
@@ -373,8 +375,9 @@ en:
         activity:     "fa-location-exclamation"
 
       titles:
-        youth:        "Youth"
-        adults:       "Adults"
+        youth:  "Youth"
+        adults: "Adults"
+        chat:   "Discussion"
 
     cancel:
       proceed:        "Cancel this event"
