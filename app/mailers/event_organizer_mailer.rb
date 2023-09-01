@@ -11,10 +11,10 @@ class EventOrganizerMailer < ScoutplanMailer
     @member = @event_organizer.unit_membership
     @user   = @member.user
     mail(
-      to: @user.email,
-      from: unit_from_address_with_name,
-      reply_to: "event-#{@event.uuid}@#{ENV.fetch('EMAIL_DOMAIN')}",
-      subject: "[#{@unit.name}] You've been added as an organizer for #{@event.title}"
+      to:       @user.email,
+      from:     unit_from_address_with_name,
+      reply_to: @event.email,
+      subject:  "[#{@unit.name}] You've been added as an organizer for #{@event.title}"
     )
   end
 end

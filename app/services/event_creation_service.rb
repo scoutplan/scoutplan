@@ -34,6 +34,7 @@ class EventCreationService < ApplicationService
 
   def create_series
     new_event = @event.dup
+    new_event.regenerate_token
     new_event.series_parent = @event
     new_event.repeats_until = nil
 
@@ -49,6 +50,7 @@ class EventCreationService < ApplicationService
       end
 
       new_event = new_event.dup
+      new_event.regenerate_token
     end
   end
 end

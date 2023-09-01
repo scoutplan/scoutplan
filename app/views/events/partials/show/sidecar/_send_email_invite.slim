@@ -4,8 +4,8 @@ li
   = button_to unit_event_email_invitations_path(@unit, @event),
               method: :post,
               remote: true,
-              class: "block p-2 rounded font-bold hover:bg-brand-700",
-              data: { turbo_action: "advance" } do
+              class: "block w-full px-4 py-2 text-left hover:bg-brand-600",
+              data: { turbo_action: "advance", action: "dropdown#close" } do
 
     i.fa-solid.fa-envelope.fa-fw.mr-2
     = "Send me an email invite"

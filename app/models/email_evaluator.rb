@@ -2,8 +2,7 @@
 
 require "openai"
 
-# The EmailEvaluator is responsible for analyzing the email to determine the appropriate mailbox
-# to route to. It is used by the ApplicationMailbox.
+# https://local.scoutplan.org/rails/conductor/action_mailbox/inbound_emails
 class EmailEvaluator
   AUTO_RESPONDER_HEADER = "Auto-Submitted"
   AUTO_RESPONDER_VALUES = %w[auto-replied auto-generated].freeze
@@ -55,8 +54,12 @@ class EmailEvaluator
 
     @user = User.find_by(email: from_address)
     @slug = local_parts.first
+
     @modifier = local_parts.drop(1)
     @unit ||= Unit.find_by(slug: @slug)
+
+    return unless @user.present? && @unit.present?
+
     @member = @user.unit_memberships.where(unit: @unit)
 
     perform_ai_parsing if ai_parseable?
@@ -64,8 +67,8 @@ class EmailEvaluator
 
   def find_event
     @mail.to.first.match(EVENT_REGEX) do |m|
-      event_uuid = m[1]
-      @event = Event.find_by(uuid: event_uuid)
+      event_token = m[1]
+      @event = Event.find_by(token: event_token)
       @unit = @event&.unit
     end
   end

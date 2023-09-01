@@ -1,11 +1,13 @@
-nav#top_nav_mobile.sticky.top-0.bg-white/95.z-20.lg:hidden
+nav#top_nav_mobile.sticky.top-0.bg-white/95.dark:bg-stone-900/95.z-20.lg:hidden
   header
     = link_to "#", class: "toggle-mobile-menu block px-4 py-3 flex justify-between" do
 
       // left
       .align-middle.text-xl
         i.fas.fa-bars.inline-block.align-middle.mr-3
-        = image_tag "scoutplan-logo-word", style: "height:0.60rem;", class: "inline-block align-middle"
+
+        .inline.dark:hidden
+          = image_tag "scoutplan-logo-word", style: "height:0.60rem;", class: "inline-block align-middle"
 
       // right
       .align-middle.text-sm.font-bold.leading-none.py-2

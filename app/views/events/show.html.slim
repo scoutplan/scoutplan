@@ -1,33 +1,12 @@
-- accepted_count = @event.rsvps.accepted.count
-
 = turbo_frame_tag "main"
-  article.event.mx-auto.max-w-2xl.md:mt-8.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
+  article.event.mx-auto.max-w-2xl.md:mt-0.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
     section#informative.flex.flex-col
       = render partial: "events/partials/show/header"
-      = render partial: "events/partials/show/chat"
-      = render partial: "events/partials/show/rsvp"
-
-
-      - if @event.organizable? && EventPolicy.new(@current_member, @event).rsvps?
-        .border-t.py-4.border-stone-700.font-bold
-          .flex.flex-row.justify-between.items-center
-            .left
-              i.fa-stack.mr-1
-                i.fa-solid.fa-circle.fa-stack-2x.text-violet-700
-                i.fa-solid.fa-clipboard.fa-stack-1x.text-white
-
-              = accepted_count.zero? ? "No one's signed up yet" : "#{pluralize(accepted_count, 'person')} are going."
-
-            .right
-              = link_to unit_event_rsvps_path(@event.unit, @event),
-                        class: "block bg-violet-600 hover:bg-violet-700 text-violet-100 py-2 px-3 rounded ml-3" do
-                = "See all RSVPs"
-
-          footer.font-normal.mt-4.text-sm
-            = "This section is visible to you because you're a unit administrator or event organizer"
-
       = render partial: "events/partials/show/date"
+      = render partial: "events/partials/show/rsvp"
+      = render partial: "events/partials/show/organize"
       = render partial: "events/partials/show/location"
+      = render partial: "events/partials/show/chat"
       = render partial: "events/partials/show/payment"
       = render partial: "events/partials/show/weather"
       = render partial: "events/partials/show/description"
@@ -35,8 +14,9 @@
       = render partial: "events/partials/show/attachments"
 
     = render partial: "events/partials/show/packing_lists"
-    = render partial: "events/partials/show/new_footer"
     = render partial: "events/partials/show/watermarks"
+
+    /! #{@event.email}
 
 javascript:
   document.title = "#{@event.title.html_safe} · #{@unit.name.html_safe}"

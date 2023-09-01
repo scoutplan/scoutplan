@@ -6,7 +6,7 @@
                                           only_path: false,
                                           protocol: "webcal")
 
-aside.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.rounded.dropdown-menu.border.border-brand-600.dark:border-brand-800.animate-pop-open.drop-shadow.md:w-80
+aside.block.w-80.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.rounded.dropdown-menu.border.border.animate-pop-open.drop-shadow
   nav
     - if @current_member.admin?
       = link_to new_unit_event_path(@unit),
@@ -16,28 +16,36 @@ aside.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.rounded.dropdown-m
         i.fa-fw.fa-solid.fa-calendar-plus.mr-2
         = t("events.captions.new_short")
 
-    = link_to calendar_unit_events_path(@unit, year: Date.today.year, month: Date.today.month),
-              class: "block px-4 py-2 rounded hover:bg-brand-600",
-              data: { turbo_action: "advance" } do
+    - if action_name == "list"
+      = link_to calendar_unit_events_path(@unit, year: Date.today.year, month: Date.today.month),
+                class: "block px-4 py-2 rounded hover:bg-brand-600",
+                data: { turbo_action: "advance" } do
 
-      i.fa-fw.fa-solid.fa-calendar.mr-2
-      = t("events.index.buttons.calendar")
+        i.fa-fw.fa-solid.fa-calendar.mr-2
+        = t("events.index.buttons.calendar")
 
-    - if user_signed_in?
+    - elsif action_name == "calendar"
+      = link_to list_unit_events_path(@unit),
+                class: "block px-4 py-2 rounded hover:bg-brand-600",
+                data: { turbo_action: "advance" } do
+
+        i.fa-fw.fa-solid.fa-list.mr-2
+        = t("events.index.buttons.list")
+
+    - if user_signed_in? && action_name == "list"
       = link_to list_unit_events_path(@unit, page: -1),
                 class: "block px-4 py-2 rounded hover:bg-brand-600",
                 data: { turbo_stream: "true" } do
 
         i.fa-fw.fa-solid.fa-calendar-clock.mr-2
-        = "Show past events"      
+        = "Show past events"
 
-      = link_to list_unit_events_path(@unit, format: :pdf),
-                class: "block px-4 py-2 rounded hover:bg-brand-600",
-                data: { turbo_action: "advance" } do
+    = link_to list_unit_events_path(@unit, format: :pdf),
+              class: "block px-4 py-2 rounded hover:bg-brand-600",
+              data: { turbo_action: "advance" } do
 
-        i.fa-fw.fa-solid.fa-print.mr-2
-
-        = t("events.index.buttons.print")
+      i.fa-fw.fa-solid.fa-print.mr-2
+      = t("events.index.buttons.print")
 
     - if @current_member.admin?
         = link_to list_unit_events_path(@unit, format: :pdf, season: "next"),
@@ -53,24 +61,6 @@ aside.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.rounded.dropdown-m
 
       i.fa-fw.fa-regular.fa-mobile.mr-2
       = t("events.index.buttons.subscribe")
-
-    / - if @current_member.admin?
-    /     = link_to "#", class: "block px-4 py-2 rounded hover:bg-brand-600",
-    /               data: { action: "event#toggleBulkPublish" } do
-          
-    /       i.fa-fw.fa-solid.fa-layer-group.mr-2
-    /       = t("events.index.buttons.bulk_publish")
-
-    /     = link_to "#", class: "block px-4 py-2 rounded hover:bg-brand-600",
-    /               data: { action: "event#toggleCancelledEvents" } do
-
-    /       i.fa-fw.fa-solid.fa-calendar-xmark.mr-2
-
-    /       #toggle_cancelled_events_link.inline-block
-    /         .normal
-    /           = "Show cancelled events"
-    /         .showing-cancelled-events
-    /           = "Hide cancelled events"
 
 css:
   #toggle_cancelled_events_link .showing-cancelled-events {

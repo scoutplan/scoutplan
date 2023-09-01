@@ -2,7 +2,7 @@
 
 li
   = link_to unit_event_path(@unit, @event, format: :pdf),
-            class: "block p-2 rounded font-bold hover:bg-brand-700",
+            class: "block px-4 py-2 hover:bg-brand-600",
             data: { turbo_action: "advance" } do
     i.fa-solid.fa-print.fa-fw.mr-2
     = t("events.show.captions.download_brief")

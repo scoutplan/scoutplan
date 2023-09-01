@@ -1,58 +1,20 @@
-/* partial for displaying event stats & a link to the Organize page,
-   only visible to Event Organizers and Unit Admins */
-
 - return unless @event.organizable? && EventPolicy.new(@current_member, @event).rsvps?
+- accepted_count = @event.rsvps.accepted.count
 
-#manage_rsvps_card.bg-cyan-700.text-cyan-50.px-4.py-4.relative.mb-4.w-full.xl:w-60.rounded
-  header.mb-2
-    - if @event.organizers.include?(@current_member)
-      p.pb-2.font-bold.border-b
-        i.fa-solid.fa-info-circle.mr-2
-        = "You are an organizer for this event."
+.border-t.py-4.border-stone-700.font-bold
+  .flex.flex-col.md:flex-row.gap-3.justify-between.md:items-center
+    .left
+      i.fa-stack.mr-1
+        i.fa-solid.fa-circle.fa-stack-2x.text-violet-700
+        i.fa-solid.fa-clipboard.fa-stack-1x.text-white
 
-    .flex.flex-row.justify-between.border-cyan-200.pt-2
-      h2.text-lg.font-bold
-        = t("events.show.organize")
-      
-      div
-        .inline-block.ml-2.text-xs.rounded.py-1.px-2.bg-cyan-800
-          = @event.rsvps.accepted.count
+      = accepted_count.zero? ? t("events.show.captions.attendees_zero") : "#{pluralize(accepted_count, 'person')} are going."
 
-  section.border-t.border-cyan-200.py-3.hidden.md:block
-    - rsvps = @event.rsvps.accepted.select { |r| r.member.youth? }
-    .flex.flex-row.justify-between
-      h3.font-bold.mb-2
-        = t("events.show.titles.youth")
-      div
-        .inline-block.ml-2.text-xs.rounded.py-1.px-2.bg-cyan-800
-          = "#{rsvps.count}"
-    ul
-      - rsvps.each do |rsvp|
-        li.py-1.font-bold
-          i.fa-solid.fa-check-circle.mr-2
-          = rsvp.short_display_name
+    .right
+      = link_to unit_event_rsvps_path(@event.unit, @event),
+                class: "block py-2 px-3 rounded text-center bg-violet-600 hover:bg-violet-700 text-violet-100" do
+        = t("events.show.buttons.organize")
 
-    = content_tag(:p, t("events.show.captions.rsvp_empty_youth"), class: "text-sm text-cyan-100") if rsvps.empty?
-
-  section.border-t.border-cyan-200.py-3.hidden.md:block
-    - rsvps = @event.rsvps.accepted.select { |r| r.member.adult? }
-    .flex.flex-row.justify-between
-      h3.font-bold.mb-2
-        = t("events.show.titles.adults")
-      div
-        .inline-block.ml-2.text-xs.rounded.py-1.px-2.bg-cyan-800
-          = "#{rsvps.count}"
-    ul
-      - rsvps.each do |rsvp|
-        li.py-1.font-bold
-          i.fa-solid.fa-check-circle.mr-2
-          = rsvp.short_display_name   
-
-    = content_tag(:p, t("events.show.captions.rsvp_empty_adult"), class: "text-sm text-cyan-100") if rsvps.empty?
-
-  footer.mt-4
-    = link_to t("events.show.organize_button_caption"),
-      unit_event_rsvps_path(@event.unit, @event),
-      title: t("events.show.organize_reason_admin", unit_name: @event.unit.name),
-      class: "block font-bold no-underline px-4 py-3 md:py-2 border border-cyan-100 text-cyan-50 hover:bg-cyan-500 rounded text-center",
-      data: { turbo_action: "advance", turbo_frame: "main" }
+  footer.font-normal.mt-4.text-sm.text-violet-700.dark:text-violet-300
+    i.fa-solid.fa-user-crown.mr-2(title="#{t('events.show.captions.organize_title')}")
+    = t("events.show.captions.organize_reason")

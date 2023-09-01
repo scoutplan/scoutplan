@@ -9,56 +9,52 @@
 - done = false
 
 .max-w-7xl.mx-auto
-  header.flex.flex-row.justify-between.py-2.border-b.relative.mt-12
-    // LEFT SIDE
-    div.relative
-      // clickable month name launches month picker
-      .inline-block.dropdown.pl-8
+  header.flex.flex-row.items-center.py-2.border-b.md:mt-12
+    .left
+      .month-picker.inline-block.dropdown.relative
         = link_to "#",
-                  class: "inline-block dropdown-button border rounded py-1 px-2 font-bold mr-2" do
+                  class: "dropdown-button inline-block py-1 px-2 mr-2 border rounded bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600" do
           
-          = first_day_of_month.strftime("%B %Y")
+          .hidden.md:inline = first_day_of_month.strftime("%B %Y")
+          .inline.md:hidden = first_day_of_month.strftime("%b %Y")
           i.fa-chevron-down.fas.ml-2
         
-        .dropdown-menu.absolute.bg-stone-800.text-stone-50.p-2.rounded
+        .dropdown-menu.absolute.bg-stone-800.text-stone-50.p-2.rounded.border.dark:border-stone-700
           = render partial: "events/partials/index/month_picker", locals: { display_date: first_day_of_month }
 
       // prev button
-      = link_to calendar_unit_events_path(@unit,
-          month: @current_month > 1 ? @current_month - 1 : 12,
-          year: @current_month > 1 ? @current_year : @current_year - 1),
-        title: t("events.calendar_view.prev_month"),
-        data: { turbo_action: "advance" },
-        class: "font-bold inline-block py-1 px-2 md:px-4 rounded-l border hover:bg-stone-100" do
-          i.fa-chevron-left.fas.mr-1
-          .hidden.md:inline
-            = "Prev"
+      = link_to calendar_unit_events_path(@unit, month: @current_month > 1 ? @current_month - 1 : 12, year: @current_month > 1 ? @current_year : @current_year - 1),
+                title: t("events.index.buttons.hints.previous"),
+                class: "inline-block py-1 px-2 md:px-4 rounded-l border bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
+                data: { turbo_action: "advance" } do
+
+          i.fa-solid.fa-chevron-left.mr-1
+          .hidden.md:inline = t("events.index.buttons.previous")
 
       // next button
-      = link_to calendar_unit_events_path(@unit,
-          month: @current_month == 12 ? 1 : @current_month + 1,
-          year: @current_month == 12 ? @current_year + 1 : @current_year),
-        data: { turbo_action: "advance" },
-        class: "font-bold inline-block py-1 px-2 md:px-4 rounded-r border hover:bg-stone-100 border-l-0" do
-          .hidden.md:inline
-            = "Next"
-          i.fa-chevron-right.fas.ml-1
+      = link_to calendar_unit_events_path(@unit, month: @current_month == 12 ? 1 : @current_month + 1, year: @current_month == 12 ? @current_year + 1 : @current_year),
+                title: t("events.index.buttons.hints.next"),
+                class: "inline-block py-1 px-2 md:px-4 rounded-r border bg-stone-100 hover:bg-stone-200 border-l-0 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
+                data: { turbo_action: "advance" } do
+
+          .hidden.md:inline = t("events.index.buttons.next")
+          i.fa-solid.fa-chevron-right.ml-1
 
       // today button
-      = link_to "Today",
-        calendar_unit_events_path(@unit,
-          month: Time.now.month,
-          year: Time.now.year),
-        data: { turbo_action: "advance" },
-        class: "inline-block font-bold hover:bg-stone-100 border rounded px-2 py-1 ml-2"
-    
-    // RIGHT SIDE
-    div
-      // ellipsis menu
-      .hidden.md:block.absolute.left-0.top-0
-        = render partial: "events_dropdown", locals: { current_variation: "calendar" }
+      = link_to calendar_unit_events_path(@unit, month: Time.now.month, year: Time.now.year),
+                title: t("events.index.buttons.hints.today"),
+                class: "inline-block px-3 py-1 ml-2 border rounded bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
+                data: { turbo_action: "advance" }
+        = t("events.index.buttons.today")
 
-    // END HEADER
+    h1.hidden.md:inline-block.font-bold.text-4xl.ml-6
+      = first_day_of_month.strftime("%B %Y")        
+    
+    .right.ml-auto
+      .dropdown.relative
+        = link_to "#", class: "dropdown-button inline-block" do
+          i.fa-circle-ellipsis.far.fa-2xl.text-stone-500.dark:text-stone-300
+        = render partial: "events/partials/index/dropdown"
 
   .table.px-0.w-full.table-fixed
     .table-row.font-bold
@@ -107,24 +103,23 @@
               - css_classes = "event-cancelled" if event.cancelled?
               - css_classes = "event-draft" if event.draft?
 
-              - if display_date.beginning_of_day >= event.starts_at.beginning_of_day && \
-                display_date.beginning_of_day <= event.ends_at.end_of_day
-                .cal-event.text-xs.overflow-hidden(class="p-1 block hover:bg-stone-100 #{css_classes}")
+              - if display_date.beginning_of_day >= event.starts_at.beginning_of_day && display_date.beginning_of_day <= event.ends_at.end_of_day
+                .cal-event.text-xs.overflow-hidden(class="block p-1 rounded dark:hover:bg-stone-800 hover:bg-stone-100 #{css_classes}")
                   = link_to [ event.unit, event ],
-                    class: "inline font-bold",
-                    data: { turbo_action: "advance" },
-                    style: "color: #{event.category.color}" do
+                            class: "inline font-bold",
+                            data: { turbo_action: "advance" },
+                            style: "color: #{event.category.color}" do
 
                     = event.title
                     - if event.online
                       i.fa-solid.fa-laptop.ml-1(title="Online")
 
-                  // edit link
-                  = link_to edit_unit_event_path(@unit, event),
-                    class: "event-edit-link ml-1 inline-block text-stone-500 hover:text-black",
-                    data: { turbo_action: "advance" } do
+                  - if EventPolicy.new(@current_member, event).edit?
+                    = link_to edit_unit_event_path(@unit, event),
+                              class: "event-edit-link ml-1 inline-block text-stone-500 hover:text-black",
+                              data: { turbo_action: "advance" } do
 
-                    i.fa-solid.fa-pen-circle.mr-1
+                      i.fa-solid.fa-pen-circle.mr-1
 
           - display_day += 1
 

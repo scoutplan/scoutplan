@@ -24,3 +24,6 @@ Style/Documentation:
 
 Style/HashSyntax:
   Enabled: false
+
+Layout/HashAlignment:
+  EnforcedColonStyle: table
