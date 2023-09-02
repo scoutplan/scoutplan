@@ -9,7 +9,7 @@ class EventInvitationMailer < ScoutplanMailer
 
   def event_invitation_email
     attachments[@event.ical_filename] = ics_attachment
-    mail(to: to_address, from: from_address, subject: subject)
+    mail(from: from_address, to: to_address, reply_to: reply_to_address, subject: subject)
     persist_invitation
   end
 
@@ -17,10 +17,6 @@ class EventInvitationMailer < ScoutplanMailer
 
   def find_event
     @event = @unit.events.find(params[:event_id])
-  end
-
-  def from_address
-    email_address_with_name(@event.email, @unit.name)
   end
 
   def ics_attachment
@@ -36,11 +32,19 @@ class EventInvitationMailer < ScoutplanMailer
     EventInvitation.find_or_create_by!(event: @event, unit_membership: @member)
   end
 
-  def subject
-    "[#{@unit.name}] Invitation to the #{@event.title} on #{@event.starts_at.strftime('%b %-d')}"
+  def from_address
+    email_address_with_name(@unit.from_address, @unit.name)
   end
 
   def to_address
     email_address_with_name(@member.email, @member.full_display_name)
+  end
+
+  def reply_to_address
+    email_address_with_name(@event.email, @unit.name)
+  end
+
+  def subject
+    "[#{@unit.name}] Invitation to the #{@event.title} on #{@event.starts_at.strftime('%b %-d')}"
   end
 end

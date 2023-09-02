@@ -19,12 +19,12 @@ module Event::Invitations
 
   # has this member been invited?
   def invited?(member)
-    EventInvitation.exists?(event_id: id, unit_membership_id: member.unit_membership_id)
+    EventInvitation.exists?(event_id: id, unit_membership_id: member.id)
   end
 
   # should we invite this member now?
   def should_invite?(member)
-    invite_at.past? && !invited?(member)
+    invite_at(member).past? && !invited?(member)
   end
 
   # how long before the event should we send the invitation?
