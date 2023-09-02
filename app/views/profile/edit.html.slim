@@ -1,10 +1,5 @@
 .max-w-lg.mx-auto
-  = form_with \
-    model: @user,
-    url: update_user_settings_path,
-    data: { turbo: false },
-    builder: ApplicationFormBuilder do |f|
-
+  = form_with model: @user, url: update_user_settings_path, data: { turbo: false }, builder: ApplicationFormBuilder do |f|
     .flex.flex-col.gap-6
       header.border-b.border-stone-500.py-4
         = link_to root_path,

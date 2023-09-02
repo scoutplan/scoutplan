@@ -5,6 +5,10 @@ module Event::Invitations
 
   DEFAULT_INVITATION_LEAD_TIME = 14.days.freeze
 
+  included do
+    has_many :event_invitations
+  end
+
   # invite a member to this event
   def invite!(member)
     return unless member.present?
@@ -14,12 +18,12 @@ module Event::Invitations
 
   # when should we send the invitation?
   def invite_at(member)
-    starts_at - invitation_lead_time(member)
+    (starts_at - invitation_lead_time(member)).beginning_of_day
   end
 
   # has this member been invited?
   def invited?(member)
-    EventInvitation.exists?(event_id: id, unit_membership_id: member.id)
+    event_invitations.exists?(unit_membership: member)
   end
 
   # should we invite this member now?

@@ -48,9 +48,9 @@ class UnitMembershipsController < ApplicationController
   def find_or_create_user
     @user = User.create_with(
       first_name: user_params[:first_name],
-      last_name: user_params[:last_name],
-      nickname: user_params[:nickname],
-      phone: user_params[:phone]
+      last_name:  user_params[:last_name],
+      nickname:   user_params[:nickname],
+      phone:      user_params[:phone]
     ).find_or_create_by!(email: user_params[:email])
   end
 
@@ -58,6 +58,7 @@ class UnitMembershipsController < ApplicationController
     @target_membership.assign_attributes(member_params)
     update_settings_params
     return unless @target_membership.save!
+
     MemberRelationshipService.new(@target_membership).update(params[:member_relationships])
 
     flash[:notice] = "Member information updated"
@@ -129,7 +130,7 @@ class UnitMembershipsController < ApplicationController
 
   def settings_params
     params.require(:settings).permit(
-      communication: [:via_email, :via_sms]
+      communication: [:via_email, :via_sms, :receives_event_invitations]
     )
   end
 end

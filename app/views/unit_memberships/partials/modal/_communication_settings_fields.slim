@@ -21,3 +21,12 @@ div.pt-4
                        method: "via_sms",
                        checked_value: "true",
                        unchecked_value: "false" }
+
+div.pt-4
+    = render partial: "components/switch",
+             locals: { object_name: object_name,
+                       label: "Receive event invitations via email",
+                       checked: member.settings(:communication).receives_event_invitations,
+                       method: "receives_event_invitations",
+                       checked_value: "true",
+                       unchecked_value: "false" }

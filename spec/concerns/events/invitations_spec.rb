@@ -20,7 +20,7 @@ RSpec.describe Event::Invitations, type: :concern do
 
   describe "invite_at" do
     it "returns the event start time minus the invitation lead time" do
-      expect(@event.invite_at(@member)).to eq(@event.starts_at - Event::Invitations::DEFAULT_INVITATION_LEAD_TIME)
+      expect(@event.invite_at(@member)).to eq(@event.starts_at.beginning_of_day - Event::Invitations::DEFAULT_INVITATION_LEAD_TIME)
     end
   end
 
