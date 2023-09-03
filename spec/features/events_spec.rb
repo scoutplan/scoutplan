@@ -133,6 +133,16 @@ describe "events", type: :feature do
         visit(path)
         expect(page).not_to have_content(@draft_event.starts_at.strftime("%-I:%M %p"))
       end
+
+      it "returns to the previous view" do
+        event2 = FactoryBot.create(:event, :published, unit: @unit, starts_at: 1.month.from_now, ends_at: 1.month.from_now + 1.hour)
+        path = calendar_unit_events_path(@unit, year: 1.month.from_now.year, month: 1.month.from_now.month)
+        visit(path)
+
+        click_link(event2.title)
+        click_link("Event schedule")
+        expect(page).to have_current_path(path)
+      end
     end
 
     describe "update" do
