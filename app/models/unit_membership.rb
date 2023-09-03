@@ -10,7 +10,7 @@ class UnitMembership < ApplicationRecord
   ROLES = %w[member admin event_organizer].freeze
 
   include Flipper::Identifier
-  include Contactable
+  include Contactable, EventInvitable
 
   belongs_to :unit
   belongs_to :user
@@ -68,9 +68,10 @@ class UnitMembership < ApplicationRecord
   has_settings do |s|
     s.key :security, defaults: { enable_magic_links: true }
     s.key :communication, defaults: {
-      via_email: true,
-      via_sms: false,
-      event_organizer_digest: true 
+      via_email:                  true,
+      via_sms:                    false,
+      event_organizer_digest:     true,
+      receives_event_invitations: false
     }
     s.key :alerts
   end
