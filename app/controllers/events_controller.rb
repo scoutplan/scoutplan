@@ -10,9 +10,10 @@ require "humanize"
 # rubocop:disable Metrics/CyclomaticComplexity
 class EventsController < UnitContextController
   skip_before_action :authenticate_user!, only: [:public]
-  before_action :find_event, except: %i[index list calendar spreadsheet create new bulk_publish public my_rsvps signups]
+  before_action :find_event, except: %i[list calendar spreadsheet create new bulk_publish public my_rsvps signups]
   before_action :collate_rsvps, only: [:show, :rsvps]
   before_action :set_calendar_dates, only: [:calendar, :list]
+  before_action :remember_unit_events_path, only: [:list, :calendar]
   layout :current_layout
 
   def calendar
@@ -429,6 +430,10 @@ class EventsController < UnitContextController
     scope = scope.offset((@page - 1).abs * page_size).limit(page_size)
     scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
     @events = scope.all.reverse
+  end
+
+  def remember_unit_events_path
+    session[:events_index_path] = request.original_fullpath
   end
 
   def scope_for_list
