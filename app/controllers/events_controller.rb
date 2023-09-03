@@ -22,7 +22,8 @@ class EventsController < UnitContextController
     end
 
     scope = @unit.events
-    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    # scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope = scope.published unless @current_member.role == "admin"
     scope = scope.where("starts_at BETWEEN ? AND ?", @start_date, @end_date)
     @events = scope.all
   end
