@@ -16,9 +16,12 @@ class EventsController < UnitContextController
   layout :current_layout
 
   def calendar
-    @current_year = params[:year]&.to_i || Date.today.year
-    @current_month = params[:month]&.to_i || Date.today.month
+    unless params[:year] && params[:month]
+      redirect_to calendar_unit_events_path(@unit, year: Date.today.year, month: Date.today.month) and return
+    end
+
     scope = @unit.events
+    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
     scope = scope.where("starts_at BETWEEN ? AND ?", @start_date, @end_date)
     @events = scope.all
   end
@@ -454,9 +457,11 @@ class EventsController < UnitContextController
   end
 
   def set_calendar_dates
-    @current_year = params[:current_year]&.to_i
-    @current_month = params[:current_month]&.to_i
-    @start_date = Date.new(Date.today.year, Date.today.month, 1)
+    @current_year = params[:year]&.to_i || Date.today.year
+    @current_month = params[:month]&.to_i || Date.today.month
+    @display_month = params[:display_month]&.to_i
+    @display_year = params[:display_year]&.to_i
+    @start_date = Date.new(@current_year, @current_month, 1)
     @end_date = @start_date.end_of_month.end_of_day
   end
 end

@@ -14,15 +14,14 @@
               i.fa-circle-ellipsis.far.fa-2xl
             = render partial: "events/partials/index/dropdown"
 
-    div(data-controller="pagination")
-      ol#events_list
-        = render @page.records
+    ol#events_list(data-controller="pagination")
+      = render @page.records
 
       /! Current year / month: #{@current_year} / #{@current_month}
 
       - unless @page.last?
         = link_to "Next page",
-                  list_unit_events_path(@unit, page: @page.next_param, current_month: @current_month, current_year: @current_year),
+                  list_unit_events_path(@unit, page: @page.next_param, display_month: @display_month, display_year: @display_year),
                   class: "text-transparent",
                   data: { pagination_target: "nextPageLink" }
       
