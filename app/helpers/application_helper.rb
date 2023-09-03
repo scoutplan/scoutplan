@@ -64,6 +64,10 @@ module ApplicationHelper
     pill_tag_if(number.positive?, number, additional_classes)
   end
 
+  def remembered_unit_events_path(unit)
+    session[:events_index_path] || unit_events_path(unit)
+  end
+
   # given a member, return the appropriate FontAwesome element tag
   def member_glyph_tag(member)
     colors = {
