@@ -194,15 +194,28 @@ describe "events", type: :feature do
     end
   end
 
-  describe "variations" do
+  describe "calendar" do
     before :each do
       login_as(@normal_user, scope: :user)
     end
 
-    it "shows as a calendar" do
+    it "shows calendar" do
       path = calendar_unit_events_path(@unit, year: Date.today.year, month: Date.today.month)
       visit(path)
       expect(page).to have_current_path(path)
+    end
+
+    it "works across multiple months" do
+      event1 = FactoryBot.create(:event, :published, unit: @unit, starts_at: 1.hour.from_now, ends_at: 2.hours.from_now)
+      event2 = FactoryBot.create(:event, :published, unit: @unit, starts_at: 1.month.from_now, ends_at: 1.month.from_now + 1.hour)
+      path = calendar_unit_events_path(@unit, year: Date.today.year, month: Date.today.month)
+
+      visit(path)
+      expect(page).to have_content(event1.title)
+
+      path = calendar_unit_events_path(@unit, year: 1.month.from_now.year, month: 1.month.from_now.month)
+      visit(path)
+      expect(page).to have_content(event2.title)
     end
   end
 
