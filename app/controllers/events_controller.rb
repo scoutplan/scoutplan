@@ -406,10 +406,6 @@ class EventsController < UnitContextController
     ).utc
   end
 
-  # def store_path
-  #   cookies[:events_index_path] = request.original_fullpath
-  # end
-
   def find_next_and_previous_events
     @next_event = @unit.events.published.rsvp_required.where("starts_at > ?", @event.starts_at)&.first
     @previous_event = @unit.events.published.rsvp_required.where("starts_at < ?", @event.starts_at)&.last

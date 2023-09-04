@@ -1,4 +1,7 @@
 = turbo_frame_tag "main"
+  /! Current member id: #{@current_member.id}
+  /! Current unit id: #{@unit.id}
+  /! Current user id: #{current_user.id}
   article.event.mx-auto.max-w-2xl.md:mt-0.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
     section#informative.flex.flex-col
       = render partial: "events/partials/show/header"
