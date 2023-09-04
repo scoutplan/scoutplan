@@ -110,6 +110,7 @@ Rails.application.routes.draw do
         get "public",      to: "events#public", as: "public"
         get "signups",     to: "events#signups", as: "signups"
         get "list"
+        get "paged_list"
         get "calendar",
             to: redirect { |path_params, _|
               "/units/#{ path_params[:unit_id] }/schedule/calendar/#{Date.today.year}/#{Date.today.month}"

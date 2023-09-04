@@ -130,6 +130,8 @@
     // end of until loop
 
 javascript:
+  document.title = "#{@unit.name} · Event Calendar"
+
   document.addEventListener("turbo:load", function() {
     document.body.classList.remove("showing-as-list");
     document.body.classList.add("showing-as-calendar");
