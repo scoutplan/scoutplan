@@ -1,8 +1,9 @@
-// USER DROPDOWN & UNIT SWITCHER
+/! Current member id: #{@current_member.id}
+/! Current unit id: #{@unit.id}
+/! Current user id: #{current_user.id}
 .dropdown.inline-block
   = link_to "#",
-    class: "block px-4 py-3 dropdown-button dropdown-button-chevron font-bold text-sm xl:text-base" \
-    do
+    class: "block px-4 py-3 dropdown-button dropdown-button-chevron font-bold text-sm xl:text-base" do
       = @current_member.short_display_name
       i.fa-chevron-down.fas.ml-2
 
