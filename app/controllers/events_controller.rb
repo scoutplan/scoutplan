@@ -21,11 +21,7 @@ class EventsController < UnitContextController
       redirect_to calendar_unit_events_path(@unit, year: Date.today.year, month: Date.today.month) and return
     end
 
-    scope = @unit.events
-    # scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
-    scope = scope.published unless @current_member.role == "admin"
-    scope = scope.where("starts_at BETWEEN ? AND ?", @start_date, @end_date)
-    @events = scope.all
+    @events = scope_for_calendar
   end
 
   def history
@@ -436,6 +432,14 @@ class EventsController < UnitContextController
     session[:events_index_path] = request.original_fullpath
   end
 
+  def scope_for_calendar
+    scope = @unit.events
+    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope = scope.where("starts_at BETWEEN ? AND ?", @start_date, @end_date)
+    scope = scope.order(starts_at: :asc)
+    scope.all
+  end
+
   def scope_for_list
     scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = if params[:season] == "next"
@@ -444,8 +448,9 @@ class EventsController < UnitContextController
               scope.future
             end
     scope = scope.order(starts_at: :asc)
-    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
-    scope
+    # scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope = scope.published unless @current_member.role == "admin"
+    scope.all
   end
 
   def send_fridge_calendar
