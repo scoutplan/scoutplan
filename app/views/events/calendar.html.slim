@@ -13,8 +13,7 @@
     nav.calendar-nav.left.text-sm.md:text-base
       .month-picker.inline-block.dropdown.relative
         = link_to "#",
-                  class: "dropdown-button inline-block w-44 py-1 px-2 mr-2 border rounded bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800" \
-                    "dark:hover:bg-stone-700 dark:hover:border-stone-600" do
+                  class: "dropdown-button inline-block w-44 py-1 px-2 mr-2 border rounded bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600" do
           
           .flex.flex-row.justify-between.items-center
             .hidden.md:inline = first_day_of_month.strftime("%B %Y")
