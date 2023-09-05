@@ -1,7 +1,7 @@
 = turbo_stream.prepend "events_list" do
-  - if @events.count == 10
-    li.more-past-events-item
-      = link_to list_unit_events_path(@unit, page: @page - 1),
+  li.more-past-events-item
+    - if @last_month.present?
+      = link_to list_unit_events_path(@unit, year: @last_month.year, month: @last_month.month),
                 class: "group block py-2 text-center text-blue-500 hover:text-blue-600",
                 data: { turbo_stream: "true" } do
 
@@ -9,5 +9,9 @@
         .hidden.group-focus:inline-block
           i.fa-fw.fa-solid.fa-rotate-right.fa-spin.mr-2
         = t("events.index.show_earlier")
+    - else
+      .block.py-2.text-center
+        i.fa-regular.fa-circle-exclamation.mr-1
+        = t("events.index.no_earlier_events")
 
   = render @events

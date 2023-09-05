@@ -236,6 +236,7 @@ en:
       description_present:  "This event has notes to read"
       download_pdf:         "Download a Printable PDF"
       show_earlier:         "See earlier past events"
+      no_earlier_events:    "You've gone back as far as you can go"
 
       buttons:
         calendar:     "View as calendar"

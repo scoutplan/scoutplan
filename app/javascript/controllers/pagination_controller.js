@@ -34,6 +34,8 @@ const delay = (ms) => {
 }
 
 const nextIntersection = function(targetElement) {
+  let options = { rootMargin: "100px", threshold: 1.0 };
+
   return new Promise(resolve => {
     new IntersectionObserver(([element]) => {
       if (!element.isIntersecting) {
@@ -41,6 +43,6 @@ const nextIntersection = function(targetElement) {
       } else {
         resolve();
       }
-    }).observe(targetElement);
+    }, options).observe(targetElement);
   });
 }
