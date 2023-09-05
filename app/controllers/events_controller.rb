@@ -34,7 +34,7 @@ class EventsController < UnitContextController
 
   def list
     respond_to do |format|
-      format.html { @events = scope_for_list }
+      format.html { find_events_for_list }
       format.pdf { send_fridge_calendar }
       format.turbo_stream { prepare_turbo_stream }
     end
@@ -451,14 +451,26 @@ class EventsController < UnitContextController
   end
 
   def scope_for_list
-    scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
-    scope = if params[:season] == "next"
-              scope.where("starts_at BETWEEN ? AND ?", @unit.next_season_starts_at, @unit.next_season_ends_at)
-            else
-              scope.where("starts_at BETWEEN ? AND ?", @start_date.in_time_zone, @end_date.in_time_zone)
-            end
+    start_date = params[:season] == "next" ? @unit.next_season_starts_at : @start_date
+    end_date = params[:season] == "next" ? @unit.next_season_ends_at : @end_date
+
+    scope = @unit.events.includes(
+      :tags, :event_category, :event_rsvps,
+      [event_organizers: :unit_membership], [event_locations: :location]
+    )
+    scope = scope.where("starts_at BETWEEN ? AND ?", start_date.in_time_zone, end_date.in_time_zone)
     scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
     scope.order(starts_at: :asc)
+  end
+
+  def find_events_for_list
+    @events = scope_for_list.all.select { |e| tags_match?(e) }
+  end
+
+  def tags_match?(event)
+    return true if event.tag_list.empty?
+
+    @current_member.tag_list.any? { |tag| event.tag_list.include?(tag) }
   end
 
   def send_fridge_calendar
