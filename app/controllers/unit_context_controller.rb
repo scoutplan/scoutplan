@@ -8,7 +8,6 @@ class UnitContextController < ApplicationController
   before_action :build_event_presenter
   before_action :set_paper_trail_whodunnit
   around_action :time_zone
-  attr_reader :current_membership
 
   def current_unit
     # @current_unit ||= Unit.includes(
