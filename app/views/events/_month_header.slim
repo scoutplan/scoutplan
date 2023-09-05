@@ -2,7 +2,7 @@
   li.border-t.border-stone-800.dark:border-stone-400.py-4.event-month-boundary(id="month_header_#{event.starts_at.strftime('%Y')}_#{event.starts_at.strftime('%m')}")
     h3.text-brand-500.uppercase.tracking-wider(role="heading", aria-level="3")
       = event.starts_at.strftime('%B')
-      - if @display_year.nil? || @display_year != event.starts_at.year
+      - if event.starts_at.month == 1
         = event.starts_at.strftime(' %Y')
 
     .flex.flex-col.divide-y
