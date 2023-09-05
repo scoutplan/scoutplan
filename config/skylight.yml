@@ -6,3 +6,4 @@ ignored_endpoints:
   - Blazer::QueriesController#destroy
   - Blazer::DashboardsController#show
   - Blazer::QueriesController#cancel
+  - CalendarController#index
