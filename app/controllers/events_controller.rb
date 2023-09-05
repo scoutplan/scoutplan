@@ -10,7 +10,9 @@ require "humanize"
 # rubocop:disable Metrics/CyclomaticComplexity
 class EventsController < UnitContextController
   skip_before_action :authenticate_user!, only: [:public]
-  before_action :find_event, except: %i[list calendar paged_list spreadsheet create new bulk_publish public my_rsvps signups]
+  before_action :find_event, except: %i[
+    list calendar paged_list spreadsheet create new bulk_publish public my_rsvps signups
+  ]
   before_action :collate_rsvps, only: [:show, :rsvps]
   before_action :set_calendar_dates, only: [:calendar, :list, :paged_list]
   before_action :remember_unit_events_path, only: [:list, :calendar]
@@ -30,7 +32,7 @@ class EventsController < UnitContextController
 
   def list
     respond_to do |format|
-      format.html { @events = scope_for_list.all }
+      format.html { set_page_and_extract_portion_from scope_for_list }
       format.pdf { send_fridge_calendar }
       format.turbo_stream { prepare_turbo_stream }
     end
@@ -38,7 +40,7 @@ class EventsController < UnitContextController
 
   def paged_list
     respond_to do |format|
-      format.html { set_page_and_extract_portion_from scope_for_list }
+      format.html { @events = scope_for_list.all }
       format.pdf { send_fridge_calendar }
       format.turbo_stream { prepare_turbo_stream }
     end
