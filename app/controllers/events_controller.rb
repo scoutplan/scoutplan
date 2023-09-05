@@ -12,7 +12,7 @@ class EventsController < UnitContextController
   skip_before_action :authenticate_user!, only: [:public]
   before_action :find_event, except: %i[list calendar paged_list spreadsheet create new bulk_publish public my_rsvps signups]
   before_action :collate_rsvps, only: [:show, :rsvps]
-  before_action :set_calendar_dates, only: [:calendar, :list]
+  before_action :set_calendar_dates, only: [:calendar, :list, :paged_list]
   before_action :remember_unit_events_path, only: [:list, :calendar]
   layout :current_layout
 
@@ -251,11 +251,11 @@ class EventsController < UnitContextController
 
       includes_activity = values[:event_rsvp][:includes_activity] == "1"
       rsvp = @event.rsvps.create_with(
-        response: response,
-        includes_activity: includes_activity,
-        note: note,
-        respondent: @current_member,
-        event_shift_ids: accepted_shifts
+        response:          response,
+        note:              note,
+        respondent:        @current_member,
+        event_shift_ids:   accepted_shifts,
+        includes_activity: includes_activity
       ).find_or_create_by!(unit_membership_id: member_id)
 
       rsvp.update!(response: response,
@@ -468,12 +468,12 @@ class EventsController < UnitContextController
   end
 
   def set_calendar_dates
-    @current_year = params[:year]&.to_i || Date.today.year
+    @current_year  = params[:year]&.to_i || Date.today.year
     @current_month = params[:month]&.to_i || Date.today.month
     @display_month = params[:display_month]&.to_i
-    @display_year = params[:display_year]&.to_i
-    @start_date = Date.new(@current_year, @current_month, 1)
-    @end_date = @start_date.end_of_month.end_of_day
+    @display_year  = params[:display_year]&.to_i
+    @start_date    = Date.new(@current_year, @current_month, 1)
+    @end_date      = @start_date.end_of_month.end_of_day
   end
 end
 # rubocop:enable Metrics/ClassLength

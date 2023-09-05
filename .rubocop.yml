@@ -31,3 +31,6 @@ Layout/HashAlignment:
 Metrics/BlockLength:
   Exclude:
     - "spec/**/*"
+
+Naming/BlockForwarding:
+  EnforcedStyle: explicit
