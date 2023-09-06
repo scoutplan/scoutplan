@@ -8,6 +8,7 @@ class Location < ApplicationRecord
   belongs_to :unit
   has_many :event_locations, dependent: :destroy
   has_rich_text :organizer_notes
+  validates_presence_of :name
 
   def full_address
     return map_name.strip.gsub(/\,$/, "").gsub(" , ", " ") if map_name.present?

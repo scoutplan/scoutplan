@@ -28,4 +28,11 @@ RSpec.describe Location, type: :model do
       end
     end
   end
+
+  describe "validations" do
+    it "requires a title" do
+      expect(FactoryBot.build(:location, name: nil)).not_to be_valid
+      expect(FactoryBot.build(:location, name: "")).not_to be_valid
+    end
+  end
 end

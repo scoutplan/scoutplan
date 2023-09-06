@@ -8,7 +8,7 @@ RSpec.describe LocationPolicy, type: :model do
     @unit = @admin.unit
     @non_admin = FactoryBot.create(:member, unit: @unit)
     @event = FactoryBot.create(:event, unit: @unit)
-    @location = @unit.locations.create
+    @location = @unit.locations.create(name: "Location")
     EventLocation.create(event: @event, location: @location, location_type: "test")
   end
 
