@@ -285,6 +285,7 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
+    newrelic_rpm (9.4.2)
     nio4r (2.5.9)
     nokogiri (1.15.4-aarch64-linux)
       racc (~> 1.4)
@@ -611,6 +612,7 @@ DEPENDENCIES
   lograge
   loofah (>= 2.19.1)
   mixpanel-ruby
+  newrelic_rpm
   nokogiri (>= 1.14.3)
   noticed (~> 1.6)
   omniauth
