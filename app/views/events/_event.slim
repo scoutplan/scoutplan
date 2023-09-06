@@ -9,7 +9,10 @@ li.relative.event.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#
     = link_to unit_event_path(@unit, event),
               class: "event py-2 block border-t w-full dark:border-stone-700",
               name:  event.id,
-              data:  { turbo_action: "advance", turbo_frame: "main" } do
+              data:  { turbo_action: "advance",
+                       turbo_frame: "main",
+                       month: event.starts_at.month,
+                       year: event.starts_at.year } do
 
       .flex.flex-col.md:flex-row
         .first.time.shrink-0.md:w-24.flex.flex-row.md:flex-col.gap-1.md:gap-0.items-baseline.md:items-start
