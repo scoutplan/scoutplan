@@ -9,8 +9,6 @@ require "humanize"
 # rubocop:disable Metrics/PerceivedComplexity
 # rubocop:disable Metrics/CyclomaticComplexity
 class EventsController < UnitContextController
-  SCROLL_MONTH_INCREMENT = 1
-
   skip_before_action :authenticate_user!, only: [:public]
   before_action :find_event, except: %i[
     list calendar paged_list spreadsheet create new bulk_publish public my_rsvps signups
@@ -34,7 +32,7 @@ class EventsController < UnitContextController
 
   def list
     respond_to do |format|
-      format.html { @events = scope_for_list }
+      format.html { find_list_events }
       format.pdf { send_fridge_calendar }
       format.turbo_stream { prepare_turbo_stream }
     end
@@ -450,7 +448,7 @@ class EventsController < UnitContextController
     scope.where("starts_at BETWEEN ? AND ?", @start_date, @end_date)
   end
 
-  def scope_for_list
+  def scope_for_list()
     scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = if params[:season] == "next"
               scope.where("starts_at BETWEEN ? AND ?", @unit.next_season_starts_at, @unit.next_season_ends_at)
@@ -459,6 +457,13 @@ class EventsController < UnitContextController
             end
     scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
     scope.order(starts_at: :asc)
+  end
+
+  def find_list_events
+    scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope.order(starts_at: :asc)
+    @events = scope.all
   end
 
   def send_fridge_calendar
@@ -481,7 +486,7 @@ class EventsController < UnitContextController
     @display_month = params[:display_month]&.to_i
     @display_year  = params[:display_year]&.to_i
     @start_date    = Date.new(@current_year, @current_month, 1)
-    @end_date      = (@start_date + SCROLL_MONTH_INCREMENT.months).end_of_month.end_of_day
+    @end_date      = @start_date.end_of_month.end_of_day
     @next_month    = @end_date.next_month.beginning_of_month
     @last_month    = @start_date.prev_month
   end
