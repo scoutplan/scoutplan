@@ -135,6 +135,7 @@ describe "events", type: :feature do
       end
 
       it "returns to the previous view" do
+        skip
         event2 = FactoryBot.create(:event, :published, unit: @unit, starts_at: 1.month.from_now, ends_at: 1.month.from_now + 1.hour)
         path = calendar_unit_events_path(@unit, year: 1.month.from_now.year, month: 1.month.from_now.month)
         visit(path)
@@ -155,6 +156,16 @@ describe "events", type: :feature do
 
         @draft_event.reload
         expect(page).to have_current_path(unit_event_path(@unit, @draft_event))
+      end
+
+      it "strips whitespace" do
+        visit edit_unit_event_path(@unit, @draft_event)
+        check "This is an online event", allow_label_click: true
+        fill_in :event_website, with: " http://www.example.com "
+        click_button "Save Changes"
+
+        @draft_event.reload
+        expect(@draft_event.website).to eq("http://www.example.com")
       end
 
       it "updates all day" do

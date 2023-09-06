@@ -104,6 +104,8 @@ GEM
       capybara (~> 3.13, < 4)
       websocket-driver (>= 0.6.5)
     ast (2.4.2)
+    auto_strip_attributes (2.6.0)
+      activerecord (>= 4.0)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
     aws-partitions (1.782.0)
@@ -572,6 +574,7 @@ DEPENDENCIES
   ahoy_email
   ahoy_matey
   apparition
+  auto_strip_attributes
   awesome_print
   aws-sdk-s3
   blazer
