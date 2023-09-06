@@ -9,7 +9,7 @@ require "humanize"
 # rubocop:disable Metrics/PerceivedComplexity
 # rubocop:disable Metrics/CyclomaticComplexity
 class EventsController < UnitContextController
-  SCROLL_MONTH_INCREMENT = 2
+  SCROLL_MONTH_INCREMENT = 1
 
   skip_before_action :authenticate_user!, only: [:public]
   before_action :find_event, except: %i[
