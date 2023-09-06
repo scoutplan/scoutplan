@@ -62,11 +62,18 @@ class Event < ApplicationRecord
   validates_presence_of :title, :starts_at, :ends_at
   validate :dates_are_subsequent
   validates :attachments,
-            content_type: ["image/png", "image/jpg", "image/jpeg", "image/gif", "application/pdf",
-                           "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                           "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                           "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation"],
-            size: { less_than: 2.megabytes, message: "must be less than 2 MB" }
+            content_type: [
+              "image/png", "image/jpg", "image/jpeg", "image/gif", "application/pdf",
+              "application/msword",
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "application/vnd.ms-excel",
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              "application/vnd.ms-powerpoint",
+              "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+            ],
+            size:         {
+              less_than: 2.megabytes, message: "must be less than 2 MB"
+            }
 
   enum status: { draft: 0, published: 1, cancelled: 2, archived: 3 }
 
@@ -93,6 +100,8 @@ class Event < ApplicationRecord
   acts_as_taggable_tenant :unit_id
 
   delegate :next_season_starts_at, :next_season_ends_at, to: :unit
+
+  auto_strip_attributes :website
 
   def category_name
     event_category.name

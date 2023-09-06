@@ -5,12 +5,11 @@
 = render partial: "month_header", locals: { event: event }
 
 li.relative.event.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#{row_classes(event)}" id="event_#{event.id}")
-  a(name="event_#{event.id}")
-
   .flex.flex-row.items-center
     = link_to unit_event_path(@unit, event),
               class: "event py-2 block border-t w-full dark:border-stone-700",
-              data: { turbo_action: "advance", turbo_frame: "main" } do
+              name:  event.id,
+              data:  { turbo_action: "advance", turbo_frame: "main" } do
 
       .flex.flex-col.md:flex-row
         .first.time.shrink-0.md:w-24.flex.flex-row.md:flex-col.gap-1.md:gap-0.items-baseline.md:items-start
@@ -37,5 +36,3 @@ li.relative.event.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#
     = render partial: "events/partials/event_row/rsvp", locals: { event: event }
     = render partial: "events/partials/event_row/organize", locals: { event: event }
     = render partial: "events/partials/event_row/online", locals: { event: event }
-
-  /! Current year / month: #{@current_year} / #{@current_month}

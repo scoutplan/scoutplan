@@ -1,6 +1,6 @@
 header.relative.mb-4
   .mb-4
-    = link_to remembered_unit_events_path(@unit),
+    = link_to list_unit_events_path(@unit, anchor: "#{@event.id}"),
       class: "inline-block py-3 rounded font-bold text-cyan-600",
       data: { turbo_action: "advance" } do
 
@@ -17,13 +17,6 @@ header.relative.mb-4
       = @event.title
 
     .ml-auto.flex.flex-row.gap-3.items-center
-      / = link_to unit_event_discussion_index_path(@unit, @event),
-      /           data: { turbo_action: "advance" } do
-      /   - if @event.chat.present?
-      /     i.fa-solid.fa-bell.text-sky-500.dark:text-sky-800
-      /   - else
-      /     i.fa-regular.fa-bell.text-sky-500.dark:text-sky-800
-
       .dropdown.relative(data-controller="dropdown")
         = link_to "#", class: "text-stone-500 hover:text-stone-900 dark:hover:text-stone-400", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
           i.fa-regular.fa-circle-ellipsis.fa-2xl

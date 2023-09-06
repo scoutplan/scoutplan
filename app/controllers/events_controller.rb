@@ -448,7 +448,7 @@ class EventsController < UnitContextController
     scope.where("starts_at BETWEEN ? AND ?", @start_date, @end_date)
   end
 
-  def scope_for_list()
+  def scope_for_list
     scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = if params[:season] == "next"
               scope.where("starts_at BETWEEN ? AND ?", @unit.next_season_starts_at, @unit.next_season_ends_at)
@@ -460,7 +460,7 @@ class EventsController < UnitContextController
   end
 
   def find_list_events
-    scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = @unit.events.future.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
     scope.order(starts_at: :asc)
     @events = scope.all

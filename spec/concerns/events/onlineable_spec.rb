@@ -33,4 +33,23 @@ RSpec.describe Event::Onlineable, type: :concern do
       end
     end
   end
+
+  describe "validations" do
+    describe "website" do
+      it "is valid when blank" do
+        @event.website = ""
+        expect(@event).to be_valid
+      end
+
+      it "is valid when a valid URL" do
+        @event.website = "https://go.scoutplan.org/1234"
+        expect(@event).to be_valid
+      end
+
+      it "is invalid when an invalid URL" do
+        @event.website = "Wampeters, Foma and Granfalloons"
+        expect(@event).not_to be_valid
+      end
+    end
+  end
 end
