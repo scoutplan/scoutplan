@@ -1,7 +1,5 @@
 = turbo_frame_tag "main"
-  article.event.mx-auto.max-w-xl.mt-8.px-2.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
-    = render partial: "events/partials/show/sidecar"
-
+  article.event.mx-auto.max-w-2xl.md:mt-0.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
     section#informative.flex.flex-col.gap-1
       = render partial: "events/partials/show/header"
       = render partial: "events/partials/show/edit_rsvp_section", locals: { event: @event, presenter: @presenter }
