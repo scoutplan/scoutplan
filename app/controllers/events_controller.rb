@@ -40,7 +40,7 @@ class EventsController < UnitContextController
 
   def paged_list
     respond_to do |format|
-      format.html { @events = scope_for_list.all }
+      format.html { set_page_and_extract_portion_from scope_for_paged_list }
       format.pdf { send_fridge_calendar }
       format.turbo_stream { prepare_turbo_stream }
     end
@@ -455,6 +455,12 @@ class EventsController < UnitContextController
             else
               scope.where("starts_at BETWEEN ? AND ?", @start_date.in_time_zone, @end_date.in_time_zone)
             end
+    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope.order(starts_at: :asc)
+  end
+
+  def scope_for_paged_list
+    scope = @unit.events.future.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
     scope.order(starts_at: :asc)
   end
