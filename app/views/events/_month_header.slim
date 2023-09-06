@@ -1,5 +1,6 @@
 - if @display_month.nil? || @display_month != event.starts_at.month
-  li.border-t.border-stone-800.dark:border-stone-400.py-4.event-month-boundary(id="month_header_#{event.starts_at.strftime('%Y')}_#{event.starts_at.strftime('%m')}")
+  - class_name = "month-header-#{event.starts_at.strftime('%Y')}-#{event.starts_at.strftime('%m')}"
+  li.border-t.border-stone-800.dark:border-stone-400.py-4.event-month-boundary(class="#{class_name}")
     h3.text-brand-500.uppercase.tracking-wider(role="heading", aria-level="3")
       = event.starts_at.strftime('%B')
       - if event.starts_at.month == 1
@@ -9,3 +10,8 @@
 
 - @display_month = event.starts_at.month
 - @display_year = event.starts_at.year
+
+css:
+  .#{class_name} ~ .#{class_name} {
+    display: none;
+  }

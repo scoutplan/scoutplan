@@ -1,7 +1,4 @@
 = turbo_frame_tag :main
-  /! Current member id: #{@current_member.id}
-  /! Current unit id: #{@unit.id}
-  /! Current user id: #{current_user.id}
   .max-w-2xl.mx-auto
     header.relative.my-2
       .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
@@ -20,12 +17,10 @@
     ol#events_list(data-controller="pagination")
       = render @page.records
 
-      /! Current year / month: #{@current_year} / #{@current_month}
-
       - unless @page.last?
         = link_to "Next page",
-                  list_unit_events_path(@unit, page: @page.next_param, display_month: @display_month, display_year: @display_year),
-                  class: "text-transparent",
+                  paged_list_unit_events_path(@unit, page: @page.next_param),
+                  class: "text-transparentz",
                   data: { pagination_target: "nextPageLink" }
       
 
@@ -40,3 +35,4 @@
       #events_list .more-past-events-item:first-of-type {
         display: block;
       }
+      

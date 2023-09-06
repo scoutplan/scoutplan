@@ -14,11 +14,11 @@
               i.fa-circle-ellipsis.far.fa-2xl
             = render partial: "events/partials/index/dropdown"
 
-    ol#events_list(data-controller="pagination")
+    ol#events_list
       = render @events
       
       = link_to "Next page",
-                list_unit_events_path(@unit, year: @next_month.year, month: @next_month.month),
+                list_unit_events_path(@unit),
                 class: "text-transparent",
                 data: { pagination_target: "nextPageLink" }
 
