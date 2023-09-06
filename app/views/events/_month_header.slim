@@ -8,10 +8,10 @@
 
     .flex.flex-col.divide-y
 
+  / css:
+  /   .#{class_name} ~ .#{class_name} {
+  /     display: none;
+  /   }
+
 - @display_month = event.starts_at.month
 - @display_year = event.starts_at.year
-
-css:
-  .#{class_name} ~ .#{class_name} {
-    display: none;
-  }
