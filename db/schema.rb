@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_01_193943) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_09_112230) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -535,6 +535,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_01_193943) do
     t.string "email"
     t.boolean "allow_youth_rsvps", default: false
     t.string "slug"
+    t.string "status", default: "active"
   end
 
   create_table "user_relationships", force: :cascade do |t|
