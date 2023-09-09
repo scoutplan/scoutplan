@@ -376,9 +376,10 @@ en:
         activity:     "fa-location-exclamation"
 
       titles:
-        youth:  "Youth"
-        adults: "Adults"
-        chat:   "Discussion"
+        youth:    "Youth"
+        adults:   "Adults"
+        chat:     "Discussion"
+        organize: "Event organization"
 
     cancel:
       proceed:        "Cancel this event"

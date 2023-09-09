@@ -4,11 +4,11 @@
 .border-t.py-4.border-stone-700.font-bold
   .flex.flex-col.md:flex-row.gap-3.justify-between.md:items-center
     .left
-      i.fa-stack.mr-1
+      i.fa-stack.mr-1(title="#{t('events.show.titles.organize')}")
         i.fa-solid.fa-circle.fa-stack-2x.text-violet-700
         i.fa-solid.fa-clipboard.fa-stack-1x.text-white
 
-      = accepted_count.zero? ? t("events.show.captions.attendees_zero") : "#{pluralize(accepted_count, 'person')} are going."
+      = accepted_count.zero? ? t("events.show.captions.attendees_zero") : "#{pluralize(accepted_count, 'person')} #{substantive_verb(accepted_count)} going."
 
     .right
       = link_to unit_event_rsvps_path(@event.unit, @event),
