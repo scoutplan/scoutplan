@@ -103,4 +103,8 @@ module ApplicationHelper
       "#{words[0..-2].join(', ')}, and #{words.last}#{linking_verb ? ' are' : ''}"
     end
   end
+
+  def substantive_verb(count)
+    count == 1 ? "is" : "are"
+  end
 end
