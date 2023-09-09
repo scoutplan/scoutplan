@@ -31,6 +31,8 @@ class Unit < ApplicationRecord
   after_create :populate_categories
   before_validation :generate_slug
 
+  enum status: { active: "active", inactive: "inactive" }
+
   has_settings class_name: "UnitSettings" do |s|
     s.key :communication, defaults: {
       digest: true,

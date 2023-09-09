@@ -94,6 +94,7 @@ en:
     nickname: "Nickname"
     update_confirmation: "Your settings have been updated"
     change_password_prompt: "Upon changing your password you will be signed out and will need to sign back in with your new password. Proceed?"
+    payments: "Payments"
   
   be_verb:
     present_tense:
