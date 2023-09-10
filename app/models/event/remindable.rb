@@ -6,6 +6,10 @@ module Event::Remindable
 
   LEAD_TIME = 12.hours.freeze
 
+  included do
+    after_commit :create_reminder_job!
+  end
+
   def create_reminder_job!
     return unless published? && !ended?
 
