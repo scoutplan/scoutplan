@@ -10,7 +10,6 @@ class EventReminderNotification < ScoutplanNotification
   param :event
 
   def feature_enabled?
-    recipient.unit.settings(:communication).daily_reminder == "true" &&
-      (Flipper.enabled?(:sms_event_reminders, recipient) || ENV["RAILS_ENV"] == "test")
+    recipient.unit.settings(:communication).daily_reminder == "true"
   end
 end
