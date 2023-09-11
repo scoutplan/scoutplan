@@ -70,7 +70,7 @@ class Event < ApplicationRecord
               "application/vnd.openxmlformats-officedocument.presentationml.presentation"
             ],
             size:         {
-              less_than: 2.megabytes, message: "must be less than 2 MB"
+              less_than: 5.megabytes, message: "must be less than 5 MB"
             }
 
   enum status: { draft: 0, published: 1, cancelled: 2, archived: 3 }
