@@ -1,6 +1,10 @@
 require "rails_helper"
+require "sidekiq/testing"
+require "active_job/test_helper"
 
 RSpec.describe Message, type: :model do
+  include ActiveJob::TestHelper
+
   before do
     @adult = FactoryBot.create(:member)
     @unit = @adult.unit
@@ -8,18 +12,8 @@ RSpec.describe Message, type: :model do
     @adult.child_relationships.create(child_member: @youth)
   end
 
-  describe "resolve recipients" do
-    it "resolves actives" do
-    end
-
-    it "resolves registered" do
-    end
-
-    it "limits to adults" do
-    end
-
-    it "includes parents" do
-    end
+  it "has a valid factory" do
+    expect(FactoryBot.build(:message)).to be_valid
   end
 
   describe "event registered" do
@@ -37,25 +31,11 @@ RSpec.describe Message, type: :model do
     it "has an event cohort" do
       expect(@message.event_cohort?).to be_truthy
     end
+  end
 
-    it "includes parents" do
-      skip "TODO: fix this test"
-      expect(@service.resolve_members.count).to eq(2)
-      expect(@service.resolve_members).to include(@adult)
-    end
-
-    it "limits to adults" do
-      skip "TODO: fix this test"
-      another_adult = FactoryBot.create(:member, unit: @unit)
-      @event.rsvps.create!(member: another_adult, response: :accepted, respondent: another_adult)
-
-      # this third adult is a 'parent' of another_adult, but shouldn't be included
-      # because they're not attending the event
-      third_adult = FactoryBot.create(:member, unit: @unit)
-      third_adult.child_relationships.create(child_member: another_adult)
-
-      @message.member_type = :adults_only
-      expect(@service.resolve_members.count).to eq(1)
+  describe "lifecycle" do
+    it "enqueues a job" do
+      expect { FactoryBot.create(:message, unit: @unit) }.to change { enqueued_jobs.count }.by(1)
     end
   end
 end

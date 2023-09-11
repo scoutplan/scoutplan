@@ -2,21 +2,21 @@
 
 # things for handling messages
 class MessageService < ApplicationService
-  EVENT_REGEXP = /event_(\d+)_attendees/.freeze
-  TAG_REGEXP = /tag_(\d+)_members/.freeze
+  EVENT_REGEXP = /event_(\d+)_attendees/
+  TAG_REGEXP = /tag_(\d+)_members/
 
   def initialize(message)
     @message = message
     super()
   end
 
-  # determine which members should receive the current message
-  def resolve_members_old
-    members = resolve_member_cohort if @message.member_cohort?
-    members = resolve_event_cohort  if @message.event_cohort?
-    members.select!(&:adult?) if @message.member_type == "adults_only"
-    members
-  end
+  # # determine which members should receive the current message
+  # def resolve_members_old
+  #   members = resolve_member_cohort if @message.member_cohort?
+  #   members = resolve_event_cohort  if @message.event_cohort?
+  #   members.select!(&:adult?) if @message.member_type == "adults_only"
+  #   members
+  # end
 
   # determine which members should receive the current message
   def resolve_members

@@ -16,10 +16,10 @@ class MessagesController < UnitContextController
 
   def new
     authorize current_member.messages.new
-    @message = current_member.messages.create(audience: "everyone",
+    @message = current_member.messages.create(audience:    "everyone",
                                               member_type: "youth_and_adults",
-                                              send_at: Date.today,
-                                              status: "draft")
+                                              send_at:     Date.today,
+                                              status:      "draft")
     redirect_to edit_unit_message_path(@unit, @message)
   end
 
@@ -63,9 +63,9 @@ class MessagesController < UnitContextController
     member_status = p[:member_status]
 
     message = Message.new(
-      author: @unit.unit_memberships.first,
-      audience: audience,
-      member_type: member_type,
+      author:        @unit.unit_memberships.first,
+      audience:      audience,
+      member_type:   member_type,
       member_status: member_status
     )
     service = MessageService.new(message)
@@ -99,7 +99,7 @@ class MessagesController < UnitContextController
     when t("messages.captions.schedule_and_save")
       if MessagePolicy.new(current_member, @message).create?
         @message.update(status: :queued)
-        @notice = t("messages.notices.#{@message.send_now? ? 'message_sent' : 'message_queued'}")
+        @notice = t("messages.notices.message_sent")
       else
         @notice = "You aren't authorized to do that"
       end
@@ -108,7 +108,7 @@ class MessagesController < UnitContextController
     when t("messages.captions.send_message")
       if MessagePolicy.new(current_member, @message).create?
         @message.update(status: :outbox)
-        @notice = t("messages.notices.#{@message.send_now? ? 'message_sent' : 'message_queued'}")
+        @notice = t("messages.notices.message_sent")
       else
         @notice = "You aren't authorized to do that"
       end
@@ -118,8 +118,6 @@ class MessagesController < UnitContextController
       @message.destroy
       @notice = t("messages.notices.delete_success")
     end
-
-    SendMessageJob.perform_later(@message) if @message.queued? || @message.outbox?
   end
 
   def send_preview

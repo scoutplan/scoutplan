@@ -1,6 +1,6 @@
-# methods for dealing with cohorts and recipient lists
-# implementing classes need to define audience
-module Notifiable
+# frozen_string_literal: true
+
+module Message::Notifiable
   extend ActiveSupport::Concern
 
   EVENT_REGEXP = /event_(\d+)_attendees/
@@ -16,18 +16,15 @@ module Notifiable
 
   def recipients
     scope = unit.unit_memberships.joins(:user).order(:last_name)
-    if object.responds_to? :member_type
-      scope = scope.where(member_type: member_type == "youth_and_adults" ? %w[adult youth] : %w[adult]) # adult / youth
-    end
+    scope = scope.where(member_type: member_type == "youth_and_adults" ? %w[adult youth] : %w[adult]) # adult / youth
 
     if event_cohort?
-      event = Event.find(Regexp.last_match(1))
+      event = Event.find($1)
       scope = scope.where(id: event.rsvps.pluck(:unit_membership_id))
 
-    elsif tag_cohort?
-      tag = ActsAsTaggableOn::Tag.find(Regexp.last_match(1))
+    elsif audience =~ TAG_REGEXP
+      tag = ActsAsTaggableOn::Tag.find($1)
       scope = scope.tagged_with(tag.name)
-
     else
       scope = scope.where(status: member_status == "active_and_registered" ? %w[active registered] : %w[active])
     end
@@ -39,9 +36,5 @@ module Notifiable
 
   def event_cohort?
     audience =~ EVENT_REGEXP
-  end
-
-  def tag_cohort?
-    audience =~ TAG_REGEXP
   end
 end

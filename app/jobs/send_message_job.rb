@@ -1,29 +1,25 @@
 # frozen_string_literal: true
 
-# An ActiveJob for sending email asynchronously
 class SendMessageJob < ApplicationJob
   queue_as :default
 
-  def perform(message)
-    return unless message.send_now?
+  def perform(message, updated_at)
+    return unless message.updated_at == updated_at
 
-    message.recipients.each do |recipient|
-      MemberNotifier.new(recipient).send_message(message)
-    end
-
-    message.mark_as_sent!
+    message.send!
     send_broadcast(message)
   end
 
   private
 
+  # TODO: move this to MessageNotification
   def send_broadcast(message)
     Turbo::StreamsChannel.broadcast_replace_later_to(
       message.unit,
       :message_folders,
       partial: "messages/sidecar",
-      target: "message_folders",
-      locals: { unit: message.unit }
+      target:  "message_folders",
+      locals:  { unit: message.unit }
     )
   end
 end

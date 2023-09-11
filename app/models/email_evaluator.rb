@@ -6,7 +6,8 @@ require "openai"
 class EmailEvaluator
   AUTO_RESPONDER_HEADER = "Auto-Submitted"
   AUTO_RESPONDER_VALUES = %w[auto-replied auto-generated].freeze
-  EVENT_REGEX = /event-(.+)@.*/
+  REGEXP_EVENT   = /event-(.+)@.*/
+  REGEXP_MESSAGE = /message-(.+)@.*/
   AI_PROMPT = <<~PROMPT
     We are planning an event and receiving responses via email.
     From the following email text, extract the name of the event and then generate a
@@ -49,6 +50,7 @@ class EmailEvaluator
     from_address = @mail.from.first
 
     find_event
+    find_message
     local = to_address.split("@").first
     local_parts = local.split(".")
 
@@ -66,10 +68,18 @@ class EmailEvaluator
   end
 
   def find_event
-    @mail.to.first.match(EVENT_REGEX) do |m|
+    @mail.to.first.match(REGEXP_EVENT) do |m|
       event_token = m[1]
       @event = Event.find_by(token: event_token)
       @unit = @event&.unit
+    end
+  end
+
+  def find_message
+    @mail.to.first.match(REGEXP_MESSAGE) do |m|
+      message_token = m[1]
+      @message = Message.find_by(token: message_token)
+      @unit = @message&.unit
     end
   end
 
