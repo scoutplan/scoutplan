@@ -4,31 +4,15 @@ class ScoutplanNotification < Noticed::Base
   def format_for_twilio
     {
       From: ENV.fetch("TWILIO_NUMBER"),
-      To: recipient.phone_number,
-      Body: sms_body(recipient: recipient, event: params[:event])
+      To:   recipient.phone_number,
+      Body: sms_body(recipient: recipient, event: params[:event], params: params)
     }
   end
 
   def twilio_credentials
     {
-      account_sid: ENV.fetch("TWILIO_SID"),
-      auth_token: ENV.fetch("TWILIO_TOKEN"),
-      phone_number: ENV.fetch("TWILIO_NUMBER")
-    }
-  end
-
-  def twilio_credentials
-    {
-      account_sid: ENV.fetch("TWILIO_SID"),
-      auth_token: ENV.fetch("TWILIO_TOKEN"),
-      phone_number: ENV.fetch("TWILIO_NUMBER")
-    }
-  end
-
-  def twilio_credentials
-    {
-      account_sid: ENV.fetch("TWILIO_SID"),
-      auth_token: ENV.fetch("TWILIO_TOKEN"),
+      account_sid:  ENV.fetch("TWILIO_SID"),
+      auth_token:   ENV.fetch("TWILIO_TOKEN"),
       phone_number: ENV.fetch("TWILIO_NUMBER")
     }
   end
@@ -36,8 +20,8 @@ class ScoutplanNotification < Noticed::Base
   def sms_body(**assigns)
     renderer.render(
       template: "sms_notifications/#{base_name}",
-      format: "text",
-      assigns: assigns
+      format:   "text",
+      assigns:  assigns
     )
   end
 
@@ -61,7 +45,7 @@ class ScoutplanNotification < Noticed::Base
   def renderer
     ApplicationController.renderer.new(
       http_host: Rails.application.config.action_mailer.default_url_options[:host],
-      https: Rails.application.config.action_mailer.default_url_options[:protocol].to_s == "https"
+      https:     Rails.application.config.action_mailer.default_url_options[:protocol].to_s == "https"
     )
   end
 end

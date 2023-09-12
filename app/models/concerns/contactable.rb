@@ -4,8 +4,10 @@
 module Contactable
   extend ActiveSupport::Concern
 
+  REGEXP_ANONYMOUS = /anonymous-member-\h+@scoutplan.org/
+
   def anonymous_email?
-    contactable_object.email.match?(/anonymous-member-\h+@scoutplan.org/)
+    contactable_object.email.match?(REGEXP_ANONYMOUS)
   end
 
   def contactable?(via: :email)
@@ -15,8 +17,8 @@ module Contactable
 
   def emailable?
     contactable_object.email.present? &&
-    !contactable_object.anonymous_email? &&
-    active
+      !contactable_object.anonymous_email? &&
+      active
   end
 
   def smsable?

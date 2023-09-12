@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_09_112230) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_10_112510) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -379,6 +379,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_09_112230) do
     t.string "audience"
     t.string "member_type"
     t.string "member_status", default: "active"
+    t.string "token"
+    t.index ["token"], name: "index_messages_on_token", unique: true
   end
 
   create_table "news_items", force: :cascade do |t|

@@ -1,0 +1,5 @@
+Hi, <%= @recipient.display_first_name %>, <%= @message.author.short_display_name %> at <%= @message.unit.name %> sent a message with the subject, '<%= @message.title %>':
+
+<%= @message.preview %>
+
+Check your email for the full message.

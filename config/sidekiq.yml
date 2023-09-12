@@ -9,7 +9,3 @@
     run_tasks:
       cron: "0 * * * * *" # every minute
       class: TaskRunner
-
-    send_queued_messages:
-      cron: "0 * * * * *" # every minute
-      class: QueuedMessageSender

@@ -2,21 +2,21 @@
 
 # things for handling messages
 class MessageService < ApplicationService
-  EVENT_REGEXP = /event_(\d+)_attendees/.freeze
-  TAG_REGEXP = /tag_(\d+)_members/.freeze
+  EVENT_REGEXP = /event_(\d+)_attendees/
+  TAG_REGEXP = /tag_(\d+)_members/
 
   def initialize(message)
     @message = message
     super()
   end
 
-  # determine which members should receive the current message
-  def resolve_members_old
-    members = resolve_member_cohort if @message.member_cohort?
-    members = resolve_event_cohort  if @message.event_cohort?
-    members.select!(&:adult?) if @message.member_type == "adults_only"
-    members
-  end
+  # # determine which members should receive the current message
+  # def resolve_members_old
+  #   members = resolve_member_cohort if @message.member_cohort?
+  #   members = resolve_event_cohort  if @message.event_cohort?
+  #   members.select!(&:adult?) if @message.member_type == "adults_only"
+  #   members
+  # end
 
   # determine which members should receive the current message
   def resolve_members
@@ -26,12 +26,11 @@ class MessageService < ApplicationService
     unit          = @message.unit
 
     # start building up the scope
-    scope = unit.unit_memberships.joins(:user).order(:last_name)
-    scope = scope.where(member_type: member_type) # adult / youth
+    scope = unit.unit_memberships.joins(:user).order(:last_name).where(member_type: member_type)
 
     # filter by audience
     if audience =~ EVENT_REGEXP
-      event = Event.find($1)
+      event = unit.events.find($1)
       scope = scope.where(id: event.rsvps.accepted.pluck(:unit_membership_id))
     elsif audience =~ TAG_REGEXP
       tag = ActsAsTaggableOn::Tag.find($1)
