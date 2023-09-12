@@ -1,7 +1,5 @@
 - path = message.sent? ? unit_message_path(@unit, message) : edit_unit_message_path(@unit, message)
 
-- return unless MessagePolicy.new(@current_member, message).edit?
-
 article.hover:bg-stone-100.dark:hover:bg-stone-800.-mx-2.px-2
   = link_to path,
     class: "border-t dark:border-stone-700 block py-2 message #{message.updated_at < 4.weeks.ago ? 'older' : 'current' }",
@@ -40,4 +38,4 @@ article.hover:bg-stone-100.dark:hover:bg-stone-800.-mx-2.px-2
 
       // body preview
       p.mt-1.truncate.message-preview(style="max-width: calc(100% - 12rem;")
-        = strip_tags(message.body).presence || "(no message body)"
+        = message.body || "(no message body)"

@@ -26,12 +26,11 @@ class MessageService < ApplicationService
     unit          = @message.unit
 
     # start building up the scope
-    scope = unit.unit_memberships.joins(:user).order(:last_name)
-    scope = scope.where(member_type: member_type) # adult / youth
+    scope = unit.unit_memberships.joins(:user).order(:last_name).where(member_type: member_type)
 
     # filter by audience
     if audience =~ EVENT_REGEXP
-      event = Event.find($1)
+      event = unit.events.find($1)
       scope = scope.where(id: event.rsvps.accepted.pluck(:unit_membership_id))
     elsif audience =~ TAG_REGEXP
       tag = ActsAsTaggableOn::Tag.find($1)

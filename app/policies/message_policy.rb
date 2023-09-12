@@ -23,7 +23,7 @@ class MessagePolicy < UnitContextPolicy
   end
 
   def edit?
-    (admin? && @message.editable?) || @message.author == @membership
+    (admin? || @message.author == @membership) && @message.editable?
   end
 
   def draft?

@@ -10,7 +10,7 @@ module Message::Sendable
   def create_send_job!
     return unless queued? || outbox?
 
-    SendMessageJob.set(wait_until: send_at || Time.now.in_time_zone).perform_later(self, updated_at)
+    SendMessageJob.set(wait_until: wait_until).perform_later(self, updated_at)
   end
 
   def mark_as_sent!
@@ -20,5 +20,11 @@ module Message::Sendable
   def send!
     MessageNotification.with(message: self).deliver_later(recipients)
     mark_as_sent!
+  end
+
+  def wait_until
+    return send_at if queued?
+
+    Time.current.in_time_zone
   end
 end

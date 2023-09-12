@@ -9,6 +9,8 @@ class Message < ApplicationRecord
 
   has_many_attached :attachments
 
+  has_rich_text :body
+
   has_secure_token
 
   alias_attribute :member, :unit_membership
@@ -21,5 +23,15 @@ class Message < ApplicationRecord
 
   def editable?
     status != "sent"
+  end
+
+  def plain_text_body
+    return body.to_plain_text if body.respond_to?(:to_plain_text)
+
+    body
+  end
+
+  def preview
+    plain_text_body.truncate(50)
   end
 end

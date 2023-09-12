@@ -14,7 +14,7 @@ class EmailEvaluator
     table of people, including me, and whether they're attending:
   PROMPT
 
-  attr_reader :event, :unit, :slug, :modifier
+  attr_reader :event, :unit, :slug, :modifier, :message
 
   def initialize(inbound_email)
     @mail = inbound_email.mail

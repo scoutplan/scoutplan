@@ -58,8 +58,8 @@ class MessagesController < UnitContextController
   # passed in the request
   def recipients
     p = params.permit(:audience, :member_type, :member_status)
-    audience = p[:audience]
-    member_type = p[:member_type]
+    audience      = p[:audience]
+    member_type   = p[:member_type]
     member_status = p[:member_status]
 
     message = Message.new(

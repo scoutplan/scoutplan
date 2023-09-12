@@ -5,7 +5,7 @@ class ScoutplanNotification < Noticed::Base
     {
       From: ENV.fetch("TWILIO_NUMBER"),
       To:   recipient.phone_number,
-      Body: sms_body(recipient: recipient, event: params[:event])
+      Body: sms_body(recipient: recipient, event: params[:event], params: params)
     }
   end
 

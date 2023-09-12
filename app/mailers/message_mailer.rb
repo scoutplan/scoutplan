@@ -21,7 +21,7 @@ class MessageMailer < ApplicationMailer
   end
 
   def subject
-    "[#{@unit.name}] #{@message.title} MONKEYS!"
+    "[#{@unit.name}] #{@message.title}"
   end
 
   def to_address
