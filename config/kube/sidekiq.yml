@@ -62,11 +62,11 @@ spec:
                 secretKeyRef:
                   name: scoutplan-production
                   key: SMTP_PASSWORD
-            - name: MAPBOX_TOKEN
+            - name: TWILIO_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: scoutplan-production
-                  key: MAPBOX_TOKEN
+                  key: TWILIO_TOKEN
             - name: DO_STORAGE_SECRET
               valueFrom:
                 secretKeyRef:
