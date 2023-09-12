@@ -1,15 +1,22 @@
 = turbo_frame_tag "main"
-  .max-w-4xl.mx-auto
-    = link_to unit_messages_path(@unit),
-              class: "font-bold py-2 text-lime-600",
-              data: { turbo_action: "advance" } do
+  .min-w-3xl.max-w-3xl.mx-auto.pt-6
+    header.flex.flex-row.justify-between
+      div
+      / = link_to unit_messages_path(@unit),
+      /       class: "inline-block font-bold pb-4 text-lime-500",
+      /       data: { turbo_action: "advance" } do
+      /   .fa-stack
+      /     i.fa-regular.fa-circle.fa-stack-2x
+      /     i.fa-solid.fa-arrow-left.fa-stack-1x
+      /   = t("messages.new.buttons.cancel")
 
-      .fa-stack
-        i.fa-regular.fa-circle.fa-stack-2x
-        i.fa-solid.fa-arrow-left.fa-stack-1x
-      = t("messages.new.buttons.cancel")
+      - if @drafts_count.positive?
+        = link_to drafts_unit_messages_path(@unit),
+                  class: "block rounded px-4 py-2",
+                  data: { turbo_action: "advance" } do  
+          = t("messages.new.buttons.drafts", count: @drafts_count)
 
     = render partial: "form"
 
   javascript:
-    document.title = "New Email · #{@unit.name}"
+    document.title = "Edit Email · #{@unit.name}"

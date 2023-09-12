@@ -628,6 +628,7 @@ en:
     new:
       buttons:
         cancel: "Back to email list"
+        drafts: "%{count} drafts"
 
     tooltips:
       new_message: "Write a new email"

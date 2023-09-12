@@ -3,24 +3,32 @@
 # Controller for sending messages. Interfaces between
 # UI and *Notifier classes (e.g. MemberNotifier)
 class MessagesController < UnitContextController
-  before_action :find_message, except: [:index, :new, :create, :recipients]
+  before_action :find_message, except: [:index, :drafts, :new, :create, :recipients]
 
   def index
-    @draft_messages   = @unit.messages.draft.with_attached_attachments
-    @queued_messages  = @unit.messages.queued.with_attached_attachments
-    @sent_messages    = @unit.messages.sent.order("updated_at DESC").with_attached_attachments
-    @pending_messages = @unit.messages.pending.with_attached_attachments
+    redirect_to pending_unit_messages_path(@unit) and return if @unit.messages.pending.any?
+
+    redirect_to new_unit_message_path(@unit)
+
+    # @draft_messages   = @unit.messages.draft.with_attached_attachments
+    # @queued_messages  = @unit.messages.queued.with_attached_attachments
+    # @sent_messages    = @unit.messages.sent.order("updated_at DESC").with_attached_attachments
+    # @pending_messages = @unit.messages.pending.with_attached_attachments
+  end
+
+  def drafts
+    @messages = @unit.messages.draft.with_attached_attachments
   end
 
   def show; end
 
   def new
     authorize current_member.messages.new
-    @message = current_member.messages.create(audience:    "everyone",
-                                              member_type: "youth_and_adults",
-                                              send_at:     Date.today,
-                                              status:      "draft")
-    redirect_to edit_unit_message_path(@unit, @message)
+    @drafts_count = @unit.messages.draft.count
+    @message = current_member.messages.new(audience:    "everyone",
+                                           member_type: "youth_and_adults",
+                                           send_at:     Date.today,
+                                           status:      "draft")
   end
 
   def create

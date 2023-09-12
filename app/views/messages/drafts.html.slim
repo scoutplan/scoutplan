@@ -1,0 +1,21 @@
+= turbo_frame_tag "main"
+  .max-w-2xl.mx-auto
+    header.flex.flex-row.justify-between.items-center.mb-8
+      div
+
+      - if policy(:message).new? || true
+        = link_to new_unit_message_path(@unit),
+                  class: "block px-4 py-2 rounded font-bold text-white bg-lime-600 hover:bg-lime-700",
+                  data: { turbo_frame: "main", turbo_action: "advance" },
+                  title: t("messages.tooltips.new_message") do
+                  
+          i.fa-plus.fas.mr-2
+          = t("messages.captions.new_message")
+
+    section
+      = render partial: "message", collection: @messages
+      = render partial: "empty", locals: { message_type: "draft" } unless @messages.present?
+
+
+  javascript:
+      document.title = "Draft email · #{@unit.name}"

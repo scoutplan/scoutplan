@@ -58,6 +58,7 @@ Rails.application.routes.draw do
       post "duplicate"
       post "unpin", as: "unpin"
       collection do
+        get  "drafts"
         post "recipients", as: "recipients"
       end
       resources :attachments

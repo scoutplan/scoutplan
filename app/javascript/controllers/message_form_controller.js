@@ -8,6 +8,8 @@ export default class extends Controller {
                      "sendMessageButton", "sendLaterButton", "sendPreviewButton", "tempFileInput" ];
   static values = { unitId: Number };
 
+  files= [];
+
   connect() {
     this.updateRecipients();
     this.validate();
@@ -67,8 +69,10 @@ export default class extends Controller {
     event.preventDefault();
   }
 
-  addAttachments() {
-    this.attachmentFormTarget.requestSubmit();
+  addAttachments(event) {
+    this.files.push(event.target.files);
+    console.log(this.files);
+    this.attachmentWrapperTarget.classList.toggle("hidden", false);
   }
 
   uploadFiles() {

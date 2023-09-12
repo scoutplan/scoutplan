@@ -13,23 +13,17 @@
   - recipients << ["#{tag.name.titleize} Members & Guardians", "tag_#{tag.id}_members", "tag", "#57534e"]
 
 div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}")
-  // hidden form for attaching files
-  .hidden
-    = form_with model: @message,
-                url: unit_message_attachments_path(@unit, @message),
-                method: "post",
-                data: { message_form_target: "attachmentForm" } do |f|
-      = f.file_field :attachments,
-                    multiple: true,
-                    class: "hiddenz",
-                    data: { message_form_target: "fileInput", action: "message-form#addAttachments" }
-
   // visible form for composing
   .md:border.md:rounded-xl.md:p-12.mt-6.md:drop-shadow-lg.bg-white.dark:bg-stone-800.dark:border-stone-700
+    .hiddenz
+      = file_field_tag :attachments,
+                       multiple: true,
+                       data: { message_form_target: "fileInput", action: "message-form#addAttachments" }
+
     = form_with model: @message,
                 url: @message.new_record? ? unit_messages_path(@unit) : unit_message_path(@unit, @message),
                 method: @message.new_record? ? "post" : "patch",
-                data: { turbo_action: "advance", "message-form-unit-id-value" => @unit.id } do |f|
+                data: { turbo_action: "advance", "message-form-unit-id-value" => @unit.id } do |f|   
 
       section.flex.flex-col.divide-y.dark:divide-stone-600
 
