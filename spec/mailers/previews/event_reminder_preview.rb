@@ -25,6 +25,26 @@ class EventReminderPreview < ActionMailer::Preview
     end
   end
 
+  def event_reminder_notification_no_description
+    around_email do
+      event = Event.create!(
+        unit:           Unit.first,
+        category:       EventCategory.first,
+        title:          "Camping Trip",
+        starts_at:      12.hours.from_now,
+        ends_at:        2.days.from_now,
+        requires_rsvp:  true,
+        rsvp_closes_at: 11.hours.from_now,
+        status:         "published"
+      )
+      recipient = UnitMembership.first
+      recipient.family.each do |member|
+        event.rsvps.create_with(response: "accepted", respondent: recipient).find_or_create_by!(unit_membership: member)
+      end
+      EventReminderMailer.with(event: event, recipient: recipient).event_reminder_notification
+    end
+  end
+
   def event_reminder_notification_declined
     around_email do
       event = Event.create!(

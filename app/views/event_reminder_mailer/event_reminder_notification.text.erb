@@ -5,7 +5,7 @@
 <%= presenter.months_and_dates %> (<%= presenter.days_to_s %>)
 Full details at <%= magic_url_for(@member, unit_event_url(@unit, @event)) %>
 <% if @event.requires_rsvp? %>
-------------------------------------------------
+-----------------------------------------------------------------------
 Your family's RSVPs:
 
 <% @family.each do |family_member| %>
@@ -21,5 +21,10 @@ Respond at <%= magic_url_for(@member, unit_event_edit_rsvps_url(@unit, @unit.eve
 <% end # family_rsvps.any? %>
 <% end # rsvp_open %>
 <% end # if requires_rsvp %>
-------------------------------------------------
-The links in this email are personalized for you. Please don't forward this email to others or share links.
+<% if @event.description.present? %>
+-----------------------------------------------------------------------
+<%= @event.description.to_plain_text %>
+<% end # description.present? %>
+-----------------------------------------------------------------------
+The links in this email are personalized for you. Please don't forward
+this email to others or share links.
