@@ -20,14 +20,11 @@ section(style="font-weight:bold; padding-bottom:0.5rem;")
           tr
             td
               - if rsvp&.response == "accepted"
-                span(style="color:#16a34a;")
-                  | &#10004;
+                = image_tag(attachments["rsvp-going.png"].url, style: "width: 20px; height: 20px;")
               - elsif rsvp&.response == "declined"
-                span(style="color:#dc2626; font-weight: bold;")
-                  | &times;
+                = image_tag(attachments["rsvp-not-going.png"].url, style: "width: 20px; height: 20px;")
               - else
-                span(style="color:#0000dd; font-weight: bold;")
-                  | ?
+                = image_tag(attachments["rsvp-no-response.png"].url, style: "width: 20px; height: 20px;")
 
             td
               = "#{family_member.first_name}: "
@@ -42,8 +39,9 @@ section(style="font-weight:bold; padding-bottom:0.5rem;")
         - else
           = link_to "Respond now", magic_url_for(@member, unit_event_edit_rsvps_url(@unit, @unit.events.first)), class: "rsvp-link"
 
-section(style="line-height:140%; padding: 1rem 0; border-top: 1px solid #ddd;")
-  == @event.description
+- if @event.description.present?
+  section(style="line-height:140%; padding: 1rem 0; border-top: 1px solid #ddd;")
+    == @event.description
 
 footer(style="border-top: 1px solid #ddd; padding: 1rem 0;")
   p The links in this email are personalized for you. Please don't forward this email to others or share links.
