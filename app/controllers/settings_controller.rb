@@ -62,27 +62,27 @@ class SettingsController < UnitContextController
     task.save_schedule
   end
 
-  def set_digest_schedule
+  def set_digest_schedule_new
     @unit.settings(:communication).update!(digest: params.dig(:settings, :communication, :digest))
     SendWeeklyDigestJob.schedule_next_job(@unit)
   end
 
-  # def set_digest_schedule_old
-  #   digest_schedule_params = params.dig(:settings, :communication, :digest_schedul)
-  #   return unless digest_schedule_params
+  def set_digest_schedule
+    digest_schedule_params = params.dig(:settings, :communication, :digest_schedul)
+    return unless digest_schedule_params
 
-  #   day_of_week = digest_schedule_params[:day_of_week].to_i
-  #   hour_of_day = digest_schedule_params[:hour_of_day].to_i
-  #   digest_task = @unit.tasks.find_or_create_by(key: "digest", type: "UnitDigestTask")
-  #   rule = IceCube::Rule.weekly.day(day_of_week).hour_of_day(hour_of_day).minute_of_hour(0)
+    day_of_week = digest_schedule_params[:day_of_week].to_i
+    hour_of_day = digest_schedule_params[:hour_of_day].to_i
+    digest_task = @unit.tasks.find_or_create_by(key: "digest", type: "UnitDigestTask")
+    rule = IceCube::Rule.weekly.day(day_of_week).hour_of_day(hour_of_day).minute_of_hour(0)
 
-  #   digest_task.clear_schedule
-  #   digest_task.schedule.start_time = DateTime.now.in_time_zone # this should put IceCube into the unit's local time zone
-  #   digest_task.schedule.add_recurrence_rule rule
-  #   digest_task.schedule.add_recurrence_rule IceCube::Rule.minutely(60) if digest_schedule_params[:every_hour] == "yes"
+    digest_task.clear_schedule
+    digest_task.schedule.start_time = DateTime.now.in_time_zone # this should put IceCube into the unit's local time zone
+    digest_task.schedule.add_recurrence_rule rule
+    digest_task.schedule.add_recurrence_rule IceCube::Rule.minutely(60) if digest_schedule_params[:every_hour] == "yes"
 
-  #   digest_task.save_schedule
-  # end
+    digest_task.save_schedule
+  end
 
   def set_reminder_schedule
     reminder_enabled = params.dig(:settings, :communication, :daily_reminder) == "yes"

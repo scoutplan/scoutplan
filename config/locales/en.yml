@@ -62,6 +62,7 @@ en:
   see_below: "See below."
   time_ago: "%{value} ago"
   change: "Change"
+  change_family_responses: "Change your family's responses"
 
   global:
     back_to_top: "Back to top"
@@ -348,7 +349,7 @@ en:
         done:             "Back to Full Schedule"
         online:           "Video call"
         join:             "Join"
-        download_brief:   "Print a Trip Brief"
+        download_brief:   "Print a trip brief"
         rsvp_empty_youth: "No youth members have RSVP'd yet."
         rsvp_empty_adult: "No adult members have RSVP'd yet."
         open_link:        "Open link"

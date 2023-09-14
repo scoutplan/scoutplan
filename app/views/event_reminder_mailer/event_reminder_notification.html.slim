@@ -1,38 +1,74 @@
-- presenter = EventPresenter.new(@event)
+- presenter = EventPresenter.new(@event, @member)
 
-h3(style="margin-bottom: 1rem; color:#E66425;") = deictic_string_for_time_interval_from_day(@event.starts_at).capitalize
+h1(style="margin-bottom: 1rem;") = deictic_string_for_time_interval_from_day(@event.starts_at).capitalize
 
-section(style="font-weight:bold;")
-  p = link_to @event.title, unit_event_url(@unit.id, @event.id), style: "display: block; font-weight: bold; margin-top: 1rem;"
-  p = @event.starts_at.strftime("%A, %b %-d")
-  p
-    - if @event.starts_at.in_time_zone(@unit.time_zone).strftime('%p') == @event.ends_at.in_time_zone(@unit.time_zone).strftime('%p')
-      = @event.starts_at.in_time_zone(@unit.time_zone).strftime('%-I:%M')
-    - else
-      = @event.starts_at.in_time_zone(@unit.time_zone).strftime('%-I:%M %p')
-    |&thinsp;&ndash;&thinsp;
-    = @event.ends_at.in_time_zone(@unit.time_zone).strftime('%-I:%M %p')
+section(style="font-weight:bold; padding-bottom:0.5rem;")
+  p = link_to(@event.title, magic_url_for(@member, unit_event_url(@unit.id, @event.id)),
+              style: "display: block; font-weight: bold; margin-top: 1rem;")
+  p = presenter.months_and_dates
+  p = presenter.days_to_s
   p = @event.location
 
 - if @event.requires_rsvp?
-  section#rsvps(style="border-top: 1px solid #ddd; padding-top: 1rem;")
+  section#rsvps(style="padding: 1rem 0; border-top: 1px solid #ddd;")
     h4(style="margin: 0 0 0.5rem;") Your family's RSVPs
 
-    - @family_rsvps.each do |rsvp|
-      div(style="padding:0.2rem 0;")
-        - if rsvp.response == "accepted"
-          span(style="color:#16a34a;")
-            | &#10004;
-        - elsif rsvp.response == "declined"
-          span(style="color:#dc2626; font-weight: bold;")
-            | &times;
+    table
+      tbody
+        - @family.each do |family_member|
+          - rsvp = @family_rsvps.detect { |r| r.unit_membership_id == family_member.id }
+          tr
+            td
+              - if rsvp&.response == "accepted"
+                span(style="color:#16a34a;")
+                  | &#10004;
+              - elsif rsvp&.response == "declined"
+                span(style="color:#dc2626; font-weight: bold;")
+                  | &times;
+              - else
+                span(style="color:#0000dd; font-weight: bold;")
+                  | ?
 
-        = " #{rsvp.member.first_name}: #{rsvp.response}"
+            td
+              = "#{family_member.first_name}: "
 
-div(style="margin-top:1rem; line-height:140%; border-top:1px solid #ddd; padding-top:1rem;")
+            td
+              = rsvp.present? ? I18n.t("rsvp_#{rsvp.response}").downcase : "No response"
+
+    - if @event.rsvp_open? && EventPolicy.new(@member, @event).rsvp?
+      p(style="padding-top: 1rem;")
+        - if @family_rsvps.any?
+          = link_to "Change your response", magic_url_for(@member, unit_event_edit_rsvps_url(@unit, @unit.events.first)), class: "rsvp-link"
+        - else
+          = link_to "Respond now", magic_url_for(@member, unit_event_edit_rsvps_url(@unit, @unit.events.first)), class: "rsvp-link"
+
+section(style="line-height:140%; padding: 1rem 0; border-top: 1px solid #ddd;")
   == @event.description
+
+footer(style="border-top: 1px solid #ddd; padding: 1rem 0;")
+  p The links in this email are personalized for you. Please don't forward this email to others or share links.
 
 css:
   p {
     margin: 0 0 0.25rem 0;
+    line-height: 140%;
+  }
+
+  a.rsvp-link {
+    display: inline-block;
+    background-color: rgb(253, 224, 71);
+    color: rgb(133, 77, 14);
+    border-radius: 0.5rem;
+    padding: 0.75rem 2rem;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1.0;
+  }
+
+  a.rsvp-link:hover {
+    background-color: #facc15;
+  }
+
+  footer p {
+    font-size: 13px;
   }

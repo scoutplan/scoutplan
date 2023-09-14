@@ -1,0 +1,25 @@
+<% presenter = EventPresenter.new(@event, @member) %>
+<% presenter.plain_text = true %>
+
+<%= deictic_string_for_time_interval_from_day(@event.starts_at).capitalize %>: <%= @event.title %>
+<%= presenter.months_and_dates %> (<%= presenter.days_to_s %>)
+Full details at <%= magic_url_for(@member, unit_event_url(@unit, @event)) %>
+<% if @event.requires_rsvp? %>
+------------------------------------------------
+Your family's RSVPs:
+
+<% @family.each do |family_member| %>
+<% rsvp = @family_rsvps.detect { |r| r.unit_membership_id == family_member.id } %>
+- <%= family_member.first_name %>: <%= "going" if rsvp&.response == "accepted" %><%= "not going" if rsvp&.response == "declined" %><%= "no response" if rsvp.blank? %>
+<% end %>
+
+<% if @event.rsvp_open? && EventPolicy.new(@member, @event).rsvp? %>
+<% if @family_rsvps.any? %>
+Change your response at <%=magic_url_for(@member, unit_event_edit_rsvps_url(@unit, @unit.events.first)) %>
+<% else %>
+Respond at <%= magic_url_for(@member, unit_event_edit_rsvps_url(@unit, @unit.events.first)) %>
+<% end # family_rsvps.any? %>
+<% end # rsvp_open %>
+<% end # if requires_rsvp %>
+------------------------------------------------
+The links in this email are personalized for you. Please don't forward this email to others or share links.

@@ -3,7 +3,7 @@
 # Policy class governing Events and what members can do with them
 class EventRsvpPolicy < UnitContextPolicy
   attr_accessor :membership, :rsvp, :event
-  
+
   def initialize(membership, rsvp)
     super
     @membership = membership

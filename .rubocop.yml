@@ -32,5 +32,15 @@ Metrics/BlockLength:
   Exclude:
     - "spec/**/*"
 
+Metrics/MethodLength:
+  Exclude:
+    - "spec/**/*"
+  
+  CountAsOne:
+    - "hash"
+    - "array"
+    - "heredoc"
+    - "method_call"
+
 Naming/BlockForwarding:
   EnforcedStyle: explicit
