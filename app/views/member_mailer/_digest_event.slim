@@ -3,7 +3,7 @@
 - @service = RsvpService.new(@member, event)
 
 .item
-  = link_to [event.unit, event],
+  = magic_link_to @member, [event.unit, event],
             class: "imminent-event",
             style: "line-height:150%;margin-bottom:1rem;color:#57534E;text-decoration:none;display:block;line-height:150%;padding-top:18px;" do
 
@@ -53,24 +53,37 @@
 
     // TODO: this if statement should call into a Policy instead
     - if @member.adult?
-      div(style="text-align:center;margin-top:1rem;margin-bottom:1.5rem;")
+      div(style="margin-top:1rem;margin-bottom:1.5rem;")
         - if !event.rsvp_open?
           = "RSVP is Closed"
           
         - elsif family_rsvps.count.zero?
-          = link_to "RSVP Needed",
+          = magic_link_to @member, "RSVP Needed",
                     unit_event_edit_rsvps_url(event.unit, event),
-                    class: "rsvp-needed-link",
-                    style: "background:#E66425;border:1px solid #E66425;color:white;display:inline-block;padding:0.5rem 3rem;border-radius:4px;text-align:center;text-decoration:none;font-weight:700;letter-spacing:1px;text-transform:uppercase;"
+                    class: "rsvp-link rsvp-needed-link"
 
         - elsif !@service.family_fully_responded?
-          = link_to "Complete your RSVP",
+          = magic_link_to @member, "Complete your RSVP",
                     unit_event_edit_rsvps_url(event.unit, event),
-                    class: "rsvp-needed-link",
-                    style: "background:#E66425;border:1px solid #E66425;color:white;display:inline-block;padding:0.5rem 3rem;border-radius:4px;text-align:center;text-decoration:none;font-weight:700;letter-spacing:1px;text-transform:uppercase;"
+                    class: "rsvp-link rsvp-needed-link"
 
         - else
-          = link_to "Change RSVP",
+          = magic_link_to @member, "Change RSVP",
                     unit_event_edit_rsvps_url(event.unit, event),
-                    class: "rsvp-change-link",
-                    style: "border:1px solid rgb(0,0,0,0.5);color:rgb(0,0,0,0.5);display:inline-block;padding:0.5rem 3rem;border-radius:4px;text-align:center;text-decoration:none;font-weight:700;letter-spacing:1px;text-transform:uppercase;"
+                    class: "rsvp-link rsvp-change-link"
+
+css:
+  a.rsvp-link {
+    display: inline-block;
+    background-color: rgb(253, 224, 71);
+    color: rgb(133, 77, 14);
+    border-radius: 0.5rem;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1.0;
+  }
+
+  a.rsvp-link:hover {
+    background-color: #facc15;
+  }

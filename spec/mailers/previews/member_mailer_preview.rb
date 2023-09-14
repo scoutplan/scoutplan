@@ -4,7 +4,7 @@
 class MemberMailerPreview < ActionMailer::Preview
   def digest_email
     member = Unit.first.members.first
-    news_items = member.unit.news_items.queued
+    @unit = member.unit
     member.unit.events.where(title: "Preview Test Event").destroy_all
     event = member.unit.events.new(
       title: "Preview Test Event",
@@ -15,7 +15,8 @@ class MemberMailerPreview < ActionMailer::Preview
       event_category: member.unit.event_categories.first
     )
     event.save!
-    MemberMailer.with(member: member, news_items: news_items).digest_email
+    @this_week_events = @unit.events.published.this_week
+    MemberMailer.with(member: member, this_week_events: @this_week_events).digest_email
   end
 
   def digest_email_without_upcoming_events

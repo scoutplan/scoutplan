@@ -21,22 +21,15 @@ header.relative.mb-4
         = link_to "#", class: "text-stone-500 hover:text-stone-900 dark:hover:text-stone-400", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
           i.fa-regular.fa-circle-ellipsis.fa-2xl
 
-        .dropdown-menu.absolute.right-0.bg-brand-500.z-20.rounded.text-white.top-full.animate-pop-open.w-80.mt-1
+        .dropdown-menu.absolute.right-0.bg-brand-500.z-20.rounded.text-white.top-full.animate-pop-open.w-96.mt-4
           ul
             = render partial: "events/partials/show/sidecar/edit"
             = render partial: "events/partials/show/sidecar/duplicate"
             = render partial: "events/partials/show/sidecar/history"
             = render partial: "events/partials/show/sidecar/download_brief"
-            = render partial: "events/partials/show/sidecar/send_email_invite"
-
-            li
-              = link_to unit_event_path(@unit, @event, format: :ics),
-                        class: "block px-4 py-2 hover:bg-brand-600",
-                        data: { action: "dropdown#close" } do
-
-                i.fa-fw.fa-solid.fa-calendar-arrow-down.mr-2
-                = "Download a calendar invite"
-
+            = render partial: "events/partials/show/sidecar/remind"
+            = render partial: "events/partials/show/sidecar/download_ics"
+            hr
             = render partial: "events/partials/show/sidecar/adjacent_events"
 
   ul.tag-list.py-2

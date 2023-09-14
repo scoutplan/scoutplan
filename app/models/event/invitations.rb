@@ -12,7 +12,6 @@ module Event::Invitations
   # invite a member to this event
   def invite!(member)
     return unless member.present?
-    return if invited?(member)
 
     EventInvitationMailer.with(event_id: id, member: member).event_invitation_email.deliver_later
   end

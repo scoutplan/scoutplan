@@ -1,0 +1,7 @@
+li
+  = link_to unit_event_path(@unit, @event, format: :ics),
+            class: "block px-4 py-2 hover:bg-brand-600",
+            data: { action: "dropdown#close" } do
+
+    i.fa-fw.fa-solid.fa-calendar-arrow-down.mr-2
+    = "Add to calendar via download"

@@ -8,6 +8,9 @@ class EventInvitationMailer < ScoutplanMailer
   layout "event_invitation_mailer"
 
   def event_invitation_email
+    @family       = @member.family
+    @family_rsvps = @event.rsvps.where(unit_membership_id: @family.pluck(:id)) || []
+
     attachments[@event.ical_filename] = ics_attachment
     mail(from: from_address, to: to_address, reply_to: reply_to_address, subject: subject)
     persist_invitation
