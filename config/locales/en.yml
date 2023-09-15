@@ -424,9 +424,10 @@ en:
         search: "Search for members by name"
 
     titles:
-      new:  "Add an Event"
-      edit: "Change Event Details"
+      new:  "Add an event"
+      edit: "Change event details"
       sub_event: "Add an activity to %{parent_event_title}"
+      add_to_calendar: "Add this to your calendar"
         
   members:
     name:             "Name"

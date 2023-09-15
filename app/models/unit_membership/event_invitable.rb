@@ -20,7 +20,7 @@ module UnitMembership::EventInvitable
   def enqueue_event_invitation_job!(when_to_run = :now)
     return unless receives_event_invitations?
 
-    wait_until = when_to_run == :now ? 1.minute.from_now : next_event_invitation_runs_at
+    wait_until = when_to_run == :now ? 1.second.from_now : next_event_invitation_runs_at
     EventInvitationJob.set(wait_until: wait_until).perform_later(self)
   end
 end

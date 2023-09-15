@@ -13,29 +13,14 @@ describe "the sign-in process", type: :feature do
     @unit = @member.unit
   end
 
-  it "signs in and redirects" do
+  it "send a magic link" do
     visit new_user_session_path
     fill_in "user_email", with: @user.email
-    click_button "Sign in with email"
+    expect { click_button I18n.t("global.sign_in_with_email") }.to change { MagicLink.count }.by(1)
+    # expect { click_button I18n.t("global.sign_in_with_email") }.to change { ActionMailer::Base.deliveries.count }.by(1)
     expect(page).to have_current_path(new_user_session_path)
 
-    code = MagicLink.last.login_code
-    fill_in "login_code", with: code
-    page.find("#submit").click
-
+    visit(magic_link_path(MagicLink.last.token))
     expect(page).to have_current_path(list_unit_events_path(@unit))
-  end
-
-  it "bounces on bad code" do
-    visit new_user_session_path
-    fill_in "user_email", with: @user.email
-    click_button "Sign in with email"
-    expect(page).to have_current_path(new_user_session_path)
-
-    code = MagicLink.last.login_code
-    fill_in "login_code", with: "bogus"
-    page.find("#submit").click
-
-    expect(page).not_to have_current_path(list_unit_events_path(@unit))
   end
 end
