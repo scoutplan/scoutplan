@@ -29,9 +29,9 @@ class MemberNotifier < ApplicationNotifier
     find_events
 
     send_email do |recipient|
-      MemberMailer.with(member: recipient,
+      MemberMailer.with(member:           recipient,
                         this_week_events: @this_week_events,
-                        upcoming_events: @upcoming_events).digest_email.deliver_later
+                        upcoming_events:  @upcoming_events).digest_email.deliver_later
     end
 
     send_text { |recipient| DigestTexter.new(recipient, @this_week_events).send_message }

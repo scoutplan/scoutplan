@@ -13,8 +13,8 @@ html
 
   body(class="bg-stone-100 text-gray-600 #{controller_name} #{action_name}")
     .mx-auto.max-w-md
-      header.pt-8.px-2
-        = image_tag "https://scoutplan.github.io/assets/scoutplan_logo_sm.png", class: "w-32 mx-auto"
+      header.pt-8.pb-4
+        = image_tag "scoutplan_logo.svg", class: "w-32 mx-auto"
 
       - if flash[:notice].present?
         p.py-6.mx-2.font-bold.text-left
