@@ -124,6 +124,7 @@ Rails.application.routes.draw do
       get   "cancel"
       get   "organize"
       get   "history"
+      get   "add_to_calendar"
       post  "cancel", to: "events#perform_cancellation"
       patch "rsvp", as: "send_rsvps", to: "events#create_or_update_rsvps"
 
@@ -156,6 +157,8 @@ Rails.application.routes.draw do
         get  "import",      to: "unit_memberships_import#new"
         post "import",      to: "unit_memberships_import#create"
       end
+
+      resources :test_communications, module: :unit_memberships, only: %i[index create]
     end
 
     resources :wiki_pages, path: "pages" do
@@ -187,14 +190,13 @@ Rails.application.routes.draw do
   # TODO: rationalize all this
   get "profile/:user_id/edit", to: "profile#edit", as: "edit_profile"
   get "profile/:user_id/payments", to: "profile#payments", as: "profile_payments"
+  get "profile/:user_id/test", to: "profile#test", as: "test"
 
   # Member profile settings
   get "member_profile", to: "unit_membership_profiles#index", as: "member_profiles"
   get "member_profile/:unit_membership_id", to: "unit_membership_profiles#index", as: "member_profile"
   get "member_profile/:unit_membership_id/calendar", to: "unit_membership_profiles#calendar", as: "member_calendar_profile"
   post "member_profile/:unit_membership_id", to: "unit_membership_profiles#update", as: "update_member_profile"
-
-  post "units/:unit_id/members/:member_id/test_communication", to: "test_communications#create", as: "create_test_communication"
 
   resources :member_relationships, as: "relationships", path: "relationships", only: %i[destroy]
   resources :event_rsvps, except: [:index, :show, :edit, :update, :new]
@@ -211,7 +213,6 @@ Rails.application.routes.draw do
   end
 
   get ":token", to: "magic_links#resolve", as: "magic_link", constraints: { token: /[0-9a-f]{12}/ }
-  get ":login_code", to: "magic_links#resolve", as: "login_code_link", constraints: { token: /[0-9]{6}/ }
   get "link_expired", to: "magic_links#expired", as: "expired_magic_link"
 
   post "webhooks/mailgun/receive", to: "mailgun#receive"

@@ -18,10 +18,4 @@ RSpec.describe MagicLink, type: :model do
   it "generates a MagicLink" do
     expect(MagicLink.generate_link(@member, @path)).to be_a MagicLink
   end
-
-  it "generates a non-expiring link" do
-    magic_link = MagicLink.generate_non_expiring_link(@member, @path)
-    expect(magic_link.expires?).to be_falsey
-    expect(magic_link.expires_at).to be_nil
-  end
 end

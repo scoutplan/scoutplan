@@ -20,11 +20,11 @@ section(style="font-weight:bold; padding-bottom:0.5rem;")
           tr
             td
               - if rsvp&.response == "accepted"
-                = image_tag(attachments["rsvp-going.png"].url, style: "width: 20px; height: 20px;")
+                image(style="width: 20px; height: 20px;" src="data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("app/assets/images/rsvp-going.png")))}")
               - elsif rsvp&.response == "declined"
-                = image_tag(attachments["rsvp-not-going.png"].url, style: "width: 20px; height: 20px;")
+                image(style="width: 20px; height: 20px;" src="data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("app/assets/images/rsvp-not-going.png")))}")
               - else
-                = image_tag(attachments["rsvp-no-response.png"].url, style: "width: 20px; height: 20px;")
+                image(style="width: 20px; height: 20px;" src="data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("app/assets/images/rsvp-no-response.png")))}")
 
             td
               = "#{family_member.first_name}: "
@@ -44,7 +44,7 @@ section(style="font-weight:bold; padding-bottom:0.5rem;")
     == @event.description
 
 footer(style="border-top: 1px solid #ddd; padding: 1rem 0;")
-  p The links in this email are personalized for you. Please don't forward this email to others or share links.
+  p The links in this email are personalized for you and expire in seven days. Please don't forward this email to others or share links.
 
 css:
   p {

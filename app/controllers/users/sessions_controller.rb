@@ -10,17 +10,9 @@ module Users
     end
 
     def create
-      if params[:login_code].present?
-        if (magic_link = MagicLink.find_by(login_code: params[:login_code]))
-          sign_in(magic_link.user)
-          magic_link.user.remember_me! if params[:remember_me] == "1"
-          session[:via_magic_link] = true
-          redirect_to magic_link.path
-        else
-          flash[:alert] = "Invalid login code"
-          redirect_to root_path
-        end
-      elsif params[:user][:email].present? && params[:user][:password].present?
+      sign_in_via_magic_link if params[:token].present?
+
+      if params[:user][:email].present? && params[:user][:password].present?
         self.resource = warden.authenticate!(auth_options)
         set_flash_message!(:notice, :signed_in)
         sign_in(resource_name, resource)
@@ -53,8 +45,16 @@ module Users
 
     def send_session_email
       member = @current_unit.membership_for(@user)
-      magic_link = MagicLink.generate_link(member, target_path, ttl: 1.hour)
+      magic_link = MagicLink.generate_link(member, target_path, 1.hour)
       UserMailer.with(magic_link: magic_link).session_email.deliver_later
+    end
+
+    def sign_in_via_magic_link
+      magic_link = MagicLink.find_by(token: params[:token])
+      sign_in(magic_link.user)
+      magic_link.user.remember_me!
+      session[:via_magic_link] = true
+      redirect_to magic_link.path
     end
 
     def target_path

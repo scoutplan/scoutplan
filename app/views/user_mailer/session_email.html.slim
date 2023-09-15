@@ -1,13 +1,13 @@
-- content_for :title do
-  div(style="color: rgb(230, 100, 37); line-height:1.2;")
-    | Right this way to Scoutplan&#8230;
+section(style="padding: 1rem 0; border-top: 1px solid #ddd;")
+  h1(style="margin: 0 0 2rem 0; font-size: 2rem;") Right this way...
 
-- content_for :left_column do
-  p(style="font-size:21px; line-height: 1.3;") Enter this code in your open browser to sign in:
+  p(style="margin-bottom: 2rem;") You requested a sign-in link, and here it is!
+  
+  p
+    = link_to "Sign in to Scoutplan",
+              magic_link_url(token: @magic_link.token),
+              class: "button button-green text-lg"
 
-  p(style="font-size:48px; line-height: 1.3; display: block; text-align: center; background: #eee; padding: 15px 10px; margin: 10px 0; letter-spacing: 4px; border-radius: 5px;") 
-    = @magic_link.login_code
-
-  p(style="color: #888;")
-    | Or you can #{link_to "sign in directly", magic_link_url(token: @magic_link.token), style: "color: blue; text-decoration: none;"}. 
-    | Your code expires shortly and is uniquely yours. Please don't forward or share it with anyone else.
+footer(style="border-top: 1px solid #ddd; padding: 1rem 0;")
+  p(style="font-size:90%; color: #888; margin: 0;")
+    | The link in this email is personalized for you and is valid for one hour. Please don't forward this email to others or share links.

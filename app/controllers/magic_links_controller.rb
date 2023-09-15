@@ -23,9 +23,6 @@ class MagicLinksController < ApplicationController
     redirect_to @magic_link.path
   end
 
-  def resolve_login_code
-  end
-
   def expired; end
 
   def current_member; end
@@ -34,6 +31,5 @@ class MagicLinksController < ApplicationController
 
   def find_magic_link
     @magic_link = MagicLink.find_by(token: params[:token]) if params[:token].present?
-    @magic_link = MagicLink.find_by(login_code: params[:login_code]) if params[:login_code].present?
   end
 end
