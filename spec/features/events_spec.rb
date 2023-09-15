@@ -11,7 +11,7 @@ describe "events", type: :feature do
     @admin_user  = FactoryBot.create(:user, email: "test_admin@scoutplan.org")
     @normal_user = FactoryBot.create(:user, email: "test_normal@scoutplan.org")
 
-    @unit  = FactoryBot.create(:unit)
+    @unit = FactoryBot.create(:unit)
     @draft_event = FactoryBot.create(:event, :draft, unit: @unit, title: "Draft Event")
     @published_event = FactoryBot.create(:event, :published, unit: @unit, title: "Published Event")
 
@@ -106,6 +106,20 @@ describe "events", type: :feature do
       it "shows an Event with a location" do
         location = FactoryBot.create(:location, unit: @unit)
         @draft_event.event_locations.create(location: location, location_type: :arrival)
+        path = unit_event_path(@unit, @draft_event)
+        visit(path)
+        expect(page).to have_current_path(path)
+      end
+
+      it "shows an event without only a departure location" do
+        location = FactoryBot.create(:location, unit: @unit)
+        @draft_event.event_locations.destroy_all
+        @draft_event.event_locations.create!(location: location, location_type: :departure)
+
+        # ap @draft_event.event_locations
+        # ap @draft_event.map_address
+        # ap CGI.escape(@draft_event.map_address.gsub(",", ""))
+
         path = unit_event_path(@unit, @draft_event)
         visit(path)
         expect(page).to have_current_path(path)

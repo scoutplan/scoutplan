@@ -1,3 +1,4 @@
+- return unless @event.map_address.present?
 - return unless (query = CGI.escape(@event.map_address.gsub(",", "")))
 
 iframe.mb-4(
