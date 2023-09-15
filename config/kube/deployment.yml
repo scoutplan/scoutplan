@@ -126,7 +126,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: scoutplan-production
-                  key: STRIPE_SECRET_KEY            
+                  key: STRIPE_SECRET_KEY  
+            - name: SCOUT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: SCOUT_KEY          
             - name: DO_STORAGE_SECRET
               valueFrom:
                 secretKeyRef:
