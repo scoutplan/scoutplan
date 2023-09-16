@@ -1,7 +1,8 @@
 = turbo_frame_tag "main"
   .max-w-sm.mx-auto.w-full
     header.mb-4
-      h1.text-4xl.font-bold = @current_member.full_display_name
+      h1.text-4xl.font-bold = @target_member.full_display_name
+      p = @target_member.email
 
     = button_to "Send digest",
                 unit_member_test_communications_path(@unit, @current_member,message_type: "digest"),

@@ -3,12 +3,12 @@
 - row_classes += " member-admin" if unit_membership.admin?
 - row_classes += " member-inactive" if unit_membership.status_inactive?
 
-article.member.relative.flex.flex-row.items-center(class="#{row_classes}")
+article.member.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#{row_classes}")
   = render partial: "unit_memberships/partials/index/checkbox", locals: { unit_membership: unit_membership }
 
-  = link_to unit_member_path(@unit, unit_membership), class: "block px-2 py-4 hover:bg-stone-100 dark:hover:bg-stone-800 grow", data: { turbo_action: "advance" } do
+  = link_to unit_member_path(@unit, unit_membership), class: "block py-4 grow", data: { turbo_action: "advance" } do
     = render partial: "unit_memberships/partials/index/name", locals: { unit_membership: unit_membership }
     .extended-member-info
       = render partial: "unit_memberships/partials/index/email", locals: { unit_membership: unit_membership }
       = render partial: "unit_memberships/partials/index/phone", locals: { unit_membership: unit_membership }
-      = render partial: "unit_memberships/partials/index/family", locals: { unit_membership: unit_membership }
+      / = render partial: "unit_memberships/partials/index/family", locals: { unit_membership: unit_membership }

@@ -1,14 +1,13 @@
 = turbo_frame_tag("main")
-  .max-w-xl.mx-auto
-    = render partial: "unit_memberships/partials/index/sidecar"
+  .max-w-2xl.mx-auto
+    / = render partial: "unit_memberships/partials/index/sidecar"
     = render partial: "unit_memberships/partials/index/header"
     = form_tag bulk_update_unit_members_path(@unit), id: "bulk_edit_form"
       = render "member_bulk_edit_panel"
 
-      .divide-y.divide-stone-300
-        - ("A".."Z").each do |letter|
-          - letter_memberships = @unit_memberships.select{ |m| m.first_name.first.downcase == letter.downcase }
-          = render partial: "member_index", locals: { letter: letter, unit_memberships: letter_memberships } if letter_memberships.present?
+      - ("A".."Z").each do |letter|
+        - letter_memberships = @unit_memberships.select{ |m| m.first_name.first.downcase == letter.downcase }
+        = render partial: "member_index", locals: { letter: letter, unit_memberships: letter_memberships } if letter_memberships.present?
 
   javascript:
     document.title = "Member Roster · #{@unit.name}"

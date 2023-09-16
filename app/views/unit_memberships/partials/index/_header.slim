@@ -1,8 +1,14 @@
-header
-  .flex.flex-row.justify-between.mt-8.px-2
-    h1.text-3xl.font-bold.mb-2
+header.relative.my-2
+  .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
+
+  .flex.flex-row.justify-between.items-center
+    h1.text-4xl.font-bold.mb-2
       = t("members.index.page_title")
-      .text-sm.uppercase.tracking-wider.text-stone-500 = @unit.name
     
-    div
-      = render partial: "new_member_button"
+    .right
+      .dropdown
+        = link_to "#", class: "dropdown-button inline-block text-stone-500 hover:text-stone-900 dark:hover:text-stone-300" do
+          i.fa-circle-ellipsis.far.fa-2xl
+        = render partial: "unit_memberships/partials/index/dropdown"
+
+  = render partial: "search_field"

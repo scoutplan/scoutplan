@@ -1,6 +1,6 @@
 // search field
 - if true
-  .relative.md:inline-block.w-full
+  .block.relative
     = search_field_tag(:search, 
       "",
       class: "block w-full rounded px-2 py-2 bg-stone-100 border border-stone-300 dark:bg-black dark:border-stone-700 placeholder-stone-400",
@@ -12,19 +12,19 @@
     i.fa-magnifying-glass.fas.absolute.right-3(style="top:50%;transform:translateY(-50%);")
 
 javascript:
-  // search functionality
-  // adapted from https://www.w3schools.com/howto/howto_js_filter_table.asp
   function performNameSearch() {
     var input = document.querySelector('#search');
     var filter = input.value.toUpperCase();
-
     var rows = document.querySelectorAll('article.member');
+
+    console.log(filter);
+    console.log(rows.length);
     rows.forEach(function(row) {
       var nameCell = row.querySelector('.member-name');
 
       // the normalize and replace voodoo converts diacriticals to undecorated letters, e.g. ñ -> n
       var name = nameCell.innerText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      if (filter.length < 0 || name.toUpperCase().indexOf(filter) > -1) {
+      if (filter.length == 0 || name.toUpperCase().indexOf(filter) > -1) {
         row.style.display = '';
       } else {
         row.style.display = 'none';

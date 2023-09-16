@@ -24,7 +24,7 @@ RSpec.describe MemberMailer, type: :mailer do
     end
 
     it "renders the headers" do
-      expect(@mail.subject).to eq("#{@unit.name} Digest")
+      expect(@mail.subject).to eq("[#{@unit.name}] Weekly Digest")
     end
 
     it "correctly renders the body" do
