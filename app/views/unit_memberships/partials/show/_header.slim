@@ -8,8 +8,16 @@ header.mb-2.pb-2.border-b.border-stone-800
       i.fa-solid.fa-arrow-left.fa-stack-1x
     = "Back to member list"  
 
-  h3.font-bold.text-3xl.mb-2
-    = @target_membership.full_display_name
+  .flex.flex-row.justify-between.items-center
+    h3.font-bold.text-3xl.mb-2
+      = @target_membership.full_display_name
+
+    .right
+      = link_to edit_unit_member_path(@unit, @target_membership),
+                class: "btn btn-primary btn-sm",
+                data: { turbo_action: "advance" } do
+        i.fa-solid.fa-pencil-alt.mr-1
+        = "Edit"
 
   div
     = render partial: "unit_memberships/member_badges", locals: { unit_membership: @target_membership }

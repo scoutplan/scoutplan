@@ -16,7 +16,7 @@ section.py-4(data-controller="autocomplete")
 
     = f.label :child_relationships, "Can RSVP on behalf of:", class: "block font-bold mb-1"
     
-    div.rounded.border.border-stone-300.px-2.py-0
+    div.rounded.border.border-stone-300.px-2.py-0.dark:bg-stone-800.dark:border-stone-700
       .flex.flex-wrap.gap-1.items-center
         // left part: list of organizers
         div.flex.flex-wrap.gap-1(data-autocomplete-target="list")
@@ -26,7 +26,7 @@ section.py-4(data-controller="autocomplete")
         // right part: input field
         .flex-initial.relative
           = text_field_tag :organizers, "",
-                            class: "w-full px-0 focus:ring-0 focus:outline-none focus:border-0 border-0 w-full placeholder:text-stone-300",
+                            class: "w-full px-0 focus:ring-0 focus:outline-none focus:border-0 border-0 w-full placeholder:text-stone-300 bg-transparent",
                             autocomplete: "off",
                             placeholder: "Type a name",
                             data: { autocomplete_target: "query", action: "keyup->autocomplete#search" }
