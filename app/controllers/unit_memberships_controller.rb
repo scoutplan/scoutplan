@@ -8,7 +8,7 @@ class UnitMembershipsController < ApplicationController
   def index
     authorize UnitMembership
     @unit_memberships = @unit.memberships.includes(
-      :user,
+      :user, :tags,
       { parent_relationships: { parent_unit_membership: :user } },
       { child_relationships: { child_unit_membership: :user } }
     ).order("users.first_name, users.last_name ASC")
@@ -17,8 +17,7 @@ class UnitMembershipsController < ApplicationController
     @membership.build_user
   end
 
-  def edit
-  end
+  def edit; end
 
   def new
     @target_membership = @unit.memberships.build(role: "member")

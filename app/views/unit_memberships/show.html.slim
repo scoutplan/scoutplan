@@ -1,12 +1,10 @@
 - @page_title = [@unit.name, "Members", @target_membership.full_display_name]
 
 = turbo_frame_tag "main"
-  article.mt-8.max-w-xl.mx-auto.flex.flex-col.gap-4.relative
-    = render partial: "unit_memberships/partials/show/sidecar"
+  article.mt-8.max-w-2xl.mx-auto.flex.flex-col.gap-4.relative
     = render partial: "unit_memberships/partials/show/header"
     = render partial: "unit_memberships/partials/show/basics"
     = render partial: "unit_memberships/partials/show/relationships"
-    / = render partial: "unit_memberships/partials/show/messages"
     = render partial: "unit_memberships/partials/show/watermark"
 
   javascript:
