@@ -1,37 +1,38 @@
-.max-w-lg.mx-auto
-  = form_tag import_unit_members_path(@unit), multipart: true, data: { turbo: false }
-    = hidden_field_tag :authenticity_token, form_authenticity_token
+= turbo_frame_tag "main" do
+  .max-w-lg.mx-auto
+    = form_tag import_unit_members_path(@unit), multipart: true, data: { turbo: false }
+      = hidden_field_tag :authenticity_token, form_authenticity_token
 
-    header
-      = link_to unit_unit_memberships_path(@unit),
-                class: "text-center font-bold no-underline inline-block w-full md:w-fit py-3 md:py-2 text-purple-500 hover:text-purple-600",
-                id: "cancel_location_button" do
-                
-        i.fa-stack
-          i.fa-regular.fa-circle.fa-stack-2x
-          i.fa-solid.fa-arrow-left.fa-stack-1x
+      header
+        = link_to unit_unit_memberships_path(@unit),
+                  class: "text-center font-bold no-underline inline-block w-full md:w-fit py-3 md:py-2 text-purple-500 hover:text-purple-600",
+                  id: "cancel_location_button" do
+                  
+          i.fa-stack
+            i.fa-regular.fa-circle.fa-stack-2x
+            i.fa-solid.fa-arrow-left.fa-stack-1x
 
-        = "Back to member roster"      
+          = "Back to member roster"      
 
-      h1.text-4xl.font-bold = t("members.import.title")
+        h1.text-4xl.font-bold = t("members.import.title")
 
-    section
-      .py-4
-        = label :roster_file, t("members.import.roster_file"), class: "block font-bold mb-1"
-        = file_field_tag :roster_file, class: "rounded border w-full py-2 px-4"
+      section
+        .py-4
+          = label :roster_file, t("members.import.roster_file"), class: "block font-bold mb-1"
+          = file_field_tag :roster_file, class: "rounded border w-full py-2 px-4"
 
-    footer
-      = submit_tag t("global.next"), class: "rounded bg-brand-500 text-white px-8 py-2 font-bold"
+      footer
+        = submit_tag t("global.next"), class: "rounded bg-brand-500 text-white px-8 py-2 font-bold"
 
-  section.flex.flex-col.gap-3.mt-8
-    ul.list-disc
-      li.py-1
-        | Your import file should be in CSV (not UTF-8) format with a first-row header containing the following columns (in any order):    
-        ul.list-square.ml-8
-          li first_name
-          li last_name
-          li email
-          li phone
+    section.flex.flex-col.gap-3.mt-8
+      ul.list-disc
+        li.py-1
+          | Your import file should be in CSV (not UTF-8) format with a first-row header containing the following columns (in any order):    
+          ul.list-square.ml-8
+            li first_name
+            li last_name
+            li email
+            li phone
 
-      li.py-1 Imported members won't receive any kind of welcome or invitation email. When you're ready, you can subsequently send invitations from the member roster.
-      li.py-1 Imported members will be marked as Active. You can change individual member statuses afterward.
+        li.py-1 Imported members won't receive any kind of welcome or invitation email. When you're ready, you can subsequently send invitations from the member roster.
+        li.py-1 Imported members will be marked as Active. You can change individual member statuses afterward.

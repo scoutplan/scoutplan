@@ -466,7 +466,7 @@ en:
       phone: "111-222-3333 (optional)"
 
     index:
-      new_button_caption: "Add"
+      new_button_caption: "Add a member"
       page_title: "Member Roster"
       show_inactive: "Show inactive members"
       hide_inactive: "Hide inactive members"

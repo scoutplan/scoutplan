@@ -25,9 +25,9 @@ class MemberMailer < ScoutplanMailer
     @this_week_events = params[:this_week_events]
     @upcoming_events = params[:upcoming_events]
     mail(
-      to: @to_address,
-      from: @from_address,
-      subject: "#{@unit.name} Digest"
+      to:      @to_address,
+      from:    @from_address,
+      subject: "[#{@unit.name}] Weekly Digest"
     )
   end
 
