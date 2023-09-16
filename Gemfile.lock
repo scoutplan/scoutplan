@@ -272,7 +272,6 @@ GEM
     mini_magick (4.12.0)
     mini_mime (1.1.5)
     minitest (5.20.0)
-    mixpanel-ruby (2.3.0)
     msgpack (1.7.1)
     multi_xml (0.6.0)
     multipart-post (2.3.0)
@@ -488,8 +487,6 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
-    skylight (5.3.4)
-      activesupport (>= 5.2.0)
     slim (5.1.1)
       temple (~> 0.10.0)
       tilt (>= 2.1.0)
@@ -612,7 +609,6 @@ DEPENDENCIES
   listen (~> 3.7)
   lograge
   loofah (>= 2.19.1)
-  mixpanel-ruby
   nokogiri (>= 1.14.3)
   noticed (~> 1.6)
   omniauth
@@ -648,7 +644,6 @@ DEPENDENCIES
   sidekiq
   sidekiq-scheduler
   simplecov
-  skylight
   slim
   smarter_csv
   sprockets-rails
