@@ -3,10 +3,46 @@
 h1(style="margin-bottom: 1rem;") = deictic_string_for_time_interval_from_day(@event.starts_at).capitalize
 
 section(style="font-weight:bold; padding-bottom:0.5rem;")
-  p = link_to(@event.title, magic_url_for(@member, unit_event_url(@unit.id, @event.id)),
-              style: "display: block; font-weight: bold; margin-top: 1rem;")
-  p = presenter.months_and_dates
-  p = presenter.days_to_s
+  p(style="margin-bottom: 2rem;") = link_to(@event.title, magic_url_for(@member, unit_event_url(@unit.id, @event.id)),
+              style: "display: block; font-weight: bold; margin-top: 1rem; font-size: 2rem;")
+
+  - if @event.multiday?
+    table.dates
+      tr
+        td.month = @event.starts_at.strftime("%B")
+        td
+        td.month(style="text-align: right;") = @event.ends_at.strftime("%B") if @event.spans_months?
+      
+      tr
+        td.day = @event.starts_at.strftime("%A")
+        td
+        td.day(style="text-align: right;") = @event.ends_at.strftime("%A")
+
+      tr
+        td.date = @event.starts_at.strftime("%-d")
+        td.mid-dash &mdash;
+        td.date(style="text-align: right;") = @event.ends_at.strftime("%-d")
+
+      tr
+        td.time = @event.starts_at.strftime("%l:%M %p")
+        td
+        td.time(style="text-align: right;") = @event.ends_at.strftime("%l:%M %p")
+
+  - else
+    table.dates
+      tr
+        td.month
+          = @event.starts_at.strftime("%B")
+      
+      tr
+        td.day = @event.starts_at.strftime("%A")
+
+      tr
+        td.date = @event.starts_at.strftime("%-d")
+
+      tr
+        td.time = @event.starts_at.strftime("%l:%M %p")
+
   p = @event.location
 
 - if @event.requires_rsvp?
@@ -69,4 +105,34 @@ css:
 
   footer p {
     font-size: 13px;
+  }
+
+  table.dates {
+    margin: 0 0 0 -1px;
+    padding: 0;
+  }
+
+  table.dates tr td:first-child {
+    padding-left: 0;
+  }
+
+  td.day {
+    text-transform: uppercase;
+  }
+
+  td.date {
+    font-size: 3rem;
+    font-weight: bold;
+    padding: 0 0 0 0.5rem;
+    overflow: auto;
+    line-height: 1.0;
+  }
+
+  td.month {
+    padding-bottom: 1rem;
+  }
+
+  td.mid-dash {
+    font-size: 3rem;
+    color: #888;
   }

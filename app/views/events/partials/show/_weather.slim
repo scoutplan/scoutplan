@@ -23,34 +23,34 @@ section#location.py-4.border-t.border-stone-800.dark:border-stone-700
         = conditions.main
 
     #high-low-today.font-bold
-      .inline.font-bold.uppercase.text-stone-400 = "Low "
+      .inline.font-bold.uppercase.text-stone-500 = "Low "
       = "#{conditions.temp_min.round}&deg;&nbsp;&ndash;&nbsp;#{conditions.temp_max.round}&deg;".html_safe
-      .inline.font-bold.uppercase.text-stone-400 = " High"
+      .inline.font-bold.uppercase.text-stone-500 = " High"
 
-  .table.w-full.mt-4.-mb-4.font-bold
+  .table.w-full.mt-4.font-bold
     - count = 0
     - service.daily_forecast.each do |date, conditions|
       - next if date.today?
       - count += 1
 
       .table-row
-        .table-cell.border-t.dark:border-stone-500.py-2.grow-0
+        .table-cell.border-t.border-stone-300.dark:border-stone-500.py-2.grow-0
           = date.strftime("%a")
 
-        .table-cell.border-t.dark:border-stone-500.px-2.text-center
+        .table-cell.border-t.border-stone-300.dark:border-stone-500.px-2.text-center
           = raw(service.fa_icon_tag(conditions.main))
 
-        .table-cell.border-t.dark:border-stone-500.px-2
+        .table-cell.border-t.border-stone-300.dark:border-stone-500.px-2
           = "#{conditions.temp_min.round}&deg;".html_safe
           - if count == 1
-            .inline.uppercase.text-stone-400 = " Low"
+            .inline.uppercase.text-stone-500 = " Low"
 
-        .table-cell.border-t.dark:border-stone-500.px-2
+        .table-cell.border-t.border-stone-300.dark:border-stone-500.px-2
           = "#{conditions.temp_max.round}&deg;".html_safe
           - if count == 1
-            .inline.uppercase.text-stone-400 = " High"
+            .inline.uppercase.text-stone-500 = " High"
 
-        .table-cell.border-t.dark:border-stone-500.px-2
+        .table-cell.border-t.border-stone-300.dark:border-stone-500.px-2
           = "#{conditions.humidity.round}%".html_safe
           - if count == 1
-            .inline.uppercase.text-stone-400 = " Humidity"
+            .inline.uppercase.text-stone-500 = " Humidity"

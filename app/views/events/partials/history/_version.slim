@@ -1,9 +1,10 @@
 - changes = version.object_changes
 - return unless changes
+- return unless version.whodunnit
 
 div.py-2
   h3.font-bold.text-lg.mb-2
-    = UnitMembership.find(version.whodunnit).short_display_name
+    = UnitMembership.find(version.whodunnit)&.short_display_name || "unknown"
     = " made changes on "
     = version.created_at.in_time_zone.strftime("%b %-d, %Y")
     span.text-stone-500 = " at " + version.created_at.in_time_zone.strftime("%-I:%M %p")
