@@ -25,14 +25,12 @@ class CalendarController < ApplicationController
     cal.append_custom_property("X-WR-CALNAME", @unit.name) # needed for Microsoft
     cal.append_custom_property("X-WR-TIMEZONE", tzid) # needed for Google Calendar
 
-    exporter = IcalExporter.new(member)
     policy = EventPolicy.new(member)
 
     events.each do |event|
       next unless policy.show?(event)
 
-      exporter.event = event
-      cal.add_event(exporter.to_ical)
+      cal.add_event(event.to_ical_event(member))
     end
 
     render plain: cal.to_ical, content_type: "text/calendar"
