@@ -1,5 +1,5 @@
 = turbo_frame_tag "main"
-  .mx-auto.max-w-5xl.py-8
+  .mx-auto.max-w-5xl.py-8.px-4.md:px-0
     header
       = link_to unit_event_path(@unit, @event),
                 class: "font-bold text-emerald-600 hover:text-emerald-700",
@@ -8,13 +8,13 @@
         = "Back to #{@event.title}"
 
     header.my-8
-      h1.text-3xl.font-bold = "Add #{@event.title} to your calendar"
-      p There are three ways to add this event to your calendar:
+      h1.text-4xl.font-bold.mb-1 = raw("Add <span class='text-emerald-500'>#{@event.title}</span> to your calendar")
+      p There are three ways to add an event to your calendar:
 
     section
       .grid.grid-cols-1.md:grid-cols-3.gap-4
         div
-          h2.font-bold.text-4xl.text-emerald-600 1.
+          h2.font-bold.text-5xl.text-emerald-600 1.
           p.font-bold.mb-4 Download an iCalendar file
           p.mb-6 = link_to unit_event_path(@unit, @event, format: :ics),
                       class: "block md:inline-block px-4 py-2 rounded text-center font-bold bg-emerald-700 hover:bg-emerald-800 text-emerald-100"
@@ -23,7 +23,7 @@
           p.text-sm Download an .ics file that your calendar app can import. This is the best option if you use a calendar app that doesn't support subscribing to calendars.
 
         div
-          h2.font-bold.text-4xl.text-emerald-600 2.
+          h2.font-bold.text-5xl.text-emerald-600 2.
           p.font-bold.mb-4 Send yourself an email invitation
           div.mb-6
             = button_to unit_event_reminders_path(@unit, @event),
@@ -37,7 +37,7 @@
           p.text-sm Send an email to yourself with an .ics file attached. Depending on your calendar application, it may be able to import the event directly to your calendar from the email.            
 
         div
-          h2.font-bold.text-4xl.text-emerald-600 3.
+          h2.font-bold.text-5xl.text-emerald-600 3.
           p.font-bold.mb-4 Subscribe to the #{@unit.name} calendar
           p.mb-6 = link_to calendar_feed_unit_events_url(token: @current_member.token,
                                                                 unit_id: @unit.to_param,
