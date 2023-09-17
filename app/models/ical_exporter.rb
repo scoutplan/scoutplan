@@ -45,6 +45,7 @@ class IcalExporter
   def add_alarms(ical_event)
     ical_event.alarm do |a|
       a.action = "DISPLAY"
+      a.description = ical_event.summary
       a.summary = ical_event.summary
       a.trigger = "-PT1H" # 1 hour before
     end

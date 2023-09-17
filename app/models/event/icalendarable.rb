@@ -67,14 +67,18 @@ module Event::Icalendarable
   end
 
   def ical_starts_at
+    return ical_datetime(starts_at.beginning_of_day.in_time_zone) if all_day?
+
     ical_datetime(starts_at)
   end
 
   def ical_ends_at
+    return ical_datetime(ends_at.end_of_day.in_time_zone) if all_day?
+
     ical_datetime(ends_at)
   end
 
   def ical_datetime(val)
-    Icalendar::Values::DateOrDateTime.new(all_day? ? val.to_date : val.utc, tzid: "UTC")
+    Icalendar::Values::DateOrDateTime.new(val.utc, tzid: "UTC")
   end
 end
