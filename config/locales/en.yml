@@ -341,7 +341,7 @@ en:
       buttons:
         duplicate:      "Duplicate"
         add_sub_event:  "Add an Activity"
-        history:        "Event change history"
+        history:        "View changes over time"
         organize:       "See all RSVPs"
         back:           "Event schedule"
 
