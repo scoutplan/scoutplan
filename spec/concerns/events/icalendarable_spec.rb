@@ -5,7 +5,8 @@ require "rails_helper"
 RSpec.describe Event::Icalendarable, type: :model do
   before do
     @event = FactoryBot.create(:event, :published, :requires_rsvp)
-    @member = FactoryBot.create(:member, unit: @event.unit)
+    @unit = @event.unit
+    @member = FactoryBot.create(:member, unit: @unit)
   end
 
   describe "methods" do
@@ -34,10 +35,12 @@ RSpec.describe Event::Icalendarable, type: :model do
       it "renders all-day events correctly" do
         @event.update!(all_day: true)
         ical_event = @event.to_ical_event(@member)
-        expected_start = Icalendar::Values::DateOrDateTime.new(@event.starts_at.in_time_zone.beginning_of_day)
-        expected_end = Icalendar::Values::DateOrDateTime.new(@event.ends_at.in_time_zone.end_of_day)
-        expect(ical_event.dtstart).to eq(expected_start)
-        expect(ical_event.dtend).to eq(expected_end)
+
+        expected_start = @event.starts_at.beginning_of_day.in_time_zone(@unit.time_zone)
+        expected_end   = @event.ends_at.end_of_day.in_time_zone(@unit.time_zone)
+
+        expect(ical_event.dtstart).to eq(Icalendar::Values::DateOrDateTime.new(expected_start))
+        expect(ical_event.dtend).to eq(Icalendar::Values::DateOrDateTime.new(expected_end))
       end
     end
   end
