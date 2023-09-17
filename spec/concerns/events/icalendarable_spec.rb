@@ -30,6 +30,15 @@ RSpec.describe Event::Icalendarable, type: :model do
         ical_event = @event.to_ical_event(@member)
         expect(ical_event.attendee.count).to eq(0)
       end
+
+      it "renders all-day events correctly" do
+        @event.update!(all_day: true)
+        ical_event = @event.to_ical_event(@member)
+        expected_start = Icalendar::Values::DateOrDateTime.new(@event.starts_at.in_time_zone.beginning_of_day)
+        expected_end = Icalendar::Values::DateOrDateTime.new(@event.ends_at.in_time_zone.end_of_day)
+        expect(ical_event.dtstart).to eq(expected_start)
+        expect(ical_event.dtend).to eq(expected_end)
+      end
     end
   end
 end
