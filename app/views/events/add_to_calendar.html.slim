@@ -15,17 +15,17 @@
       .grid.grid-cols-1.md:grid-cols-3.gap-4
         div
           h2.font-bold.text-4xl.text-emerald-600 1.
-          p.font-bold.mb-2 Download an iCalendar file
-          p.mb-2 = link_to unit_event_path(@unit, @event, format: :ics),
+          p.font-bold.mb-4 Download an iCalendar file
+          p.mb-6 = link_to unit_event_path(@unit, @event, format: :ics),
                       class: "block md:inline-block px-4 py-2 rounded text-center font-bold bg-emerald-700 hover:bg-emerald-800 text-emerald-100"
                    = "Download file"
 
-          p.text-sm This option will download an .ics file that your calendar app can import. This is the best option if you use a calendar app that doesn't support subscribing to calendars.
+          p.text-sm Download an .ics file that your calendar app can import. This is the best option if you use a calendar app that doesn't support subscribing to calendars.
 
         div
           h2.font-bold.text-4xl.text-emerald-600 2.
-          p.font-bold.mb-2 Send yourself an email invitation
-          div.mb-2
+          p.font-bold.mb-4 Send yourself an email invitation
+          div.mb-6
             = button_to unit_event_reminders_path(@unit, @event),
                                method: :post,
                                form:   { "data-type": "turbo_stream" },
@@ -34,12 +34,12 @@
 
           p.mb-2#event_reminder_create_message
 
-          p.text-sm This option will send you an email invitation with an .ics file attached. Depending on your calendar application, it may be able to import the event directly to your calendar from the email.            
+          p.text-sm Send an email to yourself with an .ics file attached. Depending on your calendar application, it may be able to import the event directly to your calendar from the email.            
 
         div
           h2.font-bold.text-4xl.text-emerald-600 3.
-          p.font-bold.mb-2 Subscribe to the #{@unit.name} calendar
-          p.mb-2 = link_to calendar_feed_unit_events_url(token: @current_member.token,
+          p.font-bold.mb-4 Subscribe to the #{@unit.name} calendar
+          p.mb-6 = link_to calendar_feed_unit_events_url(token: @current_member.token,
                                                                 unit_id: @unit.to_param,
                                                                 format: :ics,
                                                                 only_path: false,
@@ -47,5 +47,5 @@
                            class: "block md:inline-block px-4 py-2 rounded text-center font-bold bg-emerald-700 hover:bg-emerald-800 text-emerald-100"                                                       
                    = "Subscribe to calendar"
 
-          p.text-sm This option lets you add a live feed of all #{@unit.name} events to your calendar. This is the best way to keep your calendar up-to-date.
+          p.text-sm Add a live feed of all #{@unit.name} events to your calendar. This is the best way to keep your calendar up-to-date.
                   

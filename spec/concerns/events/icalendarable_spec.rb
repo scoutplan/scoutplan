@@ -36,8 +36,8 @@ RSpec.describe Event::Icalendarable, type: :model do
         @event.update!(all_day: true)
         ical_event = @event.to_ical_event(@member)
 
-        expected_start = @event.starts_at.beginning_of_day.in_time_zone(@unit.time_zone)
-        expected_end   = @event.ends_at.end_of_day.in_time_zone(@unit.time_zone)
+        expected_start = @event.starts_at.in_time_zone(@unit.time_zone).beginning_of_day
+        expected_end   = @event.ends_at.in_time_zone(@unit.time_zone).end_of_day
 
         expect(ical_event.dtstart).to eq(Icalendar::Values::DateOrDateTime.new(expected_start))
         expect(ical_event.dtend).to eq(Icalendar::Values::DateOrDateTime.new(expected_end))
