@@ -33,7 +33,7 @@ aside.block.w-80.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.rounded
         = t("events.index.buttons.list")
 
     - if user_signed_in? && action_name == "list"
-      = link_to list_unit_events_path(@unit, year: @last_month.year, month: @last_month.month),
+      = link_to list_unit_events_path(@unit, before: @events&.first&.id),
                 class: "block px-4 py-2 rounded hover:bg-brand-600",
                 data: { turbo_stream: "true" } do
 
