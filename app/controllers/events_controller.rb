@@ -466,8 +466,9 @@ class EventsController < UnitContextController
   end
 
   def find_list_events
-    scope = @unit.events.future.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope = params[:before].present? ? scope.where("id < ?", params[:before]) : scope.future
     scope.order(starts_at: :asc)
     @events = scope.all
   end
