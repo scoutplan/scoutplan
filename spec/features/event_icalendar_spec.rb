@@ -48,6 +48,11 @@ describe "events", type: :feature do
       expect(cal_event.url.to_s).not_to be_empty
     end
 
+    it "returns a 404 if the token is invalid" do
+      visit(calendar_feed_unit_events_path(@unit, "invalid-token"))
+      expect(page.status_code).to eq(404)
+    end
+
     it "includes cancelled and draft events for admins" do
       @unit.events.destroy_all
       FactoryBot.create( \

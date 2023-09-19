@@ -6,7 +6,7 @@ require "icalendar/tzinfo"
 # given a member token, returns an ical feed of events for that member's unit
 class CalendarController < ApplicationController
   skip_before_action :authenticate_user!
-  before_action :find_member, :find_unit, :build_calendar
+  before_action :find_unit, :find_member, :build_calendar
 
   layout false
 
@@ -32,11 +32,11 @@ class CalendarController < ApplicationController
   end
 
   def find_member
-    @member = UnitMembership.find_by(token: params[:token])
+    @member = @unit.members.find_by(token: params[:token])
   end
 
   def find_unit
-    @unit = @member.unit
+    @unit = Unit.find(params[:unit_id])
   end
 
   def events
