@@ -1,0 +1,4 @@
+li.hover:bg-lime-900
+  = link_to select_unit_messages_path(search_result.key), class: "block px-3 py-2" do
+    .font-bold = search_result.full_display_name
+    .font-base.text-lime-200.text-sm = search_result.email

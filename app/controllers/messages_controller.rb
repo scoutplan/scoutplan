@@ -3,7 +3,7 @@
 # Controller for sending messages. Interfaces between
 # UI and *Notifier classes (e.g. MemberNotifier)
 class MessagesController < UnitContextController
-  before_action :find_message, except: [:index, :drafts, :new, :create, :recipients]
+  before_action :find_message, except: [:index, :drafts, :new, :create, :recipients, :search]
 
   def index
     redirect_to pending_unit_messages_path(@unit) and return if @unit.messages.pending.any?
@@ -25,10 +25,7 @@ class MessagesController < UnitContextController
   def new
     authorize current_member.messages.new
     @drafts_count = @unit.messages.draft.count
-    @message = current_member.messages.new(audience:    "everyone",
-                                           member_type: "youth_and_adults",
-                                           send_at:     Date.today,
-                                           status:      "draft")
+    @message = current_member.messages.new(send_at: Date.today, status: :draft)
   end
 
   def create
@@ -78,6 +75,14 @@ class MessagesController < UnitContextController
     )
     service = MessageService.new(message)
     @recipients = service.resolve_members
+  end
+
+  def search
+    query = params[:query]
+
+    scope = @unit.members.active.joins(:user).where("users.first_name ILIKE ? OR users.last_name ILIKE ? OR users.email ILIKE ?", "%#{query}%", "%#{query}%", "%#{query}%")
+    @members = scope.all.order(:last_name, :first_name)
+    @search_results = EmailSearchResult.to_a(@members)
   end
 
   private

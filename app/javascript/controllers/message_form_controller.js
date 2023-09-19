@@ -5,19 +5,19 @@ export default class extends Controller {
   static targets = [ "attachmentList", "attachmentWrapper", "attachmentForm", "audienceList", "audienceName",
                      "ffCheckWrapper", "fileInput",
                      "recipientList", "memberTypeCheckBox", "memberStatusCheckBox", "subjectTextBox", "bodyTextArea",
-                     "sendMessageButton", "sendLaterButton", "sendPreviewButton", "tempFileInput" ];
+                     "sendMessageButton", "sendLaterButton", "sendPreviewButton", "tempFileInput",
+                     "searchResults" ];
   static values = { unitId: Number };
 
   files= [];
 
   connect() {
-    this.updateRecipients();
+    // this.updateRecipients();
     this.validate();
   }
 
   updateRecipients() {
-    // const audience = this.audienceSelectTarget.value;
-
+    console.log("updateRecipients");
     const selectedRadioButton = document.querySelector("input[type='radio']:checked");
     const audience = selectedRadioButton.value;
     const memberType = this.memberTypeCheckBoxTarget.checked ? "adults_only" : "youth_and_adults";
@@ -57,6 +57,19 @@ export default class extends Controller {
 
   hideRecipientList() {
     this.recipientListTarget.classList.toggle("hidden", true);
+  }
+
+  searchRecipients(event) {
+    const body = {
+      "query": event.target.value
+    }
+
+    const path = `/u/${this.unitIdValue}/email/recipients`;
+
+    console.log(path);
+    console.log(body);
+
+    post(`/u/${this.unitIdValue}/email/search`, { body: body, responseKind: "turbo-stream" });
   }
 
   toggleRecipientList(event) {

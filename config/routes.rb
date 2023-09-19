@@ -60,6 +60,8 @@ Rails.application.routes.draw do
       collection do
         get  "drafts"
         post "recipients", as: "recipients"
+        post "search",     as: "search"
+        get  "select",     as: "select"
       end
       resources :attachments
     end
