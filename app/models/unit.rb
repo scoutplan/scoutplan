@@ -3,7 +3,7 @@
 # a Troop, Pack, Post, Lodge, or Crew.
 #
 class Unit < ApplicationRecord
-  include Seasons
+  include Seasons, DistributionLists
   has_one :payment_account
   has_many :events
   has_many :event_categories

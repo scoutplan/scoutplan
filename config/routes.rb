@@ -62,6 +62,7 @@ Rails.application.routes.draw do
         post "recipients", as: "recipients"
         post "search",     as: "search"
         get  "select",     as: "select"
+        post "commit",     as: "commit"
       end
       resources :attachments
     end

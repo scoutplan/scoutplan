@@ -1,17 +1,3 @@
-- recipients = [ ["#{@unit.name} Members", "everyone", "people-group", "#913F17"] ]
-
-- events = @unit.events.recent.rsvp_required.published
-/ - recipients << ["", nil] if events.present?
-
-- events.each do |event|
-  - recipients << ["#{event.title} Attendees & Guardians", "event_#{event.id}_attendees", event.category.glyph, event.category.color, "ended #{distance_of_time_in_words_to_now(event.ends_at)} ago"]
-
-- @unit.events.published.upcoming.rsvp_required.each do |event|
-  - recipients << ["#{event.title} Attendees & Guardians", "event_#{event.id}_attendees", event.category.glyph, event.category.color, "starts in #{distance_of_time_in_words_to_now(event.starts_at)}"]
-
-- @unit.members.tag_counts.each do |tag|
-  - recipients << ["#{tag.name.titleize} Members & Guardians", "tag_#{tag.id}_members", "tag", "#57534e"]
-
 div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}")
   .md:border.md:rounded-xl.md:p-12.mt-6.md:drop-shadow-lg.bg-white.dark:bg-stone-800.dark:border-stone-700
     .hiddenz
@@ -25,114 +11,35 @@ div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}"
                 data: { turbo_action: "advance", "message-form-unit-id-value" => @unit.id } do |f|   
 
       section.flex.flex-col.divide-y.dark:divide-stone-600
+        // FROM
+        div#sender_wrapper.flex.flex-row.gap-6.py-3.items-center
+          = f.label :sender, t("messages.form.labels.from"), class: "block font-semibold"
+          = f.label :sender_address, @unit.from_address, class: "block font-bold"
 
-        // 'TO' SECTION
-        div#recipient_wrapper.dropdown.relative.z-20(data-controller="dropdown" data-action="keydown->dropdown#handleKeydown")
+        // TO
+        div#recipient_wrapper.py-2(data-controller="dropdown" data-action="keydown->dropdown#handleKeydown")
+          .flex.flex-row.gap-6.justify-between.items-start
+            = f.label :groups, "To", class: "inline-block py-2 font-semibold"
 
-          // recipient dropdown box
-          #audience_list.dropdown-menu.absolute.top-full.w-full.h-72.text-white.bg-stone-800.dark:bg-black.drop-shadow-lg.border.border-stone-200.dark:border-stone-700
+            .auto-complete-field.w-full.flex.gap-1.flex-wrap(data-controller="selectable-list")
 
-            // recipient list
-            #recipient_list.absolute.inset-0.bg-stone-800.z-10.overflow-scroll.hidden(data-message-form-target="recipientList")
-              #recipient_list_content
+              // RECIPIENTS GO HERE
+              / .recipient.inline-block.rounded.p-2.bg-lime-100.font-semibold.whitespace-nowrap = "Frank Poncharello"
+              / .recipient.inline-block.rounded.p-2.bg-lime-100.font-semibold.whitespace-nowrap = "Jon Baker"
+              / .recipient.inline-block.rounded.p-2.bg-lime-100.font-semibold.whitespace-nowrap = "Joe Getraer"
+              / .recipient.inline-block.rounded.p-2.bg-lime-100.font-semibold.whitespace-nowrap = "Gene Fritz"
+              / .recipient.inline-block.rounded.p-2.bg-lime-100.font-semibold.whitespace-nowrap = "Arthur Grossman"
+              / .recipient.inline-block.rounded.p-2.bg-lime-100.font-semibold.whitespace-nowrap = "Harlan Arliss"
+              / .recipient.inline-block.rounded.p-2.bg-lime-100.font-semibold.whitespace-nowrap = "Barry Baricza"
 
-            // group list
-            #group_list.absolute.inset-0.overflow-scroll
-              ul.mb-12(data-message-form-target="audienceList")
-                - recipients.each do |recipient|
-                  - classes = recipient[1] == "everyone" ? "active" : ""
+              #recipient_search_query.relative.w-full.flex.grow.shrink.basis-0
+                = text_field :recipient_search, "", autofocus: true,
+                            class: "ml-1 px-0 bg-transparent border-0 focus:ring-0 w-full grow",
+                            data: { action: "input->message-form#searchRecipients keydown->message-form#handleKeydown",
+                                    message_form_target: "queryInput", selectable_list_target: "queryInput" }
 
-                  li.audience-item(class="#{classes}")
-                    = label_tag nil do
-                      = f.radio_button :audience,
-                                        recipient[1],
-                                        class: "hidden inline-block audience-checkbox",
-                                        checked: recipient[1] == @message.audience,
-                                        data: { action: "message-form#updateRecipients", message_form_audience_name: recipient[0] }
-
-                      span.flex.flex-row.gap-1.items-center.hover:bg-stone-700.py-3.px-2
-                        i.fa-stack(style="color: #{recipient[3]}")
-                          i.fa-solid.fa-circle.fa-stack-2x
-                          i.fa-solid.fa-stack-1x.text-white(class="fa-#{recipient[2]}")
-
-                        span
-                          = recipient[0]
-                          - if recipient[4]
-                            .text-sm = recipient[4]
-
-            // switches
-            footer.fixed.bottom-0.w-full.border-t.flex.flex-row.gap-4.px-3.items-center.bg-stone-900.h-12.text-sm.sm:text-base
-              = render partial: "components/switch", locals: { checked: @message.member_type == "adults_only",
-                                                                label: raw("<span class='hidden sm:inline'>Only send to adults</span><span class='sm:hidden inline'>Adults only</span>"),
-                                                                object_name: "message",
-                                                                method: "member_type",
-                                                                checked_value: "adults_only",
-                                                                unchecked_value: "youth_and_adults",
-                                                                css_classes: "py-2",
-                                                                size: "sm",
-                                                                data: { action: "message-form#updateRecipients", "message-form-target" => "memberTypeCheckBox" } }
-
-              div(data-message-form-target="ffCheckWrapper")
-                = render partial: "components/switch", locals: { checked: @message.member_type == "active_and_registered",
-                                                                label: raw("<span class='hidden sm:inline'>Include family & friends</span><span class='sm:hidden inline'>Family & friends</span>"),
-                                                                object_name: "message",
-                                                                method: "member_status",
-                                                                checked_value: "active_and_registered",
-                                                                unchecked_value: "active",
-                                                                css_classes: "py-2",
-                                                                size: "sm",
-                                                                data: { action: "message-form#updateRecipients", "message-form-target" => "memberStatusCheckBox" } }
-
-                #recipient_list.absolute.right-10.top-20.mt-1.w-48.h-80.p-2.bg-sky-600.text-sky-100.font-bold.rounded.z-20.overflow-scroll.hidden(data-message-form-target="recipientList")
-              
-              = link_to "#",
-                        class: "text-blue-500 text-sm font-bold ml-auto",
-                        data: { action: "message-form#toggleRecipientList" } do
-                
-                .hidden.sm:inline-block
-                  = "Show recipients"
-                
-                .sm:hidden
-                  = "Recipients"
-
-          .flex.flex-row.gap-6.justify-between.items-center.recipients-wrapper
-            = f.label :groups, "To", class: "inline-block py-3 font-bold"
-
-            .grow.auto-complete-field.relative
-              = text_field :recipient_search, "", autofocus: true,
-                           class: "w-full bg-transparent",
-                           data: { action: "input->message-form#searchRecipients" }
-
-              ul#search_results.absolute.bg-lime-700.text-white.max-h-96.overflow-y-scroll.rounded-b
-                li.hover:bg-lime-700
-                  = link_to "#", class: "block px-3 py-2" do
-                    .font-bold = "Troop 2 All Members"
-                    .font-base.text-lime-200.text-sm = "Contact group with 56 people"
-                li.hover:bg-lime-700
-                  = link_to "#", class: "block px-3 py-2" do
-                    .font-bold = "Troop 2 Active Members"
-                    .font-base.text-lime-200.text-sm = "Contact group with 37 people"
-                li.hover:bg-lime-700
-                  = link_to "#", class: "block px-3 py-2" do
-                    .font-bold = "Troop 2 Active Adults"
-                    .font-base.text-lime-200.text-sm = "Contact group with 24 people"
-                li.hover:bg-lime-700
-                  = link_to "#", class: "block px-3 py-2" do
-                    .font-bold = "Canoe Camping Trip 2023 Attendees"
-                    .font-base.text-lime-200.text-sm = "Contact group with 24 people"                      
-                li.hover:bg-lime-700
-                  = link_to "#", class: "block px-3 py-2" do
-                    .font-bold = "October Camping Trip Attendees"
-                    .font-base.text-lime-200.text-sm = "Contact group with 24 people"                       
-                li.hover:bg-lime-700
-                  = link_to "#", class: "block px-3 py-2" do
-                    .font-bold = "November Camping Trip Attendees"
-                    .font-base.text-lime-200.text-sm = "Contact group with 24 people"                      
-                li.hover:bg-lime-700
-                  = link_to "#", class: "block px-3 py-2" do
-                    .font-bold = "Mortimer Snerd"
-                    .font-base.text-lime-200.text-sm = "mortimer@snerd.org"
-
+                ul#search_results.absolute.top-full.bg-lime-600.text-white.max-h-96.overflow-y-scroll.rounded-b(data-message-form-target="searchResults" \
+                  data-selectable-list-commit-url-value="#{unit_messages_path(@unit)}")
 
             .right
               = link_to "#",
@@ -141,8 +48,8 @@ div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}"
                 i.fa-solid.fa-chevron-down.text-stone-500
 
         // SUBJECT
-        div.flex.flex-row.gap-6.py-3.items-center
-          = f.label :subject, t("messages.form.labels.subject"), class: "block font-bold"
+        div#subject_wrapper.flex.flex-row.gap-6.py-3.items-center
+          = f.label :subject, t("messages.form.labels.subject"), class: "block font-semibold"
 
           = f.text_field :title,
                           autofocus: true,
@@ -154,7 +61,7 @@ div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}"
         = render partial: "attachments", locals: { f: f, message: @message }
 
         // BODY
-        div.py-2
+        div#body_wrapper.py-2
           = f.rich_text_area :body,
                             class: "p-0 focus:outline-none border-0 overflow-auto border border-stone-400 dark:border-stone-500 placeholder-stone-400 dark:placeholder-stone-500",
                             placeholder: "Type your message...",
@@ -333,4 +240,28 @@ css:
 
   trix-toolbar .trix-button-group.trix-button-group--file-tools {
     display: none;
+  }
+
+  .search-result.contactable {
+    cursor: pointer;
+  }
+
+  .search-result.not-contactable {
+    cursor: not-allowed;
+  }
+
+  .search-result.not-contactable .name {
+    color: #a3e635;
+  }
+
+  .search-result.not-contactable .contact-methods {
+    color: #a3e635;
+  }  
+
+  .search-result.selected {
+    background: #365314;
+  }
+
+  #recipients li {
+    display: inline-block;
   }

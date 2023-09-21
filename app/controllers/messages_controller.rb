@@ -3,7 +3,7 @@
 # Controller for sending messages. Interfaces between
 # UI and *Notifier classes (e.g. MemberNotifier)
 class MessagesController < UnitContextController
-  before_action :find_message, except: [:index, :drafts, :new, :create, :recipients, :search]
+  before_action :find_message, except: [:index, :drafts, :new, :create, :recipients, :search, :commit]
 
   def index
     redirect_to pending_unit_messages_path(@unit) and return if @unit.messages.pending.any?
@@ -79,10 +79,33 @@ class MessagesController < UnitContextController
 
   def search
     query = params[:query]
+    return unless query.present?
 
-    scope = @unit.members.active.joins(:user).where("users.first_name ILIKE ? OR users.last_name ILIKE ? OR users.email ILIKE ?", "%#{query}%", "%#{query}%", "%#{query}%")
-    @members = scope.all.order(:last_name, :first_name)
-    @search_results = EmailSearchResult.to_a(@members)
+    query = query.split
+
+    if query.length == 1
+      scope = @unit.members.active.joins(:user).where(
+        "unaccent(users.first_name) ILIKE ? OR unaccent(users.last_name) ILIKE ? " \
+        "OR users.email ILIKE ? OR unaccent(users.nickname) ILIKE ?",
+        "%#{query[0]}%", "%#{query[0]}%", "%#{query[0]}%", "%#{query[0]}%"
+      )
+    elsif query.length == 2
+      scope = @unit.members.active.joins(:user).where(
+        "(unaccent(users.first_name) ILIKE ? OR unaccent(users.nickname) ILIKE ?) AND "\
+        "unaccent(users.last_name) ILIKE ?",
+        query[0], query[0], "#{query[1]}%"
+      )
+    end
+
+    members = scope.all.order(:last_name, :first_name)
+    events = @unit.events.published.rsvp_required.recent_and_future
+                  .includes(:event_rsvps).where("title ILIKE ?", "%#{query[0]}%")
+    distribution_lists = query.length == 1 ? @unit.distribution_lists(matching: query[0]) : []
+    @search_results = MessagingSearchResult.to_a(distribution_lists + members + events)
+  end
+
+  def commit
+    @recipients = @unit.members.first
   end
 
   private

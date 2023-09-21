@@ -1,4 +1,9 @@
-li.hover:bg-lime-900
-  = link_to select_unit_messages_path(search_result.key), class: "block px-3 py-2" do
-    .font-bold = search_result.full_display_name
-    .font-base.text-lime-200.text-sm = search_result.email
+= content_tag :li,
+  role: "option",
+  class: "search-result block px-3 py-2 #{search_result.contactable_status}",
+  data: { action: "mouseover->selectable-list#select click->message-form#commit", key: search_result.key } do
+    .name.font-bold
+      = search_result.name
+
+    .contact-methods.font-semibold.text-sm.flex.flex-row.gap-4.text-lime-200
+      = raw(search_result.description)
