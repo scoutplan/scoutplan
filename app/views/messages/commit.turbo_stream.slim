@@ -1,3 +1,2 @@
 = turbo_stream.before "recipient_search_query"
-  / = render partial: "messages/recipient", collection: @recipients
-  .recipient.inline-block.rounded.p-2.bg-lime-100.font-semibold.whitespace-nowrap = "Frank Poncharello"
+  = render partial: "recipient", collection: @recipients

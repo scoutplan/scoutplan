@@ -1,1 +1,9 @@
-li = recipient.full_display_name
+.recipient.inline-block.flex.items-center.rounded.bg-lime-100.dark:bg-lime-900.whitespace-nowrap class="recipient-#{recipient.reason}"
+  .recipient-name.py-2.pl-2
+    = recipient.full_display_name
+
+  .recipient-action.recipient-action-delete.p-2.cursor-pointer
+    i.fa-solid.fa-times-circle.text-lime-600.dark:text-lime-100
+
+  .recipient-action.recipient-action-info.p-2.cursor-pointer
+    i.fa-regular.fa-info-circle.text-lime-600.dark:text-lime-100(title="#{recipient.description}")

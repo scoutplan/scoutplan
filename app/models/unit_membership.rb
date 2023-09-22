@@ -21,13 +21,13 @@ class UnitMembership < ApplicationRecord
 
   has_many  :parent_relationships,
             foreign_key: "child_unit_membership_id",
-            class_name: "MemberRelationship",
-            dependent: :destroy
+            class_name:  "MemberRelationship",
+            dependent:   :destroy
 
   has_many  :child_relationships,
             foreign_key: "parent_unit_membership_id",
-            class_name: "MemberRelationship",
-            dependent: :destroy
+            class_name:  "MemberRelationship",
+            dependent:   :destroy
 
   has_many :parents, through: :parent_relationships, source: :parent_unit_membership
   has_many :children, through: :child_relationships, source: :child_unit_membership

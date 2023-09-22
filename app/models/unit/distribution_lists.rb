@@ -2,7 +2,6 @@
 
 module Unit::DistributionLists
   def distribution_lists(matching: nil)
-    ap matching
     all_distribution_lists.select do |list|
       matching.nil? || list.name =~ /#{matching}/i
     end
@@ -11,10 +10,13 @@ module Unit::DistributionLists
   private
 
   def all_distribution_lists
+    all_count    = members.count
+    active_count = members.active.count
+    adult_count  = members.active.adult.count
     [
-      DistributionList.new(key: "dl_all",    name: "All #{name} Members",          description: "Group with 48 members"),
-      DistributionList.new(key: "dl_active", name: "All #{name} Active Members",   description: "Group with 28 members"),
-      DistributionList.new(key: "dl_adults", name: "Active #{name} Adult Members", description: "Group with 28 members")
+      DistributionList.new(key: "all",    name: "All Members in #{name}",          description: "Group with #{all_count} members"),
+      DistributionList.new(key: "active", name: "All Active Members in #{name}",   description: "Group with #{active_count} members"),
+      DistributionList.new(key: "adults", name: "All Active Adults in #{name}", description: "Group with #{adult_count} members")
     ]
   end
 end

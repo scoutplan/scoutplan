@@ -12,52 +12,17 @@ export default class extends Controller {
   files= [];
 
   connect() {
-    // this.updateRecipients();
     this.validate();
   }
 
-  // updateRecipients() {
-  //   console.log("updateRecipients");
-  //   const selectedRadioButton = document.querySelector("input[type='radio']:checked");
-  //   const audience = selectedRadioButton.value;
-  //   const memberType = this.memberTypeCheckBoxTarget.checked ? "adults_only" : "youth_and_adults";
-  //   const memberStatus = this.memberStatusCheckBoxTarget.checked ? "active_and_registered" : "active";
-  //   const timeout = null;
-  //   const delay = 5000; // ms
-    
-  //   var audienceName = selectedRadioButton.dataset.messageFormAudienceName;
-
-  //   if (audience === "everyone") {
-  //     if (memberStatus === "active_and_registered") {
-  //       audienceName = "All " + audienceName;
-  //     } else {
-  //       audienceName = "Active " + audienceName;
-  //     } 
-  //   }
-
-  //   if (memberType === "adults_only") {
-  //     audienceName = "Adult " + audienceName;
-  //   }
-
-  //   this.audienceNameTarget.textContent = audienceName;    
-
-  //   // hide the ff check box if the audience is not everyone
-  //   this.ffCheckWrapperTarget.classList.toggle("hidden", audience !== "everyone");
-
-  //   // https://www.reddit.com/r/rails/comments/rzne63/is_it_possible_to_trigger_turbo_stream_update/
-
-  //   // post a call to an endpoint to compute the recipient list
-
-  //   const body = {
-  //     "audience":      audience,
-  //     "member_type":   memberType,
-  //     "member_status": memberStatus,
-  //   }    
-
-  //   post(`/u/${this.unitIdValue}/email/recipients`, { body: body, responseKind: "turbo-stream" });
-  // }
-
   handleKeydown(event) {
+
+    if (event.key === "Backspace") {
+      if (this.queryInputTarget.value.length > 0) { return; }
+      this.deleteLastRecipient();
+      return;
+    }
+
     const current = this.searchResultsTarget.querySelector(".selected");
     if (!current) { return; }
 
@@ -87,15 +52,14 @@ export default class extends Controller {
       target?.scrollIntoView({block: "center"});
       event.stopPropagation()
       event.preventDefault()
-    } else if (event.key === "Backspace") {
-      this.deleteLastRecipient();
     } else if (event.key === "Enter") {
       this.commit();
     } else { return; }
   }
 
   deleteLastRecipient() {
-    const lastElem = this.searchResultsTarget.lastChild;
+    const lastElem = this.queryInputTarget.parentNode.previousSibling;
+    console.log(lastElem);
     if (!lastElem) { return; }
     lastElem.remove();
   }

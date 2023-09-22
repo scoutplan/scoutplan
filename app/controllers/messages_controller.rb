@@ -105,7 +105,38 @@ class MessagesController < UnitContextController
   end
 
   def commit
-    @recipients = @unit.members.first
+    key = params[:key]
+    return unless key.present?
+
+    key_parts = key.split("_")
+    type = key_parts[0]
+    id = key_parts[1]
+    @recipients = @unit.members.where(id: id).map { |m| CandidateMessageRecipient.new(m) } if type == "membership"
+    @recipients = @unit.events.find(id).rsvps.accepted.map { |r| CandidateMessageRecipient.new(r.member) } if type == "event"
+    if type == "dl"
+      @recipients = case id
+                    when "all" then @unit.members.status_active_and_registered
+                    when "active" then @unit.members.active
+                    when "adults" then @unit.members.active.adult
+                    end
+
+      @recipients = @recipients.map { |m| CandidateMessageRecipient.new(m, :committed, "") }
+    end
+
+    parents = []
+    @recipients&.each do |recipient|
+      next unless recipient.member_type == "youth"
+
+      parents << recipient.parents.to_a.map do |member|
+        CandidateMessageRecipient.new(
+          member, :ypt,
+          "Parent of #{recipient.full_display_name} included for two-deep communication"
+        )
+      end
+    end
+
+    @recipients += parents.flatten
+    @recipients.uniq!(&:email)
   end
 
   private
