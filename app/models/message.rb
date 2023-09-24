@@ -7,6 +7,8 @@ class Message < ApplicationRecord
 
   has_one :unit, through: :author
 
+  has_many :message_recipients, as: :message_receivable, dependent: :destroy
+
   has_many_attached :attachments
 
   has_rich_text :body
@@ -16,6 +18,8 @@ class Message < ApplicationRecord
   alias_attribute :member, :unit_membership
 
   enum status: { draft: 0, queued: 1, sent: 2, pending: 3, outbox: 4 }
+
+  accepts_nested_attributes_for :message_recipients, allow_destroy: true
 
   def approvers
     unit.unit_memberships.message_approver

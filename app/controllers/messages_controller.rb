@@ -79,18 +79,19 @@ class MessagesController < UnitContextController
 
   def search
     query = params[:query]
+    member_ids = params[:member_ids].map(&:to_i) || []
     return unless query.present?
 
     query = query.split
 
     if query.length == 1
-      scope = @unit.members.active.joins(:user).where(
+      scope = @unit.members.status_active_and_registered.joins(:user).where(
         "unaccent(users.first_name) ILIKE ? OR unaccent(users.last_name) ILIKE ? " \
         "OR users.email ILIKE ? OR unaccent(users.nickname) ILIKE ?",
         "%#{query[0]}%", "%#{query[0]}%", "%#{query[0]}%", "%#{query[0]}%"
       )
     elsif query.length == 2
-      scope = @unit.members.active.joins(:user).where(
+      scope = @unit.members.status_active_and_registered.joins(:user).where(
         "(unaccent(users.first_name) ILIKE ? OR unaccent(users.nickname) ILIKE ?) AND "\
         "unaccent(users.last_name) ILIKE ?",
         query[0], query[0], "#{query[1]}%"
@@ -98,6 +99,9 @@ class MessagesController < UnitContextController
     end
 
     members = scope.all.order(:last_name, :first_name)
+    ap members.count
+    members = members.to_a.reject { |m| member_ids.include?(m.id) } # delete dupes
+    ap members.count
     events = @unit.events.published.rsvp_required.recent_and_future
                   .includes(:event_rsvps).where("title ILIKE ?", "%#{query[0]}%")
     distribution_lists = query.length == 1 ? @unit.distribution_lists(matching: query[0]) : []
@@ -130,7 +134,7 @@ class MessagesController < UnitContextController
       parents << recipient.parents.to_a.map do |member|
         CandidateMessageRecipient.new(
           member, :ypt,
-          "Parent of #{recipient.full_display_name} included for two-deep communication"
+          "Included for two-deep communication because #{recipient.full_display_name} is a youth member addressed in this message."
         )
       end
     end

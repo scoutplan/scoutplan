@@ -52,14 +52,13 @@ export default class extends Controller {
       target?.scrollIntoView({block: "center"});
       event.stopPropagation()
       event.preventDefault()
-    } else if (event.key === "Enter") {
+    } else if (event.key === "Enter" || event.key === "Tab") {
       this.commit();
     } else { return; }
   }
 
   deleteLastRecipient() {
     const lastElem = this.queryInputTarget.parentNode.previousSibling;
-    console.log(lastElem);
     if (!lastElem) { return; }
     lastElem.remove();
   }
@@ -71,6 +70,11 @@ export default class extends Controller {
     const response = await post(`/u/${this.unitIdValue}/email/commit`, { body: body, responseKind: "turbo-stream" });    
     this.queryInputTarget.value = "";
     this.queryInputTarget.focus();
+  }
+
+  deleteItem(event) {
+    const target = event.target;
+    target.closest(".recipient").remove();
   }
 
   clearResults() {
@@ -89,7 +93,9 @@ export default class extends Controller {
   }
 
   async performRecipientSearch() {
-    const body = { "query": this.queryInputTarget.value }
+    const recipientTags = this.recipientListTarget.querySelectorAll(".recipient");
+    const memberIds = Array.from(recipientTags).map((tag) => { return tag.dataset.recipientId; });
+    const body = { "query": this.queryInputTarget.value, "member_ids": memberIds }
     const response = await post(`/u/${this.unitIdValue}/email/search`, { body: body, responseKind: "turbo-stream" });
   }
 
@@ -116,7 +122,6 @@ export default class extends Controller {
 
   addAttachments(event) {
     this.files.push(event.target.files);
-    console.log(this.files);
     this.attachmentWrapperTarget.classList.toggle("hidden", false);
   }
 
