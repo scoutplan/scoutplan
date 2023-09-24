@@ -3,6 +3,7 @@ FROM ruby:3.2.2-alpine
 RUN apk add --no-cache --update \
     build-base \
     linux-headers \
+    ffmpeg \
     git \
     postgresql-dev \
     gcompat \
