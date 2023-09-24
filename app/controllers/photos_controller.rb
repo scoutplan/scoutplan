@@ -4,6 +4,7 @@
 
 class PhotosController < UnitContextController
   before_action :find_photo, only: [:edit, :update, :destroy]
+  before_action :find_event, only: [:new]
 
   def index
     if params[:event_id].present?
@@ -31,10 +32,10 @@ class PhotosController < UnitContextController
         @photo.images.attach(image)
       end
     end
-    
+
     @photo.save!
     flash[:notice] = "Photo updated"
-    
+
     if (event_id = params[:event_id]).present?
       redirect_to unit_event_photos_path(@unit, event_id)
     else
@@ -61,7 +62,7 @@ class PhotosController < UnitContextController
         photo.images.attach(image)
       end
     end
-    
+
     photo.save!
 
     redirect_to unit_photos_path(@unit)
@@ -87,5 +88,9 @@ class PhotosController < UnitContextController
 
   def find_photo
     @photo = @unit.photos.find(params[:id])
+  end
+
+  def find_event
+    @event = @unit.events.find(params[:event_id])
   end
 end
