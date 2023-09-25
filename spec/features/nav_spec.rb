@@ -26,6 +26,8 @@ describe "events", type: :feature do
     end
 
     it "shows planner" do
+      Flipper.enable(:planner)
+      visit list_unit_events_path(@unit)
       expect(page).to have_content(I18n.t("main_nav.planner"))
     end
 
@@ -33,7 +35,9 @@ describe "events", type: :feature do
       expect(page).to have_content(I18n.t("main_nav.members"))
     end
 
-    it "shows roster" do
+    it "shows messaging" do
+      Flipper.enable(:messages)
+      visit list_unit_events_path(@unit)
       expect(page).to have_content(I18n.t("main_nav.communication"))
     end
 
