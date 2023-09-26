@@ -1,20 +1,33 @@
+import { DirectUpload } from "@rails/activestorage"
 import { Controller } from "@hotwired/stimulus"
 import { post } from "@rails/request.js"
 
+// https://mentalized.net/journal/2020/11/30/upload-multiple-files-with-rails/
+// config.active_storage.replace_on_assign_to_many = false
+// https://blog.commutatus.com/understanding-rails-activestorage-direct-uploads-a4aeca7eccf
+
 export default class extends Controller {
   static targets = [ "attachmentList", "attachmentWrapper", "attachmentForm", "audienceList", "audienceName",
-                     "ffCheckWrapper", "fileInput",
+                     "ffCheckWrapper", "fileInput", "form",
                      "recipientList", "memberTypeCheckBox", "memberStatusCheckBox", "subjectTextBox", "bodyTextArea",
                      "sendMessageButton", "sendLaterButton", "sendPreviewButton", "tempFileInput",
                      "queryInput", "searchResults" ];
   static values = { unitId: Number };
 
   files= [];
+  formData = null;
   recipientObserver = null;
+
+  addAttachments(event) {
+
+    this.attachmentWrapperTarget.classList.toggle("hidden", false);
+    this.attachmentListTarget.innerHTML += event.target.files[0].name;
+  }
 
   connect() {
     this.establishRecipientObserver();
     this.validate();
+    this.formData = new FormData(this.formTarget);
   }
 
   establishRecipientObserver() {
@@ -25,7 +38,11 @@ export default class extends Controller {
   }
 
   handleKeydown(event) {
-    if (event.key === "Backspace") {
+    if (event.key === "Backspace" && (event.metaKey || event.ctrlKey)) {
+      this.recipientListTarget.querySelectorAll(".recipient").forEach((tag) => {
+        tag.remove();
+      });
+    } else if (event.key === "Backspace") {
       if (this.queryInputTarget.value.length > 0) { return; }
       this.deleteLastRecipient();
       this.validate();
@@ -85,7 +102,7 @@ export default class extends Controller {
 
     const body = { "key": current.dataset.key, "member_ids": memberIds }
 
-    post(`/u/${this.unitIdValue}/email/commit`, { body: body, responseKind: "turbo-stream" });    
+    post(`/u/${this.unitIdValue}/messages/commit`, { body: body, responseKind: "turbo-stream" });    
 
     this.queryInputTarget.value = "";
     this.queryInputTarget.focus();
@@ -116,7 +133,7 @@ export default class extends Controller {
     const recipientTags = this.recipientListTarget.querySelectorAll(".recipient");
     const memberIds = Array.from(recipientTags).map((tag) => { return tag.dataset.recipientId; });
     const body = { "query": this.queryInputTarget.value, "member_ids": memberIds }
-    const response = await post(`/u/${this.unitIdValue}/email/search`, { body: body, responseKind: "turbo-stream" });
+    const response = await post(`/u/${this.unitIdValue}/messages/search`, { body: body, responseKind: "turbo-stream" });
   }
 
   select(event) {
@@ -138,11 +155,6 @@ export default class extends Controller {
   toggleFormattingToolbar (event) {
     this.element.classList.toggle("formatting-active");
     event.preventDefault();
-  }
-
-  addAttachments(event) {
-    this.files.push(event.target.files);
-    this.attachmentWrapperTarget.classList.toggle("hidden", false);
   }
 
   uploadFiles() {

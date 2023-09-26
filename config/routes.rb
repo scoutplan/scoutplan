@@ -54,11 +54,13 @@ Rails.application.routes.draw do
 
   # begin units
   resources :units, path: "u", only: %i[show index update] do
-    resources :messages, path: "email" do
+    resources :messages, path: "messages" do
       post "duplicate"
       post "unpin", as: "unpin"
       collection do
         get  "drafts"
+        get  "sent"
+        get  "scheduled"
         post "recipients", as: "recipients"
         post "search",     as: "search"
         get  "select",     as: "select"

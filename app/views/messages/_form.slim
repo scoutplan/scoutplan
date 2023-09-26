@@ -1,5 +1,5 @@
 div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}")
-  .md:rounded-xl.md:p-12.mt-6.md:drop-shadow-lg.bg-white.dark:bg-stone-800
+  .md:rounded-xl.md:p-12.mt-6.md:drop-shadow-overhead.bg-white.dark:bg-stone-800
     - if @message.new_record?
       header.mb-4
         h1.text-xl.font-bold = t("messages.form.titles.new_message")
@@ -12,7 +12,7 @@ div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}"
     = form_with model: @message,
                 url: @message.new_record? ? unit_messages_path(@unit) : unit_message_path(@unit, @message),
                 method: @message.new_record? ? "post" : "patch",
-                data: { turbo_action: "advance", "message-form-unit-id-value" => @unit.id } do |f|   
+                data: { turbo_action: "advance", message_form_target: "form" } do |f|   
 
       section.flex.flex-col.divide-y.dark:divide-stone-600.text-sm.md:text-base
         // FROM

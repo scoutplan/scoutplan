@@ -10,6 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      dropShadow: {
+        overhead: '0 0 1rem rgba(0, 0, 0, 0.1)',
+      },
       fontFamily: {
         sans: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"],
         serif: [...defaultTheme.fontFamily.serif],

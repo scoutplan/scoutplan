@@ -1,23 +1,9 @@
 = turbo_frame_tag "main"
   .max-w-3xl.mx-auto
-    header.flex.flex-row.justify-between.items-center.mb-8
-      .left
-        h1.font-bold.text-4xl = "Drafts"
-
-      .right
-        - if policy(:message).new? || true
-          = link_to new_unit_message_path(@unit),
-                    class: "block px-4 py-2 rounded font-bold text-white dark:text-black bg-messages-600 hover:bg-lime-700 dark:hover:bg-messages-500",
-                    data: { turbo_frame: "main", turbo_action: "advance" },
-                    title: t("messages.tooltips.new_message") do
-                    
-            i.fa-plus.fas.mr-2
-            = t("messages.captions.new_message")
-
-    section
-      = render partial: "message", collection: @messages
-      = render partial: "empty", locals: { message_type: "draft" } unless @messages.present?
-
+    = render partial: "message_list", locals: { messages: @messages, title: "Draft messages", verb: "draft" }
 
   javascript:
       document.title = "#{@unit.name} · Draft messages"
+
+  css:
+    .draft-messages-link { display: none; }

@@ -1,0 +1,9 @@
+= turbo_frame_tag "main"
+  .max-w-3xl.mx-auto
+    = render partial: "message_list", locals: { messages: @messages, title: "Scheduled messages", verb: "scheduled" }
+
+  javascript:
+      document.title = "#{@unit.name} · Scheduled messages"
+
+  css:
+    .scheduled-messages-link { display: none; }

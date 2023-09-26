@@ -1,8 +1,8 @@
 - path = message.sent? ? unit_message_path(@unit, message) : edit_unit_message_path(@unit, message)
 
-article.hover:bg-stone-100.dark:hover:bg-stone-800.-mx-2.px-2
+article.hover:bg-stone-100.dark:hover:bg-stone-800.-mx-3.px-3
   = link_to path,
-    class: "block w-full flex flex-row justify-between items-center gap-10 border-t dark:border-stone-700 block py-2 message #{message.updated_at < 4.weeks.ago ? 'older' : 'current' }",
+    class: "block w-full flex flex-row justify-between items-center gap-10 dark:border-stone-700 py-3",
     data: { turbo_action: "advance" } do
 
     .left
@@ -14,7 +14,7 @@ article.hover:bg-stone-100.dark:hover:bg-stone-800.-mx-2.px-2
           i.fa-regular.fa-paperclip.ml-2.text-stone-400
 
       // FROM -> TO
-      p.mb-2.text-stone-500.dark:text-stone-400
+      p.text-stone-500.dark:text-stone-400
         // author name
         = message.author == @current_member ? "You" : message.author.full_display_name
         

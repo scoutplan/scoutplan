@@ -3,6 +3,8 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "trix"
 import "@rails/actiontext"
+import * as ActiveStorage from "@rails/activestorage"
+ActiveStorage.start()
 
 import * as ActionCable from "@rails/actioncable"
 ActionCable.logger.enabled = true

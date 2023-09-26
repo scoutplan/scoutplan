@@ -1,0 +1,9 @@
+= turbo_frame_tag "main"
+  .max-w-3xl.mx-auto
+    = render partial: "message_list", locals: { messages: @messages, title: "Sent messages", verb: "sent" }
+
+  javascript:
+      document.title = "#{@unit.name} · Sent messages"
+
+  css:
+    .sent-messages-link { display: none; }

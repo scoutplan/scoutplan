@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MessagesController < UnitContextController
-  before_action :find_message, except: [:index, :drafts, :new, :create, :recipients, :search, :commit]
+  before_action :find_message, except: [:index, :drafts, :scheduled, :sent, :new, :create, :recipients, :search, :commit]
   after_action :create_recipients, only: [:create, :update]
 
   def index
@@ -10,6 +10,14 @@ class MessagesController < UnitContextController
 
   def drafts
     @messages = @unit.messages.draft.with_attached_attachments.order(updated_at: :desc)
+  end
+
+  def sent
+    @messages = @unit.messages.sent.with_attached_attachments.order(updated_at: :desc)
+  end
+
+  def scheduled
+    @messages = @unit.messages.queued.with_attached_attachments.order(updated_at: :desc)
   end
 
   def show; end
@@ -172,9 +180,10 @@ class MessagesController < UnitContextController
   end
 
   def message_params
-    params.require(:message).permit(
-      :title, :body, :audience, :member_type, :member_status, :send_at
-    ).merge(author: @current_member)
+    ap params
+    result = params.require(:message).permit(:title, :body, :audience, :member_type, :member_status, :send_at)
+    result.merge!(author: @current_member) unless result[:author].present?
+    result
   end
 
   def find_message
@@ -182,10 +191,10 @@ class MessagesController < UnitContextController
   end
 
   def create_recipients
-    member_ids = params[:message_recipients][:id]
-    return unless member_ids.present?
-
     @message.message_recipients.destroy_all
+    return unless params[:message_recipients].present?
+
+    member_ids = params[:message_recipients][:id]
 
     member_ids.each do |id|
       member = @unit.members.find(id.to_i)
