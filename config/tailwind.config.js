@@ -1,5 +1,6 @@
 const { scale } = require('tailwindcss/defaultTheme')
 const defaultTheme = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
   content: [
@@ -34,7 +35,8 @@ module.exports = {
           100: '',
           500: '',
           700: '',
-        }
+        },
+        messages: colors.lime
       },
       listStyleType: {
         square: 'square',

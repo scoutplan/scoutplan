@@ -1,23 +1,15 @@
 # frozen_string_literal: true
 
-# Controller for sending messages. Interfaces between
-# UI and *Notifier classes (e.g. MemberNotifier)
 class MessagesController < UnitContextController
   before_action :find_message, except: [:index, :drafts, :new, :create, :recipients, :search, :commit]
+  after_action :create_recipients, only: [:create, :update]
 
   def index
-    redirect_to pending_unit_messages_path(@unit) and return if @unit.messages.pending.any?
-
-    redirect_to new_unit_message_path(@unit)
-
-    # @draft_messages   = @unit.messages.draft.with_attached_attachments
-    # @queued_messages  = @unit.messages.queued.with_attached_attachments
-    # @sent_messages    = @unit.messages.sent.order("updated_at DESC").with_attached_attachments
-    # @pending_messages = @unit.messages.pending.with_attached_attachments
+    redirect_to drafts_unit_messages_path(@unit)
   end
 
   def drafts
-    @messages = @unit.messages.draft.with_attached_attachments
+    @messages = @unit.messages.draft.with_attached_attachments.order(updated_at: :desc)
   end
 
   def show; end
@@ -29,15 +21,14 @@ class MessagesController < UnitContextController
   end
 
   def create
-    @message = @unit.messages.new(message_params)
-    @message.author = current_member
-    @message.save!
+    @message = @unit.messages.create!(message_params)
     handle_commit
     redirect_to unit_messages_path(@unit), notice: @notice
   end
 
   def edit
     authorize @message
+    @recipients = @message.message_recipients.map { |m| CandidateMessageRecipient.new(m.member, :committed, "") }
   end
 
   def update
@@ -46,35 +37,23 @@ class MessagesController < UnitContextController
     redirect_to unit_messages_path(@unit), notice: notice
   end
 
+  def destroy
+    @message.destroy
+    redirect_to unit_messages_path(@unit), notice: t("messages.notices.delete_success")
+  end
+
   def duplicate
     new_message = @message.dup
-    new_message.title = "DUPLICATE - #{@message.title}"
-    new_message.status = "draft"
-    new_message.send_at = Time.now
-    new_message.save
+    new_message.update(
+      title:   "DUPLICATE - #{@message.title}",
+      status:  "draft",
+      send_at: Time.now
+    )
     redirect_to edit_unit_message_path(@unit, new_message), notice: t("messages.notices.duplicate_success")
   end
 
   def unpin
     redirect_to unit_messages_path(@unit), notice: t("messages.notices.unpin_success")
-  end
-
-  # compute the recipients for a message based on the params
-  # passed in the request
-  def recipients
-    p = params.permit(:audience, :member_type, :member_status)
-    audience      = p[:audience]
-    member_type   = p[:member_type]
-    member_status = p[:member_status]
-
-    message = Message.new(
-      author:        @unit.unit_memberships.first,
-      audience:      audience,
-      member_type:   member_type,
-      member_status: member_status
-    )
-    service = MessageService.new(message)
-    @recipients = service.resolve_members
   end
 
   def search
@@ -99,18 +78,19 @@ class MessagesController < UnitContextController
     end
 
     members = scope.all.order(:last_name, :first_name)
-    ap members.count
-    members = members.to_a.reject { |m| member_ids.include?(m.id) } # delete dupes
-    ap members.count
+    members = members.to_a.reject { |m| member_ids.include?(m.id) }
     events = @unit.events.published.rsvp_required.recent_and_future
                   .includes(:event_rsvps).where("title ILIKE ?", "%#{query[0]}%")
     distribution_lists = query.length == 1 ? @unit.distribution_lists(matching: query[0]) : []
+    # TODO: tags
     @search_results = MessagingSearchResult.to_a(distribution_lists + members + events)
   end
 
   def commit
     key = params[:key]
     return unless key.present?
+
+    member_ids = params[:member_ids].map(&:to_i) || []
 
     key_parts = key.split("_")
     type = key_parts[0]
@@ -141,6 +121,7 @@ class MessagesController < UnitContextController
 
     @recipients += parents.flatten
     @recipients.uniq!(&:email)
+    @recipients.reject! { |r| member_ids.include?(r.id) } # delete dupes
   end
 
   private
@@ -178,16 +159,11 @@ class MessagesController < UnitContextController
     # send now
     when t("messages.captions.send_message")
       if MessagePolicy.new(current_member, @message).create?
-        @message.update(status: :outbox)
+        @message.update!(status: :outbox)
         @notice = t("messages.notices.message_sent")
       else
         @notice = "You aren't authorized to do that"
       end
-
-    # delete
-    when t("messages.captions.delete_draft")
-      @message.destroy
-      @notice = t("messages.notices.delete_success")
     end
   end
 
@@ -196,10 +172,25 @@ class MessagesController < UnitContextController
   end
 
   def message_params
-    params.require(:message).permit(:title, :body, :audience, :member_type, :member_status, :send_at)
+    params.require(:message).permit(
+      :title, :body, :audience, :member_type, :member_status, :send_at
+    ).merge(author: @current_member)
   end
 
   def find_message
     @message = Message.find(params[:id] || params[:message_id])
+  end
+
+  def create_recipients
+    member_ids = params[:message_recipients][:id]
+    return unless member_ids.present?
+
+    @message.message_recipients.destroy_all
+
+    member_ids.each do |id|
+      member = @unit.members.find(id.to_i)
+      ap member
+      @message.message_recipients.create!(unit_membership: member)
+    end
   end
 end

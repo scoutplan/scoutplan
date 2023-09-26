@@ -77,6 +77,7 @@ class UnitMembership < ApplicationRecord
   end
 
   acts_as_taggable_on :tags
+  acts_as_taggable_tenant :unit_id
 
   # def to_param
   #   [id, user&.full_display_name].join("-").parameterize

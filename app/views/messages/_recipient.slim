@@ -1,11 +1,10 @@
 / https://guides.rubyonrails.org/form_helpers.html#basic-structures
 
-.recipient.inline-block.flex.items-center.rounded.bg-lime-100.dark:bg-lime-900.whitespace-nowrap class="recipient-#{recipient.reason}" data-recipient-id="#{recipient.id}"
-  = hidden_field_tag "message[message_recipients][#{recipient.id}][id]", recipient.id
-  = hidden_field_tag "message[message_recipients][#{recipient.id}][type]", "UnitMembership"
+.recipient.inline-block.flex.items-center.rounded.bg-lime-100.dark:bg-lime-900.whitespace-nowrap data-recipient-id="#{recipient.id}"
+  = hidden_field_tag "message_recipients[id][]", recipient.id
 
   .recipient-name.py-2.pl-2
     = recipient.full_display_name
 
-  .recipient-action.recipient-action-delete.p-2.cursor-pointer(data-action="click->message-form#deleteItem" title="#{recipient.description}")
-    i.fa-solid.fa-times-circle.text-lime-600.dark:text-lime-100
+  .recipient-action.recipient-action-delete.p-2.cursor-pointer(data-action="click->message-form#deleteItem" title="#{recipient&.description}")
+    i.fa-solid.fa-times-circle.text-messages-600.dark:text-messages-600

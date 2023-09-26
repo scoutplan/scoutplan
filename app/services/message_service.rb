@@ -53,15 +53,6 @@ class MessageService < ApplicationService
     @recipients = @recipients.select { |r| r.contactable?(via: :email) }
   end
 
-  # return the Event associated with a message, or nil if it's not an event-based Message
-  def event
-    return nil unless @message.event_cohort?
-
-    recipient_parts = @message.recipients.split("_")
-    event_id = recipient_parts.second
-    Event.find(event_id)
-  end
-
   private
 
   def resolve_member_cohort

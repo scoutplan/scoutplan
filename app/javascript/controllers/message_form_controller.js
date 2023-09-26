@@ -10,16 +10,25 @@ export default class extends Controller {
   static values = { unitId: Number };
 
   files= [];
+  recipientObserver = null;
 
   connect() {
+    this.establishRecipientObserver();
     this.validate();
   }
 
-  handleKeydown(event) {
+  establishRecipientObserver() {
+    this.recipientObserver = new MutationObserver((mutations) => {
+      this.validate();
+    });
+    this.recipientObserver.observe(this.recipientListTarget, { childList: true });
+  }
 
+  handleKeydown(event) {
     if (event.key === "Backspace") {
       if (this.queryInputTarget.value.length > 0) { return; }
       this.deleteLastRecipient();
+      this.validate();
       return;
     }
 
@@ -37,8 +46,8 @@ export default class extends Controller {
       current.classList.remove("selected");
       target?.classList?.add("selected");
       target?.scrollIntoView({block: "center"});
-      event.stopPropagation()
-      event.preventDefault()
+      event.stopPropagation();
+      event.preventDefault();
     } else if (event.key === "ArrowDown") {
       var target = current.nextSibling;
       if (target == null) { target = current.parentNode.firstChild; } // wraparound
@@ -50,10 +59,16 @@ export default class extends Controller {
       current.classList.remove("selected");
       target?.classList?.add("selected");
       target?.scrollIntoView({block: "center"});
-      event.stopPropagation()
-      event.preventDefault()
+      event.stopPropagation();
+      event.preventDefault();
     } else if (event.key === "Enter" || event.key === "Tab") {
       this.commit();
+      event.stopPropagation();
+      event.preventDefault();
+    } else if (event.key === "Escape") {
+      this.resetQueryInput();
+      event.stopPropagation();
+      event.preventDefault();
     } else { return; }
   }
 
@@ -63,13 +78,18 @@ export default class extends Controller {
     lastElem.remove();
   }
 
-  async commit() {
+  commit() {
     const current = this.searchResultsTarget.querySelector(".selected");
-    this.clearResults();
-    const body = { "key": current.dataset.key }
-    const response = await post(`/u/${this.unitIdValue}/email/commit`, { body: body, responseKind: "turbo-stream" });    
+    const recipientTags = this.recipientListTarget.querySelectorAll(".recipient");
+    const memberIds = Array.from(recipientTags).map((tag) => { return tag.dataset.recipientId; });
+
+    const body = { "key": current.dataset.key, "member_ids": memberIds }
+
+    post(`/u/${this.unitIdValue}/email/commit`, { body: body, responseKind: "turbo-stream" });    
+
     this.queryInputTarget.value = "";
     this.queryInputTarget.focus();
+    this.clearResults();
   }
 
   deleteItem(event) {
@@ -131,7 +151,8 @@ export default class extends Controller {
 
   validate() {
     var valid = this.subjectTextBoxTarget.value.length > 0;
-    valid = valid && this.bodyTextAreaTarget.value.length > 0;
+    // valid = valid && this.bodyTextAreaTarget?.value?.length > 0;
+    valid = valid && this.recipientListTarget.querySelectorAll(".recipient").length > 0;
 
     this.sendMessageButtonTarget.disabled = !valid;
     this.sendLaterButtonTarget.disabled   = !valid;

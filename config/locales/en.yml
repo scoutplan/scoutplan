@@ -84,7 +84,7 @@ en:
     events:        "Schedule"
     members:       "Members"
     planner:       "Planner"
-    communication: "Email"
+    communication: "Messages"
     wiki:          "Wiki"
 
   profile:
@@ -641,7 +641,7 @@ en:
       send_preview: "Send Preview"
       send_message: "Send Now"
       schedule_and_save: "Schedule and save"
-      new_message:  "Write an email"
+      new_message:  "Write a message"
       duplicate:    "Duplicate This Email"
       delete_draft: "Delete Draft"
 

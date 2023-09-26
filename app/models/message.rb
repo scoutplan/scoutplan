@@ -7,7 +7,7 @@ class Message < ApplicationRecord
 
   has_one :unit, through: :author
 
-  has_many :message_recipients, as: :message_receivable, dependent: :destroy
+  has_many :message_recipients
 
   has_many_attached :attachments
 
@@ -29,6 +29,10 @@ class Message < ApplicationRecord
     status != "sent"
   end
 
+  def deleteable?
+    !new_record? && editable?
+  end
+
   def plain_text_body
     return body.to_plain_text if body.respond_to?(:to_plain_text)
 
@@ -37,5 +41,21 @@ class Message < ApplicationRecord
 
   def preview
     plain_text_body.truncate(50)
+  end
+
+  def recipients
+    message_recipients.map(&:member)
+  end
+
+  MAX_RECIPIENT_PREVIEW = 3
+
+  def recipients_preview
+    recipients = message_recipients.limit(MAX_RECIPIENT_PREVIEW).map(&:member).map(&:full_display_name).join(", ")
+
+    if message_recipients.count > MAX_RECIPIENT_PREVIEW
+      recipients += ", and #{message_recipients.count - MAX_RECIPIENT_PREVIEW} more"
+    end
+
+    recipients
   end
 end
