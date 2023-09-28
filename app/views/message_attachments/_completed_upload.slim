@@ -1,0 +1,8 @@
+.completed-upload.pl-2.py-1.rounded.bg-stone-200.dark:bg-stone-700.inline-block.flex.flex-row.items-center.gap-1(id="pending_upload_#{upload[:token]}")
+  .inline-block.text-ellipsis.whitespace-nowrap.overflow-hidden(style="max-width: 12rem;")
+    = upload[:file].original_filename
+    
+  .inline-block.py-1.px-3.ml-1.text-stone-500.hover:text-stone-400.cursor-pointer
+    i.fa-solid.fa-times-circle
+
+= hidden_field_tag "message[blob_ids][]", upload[:blob_id], id: "message_blob_ids_#{upload[:blob_id]}"

@@ -7,7 +7,7 @@ import { post } from "@rails/request.js"
 // https://blog.commutatus.com/understanding-rails-activestorage-direct-uploads-a4aeca7eccf
 
 export default class extends Controller {
-  static targets = [ "attachmentList", "attachmentWrapper", "attachmentForm", "audienceList", "audienceName",
+  static targets = [ "attachmentsList", "attachmentWrapper", "attachmentForm", "audienceList", "audienceName",
                      "ffCheckWrapper", "fileInput", "form",
                      "recipientList", "memberTypeCheckBox", "memberStatusCheckBox", "subjectTextBox", "bodyTextArea",
                      "sendMessageButton", "sendLaterButton", "sendPreviewButton", "tempFileInput",
@@ -19,9 +19,8 @@ export default class extends Controller {
   recipientObserver = null;
 
   addAttachments(event) {
-
+    this.attachmentFormTarget.requestSubmit();
     this.attachmentWrapperTarget.classList.toggle("hidden", false);
-    this.attachmentListTarget.innerHTML += event.target.files[0].name;
   }
 
   connect() {

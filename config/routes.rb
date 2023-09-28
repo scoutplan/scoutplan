@@ -66,9 +66,9 @@ Rails.application.routes.draw do
         get  "select",     as: "select"
         post "commit",     as: "commit"
       end
-      resources :attachments
     end
 
+    resources :message_attachments
     resources :locations
     resources :packing_lists do
       resources :packing_list_items

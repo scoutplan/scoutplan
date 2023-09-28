@@ -1,0 +1,3 @@
+div#sender_wrapper.flex.flex-row.gap-6.py-4.items-center
+  = f.label :sender, t("messages.form.labels.from")
+  = f.label :sender_address, "#{@message.author.full_display_name} at #{@unit.name} <#{@unit.from_address}>", class: "ellipsis truncate"

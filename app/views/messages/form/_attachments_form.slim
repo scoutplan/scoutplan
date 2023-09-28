@@ -1,0 +1,9 @@
+= form_with url:    unit_message_attachments_path(@unit),
+            method: "post",
+            format: "turbo_stream",
+            data:   { message_form_target: "attachmentForm" } do |f|
+  / = hidden_field_tag :message_token, @message_token
+  = f.file_field :files,
+                  multiple: true,
+                  class: "hidden",
+                  data: { message_form_target: "fileInput", action: "message-form#addAttachments" }

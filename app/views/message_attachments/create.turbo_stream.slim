@@ -1,0 +1,3 @@
+= turbo_stream.append "attachments_list" do
+  - @uploads.each do |upload|
+    = render partial: "attachment_candidate", locals: { filename: upload[:filename], blob_id: upload[:blob_id] }

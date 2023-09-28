@@ -7,11 +7,11 @@ article.hover:bg-stone-100.dark:hover:bg-stone-800.-mx-3.px-3
 
     .left
       // TITLE
-      h3.text-2xl
+      h3.text-xl
         = message.title.presence || "(no subject)"
 
         - if message.attachments.any?
-          i.fa-regular.fa-paperclip.ml-2.text-stone-400
+          i.fa-regular.fa-paperclip.ml-2.text-stone-500.text-base
 
       // FROM -> TO
       p.text-stone-500.dark:text-stone-400

@@ -1,0 +1,22 @@
+div#recipient_wrapper.py-2(data-controller="dropdown" data-action="keydown->dropdown#handleKeydown")
+  .flex.flex-row.gap-4.justify-between.items-start
+    = f.label :groups, "To", class: "inline-block py-2"
+
+    .auto-complete-field.w-full.flex.gap-1.flex-wrap(data-controller="selectable-list" data-message-form-target="recipientList" data-action="change->message-form#validate")
+      = render partial: "recipient", collection: @recipients
+
+      #recipient_search_query.relative.w-full.flex.grow.shrink.basis-0
+        = text_field :recipient_search, "", autofocus: true,
+                    class: "ml-1 px-0 bg-transparent border-0 focus:ring-0 w-full grow text-sm md:text-base",
+                    autocomplete: "off",
+                    data: { action: "input->message-form#searchRecipients keydown->message-form#handleKeydown blur->message-form#clearResults",
+                            message_form_target: "queryInput", selectable_list_target: "queryInput" }
+
+        ul#search_results.absolute.top-full.bg-messages-600.text-messages-100.max-h-96.overflow-y-scroll.rounded-b.z-50(data-message-form-target="searchResults" \
+          data-selectable-list-commit-url-value="#{unit_messages_path(@unit)}")
+
+    .right
+      = link_to "#",
+                class: "block w-full py-3 flex flex-row justify-between items-center ml-auto",
+                data: { dropdown_target: "toggle", action: "dropdown#toggle" } do
+        i.fa-solid.fa-chevron-down.text-stone-500

@@ -54,6 +54,7 @@ class MessagingSearchResult
 
   def unit_membership_description
     return "No contact methods available" unless contactable?
+
     result = []
     result << @result.email if @result.emailable?
     result << @result.phone.phony_formatted(country_code: "US") if @result.smsable?
@@ -64,9 +65,9 @@ class MessagingSearchResult
     attendee_count = @result.rsvps.accepted.count
 
     if @result.ended?
-      "#{pluralize(attendee_count, 'attendee')}, ended #{distance_of_time_in_words_to_now(@result.ends_at)} ago"
+      "#{pluralize(attendee_count, 'attendee')}, ended #{ApplicationController.helpers.deictic_string_for_time_interval_from_day(@result.ends_at)}"
     else
-      "#{pluralize(attendee_count, 'attendee')}, starts in #{distance_of_time_in_words_to_now(@result.starts_at)}"
+      "#{pluralize(attendee_count, 'attendee')}, starts #{ApplicationController.helpers.deictic_string_for_time_interval_from_day(@result.starts_at)}"
     end
   end
 end

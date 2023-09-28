@@ -23,3 +23,5 @@ pin "@rails/actioncable", to: "https://ga.jspm.io/npm:@rails/actioncable@7.0.4/a
 pin "stimulus-timeago", to: "https://ga.jspm.io/npm:stimulus-timeago@4.1.0/dist/stimulus-timeago.mjs"
 pin "date-fns", to: "https://ga.jspm.io/npm:date-fns@2.29.3/esm/index.js"
 pin "logrocket", to: "https://ga.jspm.io/npm:logrocket@4.0.4/dist/build.umd.js"
+pin "@rails/actioncable", to: "actioncable.esm.js"
+pin_all_from "app/javascript/channels", under: "channels"

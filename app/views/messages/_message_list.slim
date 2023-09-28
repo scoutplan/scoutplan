@@ -11,19 +11,19 @@ header.flex.flex-row.justify-between.items-center.pb-4.mb-2.border-b.dark:border
       = link_to drafts_unit_messages_path(@unit),
                 class: "draft-messages-link block px-4 py-2 font-bold hover:bg-messages-800",
                 data: { turbo_action: "advance" } do
-        i.fa-regular.fa-file-pen.mr-2
+        i.fa-fw.fa-regular.fa-file-pen.mr-2
         = "Drafts"
 
       = link_to scheduled_unit_messages_path(@unit),
                 class: "scheduled-messages-link block px-4 py-2 font-bold hover:bg-messages-800",
                 data: { turbo_action: "advance" } do
-        i.fa-regular.fa-clock.mr-2
+        i.fa-fw.fa-regular.fa-clock.mr-2
         = "Scheduled"
 
       = link_to sent_unit_messages_path(@unit),
                 class: "sent-messages-link block px-4 py-2 font-bold hover:bg-messages-800",
                 data: { turbo_action: "advance" } do
-        i.fa-regular.fa-paper-plane.mr-2
+        i.fa-fw.fa-regular.fa-paper-plane.mr-2
         = "Sent"
 
   .right

@@ -2,6 +2,7 @@
 
 class MessagesController < UnitContextController
   before_action :find_message, except: [:index, :drafts, :scheduled, :sent, :new, :create, :recipients, :search, :commit]
+  before_action :set_message_token, only: [:new, :edit]
   after_action :create_recipients, only: [:create, :update]
 
   def index
@@ -24,12 +25,12 @@ class MessagesController < UnitContextController
 
   def new
     authorize current_member.messages.new
-    @drafts_count = @unit.messages.draft.count
     @message = current_member.messages.new(send_at: Date.today, status: :draft)
   end
 
   def create
     @message = @unit.messages.create!(message_params)
+    associate_attachments
     handle_commit
     redirect_to unit_messages_path(@unit), notice: @notice
   end
@@ -41,6 +42,7 @@ class MessagesController < UnitContextController
 
   def update
     @message.update(message_params)
+    associate_attachments
     handle_commit
     redirect_to unit_messages_path(@unit), notice: notice
   end
@@ -134,6 +136,14 @@ class MessagesController < UnitContextController
 
   private
 
+  def associate_attachments
+    return unless params[:blob_ids].present?
+
+    params[:blob_ids].each do |blob_id|
+      ActiveStorage::Attachment.create!(name: "attachments", record: @message, blob_id: blob_id)
+    end
+  end
+
   def handle_commit
     case params[:commit]
 
@@ -180,7 +190,6 @@ class MessagesController < UnitContextController
   end
 
   def message_params
-    ap params
     result = params.require(:message).permit(:title, :body, :audience, :member_type, :member_status, :send_at)
     result.merge!(author: @current_member) unless result[:author].present?
     result
@@ -201,5 +210,9 @@ class MessagesController < UnitContextController
       ap member
       @message.message_recipients.create!(unit_membership: member)
     end
+  end
+
+  def set_message_token
+    @message_token = SecureRandom.hex(10)
   end
 end

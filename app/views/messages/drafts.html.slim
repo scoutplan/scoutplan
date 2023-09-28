@@ -3,7 +3,8 @@
     = render partial: "message_list", locals: { messages: @messages, title: "Draft messages", verb: "draft" }
 
   javascript:
-      document.title = "#{@unit.name} · Draft messages"
+    document.title = `#{["Draft Messages", @unit.name].join(" · ")}`;
+
 
   css:
     .draft-messages-link { display: none; }

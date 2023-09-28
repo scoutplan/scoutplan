@@ -9,3 +9,6 @@
     run_tasks:
       cron: "0 * * * * *" # every minute
       class: TaskRunner
+    purge_orphaned_files:
+      cron: "0 0 * * *"
+      class: PurgeOrphanedUploadsWorker
