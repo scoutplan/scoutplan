@@ -1,4 +1,5 @@
-div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}")
+div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}" \
+    data-action="beforeunload@window->message-form#confirmLeave turbo:before-fetch-request@document->message-form#confirmLeave")
   .md:rounded-xl.md:p-12.mt-6.md:drop-shadow-overhead.bg-white.dark:bg-stone-800
     = render partial: "messages/form/header"
     = render partial: "messages/form/attachments_form"
@@ -9,7 +10,7 @@ div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}"
       section.flex.flex-col.divide-y.dark:divide-stone-600.text-sm.md:text-base
         = render partial: "messages/form/from", locals: { f: f }
         = render partial: "messages/form/to", locals: { f: f }
-        = render partial: "messages/form/audience", locals: { f: f }
+        = render partial: "messages/form/subject", locals: { f: f }
         = render partial: "messages/form/attachments"
         = render partial: "messages/form/body", locals: { f: f }
         = render partial: "messages/form/footer", locals: { f: f }

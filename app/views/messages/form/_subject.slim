@@ -7,4 +7,4 @@ div#subject_wrapper.flex.flex-row.gap-6.py-4.items-center
                   class: "p-0 w-full border-0 bg-transparent placeholder-stone-400 dark:placeholder-stone-500 disabled:text-stone-300 " \
                           "disabled:placeholder-stone-200 ring-0 focus:ring-0 text-sm md:text-base",
                   placeholder: t("messages.form.placeholders.subject"),
-                  data: { message_form_target: "subjectTextBox", action: "message-form#validate" }
+                  data: { message_form_target: "subjectTextBox", action: "message-form#validate message-form#markAsDirty" }

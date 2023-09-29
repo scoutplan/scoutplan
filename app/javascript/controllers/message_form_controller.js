@@ -7,24 +7,37 @@ import { post } from "@rails/request.js"
 // https://blog.commutatus.com/understanding-rails-activestorage-direct-uploads-a4aeca7eccf
 
 export default class extends Controller {
-  static targets = [ "attachmentsList", "attachmentWrapper", "attachmentForm", "audienceList", "audienceName",
+  static targets = [ "attachmentsList", "attachmentsWrapper", "attachmentForm", "audienceList", "audienceName",
                      "ffCheckWrapper", "fileInput", "form",
                      "recipientList", "memberTypeCheckBox", "memberStatusCheckBox", "subjectTextBox", "bodyTextArea",
                      "sendMessageButton", "sendLaterButton", "sendPreviewButton", "tempFileInput",
                      "queryInput", "searchResults" ];
   static values = { unitId: Number };
 
-  files= [];
-  formData = null;
   recipientObserver = null;
+  dirty = false;
+  shouldSkipLeaveConfirmation = false;
+
+  skipLeaveConfirmation() {
+    this.shouldSkipLeaveConfirmation = true;
+  }
 
   addAttachments(event) {
     this.attachmentFormTarget.requestSubmit();
-    this.attachmentWrapperTarget.classList.toggle("hidden", false);
+  }
+
+  confirmLeave(event) {
+    if (this.shouldSkipLeaveConfirmation) { return; }
+
+    if (this.dirty && !confirm("You have unsaved changes. Are you sure you want to leave this page?")) {
+      event.preventDefault();
+      event.returnValue = "";
+    }
   }
 
   connect() {
     this.establishRecipientObserver();
+    this.establishAttachmentsObserver();
     this.validate();
     this.formData = new FormData(this.formTarget);
   }
@@ -34,6 +47,13 @@ export default class extends Controller {
       this.validate();
     });
     this.recipientObserver.observe(this.recipientListTarget, { childList: true });
+  }
+
+  establishAttachmentsObserver() {
+    this.attachmentObserver = new MutationObserver((mutations) => {
+      this.attachmentsWrapperTarget.classList.toggle("hidden", this.attachmentsListTarget.children.length == 0);
+    });
+    this.attachmentObserver.observe(this.attachmentsListTarget, { childList: true });
   }
 
   handleKeydown(event) {
@@ -103,6 +123,7 @@ export default class extends Controller {
 
     post(`/u/${this.unitIdValue}/messages/commit`, { body: body, responseKind: "turbo-stream" });    
 
+    this.markAsDirty();
     this.queryInputTarget.value = "";
     this.queryInputTarget.focus();
     this.clearResults();
@@ -126,6 +147,10 @@ export default class extends Controller {
     this.timeout = setTimeout(() => {
       this.performRecipientSearch();
     }, 50);
+  }
+
+  markAsDirty() {
+    this.dirty = true;
   }
 
   async performRecipientSearch() {

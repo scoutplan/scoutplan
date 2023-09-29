@@ -55,6 +55,7 @@ Rails.application.routes.draw do
   # begin units
   resources :units, path: "u", only: %i[show index update] do
     resources :messages, path: "messages" do
+      resources :message_attachments, path: "attachments", as: "attachments", only: [:destroy]
       post "duplicate"
       post "unpin", as: "unpin"
       collection do

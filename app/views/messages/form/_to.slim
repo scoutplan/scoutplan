@@ -9,7 +9,7 @@ div#recipient_wrapper.py-2(data-controller="dropdown" data-action="keydown->drop
         = text_field :recipient_search, "", autofocus: true,
                     class: "ml-1 px-0 bg-transparent border-0 focus:ring-0 w-full grow text-sm md:text-base",
                     autocomplete: "off",
-                    data: { action: "input->message-form#searchRecipients keydown->message-form#handleKeydown blur->message-form#clearResults",
+                    data: { action: "input->message-form#searchRecipients keydown->message-form#handleKeydown input->markAsDirty blur->message-form#clearResults",
                             message_form_target: "queryInput", selectable_list_target: "queryInput" }
 
         ul#search_results.absolute.top-full.bg-messages-600.text-messages-100.max-h-96.overflow-y-scroll.rounded-b.z-50(data-message-form-target="searchResults" \
