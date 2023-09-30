@@ -24,36 +24,9 @@ footer.border-t.pt-4.dark:border-stone-500
     
       .w-8
 
-
+      // ALL THE OTHER BUTTONS
       .flex.flex-row
-        // send later
-        .relative.dropdown(data-controller="dropdown")
-          // send later dropdown ("dropup")
-          .dropdown-menu.absolute.p-3.bg-white.dark:bg-black.border.border-stone-300.dark:border-stone-600.rounded.drop-shadow-lg.flex.flex-col.gap-2.min-w-96.bottom-full.-translate-x-1/2.left-1/2.mb-2(data-dropdown-target="dropdown")
-            = link_to "#",
-                      class: "absolute right-0 top-0 text-xl px-3 py-2 cursor-pointer",
-                      data: { action: "message-form#toggleSendLater" } do
-              i.fa-solid.fa-times
-            = f.label :send_at, "Send later", class: "block font-bold"
-            = f.date_field :send_at, class: "w-full rounded border-stone-300"
-            = f.button t("messages.captions.schedule_and_save"),
-                      type: "submit",
-                      title: "Schedule and save",
-                      name: "commit",
-                      value: t("messages.captions.schedule_and_save"),
-                      class: "block mt-2 px-3 py-2 bg-messages-600 text-messages-100 hover:bg-messages-700 dark:hover:text-messages-400 cursor-pointer whitespace-nowrap rounded font-bold",
-                      data: { action: "message-form#skipLeaveConfirmation" }
-
-          = f.button t("messages.captions.send_later"),
-                    type: "submit",
-                    title: "Send later",
-                    disabled: true,
-                    value: t("messages.captions.send_preview"),
-                    name: "commit",
-                    id: "send_later_button",
-                    class: "text-xl px-3 py-2 text-messages-600 hover:text-messages-700 dark:hover:text-messages-400 disabled:text-messages-200 dark:disabled:hover:text-messages-900 cursor-pointer dark:disabled:text-messages-900 disabled:cursor-not-allowed",
-                    data: { message_form_target: "sendLaterButton", action: "dropdown#toggle" } do
-              i.fa-solid.fa-calendar-days
+        = render partial: "messages/form/send_later_button", locals: { f: f }
 
         // send preview
         = f.button t("messages.captions.send_preview"),
@@ -102,3 +75,8 @@ footer.border-t.pt-4.dark:border-stone-500
           i.fa-stack
             i.fa-thin.fa-circle.fa-stack-2x
             i.fa-solid.fa-trash-can.fa-stack-1x
+
+  - if @message.queued?
+    p.mt-4.text-stone-500.dark:text-stone-400
+      i.fa-regular.fa-clock.mr-2
+      | Scheduled to send on #{@message.send_at.strftime("%b %-d")}

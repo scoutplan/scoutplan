@@ -15,8 +15,11 @@ div#recipient_wrapper.py-2(data-controller="dropdown" data-action="keydown->drop
         ul#search_results.absolute.top-full.bg-messages-600.text-messages-100.max-h-96.overflow-y-scroll.rounded-b.z-50(data-message-form-target="searchResults" \
           data-selectable-list-commit-url-value="#{unit_messages_path(@unit)}")
 
-    .right
+    .right.dropdown.relative
       = link_to "#",
-                class: "block w-full py-3 flex flex-row justify-between items-center ml-auto",
+                class: "dropdown-button block w-full py-3 flex flex-row justify-between items-center ml-auto",
                 data: { dropdown_target: "toggle", action: "dropdown#toggle" } do
         i.fa-solid.fa-chevron-down.text-stone-500
+
+      .dropdown-menu.absolute.right-0.top-full.w-96.max-h-96.bg-messages-800.z-10.overflow-y-scroll.rounded-b
+        = render partial: "search_result", collection: @addressables

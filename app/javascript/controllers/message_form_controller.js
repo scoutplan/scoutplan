@@ -206,4 +206,9 @@ export default class extends Controller {
 
     event.preventDefault();
   }
+
+  removeAttachmentCandidate(event) {
+    var elem = event.target.closest(".attachment-candidate");
+    elem.remove();
+  }
 }

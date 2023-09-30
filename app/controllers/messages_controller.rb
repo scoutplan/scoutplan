@@ -3,6 +3,7 @@
 class MessagesController < UnitContextController
   before_action :find_message, except: [:index, :drafts, :scheduled, :sent, :new, :create, :recipients, :search, :commit]
   before_action :set_message_token, only: [:new, :edit]
+  before_action :set_addressables, only: [:new, :edit]
   after_action :create_recipients, only: [:create, :update]
 
   def index
@@ -44,7 +45,9 @@ class MessagesController < UnitContextController
     @message.update(message_params)
     associate_attachments
     handle_commit
-    redirect_to unit_messages_path(@unit), notice: notice
+    redirect_to(scheduled_unit_messages_path(@unit), notice: @notice) and return if @message.queued?
+
+    redirect_to unit_messages_path(@unit), notice: @notice
   end
 
   def destroy
@@ -214,5 +217,14 @@ class MessagesController < UnitContextController
 
   def set_message_token
     @message_token = SecureRandom.hex(10)
+  end
+
+  def set_addressables
+    scope   = @unit.members.status_active_and_registered.joins(:user)
+    members = scope.all.order(:last_name, :first_name)
+    events  = @unit.events.published.rsvp_required.recent_and_future.includes(:event_rsvps)
+    lists   = @unit.distribution_lists
+    # TODO: tags
+    @addressables = MessagingSearchResult.to_a(lists + [:divider] + events + [:divider] + members)
   end
 end

@@ -1,5 +1,13 @@
 = turbo_frame_tag "main"
   .min-w-4xl.max-w-3xl.mx-auto.pt-6
+    = link_to sent_unit_messages_path(@unit),
+          class: "inline-block font-bold pb-4 text-lime-600 hover:text-lime-700 dark:text-lime-400",
+          data: { turbo_action: "advance" } do
+      .fa-stack
+        i.fa-regular.fa-circle.fa-stack-2x
+        i.fa-solid.fa-arrow-left.fa-stack-1x
+      = t("messages.new.buttons.cancel")
+
     header.mb-2
       h1.text-3xl.font-bold = @message.title
 

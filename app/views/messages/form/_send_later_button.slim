@@ -1,0 +1,33 @@
+.send-later.relative.dropdown(data-controller="dropdown")
+  .dropdown-menu.p-6.pt-4.absolute.text-messages-100.bg-messages-800.rounded.drop-shadow-overhead.min-w-96.bottom-full.-translate-x-1/2.left-1/2.mb-2(data-dropdown-target="dropdown")
+    .flex.flex-col.gap-2
+      header.flex.flex-row.justify-between.items-center.mb-1.relative
+        = f.label :send_at, "Send later", class: "block font-bold text-lg"
+
+        = link_to "#",
+                  class: "block absolute right-0 top-0 text-xl p-2 -mt-2 -mr-2 hover:text-messages-400",
+                  data: { action: "dropdown#toggle" } do
+          i.fa-solid.fa-times                           
+
+      section
+        = f.date_field :send_at, class: "w-full mb-1 rounded border border-messages-900 text-stone-900"
+
+      footer
+        = f.button t("messages.captions.schedule_and_save"),
+                  type: "submit",
+                  name: "commit",
+                  title: "Schedule and save",
+                  value: t("messages.captions.schedule_and_save"),
+                  class: "leading-loose w-full md:w-fit block px-4 py-2 font-bold text-messages-900 bg-messages-500 hover:bg-messages-400 rounded",
+                  data: { action: "message-form#skipLeaveConfirmation" }
+
+  = f.button t("messages.captions.send_later"),
+            type: "submit",
+            name: "commit",
+            title: "Send later",
+            disabled: true,
+            value: t("messages.captions.send_preview"),
+            id: "send_later_button",
+            class: "text-xl px-3 py-2 text-messages-600 hover:text-messages-700 dark:hover:text-messages-400 disabled:text-messages-200 dark:disabled:hover:text-messages-900 cursor-pointer dark:disabled:text-messages-900 disabled:cursor-not-allowed",
+            data: { message_form_target: "sendLaterButton", action: "dropdown#toggle" } do
+      i.fa-solid.fa-calendar-days
