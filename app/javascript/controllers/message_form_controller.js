@@ -18,6 +18,13 @@ export default class extends Controller {
   dirty = false;
   shouldSkipLeaveConfirmation = false;
 
+  connect() {
+    this.establishRecipientObserver();
+    this.establishAttachmentsObserver();
+    this.validate();
+    this.formData = new FormData(this.formTarget);
+  }
+
   skipLeaveConfirmation() {
     this.shouldSkipLeaveConfirmation = true;
   }
@@ -33,13 +40,6 @@ export default class extends Controller {
       event.preventDefault();
       event.returnValue = "";
     }
-  }
-
-  connect() {
-    this.establishRecipientObserver();
-    this.establishAttachmentsObserver();
-    this.validate();
-    this.formData = new FormData(this.formTarget);
   }
 
   establishRecipientObserver() {
@@ -188,11 +188,13 @@ export default class extends Controller {
   validate() {
     var valid = this.subjectTextBoxTarget.value.length > 0;
     // valid = valid && this.bodyTextAreaTarget?.value?.length > 0;
-    valid = valid && this.recipientListTarget.querySelectorAll(".recipient").length > 0;
+    const recipientCount = this.recipientListTarget.querySelectorAll(".recipient").length
+    valid = valid && recipientCount > 0;
 
     this.sendMessageButtonTarget.disabled = !valid;
     this.sendLaterButtonTarget.disabled   = !valid;
     this.sendPreviewButtonTarget.disabled = !valid;
+    this.queryInputTarget.placeholder = recipientCount > 0 ? "" : "Search for people, events, or groups...";
   }
 
   changeAudience(event) {

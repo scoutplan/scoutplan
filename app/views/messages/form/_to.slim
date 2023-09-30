@@ -7,8 +7,9 @@ div#recipient_wrapper.py-2(data-controller="dropdown" data-action="keydown->drop
 
       #recipient_search_query.relative.w-full.flex.grow.shrink.basis-0
         = text_field :recipient_search, "", autofocus: true,
-                    class: "ml-1 px-0 bg-transparent border-0 focus:ring-0 w-full grow text-sm md:text-base",
+                    class: "ml-1 px-0 bg-transparent border-0 focus:ring-0 w-full grow text-sm md:text-base placeholder-stone-400 dark:placeholder-stone-500",
                     autocomplete: "off",
+                    placeholder: "Search for a person, event, or group...",
                     data: { action: "input->message-form#searchRecipients keydown->message-form#handleKeydown input->markAsDirty blur->message-form#clearResults",
                             message_form_target: "queryInput", selectable_list_target: "queryInput" }
 
@@ -19,7 +20,7 @@ div#recipient_wrapper.py-2(data-controller="dropdown" data-action="keydown->drop
       = link_to "#",
                 class: "dropdown-button block w-full py-3 flex flex-row justify-between items-center ml-auto",
                 data: { dropdown_target: "toggle", action: "dropdown#toggle" } do
-        i.fa-solid.fa-chevron-down.text-stone-500
+        i.fa-solid.fa-address-book.text-stone-500
 
       .dropdown-menu.absolute.right-0.top-full.w-96.max-h-96.bg-messages-800.z-10.overflow-y-scroll.rounded-b
         = render partial: "search_result", collection: @addressables
