@@ -639,7 +639,7 @@ en:
     captions:
       save_draft:   "Save Draft"
       send_preview: "Send Preview"
-      send_message: "Send Now"
+      send_message: "Send Message"
       schedule_and_save: "Schedule and save"
       new_message:  "Write a message"
       duplicate:    "Duplicate This Email"
@@ -667,6 +667,9 @@ en:
       titles:
         edit: "Edit Email"
         new:  "New email"
+
+      buttons:
+        address_book: "View all %{unit_name} members and groups"
 
     notices:
       draft_saved:        "Draft message saved"

@@ -1,6 +1,6 @@
 = content_tag :li,
   role: "option",
-  class: "search-result block px-3 py-2 #{search_result.contactable_status}",
+  class: "search-result block px-3 py-2 text-white #{search_result.contactable_status}",
   data: { action: "mouseover->selectable-list#select click->message-form#commit", key: search_result.key } do
 
     - if search_result.result.is_a?(Symbol)

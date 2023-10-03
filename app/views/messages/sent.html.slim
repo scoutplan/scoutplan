@@ -1,6 +1,16 @@
 = turbo_frame_tag "main"
   .max-w-3xl.mx-auto
-    = render partial: "message_list", locals: { messages: @messages, title: "Sent messages", verb: "sent" }
+    = render partial: "header", locals: { title: "Sent messages" }
+
+    section(data-controller="pagination")
+      = render partial: "message", collection: @page.records
+      = render partial: "empty", locals: { message_type: "sent" }
+
+      - unless @page.last?
+        = link_to "Next page",
+                  sent_unit_messages_path(@unit, page: @page.next_param),
+                  class: "block mt-4 text-center text-transparent",
+                  data: { pagination_target: "nextPageLink" }
 
   javascript:
       document.title = "#{@unit.name} · Sent messages"

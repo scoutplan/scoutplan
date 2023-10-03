@@ -30,6 +30,8 @@ class User < ApplicationRecord
 
   validates_presence_of :first_name, :last_name
 
+  alias_attribute :display_name, :full_display_name
+
   self.inheritance_column = nil
   enum type: { unknown: 0, youth: 1, adult: 2 }
 

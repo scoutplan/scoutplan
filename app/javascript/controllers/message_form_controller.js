@@ -115,6 +115,9 @@ export default class extends Controller {
   }
 
   commit() {
+    console.log("commit");
+
+
     const current = this.searchResultsTarget.querySelector(".selected");
     const recipientTags = this.recipientListTarget.querySelectorAll(".recipient");
     const memberIds = Array.from(recipientTags).map((tag) => { return tag.dataset.recipientId; });
@@ -135,6 +138,7 @@ export default class extends Controller {
   }
 
   clearResults() {
+    console.log("clearResults");
     this.searchResultsTarget.innerHTML = "";
   }
 

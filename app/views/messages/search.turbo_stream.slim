@@ -1,3 +1,3 @@
 = turbo_stream.replace "search_results" do
-  ul#search_results.top-full.absolute.bg-lime-700.text-white.max-h-96.overflow-y-scroll.rounded-b.z-50(data-message-form-target="searchResults" data-controller="selectable-list")
+  ul#search_results.top-full.absolute.bg-messages-800.text-white.max-h-96.overflow-y-scroll.rounded-b.z-50(data-message-form-target="searchResults" data-controller="selectable-list")
     = render partial: "search_result", collection: @search_results

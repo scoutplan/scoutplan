@@ -11,15 +11,13 @@ class MessagesController < UnitContextController
   end
 
   def drafts
-    @messages = @unit.messages.draft.with_attached_attachments.order(updated_at: :desc)
+    scope = @unit.messages.includes(:message_recipients).draft_and_queued.with_attached_attachments.order(updated_at: :desc)
+    set_page_and_extract_portion_from(scope.all, per_page: [20])
   end
 
   def sent
-    @messages = @unit.messages.sent.with_attached_attachments.order(updated_at: :desc)
-  end
-
-  def scheduled
-    @messages = @unit.messages.queued.with_attached_attachments.order(updated_at: :desc)
+    scope = @unit.messages.includes(message_recipients: [unit_membership: :user]).sent.with_attached_attachments.order(updated_at: :desc)
+    set_page_and_extract_portion_from(scope.all, per_page: [20])
   end
 
   def show; end
@@ -56,12 +54,10 @@ class MessagesController < UnitContextController
   end
 
   def duplicate
+    # authorize @message
     new_message = @message.dup
-    new_message.update(
-      title:   "DUPLICATE - #{@message.title}",
-      status:  "draft",
-      send_at: Time.now
-    )
+    ap @message
+    ap new_message
     redirect_to edit_unit_message_path(@unit, new_message), notice: t("messages.notices.duplicate_success")
   end
 

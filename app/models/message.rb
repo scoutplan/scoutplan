@@ -21,6 +21,8 @@ class Message < ApplicationRecord
 
   accepts_nested_attributes_for :message_recipients, allow_destroy: true
 
+  scope :draft_and_queued, -> { where(status: %i[draft queued]) }
+
   def approvers
     unit.unit_memberships.message_approver
   end
@@ -31,6 +33,19 @@ class Message < ApplicationRecord
 
   def deleteable?
     !new_record? && editable?
+  end
+
+  def dup
+    super.tap do |new_message|
+      new_message.regenerate_token
+      new_message.body = body.dup
+      new_message.status = :draft
+      new_message.title.prepend("Copy of ")
+      message_recipients.each do |message_recipient|
+        new_message.message_recipients << message_recipient.dup
+      end
+      new_message.save
+    end
   end
 
   def plain_text_body

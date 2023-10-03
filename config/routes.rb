@@ -61,7 +61,6 @@ Rails.application.routes.draw do
       collection do
         get  "drafts"
         get  "sent"
-        get  "scheduled"
         post "recipients", as: "recipients"
         post "search",     as: "search"
         get  "select",     as: "select"

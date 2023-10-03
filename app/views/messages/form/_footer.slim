@@ -1,4 +1,4 @@
-footer.border-t.pt-4.dark:border-stone-500
+footer.border-t.py-4.dark:border-stone-500.sticky.bottom-0.bg-white.dark:bg-stone-800
   - unless MessagePolicy.new(@current_member, @message).create?
     p.text-sm.font-bold
       i.fa-solid.fa-circle-info.mr-1
@@ -6,7 +6,7 @@ footer.border-t.pt-4.dark:border-stone-500
 
   .flex.flex-col.md:flex-row.bottom-0.sticky.gap-2.md:gap-10.md:justify-between
 
-    - submit_caption = MessagePolicy.new(@current_member, @message).create? ? "Send Now" : "Submit for Approval"
+    - submit_caption = MessagePolicy.new(@current_member, @message).create? ? t("messages.captions.send_message") : "Submit for Approval"
 
     // LEFT SIDE
     div.flex.flex-col.md:flex-row
@@ -18,7 +18,7 @@ footer.border-t.pt-4.dark:border-stone-500
                 name: "commit",
                 disabled: true,
                 value: t("messages.captions.send_message"),
-                class: "w-full md:w-fit block px-4 py-2 font-bold text-messages-100 dark:text-black bg-messages-600 hover:bg-messages-700 dark:hover:bg-messages-500 disabled:bg-messages-200 dark:disabled:bg-messages-900 dark:disabled:text-messages-700 rounded disabled:cursor-not-allowed",
+                class: "w-full md:w-fit block px-4 py-2 font-bold text-messages-100 dark:text-black bg-messages-600 hover:bg-messages-700 dark:hover:bg-messages-500 disabled:bg-messages-300 dark:disabled:bg-messages-900 dark:disabled:text-messages-700 rounded disabled:cursor-not-allowed",
                 id: "send_message_button",
                 data: { message_form_target: "sendMessageButton", action: "message-form#skipLeaveConfirmation" }
     
@@ -32,11 +32,10 @@ footer.border-t.pt-4.dark:border-stone-500
         = f.button t("messages.captions.send_preview"),
                   type: "submit",
                   title: "Send a preview to yourself",
-                  disabled: true,
                   value: t("messages.captions.send_preview"),
                   name: "commit",
                   id: "send_preview_button",
-                  class: "text-xl w-full md:w-fit px-3 py-2 text-messages-600 hover:text-messages-700 dark:hover:text-messages-400 disabled:text-messages-200 cursor-pointer dark:disabled:text-messages-900 dark:disabled:hover:text-messages-900 disabled:cursor-not-allowed",
+                  class: "text-xl w-full md:w-fit px-3 py-2 text-messages-600 hover:text-messages-700 dark:hover:text-messages-400 disabled:text-messages-300 cursor-pointer dark:disabled:text-messages-900 dark:disabled:hover:text-messages-900 disabled:cursor-not-allowed",
                   data: { message_form_target: "sendPreviewButton", action: "message-form#skipLeaveConfirmation" } do
             i.fa-solid.fa-glasses-round
 

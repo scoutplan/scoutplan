@@ -14,11 +14,11 @@ module Unit::DistributionLists
     active_count = members.active.count
     adult_count  = members.active.adult.count
     [
-      DistributionList.new(key: "all", name: "All Members in #{name}", keywords: "everyone",
+      DistributionList.new(key: "all", name: "All Members of #{name}", keywords: "everyone",
                            description: "Group with #{all_count} members"),
-      DistributionList.new(key: "active", name: "All Active Members in #{name}", keywords: "everyone",
+      DistributionList.new(key: "active", name: "All Active Members of #{name}", keywords: "everyone",
                            description: "Group with #{active_count} members"),
-      DistributionList.new(key: "adults", name: "All Active Adults in #{name}", keywords: "everyone",
+      DistributionList.new(key: "adults", name: "All Active Adults of #{name}", keywords: "everyone",
                            description: "Group with #{adult_count} members")
     ]
   end

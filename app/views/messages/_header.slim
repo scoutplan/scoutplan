@@ -4,7 +4,7 @@ header.flex.flex-row.justify-between.items-center.pb-4.mb-2.border-b.dark:border
               class: "block dropdown-button",
               data: { turbo_frame: "main" } do
       .flex.flex-row.items-center
-        h1.font-bold.text-xl.md:text-4xl = title
+        h1.font-bold.text-xl.md:text-4xl = title.titleize
         i.fa-solid.fa-chevron-down.ml-3.text-stone-500.dark:text-stone-400
 
     nav.dropdown-menu.absolute.top-full.right-0.mt-2.w-full.md:w-48.bg-messages-700.text-white.drop-shadow-lg.border.border-stone-200.dark:border-stone-700
@@ -13,12 +13,6 @@ header.flex.flex-row.justify-between.items-center.pb-4.mb-2.border-b.dark:border
                 data: { turbo_action: "advance" } do
         i.fa-fw.fa-regular.fa-file-pen.mr-2
         = "Drafts"
-
-      = link_to scheduled_unit_messages_path(@unit),
-                class: "scheduled-messages-link block px-4 py-2 font-bold hover:bg-messages-800",
-                data: { turbo_action: "advance" } do
-        i.fa-fw.fa-regular.fa-clock.mr-2
-        = "Scheduled"
 
       = link_to sent_unit_messages_path(@unit),
                 class: "sent-messages-link block px-4 py-2 font-bold hover:bg-messages-800",
@@ -29,7 +23,7 @@ header.flex.flex-row.justify-between.items-center.pb-4.mb-2.border-b.dark:border
   .right
     - if policy(:message).new? || true
       = link_to new_unit_message_path(@unit),
-                class: "block px-4 py-2 rounded font-bold text-white bg-messages-700 hover:bg-lime-600",
+                class: "block px-4 py-2 rounded font-bold text-white bg-messages-700 hover:bg-messages-800 dark:hover:bg-messages-600",
                 data: { turbo_frame: "main", turbo_action: "advance" },
                 title: t("messages.tooltips.new_message") do
                 
@@ -38,7 +32,3 @@ header.flex.flex-row.justify-between.items-center.pb-4.mb-2.border-b.dark:border
         
         .hidden.md:inline-block
           = raw("&nbsp;a message")
-
-section
-  = render partial: "message", collection: messages
-  = render partial: "empty", locals: { message_type: verb } unless messages.present?
