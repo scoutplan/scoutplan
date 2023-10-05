@@ -1,26 +1,19 @@
 div#recipient_wrapper.py-2(data-controller="dropdown" data-action="keydown->dropdown#handleKeydown")
   .flex.flex-row.gap-4.justify-between.items-start
+    // LABEL
     = f.label :groups, "To", class: "inline-block py-2"
 
+    // RECIPIENTS, SEARCH FIELD & SEARCH RESULTS
     .auto-complete-field.w-full.flex.gap-1.flex-wrap(data-controller="selectable-list" data-message-form-target="recipientList" data-action="change->message-form#validate")
       = render partial: "recipient", collection: @recipients
 
       #recipient_search_query.relative.w-full.flex.grow.shrink.basis-0
-        = text_field :recipient_search, "", autofocus: true,
-                    class: "ml-1 px-0 bg-transparent border-0 focus:ring-0 w-full grow text-sm md:text-base placeholder-stone-400 dark:placeholder-stone-500",
-                    autocomplete: "off",
-                    placeholder: "Search for a person, event, or group...",
-                    data: { action: "input->message-form#searchRecipients keydown->message-form#handleKeydown input->markAsDirty blur->message-form#clearResults",
-                            message_form_target: "queryInput", selectable_list_target: "queryInput" }
+        = render partial: "messages/form/search_field", locals: { f: f }
+        = render partial: "messages/form/search_results", locals: { f: f }
 
-        ul#search_results.absolute.top-full.bg-messages-600.text-messages-100.max-h-96.overflow-y-scroll.rounded-b.z-50(data-message-form-target="searchResults" \
-          data-selectable-list-commit-url-value="#{unit_messages_path(@unit)}")
-
-    .right.dropdown.relative
+    // ADDRESS BOOK BUTTON
+    .right
       = link_to "#",
-                class: "dropdown-button block w-full py-3 flex flex-row justify-between items-center ml-auto",
-                data: { dropdown_target: "toggle", action: "dropdown#toggle" } do
+                class: "block w-full py-3 pl-3 flex flex-row justify-between items-center ml-auto",
+                data: { action: "message-form#browseAddressBook" } do
         i.fa-solid.fa-address-book.text-stone-500
-
-      .dropdown-menu.absolute.right-0.top-full.w-96.max-h-96.bg-messages-800.z-10.overflow-y-scroll.rounded-b
-        = render partial: "search_result", collection: @addressables

@@ -52,7 +52,7 @@ module.exports = {
       },
       animation: {
         'pop-open': 'pop-open 0.1s',
-        'fade-out-after-load': 'fade-out-after-load 3s linear 1',
+        'fade-out-after-load': 'fade-out-after-load 5s linear',
       },
       keyframes: {
         'pop-open': {
@@ -68,6 +68,9 @@ module.exports = {
         },
         'fade-out-after-load': {
           '0%': {
+            opacity: '1'
+          },
+          '80%': {
             opacity: '1'
           },
           '100%': {

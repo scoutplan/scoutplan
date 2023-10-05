@@ -1,6 +1,7 @@
 import { DirectUpload } from "@rails/activestorage"
 import { Controller } from "@hotwired/stimulus"
 import { post } from "@rails/request.js"
+import {} from "../traversal.js"
 
 // https://mentalized.net/journal/2020/11/30/upload-multiple-files-with-rails/
 // config.active_storage.replace_on_assign_to_many = false
@@ -9,13 +10,14 @@ import { post } from "@rails/request.js"
 export default class extends Controller {
   static targets = [ "attachmentsList", "attachmentsWrapper", "attachmentForm", "audienceList", "audienceName",
                      "ffCheckWrapper", "fileInput", "form",
-                     "recipientList", "memberTypeCheckBox", "memberStatusCheckBox", "subjectTextBox", "bodyTextArea",
+                     "addressBook", "memberTypeCheckBox", "memberStatusCheckBox", "subjectTextBox", "bodyTextArea",
                      "sendMessageButton", "sendLaterButton", "sendPreviewButton", "tempFileInput",
-                     "queryInput", "searchResults" ];
+                     "queryInput", "addressBook", "recipientList" ];
   static values = { unitId: Number };
 
   recipientObserver = null;
   dirty = false;
+  browsingAddressBook = false;
   shouldSkipLeaveConfirmation = false;
 
   connect() {
@@ -23,6 +25,18 @@ export default class extends Controller {
     this.establishAttachmentsObserver();
     this.validate();
     this.formData = new FormData(this.formTarget);
+  }
+
+  blur() { }
+
+  browseAddressBook(event) {
+    event.preventDefault();
+    if (this.browsingAddressBook) { 
+      this.closeAddressBook();
+    } else {
+      this.openAddressBook(true);
+    }
+    this.browsingAddressBook = !this.browsingAddressBook;
   }
 
   skipLeaveConfirmation() {
@@ -45,8 +59,9 @@ export default class extends Controller {
   establishRecipientObserver() {
     this.recipientObserver = new MutationObserver((mutations) => {
       this.validate();
+      this.syncAddressBookToRecipients();
     });
-    this.recipientObserver.observe(this.recipientListTarget, { childList: true });
+    this.recipientObserver.observe(this.addressBookTarget, { childList: true });
   }
 
   establishAttachmentsObserver() {
@@ -61,6 +76,7 @@ export default class extends Controller {
       this.recipientListTarget.querySelectorAll(".recipient").forEach((tag) => {
         tag.remove();
       });
+      return;
     } else if (event.key === "Backspace") {
       if (this.queryInputTarget.value.length > 0) { return; }
       this.deleteLastRecipient();
@@ -68,41 +84,43 @@ export default class extends Controller {
       return;
     }
 
-    const current = this.searchResultsTarget.querySelector(".selected");
+    const current = this.addressBookTarget.querySelector(".selected");
     if (!current) { return; }
 
     if (event.key === "ArrowUp") {
-      var target = current.previousSibling;
-      if (target == null) { target = current.parentNode.lastChild; } // wraparoun
-      while(target) {
-        if (target.classList.contains("contactable")) { break; }
-        target = target.previousSibling;
-        if (target == null) { target = current.parentNode.lastChild; } // wraparound
-      }
+      var target = current.prev(".contactable:not(.hidden)", true);
+      // var target = current.previousSibling;
+      // if (target == null) { target = current.parentNode.lastChild; } // wraparoun
+      // while(target) {
+      //   if (target.classList.contains("contactable")) { break; }
+      //   target = target.previousSibling;
+      //   if (target == null) { target = current.parentNode.lastChild; } // wraparound
+      // }
       current.classList.remove("selected");
       target?.classList?.add("selected");
       target?.scrollIntoView({block: "center"});
       event.stopPropagation();
       event.preventDefault();
     } else if (event.key === "ArrowDown") {
-      var target = current.nextSibling;
-      if (target == null) { target = current.parentNode.firstChild; } // wraparound
-      while(target) {
-        if (target.classList.contains("contactable")) { break; }
-        target = target.nextSibling;
-        if (target == null) { target = current.parentNode.firstChild; } // wraparound
-      }
+      var target = current.next(".contactable:not(.hidden)", true);
+      // var target = current.nextSibling;
+      // if (target == null) { target = current.parentNode.firstChild; } // wraparound
+      // while(target) {
+      //   if (target.classList.contains("contactable")) { break; }
+      //   target = target.nextSibling;
+      //   if (target == null) { target = current.parentNode.firstChild; } // wraparound
+      // }
       current.classList.remove("selected");
       target?.classList?.add("selected");
       target?.scrollIntoView({block: "center"});
       event.stopPropagation();
       event.preventDefault();
-    } else if (event.key === "Enter" || event.key === "Tab") {
+    } else if ((event.key === "Enter" || event.key === "Tab") && this.addressBookIsOpen()) {
       this.commit();
       event.stopPropagation();
       event.preventDefault();
     } else if (event.key === "Escape") {
-      this.resetQueryInput();
+      this.closeAddressBook();
       event.stopPropagation();
       event.preventDefault();
     } else { return; }
@@ -114,22 +132,20 @@ export default class extends Controller {
     lastElem.remove();
   }
 
-  commit() {
-    console.log("commit");
-
-
-    const current = this.searchResultsTarget.querySelector(".selected");
-    const recipientTags = this.recipientListTarget.querySelectorAll(".recipient");
+  async commit() {
+    this.queryInputTarget.placeholder = "";
+    const current = this.addressBookTarget.querySelector(".selected");
+    const recipientTags = this.addressBookTarget.querySelectorAll(".recipient");
     const memberIds = Array.from(recipientTags).map((tag) => { return tag.dataset.recipientId; });
 
     const body = { "key": current.dataset.key, "member_ids": memberIds }
 
-    post(`/u/${this.unitIdValue}/messages/commit`, { body: body, responseKind: "turbo-stream" });    
+    await post(`/u/${this.unitIdValue}/messages/commit`, { body: body, responseKind: "turbo-stream" });    
 
     this.markAsDirty();
-    this.queryInputTarget.value = "";
+    this.resetQueryInput();
+    this.closeAddressBook();
     this.queryInputTarget.focus();
-    this.clearResults();
   }
 
   deleteItem(event) {
@@ -137,31 +153,60 @@ export default class extends Controller {
     target.closest(".recipient").remove();
   }
 
-  clearResults() {
-    console.log("clearResults");
-    this.searchResultsTarget.innerHTML = "";
+  /* address book */
+
+  closeAddressBook() {
+    this.addressBookTarget.classList.toggle("hidden", true);
   }
 
-  hideRecipientList() {
-    this.recipientListTarget.classList.toggle("hidden", true);
+  openAddressBook() {
+    this.addressBookTarget.classList.toggle("hidden", false);
   }
 
-  searchRecipients() {
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      this.performRecipientSearch();
-    }, 50);
+  addressBookIsOpen() {
+    return !this.addressBookTarget.classList.contains("hidden");
+  }
+  
+  filterAddressBook(browse = false) {
+    this.openAddressBook();
+
+    this.addressBookTarget.querySelectorAll("li").forEach((li) => {
+      // var name = nameCell.innerText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      // if (filter.length == 0 || name.toUpperCase().indexOf(filter) > -1) {
+        
+        const filter = this.queryInputTarget.value.toUpperCase();
+        const name = li.innerText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        var match = false;
+        
+        match = match || filter.length == 0;
+        match = match || name.toUpperCase().indexOf(filter) > -1;
+        
+        li.classList.remove("selected");
+        li.classList.toggle("hidden", !match);
+      }
+    );
+
+    this.addressBookTarget.querySelector("li.contactable:not(.hidden)")?.classList?.toggle("selected", true);
+  }
+
+  unfilterAddressBook() {
+    this.addressBookTarget.querySelectorAll("li").forEach((li) => {        
+        li.classList.toggle("hidden", false);
+    } );
+  } 
+
+  syncAddressBookToRecipients() {
+    this.unfilterAddressBook();
+    const memberIds = this.selectedMemberIds();
+
+    memberIds.forEach((memberId) => {
+      const li = this.addressBookTarget.querySelector(`li[id='membership_${memberId}']`);
+      li?.classList?.toggle("hidden", true);
+    });
   }
 
   markAsDirty() {
     this.dirty = true;
-  }
-
-  async performRecipientSearch() {
-    const recipientTags = this.recipientListTarget.querySelectorAll(".recipient");
-    const memberIds = Array.from(recipientTags).map((tag) => { return tag.dataset.recipientId; });
-    const body = { "query": this.queryInputTarget.value, "member_ids": memberIds }
-    const response = await post(`/u/${this.unitIdValue}/messages/search`, { body: body, responseKind: "turbo-stream" });
   }
 
   select(event) {
@@ -170,13 +215,18 @@ export default class extends Controller {
     this.resetQueryInput();
   }
 
+  selectedMemberIds() {
+    const recipientTags = this.addressBookTarget.querySelectorAll(".recipient");
+    const memberIds = Array.from(recipientTags).map((tag) => { return tag.dataset.recipientId; });
+    return memberIds;
+  }
+
   resetQueryInput() {
     this.queryInputTarget.value = "";
-    this.searchRecipients();
   }
 
   toggleRecipientList(event) {
-    this.recipientListTarget.classList.toggle("hidden");
+    this.addressBookTarget.classList.toggle("hidden");
     event.preventDefault();
   }
 
@@ -192,13 +242,13 @@ export default class extends Controller {
   validate() {
     var valid = this.subjectTextBoxTarget.value.length > 0;
     // valid = valid && this.bodyTextAreaTarget?.value?.length > 0;
-    const recipientCount = this.recipientListTarget.querySelectorAll(".recipient").length
+    const recipientCount = this.addressBookTarget.querySelectorAll(".recipient").length
     valid = valid && recipientCount > 0;
 
     this.sendMessageButtonTarget.disabled = !valid;
     this.sendLaterButtonTarget.disabled   = !valid;
     this.sendPreviewButtonTarget.disabled = !valid;
-    this.queryInputTarget.placeholder = recipientCount > 0 ? "" : "Search for people, events, or groups...";
+    // this.queryInputTarget.placeholder = recipientCount > 0 ? "" : "Search for people, events, or groups...";
   }
 
   changeAudience(event) {

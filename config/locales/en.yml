@@ -663,6 +663,7 @@ en:
       placeholders:
         subject:    "Message subject"
         recipients: "Type member names"
+        search_recipients: "Search for a person, event, or group..."
 
       titles:
         edit: "Edit Email"

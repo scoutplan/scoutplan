@@ -62,7 +62,7 @@ Rails.application.routes.draw do
         get  "drafts"
         get  "sent"
         post "recipients", as: "recipients"
-        post "search",     as: "search"
+        get  "addressables", as: "addressables"
         get  "select",     as: "select"
         post "commit",     as: "commit"
       end

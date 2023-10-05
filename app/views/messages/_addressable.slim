@@ -1,0 +1,16 @@
+/ - if @search_result_class.present? && addressable.result.class.name != @search_result_class
+/   hr.border-messages-700
+
+/ - @search_result_class = addressable.result.class.name
+
+= content_tag :li,
+  id: addressable.key,
+  role: "option",
+  class: "search-result block px-3 py-2 text-white #{addressable.contactable_status}",
+  data: { action: "mouseover->selectable-list#select click->message-form#commit", key: addressable.key } do
+
+    .name.font-bold
+      = addressable.name
+
+    .contact-methods.font-semibold.text-sm.flex.flex-row.gap-4.text-lime-200.whitespace-nowrap
+      = raw(addressable.description)

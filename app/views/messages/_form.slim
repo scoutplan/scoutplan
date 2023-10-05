@@ -77,17 +77,24 @@ css:
   }
 
   .search-result.not-contactable .name {
-    color: #a3e635;
+    color: #84cc16;
   }
 
   .search-result.not-contactable .contact-methods {
-    color: #a3e635;
+    color: #84cc16;
   }  
 
   .search-result.selected {
     background: #365314;
   }
 
+  @media (prefers-color-scheme: dark) {
+    .search-result.selected {
+      background: #4d7c0f;
+    }    
+  }
+
   #recipients li {
     display: inline-block;
   }
+

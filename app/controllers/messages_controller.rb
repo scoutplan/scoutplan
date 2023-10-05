@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class MessagesController < UnitContextController
-  before_action :find_message, except: [:index, :drafts, :scheduled, :sent, :new, :create, :recipients, :search, :commit]
+  before_action :find_message, except: [:index, :drafts, :scheduled, :sent, :new, :create, :recipients, :addressables, :commit]
   before_action :set_message_token, only: [:new, :edit]
-  before_action :set_addressables, only: [:new, :edit]
+  # before_action :set_addressables, only: [:new, :edit]
   after_action :create_recipients, only: [:create, :update]
 
   def index
@@ -31,6 +31,7 @@ class MessagesController < UnitContextController
     @message = @unit.messages.create!(message_params)
     associate_attachments
     handle_commit
+    flash.now[:notice] = @notice
     redirect_to unit_messages_path(@unit), notice: @notice
   end
 
@@ -43,8 +44,6 @@ class MessagesController < UnitContextController
     @message.update(message_params)
     associate_attachments
     handle_commit
-    redirect_to(scheduled_unit_messages_path(@unit), notice: @notice) and return if @message.queued?
-
     redirect_to unit_messages_path(@unit), notice: @notice
   end
 
@@ -65,57 +64,74 @@ class MessagesController < UnitContextController
     redirect_to unit_messages_path(@unit), notice: t("messages.notices.unpin_success")
   end
 
-  def search
-    query = params[:query]
-    member_ids = params[:member_ids].map(&:to_i) || []
-    return unless query.present?
+  def addressables
+    lists = @unit.distribution_lists
+    events = @unit.events.published.rsvp_required.recent_and_future.includes(:event_rsvps)
+    members = @unit.members.joins(:user).order(:last_name, :first_name)
 
-    query = query.split
-
-    if query.length == 1
-      scope = @unit.members.status_active_and_registered.joins(:user).where(
-        "unaccent(users.first_name) ILIKE ? OR unaccent(users.last_name) ILIKE ? " \
-        "OR users.email ILIKE ? OR unaccent(users.nickname) ILIKE ?",
-        "%#{query[0]}%", "%#{query[0]}%", "%#{query[0]}%", "%#{query[0]}%"
-      )
-    elsif query.length == 2
-      scope = @unit.members.status_active_and_registered.joins(:user).where(
-        "(unaccent(users.first_name) ILIKE ? OR unaccent(users.nickname) ILIKE ?) AND "\
-        "unaccent(users.last_name) ILIKE ?",
-        query[0], query[0], "#{query[1]}%"
-      )
-    end
-
-    members = scope.all.order(:last_name, :first_name)
-    members = members.to_a.reject { |m| member_ids.include?(m.id) }
-    events = @unit.events.published.rsvp_required.recent_and_future
-                  .includes(:event_rsvps).where("title ILIKE ?", "%#{query[0]}%")
-    distribution_lists = query.length == 1 ? @unit.distribution_lists(matching: query[0]) : []
-    # TODO: tags
-    @search_results = MessagingSearchResult.to_a(distribution_lists + members + events)
+    @addressables = MessagingSearchResult.to_a(lists + events + members)
   end
 
+  # def search
+  #   query = params[:query]
+  #   member_ids = params[:member_ids].map(&:to_i) || []
+
+  #   query = query.split
+
+  #   if query.empty?
+  #     scope = @unit.members.status_active_and_registered.joins(:user)
+  #   elsif query.length == 1
+  #     scope = @unit.members.status_active_and_registered.joins(:user).where(
+  #       "unaccent(users.first_name) ILIKE ? OR unaccent(users.last_name) ILIKE ? " \
+  #       "OR users.email ILIKE ? OR unaccent(users.nickname) ILIKE ?",
+  #       "%#{query[0]}%", "%#{query[0]}%", "%#{query[0]}%", "%#{query[0]}%"
+  #     )
+  #   elsif query.length == 2
+  #     scope = @unit.members.status_active_and_registered.joins(:user).where(
+  #       "(unaccent(users.first_name) ILIKE ? OR unaccent(users.nickname) ILIKE ?) AND "\
+  #       "unaccent(users.last_name) ILIKE ?",
+  #       query[0], query[0], "#{query[1]}%"
+  #     )
+  #   end
+
+  #   members = scope.all.order(:last_name, :first_name)
+  #   members = members.to_a.reject { |m| member_ids.include?(m.id) }
+
+  #   events = @unit.events.published.rsvp_required.recent_and_future
+  #                 .includes(:event_rsvps)
+  #   events = events.where("title ILIKE ?", "%#{query[0]}%") if query.length == 1
+  #   distribution_lists = case query.length
+  #                        when 0
+  #                          @unit.distribution_lists
+  #                        when 1
+  #                          @unit.distribution_lists(matching: query[0])
+  #                        when 2
+  #                          []
+  #                        end
+  #   # TODO: tags
+  #   @search_results = MessagingSearchResult.to_a(distribution_lists + events + members)
+  # end
+
   def commit
-    key = params[:key]
-    return unless key.present?
+    return unless (key = params[:key]).present?
 
-    member_ids = params[:member_ids].map(&:to_i) || []
-
-    key_parts = key.split("_")
-    type = key_parts[0]
-    id = key_parts[1]
-    @recipients = @unit.members.where(id: id).map { |m| CandidateMessageRecipient.new(m) } if type == "membership"
-    @recipients = @unit.events.find(id).rsvps.accepted.map { |r| CandidateMessageRecipient.new(r.member) } if type == "event"
-    if type == "dl"
-      @recipients = case id
+    type, id = key.split("_")
+    @recipients = case type
+                  when "membership"
+                    @unit.members.where(id: id).map { |m| CandidateMessageRecipient.new(m) }
+                  when "event"
+                    @unit.events.find(id).rsvps.accepted.map { |r| CandidateMessageRecipient.new(r.member) }
+                  when "dl"
+                    case id
                     when "all" then @unit.members.status_active_and_registered
                     when "active" then @unit.members.active
                     when "adults" then @unit.members.active.adult
                     end
+                  end
 
-      @recipients = @recipients.map { |m| CandidateMessageRecipient.new(m, :committed, "") }
-    end
+    @recipients = @recipients.map { |m| CandidateMessageRecipient.new(m, :committed, "") }
 
+    # find parents of youth members
     parents = []
     @recipients&.each do |recipient|
       next unless recipient.member_type == "youth"
@@ -127,10 +143,14 @@ class MessagesController < UnitContextController
         )
       end
     end
-
     @recipients += parents.flatten
+
+    # dedupe
     @recipients.uniq!(&:email)
-    @recipients.reject! { |r| member_ids.include?(r.id) } # delete dupes
+
+    # remove members already committed
+    member_ids = params[:member_ids].map(&:to_i) || []
+    @recipients.reject! { |r| member_ids.include?(r.id) }
   end
 
   private
@@ -215,12 +235,12 @@ class MessagesController < UnitContextController
     @message_token = SecureRandom.hex(10)
   end
 
-  def set_addressables
-    scope   = @unit.members.status_active_and_registered.joins(:user)
-    members = scope.all.order(:last_name, :first_name)
-    events  = @unit.events.published.rsvp_required.recent_and_future.includes(:event_rsvps)
-    lists   = @unit.distribution_lists
-    # TODO: tags
-    @addressables = MessagingSearchResult.to_a(lists + [:divider] + events + [:divider] + members)
-  end
+  # def set_addressables
+  #   scope   = @unit.members.status_active_and_registered.joins(:user)
+  #   members = scope.all.order(:last_name, :first_name)
+  #   events  = @unit.events.published.rsvp_required.recent_and_future.includes(:event_rsvps)
+  #   lists   = @unit.distribution_lists
+  #   # TODO: tags
+  #   @addressables = MessagingSearchResult.to_a(lists + [:divider] + events + [:divider] + members)
+  # end
 end
