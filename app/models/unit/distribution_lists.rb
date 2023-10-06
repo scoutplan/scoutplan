@@ -9,17 +9,16 @@ module Unit::DistributionLists
 
   private
 
+  # rubocop:disable Metrics/AbcSize
   def all_distribution_lists
-    all_count    = members.count
-    active_count = members.active.count
-    adult_count  = members.active.adult.count
     [
-      DistributionList.new(key: "all", name: "All Members of #{name}", keywords: "everyone",
-                           description: "Group with #{all_count} members"),
-      DistributionList.new(key: "active", name: "All Active Members of #{name}", keywords: "everyone",
-                           description: "Group with #{active_count} members"),
-      DistributionList.new(key: "adults", name: "All Active Adults of #{name}", keywords: "everyone",
-                           description: "Group with #{adult_count} members")
+      DistributionList.new(key: "all", name: "All #{name} Members", keywords: "everyone",
+                           description: "Group with #{'member'.pluralize(members.count)}"),
+      DistributionList.new(key: "active", name: "All Active #{name} Members", keywords: "everyone",
+                           description: "Group with #{'member'.pluralize(members.active.count)}"),
+      DistributionList.new(key: "adults", name: "All Active #{name} Adult Members", keywords: "everyone",
+                           description: "Group with #{'member'.pluralize(members.active.adult.count)}")
     ]
   end
+  # rubocop:enable Metrics/AbcSize
 end

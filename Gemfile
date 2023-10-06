@@ -38,8 +38,8 @@ gem "importmap-rails"
 gem "ledermann-rails-settings"
 gem "lograge"
 gem "loofah", ">= 2.19.1"
-# gem "mixpanel-ruby"
 gem "nokogiri", ">= 1.14.3"
+gem "noticed", "~> 1.6"
 gem "omniauth"
 gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection", "~> 1.0"
@@ -55,6 +55,7 @@ gem "rack-attack"
 gem "rack-cors"
 gem "rails", "~> 7.0.0"
 gem "rails-html-sanitizer", ">= 1.4.4"
+gem "redis", "~> 4.0"
 gem "remote_syslog_logger"
 gem "rexml"
 gem "rubocop", require: false
@@ -65,7 +66,6 @@ gem "seedbank"
 gem "sentry-ruby"
 gem "sidekiq"
 gem "sidekiq-scheduler"
-# gem "skylight"
 gem "slim"
 gem "smarter_csv"
 gem "sprockets-rails"
@@ -103,16 +103,11 @@ end
 
 group :test do
   gem "capybara"
+  gem "cuprite"
   gem "faker"
   gem "launchy"
   gem "simplecov", require: false
   # gem "webdrivers"
-  gem "apparition"
+  # gem "apparition"
   gem "rack_session_access"
 end
-
-# Use Redis for Action Cable
-gem "redis", "~> 4.0"
-
-gem "noticed", "~> 1.6"
-

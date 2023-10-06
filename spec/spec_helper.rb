@@ -5,11 +5,13 @@ require "factory_bot_rails"
 require "capybara/rspec"
 require "warden"
 
-require "capybara/apparition"
-Capybara.register_driver :apparition do |app|
-  Capybara::Apparition::Driver.new(app, { js_errors: false } )
-end
-Capybara.javascript_driver = :apparition
+# require "capybara/apparition"
+# Capybara.register_driver :apparition do |app|
+#   Capybara::Apparition::Driver.new(app, { js_errors: false } )
+# end
+# Capybara.javascript_driver = :apparition
+
+Capybara.javascript_driver = :selenium_chrome
 
 SimpleCov.start do
   add_filter "spec"

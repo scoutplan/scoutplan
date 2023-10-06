@@ -1,7 +1,8 @@
 - actions = [ "input->message-form#filterAddressBook", "keydown->message-form#handleKeydown", "blur->message-form#blur" ]
 
 = search_field :recipient_search,
-               "", 
+               "",
+               id: "recipient_search_query_field",
                autofocus: true,
                class: "ml-1 px-0 bg-transparent border-0 focus:ring-0 w-full grow text-sm md:text-base placeholder-stone-400 dark:placeholder-stone-500",
                autocomplete: "off",
