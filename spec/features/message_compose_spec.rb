@@ -58,7 +58,7 @@ describe "messages", type: :feature do
         execute_script("document.querySelector('#file_attachment_form').classList.remove('hidden');")
         page.attach_file("files", filename)
         find("#attachment_submit_button", visible: false).click
-        
+
         expect(page).to have_css("#attachments_section")
         expect(page).to have_css(".attachment-candidate", count: 1)
       end

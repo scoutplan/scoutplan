@@ -11,18 +11,6 @@ class EventUpdateService < EventService
     @event.event_locations.destroy_all
     @event.assign_attributes(@params)
     @event.save!
-    notify_members
-  end
-
-  def notify_members
-    return unless @event.notify_members.downcase == "true"
-
-    message = Message.new(author: @current_member,
-                          status: :queued,
-                          audience: @event.notify_recipients,
-                          title: "Event Update",
-                          body: notify_body)
-    message.save!
   end
 
   def notify_body
