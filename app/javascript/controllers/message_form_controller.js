@@ -3,10 +3,6 @@ import { Controller } from "@hotwired/stimulus"
 import { post } from "@rails/request.js"
 import {} from "../traversal.js"
 
-// https://mentalized.net/journal/2020/11/30/upload-multiple-files-with-rails/
-// config.active_storage.replace_on_assign_to_many = false
-// https://blog.commutatus.com/understanding-rails-activestorage-direct-uploads-a4aeca7eccf
-
 export default class extends Controller {
   static targets = [ "attachmentsList", "attachmentsWrapper", "attachmentForm", "audienceList", "audienceName",
                      "ffCheckWrapper", "fileInput", "form",
@@ -27,7 +23,10 @@ export default class extends Controller {
     this.formData = new FormData(this.formTarget);
   }
 
-  blur() { }
+  blur(event) {
+    if (event.relatedTarget?.closest("#recipient_search_results")) { return; }
+    // this.closeAddressBook();
+  }
 
   browseAddressBook(event) {
     event.preventDefault();
@@ -61,7 +60,7 @@ export default class extends Controller {
       this.validate();
       this.syncAddressBookToRecipients();
     });
-    this.recipientObserver.observe(this.addressBookTarget, { childList: true });
+    this.recipientObserver.observe(this.recipientListTarget, { childList: true });
   }
 
   establishAttachmentsObserver() {
@@ -88,7 +87,7 @@ export default class extends Controller {
     if (!current) { return; }
 
     if (event.key === "ArrowUp") {
-      var target = current.prev(".contactable:not(.hidden)", true);
+      var target = current.prev(".contactable:not(.hidden):not(.committed)", true);
       // var target = current.previousSibling;
       // if (target == null) { target = current.parentNode.lastChild; } // wraparoun
       // while(target) {
@@ -102,7 +101,7 @@ export default class extends Controller {
       event.stopPropagation();
       event.preventDefault();
     } else if (event.key === "ArrowDown") {
-      var target = current.next(".contactable:not(.hidden)", true);
+      var target = current.next(".contactable:not(.hidden):not(.committed)", true);
       // var target = current.nextSibling;
       // if (target == null) { target = current.parentNode.firstChild; } // wraparound
       // while(target) {
@@ -151,6 +150,7 @@ export default class extends Controller {
   deleteItem(event) {
     const target = event.target;
     target.closest(".recipient").remove();
+    this.queryInputTarget.focus();
   }
 
   /* address book */
@@ -186,12 +186,12 @@ export default class extends Controller {
       }
     );
 
-    this.addressBookTarget.querySelector("li.contactable:not(.hidden)")?.classList?.toggle("selected", true);
+    this.addressBookTarget.querySelector("li.contactable:not(.committed):not(.hidden)")?.classList?.toggle("selected", true);
   }
 
   unfilterAddressBook() {
     this.addressBookTarget.querySelectorAll("li").forEach((li) => {        
-        li.classList.toggle("hidden", false);
+        li.classList.toggle("committed", false);
     } );
   } 
 
@@ -201,7 +201,7 @@ export default class extends Controller {
 
     memberIds.forEach((memberId) => {
       const li = this.addressBookTarget.querySelector(`li[id='membership_${memberId}']`);
-      li?.classList?.toggle("hidden", true);
+      li?.classList?.toggle("committed", true);
     });
   }
 
@@ -216,7 +216,7 @@ export default class extends Controller {
   }
 
   selectedMemberIds() {
-    const recipientTags = this.addressBookTarget.querySelectorAll(".recipient");
+    const recipientTags = this.recipientListTarget.querySelectorAll(".recipient");
     const memberIds = Array.from(recipientTags).map((tag) => { return tag.dataset.recipientId; });
     return memberIds;
   }
@@ -240,15 +240,11 @@ export default class extends Controller {
   }
 
   validate() {
-    var valid = this.subjectTextBoxTarget.value.length > 0;
-    // valid = valid && this.bodyTextAreaTarget?.value?.length > 0;
-    const recipientCount = this.addressBookTarget.querySelectorAll(".recipient").length
-    valid = valid && recipientCount > 0;
+    const recipientCount = this.recipientListTarget.querySelectorAll(".recipient").length
+    const valid = recipientCount > 0;
 
     this.sendMessageButtonTarget.disabled = !valid;
     this.sendLaterButtonTarget.disabled   = !valid;
-    this.sendPreviewButtonTarget.disabled = !valid;
-    // this.queryInputTarget.placeholder = recipientCount > 0 ? "" : "Search for people, events, or groups...";
   }
 
   changeAudience(event) {

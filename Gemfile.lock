@@ -140,6 +140,9 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
+    capybara_test_helpers (1.0.4)
+      activesupport
+      capybara
     character_set (1.7.0)
     chartkick (5.0.2)
     chroma (0.2.0)
@@ -588,6 +591,7 @@ DEPENDENCIES
   bootsnap
   byebug (~> 11.1)
   capybara
+  capybara_test_helpers
   chroma
   client_side_validations
   colorize

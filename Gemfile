@@ -103,11 +103,10 @@ end
 
 group :test do
   gem "capybara"
+  gem "capybara_test_helpers"
   gem "cuprite"
   gem "faker"
   gem "launchy"
   gem "simplecov", require: false
-  # gem "webdrivers"
-  # gem "apparition"
   gem "rack_session_access"
 end

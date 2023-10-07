@@ -9,12 +9,16 @@ Capybara.register_driver :cuprite do |app|
     browser_options: {},
     process_timeout: 10,
     inspector:       true,
-    headless:        true
-    # headless: !ENV["HEADLESS"].in?(%w[0 false no]),
+    headless: !ENV["HEADLESS"].in?(%w[0 false no]),
   )
 end
 
-Capybara.javascript_driver = :cuprite
+Capybara.configure do |config|
+  config.javascript_driver = :cuprite
+  config.server_host = "localhost"
+  config.server_port = 3001
+  config.app_host = "http://localhost:3001"
+end
 
 module CupriteHelpers
   def pause
