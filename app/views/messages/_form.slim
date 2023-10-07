@@ -1,5 +1,12 @@
-div(data-controller="message-form" data-message-form-unit-id-value="#{@unit.id}" \
-    data-action="beforeunload@window->message-form#confirmLeave turbo:before-fetch-request@document->message-form#confirmLeave")
+- actions = [ "beforeunload@window->message-form#confirmLeave", \
+              "turbo:before-fetch-request@document->message-form#confirmLeave" ]
+
+= content_tag(:div, data: { controller: "message-form",
+                            message_form_unit_id_value: @unit.id,
+                            action: actions.join(" ") }) do
+
+  = hidden_field_tag :test_mode, "false", id: "test_mode", data: { message_form_target: "testMode" }
+
   .md:rounded-xl.md:p-12.md:pb-7.mt-6.md:drop-shadow-overhead.bg-white.dark:bg-stone-800
     = render partial: "messages/form/header"
     = render partial: "messages/form/attachments_form"

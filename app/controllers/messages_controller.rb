@@ -72,46 +72,6 @@ class MessagesController < UnitContextController
     @addressables = MessagingSearchResult.to_a(lists + events + members)
   end
 
-  # def search
-  #   query = params[:query]
-  #   member_ids = params[:member_ids].map(&:to_i) || []
-
-  #   query = query.split
-
-  #   if query.empty?
-  #     scope = @unit.members.status_active_and_registered.joins(:user)
-  #   elsif query.length == 1
-  #     scope = @unit.members.status_active_and_registered.joins(:user).where(
-  #       "unaccent(users.first_name) ILIKE ? OR unaccent(users.last_name) ILIKE ? " \
-  #       "OR users.email ILIKE ? OR unaccent(users.nickname) ILIKE ?",
-  #       "%#{query[0]}%", "%#{query[0]}%", "%#{query[0]}%", "%#{query[0]}%"
-  #     )
-  #   elsif query.length == 2
-  #     scope = @unit.members.status_active_and_registered.joins(:user).where(
-  #       "(unaccent(users.first_name) ILIKE ? OR unaccent(users.nickname) ILIKE ?) AND "\
-  #       "unaccent(users.last_name) ILIKE ?",
-  #       query[0], query[0], "#{query[1]}%"
-  #     )
-  #   end
-
-  #   members = scope.all.order(:last_name, :first_name)
-  #   members = members.to_a.reject { |m| member_ids.include?(m.id) }
-
-  #   events = @unit.events.published.rsvp_required.recent_and_future
-  #                 .includes(:event_rsvps)
-  #   events = events.where("title ILIKE ?", "%#{query[0]}%") if query.length == 1
-  #   distribution_lists = case query.length
-  #                        when 0
-  #                          @unit.distribution_lists
-  #                        when 1
-  #                          @unit.distribution_lists(matching: query[0])
-  #                        when 2
-  #                          []
-  #                        end
-  #   # TODO: tags
-  #   @search_results = MessagingSearchResult.to_a(distribution_lists + events + members)
-  # end
-
   def commit
     return unless (key = params[:key]).present?
 
@@ -143,12 +103,10 @@ class MessagesController < UnitContextController
         )
       end
     end
+
+    # concatenate, dedupe, and remove members already committed
     @recipients += parents.flatten
-
-    # dedupe
     @recipients.uniq!(&:email)
-
-    # remove members already committed
     member_ids = params[:member_ids].map(&:to_i) || []
     @recipients.reject! { |r| member_ids.include?(r.id) }
   end

@@ -1,9 +1,14 @@
 = form_with url:    unit_message_attachments_path(@unit),
+            id:     "file_attachment_form",
             method: "post",
             format: "turbo_stream",
+            class:  "hidden",
             data:   { message_form_target: "attachmentForm" } do |f|
-  / = hidden_field_tag :message_token, @message_token
   = f.file_field :files,
                   multiple: true,
-                  class: "hidden",
                   data: { message_form_target: "fileInput", action: "message-form#addAttachments" }
+
+  = f.button "Add Attachments",
+             type:  "submit",
+             id:    "attachment_submit_button",
+             data:  { message_form_target: "attachmentSubmitButton" }

@@ -5,7 +5,7 @@ import {} from "../traversal.js"
 
 export default class extends Controller {
   static targets = [ "attachmentsList", "attachmentsWrapper", "attachmentForm", "audienceList", "audienceName",
-                     "ffCheckWrapper", "fileInput", "form",
+                     "ffCheckWrapper", "fileInput", "form", "testMode",
                      "addressBook", "memberTypeCheckBox", "memberStatusCheckBox", "subjectTextBox", "bodyTextArea",
                      "sendMessageButton", "sendLaterButton", "sendPreviewButton", "tempFileInput",
                      "queryInput", "addressBook", "recipientList" ];
@@ -25,7 +25,9 @@ export default class extends Controller {
 
   blur(event) {
     if (event.relatedTarget?.closest("#recipient_search_results")) { return; }
-    // this.closeAddressBook();
+    if (this.testModeTarget.value == "true") { return; }
+
+    this.closeAddressBook();
   }
 
   browseAddressBook(event) {
@@ -134,11 +136,9 @@ export default class extends Controller {
   async commit() {
     this.queryInputTarget.placeholder = "";
     const current = this.addressBookTarget.querySelector(".selected");
-    const recipientTags = this.addressBookTarget.querySelectorAll(".recipient");
+    const recipientTags = this.recipientListTarget.querySelectorAll(".recipient");
     const memberIds = Array.from(recipientTags).map((tag) => { return tag.dataset.recipientId; });
-
     const body = { "key": current.dataset.key, "member_ids": memberIds }
-
     await post(`/u/${this.unitIdValue}/messages/commit`, { body: body, responseKind: "turbo-stream" });    
 
     this.markAsDirty();

@@ -27,7 +27,7 @@
               
     .mx-auto.max-w-xl.pb-12
       .divide-y.divide-stone-800
-        - %w[basics rsvp activity dates locations description organizers packlists attachments notify cancel_delete].each do |section|
+        - %w[basics rsvp activity dates locations description organizers packlists attachments cancel_delete].each do |section|
           = render partial: "events/partials/form/#{section}", layout: "layouts/event_form_section", locals: { f: f, section: section }
 
     = render partial: "events/partials/form/footer", layout: "layouts/event_form_section", locals: { f: f }

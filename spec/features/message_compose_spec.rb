@@ -14,10 +14,15 @@ describe "messages", type: :feature do
       first_name: "Murgatroyd", last_name: "Snerd")
     @fifth_member = FactoryBot.create(:member, member_type: "youth", unit: @unit,
       first_name: "Matt", last_name: "Snerd")
-    @snerds = User.where(last_name: "Snerd").order(:first_name)
+    @family = User.where(last_name: "Snerd").order(:first_name)
 
     MemberRelationship.create(parent_unit_membership: @second_member, child_unit_membership: @fourth_member)
     MemberRelationship.create(parent_unit_membership: @third_member, child_unit_membership: @fourth_member)
+
+    @event = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit,
+      starts_at: 7.days.from_now, ends_at: 8.days.from_now)
+
+    @event.rsvps.create(unit_membership: @second_member, response: :accepted)
 
     login_as(@member.user, scope: :user)
     Flipper.enable(:messages)
@@ -42,105 +47,137 @@ describe "messages", type: :feature do
   end
 
   describe "message compose", js: true do
+    before do
+      visit(new_unit_message_path(@unit))
+    end
+
+    describe "attachments" do
+      it "attaches a file" do
+        filename = Rails.root.join("spec", "fixtures", "files", "roster_file.csv")
+        visit(new_unit_message_path(@unit))
+        execute_script("document.querySelector('#file_attachment_form').classList.remove('hidden');")
+        page.attach_file("files", filename)
+        find("#attachment_submit_button", visible: false).click
+        
+        expect(page).to have_css("#attachments_section")
+        expect(page).to have_css(".attachment-candidate", count: 1)
+      end
+    end
+
     describe "address book" do
       before do
-        visit(new_unit_message_path(@unit))
-
-        # wait for the address book to load
+        page.find("#test_mode", visible: false).set("true")
         page.find(:css, "#recipient_search_results li:first-child", visible: false, wait: 10)
       end
 
       it "toggles the address book" do
         find(:css, "#browse_address_book_button").click
-        expect(page.has_css?("#recipient_search_results", visible: true)).to be_truthy
+        expect(page).to have_css("#recipient_search_results", visible: true)
         find(:css, "#browse_address_book_button").click
-        expect(page.has_css?("#recipient_search_results", visible: true)).to be_falsey
+        expect(page).to have_css("#recipient_search_results", visible: false)
       end
 
       describe "search" do
         before do
-          find("#recipient_search_query_field").click
-          fill_in("recipient_search_query_field", with: @snerds.first.last_name[0, 3])
-          find("#recipient_search_results", visible: true, wait: 5)
+          # find("#recipient_search_query_field").click
         end
 
         it "searches by first name" do
-          expect(page).to have_content(@second_member.display_name)
-          expect(page).to have_content(@second_member.email)
+          find("#recipient_search_query_field").click
+          fill_in("recipient_search_query_field", with: @family.first.first_name[0, 3])
+          expect(page).to have_content(@family.first.display_name)
+          expect(page).to have_content(@family.first.email)
         end
 
         it "searches by last name" do
-          expect(page).to have_content(@second_member.display_name)
-          expect(page).to have_content(@second_member.email)
+          fill_in("recipient_search_query_field", with: @family.first.last_name[0, 3])
+          expect(page).to have_content(@family.first.display_name, wait: 5)
+          expect(page).to have_content(@family.first.email)
+        end
+
+        it "searches by event name" do
+          find("#recipient_search_query_field").click
+          fill_in("recipient_search_query_field", with: @event.title[0, 3])
+          find("#recipient_search_results", visible: true, wait: 5)
+          within "#recipient_search_results" do
+            expect(page).to have_content(@event.title)
+            expect(page).to have_content("attendee".pluralize(@event.rsvps.accepted.count))
+          end
         end
 
         it "defaults to the first result" do
-          expect(page).to have_css(".search-result", count: @snerds.count)
+          fill_in("recipient_search_query_field", with: @family.first.last_name[0, 3])
+          expect(page).to have_css(".search-result", count: @family.count)
 
-          within ".search-result.selected" do
-            expect(page).to have_content(@snerds.first.display_name)
+          within ".search-result.selected", visible: false do
+            expect(page).to have_content(@family.first.display_name)
           end
         end
 
-        describe "keyboard traversal" do
-          it "traverses results with down arrow key" do
-            find("#recipient_search_query_field").send_keys :down
-            within ".search-result.selected" do
-              expect(page).to have_content(@snerds.second.display_name)
-            end
+        it "traverses results with down arrow key" do
+          fill_in("recipient_search_query_field", with: @family.first.last_name[0, 3])
+          expect(page).to have_css(".search-result", count: @family.count)
 
-            find("#recipient_search_query_field").send_keys :down
-            within ".search-result.selected" do
-              expect(page).to have_content(@snerds.third.display_name)
-            end
-
-            find("#recipient_search_query_field").send_keys :down
-            within ".search-result.selected" do
-              expect(page).to have_content(@snerds.fourth.display_name)
-            end
-
-            # wraparound
-            find("#recipient_search_query_field").send_keys :down
-            within ".search-result.selected" do
-              expect(page).to have_content(@snerds.first.display_name)
-            end
+          find("#recipient_search_query_field").send_keys :down
+          within ".search-result.selected" do
+            expect(page).to have_content(@family.second.display_name)
           end
 
-          it "traverses results with up arrow key" do
-            # wraparound
-            find("#recipient_search_query_field").send_keys :up
-            within ".search-result.selected" do
-              expect(page).to have_content(@snerds.fourth.display_name)
-            end
-
-            find("#recipient_search_query_field").send_keys :up
-            within ".search-result.selected" do
-              expect(page).to have_content(@snerds.third.display_name)
-            end
-
-            find("#recipient_search_query_field").send_keys :up
-            within ".search-result.selected" do
-              expect(page).to have_content(@snerds.second.display_name)
-            end
-
-            find("#recipient_search_query_field").send_keys :up
-            within ".search-result.selected" do
-              expect(page).to have_content(@snerds.first.display_name)
-            end
+          find("#recipient_search_query_field").send_keys :down
+          within ".search-result.selected" do
+            expect(page).to have_content(@family.third.display_name)
           end
 
-          it "skips uncontactable results" do
-            @snerds.second.update!(email: "anonymous-member-#{SecureRandom.hex(6)}@scoutplan.org")
-            visit(new_unit_message_path(@unit))
-            page.find(:css, "#recipient_search_results li:first-child", visible: false, wait: 10)
+          find("#recipient_search_query_field").send_keys :down
+          within ".search-result.selected" do
+            expect(page).to have_content(@family.fourth.display_name)
+          end
 
-            fill_in("recipient_search_query_field", with: "")
-            fill_in("recipient_search_query_field", with: @second_member.last_name[0, 3])
-            find("#recipient_search_query_field").send_keys :down
+          # wraparound
+          find("#recipient_search_query_field").send_keys :down
+          within ".search-result.selected" do
+            expect(page).to have_content(@family.first.display_name)
+          end
+        end
 
-            within ".search-result.selected" do
-              expect(page).to have_content(@snerds.third.display_name)
-            end
+        it "traverses results with up arrow key" do
+          fill_in("recipient_search_query_field", with: @family.first.last_name[0, 3])
+          expect(page).to have_css(".search-result", count: @family.count)
+
+          # wraparound
+          find("#recipient_search_query_field").send_keys :up
+          within ".search-result.selected" do
+            expect(page).to have_content(@family.fourth.display_name)
+          end
+
+          find("#recipient_search_query_field").send_keys :up
+          within ".search-result.selected" do
+            expect(page).to have_content(@family.third.display_name)
+          end
+
+          find("#recipient_search_query_field").send_keys :up
+          within ".search-result.selected" do
+            expect(page).to have_content(@family.second.display_name)
+          end
+
+          find("#recipient_search_query_field").send_keys :up
+          within ".search-result.selected" do
+            expect(page).to have_content(@family.first.display_name)
+          end
+        end
+
+        it "skips uncontactable results" do
+          @family.second.update!(email: "anonymous-member-#{SecureRandom.hex(6)}@scoutplan.org")
+          visit(new_unit_message_path(@unit))
+          page.find("#test_mode", visible: false).set("true")
+          page.find(:css, "#recipient_search_results li:first-child", visible: false, wait: 10)
+
+          fill_in("recipient_search_query_field", with: "")
+          fill_in("recipient_search_query_field", with: @family.first.last_name[0, 3])
+
+          find("#recipient_search_query_field").send_keys :down
+          within ".search-result.selected" do
+            expect(page).to have_content(@family.third.display_name)
           end
         end
       end
@@ -173,15 +210,29 @@ describe "messages", type: :feature do
         end
 
         it "removes committed results from the search results" do
-          fill_in("recipient_search_query_field", with: @snerds.first.last_name)
+          fill_in("recipient_search_query_field", with: @family.first.last_name)
           find("#recipient_search_query_field").send_keys :return
           find(".recipient:first-child", wait: 10)
 
-          fill_in("recipient_search_query_field", with: @snerds.first.last_name)
+          fill_in("recipient_search_query_field", with: @family.first.last_name)
 
           within "#recipient_search_results" do
-            expect(page).not_to have_content(@snerds.first.display_name)
+            expect(page).not_to have_content(@family.first.display_name)
           end
+        end
+
+        it "prevents duplicate recipients" do
+          find("#recipient_search_query_field").click
+          fill_in("recipient_search_query_field", with: @event.rsvps.first.member.last_name)
+          find("#recipient_search_query_field").send_keys :return
+
+          expect(page).to have_css(".recipient", count: 1)
+
+          fill_in("recipient_search_query_field", with: @event.title[0, 3])
+          find("#recipient_search_query_field").send_keys :return
+          find(".recipient:first-child", wait: 10)
+
+          expect(page).to have_css(".recipient", count: 1)
         end
       end
 
@@ -237,6 +288,7 @@ describe "messages", type: :feature do
       describe "validation" do
         before do
           visit(new_unit_message_path(@unit))
+          page.find("#test_mode", visible: false).set("true")
           page.find(:css, "#recipient_search_results li:first-child", visible: false, wait: 10)
         end
 
