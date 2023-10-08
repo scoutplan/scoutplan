@@ -1,0 +1,5 @@
+div#body_wrapper.py-4
+  = f.rich_text_area :body,
+                     class: "p-0 focus:outline-none border-0 overflow-auto border border-stone-400 dark:border-stone-500 placeholder-stone-400 dark:placeholder-stone-500",
+                     placeholder: "Type your message...",
+                     data: { message_form_target: "bodyTextArea", action: "trix-change->message-form#validate trix-change->message-form#markAsDirty" }

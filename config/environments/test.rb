@@ -10,6 +10,7 @@ Rails.application.configure do
   config.middleware.use RackSessionAccess::Middleware
   config.hosts << "127.0.0.1"
   config.hosts << "www.example.com"
+  config.hosts << "localhost:3001"
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.cache_classes = false

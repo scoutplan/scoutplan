@@ -1,0 +1,9 @@
+div.pl-2.rounded.bg-stone-100.dark:bg-stone-700.inline-block.flex.flex-row.items-center.gap-1(id="#{dom_id(attachment)}")
+  .inline-block.text-ellipsis.whitespace-nowrap.overflow-hidden(style="max-width: 12rem;")
+    = attachment.filename
+    
+  - if @message.editable?
+    = link_to unit_message_attachment_path(unit, message, attachment),
+              class: "inline-block p-2 text-stone-500 hover:text-stone-600 dark:hover:text-stone-400",
+              data: { turbo_method: "delete", turbo_stream: true } do
+      i.fa-solid.fa-times-circle

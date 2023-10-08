@@ -21,13 +21,13 @@ class UnitMembership < ApplicationRecord
 
   has_many  :parent_relationships,
             foreign_key: "child_unit_membership_id",
-            class_name: "MemberRelationship",
-            dependent: :destroy
+            class_name:  "MemberRelationship",
+            dependent:   :destroy
 
   has_many  :child_relationships,
             foreign_key: "parent_unit_membership_id",
-            class_name: "MemberRelationship",
-            dependent: :destroy
+            class_name:  "MemberRelationship",
+            dependent:   :destroy
 
   has_many :parents, through: :parent_relationships, source: :parent_unit_membership
   has_many :children, through: :child_relationships, source: :child_unit_membership
@@ -77,6 +77,7 @@ class UnitMembership < ApplicationRecord
   end
 
   acts_as_taggable_on :tags
+  acts_as_taggable_tenant :unit_id
 
   # def to_param
   #   [id, user&.full_display_name].join("-").parameterize

@@ -1,41 +1,31 @@
 - path = message.sent? ? unit_message_path(@unit, message) : edit_unit_message_path(@unit, message)
 
-article.hover:bg-stone-100.dark:hover:bg-stone-800.-mx-2.px-2
+article.hover:bg-stone-100.dark:hover:bg-stone-800.-mx-3.px-3
   = link_to path,
-    class: "border-t dark:border-stone-700 block py-2 message #{message.updated_at < 4.weeks.ago ? 'older' : 'current' }",
+    class: "block w-full flex flex-row justify-between items-center gap-10 dark:border-stone-700 py-3",
     data: { turbo_action: "advance" } do
 
-    div
-      // TITLE
-      h3.text-xl.font-semibold
+    .left.flex-initial
+      h3.title.md:text-xl.font-bold.text-ellipsis
         = message.title.presence || "(no subject)"
-
         - if message.attachments.any?
-          i.fa-regular.fa-paperclip.ml-2.text-stone-400
+          i.fa-regular.fa-paperclip.ml-2.text-stone-500.text-base
 
-      // FROM -> TO
-      p.inline-block.font-semibold.text-sm
-        // author name
-        = message.author == @current_member ? "You" : message.author.full_display_name
-        
-        // right arrow
-        i.fas.fa-arrow-right.mx-1
-           
-        = recipients_to_s(message)
+      .line-clamp-1.text-stone-500.dark:text-stone-400
+          = message.author == @current_member ? "You" : message.author.full_display_name
+          
+          i.fas.fa-arrow-right.mx-1
 
-      // LEFT
-      time.block.text-sm.font-semibold.text-stone-400
-        - if message.send_at&.future? && message.queued?
-          i.fa-calendar-days.fas
-          | &nbsp;
-          = t("messages.index.will_send_on", send_date: message.send_at.strftime('%b %-d'))
+          = message.recipients.any? ? message.recipients_preview : "No recipients"
 
-        - elsif message.sent?
-          = t("messages.index.sent_at", value: distance_of_time_in_words_to_now(message.updated_at))
+      .line-clamp-1
+        = message.body
 
+    .right
+      .text-sm.md:text-base.whitespace-nowrap
+        - if message.queued?
+          span(title="Scheduled to send later")
+            i.fa-solid.fa-clock.mr-2.text-messages-600
+            = message.send_at.strftime("%b %-d")
         - else
-          = t("time_ago", value: distance_of_time_in_words_to_now(message.updated_at))
-
-      // body preview
-      p.mt-1.truncate.message-preview(style="max-width: calc(100% - 12rem;")
-        = message.body || "(no message body)"
+          = message.updated_at.strftime("%b %-d")

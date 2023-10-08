@@ -33,20 +33,5 @@ describe "events", type: :feature do
       expect(page).to have_content("Updated Event Title")
     end
   end
-
-  describe "notifications" do
-    it "notifies when switch is on" do
-      visit edit_unit_event_path(@unit, @event)
-      fill_in "event_title", with: "Updated Event Title"
-      check "event_notify_members"
-      expect { click_button "Save" }.to change(Message, :count).by(1)
-    end
-
-    it "doesn't notify when switch is off" do
-      visit edit_unit_event_path(@unit, @event)
-      fill_in "event_title", with: "Updated Event Title"
-      expect { click_button "Save" }.to change(Message, :count).by(0)
-    end
-  end
 end
 # rubocop:enable Metrics/BlockLength

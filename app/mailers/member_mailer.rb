@@ -52,8 +52,8 @@ class MemberMailer < ScoutplanMailer
     end
 
     mail(
-      to: @to_address,
-      from: unit_from_address_with_name(@message.author.short_display_name),
+      to:      @to_address,
+      from:    unit_from_address_with_name(@message.author.short_display_name),
       subject: subject
     )
   end

@@ -1,0 +1,8 @@
+div.attachment-candidate.pl-2.py-1.rounded.bg-stone-200.dark:bg-stone-700.inline-block.flex.flex-row.items-center.gap-1
+  .inline-block.text-ellipsis.whitespace-nowrap.overflow-hidden(style="max-width: 12rem;")
+    = filename
+    
+  .inline-block.py-1.px-3.ml-1.text-stone-500.hover:text-stone-600.dark:hover:text-stone-400.cursor-pointer(data-action="click->message-form#removeAttachmentCandidate")
+    i.fa-solid.fa-times-circle
+
+  = hidden_field_tag "blob_ids[]", blob_id, id: "blob_ids_#{blob_id}"

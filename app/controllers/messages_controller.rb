@@ -1,52 +1,62 @@
 # frozen_string_literal: true
 
-# Controller for sending messages. Interfaces between
-# UI and *Notifier classes (e.g. MemberNotifier)
 class MessagesController < UnitContextController
-  before_action :find_message, except: [:index, :new, :create, :recipients]
+  before_action :find_message, except: [:index, :drafts, :scheduled, :sent, :new, :create, :recipients, :addressables, :commit]
+  before_action :set_message_token, only: [:new, :edit]
+  # before_action :set_addressables, only: [:new, :edit]
+  after_action :create_recipients, only: [:create, :update]
 
   def index
-    @draft_messages   = @unit.messages.draft.with_attached_attachments
-    @queued_messages  = @unit.messages.queued.with_attached_attachments
-    @sent_messages    = @unit.messages.sent.order("updated_at DESC").with_attached_attachments
-    @pending_messages = @unit.messages.pending.with_attached_attachments
+    redirect_to drafts_unit_messages_path(@unit)
+  end
+
+  def drafts
+    scope = @unit.messages.includes(:message_recipients).draft_and_queued.with_attached_attachments.order(updated_at: :desc)
+    set_page_and_extract_portion_from(scope.all, per_page: [20])
+  end
+
+  def sent
+    scope = @unit.messages.includes(message_recipients: [unit_membership: :user]).sent.with_attached_attachments.order(updated_at: :desc)
+    set_page_and_extract_portion_from(scope.all, per_page: [20])
   end
 
   def show; end
 
   def new
     authorize current_member.messages.new
-    @message = current_member.messages.create(audience:    "everyone",
-                                              member_type: "youth_and_adults",
-                                              send_at:     Date.today,
-                                              status:      "draft")
-    redirect_to edit_unit_message_path(@unit, @message)
+    @message = current_member.messages.new(send_at: Date.today, status: :draft)
   end
 
   def create
-    @message = @unit.messages.new(message_params)
-    @message.author = current_member
-    @message.save!
+    @message = @unit.messages.create!(message_params)
+    associate_attachments
     handle_commit
+    flash.now[:notice] = @notice
     redirect_to unit_messages_path(@unit), notice: @notice
   end
 
   def edit
     authorize @message
+    @recipients = @message.message_recipients.map { |m| CandidateMessageRecipient.new(m.member, :committed, "") }
   end
 
   def update
     @message.update(message_params)
+    associate_attachments
     handle_commit
-    redirect_to unit_messages_path(@unit), notice: notice
+    redirect_to unit_messages_path(@unit), notice: @notice
+  end
+
+  def destroy
+    @message.destroy
+    redirect_to unit_messages_path(@unit), notice: t("messages.notices.delete_success")
   end
 
   def duplicate
+    # authorize @message
     new_message = @message.dup
-    new_message.title = "DUPLICATE - #{@message.title}"
-    new_message.status = "draft"
-    new_message.send_at = Time.now
-    new_message.save
+    ap @message
+    ap new_message
     redirect_to edit_unit_message_path(@unit, new_message), notice: t("messages.notices.duplicate_success")
   end
 
@@ -54,25 +64,62 @@ class MessagesController < UnitContextController
     redirect_to unit_messages_path(@unit), notice: t("messages.notices.unpin_success")
   end
 
-  # compute the recipients for a message based on the params
-  # passed in the request
-  def recipients
-    p = params.permit(:audience, :member_type, :member_status)
-    audience      = p[:audience]
-    member_type   = p[:member_type]
-    member_status = p[:member_status]
+  def addressables
+    lists = @unit.distribution_lists
+    events = @unit.events.published.rsvp_required.recent_and_future.includes(:event_rsvps)
+    members = @unit.members.joins(:user).order(:last_name, :first_name)
 
-    message = Message.new(
-      author:        @unit.unit_memberships.first,
-      audience:      audience,
-      member_type:   member_type,
-      member_status: member_status
-    )
-    service = MessageService.new(message)
-    @recipients = service.resolve_members
+    @addressables = MessagingSearchResult.to_a(lists + events + members)
+  end
+
+  def commit
+    return unless (key = params[:key]).present?
+
+    type, id = key.split("_")
+    @recipients = case type
+                  when "membership"
+                    @unit.members.where(id: id).map { |m| CandidateMessageRecipient.new(m) }
+                  when "event"
+                    @unit.events.find(id).rsvps.accepted.map { |r| CandidateMessageRecipient.new(r.member) }
+                  when "dl"
+                    case id
+                    when "all" then @unit.members.status_active_and_registered
+                    when "active" then @unit.members.active
+                    when "adults" then @unit.members.active.adult
+                    end
+                  end
+
+    @recipients = @recipients.map { |m| CandidateMessageRecipient.new(m, :committed, "") }
+
+    # find parents of youth members
+    parents = []
+    @recipients&.each do |recipient|
+      next unless recipient.member_type == "youth"
+
+      parents << recipient.parents.to_a.map do |member|
+        CandidateMessageRecipient.new(
+          member, :ypt,
+          "Included for two-deep communication because #{recipient.full_display_name} is a youth member addressed in this message."
+        )
+      end
+    end
+
+    # concatenate, dedupe, and remove members already committed
+    @recipients += parents.flatten
+    @recipients.uniq!(&:email)
+    member_ids = params[:member_ids].map(&:to_i) || []
+    @recipients.reject! { |r| member_ids.include?(r.id) }
   end
 
   private
+
+  def associate_attachments
+    return unless params[:blob_ids].present?
+
+    params[:blob_ids].each do |blob_id|
+      ActiveStorage::Attachment.create!(name: "attachments", record: @message, blob_id: blob_id)
+    end
+  end
 
   def handle_commit
     case params[:commit]
@@ -107,16 +154,11 @@ class MessagesController < UnitContextController
     # send now
     when t("messages.captions.send_message")
       if MessagePolicy.new(current_member, @message).create?
-        @message.update(status: :outbox)
+        @message.update!(status: :outbox)
         @notice = t("messages.notices.message_sent")
       else
         @notice = "You aren't authorized to do that"
       end
-
-    # delete
-    when t("messages.captions.delete_draft")
-      @message.destroy
-      @notice = t("messages.notices.delete_success")
     end
   end
 
@@ -125,10 +167,38 @@ class MessagesController < UnitContextController
   end
 
   def message_params
-    params.require(:message).permit(:title, :body, :audience, :member_type, :member_status, :send_at)
+    result = params.require(:message).permit(:title, :body, :audience, :member_type, :member_status, :send_at)
+    result.merge!(author: @current_member) unless result[:author].present?
+    result
   end
 
   def find_message
     @message = Message.find(params[:id] || params[:message_id])
   end
+
+  def create_recipients
+    @message.message_recipients.destroy_all
+    return unless params[:message_recipients].present?
+
+    member_ids = params[:message_recipients][:id]
+
+    member_ids.each do |id|
+      member = @unit.members.find(id.to_i)
+      ap member
+      @message.message_recipients.create!(unit_membership: member)
+    end
+  end
+
+  def set_message_token
+    @message_token = SecureRandom.hex(10)
+  end
+
+  # def set_addressables
+  #   scope   = @unit.members.status_active_and_registered.joins(:user)
+  #   members = scope.all.order(:last_name, :first_name)
+  #   events  = @unit.events.published.rsvp_required.recent_and_future.includes(:event_rsvps)
+  #   lists   = @unit.distribution_lists
+  #   # TODO: tags
+  #   @addressables = MessagingSearchResult.to_a(lists + [:divider] + events + [:divider] + members)
+  # end
 end

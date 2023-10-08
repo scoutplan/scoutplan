@@ -5,7 +5,7 @@ ul.list-none
     // Events
     li#main_nav_item_events.md:inline-block
       = link_to unit_events_path(@current_unit),
-        class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+        class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-semibold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
         data: { turbo_frame: "main", turbo_action: "advance" } do
 
           / i.fa-solid.fa-calendar-alt.fa-fw.mr-1
@@ -18,7 +18,7 @@ ul.list-none
   - if policy(:unit_membership).index?
     li#main_nav_item_members.md:inline-block
       = link_to unit_members_path(@current_unit),
-        class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+        class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-semibold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
         data: { turbo_frame: "main", turbo_action: "advance" } do
 
         svg.inline-block.text-center.mr-1(style="vertical-align: -.125em;" width="20" height="16" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="calendar" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg="")
@@ -30,7 +30,7 @@ ul.list-none
   - if policy(:event).plan? && Flipper.enabled?(:planner, @current_member)
     li#main_nav_item_planner.md:inline-block
       = link_to unit_plans_path(@current_unit),
-        class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+        class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-semibold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
         data: { turbo_frame: "main", turbo_action: "advance" } do
 
         svg.inline-block.mr-1(style="vertical-align: -.125em;" width="20" height="16" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="calendar" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="")
@@ -42,7 +42,7 @@ ul.list-none
   - if policy(:message).new? && Flipper.enabled?(:messages, @current_member)
     li#main_nav_item_messages.md:inline-block
       = link_to unit_messages_path(@current_unit),
-        class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+        class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-semibold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
         data: { turbo_frame: "main", turbo_action: "advance" } do
 
         svg.inline-block.mr-1(style="vertical-align: -.125em;" width="20" height="16" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="calendar" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="")
@@ -54,7 +54,7 @@ ul.list-none
     - if policy(:wiki_page).index?
       li#main_nav_item_wiki.md:inline-block
         = link_to unit_wiki_pages_path(@current_unit),
-          class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-bold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+          class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-semibold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
           data: { turbo_frame: "main", turbo_action: "advance" } do
 
         svg.inline-block.mr-1(style="vertical-align: -.125em;" width="20" height="16" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="calendar" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="")

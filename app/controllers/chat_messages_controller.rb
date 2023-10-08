@@ -22,8 +22,8 @@ class ChatMessagesController < UnitContextController
       "chat_#{chat.id}",
       :chat_messages,
       partial: "chat_messages/chat_message",
-      target: "chat_messages",
-      locals: { chat_message: @chat_message, current_member: @current_member }
+      target:  "chat_messages",
+      locals:  { chat_message: @chat_message, current_member: @current_member }
     )
 
     respond_to do |format|

@@ -1,64 +1,232 @@
+import { DirectUpload } from "@rails/activestorage"
 import { Controller } from "@hotwired/stimulus"
 import { post } from "@rails/request.js"
+import {} from "../traversal.js"
 
 export default class extends Controller {
-  static targets = [ "attachmentList", "attachmentWrapper", "attachmentForm", "audienceList", "audienceName",
-                     "ffCheckWrapper", "fileInput",
-                     "recipientList", "memberTypeCheckBox", "memberStatusCheckBox", "subjectTextBox", "bodyTextArea",
-                     "sendMessageButton", "sendLaterButton", "sendPreviewButton", "tempFileInput" ];
+  static targets = [ "attachmentsList", "attachmentsWrapper", "attachmentForm", "audienceList", "audienceName",
+                     "ffCheckWrapper", "fileInput", "form", "testMode",
+                     "addressBook", "memberTypeCheckBox", "memberStatusCheckBox", "subjectTextBox", "bodyTextArea",
+                     "sendMessageButton", "sendLaterButton", "sendPreviewButton", "tempFileInput",
+                     "queryInput", "addressBook", "recipientList" ];
   static values = { unitId: Number };
 
+  recipientObserver = null;
+  dirty = false;
+  browsingAddressBook = false;
+  shouldSkipLeaveConfirmation = false;
+
   connect() {
-    this.updateRecipients();
+    this.establishRecipientObserver();
+    this.establishAttachmentsObserver();
     this.validate();
+    this.formData = new FormData(this.formTarget);
   }
 
-  updateRecipients() {
-    // const audience = this.audienceSelectTarget.value;
+  blur(event) {
+    if (event.relatedTarget?.closest("#recipient_search_results")) { return; }
+    if (this.testModeTarget.value == "true") { return; }
 
-    const selectedRadioButton = document.querySelector("input[type='radio']:checked");
-    const audience = selectedRadioButton.value;
-    const memberType = this.memberTypeCheckBoxTarget.checked ? "adults_only" : "youth_and_adults";
-    const memberStatus = this.memberStatusCheckBoxTarget.checked ? "active_and_registered" : "active";
-    
-    var audienceName = selectedRadioButton.dataset.messageFormAudienceName;
-
-    if (audience === "everyone") {
-      if (memberStatus === "active_and_registered") {
-        audienceName = "All " + audienceName;
-      } else {
-        audienceName = "Active " + audienceName;
-      } 
-    }
-
-    if (memberType === "adults_only") {
-      audienceName = "Adult " + audienceName;
-    }
-
-    this.audienceNameTarget.textContent = audienceName;    
-
-    // hide the ff check box if the audience is not everyone
-    this.ffCheckWrapperTarget.classList.toggle("hidden", audience !== "everyone");
-
-    // https://www.reddit.com/r/rails/comments/rzne63/is_it_possible_to_trigger_turbo_stream_update/
-
-    // post a call to an endpoint to compute the recipient list
-
-    const body = {
-      "audience":      audience,
-      "member_type":   memberType,
-      "member_status": memberStatus,
-    }    
-
-    post(`/u/${this.unitIdValue}/email/recipients`, { body: body, responseKind: "turbo-stream" });
+    this.closeAddressBook();
   }
 
-  hideRecipientList() {
-    this.recipientListTarget.classList.toggle("hidden", true);
+  browseAddressBook(event) {
+    event.preventDefault();
+    if (this.browsingAddressBook) { 
+      this.closeAddressBook();
+    } else {
+      this.openAddressBook(true);
+    }
+    this.browsingAddressBook = !this.browsingAddressBook;
+  }
+
+  skipLeaveConfirmation() {
+    this.shouldSkipLeaveConfirmation = true;
+  }
+
+  addAttachments(event) {
+    this.attachmentFormTarget.requestSubmit();
+  }
+
+  confirmLeave(event) {
+    if (this.shouldSkipLeaveConfirmation) { return; }
+
+    if (this.dirty && !confirm("You have unsaved changes. Are you sure you want to leave this page?")) {
+      event.preventDefault();
+      event.returnValue = "";
+    }
+  }
+
+  establishRecipientObserver() {
+    this.recipientObserver = new MutationObserver((mutations) => {
+      this.validate();
+      this.syncAddressBookToRecipients();
+    });
+    this.recipientObserver.observe(this.recipientListTarget, { childList: true });
+  }
+
+  establishAttachmentsObserver() {
+    this.attachmentObserver = new MutationObserver((mutations) => {
+      this.attachmentsWrapperTarget.classList.toggle("hidden", this.attachmentsListTarget.children.length == 0);
+    });
+    this.attachmentObserver.observe(this.attachmentsListTarget, { childList: true });
+  }
+
+  handleKeydown(event) {
+    if (event.key === "Backspace" && (event.metaKey || event.ctrlKey)) {
+      this.recipientListTarget.querySelectorAll(".recipient").forEach((tag) => {
+        tag.remove();
+      });
+      return;
+    } else if (event.key === "Backspace") {
+      if (this.queryInputTarget.value.length > 0) { return; }
+      this.deleteLastRecipient();
+      this.validate();
+      return;
+    }
+
+    const current = this.addressBookTarget.querySelector(".selected");
+    if (!current) { return; }
+
+    if (event.key === "ArrowUp") {
+      var target = current.prev(".contactable:not(.hidden):not(.committed)", true);
+      // var target = current.previousSibling;
+      // if (target == null) { target = current.parentNode.lastChild; } // wraparoun
+      // while(target) {
+      //   if (target.classList.contains("contactable")) { break; }
+      //   target = target.previousSibling;
+      //   if (target == null) { target = current.parentNode.lastChild; } // wraparound
+      // }
+      current.classList.remove("selected");
+      target?.classList?.add("selected");
+      target?.scrollIntoView({block: "center"});
+      event.stopPropagation();
+      event.preventDefault();
+    } else if (event.key === "ArrowDown") {
+      var target = current.next(".contactable:not(.hidden):not(.committed)", true);
+      // var target = current.nextSibling;
+      // if (target == null) { target = current.parentNode.firstChild; } // wraparound
+      // while(target) {
+      //   if (target.classList.contains("contactable")) { break; }
+      //   target = target.nextSibling;
+      //   if (target == null) { target = current.parentNode.firstChild; } // wraparound
+      // }
+      current.classList.remove("selected");
+      target?.classList?.add("selected");
+      target?.scrollIntoView({block: "center"});
+      event.stopPropagation();
+      event.preventDefault();
+    } else if ((event.key === "Enter" || event.key === "Tab") && this.addressBookIsOpen()) {
+      this.commit();
+      event.stopPropagation();
+      event.preventDefault();
+    } else if (event.key === "Escape") {
+      this.closeAddressBook();
+      event.stopPropagation();
+      event.preventDefault();
+    } else { return; }
+  }
+
+  deleteLastRecipient() {
+    const lastElem = this.queryInputTarget.parentNode.previousSibling;
+    if (!lastElem) { return; }
+    lastElem.remove();
+  }
+
+  async commit() {
+    this.queryInputTarget.placeholder = "";
+    const current = this.addressBookTarget.querySelector(".selected");
+    const recipientTags = this.recipientListTarget.querySelectorAll(".recipient");
+    const memberIds = Array.from(recipientTags).map((tag) => { return tag.dataset.recipientId; });
+    const body = { "key": current.dataset.key, "member_ids": memberIds }
+    await post(`/u/${this.unitIdValue}/messages/commit`, { body: body, responseKind: "turbo-stream" });    
+
+    this.markAsDirty();
+    this.resetQueryInput();
+    this.closeAddressBook();
+    this.queryInputTarget.focus();
+  }
+
+  deleteItem(event) {
+    const target = event.target;
+    target.closest(".recipient").remove();
+    this.queryInputTarget.focus();
+  }
+
+  /* address book */
+
+  closeAddressBook() {
+    this.addressBookTarget.classList.toggle("hidden", true);
+  }
+
+  openAddressBook() {
+    this.addressBookTarget.classList.toggle("hidden", false);
+  }
+
+  addressBookIsOpen() {
+    return !this.addressBookTarget.classList.contains("hidden");
+  }
+  
+  filterAddressBook(browse = false) {
+    this.openAddressBook();
+
+    this.addressBookTarget.querySelectorAll("li").forEach((li) => {
+      // var name = nameCell.innerText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      // if (filter.length == 0 || name.toUpperCase().indexOf(filter) > -1) {
+        
+        const filter = this.queryInputTarget.value.toUpperCase();
+        const name = li.innerText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        var match = false;
+        
+        match = match || filter.length == 0;
+        match = match || name.toUpperCase().indexOf(filter) > -1;
+        
+        li.classList.remove("selected");
+        li.classList.toggle("hidden", !match);
+      }
+    );
+
+    this.addressBookTarget.querySelector("li.contactable:not(.committed):not(.hidden)")?.classList?.toggle("selected", true);
+  }
+
+  unfilterAddressBook() {
+    this.addressBookTarget.querySelectorAll("li").forEach((li) => {        
+        li.classList.toggle("committed", false);
+    } );
+  } 
+
+  syncAddressBookToRecipients() {
+    this.unfilterAddressBook();
+    const memberIds = this.selectedMemberIds();
+
+    memberIds.forEach((memberId) => {
+      const li = this.addressBookTarget.querySelector(`li[id='membership_${memberId}']`);
+      li?.classList?.toggle("committed", true);
+    });
+  }
+
+  markAsDirty() {
+    this.dirty = true;
+  }
+
+  select(event) {
+    const target = event.target;
+    event.preventDefault();
+    this.resetQueryInput();
+  }
+
+  selectedMemberIds() {
+    const recipientTags = this.recipientListTarget.querySelectorAll(".recipient");
+    const memberIds = Array.from(recipientTags).map((tag) => { return tag.dataset.recipientId; });
+    return memberIds;
+  }
+
+  resetQueryInput() {
+    this.queryInputTarget.value = "";
   }
 
   toggleRecipientList(event) {
-    this.recipientListTarget.classList.toggle("hidden");
+    this.addressBookTarget.classList.toggle("hidden");
     event.preventDefault();
   }
 
@@ -67,21 +235,16 @@ export default class extends Controller {
     event.preventDefault();
   }
 
-  addAttachments() {
-    this.attachmentFormTarget.requestSubmit();
-  }
-
   uploadFiles() {
     const files = this.fileInputTarget.click();
   }
 
   validate() {
-    var valid = this.subjectTextBoxTarget.value.length > 0;
-    valid = valid && this.bodyTextAreaTarget.value.length > 0;
+    const recipientCount = this.recipientListTarget.querySelectorAll(".recipient").length
+    const valid = recipientCount > 0;
 
     this.sendMessageButtonTarget.disabled = !valid;
     this.sendLaterButtonTarget.disabled   = !valid;
-    this.sendPreviewButtonTarget.disabled = !valid;
   }
 
   changeAudience(event) {
@@ -94,5 +257,10 @@ export default class extends Controller {
     event.target.closest("li").classList.toggle("active", true);
 
     event.preventDefault();
+  }
+
+  removeAttachmentCandidate(event) {
+    var elem = event.target.closest(".attachment-candidate");
+    elem.remove();
   }
 }

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# adds remind capability to Events
 module Event::Remindable
   extend ActiveSupport::Concern
 

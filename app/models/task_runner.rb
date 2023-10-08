@@ -2,8 +2,6 @@
 
 require "sidekiq-scheduler"
 
-# This is a Class that can be instantiated by Sidekiq Scheduler which,
-# in turn, runs all Tasks.
 class TaskRunner
   include Sidekiq::Worker
 

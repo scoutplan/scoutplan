@@ -1,5 +1,6 @@
 const { scale } = require('tailwindcss/defaultTheme')
 const defaultTheme = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
   content: [
@@ -9,6 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      dropShadow: {
+        overhead: '0 0 1rem rgba(0, 0, 0, 0.1)',
+      },
       fontFamily: {
         sans: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"],
         serif: [...defaultTheme.fontFamily.serif],
@@ -34,7 +38,8 @@ module.exports = {
           100: '',
           500: '',
           700: '',
-        }
+        },
+        messages: colors.lime
       },
       listStyleType: {
         square: 'square',
@@ -47,7 +52,7 @@ module.exports = {
       },
       animation: {
         'pop-open': 'pop-open 0.1s',
-        'fade-out-after-load': 'fade-out-after-load 3s linear 1',
+        'fade-out-after-load': 'fade-out-after-load 5s linear',
       },
       keyframes: {
         'pop-open': {
@@ -63,6 +68,9 @@ module.exports = {
         },
         'fade-out-after-load': {
           '0%': {
+            opacity: '1'
+          },
+          '80%': {
             opacity: '1'
           },
           '100%': {

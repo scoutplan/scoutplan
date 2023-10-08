@@ -54,15 +54,21 @@ Rails.application.routes.draw do
 
   # begin units
   resources :units, path: "u", only: %i[show index update] do
-    resources :messages, path: "email" do
+    resources :messages, path: "messages" do
+      resources :message_attachments, path: "attachments", as: "attachments", only: [:destroy]
       post "duplicate"
       post "unpin", as: "unpin"
       collection do
+        get  "drafts"
+        get  "sent"
         post "recipients", as: "recipients"
+        get  "addressables", as: "addressables"
+        get  "select",     as: "select"
+        post "commit",     as: "commit"
       end
-      resources :attachments
     end
 
+    resources :message_attachments
     resources :locations
     resources :packing_lists do
       resources :packing_list_items

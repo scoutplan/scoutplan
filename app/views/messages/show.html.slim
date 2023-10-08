@@ -1,14 +1,36 @@
 = turbo_frame_tag "main"
-  .min-w-4xl.max-w-3xl.mx-auto.pt-6
-    header.mb-2
-      h1.text-3xl.font-bold = @message.title
+  .min-w-3xl.max-w-4xl.mx-auto.pt-6
+    header.mb-4
+      = link_to sent_unit_messages_path(@unit),
+            class: "inline-block font-bold pb-4 text-messages-700 hover:text-lime-800 dark:text-messages-500 dark:hover:text-messages-400",
+            data: { turbo_action: "advance" } do
+        i.fa-solid.fa-chevron-left.mr-2
+        = t("messages.new.buttons.cancel")
 
-    article.text-lg
-      == @message.body
+    .md:rounded-xl.md:p-12.md:pb-7.mt-6.md:drop-shadow-overhead.bg-white.dark:bg-stone-800
+      header.mb-8
+        .flex.flex-row.justify-between.items-center
+          h1.text-4xl.font-bold.mb-2 = @message.title
 
-    p.border-t.py-4.text-stone-500.text-sm.font-bold
-      = t("messages.show.send_dates", author: @message.author.display_first_name, start_date: @message.updated_at, end_date: nil)
+          .right.flex.flex-row.gap-3
+            .dropdown.relative
+              = link_to "#", class: "dropdown-button" do
+                i.fa-solid.fa-ellipsis-h
 
-    footer.py-4
-      = button_to t("messages.captions.duplicate"), unit_message_duplicate_path(@unit, @message),
-                  class: "inline-block rounded border border-brand-500 text-brand-500 hover:border-brand-600 hover:text-brand-600 px-4 py-2 font-bold"
+              .dropdown-menu.bg-messages-800.absolute.right-0.rounded-b
+                = link_to unit_message_duplicate_path(@unit, @message),
+                      class: "dropdown-item block whitespace-nowrap text-messages-100 px-3 py-2 hover:bg-messages-700",
+                      data: { turbo_method: "post", turbo_action: "advance" } do
+                  i.fa-solid.fa-copy.mr-2
+                  = t("messages.show.buttons.duplicate")
+
+
+            = @message.send_at.strftime("%b %-d")
+
+        p.recipients.text-sm
+          = @message.author.display_name
+          i.fa-solid.fa-arrow-right.mx-1
+          = @message.recipients.map(&:display_name).join(", ")
+
+      article.text-lg
+        == @message.body

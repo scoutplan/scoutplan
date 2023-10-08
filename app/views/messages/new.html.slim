@@ -1,15 +1,13 @@
 = turbo_frame_tag "main"
-  .max-w-4xl.mx-auto
-    = link_to unit_messages_path(@unit),
-              class: "font-bold py-2 text-lime-600",
-              data: { turbo_action: "advance" } do
-
-      .fa-stack
-        i.fa-regular.fa-circle.fa-stack-2x
-        i.fa-solid.fa-arrow-left.fa-stack-1x
-      = t("messages.new.buttons.cancel")
+  .min-w-3xl.max-w-4xl.mx-auto.pt-6
+    header
+      = link_to unit_messages_path(@unit),
+                class: "font-bold text-messages-600 hover:text-messages-700 dark:hover:text-messages-500",
+                data: { turbo_action: "advance" } do
+        i.fa-solid.fa-chevron-left.mr-2
+        = "Back to messages"
 
     = render partial: "form"
 
   javascript:
-    document.title = "New Email · #{@unit.name}"
+    document.title = "New Message · #{@unit.name}"

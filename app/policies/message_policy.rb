@@ -29,4 +29,8 @@ class MessagePolicy < UnitContextPolicy
   def draft?
     admin?
   end
+
+  def duplicate?
+    admin? || @message.author == @membership
+  end
 end

@@ -17,7 +17,7 @@ module ApplicationHelper
     elsif val.yesterday?
       "yesterday"
     elsif val.future?
-      "#{distance_of_time_in_words_to_now(val)} from now"
+      "in #{distance_of_time_in_words_to_now(val)}"
     elsif val.past?
       "#{distance_of_time_in_words_to_now(val)} ago"
     end

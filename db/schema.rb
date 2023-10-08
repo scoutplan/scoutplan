@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_10_112510) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_25_121905) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "unaccent"
 
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
@@ -361,11 +362,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_10_112510) do
   end
 
   create_table "message_recipients", force: :cascade do |t|
-    t.string "message_receivable_type"
-    t.string "message_receivable_id"
     t.integer "message_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "unit_membership_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -376,9 +376,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_10_112510) do
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "audience"
-    t.string "member_type"
-    t.string "member_status", default: "active"
     t.string "token"
     t.index ["token"], name: "index_messages_on_token", unique: true
   end
