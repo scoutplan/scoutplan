@@ -105,10 +105,11 @@ class MessagesController < UnitContextController
     end
 
     # concatenate, dedupe, and remove members already committed
+    member_ids = params[:member_ids].map(&:to_i) || []
     @recipients += parents.flatten
     @recipients.uniq!(&:email)
-    member_ids = params[:member_ids].map(&:to_i) || []
     @recipients.reject! { |r| member_ids.include?(r.id) }
+    @recipients.select!(&:contactable?)
   end
 
   private
