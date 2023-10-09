@@ -3,8 +3,6 @@
 require "rails_helper"
 
 describe "messages", type: :feature do
-  skip "can't get these to run reliably"
-
   before do
     @member = FactoryBot.create(:member, :admin)
     @unit = @member.unit
@@ -48,7 +46,7 @@ describe "messages", type: :feature do
     end
   end
 
-  describe "message compose", js: true do
+  describe "message compose", :skip, js: true do
     before do
       visit(new_unit_message_path(@unit))
     end
