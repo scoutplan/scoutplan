@@ -62,12 +62,12 @@ class MessagingSearchResult
   end
 
   def event_description
-    attendee_count = @result.rsvps.accepted.count
+    attendee_count = @result.rsvps.accepted.select { |r| r.member.contactable? }.count
 
     if @result.ended?
-      "#{pluralize(attendee_count, 'attendee')}, ended #{ApplicationController.helpers.deictic_string_for_time_interval_from_day(@result.ends_at)}"
+      "#{pluralize(attendee_count, 'contactable attendee')}, ended #{ApplicationController.helpers.deictic_string_for_time_interval_from_day(@result.ends_at)}"
     else
-      "#{pluralize(attendee_count, 'attendee')}, starts #{ApplicationController.helpers.deictic_string_for_time_interval_from_day(@result.starts_at)}"
+      "#{pluralize(attendee_count, 'contactable attendee')}, starts #{ApplicationController.helpers.deictic_string_for_time_interval_from_day(@result.starts_at)}"
     end
   end
 end

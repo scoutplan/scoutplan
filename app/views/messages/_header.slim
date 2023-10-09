@@ -7,7 +7,7 @@ header.flex.flex-row.justify-between.items-center.pb-4.mb-2.border-b.dark:border
         h1.font-bold.text-xl.md:text-4xl = title.titleize
         i.fa-solid.fa-chevron-down.ml-3.text-stone-500.dark:text-stone-400
 
-    nav.dropdown-menu.absolute.top-full.right-0.mt-2.w-full.md:w-48.bg-messages-700.text-white.drop-shadow-lg.border.border-stone-200.dark:border-stone-700
+    nav.dropdown-menu.absolute.top-full.right-0.mt-2.w-full.md:w-48.bg-messages-700.text-white.drop-shadow-lg.rounded-b
       = link_to drafts_unit_messages_path(@unit),
                 class: "draft-messages-link block px-4 py-2 font-bold hover:bg-messages-800",
                 data: { turbo_action: "advance" } do

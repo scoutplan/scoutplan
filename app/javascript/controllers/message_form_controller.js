@@ -13,7 +13,7 @@ export default class extends Controller {
 
   recipientObserver = null;
   dirty = false;
-  browsingAddressBook = false;
+  // browsingAddressBook = false;
   shouldSkipLeaveConfirmation = false;
 
   connect() {
@@ -25,20 +25,65 @@ export default class extends Controller {
 
   blur(event) {
     if (event.relatedTarget?.closest("#recipient_search_results")) { return; }
+    if (event.relatedTarget?.id == "browse_address_book_button") { return; }
     if (this.testModeTarget.value == "true") { return; }
 
     this.closeAddressBook();
   }
 
-  browseAddressBook(event) {
-    event.preventDefault();
-    if (this.browsingAddressBook) { 
-      this.closeAddressBook();
-    } else {
-      this.openAddressBook(true);
-    }
-    this.browsingAddressBook = !this.browsingAddressBook;
+  /* address book */
+
+  toggleAddressBook(event) {
+    this.unfilterAddressBook();
+    this.addressBookTarget.classList.toggle("hidden");
+    this.queryInputTarget.focus();
   }
+
+  closeAddressBook() {
+    this.addressBookTarget.classList.toggle("hidden", true);
+  }
+  
+  openAddressBook() {
+    this.addressBookTarget.classList.toggle("hidden", false);
+  }
+  
+  addressBookIsOpen() {
+    return !this.addressBookTarget.classList.contains("hidden");
+  }
+
+  filterAddressBook(browse = false) {
+    const filter = this.queryInputTarget.value.toUpperCase();
+    if (filter.length == 0) {
+      this.closeAddressBook();
+      return;
+    }
+
+    this.openAddressBook();
+
+    this.addressBookTarget.querySelectorAll("li").forEach((li) => {
+        const filter = this.queryInputTarget.value.toUpperCase();
+        const name = li.innerText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        var match = false;
+        
+        match = match || filter.length == 0;
+        match = match || name.toUpperCase().indexOf(filter) > -1;
+        
+        li.classList.remove("selected");
+        li.classList.toggle("hidden", !match);
+      }
+    );
+
+    this.addressBookTarget.querySelector("li.contactable:not(.committed):not(.hidden)")?.classList?.toggle("selected", true);
+  }
+
+  unfilterAddressBook() {
+    this.addressBookTarget.querySelectorAll("li").forEach((li) => {        
+        li.classList.toggle("committed", false);
+        li.classList.toggle("hidden", false);
+    } );
+  }    
+  
+  /* address book */
 
   skipLeaveConfirmation() {
     this.shouldSkipLeaveConfirmation = true;
@@ -152,48 +197,6 @@ export default class extends Controller {
     target.closest(".recipient").remove();
     this.queryInputTarget.focus();
   }
-
-  /* address book */
-
-  closeAddressBook() {
-    this.addressBookTarget.classList.toggle("hidden", true);
-  }
-
-  openAddressBook() {
-    this.addressBookTarget.classList.toggle("hidden", false);
-  }
-
-  addressBookIsOpen() {
-    return !this.addressBookTarget.classList.contains("hidden");
-  }
-  
-  filterAddressBook(browse = false) {
-    this.openAddressBook();
-
-    this.addressBookTarget.querySelectorAll("li").forEach((li) => {
-      // var name = nameCell.innerText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      // if (filter.length == 0 || name.toUpperCase().indexOf(filter) > -1) {
-        
-        const filter = this.queryInputTarget.value.toUpperCase();
-        const name = li.innerText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        var match = false;
-        
-        match = match || filter.length == 0;
-        match = match || name.toUpperCase().indexOf(filter) > -1;
-        
-        li.classList.remove("selected");
-        li.classList.toggle("hidden", !match);
-      }
-    );
-
-    this.addressBookTarget.querySelector("li.contactable:not(.committed):not(.hidden)")?.classList?.toggle("selected", true);
-  }
-
-  unfilterAddressBook() {
-    this.addressBookTarget.querySelectorAll("li").forEach((li) => {        
-        li.classList.toggle("committed", false);
-    } );
-  } 
 
   syncAddressBookToRecipients() {
     this.unfilterAddressBook();
