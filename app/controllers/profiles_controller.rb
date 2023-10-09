@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-# edit user profile
-class ProfileController < ApplicationController
-  layout "global"
+class ProfilesController < ApplicationController
+  layout "unitless"
+
+  before_action :find_profile
 
   def edit
-    @user = current_user
+    authorize @profile
   end
 
   def update
@@ -21,8 +22,7 @@ class ProfileController < ApplicationController
     @payments = Payment.where(unit_membership: @user.family.collect(&:id)).order(created_at: :desc)
   end
 
-  def test
-  end
+  def test; end
 
   # rubocop:disable Style/GuardClause
   def update_password
@@ -33,6 +33,13 @@ class ProfileController < ApplicationController
   # rubocop:enable Style/GuardClause
 
   private
+
+  def find_profile
+    @member = UnitMembership.find(params[:id])
+    @unit = @member.unit
+    @editing_member = @unit.membership_for(current_user)
+    @profile = UnitMembershipProfile.new(@member)
+  end
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :nickname, :email, :phone)

@@ -193,10 +193,11 @@ Rails.application.routes.draw do
   get   "user_settings/change_password", to: "profile#edit_password", as: "edit_credentials"
   patch "user_settings/save_password", to: "profile#update_password", as: "update_credentials"
 
-  # TODO: rationalize all this
-  get "profile/:user_id/edit", to: "profile#edit", as: "edit_profile"
-  get "profile/:user_id/payments", to: "profile#payments", as: "profile_payments"
-  get "profile/:user_id/test", to: "profile#test", as: "test"
+
+  resources :profiles
+
+  get "profile/:id/payments", to: "profile#payments", as: "profile_payments"
+  get "profile/:id/test", to: "profile#test", as: "test"
 
   # Member profile settings
   get "member_profile", to: "unit_membership_profiles#index", as: "member_profiles"

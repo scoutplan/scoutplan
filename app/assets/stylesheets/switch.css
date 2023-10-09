@@ -1,0 +1,21 @@
+.switch-button {
+  transform: translateX(0);
+  transition: transform 0.25s;
+}
+
+.switch-wrapper input:checked + label .switch-button {
+  transform: translateX(1.5rem);
+  transition: transform 0.25s;
+}
+
+.switch-wrapper input:checked + label.sm .switch-button {
+  transform: translateX(1.0rem);  
+}
+
+.switch-wrapper input {
+  display: none;
+}
+
+.switch-wrapper input:checked + label .switch-container {
+  background: #16a34a;
+}

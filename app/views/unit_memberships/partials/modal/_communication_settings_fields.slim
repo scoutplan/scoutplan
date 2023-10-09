@@ -8,7 +8,8 @@ div.pt-4
     = render partial: "components/switch",
              locals: { object_name: object_name,
                        label: "Via email",
-                       checked: member.settings(:communication).via_email == "true",
+                       checked: member.contactable?(via: :email) && member.settings(:communication).via_email == "true",
+                       disabled: !member.contactable?(via: :email),
                        method: "via_email",
                        checked_value: "true",
                        unchecked_value: "false" }
@@ -17,7 +18,8 @@ div.pt-4
     = render partial: "components/switch",
              locals: { object_name: object_name,
                        label: "Via SMS",
-                       checked: member.settings(:communication).via_sms == "true",
+                       checked: member.contactable?(via: :sms) && member.settings(:communication).via_sms == "true",
+                       disabled: !member.contactable?(via: :sms),
                        method: "via_sms",
                        checked_value: "true",
                        unchecked_value: "false" }

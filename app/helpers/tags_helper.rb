@@ -49,4 +49,26 @@ module TagsHelper
     end
     link_to(name, options, html_options, &block)
   end
+
+  # rubocop:disable Metrics/AbcSize
+  def switch(object_name, method, options = {}, checked_value, unchecked_value)
+    wrapper_classes = ["switch-wrapper"]
+    wrapper_classes << "switch-on" if options[:checked]
+    wrapper_classes << "disabled" if options[:disabled]
+    wrapper_classes << options[:css_classes] if options[:css_classes].present?
+
+    switch_classes = "inline-block switch-container rounded-full bg-stone-500 w-14 h-8 relative p-1 \
+      group-[.is-disabled]:bg-stone-300 dark:group-[.is-disabled]:bg-stone-700"
+    button_classes = "switch-button absolute block w-6 h-6 rounded-full bg-white dark:bg-stone-600"
+
+    content_tag(:div, class: wrapper_classes.join(" ")) do
+      check_box(object_name, method, { checked: options[:checked], role: "switch" }, checked_value, unchecked_value) +
+        label(object_name, method, class: "flex items-center") do
+          content_tag(:div, class: switch_classes) do
+            content_tag(:div, nil, class: button_classes)
+          end + content_tag(:span, options[:label], class: "ml-2")
+        end
+    end
+  end
+  # rubocop:enable Metrics/AbcSize
 end

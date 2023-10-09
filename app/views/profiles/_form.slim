@@ -1,0 +1,61 @@
+= form_with model: @member,
+            url: update_user_settings_path,
+            data: { turbo: false, controller: "profile-form" },
+            builder: ApplicationFormBuilder do |f|
+  .flex.flex-col.gap-6
+    header.py-4
+      = link_to root_path,
+                class: "text-center font-bold no-underline inline-block w-full md:w-fit pb-6 text-brand-500 hover:text-brand-600",
+                id: "cancel_location_button",
+                data: { turbo_action: "advance", turbo_frame: "main" } do
+          
+          i.fa-solid.fa-chevron-left.mr-2
+          = "Back to Scoutplan"
+
+    header.flex.flex-row.items-center.justify-between
+      h1.font-bold.text-4xl.mb-2
+        = "Update personal information"
+
+      .right
+        - if @editing_member.children.any?
+          = select_tag :child_id,
+            options_from_collection_for_select(@editing_member.family, :id, :display_first_name, @member.id),
+            class: "border-0 focus:ring-0 cursor-pointer text-right -mr-2",
+            data: { action: "change->profile-form#switch" }
+
+    = fields_for :user, @member.user do |uf|
+      section
+        = uf.label :name, class: "block font-bold mb-1"
+
+        .flex.flex-col.gap-1
+          = uf.text_field :first_name, class: "rounded border p-2 w-full placeholder-stone-400 border-stone-200", autocomplete: "off", placeholder: "First"
+          = uf.text_field :last_name, class: "rounded border p-2 w-full placeholder-stone-400 border-stone-200", autocomplete: "off", placeholder: "Last"
+
+      section
+          = uf.label :email, class: "block font-bold mb-1"
+          = uf.email_field :email,
+                          class: "block rounded border border-stone-200 p-2 placeholder-stone-400 w-full",
+                          autocomplete: "off",
+                          placeholder: t("members.placeholders.email")
+
+      section
+          = uf.label :phone, class: "block font-bold mb-1"
+          = uf.phone_field :phone,
+                          class: "block rounded border border-stone-200 p-2 placeholder-stone-400 w-full",
+                          autocomplete: "off",
+                          placeholder: t("members.placeholders.phone"),
+                          value: @member.phone.phony_formatted(country_code: "US")
+
+    = render partial: "profiles/form/youth_rsvps"
+
+    = render partial: "unit_memberships/partials/modal/communication_settings_fields", locals: { f: f, member: @member }
+
+    footer.border-t.border-stone-500.py-4.flex.flex-col.md:flex-row.justify-between
+      div
+        = f.submit t("global.save_changes"),
+          class: "text-white font-bold rounded inline-block w-full md:w-fit px-4 py-3 md:py-2 bg-brand-500 hover:bg-brand-600"
+        
+      div
+        = link_to "Change your password",
+          edit_credentials_path,
+          class: "block py-2 font-bold text-blue-500 hover:underline"
