@@ -1,32 +1,18 @@
-- label ||= "Communication preferences"
-- object_name ||= "settings[communication]"
-
-div.pt-4
-  = label_tag :communication_preferences, label, class: "block mb-2 font-bold"
+section
+  h2.font-bold.mb-2 = "Communication methods"
 
   .py-1
-    = switch(object_name, "via_email",
-                { label: "Via email",
-                  checked: member.contactable?(via: :email) && member.settings(:communication).via_email == "true",
-                  data: { action: "change->profile-form#changeCommsSettings" },
-                  disabled: !member.contactable?(via: :email) },
-                "true", "false")                       
+    = switch( "settings[communication]", "via_email",
+              { label: "Via email",
+                checked: member.contactable?(via: :email) && member.settings(:communication).via_email == "true",
+                data: { profile_form_target: "viaEmailField", action: "change->profile-form#changeSettings" },
+                disabled: !member.contactable?(via: :email) },
+              "true", "false" ) 
 
   .py-1
-    = render partial: "components/switch",
-             locals: { object_name: object_name,
-                       label: "Via SMS",
-                       checked: member.contactable?(via: :sms) && member.settings(:communication).via_sms == "true",
-                       disabled: !member.contactable?(via: :sms),
-                       method: "via_sms",
-                       checked_value: "true",
-                       unchecked_value: "false" }
-
-div.pt-4
-    = render partial: "components/switch",
-             locals: { object_name: object_name,
-                       label: "Receive event invitations via email 14 days before event",
-                       checked: member.settings(:communication).receives_event_invitations,
-                       method: "receives_event_invitations",
-                       checked_value: "true",
-                       unchecked_value: "false" }
+    = switch( "settings[communication]", "via_sms",
+              { label: "Via SMS",
+                checked: member.contactable?(via: :sms) && member.settings(:communication).via_sms == "true",
+                disabled: !member.contactable?(via: :sms),
+                data: { profile_form_target: "viaSmsField", action: "change->profile-form#changeSettings" } },
+              "true", "false" )

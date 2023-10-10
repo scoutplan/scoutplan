@@ -14,13 +14,13 @@
 
     header.flex.flex-row.items-center.justify-between
       h1.font-bold.text-4xl.mb-2
-        = "Update personal information"
+        = "Personal information"
 
       .right
         - if @editing_member.children.any?
           = select_tag :child_id,
             options_from_collection_for_select(@editing_member.family, :id, :display_first_name, @member.id),
-            class: "border-0 focus:ring-0 cursor-pointer text-right -mr-2",
+            class: "border-0 focus:ring-0 cursor-pointer text-right -mr-2 bg-transparent",
             data: { action: "change->profile-form#switchProfile" }
 
     = fields_for :user, @member.user do |uf|
@@ -34,28 +34,23 @@
       section
           = uf.label :email, class: "block font-bold mb-1"
           = uf.email_field :email,
-                          class: "block rounded border border-stone-200 p-2 placeholder-stone-400 w-full dark:bg-stone-800 dark:border-stone-600",
-                          autocomplete: "off",
-                          placeholder: t("members.placeholders.email")
+                           autocomplete: "off",
+                           placeholder: t("members.placeholders.email"),
+                           class: "block rounded border border-stone-200 p-2 placeholder-stone-400 w-full dark:bg-stone-800 dark:border-stone-600",
+                           data: { profile_form_target: "emailField", action: "keyup->profile-form#changeSettings" }
 
       section
           = uf.label :phone, class: "block font-bold mb-1"
           = uf.phone_field :phone,
-                          class: "block rounded border border-stone-200 p-2 placeholder-stone-400 w-full dark:bg-stone-800 dark:border-stone-600 dark:placeholder-stone-500",
-                          autocomplete: "off",
-                          placeholder: t("members.placeholders.phone"),
-                          value: @member.phone.phony_formatted(country_code: "US")
+                           autocomplete: "off",
+                           placeholder: t("members.placeholders.phone"),
+                           value: @member.phone.phony_formatted(country_code: "US"),
+                           class: "block rounded border border-stone-200 p-2 placeholder-stone-400 w-full dark:bg-stone-800 dark:border-stone-600 dark:placeholder-stone-500",
+                           data: { profile_form_target: "phoneField", action: "keyup->profile-form#changeSettings" }
 
 
     = render partial: "profiles/form/communication_settings_fields", locals: { f: f, member: @member }
-    = render partial: "profiles/form/youth_rsvps", locals: { member: @member }
+    = render partial: "profiles/form/youth_rsvps", locals: { f: f, member: @member }
+    = render partial: "profiles/form/notification_fields", locals: { f: f, member: @member }
 
-    footer.border-t.border-stone-500.py-4.flex.flex-col.md:flex-row.justify-between
-      div
-        = f.submit t("global.save_changes"),
-          class: "text-white font-bold rounded inline-block w-full md:w-fit px-4 py-3 md:py-2 bg-brand-500 hover:bg-brand-600"
-        
-      div
-        = link_to "Change your password",
-          edit_credentials_path,
-          class: "block py-2 font-bold text-blue-500 hover:underline"
+    = render partial: "profiles/form/footer", locals: { f: f, member: @member }

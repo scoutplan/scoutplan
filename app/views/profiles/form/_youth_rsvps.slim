@@ -1,12 +1,14 @@
-/ - return unless Flipper.enabled?(:youth_rsvps, @unit)
+- return unless Flipper.enabled?(:youth_rsvps, @unit)
 
-section.py-2
+section
   h2.font-bold.mb-1 = "Event RSVPs"
   
-  p.text-stone-500.dark:text-stone-400 You can choose to allow your #{member.first_name} to RSVP for events on their own.
-    Their responses will be sent to you for approval before being sent to the event organizer.
+  p.text-sm You can allow #{member.first_name} to RSVP to events on their own.
+    You'll be notified and their responses will be tentative until you approve.
   
   .mt-3
     = switch("profile", "youth_rsvps",
-             { label: "Allow #{member.first_name} to RSVP for events", checked: false, disabled: !member.contactable?(via: :email) },
+             { label: "Allow #{member.first_name} to RSVP for events", checked: false,
+               disabled: !member.contactable?(via: :email),
+               data: { profile_form_target: "youthRsvpField" } },
              "true", "false")

@@ -1,0 +1,9 @@
+  footer.border-t.border-stone-500.py-4.flex.flex-col.md:flex-row.justify-between
+    div
+      = f.submit t("global.save_changes"),
+        class: "text-white font-bold rounded inline-block w-full md:w-fit px-4 py-3 md:py-2 bg-brand-500 hover:bg-brand-600"
+      
+    div
+      = link_to "Change your password",
+        edit_credentials_path,
+        class: "block py-2 font-bold text-blue-500 hover:underline"

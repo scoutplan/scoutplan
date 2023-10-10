@@ -10,7 +10,7 @@
 /* TODO: move to a stimulus controller */
 .switch-wrapper(class="#{checked ? 'switch-on' : ''} #{disabled ? 'group is-disabled' : ''} #{css_classes}")
   = check_box object_name, method,
-              { multiple: multiple, checked: checked, role: "switch", data: data, disabled: disabled },
+              { multiple: multiple, checked: checked, role: "switch", data: data, disabled: disabled, class: "dp-switch" },
               checked_value, unchecked_value
 
   = label object_name, method,

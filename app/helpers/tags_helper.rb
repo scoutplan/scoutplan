@@ -51,25 +51,19 @@ module TagsHelper
   end
 
   # drop-in replacement for Rails's check_box helper
-  # rubocop:disable Metrics/AbcSize
   def switch(object_name, method, options = {}, checked_value = "1", unchecked_value = "0")
-    wrapper_classes = ["switch-wrapper"]
-    wrapper_classes << "switch-on" if options[:checked]
-    wrapper_classes << "group is-disabled" if options[:disabled]
-    wrapper_classes << options[:css_classes] if options[:css_classes].present?
-
-    switch_classes = "inline-block switch-container rounded-full bg-stone-500 w-[3.5em] h-[2em] relative p-[0.25em] \
-      group-[.is-disabled]:bg-stone-300 dark:group-[.is-disabled]:bg-stone-700 shrink-0"
-    button_classes = "switch-button absolute block w-[1.5em] h-[1.5em] rounded-full bg-white group-[.is-disabled]:bg-stone-400 dark:group-[.is-disabled]:bg-stone-600]"
-
-    content_tag(:div, class: wrapper_classes.join(" ")) do
-      check_box(object_name, method, { checked: options[:checked], disabled: options[:disabled], data: options[:data], role: "switch" }, checked_value, unchecked_value) +
-        label(object_name, method, class: "flex items-center group-[.is-disabled]:text-stone-400 dark:group-[.is-disabled]:text-stone-700") do
-          content_tag(:div, class: switch_classes) do
-            content_tag(:div, nil, class: button_classes)
-          end + content_tag(:span, options[:label], class: "ml-2")
+    content_tag(:span, class: "switch-wrapper") do
+      check_box(
+        object_name, method,
+        { checked: options[:checked], disabled: options[:disabled],
+          data: options[:data], role: "switch", class: "dp-switch" },
+        checked_value, unchecked_value
+      ) +
+        label(object_name, method, class: "flex items-center") do
+          content_tag(:div, class: "switch-container") do
+            content_tag(:div, nil, class: "switch-button")
+          end + content_tag(:span, options[:label], class: "ml-2 select-none")
         end
     end
   end
-  # rubocop:enable Metrics/AbcSize
 end

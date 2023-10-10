@@ -1,21 +1,56 @@
-.switch-button {
-  transform: translateX(0);
-  transition: transform 0.25s;
-}
-
-.switch-wrapper input:checked + label .switch-button {
-  transform: translateX(1.5em);
-  transition: transform 0.25s;
-}
-
-.switch-wrapper input:checked + label.sm .switch-button {
-  transform: translateX(1.0em);  
-}
-
 .switch-wrapper input {
   display: none;
 }
 
-.switch-wrapper input:checked + label .switch-container {
+input.dp-switch + label .switch-container {
+  background: #666;
+  display: inline-block;
+  border-radius: 9999px;
+  width: 3.5em;
+  height: 2em;
+  position: relative;
+  padding: 0.25em;
+  flex-shrink: 0;
+}
+
+input.dp-switch + label .switch-button {
+  background: #fff;
+  display: block;
+  position: absolute;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 9999px;
+  transform: translateX(0);
+  transition: transform 0.25s;
+}
+
+input.dp-switch:checked + label .switch-container {
   background: #16a34a;
+}
+
+input.dp-switch:checked + label .switch-button {
+  transform: translateX(1.5em);
+  transition: transform 0.25s;
+}
+
+input.dp-switch:disabled + label .switch-container {
+  background: #ccc;
+}
+
+input.dp-switch:disabled + label {
+  color: #aaa;
+}
+
+@media (prefers-color-scheme: dark) {
+  input.dp-switch:disabled + label .switch-container {
+    background: #444;
+  }
+
+  input.dp-switch:disabled + label {
+    color: #666;
+  }
+
+  input.dp-switch:disabled + label .switch-button {
+    background: #222;
+  }
 }

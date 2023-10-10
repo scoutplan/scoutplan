@@ -1,0 +1,18 @@
+section.hidden
+  h2.font-bold.py-4 = "Event reminders"
+  .py-1.flex.flex-row.items-center.gap-2
+    = switch( "settings[communication]", "same_day_reminder",
+              { label: "Receive event reminders the day of or day before event",
+                checked: member.settings(:communication).receives_event_invitations,
+                data: { profile_form_target: "fourteenDayReminderField", action: "change->profile-form#changeSettings" },
+                disabled: !member.contactable?(via: :email) },
+              "true", "false" )
+    i.fa-regular.fa-info-circle
+
+  .py-1
+    = switch( "settings[communication]", "fourteen_day_reminder",
+              { label: "Receive event invitations via email two weeks before event",
+                checked: member.settings(:communication).receives_event_invitations,
+                data: { profile_form_target: "sameDayReminderField", action: "change->profile-form#changeSettings" },
+                disabled: !member.contactable?(via: :email) },
+              "true", "false" )
