@@ -2,18 +2,11 @@
 
 section.py-2
   h2.font-bold.mb-1 = "Event RSVPs"
-  p.text-stone-500 You can choose to allow your #{@member.first_name} to RSVP for events on their own.
+  
+  p.text-stone-500.dark:text-stone-400 You can choose to allow your #{member.first_name} to RSVP for events on their own.
     Their responses will be sent to you for approval before being sent to the event organizer.
+  
   .mt-3
-    / = render partial: "components/switch",
-    /          locals: { checked: false,
-    /                    object_name: "x",
-    /                    method: "y",
-    /                    label: "Allow #{@member.first_name} to RSVP for events" }
-
-
-    / = switch_tag(:profile, :youth_rsvps, label: "Allow #{@member.first_name} to RSVP for events")
-
     = switch("profile", "youth_rsvps",
-             { label: "Allow #{@member.first_name} to RSVP for events", checked: false },
+             { label: "Allow #{member.first_name} to RSVP for events", checked: false, disabled: !member.contactable?(via: :email) },
              "true", "false")

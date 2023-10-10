@@ -15,14 +15,14 @@
 
   = label object_name, method,
           value: multiple ? checked_value : nil,
-          class: "flex items-center #{size} group-[.is-disabled]:text-stone-400 dark:group-[.is-disabled]:text-stone-700",
+          class: "flex items-center #{size} group-[.is-disabled]:text-stone-400 dark:group-[.is-disabled]:text-stone-500",
           id: "#{object_name.parameterize(separator: "_")}_#{method}_label" do
 
     - if size == "md"
-      .inline-block.switch-container.rounded-full.bg-stone-500.w-14.h-8.relative.p-1(class="group-[.is-disabled]:bg-stone-300 dark:group-[.is-disabled]:bg-stone-700")
-        .switch-button.absolute.block.w-6.h-6.rounded-full.bg-white.dark:bg-stone-600
+      .inline-block.switch-container.rounded-full.bg-stone-500.w-14.h-8.relative.p-1.shrink-0(class="group-[.is-disabled]:bg-stone-300 dark:group-[.is-disabled]:bg-stone-700")
+        .switch-button.absolute.block.w-6.h-6.rounded-full.bg-white(class="group-[.is-disabled]:bg-stone-400")
     - elsif size == "sm"
-      .inline-block.switch-container.rounded-full.bg-stone-500.w-10.h-6.relative.p-1(class="group-[.is-disabled]:bg-stone-300 dark:group-[.is-disabled]:bg-stone-700")
+      .inline-block.switch-container.rounded-full.bg-stone-500.w-10.h-6.relative.p-1.shrink-0(class="group-[.is-disabled]:bg-stone-300 dark:group-[.is-disabled]:bg-stone-700")
         .switch-button.absolute.block.w-4.h-4.rounded-full.bg-white
 
     span.ml-2 = label

@@ -50,20 +50,21 @@ module TagsHelper
     link_to(name, options, html_options, &block)
   end
 
+  # drop-in replacement for Rails's check_box helper
   # rubocop:disable Metrics/AbcSize
-  def switch(object_name, method, options = {}, checked_value, unchecked_value)
+  def switch(object_name, method, options = {}, checked_value = "1", unchecked_value = "0")
     wrapper_classes = ["switch-wrapper"]
     wrapper_classes << "switch-on" if options[:checked]
-    wrapper_classes << "disabled" if options[:disabled]
+    wrapper_classes << "group is-disabled" if options[:disabled]
     wrapper_classes << options[:css_classes] if options[:css_classes].present?
 
-    switch_classes = "inline-block switch-container rounded-full bg-stone-500 w-14 h-8 relative p-1 \
-      group-[.is-disabled]:bg-stone-300 dark:group-[.is-disabled]:bg-stone-700"
-    button_classes = "switch-button absolute block w-6 h-6 rounded-full bg-white dark:bg-stone-600"
+    switch_classes = "inline-block switch-container rounded-full bg-stone-500 w-[3.5em] h-[2em] relative p-[0.25em] \
+      group-[.is-disabled]:bg-stone-300 dark:group-[.is-disabled]:bg-stone-700 shrink-0"
+    button_classes = "switch-button absolute block w-[1.5em] h-[1.5em] rounded-full bg-white group-[.is-disabled]:bg-stone-400 dark:group-[.is-disabled]:bg-stone-600]"
 
     content_tag(:div, class: wrapper_classes.join(" ")) do
-      check_box(object_name, method, { checked: options[:checked], role: "switch" }, checked_value, unchecked_value) +
-        label(object_name, method, class: "flex items-center") do
+      check_box(object_name, method, { checked: options[:checked], disabled: options[:disabled], data: options[:data], role: "switch" }, checked_value, unchecked_value) +
+        label(object_name, method, class: "flex items-center group-[.is-disabled]:text-stone-400 dark:group-[.is-disabled]:text-stone-700") do
           content_tag(:div, class: switch_classes) do
             content_tag(:div, nil, class: button_classes)
           end + content_tag(:span, options[:label], class: "ml-2")

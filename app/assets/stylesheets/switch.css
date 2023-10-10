@@ -4,12 +4,12 @@
 }
 
 .switch-wrapper input:checked + label .switch-button {
-  transform: translateX(1.5rem);
+  transform: translateX(1.5em);
   transition: transform 0.25s;
 }
 
 .switch-wrapper input:checked + label.sm .switch-button {
-  transform: translateX(1.0rem);  
+  transform: translateX(1.0em);  
 }
 
 .switch-wrapper input {

@@ -6,9 +6,15 @@ export default class extends Controller {
     console.log("ProfileFormController#connect");
   }
 
-  switch(event) {
+  changeCommsSettings(event) {
+
+  }
+
+  switchProfile(event) {
     const memberId = event.target.value;
     const url = `/profiles/${memberId}/edit`;
     window.location = url;
   }
+
+
 }

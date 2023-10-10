@@ -21,34 +21,34 @@
           = select_tag :child_id,
             options_from_collection_for_select(@editing_member.family, :id, :display_first_name, @member.id),
             class: "border-0 focus:ring-0 cursor-pointer text-right -mr-2",
-            data: { action: "change->profile-form#switch" }
+            data: { action: "change->profile-form#switchProfile" }
 
     = fields_for :user, @member.user do |uf|
       section
         = uf.label :name, class: "block font-bold mb-1"
 
         .flex.flex-col.gap-1
-          = uf.text_field :first_name, class: "rounded border p-2 w-full placeholder-stone-400 border-stone-200", autocomplete: "off", placeholder: "First"
-          = uf.text_field :last_name, class: "rounded border p-2 w-full placeholder-stone-400 border-stone-200", autocomplete: "off", placeholder: "Last"
+          = uf.text_field :first_name, class: "rounded border p-2 w-full placeholder-stone-400 border-stone-200 dark:bg-stone-800 dark:border-stone-600", autocomplete: "off", placeholder: "First"
+          = uf.text_field :last_name, class: "rounded border p-2 w-full placeholder-stone-400 border-stone-200 dark:bg-stone-800 dark:border-stone-600", autocomplete: "off", placeholder: "Last"
 
       section
           = uf.label :email, class: "block font-bold mb-1"
           = uf.email_field :email,
-                          class: "block rounded border border-stone-200 p-2 placeholder-stone-400 w-full",
+                          class: "block rounded border border-stone-200 p-2 placeholder-stone-400 w-full dark:bg-stone-800 dark:border-stone-600",
                           autocomplete: "off",
                           placeholder: t("members.placeholders.email")
 
       section
           = uf.label :phone, class: "block font-bold mb-1"
           = uf.phone_field :phone,
-                          class: "block rounded border border-stone-200 p-2 placeholder-stone-400 w-full",
+                          class: "block rounded border border-stone-200 p-2 placeholder-stone-400 w-full dark:bg-stone-800 dark:border-stone-600 dark:placeholder-stone-500",
                           autocomplete: "off",
                           placeholder: t("members.placeholders.phone"),
                           value: @member.phone.phony_formatted(country_code: "US")
 
-    = render partial: "profiles/form/youth_rsvps"
 
-    = render partial: "unit_memberships/partials/modal/communication_settings_fields", locals: { f: f, member: @member }
+    = render partial: "profiles/form/communication_settings_fields", locals: { f: f, member: @member }
+    = render partial: "profiles/form/youth_rsvps", locals: { member: @member }
 
     footer.border-t.border-stone-500.py-4.flex.flex-col.md:flex-row.justify-between
       div
