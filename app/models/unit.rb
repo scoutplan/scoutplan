@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# a Troop, Pack, Post, Lodge, or Crew.
-#
 class Unit < ApplicationRecord
   include Seasons, DistributionLists
   has_one :payment_account
