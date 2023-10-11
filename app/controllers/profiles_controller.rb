@@ -10,9 +10,12 @@ class ProfilesController < ApplicationController
   end
 
   def update
+    authorize @profile
     if @member.update!(member_params)
       update_settings
       redirect_to root_path, notice: "Member settings have been updated"
+    else
+      render edit
     end
   end
 
@@ -51,7 +54,6 @@ class ProfilesController < ApplicationController
   def update_settings
     setting_params.each do |category, kvpairs|
       kvpairs.transform_keys(&:to_sym)
-      # kvpairs.delete(:youth_rsvps) unless @editing_member.adult?
       @member.settings(category.to_sym).update!(kvpairs)
     end
   end
