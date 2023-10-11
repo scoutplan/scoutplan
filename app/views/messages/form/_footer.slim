@@ -69,13 +69,15 @@ footer.border-t.py-4.dark:border-stone-500.sticky.bottom-0.bg-white.dark:bg-ston
     .right.flex.flex-row
       - if @message.deleteable?
         = link_to unit_message_path(@unit, @message),
-                  data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this draft?", skip_leave_confirmation: "true" },
+                  id: "delete_draft_link",
+                  data: { turbo_method: :delete, turbo_action: "advance", turbo_confirm: "Are you sure you want to delete this draft?", skip_leave_confirmation: "true" },
                   class: "w-full md:w-fit px-3 py-2 -mr-3 text-messages-600 hover:text-messages-700 dark:hover:text-messages-400 cursor-pointer" do
           i.fa-stack
             i.fa-thin.fa-circle.fa-stack-2x
             i.fa-solid.fa-trash-can.fa-stack-1x
       - else
         = link_to drafts_unit_messages_path(@unit),
+                  id: "delete_draft_link",
                   class: "w-full md:w-fit px-3 py-2 -mr-3 text-messages-600 hover:text-messages-700 dark:hover:text-messages-400 cursor-pointer",
                   data: { action: "message-form#skipLeaveConfirmation" } do
           i.fa-stack
