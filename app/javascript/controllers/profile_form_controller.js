@@ -1,10 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "emailField", "phoneField", "viaEmailField", "viaSmsField", "youthRsvpField" ];
+  static targets = [ "emailField", "phoneField", "viaEmailField", "viaSmsField", "youthRsvpsField" ];
 
   connect() {
-    console.log("ProfileFormController#connect");
+    this.changeSettings();
   }
 
   changeSettings(event) {
@@ -22,9 +22,11 @@ export default class extends Controller {
     const viaSms = this.viaSmsFieldTarget.checked;
     const contactable = viaEmail || viaSms;
 
-    this.youthRsvpFieldTarget.disabled = !contactable;
-    if (!contactable) {
-      this.youthRsvpFieldTarget.checked = false;
+    if (this.hasYouthRsvpsFieldTarget) {
+      this.youthRsvpsFieldTarget.disabled = !contactable;
+      if (!contactable) {
+        this.youthRsvpsFieldTarget.checked = false;
+      }
     }
   }
 

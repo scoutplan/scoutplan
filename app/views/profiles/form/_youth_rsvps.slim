@@ -1,3 +1,4 @@
+- return unless member.youth?
 - return unless Flipper.enabled?(:youth_rsvps, @unit)
 
 section
@@ -7,8 +8,9 @@ section
     You'll be notified and their responses will be tentative until you approve.
   
   .mt-3
-    = switch("profile", "youth_rsvps",
+    = switch("settings[policy]", "youth_rsvps",
              { label: "Allow #{member.first_name} to RSVP for events", checked: false,
+               checked: member.settings(:policy).youth_rsvps == "true",
                disabled: !member.contactable?(via: :email),
-               data: { profile_form_target: "youthRsvpField" } },
+               data: { profile_form_target: "youthRsvpsField" } },
              "true", "false")

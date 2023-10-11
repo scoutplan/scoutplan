@@ -10,11 +10,10 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    redirect_to root_path, notice: t("profile.update_confirmation") if current_user.update!(user_params)
-  end
-
-  def edit_password
-    @user = current_user
+    if @member.update!(member_params)
+      update_settings
+      redirect_to root_path, notice: "Member settings have been updated"
+    end
   end
 
   def payments
@@ -41,11 +40,19 @@ class ProfilesController < ApplicationController
     @profile = UnitMembershipProfile.new(@member)
   end
 
-  def user_params
-    params.require(:user).permit(:first_name, :last_name, :nickname, :email, :phone)
+  def member_params
+    params.require(:unit_membership).permit(user_attributes: [:id, :first_name, :last_name, :email, :phone])
   end
 
-  def password_params
-    params.require(:user).permit(:password, :password_confirmation)
+  def setting_params
+    params.require(:settings).permit(communication: [:via_email, :via_sms], policy: [:youth_rsvps])
+  end
+
+  def update_settings
+    setting_params.each do |category, kvpairs|
+      kvpairs.transform_keys(&:to_sym)
+      # kvpairs.delete(:youth_rsvps) unless @editing_member.adult?
+      @member.settings(category.to_sym).update!(kvpairs)
+    end
   end
 end

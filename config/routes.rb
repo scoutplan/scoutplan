@@ -188,11 +188,9 @@ Rails.application.routes.draw do
   end
 
   ## Profile editing
-  get   "user_settings/edit", to: "profile#edit",   as: "edit_user_settings"
-  patch "user_settings/save", to: "profile#update", as: "update_user_settings"
-  get   "user_settings/change_password", to: "profile#edit_password", as: "edit_credentials"
-  patch "user_settings/save_password", to: "profile#update_password", as: "update_credentials"
-
+  get   "user_settings/edit", to: "users#edit",   as: "edit_user_settings"
+  patch "user_settings/save", to: "users#update", as: "update_user_settings"
+  get   "settings/change_password", to: "users#change_password", as: "change_password"
 
   resources :profiles
 
