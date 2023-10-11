@@ -1,6 +1,6 @@
 = turbo_frame_tag "main"
   .mx-auto.max-w-xl.py-8
-    = form_with model: @event, url: unit_event_cancel_path(@unit, @event), method: :post, data: { turbo_action: "advance" } do |f|
+    = form_with model: @event, url: unit_event_cancel_path(@unit, @event), method: :post, data: { turbo: false } do |f|
 
       header.sticky.top-0.pb-4
         .mb-4

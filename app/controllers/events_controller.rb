@@ -260,9 +260,9 @@ class EventsController < UnitContextController
         includes_activity: includes_activity
       ).find_or_create_by!(unit_membership_id: member_id)
 
-      rsvp.update!(response: response,
+      rsvp.update!(response:   response,
                    respondent: @current_member,
-                   note: note,
+                   note:       note,
                    event_shift_ids: accepted_shifts)
 
       EventNotifier.send_rsvp_confirmation(rsvp)
@@ -290,7 +290,12 @@ class EventsController < UnitContextController
   # actually cancel the event and send out notifications
   def perform_cancellation
     service = EventCancellationService.new(@event, event_params)
-    redirect_to unit_events_path(@unit), notice: "Event has been cancelled." and return if service.cancel
+
+    result = service.cancel
+
+    ap result
+
+    redirect_to unit_events_path(@unit), notice: "Event has been cancelled."
   end
 
   # this override is needed to pass the membership instead of the user

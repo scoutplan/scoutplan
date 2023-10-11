@@ -4,14 +4,11 @@
 = javascript_include_tag "events_form"
 
 .form-wrapper(class="#{@event.online ? "online-event" : ""}" data-controller="body-classer event-edit")
-  = render partial: "events/partials/form/watermark"
 
   .mx-auto.max-w-xl.relative
-    header.py-4
-      aside.fixed
-        .absolute.-ml-60.top-0.w-48
-          = render partial: "events/partials/form/sidecar"
+    = render partial: "components/cancelled_badge" if @event.cancelled?
 
+    header.py-4
       h2.font-bold.text-2xl
         - if @parent_event.present?
           = t("events.titles.sub_event", parent_event_title: @parent_event.title)
@@ -26,11 +23,11 @@
               data: { turbo: false, action: "keydown->event-edit#keypress" } do |f|
               
     .mx-auto.max-w-xl.pb-12
-      .divide-y.divide-stone-800
+      .divide-y
         - %w[basics rsvp activity dates locations description organizers packlists attachments cancel_delete].each do |section|
-          = render partial: "events/partials/form/#{section}", layout: "layouts/event_form_section", locals: { f: f, section: section }
+          = render partial: "events/partials/form/#{section}", locals: { f: f, section: section }
 
-    = render partial: "events/partials/form/footer", layout: "layouts/event_form_section", locals: { f: f }
+      = render partial: "events/partials/form/footer", locals: { f: f }
 
   = render partial: "events/partials/form/new_location_form"
   = render partial: "events/partials/form/document_library"
