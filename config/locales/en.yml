@@ -462,8 +462,8 @@ en:
       create: "%{member_name} was added to %{unit_name}"
 
     placeholders:
-      email: "address@example.com (optional)"
-      phone: "111-222-3333 (optional)"
+      email: "address@example.com"
+      phone: "111-222-3333"
 
     index:
       new_button_caption: "Add a member"

@@ -5,22 +5,22 @@ div.pt-4
   = label_tag :communication_preferences, label, class: "block mb-2 font-bold"
 
   .py-1
-    = render partial: "components/switch",
-             locals: { object_name: object_name,
-                       label: "Via email",
-                       checked: member.settings(:communication).via_email == "true",
-                       method: "via_email",
-                       checked_value: "true",
-                       unchecked_value: "false" }
+
+
+    = switch( "settings[communication]", "via_email",
+          { label: "Via email",
+            checked: member.contactable?(via: :email) && member.settings(:communication).via_email == "true",
+            data: {  },
+            disabled: !member.contactable?(via: :email) },
+          "true", "false" )                        
 
   .py-1
-    = render partial: "components/switch",
-             locals: { object_name: object_name,
-                       label: "Via SMS",
-                       checked: member.settings(:communication).via_sms == "true",
-                       method: "via_sms",
-                       checked_value: "true",
-                       unchecked_value: "false" }
+    = switch( "settings[communication]", "via_sms",
+          { label: "Via SMS",
+            checked: member.contactable?(via: :sms) && member.settings(:communication).via_sms == "true",
+            data: {  },
+            disabled: !member.contactable?(via: :sms) },
+          "true", "false" ) 
 
 div.pt-4
     = render partial: "components/switch",

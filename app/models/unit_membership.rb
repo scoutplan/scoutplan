@@ -73,23 +73,17 @@ class UnitMembership < ApplicationRecord
       event_organizer_digest:     true,
       receives_event_invitations: false
     }
+    s.key :policy, defaults: { youth_rsvps: false }
     s.key :alerts
   end
 
   acts_as_taggable_on :tags
   acts_as_taggable_tenant :unit_id
 
-  # def to_param
-  #   [id, user&.full_display_name].join("-").parameterize
-  # end
-
-  # def parents
-  #   parent_relationships.map(&:parent_member)
-  # end
-
-  # def children
-  #   child_relationships.map(&:child_member)
-  # end
+  def child_of?(candidate)
+    return parents.include?(candidate) if candidate.is_a?(UnitMembership)
+    return parents.map(&:user).include?(candidate) if candidate.is_a?(User)
+  end
 
   def siblings
     parents.flat_map(&:children) - [self]

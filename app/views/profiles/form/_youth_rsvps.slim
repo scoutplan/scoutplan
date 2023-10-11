@@ -1,0 +1,16 @@
+- return unless member.youth?
+- return unless Flipper.enabled?(:youth_rsvps, @unit)
+
+section
+  h2.font-bold.mb-1 = "Event RSVPs"
+  
+  p.text-sm You can allow #{member.first_name} to RSVP to events on their own.
+    You'll be notified and their responses will be tentative until you approve.
+  
+  .mt-3
+    = switch("settings[policy]", "youth_rsvps",
+             { label: "Allow #{member.first_name} to RSVP for events", checked: false,
+               checked: member.settings(:policy).youth_rsvps == "true",
+               disabled: !member.contactable?(via: :email),
+               data: { profile_form_target: "youthRsvpsField" } },
+             "true", "false")

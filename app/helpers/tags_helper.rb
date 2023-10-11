@@ -49,4 +49,21 @@ module TagsHelper
     end
     link_to(name, options, html_options, &block)
   end
+
+  # drop-in replacement for Rails's check_box helper
+  def switch(object_name, method, options = {}, checked_value = "1", unchecked_value = "0")
+    content_tag(:span, class: "switch-wrapper") do
+      check_box(
+        object_name, method,
+        { checked: options[:checked], disabled: options[:disabled],
+          data: options[:data], role: "switch", class: "dp-switch" },
+        checked_value, unchecked_value
+      ) +
+        label(object_name, method, class: "flex items-center") do
+          content_tag(:div, class: "switch-container") do
+            content_tag(:div, nil, class: "switch-button")
+          end + content_tag(:span, options[:label], class: "ml-2 select-none")
+        end
+    end
+  end
 end

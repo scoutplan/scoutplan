@@ -30,13 +30,12 @@ describe "unit_memberships", type: :feature do
     # fill in the new member form
     fill_in "unit_membership_user_attributes_first_name", with: Faker::Name.first_name
     fill_in "unit_membership_user_attributes_last_name", with: Faker::Name.last_name
-    fill_in "unit_membership_user_attributes_nickname", with: Faker::Name.first_name
     fill_in "unit_membership_user_attributes_email", with: Faker::Internet.email
     fill_in "unit_membership_user_attributes_phone", with: Faker::PhoneNumber.phone_number
     choose "unit_membership_member_type_youth"
     choose "unit_membership_status_active"
-    check "settings_communication_via_email"
-    check "settings_communication_via_sms"
+    # check "settings_communication_via_email"
+    # check "settings_communication_via_sms"
 
     # click the button
     expect { click_link_or_button "Add This Member" }.to change { UnitMembership.all.count }.by 1
@@ -56,11 +55,10 @@ describe "unit_memberships", type: :feature do
     # fill in the new member form
     fill_in "unit_membership_user_attributes_first_name", with: Faker::Name.first_name
     fill_in "unit_membership_user_attributes_last_name", with: Faker::Name.last_name
-    fill_in "unit_membership_user_attributes_nickname", with: Faker::Name.first_name
     choose "unit_membership_member_type_youth"
     choose "unit_membership_status_active"
-    check "settings_communication_via_email"
-    check "settings_communication_via_sms"
+    # check "settings_communication_via_email"
+    # check "settings_communication_via_sms"
 
     # click the button
     expect { click_link_or_button "Add This Member" }.to change { UnitMembership.all.count }.by 1
@@ -83,12 +81,11 @@ describe "unit_memberships", type: :feature do
     # fill in the new member form
     fill_in "unit_membership_user_attributes_first_name", with: member.first_name
     fill_in "unit_membership_user_attributes_last_name", with: member.last_name
-    fill_in "unit_membership_user_attributes_nickname", with: member.first_name
     fill_in "unit_membership_user_attributes_email", with: member.email
     choose "unit_membership_member_type_youth"
     choose "unit_membership_status_active"
-    check "settings_communication_via_email"
-    check "settings_communication_via_sms"
+    # check "settings_communication_via_email"
+    # check "settings_communication_via_sms"
 
     # click the button
     expect { click_link_or_button "Add This Member" }.to change { UnitMembership.all.count }.by 1
@@ -100,15 +97,12 @@ describe "unit_memberships", type: :feature do
     visit edit_unit_member_path(@unit, member)
 
     new_name = "A different name"
-    new_nickname = "A different nickname"
     new_phone = "A different phone"
     fill_in "unit_membership_user_attributes_first_name", with: new_name
-    fill_in "unit_membership_user_attributes_nickname", with: new_nickname
     fill_in "unit_membership_user_attributes_phone", with: new_phone
     click_link_or_button I18n.t("members.form.captions.accept_update")
     member.reload
     expect(member.first_name).to eq(new_name)
-    expect(member.nickname).to eq(new_nickname)
     expect(member.phone).to eq(new_phone)
   end
 

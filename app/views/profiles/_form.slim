@@ -1,0 +1,33 @@
+= form_with model: @profile.member,
+            url: profile_path(@member.id),
+            data: { turbo: false },
+            builder: ApplicationFormBuilder do |f|
+  .flex.flex-col.gap-6
+    = f.fields_for :user, @member.user do |uf|
+      section
+        = uf.label :name, class: "block font-bold mb-1"
+
+        .flex.flex-col.gap-1
+          = uf.text_field :first_name, class: "rounded border p-2 w-full placeholder-stone-400 border-stone-200 dark:bg-stone-800 dark:border-stone-600", autocomplete: "off", placeholder: "First"
+          = uf.text_field :last_name, class: "rounded border p-2 w-full placeholder-stone-400 border-stone-200 dark:bg-stone-800 dark:border-stone-600", autocomplete: "off", placeholder: "Last"
+
+      section
+          = uf.label :email, class: "block font-bold mb-1"
+          = uf.email_field :email,
+                           autocomplete: "off",
+                           placeholder: t("members.placeholders.email"),
+                           class: "block rounded border border-stone-200 p-2 placeholder-stone-400 w-full dark:bg-stone-800 dark:border-stone-600",
+                           data: { profile_form_target: "emailField", action: "keyup->profile-form#changeSettings" }
+
+      section
+          = uf.label :phone, class: "block font-bold mb-1"
+          = uf.phone_field :phone,
+                           autocomplete: "off",
+                           placeholder: t("members.placeholders.phone"),
+                           value: @member.phone.phony_formatted(country_code: "US"),
+                           class: "block rounded border border-stone-200 p-2 placeholder-stone-400 w-full dark:bg-stone-800 dark:border-stone-600 dark:placeholder-stone-500",
+                           data: { profile_form_target: "phoneField", action: "keyup->profile-form#changeSettings" }
+
+    = render partial: "profiles/form/communication_settings_fields", locals: { f: f, member: @member }
+    = render partial: "profiles/form/youth_rsvps", locals: { f: f, member: @member }
+    = render partial: "profiles/form/footer", locals: { f: f, member: @member }
