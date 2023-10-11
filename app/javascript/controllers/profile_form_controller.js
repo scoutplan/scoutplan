@@ -36,6 +36,7 @@ export default class extends Controller {
     window.location = url;
   }
 
+  // https://stackoverflow.com/a/29767609/6756943
   validPhoneNumber(phone) {
     return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(phone);
   }

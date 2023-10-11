@@ -58,6 +58,7 @@ describe "event_cancellation", type: :feature do
       visit unit_event_cancel_path(@unit, event)
       choose :event_message_audience_none
       expect { click_link_or_button I18n.t("events.cancel.proceed") }.not_to raise_exception
+      expect(page).to have_current_path(list_unit_events_path(@unit))
     end
 
     describe "default selections" do
