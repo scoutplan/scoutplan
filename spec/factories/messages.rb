@@ -6,4 +6,8 @@ FactoryBot.define do
     body { "<div>MyText</div>" }
     status { 1 }
   end
+
+  trait :draft_message do
+    status { "draft" }
+  end
 end
