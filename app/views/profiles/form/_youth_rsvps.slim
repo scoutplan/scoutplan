@@ -1,7 +1,7 @@
 - return unless member.youth?
 - return unless Flipper.enabled?(:youth_rsvps, @unit)
 
-section
+section.pt-4.border-t.dark:border-stone-700
   h2.font-bold.mb-1 = "Event RSVPs"
   
   p.text-sm You can allow #{member.first_name} to RSVP to events on their own.

@@ -26,25 +26,29 @@ class ProfilesController < ApplicationController
 
   def test; end
 
-  # rubocop:disable Style/GuardClause
   def update_password
-    if current_user.update!(password_params)
-      redirect_to edit_user_settings_path, notice: t("profile.update_password_confirmation")
+    authorize @profile
+  end
+
+  def perform_password_update
+    if @member.update!(member_params)
+      redirect_to root_path, notice: "Password updated"
+    else
+      render "change_password"
     end
   end
-  # rubocop:enable Style/GuardClause
 
   private
 
   def find_profile
-    @member = UnitMembership.find(params[:id])
+    @member = UnitMembership.find(params[:profile_id] || params[:id])
     @unit = @member.unit
     @editing_member = @unit.membership_for(current_user)
     @profile = UnitMembershipProfile.new(@member)
   end
 
   def member_params
-    params.require(:unit_membership).permit(user_attributes: [:id, :first_name, :last_name, :email, :phone])
+    params.require(:unit_membership).permit(user_attributes: [:id, :first_name, :last_name, :email, :phone, :password, :password_confirmation])
   end
 
   def setting_params
@@ -52,6 +56,8 @@ class ProfilesController < ApplicationController
   end
 
   def update_settings
+    return unless params[:settings].present?
+
     setting_params.each do |category, kvpairs|
       kvpairs.transform_keys(&:to_sym)
       @member.settings(category.to_sym).update!(kvpairs)

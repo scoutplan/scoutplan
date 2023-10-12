@@ -79,6 +79,30 @@ module ApplicationHelper
     content_tag :i, nil, class: "fa-user fad mr-1 text-#{color}", title: I18n.t("members.types.#{member.member_type}")
   end
 
+  def pronoun(member, current_member)
+    return "you" if member == current_member
+
+    "them"
+  end
+
+  def possessive_pronoun(member, current_member)
+    return "your" if member == current_member
+
+    "their"
+  end
+
+  def name_or_pronoun(member, current_member)
+    return "you" if member == current_member
+
+    member.first_name
+  end
+
+  def possessive_name_or_pronoun(member, current_member)
+    return "your" if member == current_member
+
+    "#{member.first_name}'s"
+  end
+
   # given an array of words, return a grammatically correct
   # list, e.g.
   # ['Red'] => "Red"

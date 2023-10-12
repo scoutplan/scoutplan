@@ -1,10 +1,10 @@
-  footer.sticky.bottom-0.bg-white.dark:bg-stone-900.border-t.border-stone-300.dark:border-stone-700.py-4.flex.flex-col.md:flex-row.justify-between
+  footer.sticky.bottom-0.bg-white.dark:bg-stone-900.border-t.border-stone-300.dark:border-stone-500.py-4.flex.flex-col.md:flex-row.justify-between
     div
       = f.submit t("global.save_changes"),
         class: "text-white font-bold rounded inline-block w-full md:w-fit px-4 py-3 md:py-2 bg-green-700 hover:bg-green-700 dark:hover:bg-green-500"
       
     div
-      = link_to "Change your password",
-        change_password_path,
+      = link_to "Change #{possessive_name_or_pronoun(@member, @editing_member)} password",
+        profile_change_password_path(@member),
         class: "block py-2 font-bold text-blue-500 hover:underline",
         data: { turbo_action: "advance" }
