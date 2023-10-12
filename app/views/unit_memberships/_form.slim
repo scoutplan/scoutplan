@@ -1,7 +1,3 @@
-- cancel_path = @target_membership.new_record? ? unit_members_path(@unit) : unit_member_path(@unit, @target_membership)
-
-= render partial: "unit_memberships/partials/modal/cancel_button", locals: { cancel_path: cancel_path }
-
 header.py-4
   h3.text-4xl.font-bold
     = t("members.titles.#{@target_membership.new_record? ? "new" : "edit"}")

@@ -1,11 +1,9 @@
 header.relative.mb-4
   .mb-4
-    = link_to list_unit_events_path(@unit, anchor: "#{@event.id}"),
-              class: "inline-block py-3 rounded font-bold text-cyan-600",
-              data: { turbo_action: "advance" } do
-
-      i.fa-solid.fa-chevron-left.mr-2
-      = t("events.show.buttons.back")
+    = back_link_to t("events.show.buttons.back"),
+                   list_unit_events_path(@unit, anchor: "#{@event.id}"),
+                   class: "text-cyan-600",
+                   data: { turbo_action: "advance" }
 
   .flex.flex-row.gap-1.items-center
     .block

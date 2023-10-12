@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   get "new_unit/done", to: "new_unit#done"
 
   resources :event_activities, as: "activities"
-  resources :users
+  resources :users, only: [:show, :become, :update]
 
   # get "units/:unit_id/settings", as: "edit_unit_settings", to: "unit_settings#edit"
   # patch "units/:unit_id/settings", as: "update_unit_settings", to: "unit_settings#update"
@@ -192,7 +192,10 @@ Rails.application.routes.draw do
   patch "user_settings/save", to: "users#update", as: "update_user_settings"
   get   "settings/change_password", to: "users#change_password", as: "change_password"
 
-  resources :profiles
+  resources :profiles do
+    get "change_password"
+    patch "change_password", to: "profiles#perform_password_update"
+  end
 
   get "profile/:id/payments", to: "profile#payments", as: "profile_payments"
   get "profile/:id/test", to: "profile#test", as: "test"

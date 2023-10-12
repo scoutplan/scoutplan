@@ -9,3 +9,8 @@ section.flex.flex-col.gap-2
     - if @target_membership.phone.present?
       i.fad.fa-phone.mr-2
       = link_to @target_membership.phone.phony_formatted(country_code: "US"), "tel:#{@target_membership.phone}"
+
+  - if @target_membership.youth?
+    section.text-amber-600
+      i.fa-solid.fa-exclamation-circle.mr-2
+      = "Always exercise two-deep communication when contacting youth members"

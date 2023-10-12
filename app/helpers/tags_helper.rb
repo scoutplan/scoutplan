@@ -66,4 +66,13 @@ module TagsHelper
         end
     end
   end
+
+  def back_link_to(body, url, html_options = {})
+    html_options[:class] ||= ""
+    html_options[:class] += " block font-bold"
+    link_to(url, html_options) do
+      content_tag(:i, nil, class: "fa-solid fa-chevron-left mr-2") +
+        body
+    end
+  end
 end
