@@ -11,16 +11,15 @@ module Unit::DistributionLists
 
   private
 
-  # rubocop:disable Metrics/AbcSize
   def all_distribution_lists
     [
-      DistributionList.new(key: "all", name: "All #{name} Members", keywords: "everyone",
-                           description: "Group with #{pluralize(members.count, 'member')}"),
-      DistributionList.new(key: "active", name: "All Active #{name} Members", keywords: "everyone",
-                           description: "Group with #{pluralize(members.active.count, 'member')}"),
-      DistributionList.new(key: "adults", name: "All Active #{name} Adult Members", keywords: "everyone",
-                           description: "Group with #{pluralize(members.active.adult.count, 'member')}")
+      DistributionList.new(key: "all", name: "Everyone in #{name}", keywords: "everyone",
+                           description: pluralize(members.select(&:contactable?).count, 'contactable member')),
+      DistributionList.new(key: "active", name: "Active Members", keywords: "everyone",
+                           description: pluralize(members.active.select(&:contactable?).count, 'contactable member')),
+      DistributionList.new(key: "adults", name: "Active Adults", keywords: "everyone",
+                           description: pluralize(members.active.adult.select(&:contactable?).count,
+                                                   'contactable member'))
     ]
   end
-  # rubocop:enable Metrics/AbcSize
 end

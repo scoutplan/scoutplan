@@ -1,0 +1,4 @@
+section
+  - if @target_membership.settings(:policy).youth_rsvps == "true"
+    i.fa-solid.fa-check-circle.text-green-600.mr-2
+    = "#{@target_membership.first_name} can RSVP as a youth"

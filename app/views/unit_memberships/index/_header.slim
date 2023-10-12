@@ -5,12 +5,17 @@ header.relative.my-2
     h1.text-4xl.font-bold.mb-2
       = t("members.index.page_title")
     
-    .right
+    .right.flex.flex-row.gap-1.items-center
       .dropdown
         = link_to "#",
                   id: "toggle_context_menu_link",
                   class: "dropdown-button inline-block text-stone-500 hover:text-stone-900 dark:hover:text-stone-300" do
           i.fa-circle-ellipsis.far.fa-2xl
-        = render partial: "unit_memberships/partials/index/dropdown"
+        = render partial: "unit_memberships/index/dropdown"
 
-  = render partial: "search_field"
+  javascript:
+    document.addEventListener("turbo:load", function() {
+      document.querySelector("#toggle_context_menu_link")?.addEventListener("click", function() {
+        document.querySelector("#search").focus();
+      });
+    });  

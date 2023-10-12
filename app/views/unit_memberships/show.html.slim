@@ -2,10 +2,11 @@
 
 = turbo_frame_tag "main"
   article.mt-8.max-w-2xl.mx-auto.flex.flex-col.gap-4.relative
-    = render partial: "unit_memberships/partials/show/header"
-    = render partial: "unit_memberships/partials/show/basics"
-    = render partial: "unit_memberships/partials/show/relationships"
-    = render partial: "unit_memberships/partials/show/watermark"
+    = render partial: "unit_memberships/show/header"
+    = render partial: "unit_memberships/show/basics"
+    = render partial: "unit_memberships/show/relationships"
+    = render partial: "unit_memberships/show/policy"
+    = render partial: "unit_memberships/show/watermark"
 
   javascript:
     document.title = "#{@target_membership.full_display_name} · #{@unit.name}"

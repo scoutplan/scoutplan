@@ -1,3 +1,8 @@
 = turbo_frame_tag "main"
-  .max-w-2xl.mx-auto.mt-4
+  .max-w-xl.mx-auto.mt-4
+    header
+      = back_link_to "Back to #{@target_membership.display_name}",
+                     unit_member_path(@unit, @target_membership),
+                     class: "text-sky-500"
+
     = render partial: "form"

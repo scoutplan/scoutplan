@@ -1,5 +1,5 @@
-- if @target_membership.children.length.positive?
-  section.mt-4.border-t.py-2
+- if @target_membership.children.any?
+  section.mt-4.py-2
     dl
       dt.font-bold.mb-1
         | #{@target_membership.display_first_name} can RSVP on behalf of:
@@ -9,8 +9,8 @@
             i.fad.fa-user.text-sky-500.mr-2
             = relative.full_display_name
 
-- if @target_membership.parents.length.positive?
-  section.mt-2.border-t.py-2
+- if @target_membership.parents.any?
+  section.mt-2.py-2
     dl
       dt.font-bold.mb-1
         | Members that can RSVP on behalf of #{@target_membership.display_first_name}:               
