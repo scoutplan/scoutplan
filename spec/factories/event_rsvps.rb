@@ -8,11 +8,11 @@ FactoryBot.define do
 
     event { association :event, unit: unit }
     unit_membership { association :unit_membership, unit: unit }
-    respondent
-    response { 'declined' }
+    respondent { unit_membership }
+    response { "declined" }
 
     trait :accepted do
-      response { 'accepted' }
+      response { "accepted" }
     end
   end
 end

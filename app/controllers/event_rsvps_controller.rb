@@ -1,30 +1,28 @@
 # frozen_string_literal: true
 
-# only intended to be called via XHR...no HTML view exists for this controller
-class EventRsvpsController < UnitContextController
-  before_action :find_rsvp, only: [:destroy]
-  before_action :find_event, except: [:destroy]
+class EventRsvpsController < EventContextController
+  before_action :find_rsvp,  only: [:destroy]
 
   def create
-    # authorize @event, :rsvp?
-    @service = EventRsvpService.new(current_member)
-    @rsvp = @service.create_or_update(params)
-    flash[:notice] = I18n.t("events.organize.confirmations.updated_html", name: @rsvp.member.full_display_name)
-    # @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
-    respond_to do |format|
-      format.html { redirect_to unit_event_rsvps_path(@unit, @rsvp.event) }
-      format.turbo_stream
-    end
+    rsvps = create_batch if params[:unit_memberships].present?
+    redirect_to [@unit, @event], notice: "Your RSVP#{rsvps.count > 1 ? 's' : ''} has been received."
   end
 
-  # send or re-send an invitation
-  def invite
-    @event = Event.find(params[:id])
-    @member = UnitMembership.find(params[:member_id])
-    @token  = @event.rsvp_tokens.create!(unit_membership: @member)
-    EventNotifier.invite_member_to_event(@token)
-    find_event_responses
-    respond_to :js
+  def create_batch
+    rsvps = []
+
+    params[:unit_memberships].each do |member_id, rsvp_attributes|
+      rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: member_id.to_i)
+      rsvp.respondent = @current_member
+      rsvp.response = rsvp_attributes[:response]
+      rsvp.save
+
+      rsvps << rsvp
+    end
+
+    ap rsvps
+
+    rsvps
   end
 
   def destroy
@@ -43,7 +41,11 @@ class EventRsvpsController < UnitContextController
   end
 
   def find_event
-    @event = Event.find(params[:event_id])
+    @event = @unit.events.find(params[:event_id])
+  end
+
+  def find_unit
+    @unit = Unit.find(params[:unit_id])
   end
 
   def find_event_responses

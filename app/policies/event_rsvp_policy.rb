@@ -26,7 +26,7 @@ class EventRsvpPolicy < UnitContextPolicy
   def create?(for_member = nil)
     for_member ||= rsvp.member
 
-    # admins can respond for anyone
+    # admins, unit organizers, and event organizers can respond for anyone
     return true if admin? || organizer? || event.organizer?(membership)
 
     # a parent can respond for their children
@@ -36,12 +36,19 @@ class EventRsvpPolicy < UnitContextPolicy
     return true if for_member == @membership && for_member.adult?
 
     # a youth member can respond for themselves if the event, unit, and membership allow it
-    return true if for_member == @membership && for_member.youth? && for_member.allow_youth_rsvps? &&
+    return true if for_member == membership && for_member.youth? && for_member.allow_youth_rsvps? &&
                    rsvp.event.allow_youth_rsvps? && rsvp.unit.allow_youth_rsvps?
 
     false
   end
+
   # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/PerceivedComplexity
+
+
+  def requires_approval?
+    rsvp.respondent.youth?
+  end
+
 end

@@ -76,19 +76,21 @@ class RsvpService < ApplicationService
     true
   end
 
+  # this can be improved
   def family_responses_in_words
     family_accepted = family_rsvps.select(&:accepted?).sort_by { |r| r.member == @member ? 0 : 1 }
     family_declined = family_rsvps.select(&:declined?).sort_by { |r| r.member == @member ? 0 : 1 }
-
-    # family_accepted.sort_by { |r| r.member == @member ? 0 : 1 }
-    # family_declined.sort_by { |r| r.member == @member ? 0 : 1 }
+    pending_family_accepted = family_rsvps.select(&:accepted_pending?).sort_by { |r| r.member == @member ? 0 : 1 }
+    pending_family_declined = family_rsvps.select(&:declined_pending?).sort_by { |r| r.member == @member ? 0 : 1 }
 
     return "No responses yet." unless family_accepted.any? || family_declined.any?
 
     going = "#{list_of_words(family_accepted.map { |r| r.display_first_name(@member) }, linking_verb: true)} going" if family_accepted.any?
     not_going = "#{list_of_words(family_declined.map { |r| r.display_first_name(@member) }, linking_verb: true)} not#{family_accepted.present? ? '' : ' going'}" if family_declined.any?
+    pending_going = "#{list_of_words(pending_family_accepted.map { |r| r.display_first_name(@member) }, linking_verb: true)} going (pending approval)" if pending_family_accepted.any?
+    pending_not_going = "#{list_of_words(family_declined.map { |r| r.display_first_name(@member) }, linking_verb: true)} not#{pending_family_accepted.present? ? '' : ' going (pending approval)'}" if pending_family_declined.any?
 
-    [going, not_going].compact.join("; ").sentence_case + ". "
+    [going, not_going, pending_going, pending_not_going].compact.join("; ").sentence_case + ". "
   end
 
   def family_non_respondents

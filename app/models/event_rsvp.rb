@@ -1,16 +1,19 @@
 # frozen_string_literal: true
 
-# a response, from a Member (aka UnitMembership), to an Event
 class EventRsvp < ApplicationRecord
   belongs_to :event
   belongs_to :unit_membership
   belongs_to :respondent, class_name: "UnitMembership"
+
+  before_save :enforce_approval_policy
+  after_commit :approve!
 
   has_many :documents, as: :documentable, dependent: :destroy
 
   validates_uniqueness_of :event, scope: :unit_membership
   validates_presence_of :response
   validate :common_unit?
+  validate :response_allowed?
 
   enum response: { declined: 0, accepted: 1, declined_pending: 2, accepted_pending: 3 }
 
@@ -26,6 +29,12 @@ class EventRsvp < ApplicationRecord
   # if not, something's wrong
   def common_unit?
     errors.add(:event, "and Member must belong to the same Unit") unless event.unit == member.unit
+  end
+
+  def response_allowed?
+    return if EventRsvpPolicy.new(respondent, self).create?
+
+    errors.add(:event_rsvp, "respondent is not authorized to create or edit this RSVP")
   end
 
   def document?(document_type)
@@ -50,5 +59,31 @@ class EventRsvp < ApplicationRecord
 
   def cost
     member.youth? ? event.cost_youth : event.cost_adult
+  end
+
+  def enforce_approval_policy
+    return unless requires_approval?
+
+    self.response = case response
+                    when "accepted" then "accepted_pending"
+                    when "declined" then "declined_pending"
+                    else response
+                    end
+  end
+
+  def requires_approval?
+    respondent.youth?
+  end
+
+  def pending_approval?(val = nil)
+    %w[declined_pending accepted_pending].include?(val || response)
+  end
+
+  def approved?
+    pending_approval?(response_was) && !pending_approval?
+  end
+
+  def approve!
+    ap "Sending approval confirmation to the kid" if approved?
   end
 end
