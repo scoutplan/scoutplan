@@ -3,7 +3,8 @@
 # a calendar event
 # rubocop:disable Metrics/ClassLength
 class Event < ApplicationRecord
-  include Notifiable, Remindable, Onlineable, Icalendarable, Replyable, Invitations, DatePresentable
+  include Notifiable, Remindable, Onlineable, Icalendarable, Replyable, Invitations,
+          DatePresentable, StaticMappable
   extend DateTimeAttributes
 
   date_time_attrs_for :starts_at, :ends_at
@@ -42,6 +43,7 @@ class Event < ApplicationRecord
 
   has_rich_text :description
 
+  has_one_attached :static_map
   has_many_attached :attachments
 
   has_paper_trail versions: { scope: -> { order("id desc") } }
