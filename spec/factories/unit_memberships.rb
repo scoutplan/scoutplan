@@ -5,7 +5,7 @@ FactoryBot.define do
           aliases: %i[member parent_member child_member respondent] do
     unit
     user
-    email
+    email  { Faker::Internet.email}
     status { "active" }
     role   { "member" }
     member_type { "adult" }

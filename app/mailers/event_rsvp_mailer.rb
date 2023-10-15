@@ -3,11 +3,17 @@
 class EventRsvpMailer < ApplicationMailer
   layout "basic_mailer"
 
+  helper GrammarHelper
+
   before_action :set_event_rsvp, :set_member, :set_unit, :set_event
 
   def event_rsvp_notification
     attachments[@event.ical_filename] = IcalExporter.ics_attachment(@event, @member)
-    attachments["map.png"] = File.read(URI.parse(map_url).open)
+    begin
+      attachments["map.png"] = File.read(URI.parse(map_url).open)
+    rescue TypeError
+      # If the map_url is nil, then we don't have a map to attach
+    end
 
     mail(to: to_address, from: from_address, subject: subject)
   end
@@ -44,8 +50,7 @@ class EventRsvpMailer < ApplicationMailer
 
   def map_url
     query = CGI.escape(@event.map_address.gsub(",", ""))
-    # params = "key=#{ENV.fetch('GOOGLE_API_KEY', nil)}&center=#{query}&zoom=10&size=500x400"
-    params = "key=#{ENV.fetch('GOOGLE_API_KEY', nil)}&center=#{query}&markers=|#{query}&zoom=10&size=500x400"
+    params = "key=#{ENV.fetch('GOOGLE_API_KEY', nil)}&center=#{query}&markers=|#{query}&zoom=10&size=500x300"
     "https://maps.googleapis.com/maps/api/staticmap?#{params}"
   end
 end

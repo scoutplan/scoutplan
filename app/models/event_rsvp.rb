@@ -73,6 +73,14 @@ class EventRsvp < ApplicationRecord
                     end
   end
 
+  def self_responded?
+    respondent == member
+  end
+
+  def approvers
+    member.parents
+  end
+
   def requires_approval?
     respondent.youth?
   end

@@ -1,0 +1,5 @@
+- return unless @event.rsvp_open?
+
+hr
+h2 Change of plans?
+p Let us know: #{link_to "Update your RSVP", edit_event_rsvp_url(@event, @rsvp, token: @rsvp.token, class: "button")}
