@@ -1,0 +1,10 @@
+- return unless event.organizers.any?
+
+hr
+h2 Contact
+
+dl
+  - event.organizers.each do |organizer|
+    dt = organizer.display_name
+    dd = mail_to(organizer.email)
+    dd = phone_to(organizer.phone)

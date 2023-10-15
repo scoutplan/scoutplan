@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class EventRsvp < ApplicationRecord
+  include Notifiable
+
   belongs_to :event
   belongs_to :unit_membership
   belongs_to :respondent, class_name: "UnitMembership"

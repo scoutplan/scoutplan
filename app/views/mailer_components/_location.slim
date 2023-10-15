@@ -1,0 +1,17 @@
+- return unless rsvp.accepted? || rsvp.accepted_pending?
+
+hr
+h2 Location
+
+dl.event-location
+  - if event.find_location(:departure)
+    dt Depart from
+    dd.name = event.find_location(:departure).name
+    dd = event.find_location(:departure).address
+
+  - if event.find_location(:arrival)
+    dt Arrive at
+    dd.name = event.find_location(:arrival).name
+    dd = event.find_location(:arrival).address
+
+= image_tag attachments["map.png"].url

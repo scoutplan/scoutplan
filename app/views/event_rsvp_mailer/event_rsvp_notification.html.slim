@@ -1,0 +1,37 @@
+p Hi, #{@member.first_name},
+
+p
+  - if @rsvp.respondent == @member
+    | We've received your RSVP
+  - else
+    | #{@rsvp.respondent.display_name} has RSVP'd on your behalf
+
+  |  that you
+  - if @rsvp.accepted?
+    |  <strong>will</strong> be attending
+  - else
+    |  <strong>will not</strong> be attending
+  
+  |  the <strong>#{@event.title}</strong> 
+  
+  - if @event.single_day?
+    | on #{l @event_date, format: "%A, %B %e"}.
+  - else
+    |  from #{l @event.starts_at, format: "%A, %B %e"}
+    |  to #{l @event.ends_at, format: "%A, %B %e"}.
+
+  - if @rsvp.pending_approval?
+    |  We'll let you know when your RSVP has been confirmed.
+
+= render partial: "mailer_components/location", locals: { event: @event, rsvp: @rsvp }
+
+= render partial: "mailer_components/organizers", locals: { event: @event }
+
+- if @event.rsvp_open?
+  hr
+  h2 Change of plans?
+  p Let us know: #{link_to "Update your RSVP", edit_event_rsvp_url(@event, @rsvp, token: @rsvp.token, class: "button")}
+
+hr
+h2 Add to your calendar
+p <a href="#{attachments[@event.ical_filename].url}">Download</a> and open the attached .ics file to add this event to your calendar.

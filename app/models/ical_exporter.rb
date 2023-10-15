@@ -33,6 +33,15 @@ class IcalExporter
   end
   # rubocop:enable Metrics/AbcSize
 
+  def self.ics_attachment(event, member)
+    {
+      mime_type:           "multipart/mixed",
+      content_type:        "text/calendar; method=REQUEST; charset=UTF-8; component=VEVENT",
+      content_disposition: "attachment; filename=#{event.ical_filename}",
+      content:             event.to_ical(member)
+    }
+  end
+
   private
 
   def ical_summary

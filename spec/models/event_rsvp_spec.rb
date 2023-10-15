@@ -3,36 +3,36 @@
 require "rails_helper"
 
 RSpec.describe EventRsvp, type: :model do
-  # it "has a valid factory" do
-  #   expect(FactoryBot.create(:event_rsvp)).to be_valid
-  # end
+  it "has a valid factory" do
+    expect(FactoryBot.create(:event_rsvp)).to be_valid
+  end
 
-  # describe "validations" do
-  #   before do
-  #     @youth_member = FactoryBot.create(:unit_membership, :youth)
-  #     @unit = @youth_member.unit
-  #     @parent = FactoryBot.create(:unit_membership, :adult, unit: @unit)
-  #     @parent.child_relationships.create(child_unit_membership: @youth_member)
-  #     @event = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit)
-  #   end
+  describe "validations" do
+    before do
+      @youth_member = FactoryBot.create(:unit_membership, :youth)
+      @unit = @youth_member.unit
+      @parent = FactoryBot.create(:unit_membership, :adult, unit: @unit)
+      @parent.child_relationships.create(child_unit_membership: @youth_member)
+      @event = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit)
+    end
 
-  #   it "prevents duplicates" do
-  #     rsvp = FactoryBot.create(:event_rsvp)
-  #     dupe = FactoryBot.build(:event_rsvp, unit_membership_id: rsvp.unit_membership_id, event_id: rsvp.event_id)
-  #     expect(dupe).not_to be_valid
-  #   end
+    it "prevents duplicates" do
+      rsvp = FactoryBot.create(:event_rsvp)
+      dupe = FactoryBot.build(:event_rsvp, unit_membership_id: rsvp.unit_membership_id, event_id: rsvp.event_id)
+      expect(dupe).not_to be_valid
+    end
 
-  #   it "prevents mismatched Unit associations" do
-  #     member = FactoryBot.create(:unit_membership)
-  #     event = FactoryBot.create(:event)
+    it "prevents mismatched Unit associations" do
+      member = FactoryBot.create(:unit_membership)
+      event = FactoryBot.create(:event)
 
-  #     # member and event should belong to different Units at this point
-  #     expect(member.unit).not_to eq(event.unit)
+      # member and event should belong to different Units at this point
+      expect(member.unit).not_to eq(event.unit)
 
-  #     rsvp = EventRsvp.new(event: event, member: member, respondent: member, response: :declined)
-  #     expect(rsvp).not_to be_valid
-  #   end
-  # end
+      rsvp = EventRsvp.new(event: event, member: member, respondent: member, response: :declined)
+      expect(rsvp).not_to be_valid
+    end
+  end
 
   describe "approval flow" do
     before do
