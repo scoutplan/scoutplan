@@ -21,6 +21,8 @@ class EventRsvp < ApplicationRecord
 
   alias_attribute :member, :unit_membership
 
+  delegate :reply_to, to: :event
+  delegate :organizers?, to: :event
   delegate_missing_to :unit_membership
 
   scope :ordered, -> { includes(unit_membership: :user).order("users.last_name, users.first_name") }

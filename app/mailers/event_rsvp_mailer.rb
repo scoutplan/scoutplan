@@ -3,7 +3,7 @@
 class EventRsvpMailer < ApplicationMailer
   layout "basic_mailer"
 
-  helper GrammarHelper
+  helper GrammarHelper, ApplicationHelper, MagicLinksHelper
 
   before_action :set_event_rsvp, :set_member, :set_unit, :set_event
 
@@ -15,7 +15,7 @@ class EventRsvpMailer < ApplicationMailer
       # If the map_url is nil, then we don't have a map to attach
     end
 
-    mail(to: to_address, from: from_address, subject: subject)
+    mail(to: to_address, from: from_address, reply_to: reply_to, subject: subject)
   end
 
   private
@@ -46,6 +46,10 @@ class EventRsvpMailer < ApplicationMailer
 
   def subject
     "[#{@unit.name}] Your RSVP for #{@event.title} has been received"
+  end
+
+  def reply_to
+    @rsvp.reply_to
   end
 
   def map_url

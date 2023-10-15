@@ -14,4 +14,5 @@ dl.event-location
     dd.name = event.find_location(:arrival).name
     dd = event.find_location(:arrival).address
 
-= image_tag attachments["map.png"].url
+- if attachments["map.png"]
+  = image_tag attachments["map.png"].url

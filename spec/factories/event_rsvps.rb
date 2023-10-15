@@ -6,7 +6,7 @@ FactoryBot.define do
       unit { create(:unit) }
     end
 
-    event { association :event, unit: unit }
+    event { association :event, unit: unit, status: "published", requires_rsvp: true }
     unit_membership { association :unit_membership, unit: unit }
     respondent { unit_membership }
     response { "declined" }

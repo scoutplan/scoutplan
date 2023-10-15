@@ -274,6 +274,16 @@ class Event < ApplicationRecord
     organizers.map(&:member).include?(member)
   end
 
+  def organizers?
+    organizers.any?
+  end
+
+  def reply_to
+    return organizers.map(&:email_address_with_name).join(", ") if organizers?
+
+    unit.members.admin.map(&:email_address_with_name).join(", ")
+  end
+
   # implemented for Sendable to compute message recipients
   def audience
     "event_#{id}_attendees"

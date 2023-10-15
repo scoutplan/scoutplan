@@ -4,13 +4,13 @@ p
   - if @rsvp.self_responded?
     | We've received your RSVP
   - else
-    | #{@rsvp.respondent.display_name} has RSVP'd on your behalf
+    | #{@rsvp.respondent.display_name} has let us know
 
   |  that you
-  - if @rsvp.accepted?
+  - if @rsvp.accepted? || @rsvp.accepted_pending?
     |  <strong>will</strong> be attending
   - else
-    |  <strong>will not</strong> be attending
+    |  will <strong>not</strong> be attending
   
   |  the <strong>#{@event.title}</strong> 
   
@@ -24,7 +24,10 @@ p
     |  Your RSVP is tentantive until #{grammatical_list(@rsvp.approvers.map(&:first_name), "or")} approves it.
     |  We've notified them and we'll let you know when your RSVP has been confirmed.
 
-= render partial: "mailer_components/location", locals: { event: @event, rsvp: @rsvp }
-= render partial: "mailer_components/organizers", locals: { event: @event }
+- if @rsvp.accepted? || @rsvp.accepted_pending?
+  = render partial: "mailer_components/location", locals: { event: @event, rsvp: @rsvp }
+  = render partial: "mailer_components/organizers", locals: { event: @event }
+  = render partial: "mailer_components/ics_attachment", locals: { event: @event }
+
 = render partial: "mailer_components/change_of_plans", locals: { event: @event, rsvp: @rsvp }
-= render partial: "mailer_components/ics_attachment", locals: { event: @event }
+= render partial: "mailer_components/disclaimers", locals: { unit: @unit }

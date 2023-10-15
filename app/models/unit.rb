@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class Unit < ApplicationRecord
   include Seasons, DistributionLists
 
@@ -133,3 +134,4 @@ class Unit < ApplicationRecord
     update(slug: candidate)
   end
 end
+# rubocop:enable Metrics/ClassLength
