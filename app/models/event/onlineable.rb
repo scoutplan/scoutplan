@@ -6,7 +6,7 @@ module Event::Onlineable
   JOIN_LEAD_TIME = 15.minutes.freeze
 
   included do
-    validate :website_is_valid_url
+    validate :valid_website_url?
   end
 
   def joinable?
@@ -17,7 +17,7 @@ module Event::Onlineable
     URI.parse(website).host
   end
 
-  def website_is_valid_url
+  def valid_website_url?
     return if website.blank?
 
     uri = URI.parse(website)

@@ -293,8 +293,6 @@ class EventsController < UnitContextController
 
     result = service.cancel
 
-    ap result
-
     redirect_to unit_events_path(@unit), notice: "Event has been cancelled."
   end
 

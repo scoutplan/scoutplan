@@ -20,8 +20,6 @@ class EventRsvpsController < EventContextController
       rsvps << rsvp
     end
 
-    ap rsvps
-
     rsvps
   end
 

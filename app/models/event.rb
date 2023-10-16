@@ -11,12 +11,6 @@ class Event < ApplicationRecord
 
   attr_accessor :repeats, :notify_members, :notify_recipients, :notify_message, :document_library_ids
 
-  # LOCATION_TYPES = {
-  #   departure: "departure",
-  #   staging:   "staging",
-  #   activity:  "activity"
-  # }.freeze
-
   default_scope { where(parent_event_id: nil).order(starts_at: :asc) }
 
   belongs_to :unit
