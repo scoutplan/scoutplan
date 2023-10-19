@@ -107,6 +107,20 @@ input.dt-switch.right-value:checked ~ .dt-switch-container .switch-button {
   transform: translateX(195%);
 }
 
+@media (prefers-color-scheme: dark) {
+  input.dt-switch.right-value:disabled:checked ~ .dt-switch-container {
+    background: #444;
+  }
+
+  input.dt-switch.right-value:disabled:checked ~ .dt-switch-container .switch-button {
+    background: #222;
+  }
+
+  input.dt-switch.right-value:disabled ~ label {
+    color: #666;
+  }
+
+}
 
 input[type="text"].is-invalid {
   border-color: #ef4444;

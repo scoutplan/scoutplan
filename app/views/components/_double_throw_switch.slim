@@ -15,11 +15,15 @@
       
     = label object_name, method,
             value: left_value,
-            class: "font-bold flex items-center #{size}",
+            class: "flex items-center #{size}",
             id: "#{object_name.parameterize(separator: "_")}_#{method}_label"
       span.mr-2 = left_label
 
+<<<<<<< Updated upstream
     .inline-block.dt-switch-container.rounded-full.bg-stone-500.w-20.h-8.relative.p-1
+=======
+    .inline-block.dt-switch-container.rounded-full.bg-stone-400.w-20.h-8.relative.p-1.dark:disabled:bg-stone-800
+>>>>>>> Stashed changes
       .switch-button.absolute.block.w-6.h-6.rounded-full.bg-white
 
       = label object_name, method,
@@ -39,7 +43,7 @@
 
     = label object_name, method,
             value: right_value,
-            class: "font-bold items-center #{size}",
+            class: "items-center #{size}",
             id: "#{object_name.parameterize(separator: "_")}_#{method}_label" do
 
       span.ml-2 = right_label
