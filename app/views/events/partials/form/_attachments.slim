@@ -37,10 +37,10 @@ section.py-4
         i.fa-solid.fa-upload.mr-2
         = "Upload files"
 
-      = link_to "#", class: "inline-block font-bold border rounded px-4 py-2 whitespace-nowrap border-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800",
-                  data: { action: "click->event-edit#browseDocumentLibrary" }
-        i.fa-solid.fa-cabinet-filing.mr-2
-        = "Browse document library"                   
+      / = link_to "#", class: "inline-block font-bold border rounded px-4 py-2 whitespace-nowrap border-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800",
+      /             data: { action: "click->event-edit#browseDocumentLibrary" }
+      /   i.fa-solid.fa-cabinet-filing.mr-2
+      /   = "Browse document library"                   
 
   = text_field_tag "document_library_ids", "",
                  class: "hidden",
