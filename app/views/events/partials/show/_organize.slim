@@ -6,13 +6,14 @@ article.py-4
     .left.font-bold
       i.fa-stack.mr-1(title="#{t('events.show.titles.organize')}")
         i.fa-solid.fa-circle.fa-stack-2x.text-violet-700
-        i.fa-solid.fa-clipboard.fa-stack-1x.text-white
+        i.fa-solid.fa-clipboard-check.fa-stack-1x.text-white
 
       = accepted_count.zero? ? t("events.show.captions.attendees_zero") : "#{pluralize(accepted_count, 'person')} #{substantive_verb(accepted_count)} going."
 
     .right
       = link_to unit_event_rsvps_path(@event.unit, @event),
-                class: "block py-2 px-3 rounded text-center bg-violet-600 hover:bg-violet-700 text-violet-100" do
+                class: "block py-2 px-3 rounded text-center bg-violet-600 hover:bg-violet-700 text-violet-100 font-bold",
+                data: { turbo_action: "advance" } do
         = t("events.show.buttons.organize")
 
   footer.font-normal.mt-4.text-sm.text-violet-700.dark:text-violet-300.pl-1

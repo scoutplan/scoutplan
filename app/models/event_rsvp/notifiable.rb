@@ -12,6 +12,12 @@ module EventRsvp::Notifiable
   end
 
   def notify!
-    EventRsvpNotification.with(event_rsvp: self).deliver_later(member)
+    EventRsvpNotification.with(event_rsvp: self).deliver_later(recipients)
+  end
+
+  def recipients
+    return member.family if requires_approval?
+
+    [member]
   end
 end

@@ -17,7 +17,10 @@ article.py-4
       i.fa-solid.fa-map.text-rose-600.mr-2
       = t("events.show.map")
 
-    = render partial: "events/partials/show/map"
+    - if params[:map] == "static"
+      = render partial: "events/partials/show/static_map"
+    - else
+      = render partial: "events/partials/show/map"
 
     - count = 0
     .table

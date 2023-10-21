@@ -33,5 +33,10 @@ FactoryBot.define do
     trait :youth do
       member_type { "youth" }
     end
+
+    trait :youth_with_rsvps do
+      member_type { "youth" }
+      allow_youth_rsvps { true }
+    end
   end
 end

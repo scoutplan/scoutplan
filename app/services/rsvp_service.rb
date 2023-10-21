@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 # Service for dealing with event RSVPs
+# rubocop:disable Metrics/ClassLength
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/PerceivedComplexity
 class RsvpService < ApplicationService
   attr_accessor :member, :event
 
@@ -88,7 +93,7 @@ class RsvpService < ApplicationService
     going = "#{list_of_words(family_accepted.map { |r| r.display_first_name(@member) }, linking_verb: true)} going" if family_accepted.any?
     not_going = "#{list_of_words(family_declined.map { |r| r.display_first_name(@member) }, linking_verb: true)} not#{family_accepted.present? ? '' : ' going'}" if family_declined.any?
     pending_going = "#{list_of_words(pending_family_accepted.map { |r| r.display_first_name(@member) }, linking_verb: true)} going (pending approval)" if pending_family_accepted.any?
-    pending_not_going = "#{list_of_words(family_declined.map { |r| r.display_first_name(@member) }, linking_verb: true)} not#{pending_family_accepted.present? ? '' : ' going (pending approval)'}" if pending_family_declined.any?
+    pending_not_going = "#{list_of_words(pending_family_declined.map { |r| r.display_first_name(@member) }, linking_verb: true)} not#{pending_family_accepted.present? ? '' : ' going (pending approval)'}" if pending_family_declined.any?
 
     [going, not_going, pending_going, pending_not_going].compact.join("; ").sentence_case + ". "
   end
@@ -172,3 +177,8 @@ class RsvpService < ApplicationService
     @member.unit
   end
 end
+# rubocop:enable Metrics/PerceivedComplexity
+# rubocop:enable Metrics/MethodLength
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/ClassLength

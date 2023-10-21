@@ -14,5 +14,9 @@ dl.event-location
     dd.name = event.find_location(:arrival).name
     dd = event.find_location(:arrival).address
 
-- if attachments["map.png"]
-  = image_tag attachments["map.png"].url
+= link_to event_map_url(event),
+          target: "_new",
+          style: "display: block; width: 100%; margin-bottom: 1rem;" do
+  i.fa-solid.fa-map.text-rose-600.mr-2
+  = image_tag attachments["map.png"].url, style: "display: block; width: 100%; margin-bottom: 0.5rem;" if attachments["map.png"]
+  = t("events.show.map")

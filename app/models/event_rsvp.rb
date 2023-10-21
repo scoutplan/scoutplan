@@ -13,7 +13,7 @@ class EventRsvp < ApplicationRecord
   has_many :documents, as: :documentable, dependent: :destroy
 
   validates_uniqueness_of :event, scope: :unit_membership
-  validates_presence_of :response
+  validates :response, presence: { message: "requires a response" }
   validate :common_unit?
   validate :response_allowed?
 
@@ -66,6 +66,7 @@ class EventRsvp < ApplicationRecord
   end
 
   def enforce_approval_policy
+    ap "#enforce_approval_policy"
     return unless requires_approval?
 
     self.response = case response

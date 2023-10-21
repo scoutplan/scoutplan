@@ -3,7 +3,7 @@
 class EventRsvpMailer < ApplicationMailer
   layout "basic_mailer"
 
-  helper GrammarHelper, ApplicationHelper, MagicLinksHelper
+  helper GrammarHelper, ApplicationHelper, MagicLinksHelper, EventsHelper
 
   before_action :set_event_rsvp, :set_member, :set_unit, :set_event
 

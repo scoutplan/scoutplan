@@ -22,6 +22,7 @@ module Event::StaticMappable
   def map_url
     query = CGI.escape(map_address.gsub(",", ""))
     params = "key=#{ENV.fetch('GOOGLE_API_KEY', nil)}&center=#{query}&zoom=#{MAP_ZOOM}&size=#{MAP_SIZE}"
+    params += "&markers=color:red%7C#{query}"
     "#{MAP_BASE_URL}?#{params}"
   end
 end
