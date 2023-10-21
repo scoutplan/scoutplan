@@ -20,7 +20,7 @@ class EventReminderMailer < ApplicationMailer
     # attachments.inline["rsvp-not-going.png"] = File.read(Rails.root.join("app/assets/images/rsvp-not-going.png"))
     # attachments.inline["rsvp-no-response.png"] = File.read(Rails.root.join("app/assets/images/rsvp-no-response.png"))
     mail(to: to_address, from: @unit.from_address, subject: subject)
-    persist_invitation
+    # persist_invitation
   end
 
   private
