@@ -2,6 +2,7 @@
 
 class Unit < ApplicationRecord
   include Seasons, DistributionLists
+  
   has_one :payment_account
   has_many :events
   has_many :event_categories
