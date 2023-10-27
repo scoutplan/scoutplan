@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/PerceivedComplexity
+# rubocop:disable Metrics/CyclomaticComplexity
 class MessagesController < UnitContextController
   before_action :find_message, except: [:index, :drafts, :scheduled, :sent, :new, :create, :recipients, :addressables, :commit]
   before_action :set_message_token, only: [:new, :edit]
@@ -66,7 +71,7 @@ class MessagesController < UnitContextController
 
   def addressables
     lists = @unit.distribution_lists
-    events = @unit.events.published.rsvp_required.recent_and_future.includes(:event_rsvps)
+    events = @unit.events.published.rsvp_required.recent_and_future.includes(event_rsvps: [unit_membership: :user])
     members = @unit.members.joins(:user).order(:last_name, :first_name)
 
     @addressables = MessagingSearchResult.to_a(lists + events + members)
@@ -83,9 +88,9 @@ class MessagesController < UnitContextController
                     @unit.events.find(id).rsvps.accepted.map { |r| CandidateMessageRecipient.new(r.member) }
                   when "dl"
                     case id
-                    when "all" then @unit.members.status_active_and_registered
-                    when "active" then @unit.members.active
-                    when "adults" then @unit.members.active.adult
+                    when "all" then @unit.members.status_active_and_registered.includes(:user, parents: [:user], children: [:user])
+                    when "active" then @unit.members.active.includes(:user, parents: [:user], children: [:user])
+                    when "adults" then @unit.members.active.adult.includes(:user, parents: [:user], children: [:user])
                     end
                   end
 
@@ -203,3 +208,9 @@ class MessagesController < UnitContextController
   #   @addressables = MessagingSearchResult.to_a(lists + [:divider] + events + [:divider] + members)
   # end
 end
+
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/PerceivedComplexity
+# rubocop:enable Metrics/MethodLength
+# rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/ClassLength

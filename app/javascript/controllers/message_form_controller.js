@@ -267,3 +267,23 @@ export default class extends Controller {
     elem.remove();
   }
 }
+
+
+/*
+
+Member {
+  id: 1,
+  name: "John Doe",
+  email: "john@doe.org",
+  parent_ids: [1, 2, 3],
+  status: "active",
+}
+
+
+{ 1: { id: 1, name: "John Doe", email: '' }
+  2: { id: 2, name: "Jane Doe", email: '' }
+  3: { id: 3, name: "John Doe Jr.", email: '' }
+}
+
+
+*/
