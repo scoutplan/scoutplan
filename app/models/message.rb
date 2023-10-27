@@ -27,6 +27,10 @@ class Message < ApplicationRecord
     unit.unit_memberships.message_approver
   end
 
+  def display_title
+    title.presence || "(no subject)"
+  end
+
   def editable?
     status != "sent"
   end

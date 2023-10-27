@@ -2,7 +2,7 @@
 
 class Unit < ApplicationRecord
   include Seasons, DistributionLists
-  
+
   has_one :payment_account
   has_many :events
   has_many :event_categories
@@ -33,28 +33,24 @@ class Unit < ApplicationRecord
   enum status: { active: "active", inactive: "inactive" }
 
   has_settings class_name: "UnitSettings" do |s|
-    s.key :communication, defaults: {
-      digest: true,
-      rsvp_nag: true,
-      daily_reminder: true,
-      digest_day_of_week: :sunday,
-      digest_hour_of_day: 8
-    }
+    s.key :communication,
+          defaults: { digest: true, rsvp_nag: true, daily_reminder: true,
+                      digest_day_of_week: :sunday, digest_hour_of_day: 8 }
     s.key :appearance, defaults: { main_color: "#003F87" }
-    s.key :locale, defaults: {
-      time_zone: "Eastern Time (US & Canada)",
-      meeting_location: nil,
-      meeting_address: nil
-    }
+    s.key :locale,
+          defaults: { time_zone: "Eastern Time (US & Canada)",
+                      meeting_location: nil, meeting_address: nil }
     s.key :utilities, defaults: { fire_scheduled_tasks: false }
   end
 
   def attachments
-    ActiveStorage::Attachment.includes(:blob).with_all_variant_records.where(record_type: "Event", record_id: events.collect(&:id))
+    ActiveStorage::Attachment.includes(:blob)
+                             .with_all_variant_records
+                             .where(record_type: "Event", record_id: events.collect(&:id))
   end
 
   def from_address
-    slug + "@" + ENV["EMAIL_DOMAIN"]
+    "#{slug}@#{ENV.fetch('EMAIL_DOMAIN')}"
   end
 
   def messages
@@ -91,6 +87,7 @@ class Unit < ApplicationRecord
   end
 
   # given a datetime, returns the nearest datetime that is within business hours
+  # rubocop:disable Metrics/AbcSize
   def in_business_hours(datetime)
     if datetime.in_time_zone(time_zone).hour < business_hours.first
       datetime.in_time_zone(time_zone).change(hour: business_hours.first, min: 0, sec: 0).utc
@@ -100,10 +97,7 @@ class Unit < ApplicationRecord
       datetime
     end
   end
-
-  # def to_param
-  #   [id, name, location].join(" ").parameterize
-  # end
+  # rubocop:enable Metrics/AbcSize
 
   def to_s
     name
@@ -122,7 +116,7 @@ class Unit < ApplicationRecord
   def populate_categories
     EventCategory.seeds.each do |category|
       event_categories.create(
-        name: category.name,
+        name:  category.name,
         glyph: category.glyph,
         color: category.color
       )
