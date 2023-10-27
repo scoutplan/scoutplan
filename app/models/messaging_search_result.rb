@@ -62,7 +62,7 @@ class MessagingSearchResult
   end
 
   def event_description
-    attendee_count = @result.rsvps.accepted.select { |r| r.member.contactable? }.count
+    attendee_count = @result.rsvps.includes(unit_membership: :user).accepted.select { |r| r.member.contactable? }.count
 
     if @result.ended?
       "#{pluralize(attendee_count, 'contactable attendee')}, ended #{ApplicationController.helpers.deictic_string_for_time_interval_from_day(@result.ends_at)}"

@@ -123,8 +123,9 @@ class MessagesController < UnitContextController
 
   def set_addressables
     lists = @unit.distribution_lists
-    events = @unit.events.published.rsvp_required.recent_and_future.includes(event_rsvps: [unit_membership: :user])
-    members = @unit.members.joins(:user).order(:last_name, :first_name)
+    events = @unit.events.includes(event_rsvps: [unit_membership: :user]).published.rsvp_required.recent_and_future
+    members = @unit.members.includes(:setting_objects, :event_rsvps, user: :setting_objects).order("users.last_name, users.first_name")
+    # members = []
 
     @addressables = MessagingSearchResult.to_a(lists + events + members)
   end
@@ -200,15 +201,6 @@ class MessagesController < UnitContextController
   def set_message_token
     @message_token = SecureRandom.hex(10)
   end
-
-  # def set_addressables
-  #   scope   = @unit.members.status_active_and_registered.joins(:user)
-  #   members = scope.all.order(:last_name, :first_name)
-  #   events  = @unit.events.published.rsvp_required.recent_and_future.includes(:event_rsvps)
-  #   lists   = @unit.distribution_lists
-  #   # TODO: tags
-  #   @addressables = MessagingSearchResult.to_a(lists + [:divider] + events + [:divider] + members)
-  # end
 end
 
 # rubocop:enable Metrics/CyclomaticComplexity
