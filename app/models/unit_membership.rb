@@ -118,6 +118,7 @@ class UnitMembership < ApplicationRecord
   end
 
   def time_zone
-    user.settings(:locale).time_zone || unit.settings(:locale).time_zone || "Eastern Time (US & Canada)"
+    # user.settings(:locale).time_zone || unit.settings(:locale).time_zone || "Eastern Time (US & Canada)"
+    @time_zone ||= (unit.settings(:locale).time_zone || "Eastern Time (US & Canada)")
   end
 end
