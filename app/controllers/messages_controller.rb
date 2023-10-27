@@ -8,7 +8,7 @@
 class MessagesController < UnitContextController
   before_action :find_message, except: [:index, :drafts, :scheduled, :sent, :new, :create, :recipients, :addressables, :commit]
   before_action :set_message_token, only: [:new, :edit]
-  # before_action :set_addressables, only: [:new, :edit]
+  before_action :set_addressables, only: [:new, :edit, :addressables]
   after_action :create_recipients, only: [:create, :update]
 
   def index
@@ -69,13 +69,7 @@ class MessagesController < UnitContextController
     redirect_to unit_messages_path(@unit), notice: t("messages.notices.unpin_success")
   end
 
-  def addressables
-    lists = @unit.distribution_lists
-    events = @unit.events.published.rsvp_required.recent_and_future.includes(event_rsvps: [unit_membership: :user])
-    members = @unit.members.joins(:user).order(:last_name, :first_name)
-
-    @addressables = MessagingSearchResult.to_a(lists + events + members)
-  end
+  def addressables; end
 
   def commit
     return unless (key = params[:key]).present?
@@ -125,6 +119,14 @@ class MessagesController < UnitContextController
     params[:blob_ids].each do |blob_id|
       ActiveStorage::Attachment.create!(name: "attachments", record: @message, blob_id: blob_id)
     end
+  end
+
+  def set_addressables
+    lists = @unit.distribution_lists
+    events = @unit.events.published.rsvp_required.recent_and_future.includes(event_rsvps: [unit_membership: :user])
+    members = @unit.members.joins(:user).order(:last_name, :first_name)
+
+    @addressables = MessagingSearchResult.to_a(lists + events + members)
   end
 
   def handle_commit
