@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Message::Sendable
   extend ActiveSupport::Concern
 
@@ -18,7 +16,8 @@ module Message::Sendable
   end
 
   def send!
-    MessageNotification.with(message: self).deliver_later(recipients)
+    Rails.logger.info "Sending message #{id}"
+    recipients.each { |recipient| MemberNotifier.new(recipient).send_message(self) }
     mark_as_sent!
   end
 
