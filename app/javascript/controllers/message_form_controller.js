@@ -189,6 +189,8 @@ export default class extends Controller {
     this.markAsDirty();
     this.resetQueryInput();
     this.closeAddressBook();
+    // this.queryInputTarget.scrollIntoView({block: "end"});
+    this.subjectTextBoxTarget.scrollIntoView({block: "center"});
     this.queryInputTarget.focus();
   }
 

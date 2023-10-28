@@ -117,8 +117,11 @@ class UnitMembership < ApplicationRecord
     user.smsable? && settings(:communication).via_sms
   end
 
+  # rubocop:disable Style/RedundantBegin
   def time_zone
-    # user.settings(:locale).time_zone || unit.settings(:locale).time_zone || "Eastern Time (US & Canada)"
-    @time_zone ||= (unit.settings(:locale).time_zone || "Eastern Time (US & Canada)")
+    @time_zone ||= begin
+      user.settings(:locale).time_zone || unit.settings(:locale).time_zone || Rails.configuration.default_time_zone
+    end
   end
+  # rubocop:enable Style/RedundantBegin
 end
