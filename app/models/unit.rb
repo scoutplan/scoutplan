@@ -12,6 +12,7 @@ class Unit < ApplicationRecord
   has_many :news_items
   has_many :tasks, as: :taskable
   has_many :locations
+  has_many :messages, through: :unit_memberships
   has_many :packing_lists, dependent: :destroy
   has_many :photos, dependent: :destroy
   has_many :payments, through: :events

@@ -90,7 +90,9 @@ export default class extends Controller {
   }
 
   addAttachments(event) {
+    this.shouldSkipLeaveConfirmation = true;
     this.attachmentFormTarget.requestSubmit();
+    this.shouldSkipLeaveConfirmation = false;
   }
 
   confirmLeave(event) {
