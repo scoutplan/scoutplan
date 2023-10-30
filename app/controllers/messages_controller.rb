@@ -186,15 +186,18 @@ class MessagesController < UnitContextController
   end
 
   def create_recipients
-    @message.message_recipients.delete_all
     return unless params[:message_recipients].present?
 
-    member_ids = params[:message_recipients][:id]
+    addressed_member_ids = params[:message_recipients][:id]
+    existing_member_ids = @message.message_recipients.map(&:unit_membership_id)
 
-    member_ids.each do |id|
-      member = @unit.members.find(id.to_i)
-      ap member
-      @message.message_recipients.create!(unit_membership: member)
+    member_ids_to_delete = existing_member_ids - addressed_member_ids
+    member_ids_to_add = addressed_member_ids - existing_member_ids
+
+    @message.message_recipients.where(unit_membership_id: member_ids_to_delete).delete_all
+
+    member_ids_to_add.each do |member_id|
+      @message.message_recipients.create!(unit_membership_id: member_id)
     end
   end
 
