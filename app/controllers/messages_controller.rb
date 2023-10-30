@@ -16,7 +16,7 @@ class MessagesController < UnitContextController
   end
 
   def drafts
-    scope = @unit.messages.includes(:message_recipients).draft_and_queued.with_attached_attachments.order(updated_at: :desc)
+    scope = @unit.messages.includes(message_recipients: [unit_membership: :user]).draft_and_queued.with_attached_attachments.order(updated_at: :desc)
     set_page_and_extract_portion_from(scope.all, per_page: [20])
   end
 
