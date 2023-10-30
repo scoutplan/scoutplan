@@ -44,3 +44,6 @@ Metrics/MethodLength:
 
 Naming/BlockForwarding:
   EnforcedStyle: explicit
+
+Style/FrozenStringLiteralComment:
+  Enabled: false

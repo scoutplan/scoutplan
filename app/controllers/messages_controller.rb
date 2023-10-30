@@ -186,7 +186,7 @@ class MessagesController < UnitContextController
   end
 
   def create_recipients
-    @message.message_recipients.destroy_all
+    @message.message_recipients.delete_all
     return unless params[:message_recipients].present?
 
     member_ids = params[:message_recipients][:id]
