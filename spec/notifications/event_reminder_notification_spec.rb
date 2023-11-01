@@ -16,6 +16,7 @@ RSpec.describe EventReminderNotification do
   end
 
   it "delivers an email" do
+    Flipper.enable(:deliver_email)
     expect { EventReminderNotification.with(event: @event).deliver([@member]) }
       .to change { ActionMailer::Base.deliveries.count }.by(1)
   end
