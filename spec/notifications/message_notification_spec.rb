@@ -17,7 +17,13 @@ RSpec.describe MessageNotification do
   end
 
   it "delivers an email" do
+    Flipper.enable(:deliver_email)
     expect { MessageNotification.with(message: @message).deliver([@member]) }
       .to change { ActionMailer::Base.deliveries.count }.by(1)
+  end
+
+  it "doesn't deliver email if deliver_email is disabled" do
+    expect { MessageNotification.with(message: @message).deliver([@member]) }
+    .to change { ActionMailer::Base.deliveries.count }.by(0)
   end
 end
