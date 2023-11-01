@@ -98,6 +98,6 @@ class User < ApplicationRecord
   end
 
   def super_admin?
-    (ENV['SCOUTPLAN_ADMINS']&.split(',') || ['admin@scoutplan.org']).include?(self.email)
+    (ENV["SCOUTPLAN_ADMINS"]&.split(",") || ["admin@scoutplan.org"]).include?(email)
   end
 end

@@ -7,6 +7,9 @@ class ApplicationController < ActionController::Base
   before_action :process_query_string
   after_action :clear_session_view
   after_action :track_action
+  before_action do
+    Rack::MiniProfiler.authorize_request if current_user&.super_admin?
+  end
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized 
 
