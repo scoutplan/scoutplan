@@ -42,7 +42,8 @@ class MessagesController < UnitContextController
 
   def edit
     authorize @message
-    @recipients = @message.message_recipients.map { |m| CandidateMessageRecipient.new(m.member, :committed, "") }
+    message_recipients = @message.message_recipients.includes(unit_membership: :user)
+    @recipients = message_recipients.map { |m| CandidateMessageRecipient.new(m.member, :committed, "") }
   end
 
   def update
