@@ -6,21 +6,26 @@
 # rubocop:disable Metrics/PerceivedComplexity
 # rubocop:disable Metrics/CyclomaticComplexity
 class MessagesController < UnitContextController
-  before_action :find_message, except: [:index, :drafts, :scheduled, :sent, :new, :create, :recipients, :addressables, :commit]
+  before_action :find_message,      except: [:index, :drafts, :scheduled, :sent, :new, :create,
+                                             :recipients, :addressables, :commit]
   before_action :set_message_token, only: [:new, :edit]
-  before_action :set_addressables, only: [:new, :edit, :addressables]
-  after_action :create_recipients, only: [:create, :update]
+  before_action :set_addressables,  only: [:new, :edit, :addressables]
+  before_action :set_senders,       only: [:new, :edit]
+  after_action  :create_recipients, only: [:create, :update]
 
   def index
+    authorize Message
     redirect_to drafts_unit_messages_path(@unit)
   end
 
   def drafts
+    authorize Message
     scope = @unit.messages.includes(message_recipients: [unit_membership: :user]).draft_and_queued.with_attached_attachments.order(updated_at: :desc)
     set_page_and_extract_portion_from(scope.all, per_page: [20])
   end
 
   def sent
+    authorize Message
     scope = @unit.messages.includes(message_recipients: [unit_membership: :user]).sent.with_attached_attachments.order(updated_at: :desc)
     set_page_and_extract_portion_from(scope.all, per_page: [20])
   end
@@ -28,7 +33,7 @@ class MessagesController < UnitContextController
   def show; end
 
   def new
-    authorize current_member.messages.new
+    authorize current_member.messages.new(author: current_member)
     @message = current_member.messages.new(send_at: Date.today, status: :draft)
   end
 
@@ -177,8 +182,9 @@ class MessagesController < UnitContextController
   end
 
   def message_params
-    result = params.require(:message).permit(:title, :body, :audience, :member_type, :member_status, :send_at)
-    result.merge!(author: @current_member) unless result[:author].present?
+    result = params.require(:message).permit(:title, :body, :audience, :member_type,
+                                             :member_status, :send_at, :author_id)
+    result.merge!(sender: @current_member)
     result
   end
 
@@ -204,6 +210,11 @@ class MessagesController < UnitContextController
 
   def set_message_token
     @message_token = SecureRandom.hex(10)
+  end
+
+  def set_senders
+    @eligible_senders = @unit.members.adult.status_active_and_registered
+                             .includes(:user).order("users.first_name, users.last_name")
   end
 end
 

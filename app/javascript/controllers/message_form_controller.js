@@ -7,6 +7,7 @@ export default class extends Controller {
   static targets = [ "attachmentsList", "attachmentsWrapper", "attachmentForm", "audienceList", "audienceName",
                      "ffCheckWrapper", "fileInput", "form", "testMode",
                      "addressBook", "memberTypeCheckBox", "memberStatusCheckBox", "subjectTextBox", "bodyTextArea",
+                     "authorSelect",
                      "sendMessageButton", "sendLaterButton", "sendPreviewButton", "tempFileInput",
                      "queryInput", "addressBook", "recipientList" ];
   static values = { unitId: Number };
@@ -21,6 +22,7 @@ export default class extends Controller {
     this.establishAttachmentsObserver();
     this.validate();
     this.formData = new FormData(this.formTarget);
+    this.displaySenderLongName();
   }
 
   blur(event) {
@@ -103,6 +105,16 @@ export default class extends Controller {
       event.returnValue = "";
     }
   }
+
+  displaySenderLongName(event) {
+    this.authorSelectTarget.querySelectorAll("option").forEach((option) => {
+      option.innerText = option.dataset.shortText;
+    });
+
+    const selectedOption = this.authorSelectTarget.selectedOptions[0];
+    const longName = selectedOption.dataset.longText;
+    selectedOption.innerText = longName;
+  }  
 
   establishRecipientObserver() {
     this.recipientObserver = new MutationObserver((mutations) => {

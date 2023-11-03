@@ -10,6 +10,14 @@ class MessagePolicy < UnitContextPolicy
     admin?
   end
 
+  def drafts?
+    index?
+  end
+
+  def sent?
+    index?
+  end
+
   def create?
     admin?
   end
@@ -32,5 +40,9 @@ class MessagePolicy < UnitContextPolicy
 
   def duplicate?
     admin? || @message.author == @membership
+  end
+
+  def send_on_behalf?
+    admin?
   end
 end

@@ -10,4 +10,11 @@ namespace :scoutplan_messages do
   task send_daily_reminders: :environment do
     DailyReminderSender.new.perform
   end
+
+  desc "Set message senders"
+  task set_message_senders: :environment do
+    Message.all.each do |message|
+      message.update!(sender: message.author)
+    end
+  end
 end

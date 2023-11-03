@@ -627,7 +627,7 @@ en:
 
     new:
       buttons:
-        cancel: "Back to email list"
+        cancel: "All messages"
         drafts: "%{count} drafts"
 
     tooltips:
