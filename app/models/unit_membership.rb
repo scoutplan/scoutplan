@@ -53,6 +53,7 @@ class UnitMembership < ApplicationRecord
   scope :active, -> { where(status: %i[active]) }
   scope :status_active_and_registered, -> { where(status: %i[active registered]) } # everyone except inactives
   scope :contactable, -> { joins(:user).where("email NOT LIKE 'anonymous-member-%@scoutplan.org'") }
+  scope :emailable, -> { joins(:user).where("email NOT LIKE 'anonymous-member-%@scoutplan.org'") }
   scope :message_approver, -> { where(role: %i[admin]) }
 
   delegate :time_zone, to: :unit
@@ -124,4 +125,8 @@ class UnitMembership < ApplicationRecord
     end
   end
   # rubocop:enable Style/RedundantBegin
+
+  def sender_name_and_address
+    "#{user.display_name} at #{unit.name} <#{unit.from_address}>"
+  end
 end

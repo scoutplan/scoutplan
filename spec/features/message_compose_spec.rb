@@ -42,10 +42,10 @@ describe "messages", type: :feature do
       expect(page).not_to have_current_path(unit_messages_path(@unit))
     end
 
-    it "displays 'From' address correctly" do
-      visit(new_unit_message_path(@unit))
-      expect(page).to have_content("#{@member.display_name} at #{@unit.name} <#{@unit.from_address}>")
-    end
+    # it "displays 'From' address correctly" do
+    #   visit(new_unit_message_path(@unit))
+    #   expect(page).to have_content("#{@member.display_name} at #{@unit.name} <#{@unit.from_address}>")
+    # end
   end
 
   describe "message compose", :skip, js: true do

@@ -4,6 +4,7 @@ class Message < ApplicationRecord
   include Notifiable, Replyable, Sendable
 
   belongs_to :author, class_name: "UnitMembership"
+  belongs_to :sender, class_name: "UnitMembership"
 
   has_one :unit, through: :author
 
