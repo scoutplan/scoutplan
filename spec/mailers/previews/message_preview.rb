@@ -1,14 +1,11 @@
-# frozen_string_literal: true
-
 require "faker"
 
 class MessagePreview < ActionMailer::Preview
   def message_notification
-    url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     recipient = Unit.first.members.first
     message = recipient.messages.first
-    message.body = Faker::Lorem.paragraphs(number: 3).join("\n\n")
-    message.body.concat("\n\n<a href='#{url}'>#{url}</a>")
+    message.title = "Bring your rain gear!"
+    message.body = "Weather forecast is calling for rain. Let's stay dry out there!"
     MessageMailer.with(recipient: recipient, message: message).message_notification
   end
 end

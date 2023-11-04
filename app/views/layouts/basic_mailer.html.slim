@@ -1,48 +1,51 @@
 doctype html
+html(style="height:100%;")
+  head
 
-head
-
-body(style="font-family: sans-serif; color: #57534e;")
-  table(style="width: 500px; line-height: 110%;")
-    - if @unit&.logo&.attached?
+  body(style="font-family: sans-serif; color: #57534e; height:100%;")
+    table(style="width: 500px; line-height: 110%; background:#F5F5F4; margin:0 auto; height:100%; table-layout:fixed;")
       tr
-        td(style="padding: 20px 0;")
-          = link_to root_url do
-            = image_tag "data:image/#{@unit&.logo.filename.extension};base64,#{Base64.encode64(@unit.logo.blob.download)}",
-                        style: "width:80%;max-width:150px;height:auto;text-decoration:none;color:rgb(255,255,255,1.0);"
+        td(valign="top")
+          table
+            - if @unit&.logo&.attached?
+              tr
+                td(style="padding-top: 30px; text-align:center; valign:top;")
+                  = link_to root_url, style: "display:block;" do
+                    = image_tag "data:image/#{@unit&.logo.filename.extension};base64,#{Base64.encode64(@unit.logo.blob.download)}",
+                                style: "width:80%;max-height:150px;width:auto;text-decoration:none;color:rgb(255,255,255,1.0);"
 
-    tr
-      td(style="")
-        = yield
+            tr
+              td(style="padding: 30px; line-height: 1.4; valign:top;")
+                = yield
 
-css:
-  body {
-    color: #333;
-  }
+  css:
+    body {
+      color: #333;
+    }
 
-  .button {
-    border-radius: 0.25rem;
-    padding: 0.75rem 2rem;
-    background: #ddd;
-    color: #333;
-    text-decoration: none;
-    font-weight: bold;
-    line-height: 1.0;
-  }
+    .button {
+      border-radius: 0.25rem;
+      padding: 0.75rem 2rem;
+      background: #ddd;
+      color: #333;
+      text-decoration: none;
+      font-weight: bold;
+      line-height: 1.0;
+    }
 
-  .button:hover {
-    background: #ccc;
-  }
+    .button:hover {
+      background: #ccc;
+    }
 
-  .button-green {
-    background: #65a30d;
-    color: #f7fee7;
-  }
+    .button-green {
+      background: #65a30d;
+      color: #f7fee7;
+    }
 
-  .button-green:hover {
-    background: #4d7c0f;
-  }
+    .button-green:hover {
+      background: #4d7c0f;
+    }
 
-  .text-lg {
-    font-size: 110%;
-  }
+    .text-lg {
+      font-size: 110%;
+    }

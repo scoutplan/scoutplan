@@ -1,6 +1,4 @@
-# frozen_string_literal: true
-
-# Rails Mailer for sending communications to UnitMemberships (members)
+# rubocop:disable Metrics/ClassLength
 class MemberMailer < ScoutplanMailer
   before_action :set_addresses
   before_action :time_zone
@@ -52,9 +50,10 @@ class MemberMailer < ScoutplanMailer
     end
 
     mail(
-      to:      @to_address,
-      from:    unit_from_address_with_name(@message.author.short_display_name),
-      subject: subject
+      to:       @to_address,
+      from:     unit_from_address_with_name(@message.author.short_display_name),
+      # reply_to: @message.author.email,
+      subject:  subject
     )
   end
 
@@ -78,8 +77,8 @@ class MemberMailer < ScoutplanMailer
     @events = Event.find(params[:event_ids])
     @unit = @events.first.unit
     mail(
-      to: @to_address,
-      from: @from_address,
+      to:      @to_address,
+      from:    @from_address,
       subject: annotated_subject(t("mailers.member_mailer.rsvp_nag.subject"))
     )
   end
@@ -88,16 +87,16 @@ class MemberMailer < ScoutplanMailer
     @event = Event.find(params[:event_id])
     @unit = @event.unit
     mail(
-      to: @to_address,
-      from: @from_address,
+      to:      @to_address,
+      from:    @from_address,
       subject: annotated_subject(t("mailers.member_mailer.rsvp_nag.subject"))
     )
   end
 
   def test_email
     mail(
-      to: @to_address,
-      from: @from_address,
+      to:      @to_address,
+      from:    @from_address,
       subject: "Test Message from #{@unit.name}"
     )
   end
@@ -129,3 +128,4 @@ class MemberMailer < ScoutplanMailer
     Time.zone = @unit.settings(:locale).time_zone
   end
 end
+# rubocop:enable Metrics/ClassLength

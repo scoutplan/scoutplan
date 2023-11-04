@@ -1,9 +1,7 @@
-- content_for :title do
-  = @message.title
+h1(style="margin: 0;") = @message.title
 
-- content_for :left_column do
-  == @message.body
+h2 Greetings
 
-- content_for :right_column do
-
-- content_for :footer do
+== @message.body
+br
+br
