@@ -1,4 +1,3 @@
-h1(style="margin-top: 0;") = @message.title
+h1(style="margin-top: 0; line-height:1.0;") = @message.title
 
-section(style="margin-top: 1rem; line-height: 125%;")
-  == @message.body.to_plain_text
+== @message.body.to_plain_text
