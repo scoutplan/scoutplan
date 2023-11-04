@@ -3,16 +3,16 @@ doctype html
 head
 
 body(style="font-family: sans-serif; color: #57534e;")
-  table(style="width: 500px; line-height: 110%;")
+  table(style="width: 500px; line-height: 110%; background:#F5F5F4; margin:0 auto;")
     - if @unit&.logo&.attached?
       tr
-        td(style="padding: 20px 0;")
+        td(style="padding-top: 30px; text-align:center;")
           = link_to root_url do
             = image_tag "data:image/#{@unit&.logo.filename.extension};base64,#{Base64.encode64(@unit.logo.blob.download)}",
                         style: "width:80%;max-width:150px;height:auto;text-decoration:none;color:rgb(255,255,255,1.0);"
 
     tr
-      td(style="")
+      td(style="padding: 30px;")
         = yield
 
 css:
