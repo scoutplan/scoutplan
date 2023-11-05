@@ -3,7 +3,7 @@ div#sender_wrapper.flex.flex-row.gap-6.py-2.items-center
   
   - if MessagePolicy.new(@current_member, @message).send_on_behalf?
     = f.select :author_id,
-               options_for_select(@eligible_senders.map { |s| [s.full_name, s.id, { data: { short_text: s.full_name, long_text: s.sender_name_and_address }   }] },
+               options_for_select(@eligible_senders.map { |s| [s.full_name, s.id, { data: { short_text: s.full_display_name, long_text: s.sender_name_and_address }   }] },
                                   @message.author_id),
                { include_blank: false },
                { class: "w-full border-0 -mx-3 rounded dark:bg-stone-800 focus:ring-0",
