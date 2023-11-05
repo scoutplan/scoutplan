@@ -6,10 +6,10 @@ html(style="height:100%;")
     table(style="width: 500px; line-height: 110%; background:#F5F5F4; margin:0 auto; height:100%; table-layout:fixed;")
       tr
         td(valign="top")
-          table
+          table(style="width: 100%;")
             - if @unit&.logo&.attached?
               tr
-                td(style="padding-top: 30px; text-align:center; valign:top;")
+                td(style="padding-top: 30px;" valign="top" align="center")
                   = link_to root_url, style: "display:block;" do
                     = image_tag "data:image/#{@unit&.logo.filename.extension};base64,#{Base64.encode64(@unit.logo.blob.download)}",
                                 style: "width:80%;max-height:150px;width:auto;text-decoration:none;color:rgb(255,255,255,1.0);"

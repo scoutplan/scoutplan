@@ -7,6 +7,7 @@ class MessageMailer < ApplicationMailer
   before_action :attach_files
 
   def message_notification
+    # @message = params[:message]
     mail(to: to_address, from: from_address, reply_to: @message.email, subject: subject)
   end
 
