@@ -17,9 +17,9 @@ module Message::Sendable
 
   def send!
     Rails.logger.warn "Sending message #{id}"
-    recipients.each { |recipient| MemberNotifier.new(recipient).send_message(self) }
+    # recipients.each { |recipient| MemberNotifier.new(recipient).send_message(self) }
 
-    # MessageNotification.with(message: self).deliver_later(recipients)
+    MessageNotification.with(message: self).deliver_later(recipients)
     mark_as_sent!
   end
 
