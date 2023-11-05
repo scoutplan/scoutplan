@@ -1,8 +1,3 @@
-/ - if @search_result_class.present? && addressable.result.class.name != @search_result_class
-/   hr.border-messages-700
-
-/ - @search_result_class = addressable.result.class.name
-
 = content_tag :li,
   id: addressable.key,
   role: "option",

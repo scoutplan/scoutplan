@@ -13,7 +13,7 @@ class UnitMembership < ApplicationRecord
   include Contactable, EventInvitable
 
   belongs_to :unit
-  belongs_to :user
+  belongs_to :user, touch: true
 
   validates_uniqueness_of :user, scope: :unit
   validates_presence_of :user, :status
