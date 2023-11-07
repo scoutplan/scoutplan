@@ -12,5 +12,7 @@ class EventReminderJob < ApplicationJob
     return unless @event.updated_at == event_updated_at
 
     @event.remind!
+  rescue ActiveRecord::RecordNotFound => e
+    Rails.logger.error "EventReminderJob: #{e.message}"
   end
 end
