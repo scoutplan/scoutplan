@@ -15,7 +15,7 @@ p
   |  the <strong>#{@event.title}</strong> 
   
   - if @event.single_day?
-    | on #{l @event_date, format: "%A, %B %e"}.
+    | on #{l @event.starts_at, format: "%A, %B %e"}.
   - else
     |  from #{l @event.starts_at, format: "%A, %B %e"}
     |  to #{l @event.ends_at, format: "%A, %B %e"}.

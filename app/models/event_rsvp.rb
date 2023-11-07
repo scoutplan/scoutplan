@@ -29,14 +29,12 @@ class EventRsvp < ApplicationRecord
   scope :youth, -> { joins(:unit_membership).merge(UnitMembership.youth) }
   scope :adult, -> { joins(:unit_membership).merge(UnitMembership.adult) }
 
-  # do the Event and UnitMembership share a Unit in common?
-  # if not, something's wrong
   def common_unit?
     errors.add(:event, "and Member must belong to the same Unit") unless event.unit == member.unit
   end
 
   def response_allowed?
-    return if EventRsvpPolicy.new(respondent, self).create?
+    return true if EventRsvpPolicy.new(respondent, self).create?
 
     errors.add(:event_rsvp, "respondent is not authorized to create or edit this RSVP")
   end

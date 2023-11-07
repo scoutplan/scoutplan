@@ -27,7 +27,7 @@ section.bg-stone-100.dark:bg-stone-800.rounded.p-4.mb-2.mt-2.border.dark:border-
                 dark:disabled:bg-yellow-900 dark:disabled:text-yellow-700 \
                 rounded",
         data: { turbo_frame: "main", turbo_action: "restore" },
-        disabled: true
+        disabled: !@needs_approval
 
       = link_to t("global.nevermind"),
         unit_event_path(event.unit, event),
