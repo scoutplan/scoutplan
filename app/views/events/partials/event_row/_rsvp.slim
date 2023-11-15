@@ -1,3 +1,5 @@
+/! event.requires_rsvp: #{event.requires_rsvp}
+/! user_signed_in?: #{user_signed_in?}
 - return unless event.requires_rsvp && user_signed_in?
 
 - family_has_rsvps = false
@@ -8,7 +10,9 @@
   - family_has_rsvps = family_has_rsvps || rsvp.present?
   - family_fully_responded = family_fully_responded && rsvp.present?
 
+/! event.rsvp_open?: #{event.rsvp_open?}
 - if event.rsvp_open?
+  /! policy(event).rsvp?: #{policy(event).rsvp?}
   - if policy(event).rsvp?
     - if family_fully_responded
       = link_to unit_event_edit_rsvps_path(@unit, event),
