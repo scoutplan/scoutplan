@@ -19,6 +19,9 @@ class EventRsvpPolicy < UnitContextPolicy
     create?
   end
 
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
   # the ability to RSVP is determined by a number of factors
   def create?(for_member = nil)
     for_member ||= rsvp.member
@@ -29,10 +32,16 @@ class EventRsvpPolicy < UnitContextPolicy
     # a parent can respond for their children
     return true if @membership.children.include?(for_member)
 
+    # an adult can respond for themselves
+    return true if for_member == @membership && for_member.adult?
+
     # a youth member can respond for themselves if the event, unit, and membership allow it
     return true if for_member == @membership && for_member.youth? && for_member.allow_youth_rsvps? &&
                    rsvp.event.allow_youth_rsvps? && rsvp.unit.allow_youth_rsvps?
 
     false
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
 end
