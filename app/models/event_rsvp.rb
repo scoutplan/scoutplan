@@ -64,7 +64,6 @@ class EventRsvp < ApplicationRecord
   end
 
   def enforce_approval_policy
-    ap "#enforce_approval_policy"
     return unless requires_approval?
 
     self.response = case response

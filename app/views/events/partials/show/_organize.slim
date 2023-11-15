@@ -1,4 +1,5 @@
 - return unless @event.organizable? && EventPolicy.new(@current_member, @event).rsvps?
+
 - accepted_count = @event.rsvps.accepted.count
 
 article.py-4
@@ -16,6 +17,6 @@ article.py-4
                 data: { turbo_action: "advance" } do
         = t("events.show.buttons.organize")
 
-  footer.font-normal.mt-4.text-sm.text-violet-700.dark:text-violet-300.pl-1
+  footer.font-normal.mt-4.text-sm.text-violet-700.dark:text-violet-300.pl-2
     i.fa-solid.fa-user-crown.mr-2(title="#{t('events.show.captions.organize_title')}")
     = t("events.show.captions.organize_reason")

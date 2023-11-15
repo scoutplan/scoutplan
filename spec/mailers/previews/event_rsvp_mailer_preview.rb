@@ -1,12 +1,9 @@
-# frozen_string_literal: true
-
 # rubocop:disable Metrics/ClassLength
 # rubocop:disable Metrics/AbcSize
-
 class EventRsvpMailerPreview < ActionMailer::Preview
   def event_rsvp_notification
     setup
-    EventRsvpMailer.with(event_rsvp: @event_rsvp).event_rsvp_notification
+    EventRsvpMailer.with(event_rsvp: @event_rsvp, recipient: @event_rsvp.member).event_rsvp_notification
   end
 
   def event_rsvp_notification_rsvp_closed
@@ -124,7 +121,7 @@ class EventRsvpMailerPreview < ActionMailer::Preview
   end
 
   def setup
-    @event_rsvp = FactoryBot.create(:event_rsvp, response: "accepted")
+    @event_rsvp = FactoryBot.create(:event_rsvp, response: "accepted", unit: Unit.first)
     @event = @event_rsvp.event
     @unit = @event_rsvp.unit
 
@@ -141,6 +138,5 @@ class EventRsvpMailerPreview < ActionMailer::Preview
     @event.rsvp_closes_at = Time.zone.now + 1.day
   end
 end
-
 # rubocop:enable Metrics/ClassLength
 # rubocop:enable Metrics/AbcSize

@@ -1,8 +1,5 @@
-# frozen_string_literal: true
-
-after 'development:events', 'development:users' do
-  user  = User.first
+after "development:events", "development:unit_memberships" do
+  member = UnitMembership.first
   event = Event.last
-
-  event.event_rsvps.create(user: user, response: :declined)
+  event.event_rsvps.create!(unit_membership: member, response: :declined, respondent: member)
 end

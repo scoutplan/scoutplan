@@ -1,0 +1,33 @@
+- message = "Hi, #{@member.first_name},"
+
+/ - if @rsvp.self_responded?
+/   - message += "We've received your RSVP"
+/ - else
+/   - message += "#{@rsvp.respondent.display_name} has let us know"
+
+/ - message += " that you"
+
+/ - if @rsvp.accepted? || @rsvp.accepted_pending?
+/   - message += " will be"
+/ - else
+/   - message += " will not be"
+  
+/ - message += " attending the #{@event.title}"
+
+/ - if @event.single_day?
+/   - message += " on #{l @event.starts_at, format: '%A, %B %e'}."
+/ - else
+/   - message += " from #{l @event.starts_at, format: '%A, %B %e'} to #{l @event.ends_at, format: '%A, %B %e'}."
+
+/ - if @rsvp.pending_approval?
+/   - message += " Your RSVP is tentantive until #{grammatical_list(@rsvp.approvers.map(&:first_name), "or")} approves it. We've notified them and we'll let you know when your RSVP has been confirmed."
+
+/ = message
+
+/ - if @rsvp.accepted? || @rsvp.accepted_pending?
+/   = render partial: "mailer_components/location", locals: { event: @event, rsvp: @rsvp }
+/   = render partial: "mailer_components/organizers", locals: { event: @event }
+/   = render partial: "mailer_components/ics_attachment", locals: { event: @event }
+
+/ = render partial: "mailer_components/change_of_plans", locals: { event: @event, rsvp: @rsvp }
+/ = render partial: "mailer_components/disclaimers", locals: { unit: @unit }

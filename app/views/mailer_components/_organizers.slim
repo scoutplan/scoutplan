@@ -1,10 +1,9 @@
 - return unless event.organizers.any?
 
-hr
-h2 Contact
-
-dl
-  - event.organizers.each do |organizer|
-    dt = organizer.display_name
-    dd = mail_to(organizer.email)
-    dd = phone_to(organizer.phone, organizer.phone.phony_formatted(country_code: "US"))
+section(style="border-top:1px solid #ccc;")
+  h2 Contact
+  dl
+    - event.organizers.each do |organizer|
+      dt = organizer.display_name
+      dd = mail_to(organizer.email)
+      dd = phone_to(organizer.phone, organizer.phone.phony_formatted(country_code: "US"))

@@ -1,4 +1,3 @@
-# frozen_string_literal: true
-
 Unit.destroy_all
-Unit.create(name: 'Troop 123')
+Unit.create!(name: "Troop 123", location: "North Kilttown, IM")
+puts "Created #{Unit.count} units"
