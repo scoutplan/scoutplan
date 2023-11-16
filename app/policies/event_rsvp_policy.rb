@@ -23,9 +23,6 @@ class EventRsvpPolicy < UnitContextPolicy
   # rubocop:disable Metrics/CyclomaticComplexity
   # rubocop:disable Metrics/PerceivedComplexity
   # the ability to RSVP is determined by a number of factors
-  # rubocop:disable Metrics/AbcSize
-  # rubocop:disable Metrics/CyclomaticComplexity
-  # rubocop:disable Metrics/PerceivedComplexity
   def create?(for_member = nil)
     for_member ||= rsvp.member
 
@@ -47,11 +44,6 @@ class EventRsvpPolicy < UnitContextPolicy
   # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/PerceivedComplexity
-
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/CyclomaticComplexity
-  # rubocop:enable Metrics/PerceivedComplexity
-
 
   def requires_approval?
     rsvp.respondent.youth?

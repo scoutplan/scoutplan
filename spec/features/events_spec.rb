@@ -43,6 +43,22 @@ describe "events", type: :feature do
       visit current_path # reload the page
       expect(page).to have_content(event_title)
     end
+
+    it "shows events from earlier today" do
+      logout(:user)
+      login_as(@normal_user, scope: :user)
+      Time.zone = "America/New_York"
+      FactoryBot.create(:event,
+                        :published,
+                        title:     "Earlier today",
+                        unit:      @unit,
+                        starts_at: DateTime.current.change(hour: 19, min: 0),
+                        ends_at:   DateTime.current.change(hour: 20, min: 30))
+      t = DateTime.current.change(hour: 20, min: 0)
+      Timecop.freeze(t)
+      visit unit_events_path(@unit)
+      expect(page).to have_content("Earlier today")
+    end
   end
 
   describe "as an admin..." do

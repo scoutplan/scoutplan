@@ -1,4 +1,7 @@
-- return unless event.starts_at.today?
+- if event.in_progress?
+  .inline-block.font-bold.text-xs.rounded.bg-emerald-600.text-emerald-100.px-2.py-1
+    = t(".now")
 
-.inline-block.font-bold.text-xs.rounded.bg-lime-200.text-lime-700.px-2.py-1
-  = "Today"
+- elsif event.starts_at.today?
+  .inline-block.font-bold.text-xs.rounded.bg-lime-600.text-lime-100.px-2.py-1
+    = t(".today")

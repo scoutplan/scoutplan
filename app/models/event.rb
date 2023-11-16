@@ -122,6 +122,10 @@ class Event < ApplicationRecord
     ends_at.past?
   end
 
+  def in_progress?
+    starts_at.past? && ends_at.future?
+  end
+
   def requires_payment?
     (cost_adult + cost_youth).positive?
   end
