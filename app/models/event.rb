@@ -123,7 +123,7 @@ class Event < ApplicationRecord
   end
 
   def in_progress?
-    starts_at.past? && ends_at.future?
+    published? && starts_at.past? && ends_at.future?
   end
 
   def requires_payment?
@@ -145,6 +145,10 @@ class Event < ApplicationRecord
 
   def shifts?
     event_shifts.count.positive?
+  end
+
+  def today?
+    starts_at.today? && published?
   end
 
   def chat

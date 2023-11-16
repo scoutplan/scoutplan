@@ -56,6 +56,10 @@ en:
   change: "Change"
   change_family_responses: "Change your family's responses"
 
+  index:
+    events:
+      draft: "Draft"
+
   global:
     back_to_top: "Back to top"
     cancel: "Cancel"
