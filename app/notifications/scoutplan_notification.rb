@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ScoutplanNotification < Noticed::Base
   def format_for_twilio
     {
@@ -18,12 +16,20 @@ class ScoutplanNotification < Noticed::Base
   end
 
   def sms_body(**assigns)
-    renderer.render(
-      template: "sms_notifications/#{base_name}",
-      format:   "text",
-      assigns:  assigns
-    )
+    Time.use_zone(time_zone) do
+      renderer.render(
+        template: "sms_notifications/#{base_name}",
+        format:   "text",
+        assigns:  assigns
+      )
+    end
   end
+
+  def time_zone
+    unit&.time_zone || Rails.application.config.default_time_zone
+  end
+
+  def unit; end
 
   def base_name
     self.class.name.underscore.split("_")[0..-2].join("_")

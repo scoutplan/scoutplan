@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventReminderNotification < ScoutplanNotification
   LEAD_TIME = 12.hours.freeze
 
