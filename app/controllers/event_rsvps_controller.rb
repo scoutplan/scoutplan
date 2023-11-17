@@ -6,6 +6,7 @@ class EventRsvpsController < UnitContextController
   before_action :find_event, except: [:destroy]
 
   def create
+    # authorize @event, :rsvp?
     @service = EventRsvpService.new(current_member)
     @rsvp = @service.create_or_update(params)
     flash[:notice] = I18n.t("events.organize.confirmations.updated_html", name: @rsvp.member.full_display_name)

@@ -19,7 +19,7 @@ class EventPolicy < UnitContextPolicy
   end
 
   def edit_rsvps?
-    true
+    rsvp?
   end
 
   def create?

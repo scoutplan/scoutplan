@@ -31,4 +31,30 @@ describe "event_rsvp", type: :feature do
     visit path
     expect(page).to have_current_path(path)
   end
+
+  it "allows authorized users to access the page" do
+    event = FactoryBot.create(:event, :requires_rsvp, unit: @unit, title: "RSVP Event")
+    path = unit_event_edit_rsvps_path(@unit, event)
+
+    rsvp = EventRsvp.new(event: event, member: @child)
+    policy = EventRsvpPolicy.new(@member, rsvp)
+    expect(policy.create?).to be_truthy
+
+    visit path
+    expect(page).to have_current_path(path)
+  end
+
+  it "prevents unauthorized users from accessing the page" do
+    logout(:user)
+    login_as(@child.user)
+    event = FactoryBot.create(:event, :requires_rsvp, unit: @unit, title: "RSVP Event")
+    path = unit_event_edit_rsvps_path(@unit, event)
+
+    rsvp = EventRsvp.new(event: event, member: @child)
+    policy = EventRsvpPolicy.new(@child, rsvp)
+    expect(policy.create?).to be_falsey
+
+    visit path
+    expect(page).to have_current_path(list_unit_events_path(@unit))
+  end
 end
