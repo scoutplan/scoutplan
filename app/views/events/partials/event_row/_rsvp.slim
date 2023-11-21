@@ -19,9 +19,12 @@
         title: t("events.index.tooltips.response_received"),
         class: "block py-2 text-sm",
         data: { turbo_action: "advance", turbo_frame: "main" } do
-        .font-bold.mr-1
+        .inline-block.font-bold.mr-1
           i.fa-solid.fa-circle-check.fa-fw.text-green-500.mr-1
           = t("events.index.rsvp.response_received")
+
+        .inline-block.rounded.px-2.py-1.border.border-yellow-500.text-yellow-800.font-bold.ml-1.hover:bg-yellow-500.dark:text-yellow-500.dark:hover:text-yellow-800
+          = "Change"
 
     - elsif family_has_rsvps
       = link_to t("events.index.event_row.rsvp_complete"),

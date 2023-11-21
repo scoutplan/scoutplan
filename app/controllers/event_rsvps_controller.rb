@@ -6,7 +6,7 @@ class EventRsvpsController < EventContextController
   def create
     if params[:unit_memberships].present?
       rsvps = create_batch 
-      redirect_to [@unit, @event], notice: "Your #{count > 1 ? 'RSVPs have' : 'RSVP has'} been received."
+      redirect_to [@unit, @event], notice: "Your #{rsvps.count > 1 ? 'RSVPs have' : 'RSVP has'} been received."
     elsif params[:member_id].present? && params[:response].present?
       create_single
       redirect_to unit_event_rsvps_path(@unit, @event)
@@ -31,6 +31,7 @@ class EventRsvpsController < EventContextController
       rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: member_id.to_i)
       rsvp.respondent = @current_member
       rsvp.response = rsvp_attributes[:response]
+      rsvp.note = params[:note]
       rsvp.save
 
       rsvps << rsvp
