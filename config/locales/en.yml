@@ -728,6 +728,13 @@ en:
 
     notices:
       update_success: "Your unit profile has been updated"
+  
+  unit_memberships:
+    partials:
+      modal:
+        communication_settings_fields:
+          notifications: "Notifications"
+          receives_all_rsvps: "RSVPs for all events"
 
   unit_membership_profiles:
     index:

@@ -72,7 +72,8 @@ class UnitMembership < ApplicationRecord
       via_email:                  true,
       via_sms:                    false,
       event_organizer_digest:     true,
-      receives_event_invitations: false
+      receives_event_invitations: false,
+      receives_all_rsvps:         false
     }
     s.key :policy, defaults: { youth_rsvps: false }
     s.key :alerts
@@ -83,7 +84,8 @@ class UnitMembership < ApplicationRecord
 
   def child_of?(candidate)
     return parents.include?(candidate) if candidate.is_a?(UnitMembership)
-    return parents.map(&:user).include?(candidate) if candidate.is_a?(User)
+
+    parents.map(&:user).include?(candidate) if candidate.is_a?(User)
   end
 
   def siblings
@@ -112,6 +114,10 @@ class UnitMembership < ApplicationRecord
 
   def contactable_object
     user
+  end
+
+  def receives_event_rsvps?
+    settings(:communication).receives_all_rsvps || event_organizers.any?
   end
 
   def smsable?

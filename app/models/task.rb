@@ -59,8 +59,6 @@ class Task < ApplicationRecord
     schedule.next_occurrence(last_ran_at || 1.week.ago)
   end
 
-  # set `last_ran_at`
-  #
   def set_high_watermark
     update! last_ran_at: DateTime.now
   end

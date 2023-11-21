@@ -5,8 +5,6 @@ div.pt-4
   = label_tag :communication_preferences, label, class: "block mb-2 font-bold"
 
   .py-1
-
-
     = switch( "settings[communication]", "via_email",
           { label: "Via email",
             checked: member.contactable?(via: :email) && member.settings(:communication).via_email == "true",
@@ -23,6 +21,17 @@ div.pt-4
           "true", "false" ) 
 
 div.pt-4
+  h4.font-bold.mb-2 = t(".notifications")
+
+  .py-1
+    = switch( "settings[communication]", "receives_all_rsvps",
+          { label: t(".receives_all_rsvps"),
+            checked: member.settings(:communication).receives_all_rsvps == "true",
+            data: {  },
+            disabled: !member.contactable? },
+          "true", "false" )
+
+  .py-1
     = render partial: "components/switch",
              locals: { object_name: object_name,
                        label: "Receive event invitations via email 14 days before event",

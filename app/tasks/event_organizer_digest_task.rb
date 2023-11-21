@@ -4,11 +4,6 @@
 # containing all RSVPs, flagging those that are new within
 # the last 24 hours.
 class EventOrganizerDigestTask < UnitTask
-  # def initialize(unit)
-  #   @unit = unit
-  #   super
-  # end
-
   def description
     "Daily digest for event organizers"
   end
@@ -16,7 +11,7 @@ class EventOrganizerDigestTask < UnitTask
   def perform
     Time.zone = unit.settings(:locale).time_zone
     unit.members.each do |member|
-      next unless member.event_organizers.present?
+      next unless member.receives_event_rsvps?
 
       notifier = MemberNotifier.new(member)
       notifier.send_event_organizer_digest(last_ran_at)

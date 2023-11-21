@@ -44,8 +44,17 @@ class MemberNotifier < ApplicationNotifier
     send_text  { |recipient| DailyReminderTexter.new(recipient).send_message }
   end
 
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/CyclomaticComplexity
   def send_event_organizer_digest(last_ran_at = nil)
-    events = @unit.events.future.rsvp_required.select { |event| event.organizers.map(&:member).include? @member }
+    events = if @member.settings(:communication).receives_all_rsvps == "true"
+               @unit.events.future.rsvp_required
+             else
+               @unit.events.future.rsvp_required.select { |event| event.organizers.map(&:member).include? @member }
+             end
+
     return unless events.present?
 
     events.each do |event|
@@ -55,9 +64,9 @@ class MemberNotifier < ApplicationNotifier
       next unless new_rsvps.count.positive?
 
       send_email do |recipient|
-        MemberMailer.with(member: recipient,
-                          event: event,
-                          rsvps: rsvps,
+        MemberMailer.with(member:      recipient,
+                          event:       event,
+                          rsvps:       rsvps,
                           last_ran_at: start_date)
                     .event_organizer_daily_digest_email.deliver_later
       end
@@ -66,6 +75,10 @@ class MemberNotifier < ApplicationNotifier
       end
     end
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/CyclomaticComplexity
 
   def send_family_rsvp_confirmation(event)
     send_email do |recipient|
