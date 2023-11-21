@@ -4,9 +4,25 @@ class EventRsvpsController < EventContextController
   before_action :find_rsvp,  only: [:destroy]
 
   def create
-    rsvps = create_batch if params[:unit_memberships].present?
-    redirect_to [@unit, @event], notice: "Your RSVP#{rsvps.count > 1 ? 's' : ''} has been received."
+    if params[:unit_memberships].present?
+      rsvps = create_batch 
+      redirect_to [@unit, @event], notice: "Your #{count > 1 ? 'RSVPs have' : 'RSVP has'} been received."
+    elsif params[:member_id].present? && params[:response].present?
+      create_single
+      redirect_to unit_event_rsvps_path(@unit, @event)
+    end
   end
+
+  def destroy
+    authorize @rsvp
+    event = @rsvp.event
+    display_name = @rsvp.full_display_name
+    @rsvp.destroy
+    redirect_to unit_event_rsvps_path(@unit, event),
+                notice: I18n.t("events.organize.confirmations.delete", name: display_name)
+  end
+
+  private
 
   def create_batch
     rsvps = []
@@ -23,16 +39,14 @@ class EventRsvpsController < EventContextController
     rsvps
   end
 
-  def destroy
-    authorize @rsvp
-    event = @rsvp.event
-    display_name = @rsvp.full_display_name
-    @rsvp.destroy
-    redirect_to unit_event_rsvps_path(@unit, event),
-                notice: I18n.t("events.organize.confirmations.delete", name: display_name)
-  end
+  def create_single
+    rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: params[:member_id].to_i)
+    rsvp.respondent = @current_member
+    rsvp.response = params[:response]
+    rsvp.save!
 
-  private
+    [rsvp]
+  end
 
   def find_rsvp
     @rsvp = EventRsvp.find(params[:id])

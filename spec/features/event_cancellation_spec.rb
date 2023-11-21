@@ -19,7 +19,7 @@ describe "event_cancellation", type: :feature do
     @event = FactoryBot.create(:event, :draft, unit: @unit, title: "Draft Event")
 
     @admin_member = @unit.memberships.create(user: @admin_user, role: "admin", status: :active)
-    @normal_member = @unit.memberships.create(user: @normal_user, role: "member", status: :active)
+    @normal_member = @unit.memberships.create(user: @normal_user, role: "member", member_type: "adult", status: :active)
 
     @event = FactoryBot.create(:event, :published, unit: @unit, title: "Published event")
 
@@ -42,7 +42,7 @@ describe "event_cancellation", type: :feature do
     end
 
     it "includes acceptors option for events that have accepted RSVPs" do
-      @event.rsvps.create(member: @normal_member, respondent: @normal_member, response: :accepted)
+      @event.rsvps.create!(member: @normal_member, respondent: @normal_member, response: :accepted)
       visit unit_event_cancel_path(@unit, @event)
       expect(page).to have_text("who plan on attending")
     end

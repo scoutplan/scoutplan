@@ -12,7 +12,6 @@ module EventRsvp::Notifiable
   end
 
   def notify!
-    ap recipients
     EventRsvpNotification.with(event_rsvp: self).deliver_later(recipients)
   end
 

@@ -8,16 +8,12 @@ RSpec.describe EventRsvpMailer, type: :mailer do
     @parent = FactoryBot.create(:unit_membership, :adult, unit: @unit)
     @parent.child_relationships.create(child_unit_membership: @youth_member)
     @event = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit)
-    @rsvp = @event.rsvps.create!(unit_membership: @youth_member, respondent: @youth_member, response: "accepted")
+    @rsvp = @event.rsvps.create!(unit_membership: @youth_member, respondent: @parent, response: "accepted")
 
-    @mail = EventRsvpMailer.with(event_rsvp: @rsvp).event_rsvp_notification
+    @mail = EventRsvpMailer.with(event_rsvp: @rsvp, recipient: @parent).event_rsvp_notification
   end
 
   it "renders the headers" do
     expect(@mail.subject).to eq("[#{@unit.name}] Your RSVP for #{@event.title} has been received")
-  end
-
-  it "correctly renders the body" do
-
   end
 end

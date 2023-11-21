@@ -97,6 +97,7 @@ Rails.application.routes.draw do
     resources :events, path: "schedule" do
       resources :chat_messages, as: "discussion", path: "discussion"
       resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
+      resources :event_rsvps, only: [:destroy]
       resources :payments, module: :events do
         collection do
           get :receive

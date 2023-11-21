@@ -18,7 +18,7 @@ describe "event_rsvp", type: :feature do
     path = unit_event_edit_rsvps_path(@unit, @event)
     visit path
     expect(page).to have_current_path(path)
-    radio = page.find("#event_members_#{@child.id}_event_rsvp_response_declined", visible: false)
+    radio = page.find("#unit_memberships_#{@child.id}_response_declined", visible: false)
     radio.click
 
     expect { page.find("#accept").click }.to change { EventRsvp.count }.by(1)
