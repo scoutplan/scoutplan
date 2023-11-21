@@ -1,6 +1,4 @@
-# frozen_string_literal: true
-
-# responsible for Unit <> User relationships
+# rubocop:disable Metrics/ClassLength
 class UnitMembershipsController < ApplicationController
   before_action :find_unit, only: %i[index new create bulk_update invite]
   before_action :find_membership, except: %i[index new create bulk_update]
@@ -32,17 +30,20 @@ class UnitMembershipsController < ApplicationController
     page_title [@unit.name, @user.full_display_name]
   end
 
+  # rubocop:disable Metrics/AbcSize
   def create
     find_or_create_user
 
     @member = @unit.memberships.new(member_params)
     @member.user_id = @user.id
     return unless @member.save!
+
     MemberRelationshipService.new(@member).update(params[:member_relationships])
 
     flash[:notice] = t("members.confirmations.create", member_name: @member.full_display_name, unit_name: @unit.name)
     redirect_to unit_members_path(@unit)
   end
+  # rubocop:enable Metrics/AbcSize
 
   def find_or_create_user
     @user = User.create_with(
@@ -101,7 +102,8 @@ class UnitMembershipsController < ApplicationController
   private
 
   def find_membership
-    @target_membership = UnitMembership.includes(:parent_relationships, :child_relationships).find(params[:member_id] || params[:id])
+    @target_membership = UnitMembership.includes(:parent_relationships,
+                                                 :child_relationships).find(params[:member_id] || params[:id])
     @target_user = @target_membership.user
     @current_unit = @unit = @target_membership.unit
     @current_member = @unit.membership_for(current_user)
@@ -115,9 +117,9 @@ class UnitMembershipsController < ApplicationController
   def member_params
     params.require(:unit_membership).permit(
       :status, :role, :member_type, :tag_list,
-      child_relationships_attributes: [:id, :child_unit_membership_id, :_destroy],
+      child_relationships_attributes:  [:id, :child_unit_membership_id, :_destroy],
       parent_relationships_attributes: [:id, :_destroy],
-      user_attributes: [:id, :first_name, :last_name, :phone, :email, :nickname]
+      user_attributes:                 [:id, :first_name, :last_name, :phone, :email, :nickname]
     )
   end
 
@@ -129,7 +131,8 @@ class UnitMembershipsController < ApplicationController
 
   def settings_params
     params.require(:settings).permit(
-      communication: [:via_email, :via_sms, :receives_event_invitations]
+      communication: [:via_email, :via_sms, :receives_event_invitations, :receives_all_rsvps]
     )
   end
 end
+# rubocop:enable Metrics/ClassLength
