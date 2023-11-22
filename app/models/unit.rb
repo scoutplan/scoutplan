@@ -129,7 +129,7 @@ class Unit < ApplicationRecord
     return if slug.present? || name.blank?
 
     candidate = base = name.parameterize
-    candidate = base + "-#{rand(100)}" while Unit.where(slug: candidate).exists?
+    candidate = base + "-#{SecureRandom.hex(6)}" while Unit.where(slug: candidate).exists?
 
     update(slug: candidate)
   end

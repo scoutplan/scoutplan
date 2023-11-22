@@ -11,7 +11,7 @@ class EventRsvpMailer < ApplicationMailer
 
   def event_rsvp_notification
     attach_files
-    mail(to: to_address, from: from_address, reply_to: reply_to, subject: subject, template_name: template_name)
+    mail(to: to_address, from: from_address, reply_to: reply_to, subject: subject)
   end
 
   private
@@ -41,10 +41,6 @@ class EventRsvpMailer < ApplicationMailer
     @unit = @rsvp.unit
   end
 
-  def template_name
-    @member == @recipient ? "event_rsvp_notification" : "event_rsvp_notification_for_other"
-  end
-
   def to_address
     email_address_with_name(@recipient.email, @recipient.full_display_name)
   end
@@ -54,7 +50,11 @@ class EventRsvpMailer < ApplicationMailer
   end
 
   def subject
-    "[#{@unit.name}] Your RSVP for #{@event.title} has been received"
+    if @member == @recipient
+      "[#{@unit.name}] Your RSVP for #{@event.title} has been received"
+    else
+      "[#{@unit.name}] Action required: Approve #{@member.first_name}'s RSVP to the #{@event.title}"
+    end
   end
 
   def reply_to

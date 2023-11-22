@@ -12,4 +12,16 @@ module GrammarHelper
 
     [things[0..-2].join(", "), "#{things.count > 2 ? ',' : ''}", " #{conjunction} ", things.last].join
   end
+
+  def member_list(members, current_member, conjunction = "and")
+    grammatical_list(
+      members.map do |member|
+        if member == current_member
+          "you"
+        else
+          member.first_name
+        end
+      end, conjunction
+    )
+  end
 end

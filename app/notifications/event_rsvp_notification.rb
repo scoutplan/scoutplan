@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventRsvpNotification < ScoutplanNotification
   deliver_by :database
   deliver_by :email, mailer: "EventRsvpMailer", if: :email?

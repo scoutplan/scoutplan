@@ -15,7 +15,7 @@ section.bg-stone-100.dark:bg-stone-800.rounded.p-4.mb-2.mt-2.border.dark:border-
             names: presenter.grammatical_list(@current_member.parents.map(&:display_first_name), "or"))  
 
     footer.flex.flex-col.md:flex-row.pt-4.gap-2
-      - done_caption = "Approve and Send" if @needs_approval
+      - done_caption = "Approve and Send" if @needs_approval && @can_approve
       = f.submit done_caption,
         id: "accept",
         class: "font-bold no-underline text-center \
