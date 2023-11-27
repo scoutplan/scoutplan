@@ -200,6 +200,11 @@ en:
       next_event: "Next"
       previous_event: "Previous" 
 
+    partials:
+      event_row:
+        organize:
+          organize: "View RSVPs"
+
     placeholders:
       title:        "Event title"
       location:     "Location"
