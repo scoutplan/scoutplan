@@ -24,11 +24,11 @@ p
     |  to #{l @event.ends_at, format: "%A, %B %e"}.
 
   - if @rsvp.pending_approval?
-    |  Their RSVP is tentative until #{member_list(@rsvp.approvers, @recipient, "or")} approves it.
+    |  This RSVP is tentative until #{member_list(@rsvp.approvers, @recipient, "or")} approves it.
 
     - if @rsvp.approvers.include?(@recipient)
       p = link_to "Approve Now",
-                  magic_url_for(@member, unit_event_edit_rsvps_url(@unit, @event)),
+                  magic_url_for(@recipient, unit_event_edit_rsvps_url(@unit, @event)),
                   class: "button button-rsvp",
                   style: "display: block; width: 100$; text-align: center;"
       p RSVPs close #{deictic_string_for_time_interval_from_day(@event.rsvp_closes_at)}

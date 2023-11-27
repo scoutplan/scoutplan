@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_03_174229) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_22_174519) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "unaccent"
@@ -264,6 +264,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_03_174229) do
     t.boolean "paid", default: false, null: false
     t.boolean "includes_activity", default: false, null: false
     t.integer "event_shift_ids", default: [], array: true
+    t.boolean "approved", default: false, null: false
   end
 
   create_table "event_shifts", force: :cascade do |t|

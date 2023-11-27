@@ -1,11 +1,9 @@
-# frozen_string_literal: true
-
 class EventRsvpsController < EventContextController
   before_action :find_rsvp,  only: [:destroy]
 
   def create
     if params[:unit_memberships].present?
-      rsvps = create_batch 
+      rsvps = create_batch
       redirect_to [@unit, @event], notice: "Your #{rsvps.count > 1 ? 'RSVPs have' : 'RSVP has'} been received."
     elsif params[:member_id].present? && params[:response].present?
       create_single

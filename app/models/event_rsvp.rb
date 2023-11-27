@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventRsvp < ApplicationRecord
   include Notifiable
 
@@ -8,7 +6,6 @@ class EventRsvp < ApplicationRecord
   belongs_to :respondent, class_name: "UnitMembership"
 
   before_save :enforce_approval_policy
-  after_commit :approve!
 
   has_many :documents, as: :documentable, dependent: :destroy
 
@@ -71,6 +68,7 @@ class EventRsvp < ApplicationRecord
                     when "declined" then "declined_pending"
                     else response
                     end
+    self.approved = pending_approval?(response_was) && !pending_approval?
   end
 
   def self_responded?
@@ -87,13 +85,5 @@ class EventRsvp < ApplicationRecord
 
   def pending_approval?(val = nil)
     %w[declined_pending accepted_pending].include?(val || response)
-  end
-
-  def approved?
-    pending_approval?(response_was) && !pending_approval?
-  end
-
-  def approve!
-    ap "Sending approval confirmation to the kid" if approved?
   end
 end

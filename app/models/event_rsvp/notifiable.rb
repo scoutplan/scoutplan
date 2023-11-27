@@ -8,10 +8,6 @@ module EventRsvp::Notifiable
   end
 
   def enqueue_notify_job
-    SendEventRsvpNotificationJob.perform_later(self)
-  end
-
-  def notify!
     EventRsvpNotification.with(event_rsvp: self).deliver_later(recipients)
   end
 
