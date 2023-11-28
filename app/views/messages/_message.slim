@@ -19,7 +19,7 @@ article.hover:bg-stone-100.dark:hover:bg-stone-800.-mx-3.px-3
           = message.recipients.any? ? message.recipients_preview : "No recipients"
 
       .line-clamp-1
-        = message.body
+        = message.body.to_plain_text
 
     .right
       .text-sm.md:text-base.whitespace-nowrap
