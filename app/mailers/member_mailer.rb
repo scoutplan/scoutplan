@@ -7,14 +7,14 @@ class MemberMailer < ScoutplanMailer
   def family_rsvp_confirmation_email
     @event = Event.find(params[:event_id])
     @service = RsvpService.new(@member, @event)
-    mail(to: @to_address,
-         from: @from_address,
+    mail(to:      @to_address,
+         from:    @from_address,
          subject: "#{@unit.name} — Your RSVP has been received")
   end
 
   def invitation_email
-    mail(to: @to_address,
-         from: @from_address,
+    mail(to:      @to_address,
+         from:    @from_address,
          subject: "Welcome to #{@unit.name}")
   end
 
@@ -35,11 +35,12 @@ class MemberMailer < ScoutplanMailer
     @rsvps = params[:rsvps]
     @last_ran_at = params[:last_ran_at] || @event.created_at
 
-    mail(to: @member.email,
-         from: @from_address,
+    mail(to:      @member.email,
+         from:    @from_address,
          subject: "#{@event.unit.name} #{@event.title} RSVPs")
   end
 
+  # rubocop:disable Metrics/AbcSize
   def message_email
     @message = Message.find(params[:message_id])
     subject = params[:preview] ? "[PREVIEW] " : ""
@@ -50,13 +51,17 @@ class MemberMailer < ScoutplanMailer
     end
 
     mail(
-      to:       @to_address,
-      from:     unit_from_address_with_name(@message.author.short_display_name),
-      # reply_to: @message.author.email,
-      subject:  subject
-    )
+      to:      @to_address,
+      from:    unit_from_address_with_name(@message.author.short_display_name),
+      subject: subject
+    ) do |format|
+      format.html { render layout: "basic_mailer" }
+      format.text
+    end
   end
+  # rubocop:enable Metrics/AbcSize
 
+  # rubocop:disable Metrics/AbcSize
   def daily_reminder_email
     Rails.logger.info "Emailing Daily Reminder to #{@member.flipper_id}..."
     @events = @unit.events.published.imminent
@@ -67,11 +72,12 @@ class MemberMailer < ScoutplanMailer
     )
 
     mail(
-      to: @to_address,
-      from: @from_address,
+      to:      @to_address,
+      from:    @from_address,
       subject: daily_reminder_subject
     )
   end
+  # rubocop:enable Metrics/AbcSize
 
   def rsvp_last_call_email
     @events = Event.find(params[:event_ids])
@@ -109,7 +115,7 @@ class MemberMailer < ScoutplanMailer
   end
 
   def unit_email_address
-    @unit.slug + "@" + ENV["EMAIL_DOMAIN"]
+    @unit.slug + "@" + ENV.fetch("EMAIL_DOMAIN", nil)
   end
 
   def daily_reminder_subject
