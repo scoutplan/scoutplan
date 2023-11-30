@@ -7,6 +7,7 @@ class MessageMailer < ApplicationMailer
   before_action :attach_files
 
   def message_notification
+    Rails.logger.warn("MessageMailer#message_notification to: #{to_address} from: #{from_address}")
     mail(to: to_address, from: from_address, reply_to: @message.email, subject: subject)
   end
 

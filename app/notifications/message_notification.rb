@@ -12,6 +12,12 @@ class MessageNotification < ScoutplanNotification
     true
   end
 
+  def email?
+    result = super
+    Rails.logger.warn("MessageNotification#email? #{result}")
+    result
+  end
+
   def format_for_twilio
     {
       From: ENV.fetch("TWILIO_NUMBER"),
