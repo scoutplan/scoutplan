@@ -1,0 +1,12 @@
+- return unless @event.requires_payment?
+
+.border-t.border-stone-500.py-4
+  .fa-stack.mr-1
+    i.fa-solid.fa-circle.fa-stack-2x.text-lime-600
+    i.fa-solid.fa-dollar.fa-stack-1x.fa-inverse
+
+  .inline.font-bold
+    - if @event.cost_adult == @event.cost_youth
+      = t("events.show.payment_amount_prompt", amount: number_to_currency(@event.cost_adult, precision: 0))
+    - else
+      = "#{number_to_currency(@event.cost_youth, precision: 0)} per youth; #{number_to_currency(@event.cost_adult, precision: 0)} per adult"
