@@ -1,6 +1,3 @@
-# frozen_string_literal: true
-
-# attributes determining our ability to contact a user/member
 module Contactable
   extend ActiveSupport::Concern
 
@@ -13,6 +10,8 @@ module Contactable
   def contactable?(via: :email)
     return contactable_object.emailable? if via == :email
     return contactable_object.smsable? if via == :sms
+
+    false
   end
 
   def emailable?
