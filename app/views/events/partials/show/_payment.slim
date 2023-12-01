@@ -1,4 +1,7 @@
-- return unless @event.requires_payment? && Flipper.enabled?(:payments, @current_member) && Flipper.enabled?(:payments, @current_unit)
+- return unless @event.requires_payment? && \
+                Flipper.enabled?(:payments, @current_member) && \
+                Flipper.enabled?(:payments, @current_unit) && \
+                @current_unit.payments_enabled?
 
 section.py-4.font-bold.border-t.border-stone-800.dark:border-stone-700
   .flex.flex-col.md:flex-row.justify-between.md:items-center.gap-2
@@ -17,16 +20,16 @@ section.py-4.font-bold.border-t.border-stone-800.dark:border-stone-700
         - if @amount_due > 0
 
           .flex.flex-row.items-center
+            = link_to "#", title: "View payment breakout",
+                      class: "grow-0 px-2",
+                      onclick: "document.querySelector('#payment_breakout').classList.toggle('hidden'); return false;" do
+              i.fa-regular.fa-info-circle.text-stone-500.ml-2
+
             = link_to new_unit_event_payment_path(@unit, @event, payment_method: :stripe),
                       class: "grow text-center inline-block rounded px-4 py-2 bg-lime-600 hover:bg-lime-700 text-lime-50",
                       data: { turbo: false } do
               i.fa-solid.fa-credit-card.mr-2
               = "Pay #{number_to_currency(@amount_due, precision: 2)} now"
-
-              = link_to "#", title: "View payment breakout",
-                        class: "grow-0 px-2",
-                        onclick: "document.querySelector('#payment_breakout').classList.toggle('hidden'); return false;" do
-                i.fa-regular.fa-info-circle.text-stone-500.ml-2
 
         - else
           = link_to profile_payments_path(current_user),
@@ -37,33 +40,33 @@ section.py-4.font-bold.border-t.border-stone-800.dark:border-stone-700
 
   #payment_breakout.rounded.p-4.bg-lime-100.text-lime-900.mt-4.hidden
 
-    table.w-full.w-fixed
+    table.w-full.w-fixed.text-lime-800
       tr
-        td.pr-2.w-auto Youth
+        td.pr-2.w-auto.py-1 Youth
         td.px-2.w-6 = @family_rsvps.youth.count
         td.px-2.w-6 = "@"
         td.text-right.px-2.w-6 = number_to_currency(@event.cost_youth, precision: 0)
         td.text-center.px-2.w-6 = "="
         td.text-right.pl-2.w-6 = number_to_currency(@event.cost_youth * @family_rsvps.youth.count, precision: 2)
 
-      tr.border-t.border-lime-300
-        td.pr-2 Adult
+      tr.border-t.border-lime-500
+        td.pr-2.py-1 Adult
         td.px-2 = @family_rsvps.adult.count
         td.px-2 = "@"
         td.px-2.text-right = number_to_currency(@event.cost_adult, precision: 0)
         td.px-2.text-center = "="
         td.pl-2.text-right = number_to_currency(@event.cost_adult * @family_rsvps.adult.count, precision: 2)        
 
-      tr.border-t.border-lime-300
-        td.pr-2 Subtotal
+      tr.border-t.border-lime-500
+        td.pr-2.py-1 Subtotal
         td.px-2
         td
         td.text-right
         td.text-center
         td.text-right = number_to_currency(@subtotal, precision: 2)    
 
-      tr.border-t.border-lime-300
-        td.pr-2(colspan="1") Transaction fee
+      tr.border-t.border-lime-500
+        td.pr-2.py-1(colspan="1") Transaction fee
         td.text-right(colspan="5")
           - if @transaction_fee.positive?
             = number_to_currency(@transaction_fee, precision: 2)
@@ -71,16 +74,16 @@ section.py-4.font-bold.border-t.border-stone-800.dark:border-stone-700
             = "Covered by #{@unit.name}"
 
       - if @total_paid.positive?
-        tr.border-t.border-lime-300
-          td.pr-2 = link_to "Previously paid", profile_payments_path(@current_member), class: "text-blue-500 underline hover:no-underline", data: { turbo_action: "advance" }
+        tr.border-t.border-lime-500
+          td.pr-2.py-1 = link_to "Previously paid", profile_payments_path(@current_member), class: "text-blue-500 underline hover:no-underline", data: { turbo_action: "advance" }
           td
           td
           td
           td          
           td.text-right = number_to_currency(- @total_paid, precision: 2)
 
-      tr.border-t.border-lime-300
-        td.pr-2 Amount Due
+      tr.border-t.border-lime-500
+        td.pr-2.py-1 Amount Due
         td
         td
         td

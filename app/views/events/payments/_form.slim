@@ -21,36 +21,36 @@
     h2.font-bold= "Payment Method"
 
     p.py-1
-      = f.label :method_check do
+      = f.label :method_check, :check, class: "flex flex-row items-center gap-2" do
         = f.radio_button :method, :check, checked: true
-        i.fa-solid.fa-money-check-pen.fa-fw.text-sky-400.px-2
+        i.fa-solid.fa-money-check-pen.text-sky-400.fa-fw
         = "Check"
 
     p.py-1
-      = f.label :method_cash, :check do
+      = f.label :method_cash, :check, class: "flex flex-row items-center gap-2" do
         = f.radio_button :method, :cash
-        i.fa-solid.fa-money-bill.fa-fw.text-green-600.px-2
+        i.fa-solid.fa-money-bill.text-green-600.fa-fw
         = "Cash"
 
     p.py-1
-      = f.label :method_venmo, :venmo do
+      = f.label :method_venmo, :venmo, class: "flex flex-row items-center gap-2" do
         = f.radio_button :method, :venmo
-        i.fa-solid.fa-v.fa-fw.text-sky-600.px-2
+        i.fa-solid.fa-v.text-sky-600.fa-fw
         = "Venmo"
 
     p.py-1
-      = f.label :method_zelle, :zelle do
+      = f.label :method_zelle, :zelle, class: "flex flex-row items-center gap-2" do
         = f.radio_button :method, :zelle
-        i.fa-solid.fa-z.fa-fw.text-purple-600.px-2
+        i.fa-solid.fa-z.text-purple-600.fa-fw
         = "Zelle"
 
     p.py-0
-      = f.label :method_other, :other, class: "inline-block" do
+      = f.label :method_other, :other, class: "flex flex-row items-center gap-2" do
         = f.radio_button :method, :other, onfocus: "var e = document.getElementById('payment_note'); e.focus(); e.select();"
-        i.fa-solid.fa-tag.fa-fw.text-stone-500.px-2
+        i.fa-solid.fa-tag.text-stone-500.fa-fw
         = "Other"
 
-      = f.text_field :note, placeholder: "Note (e.g. sibling discount)", class: "px-2 py-1 border rounded border-stone-300 inline-block ml-2"
+        = f.text_field :note, placeholder: "Note (e.g. sibling discount)", class: "px-2 py-1 border rounded border-stone-300 inline-block ml-2"
 
   footer.mt-6
     = f.submit t("payments.receive.record_payment"), class: "block rounded px-4 py-2 bg-green-600 text-white font-bold hover:bg-green-700 hover:text-white"
