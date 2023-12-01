@@ -192,12 +192,14 @@ export default class extends Controller {
     lastElem.remove();
   }
 
-  async commit() {
+  async commit(event) {
+    console.log(event);
     this.queryInputTarget.placeholder = "";
     const current = this.addressBookTarget.querySelector(".selected");
     const recipientTags = this.recipientListTarget.querySelectorAll(".recipient");
     const memberIds = Array.from(recipientTags).map((tag) => { return tag.dataset.recipientId; });
-    const body = { "key": current.dataset.key, "member_ids": memberIds }
+    const body = { "key": current.dataset.key, "member_ids": memberIds };
+    if (event.metaKey || event.ctrlKey || event.shiftKey) { body["member_type"] = "adult"; }
     await post(`/u/${this.unitIdValue}/messages/commit`, { body: body, responseKind: "turbo-stream" });    
 
     this.markAsDirty();
