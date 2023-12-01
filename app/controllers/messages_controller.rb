@@ -80,6 +80,8 @@ class MessagesController < UnitContextController
   def commit
     return unless (key = params[:key]).present?
 
+    ap params[:member_type]
+
     type, id = key.split("_")
     @recipients = case type
                   when "membership"
@@ -94,6 +96,7 @@ class MessagesController < UnitContextController
                     end
                   end
 
+    @recipients = @recipients.select(&:adult?) if params[:member_type] == "adult"
     @recipients = @recipients.map { |m| CandidateMessageRecipient.new(m, :committed, "") }
 
     # find parents of youth members
