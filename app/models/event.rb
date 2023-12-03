@@ -134,7 +134,7 @@ class Event < ApplicationRecord
 
   # override getter
   def rsvp_closes_at
-    read_attribute(:rsvp_closes_at) || starts_at
+    (read_attribute(:rsvp_closes_at) || starts_at).at_end_of_day
   end
 
   def rsvp_open?
