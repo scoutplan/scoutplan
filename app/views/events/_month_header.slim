@@ -1,17 +1,20 @@
-- if @display_month.nil? || @display_month != event.starts_at.month
-  - class_name = "month-header-#{event.starts_at.strftime('%Y')}-#{event.starts_at.strftime('%m')}"
-  li.border-t.border-stone-800.dark:border-stone-400.py-4.event-month-boundary(class="#{class_name}")
-    h3.text-brand-500.uppercase.tracking-wider(role="heading", aria-level="3")
-      = event.starts_at.strftime('%B')
-      - if event.starts_at.month == 1
-        = event.starts_at.strftime(' %Y')
-
-    .flex.flex-col.divide-y
-
-  / css:
-  /   .#{class_name} ~ .#{class_name} {
-  /     display: none;
-  /   }
+- return unless @display_month.nil? || @display_month != event.starts_at.month
 
 - @display_month = event.starts_at.month
 - @display_year = event.starts_at.year
+- class_name = "month-header-#{event.starts_at.strftime('%Y')}-#{event.starts_at.strftime('%m')}"
+
+li.border-t.border-stone-800.dark:border-stone-400.py-4.event-month-boundary(class="#{class_name}")
+  h3.text-brand-500.uppercase.tracking-wider(role="heading" aria-level="3")
+    = event.starts_at.strftime("%B")
+    - if event.starts_at.month == 1
+      = event.starts_at.strftime(" %Y")
+
+css:
+  .month-header-#{event.starts_at.strftime('%Y')}-#{event.starts_at.strftime('%m')} {
+    display: none;
+  }
+
+  :nth-child(1 of .month-header-#{event.starts_at.strftime('%Y')}-#{event.starts_at.strftime('%m')}) {
+    display: block;
+  }

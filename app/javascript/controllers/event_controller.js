@@ -13,7 +13,7 @@ export default class extends Controller {
     this.toggleBodyClass(event, "showing-past-events");
     document.getElementById("event_month_current_0").scrollIntoView({
       behavior: "instant"
-  });
+    });
   }
 
   toggleCancelledEvents(event) {
