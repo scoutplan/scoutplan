@@ -1,6 +1,3 @@
-# frozen_string_literal: true
-
-# job to send reminder to unit members
 class EventReminderJob < ApplicationJob
   include Notifiable
 

@@ -37,9 +37,11 @@ describe "unit settings", type: :feature do
     end
 
     it "visits the unit settings page" do
-      path = unit_settings_path(@member.unit)
+      path = unit_settings_path(@member.unit) + "/unit_profile"
       visit path
       expect(page).to have_current_path(path)
+      click_button I18n.t("settings.unit_profile.submit")
+      expect(page).to have_current_path(unit_settings_path(@member.unit))
     end
 
     it "visits the communication settings page" do
