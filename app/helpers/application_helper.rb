@@ -8,21 +8,15 @@ module ApplicationHelper
     content_tag(tag, content || conditional, options)
   end
 
-  # rubocop:disable Metrics/MethodLength
-  def deictic_string_for_time_interval_from_day(val)
-    if val.today?
-      "today"
-    elsif val.tomorrow?
-      "tomorrow"
-    elsif val.yesterday?
-      "yesterday"
-    elsif val.future?
-      "in #{distance_of_time_in_words_to_now(val)}"
-    elsif val.past?
-      "#{distance_of_time_in_words_to_now(val)} ago"
-    end
+  def string_for_time_internal_from_day(val)
+    return "today" if val.today?
+    return "tomorrow" if val.tomorrow?
+    return "yesterday" if val.yesterday?
+    return "in #{distance_of_time_in_words_to_now(val)}" if val.future?
+    return "#{distance_of_time_in_words_to_now(val)} ago" if val.past?
+
+    nil
   end
-  # rubocop:enable Metrics/MethodLength
 
   def fontawesome_file_icon(extension, style = "fa-solid")
     raw(content_tag(:i, nil, class: "#{style} fa-fw fa-#{fontawesome_file_icon_name(extension)}"))

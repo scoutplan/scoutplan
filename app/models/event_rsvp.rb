@@ -8,7 +8,7 @@ class EventRsvp < ApplicationRecord
   before_save :enforce_approval_policy
 
   has_many :documents, as: :documentable, dependent: :destroy
-
+  has_one :unit, through: :unit_membership
   validates_uniqueness_of :event, scope: :unit_membership
   validates :response, presence: { message: "requires a response" }
   validate :common_unit?

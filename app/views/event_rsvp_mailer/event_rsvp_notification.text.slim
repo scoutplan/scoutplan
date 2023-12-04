@@ -1,4 +1,4 @@
-- message = "Hi, #{@member.first_name}. "
+- message = "Hi, #{@recipient.first_name}. "
 
 - if @rsvp.self_responded?
   - message += "We've received your RSVP that you "
@@ -24,8 +24,8 @@
 
   - if @rsvp.pending_approval?
     - message += " Their RSVP is tentative until #{member_list(@rsvp.approvers, @recipient, "or")} approves it. Approve now by visiting "
-    - message += magic_url_for(@member, unit_event_edit_rsvps_url(@unit, @event))
-    - message += ". RSVPs close #{deictic_string_for_time_interval_from_day(@event.rsvp_closes_at)}."
+    - message += magic_url_for(@recipient, unit_event_edit_rsvps_url(@unit, @event))
+    - message += ". RSVPs close #{string_for_time_internal_from_day(@event.rsvp_closes_at)}."
 
     - if @recipient == @rsvp.member
       - message += " We've notified them and we'll let you know when your RSVP has been confirmed."

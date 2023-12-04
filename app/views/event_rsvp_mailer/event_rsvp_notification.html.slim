@@ -31,7 +31,7 @@ p
                   magic_url_for(@recipient, unit_event_edit_rsvps_url(@unit, @event)),
                   class: "button button-rsvp",
                   style: "display: block; width: 100$; text-align: center;"
-      p RSVPs close #{deictic_string_for_time_interval_from_day(@event.rsvp_closes_at)}
+      p RSVPs close #{string_for_time_internal_from_day(@event.rsvp_closes_at)}
 
     - if @recipient == @rsvp.member
       |  We've notified them and we'll let you know when your RSVP has been confirmed.
@@ -42,4 +42,4 @@ p
   = render partial: "mailer_components/ics_attachment", locals: { event: @event }
 
 = render partial: "mailer_components/change_of_plans", locals: { event: @event, rsvp: @rsvp }
-= render partial: "mailer_components/disclaimers", locals: { unit: @unit }
+= render partial: "mailer_components/disclaimers", locals: { unit: @unit, member: @recipient }

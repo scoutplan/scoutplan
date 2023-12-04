@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "rails_helper"
 
 RSpec.describe EventRsvp::Notifiable, type: :concern do
@@ -12,7 +10,12 @@ RSpec.describe EventRsvp::Notifiable, type: :concern do
   describe "callbacks" do
     it "enqueues a job to send an email" do
       rsvp = FactoryBot.build(:event_rsvp, event: @event, member: @member, respondent: @member)
-      expect { rsvp.save! }.to have_enqueued_job
+      expect { rsvp.save! }.to have_enqueued_job(Noticed::DeliveryMethods::Email)
+    end
+
+    it "enqueues a job to send an SMS" do
+      rsvp = FactoryBot.build(:event_rsvp, event: @event, member: @member, respondent: @member)
+      expect { rsvp.save! }.to have_enqueued_job(Noticed::DeliveryMethods::Twilio)
     end
   end
 end

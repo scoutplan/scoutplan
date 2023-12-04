@@ -11,6 +11,10 @@ class EventRsvpPolicy < UnitContextPolicy
     @event = @rsvp.event
   end
 
+  def approve?
+    admin? || organizer? || rsvp.member.parents.include?(membership)
+  end
+
   def destroy?
     admin? || organizer?
   end
@@ -30,10 +34,10 @@ class EventRsvpPolicy < UnitContextPolicy
     return true if admin? || organizer? || event.organizer?(membership)
 
     # a parent can respond for their children
-    return true if @membership.children.include?(for_member)
+    return true if membership.children.include?(for_member)
 
     # an adult can respond for themselves
-    return true if for_member == @membership && for_member.adult?
+    return true if for_member == membership && for_member.adult?
 
     # a youth member can respond for themselves if the event, unit, and membership allow it
     return true if for_member == membership && for_member.youth? && for_member.allow_youth_rsvps? &&
@@ -48,5 +52,4 @@ class EventRsvpPolicy < UnitContextPolicy
   def requires_approval?
     rsvp.respondent.youth?
   end
-
 end

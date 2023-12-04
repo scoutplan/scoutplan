@@ -30,7 +30,7 @@ class EventRsvpsController < EventContextController
       rsvp.respondent = @current_member
       rsvp.response = rsvp_attributes[:response]
       rsvp.note = params[:note]
-      rsvp.save
+      rsvp.save if rsvp.changed?
 
       rsvps << rsvp
     end
