@@ -3,7 +3,7 @@
 - ["departure", "arrival", "activity"].each do |location_type|
   - location_count += 1 if @event.event_locations.exists?(location_type: location_type)
 
-section#location.py-4.border-t.border-stone-800.dark:border-stone-700
+article.py-4
   - if @event.online
     = t("events.show.captions.online")
     .inline-block.ml-2

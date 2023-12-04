@@ -1,9 +1,9 @@
 - return unless @event.organizable? && EventPolicy.new(@current_member, @event).rsvps?
 - accepted_count = @event.rsvps.accepted.count
 
-.border-t.py-4.border-stone-700.font-bold
+article.py-4
   .flex.flex-col.md:flex-row.gap-3.justify-between.md:items-center
-    .left
+    .left.font-bold
       i.fa-stack.mr-1(title="#{t('events.show.titles.organize')}")
         i.fa-solid.fa-circle.fa-stack-2x.text-violet-700
         i.fa-solid.fa-clipboard.fa-stack-1x.text-white
