@@ -5,12 +5,12 @@
 
 - rsvp_service = RsvpService.new(@current_member, @event)
 
-section#rsvp_status_container.py-4.font-bold.border-t.border-stone-800.dark:border-stone-600
+article.py-4
   - if rsvp_service.any_responses?
     .flex.flex-col.md:flex-row.justify-between.md:items-center.gap-3
-      div.left
+      div.left.font-bold
         - if rsvp_service.family_fully_responded?
-          i.fa-stack.mr-2(title="#{t('events.show.captions.full_response')}")
+          i.fa-stack.mr-1(title="#{t('events.show.captions.full_response')}")
             i.fa-solid.fa-circle.fa-stack-2x.text-yellow-500
             i.fa-solid.fa-check.fa-stack-1x.text-white
 

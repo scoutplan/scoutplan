@@ -1,8 +1,8 @@
 - return unless @event.map_address.present?
 - return unless (query = CGI.escape(@event.map_address.gsub(",", "")))
-
-iframe.mb-4(
-  width="100%"
-  height="300px"
-  src="https://www.google.com/maps/embed/v1/place?key=#{ENV['GOOGLE_API_KEY']}&zoom=10&q=#{query}"
-  style="border:none;")
+article.py-4
+  iframe(
+    width="100%"
+    height="300px"
+    src="https://www.google.com/maps/embed/v1/place?key=#{ENV['GOOGLE_API_KEY']}&zoom=10&q=#{query}"
+    style="border:none;")

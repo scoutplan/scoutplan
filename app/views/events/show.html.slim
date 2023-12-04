@@ -3,23 +3,24 @@
   /! Current unit id: #{@unit.id}
   /! Current user id: #{current_user.id}
   /! #{@event.email}
-  article.event.mx-auto.max-w-2xl.md:mt-0.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
-    section#informative.flex.flex-col
-      = render partial: "events/partials/show/header"
-      = render partial: "events/partials/show/date"
-      = render partial: "events/partials/show/rsvp"
-      = render partial: "events/partials/show/organize"
-      = render partial: "events/partials/show/costs"
-      = render partial: "events/partials/show/location"
-      = render partial: "events/partials/show/chat"
-      = render partial: "events/partials/show/payment"
-      = render partial: "events/partials/show/weather"
-      = render partial: "events/partials/show/description"
-      = render partial: "events/partials/show/contact"
-      = render partial: "events/partials/show/attachments"
+  .max-w-2xl.mx-auto
+    article.event.mx-auto.max-w-2xl.md:mt-0.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
+      section.grid.grid-col-1.divide-y.divide-stone-300.dark:divide-stone-700
+        = render partial: "events/partials/show/header"
+        = render partial: "events/partials/show/date"
+        = render partial: "events/partials/show/rsvp"
+        = render partial: "events/partials/show/organize"
+        = render partial: "events/partials/show/costs"
+        = render partial: "events/partials/show/location"
+        = render partial: "events/partials/show/chat"
+        = render partial: "events/partials/show/payment"
+        = render partial: "events/partials/show/weather"
+        = render partial: "events/partials/show/description"
+        = render partial: "events/partials/show/contact"
+        = render partial: "events/partials/show/attachments"
 
-    = render partial: "events/partials/show/packing_lists"
-  = render partial: "events/partials/show/watermarks"
+      = render partial: "events/partials/show/packing_lists"
+    = render partial: "events/partials/show/watermarks"
 
 javascript:
   document.title = "#{@event.title.html_safe} · #{@unit.name.html_safe}"
