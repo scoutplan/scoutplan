@@ -30,14 +30,6 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  settings:
-    edit:
-      stripe_dashboard: "Visit Stripe Dashboard"
-    payments:
-      index:
-        stripe_dashboard: "Visit Stripe Dashboard"
-        pending:          "Pending"
-
   you_parenths: "(you)"
   app_name: "Scoutplan"
   administration: "Administration"
@@ -688,6 +680,12 @@ en:
       pending_success:    "Your Email has been sent for approval"
 
   settings:
+    edit:
+      stripe_dashboard: "Visit Stripe Dashboard"
+    payments:
+      index:
+        stripe_dashboard: "Visit Stripe Dashboard"
+        pending:          "Pending"  
     buttons:
       save:           "Save settings"
       
@@ -733,6 +731,9 @@ en:
 
     notices:
       update_success: "Your unit profile has been updated"
+
+    unit_profile:
+      submit: "Save Changes"
   
   unit_memberships:
     partials:

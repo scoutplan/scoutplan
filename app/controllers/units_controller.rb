@@ -1,6 +1,3 @@
-# frozen_string_literal: true
-
-# Controller for Units
 class UnitsController < UnitContextController
   def show
     redirect_to unit_events_path(@unit)
@@ -8,7 +5,6 @@ class UnitsController < UnitContextController
 
   def update
     authorize @unit
-
     @unit.update(unit_params) if params[:unit].present?
     @unit.update_settings(settings_params) if params[:settings].present?
     UnitTaskService.new(@unit).setup_tasks_from_settings
