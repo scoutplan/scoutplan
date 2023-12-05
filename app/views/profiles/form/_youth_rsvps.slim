@@ -1,5 +1,5 @@
 - return unless member.youth?
-- return unless Flipper.enabled?(:youth_rsvps, @unit)
+- return unless @unit.allow_youth_rsvps?
 
 section.pt-4.border-t.dark:border-stone-700
   h2.font-bold.mb-1 = "Event RSVPs"
@@ -9,7 +9,7 @@ section.pt-4.border-t.dark:border-stone-700
   
   .mt-3
     = switch("unit_membership", "allow_youth_rsvps",
-             { label: "Allow #{member.first_name} to RSVP for events", checked: false,
+             { label: "Allow #{member.first_name} to RSVP for events",
                checked: member.allow_youth_rsvps?,
                disabled: !member.contactable?(via: :email),
                data: { profile_form_target: "youthRsvpsField" } },

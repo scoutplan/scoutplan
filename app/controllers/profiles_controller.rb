@@ -43,7 +43,7 @@ class ProfilesController < ApplicationController
   def find_profile
     @member = UnitMembership.find(params[:profile_id] || params[:id])
     @unit = @member.unit
-    @editing_member = @unit.membership_for(current_user)
+    @current_member = @unit.membership_for(current_user)
     @profile = UnitMembershipProfile.new(@member)
   end
 

@@ -10,11 +10,6 @@ class UnitMembershipProfilePolicy < ApplicationPolicy
   end
 
   def edit?
-    ap user
-    ap "#############"
-    ap profile.member
-    ap "#############"
-    ap profile.member.user
     return true if profile.member.user == user && profile.member.adult?
     return true if profile.member.child_of?(user)
 

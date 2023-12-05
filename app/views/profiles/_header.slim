@@ -3,8 +3,8 @@ header.flex.flex-row.items-center.justify-between.mb-4
     = "Personal information"
 
   .right
-    - if @editing_member.children.any?
+    - if @current_member.children.any?
       = select_tag :child_id,
-        options_from_collection_for_select(@editing_member.family, :id, :display_first_name, @member.id),
+        options_from_collection_for_select(@current_member.family, :id, :display_first_name, @member.id),
         class: "border-0 focus:ring-0 cursor-pointer text-right -mr-2 bg-transparent",
         data: { action: "change->profile-form#switchProfile" }
