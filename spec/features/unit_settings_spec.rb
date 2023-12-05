@@ -18,8 +18,15 @@ describe "unit settings", type: :feature do
     end
 
     it "prevents Unit Settings page navigation" do
-      visit unit_settings_path(@unit)
-      expect(page).to have_current_path(list_unit_events_path(@unit))
+      path = unit_settings_path(@unit)
+      visit path
+      expect(page).not_to have_current_path(path)
+    end
+
+    it "prevents Unit Policy page navigation" do
+      path = unit_setting_path(@unit, category: "policy")
+      visit path
+      expect(page).not_to have_current_path(path)
     end
   end
 
@@ -86,7 +93,6 @@ describe "unit settings", type: :feature do
       end
 
       it "saves digest settings" do
-        skip
         expect(@unit.settings(:communication).digest).to be_falsey
         expect(@unit.tasks.count).to eq(0)
 

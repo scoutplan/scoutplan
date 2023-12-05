@@ -1,0 +1,22 @@
+header.mb-6.mt-4
+  = render partial: "settings/back_to_settings"
+  h1.font-bold.text-4xl.mb-4
+    = t("settings.titles.policies")
+    .text-sm.font-bold.uppercase.tracking-wider
+      = @unit.name
+
+= form_with model: @unit do |f|
+  article.pb-8
+    h3.font-bold = t(".titles.allow_youth_rsvps")
+    p.mb-2 When enabled, parents/guardians can allow their youth to RSVP to events. Youth RSVPs are pending until a parent/guardian approves them.
+    = switch("unit", "allow_youth_rsvps",
+             { label: t(".buttons.allow_youth_rsvps"), checked: @unit.allow_youth_rsvps? },
+             "true", "false")  
+
+  footer.py-4
+    = f.submit t("settings.buttons.save"),
+               class: "rounded font-bold bg-lime-600 hover:bg-lime-700 text-white px-4 py-2"
+
+javascript:
+  document.title = "Policy Settings · #{@unit.name}"
+  
