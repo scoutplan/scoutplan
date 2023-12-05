@@ -695,7 +695,7 @@ en:
         stripe_dashboard: "Visit Stripe Dashboard"
         pending:          "Pending"  
     buttons:
-      save:           "Save settings"
+      save:           "Save Settings"
       
     captions:
       back:           "Back to unit setup"
@@ -727,11 +727,19 @@ en:
       rsvp_nag:       "Turn on RSVP prompts"
       rsvp_last_call: "Turn on RSVP last call reminders"
       event_organizer_digest: "Turn on event organizer RSVP notifications"
+    
+    policies:
+      buttons:
+        allow_youth_rsvps: "Allow youth members to tentatively RSVP for events"
+
+      titles:
+        allow_youth_rsvps: "Allow Youth RSVPs"
 
     titles:
       unit_profile:   "Edit your unit information"
       communications: "Communications"
       daily_reminder: "Event reminders"
+      policies:       "Policies"
       rsvp_nag:       "RSVP prompts"
       rsvp_last_call: "RSVP last calls"
       digest:         "Weekly newsletters"

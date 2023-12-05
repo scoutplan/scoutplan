@@ -13,6 +13,12 @@
         i.fa-solid.fa-fw.fa-flag.mr-2
         = "Unit Profile"
 
+      = link_to unit_setting_path(@unit, category: "policies"),
+                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100 dark:hover:bg-black",
+                data: { turbo_action: "advance" } do
+        i.fa-solid.fa-fw.fa-user-shield.mr-2
+        = t(".policies")        
+
       = link_to unit_event_categories_path(@unit),
                 class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100 dark:hover:bg-black",
                 data: { turbo_action: "advance" } do

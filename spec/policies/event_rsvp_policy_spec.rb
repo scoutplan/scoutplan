@@ -32,7 +32,7 @@ RSpec.describe EventRsvpPolicy, type: :model do
 
     describe "child rsvps" do
       it "can RSVP for their children" do
-        child = FactoryBot.create(:unit_membership, :youth)
+        child = FactoryBot.create(:unit_membership, :youth, unit: @unit)
         @member.child_relationships.create(child_unit_membership: child)
         rsvp = EventRsvp.new(unit_membership: child, event: @event)
         policy = EventRsvpPolicy.new(@member, rsvp)
