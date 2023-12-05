@@ -48,11 +48,14 @@ class ProfilesController < ApplicationController
   end
 
   def member_params
-    params.require(:unit_membership).permit(user_attributes: [:id, :first_name, :last_name, :email, :phone, :password, :password_confirmation])
+    params.require(:unit_membership).permit(
+      :allow_youth_rsvps,
+      user_attributes: [:id, :first_name, :last_name, :email, :phone, :password, :password_confirmation]
+    )
   end
 
   def setting_params
-    params.require(:settings).permit(communication: [:via_email, :via_sms], policy: [:youth_rsvps])
+    params.require(:settings).permit(communication: [:via_email, :via_sms])
   end
 
   def update_settings

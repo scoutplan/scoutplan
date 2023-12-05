@@ -2,7 +2,7 @@
 - data ||= {}
 - size ||= "md"
 
-.dt-switch-wrapper
+.dt-switch-wrapper.inline-block(class="#{disabled ? 'switch-disabled' : ''}")
   .flex.flex-row.items-center
     = radio_button object_name, method, left_value,
                 { class: "left-value hidden dt-switch", checked: checked_left, data: data, disabled: disabled }
@@ -15,11 +15,13 @@
       
     = label object_name, method,
             value: left_value,
-            class: "font-bold flex items-center #{size}",
+            class: "flex items-center #{size}",
             id: "#{object_name.parameterize(separator: "_")}_#{method}_label"
       span.mr-2 = left_label
 
-    .inline-block.dt-switch-container.rounded-full.bg-stone-400.w-20.h-8.relative.p-1
+
+    .inline-block.dt-switch-container.switch-container.rounded-full.w-20.h-8.relative.p-1
+
       .switch-button.absolute.block.w-6.h-6.rounded-full.bg-white
 
       = label object_name, method,
@@ -39,7 +41,7 @@
 
     = label object_name, method,
             value: right_value,
-            class: "font-bold items-center #{size}",
+            class: "items-center #{size}",
             id: "#{object_name.parameterize(separator: "_")}_#{method}_label" do
 
       span.ml-2 = right_label

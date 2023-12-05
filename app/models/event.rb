@@ -11,12 +11,6 @@ class Event < ApplicationRecord
 
   attr_accessor :repeats, :notify_members, :notify_recipients, :notify_message, :document_library_ids
 
-  # LOCATION_TYPES = {
-  #   departure: "departure",
-  #   staging:   "staging",
-  #   activity:  "activity"
-  # }.freeze
-
   default_scope { where(parent_event_id: nil).order(starts_at: :asc) }
 
   belongs_to :unit
@@ -128,6 +122,10 @@ class Event < ApplicationRecord
     ends_at.past?
   end
 
+  def in_progress?
+    published? && starts_at.past? && ends_at.future?
+  end
+
   def requires_payment?
     (cost_adult + cost_youth).positive?
   end
@@ -147,6 +145,10 @@ class Event < ApplicationRecord
 
   def shifts?
     event_shifts.count.positive?
+  end
+
+  def today?
+    starts_at.today? && published?
   end
 
   def chat
@@ -272,6 +274,16 @@ class Event < ApplicationRecord
 
   def organizer?(member)
     organizers.map(&:member).include?(member)
+  end
+
+  def organizers?
+    organizers.any?
+  end
+
+  def reply_to
+    return organizers.map(&:email_address_with_name).join(", ") if organizers?
+
+    unit.members.admin.map(&:email_address_with_name).join(", ")
   end
 
   # implemented for Sendable to compute message recipients

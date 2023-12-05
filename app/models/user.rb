@@ -100,4 +100,8 @@ class User < ApplicationRecord
   def super_admin?
     (ENV["SCOUTPLAN_ADMINS"]&.split(",") || ["admin@scoutplan.org"]).include?(email)
   end
+
+  def email_address_with_name
+    ActionMailer::Base.email_address_with_name(email, display_name)
+  end
 end

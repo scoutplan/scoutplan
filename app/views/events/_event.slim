@@ -15,6 +15,7 @@ li.relative.event.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#
                        year: event.starts_at.year } do
 
       .flex.flex-col.md:flex-row
+        // 1 date & time
         .first.time.shrink-0.md:w-24.flex.flex-row.md:flex-col.gap-1.md:gap-0.items-baseline.md:items-start
           .date.font-bold.text-2xl.md:text-3xl.leading-0.dark:text-stone-100
             = raw(presenter.dates_to_s)
@@ -24,10 +25,11 @@ li.relative.event.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#
           
           = render partial: "events/partials/event_row/today", locals: { event: event }
 
-        // icon
+        // 2 icon
         .second.hidden.md:block.w-16.text-center.shrink-0
           = glyph_tag(event)
 
+        // 3 title, tags, description, location
         .third
           h4.font-bold.text-xl.event-title.mr-2.inline-block = event.title
           = render partial: "events/partials/event_row/title_badge", locals: { event: event }
@@ -35,7 +37,8 @@ li.relative.event.-mx-2.px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#
           = render partial: "events/partials/index/short_description", locals: { event: event }
           = render partial: "event_location", locals: { event: event }
 
-  .flex.flex-col.gap-1.md:flex-row.pb-2.md:justify-between.md:items-center
+  // second row
+  .flex.flex-col.gap-1.md:flex-row.md:justify-between.md:items-center
     = render partial: "events/partials/event_row/rsvp", locals: { event: event }
     = render partial: "events/partials/event_row/organize", locals: { event: event }
     = render partial: "events/partials/event_row/online", locals: { event: event }

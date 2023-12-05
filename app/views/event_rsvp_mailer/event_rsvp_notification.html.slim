@@ -1,0 +1,45 @@
+p Hi, #{@recipient.first_name},
+
+p
+  - if @recipient == @rsvp.member
+    | We've received your RSVP that you 
+  - else
+    | #{@rsvp.respondent.first_name} has let us know that they 
+
+  - if @rsvp.accepted?
+    |  <strong>will</strong> be attending
+  - elsif @rsvp.accepted_pending?
+    |  want to attend 
+  - elsif @rsvp.declined?
+    |  will <strong>not</strong> be attending
+  - elsif @rsvp.declined_pending?
+    |  do not plan to attend 
+  
+  |  the <strong>#{@event.title}</strong> 
+  
+  - if @event.single_day?
+    | on #{l @event.starts_at, format: "%A, %B %e"}.
+  - else
+    |  from #{l @event.starts_at, format: "%A, %B %e"}
+    |  to #{l @event.ends_at, format: "%A, %B %e"}.
+
+  - if @rsvp.pending_approval?
+    |  This RSVP is tentative until #{member_list(@rsvp.approvers, @recipient, "or")} approves it.
+
+    - if @rsvp.approvers.include?(@recipient)
+      p = link_to "Approve Now",
+                  magic_url_for(@recipient, unit_event_edit_rsvps_url(@unit, @event)),
+                  class: "button button-rsvp",
+                  style: "display: block; width: 100$; text-align: center;"
+      p RSVPs close #{string_for_time_internal_from_day(@event.rsvp_closes_at)}
+
+    - if @recipient == @rsvp.member
+      |  We've notified them and we'll let you know when your RSVP has been confirmed.
+
+- if @rsvp.accepted? || @rsvp.accepted_pending?
+  = render partial: "mailer_components/location", locals: { event: @event, rsvp: @rsvp }
+  = render partial: "mailer_components/organizers", locals: { event: @event }
+  = render partial: "mailer_components/ics_attachment", locals: { event: @event }
+
+= render partial: "mailer_components/change_of_plans", locals: { event: @event, rsvp: @rsvp }
+= render partial: "mailer_components/disclaimers", locals: { unit: @unit, member: @recipient }

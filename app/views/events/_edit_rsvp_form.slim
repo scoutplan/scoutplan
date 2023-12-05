@@ -2,15 +2,17 @@
 - rsvps = event.rsvps.where(unit_membership_id: family_member_ids)
 - @rsvps = rsvps
 - notes = rsvps.map(&:note).uniq.join(", ")
+- @needs_approval = false
+- @youth_respondent = false
 
 .table.w-full.divide-y-2.divide-red-500
   - @current_member.family.each do |family_member|
     .table-row.items-center.relative
       - existing_rsvp = event.rsvps.find_by(unit_membership: family_member)
-      - rsvp = event.rsvps.build(unit_membership: family_member,
-        response: existing_rsvp&.response,
-        includes_activity: existing_rsvp&.includes_activity,
-        event_shift_ids: existing_rsvp&.event_shift_ids)
+      - rsvp = event.rsvps.build( unit_membership: family_member,
+                                  response: existing_rsvp&.response,
+                                  includes_activity: existing_rsvp&.includes_activity,
+                                  event_shift_ids: existing_rsvp&.event_shift_ids )
 
       - policy = EventRsvpPolicy.new(@current_member, rsvp)  
       - if policy.create? && @current_member.youth?
@@ -22,37 +24,47 @@
         |&nbsp;&nbsp;
         = presenter.family_context_name(family_member)
 
-      // "Going" switch
+      // "Going" three-way switch
       .table-cell.px-3.py-2.response-wrapper
         - if @event.shifts?
           - @event.shifts.each do |shift|
             .py-1
               = render partial: "components/switch", locals: { checked: existing_rsvp&.event_shift_ids&.include?(shift.id),
-                                                              label: shift.name,
-                                                              object_name: "event[members][#{family_member.id}][shifts][#{shift.id}]",
-                                                              method: "response",
-                                                              checked_value: "accepted",
-                                                              unchecked_value: "declined",
-                                                              disabled: !policy.create? }
+                                                               label: shift.name,
+                                                               object_name: "event[members][#{family_member.id}][shifts][#{shift.id}]",
+                                                               method: "response",
+                                                               checked_value: "accepted",
+                                                               unchecked_value: "declined",
+                                                               disabled: !policy.create? }
 
         - else
           = render partial: "components/double_throw_switch",
-                            locals: { checked_left: existing_rsvp&.declined?,
-                                      checked_right: existing_rsvp&.accepted?,
-                                      label: t("rsvp_accepted"),
-                                      object_name: "event[members][#{family_member.id}][event_rsvp]",
-                                      method:      "response",
-                                      left_value:  "declined",
-                                      right_value: "accepted",
-                                      left_label:  "Regrets",
-                                      right_label: "Going!",
-                                      disabled: !policy.create? }                                      
+                            locals: { object_name:   "unit_memberships[#{family_member.id}]",
+                                      method:        "response",
+                                      checked_left:  existing_rsvp&.declined? || existing_rsvp&.declined_pending?,
+                                      checked_right: existing_rsvp&.accepted? || existing_rsvp&.accepted_pending?,
+                                      label:         t("rsvp_accepted"),
+                                      left_value:    "declined",
+                                      right_value:   "accepted",
+                                      left_label:    "Regrets",
+                                      right_label:   "Going!",
+                                      disabled:      !policy.create? }
+
+          - if existing_rsvp&.pending_approval?
+            - @needs_approval = true
+            
+            .inline-block.text-yellow-700.dark:text-yellow-500.text-sm
+              i.fa-regular.fa-info-circle.inline-block.px-2
+              - if existing_rsvp.respondent == @current_member then
+                = "pending approval"
+              - else
+                = "pending your approval"
 
 // note field
 .mt-2
   = text_field_tag :note,
     notes,
-    class: "rounded p-2 block w-full placeholder-stone-300 border border-stone-200 dark:bg-black dark:border-stone-700 dark:placeholder-stone-500",
+    class: "rounded p-2 block w-full placeholder-stone-300 border border-stone-200 dark:bg-stone-950 dark:border-stone-700 dark:placeholder-stone-500",
     placeholder: t("events.rsvp.note_placeholder"),
     autocomplete: "off"
 

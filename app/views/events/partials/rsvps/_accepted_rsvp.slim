@@ -137,7 +137,7 @@ ul.m-0
 
   // Delete RSVP
   li
-    = button_to unit_event_rsvp_path(@event.unit, rsvp),
+    = button_to unit_event_event_rsvp_path(@event.unit, @event, rsvp),
                 onclick: "this.classList.add('processing');",
                 method: :delete,
                 form: { "data-type": "turbo_stream" },

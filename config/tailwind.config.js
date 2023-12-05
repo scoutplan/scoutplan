@@ -17,6 +17,9 @@ module.exports = {
         sans: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"],
         serif: [...defaultTheme.fontFamily.serif],
       },
+      fontSize: {
+        huge: ['5rem', '1'],
+      },
       colors: {
         brand: {
           100: '#F6F1E7',

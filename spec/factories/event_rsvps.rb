@@ -6,13 +6,13 @@ FactoryBot.define do
       unit { create(:unit) }
     end
 
-    event { association :event, unit: unit }
+    event { association :event, unit: unit, status: "published", requires_rsvp: true }
     unit_membership { association :unit_membership, unit: unit }
-    respondent
-    response { 'declined' }
+    respondent { unit_membership }
+    response { "declined" }
 
     trait :accepted do
-      response { 'accepted' }
+      response { "accepted" }
     end
   end
 end

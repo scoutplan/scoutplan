@@ -78,6 +78,10 @@ a.external-link:after {
   transform: translateX(100%);
 }
 
+.dt-switch-container {
+  background-color: rgb(102, 102, 102);
+}
+
 input.dt-switch.left-value:checked ~ .dt-switch-container {
   /* background: #e11d48; */
   background: #dc2626;
@@ -107,6 +111,20 @@ input.dt-switch.right-value:checked ~ .dt-switch-container .switch-button {
   transform: translateX(195%);
 }
 
+@media (prefers-color-scheme: dark) {
+  input.dt-switch.right-value:disabled:checked ~ .dt-switch-container, .switch-disabled .dt-switch-container {
+    background: #444 !important;
+  }
+
+  input.dt-switch.right-value:disabled:checked ~ .dt-switch-container .switch-button {
+    background: #222;
+  }
+
+  input.dt-switch.right-value:disabled ~ label {
+    color: #666;
+  }
+
+}
 
 input[type="text"].is-invalid {
   border-color: #ef4444;

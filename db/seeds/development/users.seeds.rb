@@ -1,8 +1,6 @@
-# frozen_string_literal: true
-
 User.destroy_all
 
-bob = User.create!(
+User.create!(
   email:                 "admin@scoutplan.org",
   password:              "password",
   password_confirmation: "password",
@@ -12,7 +10,7 @@ bob = User.create!(
   type:                  :adult
 )
 
-anne = User.create!(
+User.create!(
   email:                 "anne@scoutplan.org",
   password:              "password",
   password_confirmation: "password",
@@ -22,7 +20,7 @@ anne = User.create!(
   type:                  :youth
 )
 
-brian = User.create!(
+User.create!(
   email:                 "brian@scoutplan.org",
   password:              "password",
   password_confirmation: "password",
@@ -32,7 +30,7 @@ brian = User.create!(
   type:                  :adult
 )
 
-debbie = User.create!(
+User.create!(
   email:                 "debbie@scoutplan.org",
   password:              "password",
   password_confirmation: "password",
@@ -42,7 +40,7 @@ debbie = User.create!(
   type:                  :youth
 )
 
-eric = User.create!(
+User.create!(
   email:                 "eric@scoutplan.org",
   password:              "password",
   password_confirmation: "password",
@@ -52,18 +50,25 @@ eric = User.create!(
   type:                  :adult
 )
 
-timmy = User.create!(
+User.create!(
   email:                 "timmy@scoutplan.org",
   password:              "password",
   password_confirmation: "password",
   first_name:            "Timmy",
   last_name:             "Dobalina",
   phone:                 "999-555-1212",
+  phone:                 "555-1212",
   type:                  :youth
 )
 
-bob.child_relationships.create!(child: timmy)
-bob.child_relationships.create!(child: anne)
-bob.child_relationships.create!(child: debbie)
+User.create!(
+  email:                 "taylor@scoutplan.org",
+  password:              "password",
+  password_confirmation: "password",
+  first_name:            "Taylor",
+  last_name:             "Dobalina",
+  phone:                 "555-1212",
+  type:                  :youth
+)
 
 puts "#{User.count} users now exist"

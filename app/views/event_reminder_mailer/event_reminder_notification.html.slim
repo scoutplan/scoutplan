@@ -1,6 +1,6 @@
 - presenter = EventPresenter.new(@event, @member)
 
-h1(style="margin-bottom: 1rem;") = deictic_string_for_time_interval_from_day(@event.starts_at).capitalize
+h1(style="margin-bottom: 1rem;") = string_for_time_internal_from_day(@event.starts_at).capitalize
 
 section(style="font-weight:bold; padding-bottom:0.5rem;")
   p(style="margin-bottom: 2rem;") = link_to(@event.title, magic_url_for(@member, unit_event_url(@unit.id, @event.id)),

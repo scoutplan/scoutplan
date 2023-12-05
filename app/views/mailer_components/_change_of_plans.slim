@@ -1,0 +1,7 @@
+- return unless @event.rsvp_open?
+
+section(style="border-top:1px solid #ccc;")
+  h2 Change of plans? Let us know.
+  p(style="margin-bottom: 1rem;")
+    = link_to "Update your RSVP", magic_url_for(@recipient, unit_event_edit_rsvps_url(@unit, @event)), class: "button button-rsvp"
+  p.text-sm RSVPs close #{string_for_time_internal_from_day(@event.rsvp_closes_at)}

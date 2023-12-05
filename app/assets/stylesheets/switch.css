@@ -42,7 +42,7 @@ input.dp-switch:disabled + label {
 }
 
 @media (prefers-color-scheme: dark) {
-  input.dp-switch:disabled + label .switch-container {
+  input.dp-switch:disabled + label .switch-container, .switch-disabled .switch-container {
     background: #444;
   }
 
@@ -50,7 +50,7 @@ input.dp-switch:disabled + label {
     color: #666;
   }
 
-  input.dp-switch:disabled + label .switch-button {
+  input.dp-switch:disabled + label .switch-button, .switch-disabled .switch-button {
     background: #222;
   }
 }

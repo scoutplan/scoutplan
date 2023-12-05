@@ -68,6 +68,7 @@ RSpec.describe EventRsvpPolicy, type: :model do
       it "prevents youth rsvps if the unit prevents it" do
         @member.allow_youth_rsvps = true
         @event.allow_youth_rsvps = true
+        @unit.update(allow_youth_rsvps: false)
 
         rsvp = EventRsvp.new(unit_membership: @member, event: @event)
 

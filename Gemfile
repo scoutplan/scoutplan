@@ -110,6 +110,6 @@ group :test do
   gem "cuprite"
   gem "faker"
   gem "launchy"
-  gem "simplecov", require: false
   gem "rack_session_access"
+  gem "simplecov", require: false
 end

@@ -75,7 +75,6 @@ class UnitMembership < ApplicationRecord
       receives_event_invitations: false,
       receives_all_rsvps:         false
     }
-    s.key :policy, defaults: { youth_rsvps: false }
     s.key :alerts
   end
 

@@ -1,7 +1,7 @@
 <% presenter = EventPresenter.new(@event, @member) %>
 <% presenter.plain_text = true %>
 
-<%= deictic_string_for_time_interval_from_day(@event.starts_at).capitalize %>: <%= @event.title %>
+<%= string_for_time_internal_from_day(@event.starts_at).capitalize %>: <%= @event.title %>
 <%= presenter.months_and_dates %> (<%= presenter.days_to_s %>)
 Full details at <%= magic_url_for(@member, unit_event_url(@unit, @event)) %>
 <% if @event.requires_rsvp? %>

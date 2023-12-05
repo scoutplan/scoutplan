@@ -1,62 +1,30 @@
-# frozen_string_literal: true
-
-after 'development:units' do
+after "development:units" do
   unit = Unit.first
 
   Event.destroy_all
 
-  unit.events.create!([
-                        { title: 'Troop Meeting',
-                          starts_at: 5.days.from_now,
-                          ends_at: 5.days.from_now,
-                          location: 'Community Center',
-                          event_category: unit.event_categories.find_by(name: 'Troop Meeting') },
-                        { title: 'Troop Meeting',
-                          starts_at: 12.days.from_now,
-                          ends_at: 12.days.from_now,
-                          location: 'Community Center',
-                          event_category: unit.event_categories.find_by(name: 'Troop Meeting') },
-                        { title: 'Troop Meeting',
-                          starts_at: 19.days.from_now,
-                          ends_at: 19.days.from_now,
-                          location: 'Community Center',
-                          event_category: unit.event_categories.find_by(name: 'Troop Meeting') },
-                        { title: 'Troop Meeting',
-                          starts_at: 26.days.from_now,
-                          ends_at: 26.days.from_now,
-                          location: 'Community Center',
-                          event_category: unit.event_categories.find_by(name: 'Troop Meeting') },
-                        { title: 'Camping Trip 1',
-                          starts_at: 14.days.from_now,
-                          ends_at: 16.days.from_now,
-                          location: 'State Park',
-                          event_category: unit.event_categories.find_by(name: 'Camping Trip'),
-                          requires_rsvp: true },
-                        { title: 'Camping Trip 2',
-                          starts_at: 45.days.from_now,
-                          ends_at: 47.days.from_now,
-                          location: 'Regional Park',
-                          event_category: unit.event_categories.find_by(name: 'Troop Meeting'),
-                          requires_rsvp: true },
-                        { title: 'Court of Honor',
-                          starts_at: 76.days.from_now,
-                          ends_at: 76.days.from_now,
-                          location: 'Community Center',
-                          event_category: unit.event_categories.find_by(name: 'Court of Honor'),
-                          requires_rsvp: true },
-                        { title: 'Camping Trip 3',
-                          starts_at: 55.days.from_now,
-                          ends_at: 57.days.from_now,
-                          location: 'Scout Camp',
-                          event_category: unit.event_categories.find_by(name: 'Camping Trip'),
-                          requires_rsvp: true },
-                        { title: 'Day Hike',
-                          starts_at: 70.days.from_now,
-                          ends_at: 70.days.from_now,
-                          location: 'Local Mountain',
-                          event_category: unit.event_categories.find_by(name: 'Hiking Trip'),
-                          requires_rsvp: true }
-                      ])
+  # troop meetings
+  next_thursday = unit.this_season_starts_at.next_occurring(:thursday).in_time_zone
+  33.times do |i|
+    unit.events.create!(title:          "Troop Meeting",
+                        starts_at:      (next_thursday + i.weeks).change(hour: 19, min: 30),
+                        ends_at:        (next_thursday + i.weeks).change(hour: 21, min: 0),
+                        event_category: unit.event_categories.find_by(name: "Troop Meeting"))
+  end
+
+  # camping trips
+  third_friday = unit.this_season_starts_at.next_occurring(:friday).next_occurring(:friday).next_occurring(:friday)
+  9.times do |i|
+    starts_at = third_friday + (i * 4).weeks
+    month = starts_at.month
+    next if month == 1
+
+    unit.events.create!(title:          "#{Date::MONTHNAMES[month]} Camping Trip",
+                        starts_at:      starts_at.change(hour: 18, min: 0),
+                        ends_at:        (starts_at + 2.days).change(hour: 9, min: 0),
+                        event_category: unit.event_categories.find_by(name: "Camping Trip"),
+                        requires_rsvp:  true)
+  end
 
   puts "#{Event.count} events now exist"
 end

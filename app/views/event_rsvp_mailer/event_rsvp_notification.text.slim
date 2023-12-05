@@ -1,0 +1,33 @@
+- message = "Hi, #{@recipient.first_name}. "
+
+- if @rsvp.self_responded?
+  - message += "We've received your RSVP that you "
+- else
+  - message += "#{@rsvp.respondent.first_name} has let us know that they "
+
+
+- if @rsvp.accepted?
+  - message += "will be attending"
+- elsif @rsvp.accepted_pending?
+  - message += "want to attend"
+- elsif @rsvp.declined?
+  - message += "will not be attending"
+- elsif @rsvp.declined_pending?
+  - message += "do not plan to attend"
+  
+- message += " the #{@event.title}"
+
+- if @event.single_day?
+  - message += " on #{l @event.starts_at, format: '%A, %B %e'}."
+- else
+  - message += " from #{l @event.starts_at, format: '%A, %B %-e'} to #{l @event.ends_at, format: '%A, %B %-e'}."
+
+  - if @rsvp.pending_approval?
+    - message += " Their RSVP is tentative until #{member_list(@rsvp.approvers, @recipient, "or")} approves it. Approve now by visiting "
+    - message += magic_url_for(@recipient, unit_event_edit_rsvps_url(@unit, @event))
+    - message += ". RSVPs close #{string_for_time_internal_from_day(@event.rsvp_closes_at)}."
+
+    - if @recipient == @rsvp.member
+      - message += " We've notified them and we'll let you know when your RSVP has been confirmed."
+
+= message

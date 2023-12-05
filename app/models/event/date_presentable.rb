@@ -11,6 +11,10 @@ module Event::DatePresentable
     duration_in_days.positive?
   end
 
+  def single_day?
+    !multiday?
+  end
+
   def spans_months?
     starts_at.month != ends_at.month
   end

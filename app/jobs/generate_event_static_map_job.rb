@@ -5,6 +5,6 @@ class GenerateEventStaticMapJob < ApplicationJob
 
   def perform(event_id)
     event = Event.find(event_id)
-    event.generate_static_map
+    event&.generate_static_map
   end
 end
