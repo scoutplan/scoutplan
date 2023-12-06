@@ -7,7 +7,6 @@ FactoryBot.define do
     phone       { Faker::PhoneNumber.cell_phone }
     password    { "password" }
     email       { Faker::Internet.email }
-    type { 0 }
   end
 
   sequence :email do |n|
