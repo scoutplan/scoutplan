@@ -1,14 +1,10 @@
-# frozen_string_literal: true
-
-# a person in Scoutplan. Most business logic, however
-# is handled in the UnitMembership class
 class User < ApplicationRecord
   include Flipper::Identifier
   include Contactable
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :invitable, :database_authenticatable, :recoverable, :rememberable, :validatable,
+  devise :database_authenticatable, :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: [:google_oauth2]
 
   phony_normalize :phone, default_country_code: "US"
@@ -18,12 +14,12 @@ class User < ApplicationRecord
   has_many  :events, through: :units
   has_many  :parent_relationships,
             foreign_key: "child_unit_membership_id",
-            class_name: "MemberRelationship",
-            dependent: :destroy
+            class_name:  "MemberRelationship",
+            dependent:   :destroy
   has_many  :child_relationships,
             foreign_key: "parent_unit_membership_id",
-            class_name: "MemberRelationship",
-            dependent: :destroy
+            class_name:  "MemberRelationship",
+            dependent:   :destroy
 
   before_validation :check_email
   before_validation :check_password
@@ -33,7 +29,6 @@ class User < ApplicationRecord
   alias_attribute :display_name, :full_display_name
 
   self.inheritance_column = nil
-  enum type: { unknown: 0, youth: 1, adult: 2 }
 
   has_settings do |s|
     s.key :locale, defaults: { time_zone: "Eastern Time (US & Canada)" }

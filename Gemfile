@@ -9,7 +9,7 @@ gem "scout_apm"
 
 gem "active_storage_validations"
 gem "acts_as_list"
-gem "acts-as-taggable-on", "~> 9.0"
+gem "acts-as-taggable-on"
 gem "ahoy_email"
 gem "ahoy_matey"
 gem "auto_strip_attributes"
@@ -23,14 +23,13 @@ gem "colorize"
 gem "convert_api"
 gem "daypack", git: "https://github.com/scoutplan/daypack.git"
 gem "devise"
-gem "devise_invitable"
 gem "faraday"
 gem "flamegraph"
 gem "flipper"
 gem "flipper-active_record"
 gem "flipper-ui"
 gem "geared_pagination"
-gem "honeybadger", "~> 4.0"
+gem "honeybadger", "~> 5.0"
 gem "humanize"
 gem "icalendar"
 gem "ice_cube", github: "ice-cube-ruby/ice_cube", ref: "6b97e77c106cd6662cb7292a5f59b01e4ccaedc6"
@@ -51,12 +50,11 @@ gem "phony_rails"
 gem "prawn"
 gem "puma", "~> 5.0"
 gem "pundit"
-gem "rack", ">= 2.2.6.4"
 gem "rack-attack"
 gem "rack-cors"
-gem "rails", "~> 7.0.0"
+gem "rails", "~> 7.1.0"
 gem "rails-html-sanitizer", ">= 1.4.4"
-gem "redis", "~> 4.0"
+gem "redis", "~> 5.0"
 gem "remote_syslog_logger"
 gem "rexml"
 gem "rubocop", require: false
@@ -81,13 +79,14 @@ gem "twilio-ruby"
 
 gem "rack-mini-profiler", "~> 2.3"
 gem "stackprof"
+
 gem "memory_profiler"
 
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console
   gem "byebug", "~> 11.1", platforms: %i[mri mingw x64_mingw]
   gem "dotenv-rails", "~> 2.7", groups: %i[development test]
-  gem "rspec-rails", "~> 5.0"
+  gem "rspec-rails", "~> 6.0"
   gem "standard", ">= 1.0"
 end
 
@@ -113,3 +112,5 @@ group :test do
   gem "rack_session_access"
   gem "simplecov", require: false
 end
+
+gem "rack", "~> 2.2"
