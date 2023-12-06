@@ -11,6 +11,13 @@ GIT
   specs:
     daypack (0.1.0)
 
+GIT
+  remote: https://github.com/scoutplan/semaphores.git
+  revision: ad2e3b546cd72b3e1aab503c967a475086003e06
+  specs:
+    semaphores (0.1.0)
+      rails (>= 7.1.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -689,6 +696,7 @@ DEPENDENCIES
   sass-rails (~> 6.0)
   scout_apm
   seedbank
+  semaphores!
   sentry-ruby
   sidekiq
   sidekiq-scheduler

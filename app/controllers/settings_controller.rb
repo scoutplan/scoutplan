@@ -111,6 +111,7 @@ class SettingsController < UnitContextController
       :location,
       :logo,
       :slug,
+      :allow_youth_rsvps,
       settings: [
         [communication: [:rsvp_nag, { digest_schedule: [:day_of_week, :hour_of_day, :every_hour] }]],
         :utilities
