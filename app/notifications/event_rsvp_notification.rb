@@ -13,7 +13,7 @@ class EventRsvpNotification < ScoutplanNotification
   def format_for_twilio
     {
       From: ENV.fetch("TWILIO_NUMBER"),
-      To:   recipient.phone_number,
+      To:   recipient.phone,
       Body: sms_body(recipient: recipient, message: params[:event_rsvp])
     }
   end

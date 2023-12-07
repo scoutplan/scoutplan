@@ -14,7 +14,7 @@ class Chat < ApplicationRecord
 
   has_many :chat_messages
 
-  alias_attribute :messages, :chat_messages
+  alias_method :messages, :chat_messages
 
   def participants
     # first, let's get this Chat's authors

@@ -11,7 +11,7 @@ require "humanize"
 class EventsController < UnitContextController
   skip_before_action :authenticate_user!, only: [:public]
   before_action :find_event, except: %i[
-    list calendar paged_list spreadsheet create new bulk_publish public my_rsvps signups
+    list calendar paged_list spreadsheet create new bulk_publish public my_rsvps signups repeat_options
   ]
   before_action :collate_rsvps, only: [:show, :rsvps]
   before_action :set_calendar_dates, only: [:calendar, :list, :paged_list]
@@ -52,6 +52,12 @@ class EventsController < UnitContextController
     # TODO: limit this to the unit's designated site(s)
     response.headers["X-Frame-Options"] = "ALLOW"
     render "public_index", layout: "public"
+  end
+
+  def repeat_options
+    @starts_at = params[:starts_at]&.to_date || Date.current
+    @starts_at = @starts_at.advance(weeks: 1)
+    @ends_at = @unit.season_ends_at(@starts_at)
   end
 
   def show

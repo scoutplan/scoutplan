@@ -43,8 +43,7 @@ class UnitMembership < ApplicationRecord
   has_noticed_notifications
   has_secure_token
 
-  alias_attribute :rsvps, :event_rsvps
-  alias_attribute :phone_number, :phone
+  alias_method :rsvps, :event_rsvps
 
   enum status: { inactive: 0, active: 1, registered: 2 }, _prefix: true
   enum role: ROLES.zip(ROLES).to_h

@@ -47,11 +47,11 @@ class Event < ApplicationRecord
   accepts_nested_attributes_for :event_locations, allow_destroy: true
   accepts_nested_attributes_for :event_organizers, allow_destroy: true
 
-  alias_attribute :rsvps, :event_rsvps
-  alias_attribute :category, :event_category
-  alias_attribute :activities, :event_activities
-  alias_attribute :organizers, :event_organizers
-  alias_attribute :shifts, :event_shifts
+  alias_method :rsvps, :event_rsvps
+  alias_method :category, :event_category
+  alias_method :activities, :event_activities
+  alias_method :organizers, :event_organizers
+  alias_method :shifts, :event_shifts
 
   validates_presence_of :title, :starts_at, :ends_at
   validate :dates_are_subsequent
@@ -301,6 +301,8 @@ class Event < ApplicationRecord
   # TODO: this is super-naive: it"s not idempotent, it doesn"t
   # handle things like updates, etc etc
   def create_series
+    raise "Series duration cannot exceed one year" if repeats_until > starts_at.advance(years: 1)
+
     new_event = dup
     new_event.series_parent = self
     new_event.repeats_until = nil

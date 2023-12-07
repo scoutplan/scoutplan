@@ -26,8 +26,6 @@ class User < ApplicationRecord
 
   validates_presence_of :first_name, :last_name
 
-  alias_attribute :display_name, :full_display_name
-
   self.inheritance_column = nil
 
   has_settings do |s|
@@ -56,6 +54,10 @@ class User < ApplicationRecord
 
     # nickname.blank? ? first_name : nickname
     nickname.presence || first_name
+  end
+
+  def display_name
+    full_display_name
   end
 
   def full_display_name

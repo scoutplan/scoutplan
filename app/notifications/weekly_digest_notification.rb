@@ -7,7 +7,7 @@ class WeeklyDigestNotification < ScoutplanNotification
   def format_for_twilio
     {
       From: ENV.fetch("TWILIO_NUMBER"),
-      To:   recipient.phone_number,
+      To:   recipient.phone,
       Body: sms_body(recipient: recipient, event: , params: params)
     }
   end

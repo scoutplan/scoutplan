@@ -1,0 +1,4 @@
+= turbo_stream.update "event_repeats_until" do
+  - while @starts_at < @ends_at
+    option(value="#{ @starts_at }") = @starts_at.strftime("%-d %B %Y")
+    - @starts_at += 1.week

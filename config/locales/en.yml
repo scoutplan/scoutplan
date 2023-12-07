@@ -205,6 +205,10 @@ en:
           now: "Now"
           today: "Today"
 
+      form:
+        dates:
+          title: "Dates & Times"
+
     placeholders:
       title:        "Event title"
       location:     "Location"

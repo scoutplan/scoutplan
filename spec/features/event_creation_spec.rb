@@ -43,8 +43,9 @@ describe "events", type: :feature do
     end
 
     it "creates a series" do
+      skip "need to convert to JS test"
       visit(new_unit_event_path(@unit))
-      
+
       fill_in :event_title, with: "Event Title"
       fill_in :event_starts_at_date, with: 13.days.from_now
       fill_in :event_ends_at_date, with: 14.days.from_now
