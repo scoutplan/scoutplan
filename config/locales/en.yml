@@ -706,7 +706,7 @@ en:
 
     descriptions:
       daily_reminder: "Send a reminder 12 hours before an event starts."
-      digest:         "Send a message on Sunday mornings with the coming week's schedule, news, and RSVPs."
+      digest:         "Send a weekly message with the coming week's schedule, news, and RSVPs."
       rsvp_nag:       "Send a message on Tuesday mornings, gently reminding members with outstanding RSVPs to respond."
       rsvp_last_call: "Send a message to members the day before RSVPs close for an event."
       event_organizer_digest: "Send a daily roundup of new RSVPs to event organizers."
@@ -731,6 +731,8 @@ en:
       rsvp_nag:       "Turn on RSVP prompts"
       rsvp_last_call: "Turn on RSVP last call reminders"
       event_organizer_digest: "Turn on event organizer RSVP notifications"
+      digest_day_of_week: "Send on"
+      digest_hour_of_day: "Send at"
     
     policies:
       buttons:
