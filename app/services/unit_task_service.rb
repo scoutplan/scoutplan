@@ -14,7 +14,7 @@
 
 class UnitTaskService
   TASK_KEYS = { communication: {
-    digest:                 "UnitDigestTask",
+    # digest:                 "UnitDigestTask",
     daily_reminder:         "DailyReminderTask",
     rsvp_nag:               "RsvpNagTask",
     rsvp_last_call:         "RsvpLastCallTask",
@@ -33,6 +33,7 @@ class UnitTaskService
       end
     end
     setup_schedules
+    setup_jobs
   end
 
   # given a setting category, key, and task class, create or destroy the task
@@ -45,5 +46,14 @@ class UnitTaskService
   # create or destroy schedules based on unit settings
   def setup_schedules
     @unit.tasks.each(&:setup_schedule)
+  end
+
+  # TODO: generalize this
+  def setup_jobs
+    setup_digest_job
+  end
+
+  def setup_digest_job
+    SendWeeklyDigestJob.schedule_next_job(@unit) if @unit.settings(:communication).digest == "true"
   end
 end

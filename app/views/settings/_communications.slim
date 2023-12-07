@@ -26,6 +26,8 @@ header.mb-6
     | Choose the types of messages you want to send.
 
   fieldset.divide-y.dark:divide-stone-500
+    = render "settings/communication/digest"
+
     - UnitTaskService::TASK_KEYS[:communication].each do |task_key, _|
       = render partial: "settings/task", locals: { task_key: task_key }
 
