@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   # patch "units/:unit_id/settings", as: "update_unit_settings", to: "unit_settings#update"
 
   get "units/*after", to: redirect("/u/%{after}")
+  get "u/:unit_id/schedule/repeat_options/:starts_at", to: "events#repeat_options", as: "repeat_options"
 
   resources :payments, only: [:create]
 
@@ -86,6 +87,7 @@ Rails.application.routes.draw do
     get "my_rsvps", to: "events#my_rsvps", as: "my_rsvps"
     get "start",    to: "units#start",     as: "start"
     get "welcome",  to: "units#welcome",   as: "welcome"
+
     resources :payments, module: :settings do
       collection do
         post "onboard"

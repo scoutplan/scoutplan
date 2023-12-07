@@ -23,10 +23,6 @@ export default class extends Controller {
     this.queryTarget.focus();
   }
 
-  connect() {
-    console.log("Autocomplete controller connected");
-  }
-
   show() {
     this.wrapperTarget.classList.add(ACTIVE_CLASS);
   }

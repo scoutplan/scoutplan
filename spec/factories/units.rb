@@ -15,6 +15,6 @@ FactoryBot.define do
   end
 
   factory :unit_with_members, parent: :unit do |_unit|
-    memberships { create_list :unit_membership, 3 }
+    unit_memberships { create_list :unit_membership, 3 }
   end
 end

@@ -1,5 +1,10 @@
 section.py-4
-  h2.font-bold.text-lg.mb-2 Date & time
+  h2.font-bold.text-lg.mb-1
+    = t(".title")
+    = " "
+    span.font-normal.text-sm.text-stone-400.mb-3
+      = @current_unit.settings(:locale).time_zone
+
   // all day
   .py-2
     = render partial: "components/switch",
@@ -19,7 +24,7 @@ section.py-4
       = f.date_field :starts_at_date,
                      class: "flex flex-grow border border-stone-300 dark:border-stone-700 rounded p-2 dark:bg-black",
                      tabindex: -1,
-                     data: { target: "event-edit.startsAtDate", action: "change->event-edit#updateStartsAt" }
+                     data: { event_edit_target: "startsAtDate", action: "change->event-edit#updateStartsAt" }
 
       
       .not-all-day.inline-block.flex.flex-grow.items-center.gap-x-4
@@ -38,7 +43,8 @@ section.py-4
     .flex.flex-grow.gap-x-4.items-center
       = f.date_field :ends_at_date,
                      class: "flex flex-grow border border-stone-300 dark:border-stone-700 rounded p-2 dark:bg-black",
-                     tabindex: -1
+                     tabindex: -1,
+                     data: { event_edit_target: "endsAtDate" }
       
 
       .not-all-day.inline-block.flex.flex-grow.items-center.gap-x-4
@@ -63,13 +69,15 @@ section.py-4
   // repeat until
   #repeat_fields.py-2
     = f.label :repeats_until, class: "font-bold block mb-1"
-    = f.date_field :repeats_until,
-                   value: (@event.starts_at + 6.months).strftime("#{ @format_date }"),
-                   class: "bg-white rounded w-full p-2 inline-block"
+    / = f.date_field :repeats_until,
+    /                value: (@event.starts_at + 6.months).strftime("#{ @format_date }"),
+    /                class: "bg-white rounded w-full p-2 inline-block"
 
-  // timezone message
-  p.text-sm.text-stone-400.mt-1
-    = t("events.form.timezone_prompt", timezone_name: @current_unit.settings(:locale).time_zone)
+    = f.select :repeats_until,
+               [],
+               {},
+               class: "bg-white rounded w-full p-2 inline-block border-stone-300",
+               data: { event_edit_target: "repeatsUntilSelect" }
 
   datalist#suggested_times
     option(value="9:00 AM")

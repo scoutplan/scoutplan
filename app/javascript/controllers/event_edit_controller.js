@@ -1,10 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
+import { get } from "@rails/request.js"
 
 export default class extends Controller {
-  static targets = [ "deleteform", "fileinput", "documentLibraryIds", "startsAtDate", "rsvpClosesAt" ];
+  static targets = [ "deleteform", "fileinput", "documentLibraryIds", "startsAtDate", "endsAtDate", "rsvpClosesAt", "repeatsUntilSelect" ];
+  static values = { seasonEndDate: String, unitId: String };
 
   connect() {
-    console.log("event edit controller connected");
+    this.populateRepeatUntilSelectOptions();
   }
 
   addAttachmentToPendingList(filename) {
@@ -54,11 +56,20 @@ export default class extends Controller {
   }
 
   updateStartsAt() {
-    var startsAt = this.startsAtDateTarget.value;
-    var rsvpClosesAt = this.rsvpClosesAtTarget.value;
-    if (startsAt < rsvpClosesAt) {
-      this.rsvpClosesAtTarget.value = startsAt;
-    }
+    const startsAt = this.startsAtDateTarget.value;
+    const endsAt = this.endsAtDateTarget.value;
+    const rsvpClosesAt = this.rsvpClosesAtTarget.value;
+
+    if (startsAt < rsvpClosesAt) { this.rsvpClosesAtTarget.value = startsAt; }
+    if (startsAt > endsAt) { this.endsAtDateTarget.value = startsAt; }
+    this.populateRepeatUntilSelectOptions();
+  }
+
+  async populateRepeatUntilSelectOptions() {
+    const startsAt = this.startsAtDateTarget.value;
+    const unitId = this.unitIdValue;
+    const query = new URLSearchParams({ "a": "b", "starts_at": startsAt });
+    await get(`/u/${unitId}/events/repeat_options/${startsAt}`, { query: query, responseKind: "turbo-stream" });     
   }
 
   hideDocumentLibrary(event) {

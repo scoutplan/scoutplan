@@ -26,8 +26,8 @@ class Unit < ApplicationRecord
   validates_uniqueness_of :email
   validates_uniqueness_of :slug
 
-  alias_attribute :memberships, :unit_memberships
-  alias_attribute :members, :unit_memberships
+  alias_method :memberships, :unit_memberships
+  alias_method :members, :unit_memberships
 
   after_create :populate_categories
   before_validation :generate_slug

@@ -3,7 +3,7 @@
 
 = javascript_include_tag "events_form"
 
-.form-wrapper(class="#{@event.online ? "online-event" : ""}" data-controller="body-classer event-edit")
+.form-wrapper(class="#{@event.online ? 'online-event' : ''}" data-controller="body-classer event-edit" data-event-edit-season-end-date-value="#{ @unit.this_season_ends_at.to_datetime.iso8601 }" data-event-edit-unit-id-value="#{ @unit.id }" )
 
   .mx-auto.max-w-xl.relative
     = render partial: "components/cancelled_badge" if @event.cancelled?
