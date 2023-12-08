@@ -3,8 +3,8 @@
 - icon_class = t("settings.icons.#{task_key}")
 - icon_color = t("settings.icon_colors.#{task_key}")
 
-article#digest_settings.py-4.switch-toggle-container
-  h2.font-bold.text-xl
+article#digest_settings.py-4.switch-toggle-container.border.border-stone-300.rounded.p-4
+  h2.font-bold.text-xl.mb-2
     i(class="fa-solid fa-fw mr-1 #{icon_class} #{icon_color}")
     = t("settings.titles.#{task_key}")
 
@@ -22,7 +22,6 @@ article#digest_settings.py-4.switch-toggle-container
         = " at "
         = select_hour(@unit.settings(:communication).digest_hour_of_day.to_i,
                       { prefix: "settings[communication]",
-                        field_name: "digest_hour_of_day",
                         leading_zeros: false,
                         use_two_digit_numbers: false,
                         ampm: true },

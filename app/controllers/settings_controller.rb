@@ -64,7 +64,6 @@ class SettingsController < UnitContextController
 
   def set_digest_schedule
     digest_setting = params.dig(:settings, :communication, :digest)
-    ap params
     @unit.settings(:communication).update!(digest: digest_setting)
     return unless @unit.settings(:communication).digest == "true"
 

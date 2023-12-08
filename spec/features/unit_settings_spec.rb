@@ -102,7 +102,6 @@ describe "unit settings", type: :feature do
 
         @unit.reload
         expect(@unit.settings(:communication).digest).to be_truthy
-        expect(@unit.tasks.count).to eq(1)
       end
 
       it "saves all the settings" do

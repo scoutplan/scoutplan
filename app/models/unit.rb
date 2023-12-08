@@ -1,7 +1,7 @@
-# frozen_string_literal: true
-
 # rubocop:disable Metrics/ClassLength
 class Unit < ApplicationRecord
+  DEFAULT_DIGEST_HOUR_OF_DAY = 9
+
   include Seasons, DistributionLists
 
   has_one :payment_account
@@ -37,7 +37,7 @@ class Unit < ApplicationRecord
   has_settings class_name: "UnitSettings" do |s|
     s.key :communication,
           defaults: { digest: true, rsvp_nag: true, daily_reminder: true,
-                      digest_day_of_week: :sunday, digest_hour_of_day: 8 }
+                      digest_day_of_week: "Sunday", digest_hour_of_day: DEFAULT_DIGEST_HOUR_OF_DAY }
     s.key :appearance, defaults: { main_color: "#003F87" }
     s.key :locale,
           defaults: { time_zone: "Eastern Time (US & Canada)",
