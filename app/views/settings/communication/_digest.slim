@@ -14,18 +14,17 @@ article#digest_settings.py-4.switch-toggle-container.border.border-stone-300.rou
   = switch("settings[communication]", task_key, { label: t("settings.labels.digest"), checked: enabled, container: "article" }, "true", "false")
 
   .config.mt-4
-    .mb-2
-      = label_tag :digest_day_of_week, t("settings.labels.digest_day_of_week"), class: "block font-bold mb-1"
+    = label_tag :digest_day_of_week, t("settings.labels.digest_day_of_week"), class: "block font-bold mb-1"
 
-      .flex.flex-row.gap-2.items-center
-        = weekday_select "settings[communication]", "digest_day_of_week", { selected: @unit.settings(:communication).digest_day_of_week.capitalize }, class: "w-full rounded border-stone-300"
-        = " at "
-        = select_hour(@unit.settings(:communication).digest_hour_of_day.to_i,
-                      { prefix: "settings[communication]",
-                        leading_zeros: false,
-                        use_two_digit_numbers: false,
-                        ampm: true },
-                      class: "w-full rounded border-stone-300")
+    .flex.flex-row.gap-2.items-center
+      = weekday_select "settings[communication]", "digest_day_of_week", { selected: @unit.settings(:communication).digest_day_of_week.capitalize }, class: "w-full rounded border-stone-300"
+      = " at "
+      = select_hour(@unit.settings(:communication).digest_hour_of_day.to_i,
+                    { prefix: "settings[communication]",
+                      leading_zeros: false,
+                      use_two_digit_numbers: false,
+                      ampm: true },
+                    class: "w-full rounded border-stone-300")
 
 / See build_options in https://github.com/rails/rails/blob/049c95161d32092663376b0b14d1a454fd43aa01/actionview/lib/action_view/helpers/date_helper.rb#L1194
 
