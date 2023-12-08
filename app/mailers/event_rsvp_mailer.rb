@@ -19,13 +19,24 @@ class EventRsvpMailer < ApplicationMailer
   private
 
   def attach_files
-    attachments[@event.ical_filename] = IcalExporter.ics_attachment(@event, @rsvp.member)
+    attachments[@event.ical_filename] = ics_attachment
     attachments[MAP_ATTACHMENT_NAME] = @event.static_map.blob.download if @event.static_map.attached?
   end
 
+  def ics_attachment
+    {
+      mime_type:           "multipart/mixed",
+      content_type:        "text/calendar; method=REQUEST; charset=UTF-8; component=VEVENT",
+      content_disposition: "attachment; filename=#{@event.ical_filename}",
+      content:             @event.to_ical(@member)
+    }
+  end
+
   def setup
-    @rsvp, @recipient = params[:event_rsvp], params[:recipient]
+    @rsvp = params[:event_rsvp]
+    @recipient = params[:recipient]
     @event = @rsvp.event
+    @member = @rsvp.member
     @unit = @rsvp.unit
   end
 end

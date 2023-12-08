@@ -1,6 +1,3 @@
-# frozen_string_literal: true
-
-# A MagicLink is a tokenized path associated with a particular UnitMembership
 class MagicLink < ApplicationRecord
   DEFAULT_TTL = 168.hours.freeze
 
@@ -12,10 +9,10 @@ class MagicLink < ApplicationRecord
 
   validates_uniqueness_of :token
 
-  alias_attribute :member, :unit_membership
-
   delegate :user, to: :unit_membership
   delegate :unit, to: :unit_membership
+
+  alias_method :member, :unit_membership
 
   scope :expired, -> { where("time_to_live IS NOT NULL AND updated_at + time_to_live * interval '1 second' < ?", DateTime.now) }
   scope :active, -> { where("time_to_live IS NULL OR updated_at + time_to_live * interval '1 second' >= ?", DateTime.now) }
@@ -29,7 +26,7 @@ class MagicLink < ApplicationRecord
   end
 
   def self.generate_link(member, path, ttl = DEFAULT_TTL)
-    magic_link = member.magic_links.create(path: path, time_to_live: ttl)
+    member.magic_links.create(path: path, time_to_live: ttl)
   end
 
   private

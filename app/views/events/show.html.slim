@@ -3,6 +3,7 @@
   /! Current unit id: #{@unit.id}
   /! Current user id: #{current_user.id}
   /! #{@event.email}
+  = render partial: "events/partials/show/watermarks"
   .max-w-2xl.mx-auto
     article.event.mx-auto.max-w-2xl.md:mt-0.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
       section.grid.grid-col-1.divide-y.divide-stone-300.dark:divide-stone-700
@@ -20,7 +21,6 @@
         = render partial: "events/partials/show/attachments"
 
       = render partial: "events/partials/show/packing_lists"
-    = render partial: "events/partials/show/watermarks"
 
 javascript:
   document.title = "#{@event.title.html_safe} · #{@unit.name.html_safe}"
