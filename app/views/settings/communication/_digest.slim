@@ -3,7 +3,7 @@
 - icon_class = t("settings.icons.#{task_key}")
 - icon_color = t("settings.icon_colors.#{task_key}")
 
-article.py-4
+article#digest_settings.py-4.switch-toggle-container
   h2.font-bold.text-xl
     i(class="fa-solid fa-fw mr-1 #{icon_class} #{icon_color}")
     = t("settings.titles.#{task_key}")
@@ -11,9 +11,9 @@ article.py-4
   p.text-md.text-stone-600.dark:text-stone-400.mb-3
     = t("settings.descriptions.#{task_key}")
 
-  = switch("settings[communication]", task_key, { label: t("settings.labels.digest"), checked: enabled }, "true", "false")
+  = switch("settings[communication]", task_key, { label: t("settings.labels.digest"), checked: enabled, container: "article" }, "true", "false")
 
-  #digest_settings.mt-4
+  .config.mt-4
     .mb-2
       = label_tag :digest_day_of_week, t("settings.labels.digest_day_of_week"), class: "block font-bold mb-1"
 
@@ -29,3 +29,12 @@ article.py-4
                       class: "w-full rounded border-stone-300")
 
 / See build_options in https://github.com/rails/rails/blob/049c95161d32092663376b0b14d1a454fd43aa01/actionview/lib/action_view/helpers/date_helper.rb#L1194
+
+css:
+  #digest_settings .config {
+    display: none;
+  }
+
+  #digest_settings.switch-on .config {
+    display: block;
+  }
