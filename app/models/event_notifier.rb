@@ -51,9 +51,9 @@ class EventNotifier
 
   def self.send_rsvp_confirmation(rsvp)
     return unless rsvp.contactable?
-    return unless Flipper.enabled? :receive_rsvp_confirmation, rsvp.member
+    return unless Flipper.enabled? :receive_rsvp_confirmation, rsvp.unit_membership
 
 
-    EventMailer.with(rsvp: rsvp, member: rsvp.member).rsvp_confirmation_email.deliver_later
+    EventMailer.with(rsvp: rsvp, member: rsvp.unit_membership).rsvp_confirmation_email.deliver_later
   end
 end

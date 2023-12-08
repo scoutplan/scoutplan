@@ -12,7 +12,7 @@ class EventRsvpPolicy < UnitContextPolicy
   end
 
   def approve?
-    admin? || organizer? || rsvp.member.parents.include?(membership)
+    admin? || organizer? || rsvp.unit_membership.parents.include?(membership)
   end
 
   def destroy?
@@ -28,7 +28,7 @@ class EventRsvpPolicy < UnitContextPolicy
   # rubocop:disable Metrics/PerceivedComplexity
   # the ability to RSVP is determined by a number of factors
   def create?(for_member = nil)
-    for_member ||= rsvp.member
+    for_member ||= rsvp.unit_membership
 
     # admins, unit organizers, and event organizers can respond for anyone
     return true if admin? || organizer? || event.organizer?(membership)

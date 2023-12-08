@@ -16,7 +16,7 @@ describe "events", type: :feature do
     @event = FactoryBot.create(:event, :draft, unit: @unit, title: "Draft Event")
 
     @admin_member = @unit.memberships.create(user: @admin_user, role: "admin", status: :active)
-    @normal_member = @unit.memberships.create(user: @normal_user, role: "member", status: :active, member_type: :adult)
+    @normal_member = @unit.memberships.create(user: @normal_user, role: "member", status: :active, member_type: :adult, ical_suppress_declined: true)
   end
 
   describe "ical" do

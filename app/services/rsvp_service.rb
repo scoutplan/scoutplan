@@ -70,9 +70,7 @@ class RsvpService < ApplicationService
   # has a family completely declined an event?
   # this feels a little kludgy...is there a more elegant way?
   def family_fully_declined?
-    # self.event = event
-    raise ArgumentError, "Event does not require RSVPs" unless event.requires_rsvp
-
+    return false unless event.requires_rsvp?
     return false unless family_fully_responded?
 
     responses = family_rsvps.map(&:response)
