@@ -116,7 +116,7 @@ class UnitMembershipsController < ApplicationController
 
   def member_params
     params.require(:unit_membership).permit(
-      :status, :role, :member_type, :tag_list,
+      :status, :role, :member_type, :tag_list, :ical_suppress_declined,
       child_relationships_attributes:  [:id, :child_unit_membership_id, :_destroy],
       parent_relationships_attributes: [:id, :_destroy],
       user_attributes:                 [:id, :first_name, :last_name, :phone, :email, :nickname]

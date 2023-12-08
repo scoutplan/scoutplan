@@ -1,0 +1,7 @@
+section
+  h2.font-bold.mb-2 = "Calendar feed"
+
+  = switch(:unit_membership, :ical_suppress_declined,
+          { label: "Hide events that your family's not attending",
+            checked: @member.ical_suppress_declined },
+          "true", "false")

@@ -50,6 +50,7 @@ class ProfilesController < ApplicationController
   def member_params
     params.require(:unit_membership).permit(
       :allow_youth_rsvps,
+      :ical_suppress_declined,
       user_attributes: [:id, :first_name, :last_name, :email, :phone, :password, :password_confirmation]
     )
   end
