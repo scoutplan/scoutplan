@@ -30,6 +30,8 @@ module Event::Icalendarable
     cal.to_ical
   end
 
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def to_ical_event(member)
     ical_event = Icalendar::Event.new
     ical_event.summary     = ical_title
@@ -46,6 +48,8 @@ module Event::Icalendarable
 
     ical_event
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 
   def ical_filename
     "#{unit.name} #{title} on #{starts_at.strftime('%b %-d %Y')}#{FILE_EXTENSION_ICAL}"
@@ -67,15 +71,19 @@ module Event::Icalendarable
   end
 
   def ical_starts_at
-    return ical_datetime(starts_at.in_time_zone(unit.time_zone).beginning_of_day) if all_day?
+    return ical_date(starts_at.in_time_zone(unit.time_zone).beginning_of_day) if all_day?
 
     ical_datetime(starts_at)
   end
 
   def ical_ends_at
-    return ical_datetime(ends_at.in_time_zone(unit.time_zone).end_of_day) if all_day?
+    return ical_date(ends_at.in_time_zone(unit.time_zone).end_of_day) if all_day?
 
     ical_datetime(ends_at)
+  end
+
+  def ical_date(val)
+    Icalendar::Values::Date.new(val.utc, tzid: "UTC")
   end
 
   def ical_datetime(val)

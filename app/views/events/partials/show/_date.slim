@@ -9,7 +9,8 @@ article.py-4
   .relative
     .flex.flex-row.justify-between.items-center
       .uppercase.text-sm.font-bold.tracking-wider = @event.starts_at.in_time_zone.strftime('%a')
-      .uppercase.text-sm.font-bold.tracking-wider = @event.ends_at.in_time_zone.strftime('%a')    
+      - if multiday
+        .uppercase.text-sm.font-bold.tracking-wider = @event.ends_at.in_time_zone.strftime('%a')    
 
     .flex.flex-row.justify-between.items-center.relative
       - if multiday
@@ -49,7 +50,7 @@ article.py-4
             | &ndash;
             = @event.ends_at.in_time_zone.strftime('%-I:%M %p')
 
-      - unless @event.all_day?
+      - if multiday && !@event.all_day?
         .font-bold.whitespace-nowrap = @event.ends_at.in_time_zone.strftime('%-I:%M %p')               
 
   - if @event.series?

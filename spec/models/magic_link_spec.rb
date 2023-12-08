@@ -11,7 +11,7 @@ RSpec.describe MagicLink, type: :model do
 
   it "instantiates" do
     expect {
-      MagicLink.create(member: @member, path: @path)
+      MagicLink.create(unit_membership: @member, path: @path)
     }.not_to raise_exception
   end
 
