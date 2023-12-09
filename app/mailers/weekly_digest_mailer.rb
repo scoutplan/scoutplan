@@ -13,6 +13,6 @@ class WeeklyDigestMailer < ApplicationMailer
   end
 
   def subject
-    "[#{@event.unit.name}] Weekly Digest"
+    "[#{@unit.name}] Weekly Digest"
   end
 end
