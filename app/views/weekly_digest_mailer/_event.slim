@@ -1,8 +1,42 @@
 - presenter = EventPresenter.new(event, unit_membership)
 
-= magic_link_to(unit_membership, [event.unit, event]) do
-  h3      = event.title
-  time    = presenter.short_dates_to_s
-  - if event.short_description.present?
-    p     = event.short_description
-  address = event.location
+= magic_link_to(unit_membership, [event.unit, event], style: "text-decoration: none; color: black;") do
+  section.py-2.border-t.border-black
+    h2 = event.title
+    - if event.short_description.present?
+      p(style="margin-bottom: 0.5em; font-size: 16px;") = event.short_description
+  
+  section
+    time
+      div(style="margin-bottom: 0.5em; line-height: 1.0; font-weight: bold;") = presenter.month_name
+      div(style="font-size:3em; font-weight:bold; line-height:1.0;")
+        = event.starts_at.strftime("%-d").strip
+        - unless presenter.single_day?
+          span(style="display: inline-block; margin: 0 0.15em;") &ndash;
+          = event.ends_at.strftime("%-d").strip
+      div(style="font-weight: bold;")
+        = event.starts_at.strftime("%l:%M %p").strip
+        span(style="display: inline-block; margin: 0 0.25em;") &ndash;
+        = event.ends_at.strftime("%l:%M %p").strip
+
+  - if event.location.present?
+    section.py-2
+      address(style="font-style: normal;")
+        = image_tag attachments["location_dot"].url, style: "height: 1.5em; margin-right: 0.5em; vertical-align: middle;"
+        = event.location
+
+- unless event.requires_rsvp?
+  = magic_link_to(unit_membership, "View details", [event.unit, event], class: "block font-bold underline text-blue-500 py-4")
+
+- if event.requires_rsvp?
+  section.py-4
+    - if event.rsvp_open?
+      - if event.rsvps.where(unit_membership: unit_membership).exists?
+        = "Change your RSVP"
+      - else
+        p = "Your RSVP is needed"
+        div
+          = magic_link_to(unit_membership, unit_event_edit_rsvps_url(event.unit, event), class: "block button button-rsvp") do
+            = "Respond now"
+    - else
+      = "RSVP is Closed"
