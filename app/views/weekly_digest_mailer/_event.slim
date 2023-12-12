@@ -1,0 +1,8 @@
+- presenter = EventPresenter.new(event, unit_membership)
+
+= magic_link_to(unit_membership, [event.unit, event]) do
+  h3      = event.title
+  time    = presenter.short_dates_to_s
+  - if event.short_description.present?
+    p     = event.short_description
+  address = event.location

@@ -16,8 +16,6 @@ class Message < ApplicationRecord
 
   has_secure_token
 
-  alias_attribute :member, :unit_membership
-
   enum status: { draft: 0, queued: 1, sent: 2, pending: 3, outbox: 4 }
 
   accepts_nested_attributes_for :message_recipients, allow_destroy: true

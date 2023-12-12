@@ -45,6 +45,7 @@ class SettingsController < UnitContextController
 
   # handle scheduled task serialization
   def set_schedule
+    ap "set_schedule"
     Time.zone = @unit.settings(:locale).time_zone
     set_digest_schedule
     set_reminder_schedule
@@ -63,9 +64,11 @@ class SettingsController < UnitContextController
   end
 
   def set_digest_schedule
-    digest_setting = params.dig(:settings, :communication, :digest)
-    @unit.settings(:communication).update!(digest: digest_setting)
-    return unless @unit.settings(:communication).digest == "true"
+    ap "Hour of day: #{params.dig(:settings, :communication, :digest_hour_of_day)}"
+    @unit.settings(:communication).digest = params.dig(:settings, :communication, :digest)
+    @unit.settings(:communication).digest_day_of_week = params.dig(:settings, :communication, :digest_day_of_week)
+    @unit.settings(:communication).digest_hour_of_day = params.dig(:settings, :communication, :digest_hour_of_day)
+    @unit.settings(:communication).digest_config_timestamp = DateTime.current
 
     SendWeeklyDigestJob.schedule_next_job(@unit)
   end

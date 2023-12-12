@@ -6,12 +6,6 @@ class WeeklyDigestNotification < ScoutplanNotification
 
   param :unit
 
-  before_deliver do
-    @unit = params[:unit]
-    @imminent_events = @unit.events.published.imminent
-    @coming_up_events = @unit.events.published.coming_up
-  end
-
   def format_for_twilio
     {
       From: ENV.fetch("TWILIO_NUMBER"),

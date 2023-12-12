@@ -21,6 +21,7 @@ article#digest_settings.py-4.switch-toggle-container.border.border-stone-300.rou
       = " at "
       = select_hour(@unit.settings(:communication).digest_hour_of_day.to_i,
                     { prefix: "settings[communication]",
+                      field_name: "digest_hour_of_day",
                       leading_zeros: false,
                       use_two_digit_numbers: false,
                       ampm: true },
