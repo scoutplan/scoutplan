@@ -6,8 +6,7 @@ User.create!(
   password_confirmation: "password",
   first_name:            "Bob",
   last_name:             "Dobalina",
-  phone:                 "999-555-1212",
-  type:                  :adult
+  phone:                 "500-555-0006"
 )
 
 User.create!(
@@ -16,8 +15,7 @@ User.create!(
   password_confirmation: "password",
   first_name:            "Anne",
   last_name:             "Avery",
-  phone:                 "999-555-1212",
-  type:                  :youth
+  phone:                 "999-555-1212"
 )
 
 User.create!(
@@ -26,8 +24,7 @@ User.create!(
   password_confirmation: "password",
   first_name:            "Brian",
   last_name:             "Bosworth",
-  phone:                 "999-555-1212",
-  type:                  :adult
+  phone:                 "999-555-1212"
 )
 
 User.create!(
@@ -36,8 +33,7 @@ User.create!(
   password_confirmation: "password",
   first_name:            "Debbie",
   last_name:             "Doolittle",
-  phone:                 "999-555-1212",
-  type:                  :youth
+  phone:                 "999-555-1212"
 )
 
 User.create!(
@@ -46,8 +42,7 @@ User.create!(
   password_confirmation: "password",
   first_name:            "Eric",
   last_name:             "Einstein",
-  phone:                 "999-555-1212",
-  type:                  :adult
+  phone:                 "999-555-1212"
 )
 
 User.create!(
@@ -56,9 +51,7 @@ User.create!(
   password_confirmation: "password",
   first_name:            "Timmy",
   last_name:             "Dobalina",
-  phone:                 "999-555-1212",
-  phone:                 "555-1212",
-  type:                  :youth
+  phone:                 "999-555-1212"
 )
 
 User.create!(
@@ -67,8 +60,7 @@ User.create!(
   password_confirmation: "password",
   first_name:            "Taylor",
   last_name:             "Dobalina",
-  phone:                 "555-1212",
-  type:                  :youth
+  phone:                 "999-555-1212"
 )
 
 puts "#{User.count} users now exist"
