@@ -9,12 +9,7 @@ class WeeklyDigestMailer < ApplicationMailer
   helper ApplicationHelper
 
   def weekly_digest_notification
-    # attachments.inline["location_dot"] = {
-    #   data:      File.read(Rails.root.join("app/assets/images/location_dot.png")),
-    #   mime_type: "image/png",
-    #   encoding:  "base64"
-    # }
-    attachments.inline["location_dot"] = File.read(Rails.root.join("app/assets/images/location_dot.png"))
+    # attachments.inline["location_dot"] = File.read(Rails.root.join("app/assets/images/location_dot.png"))
     Rails.logger.warn("WeeklyDigestMailer#weekly_digest_notification to: #{to_address} from: #{from_address}")
     mail(to: to_address, from: from_address, subject: subject)
   end
@@ -24,8 +19,9 @@ class WeeklyDigestMailer < ApplicationMailer
   def setup
     @recipient = params[:recipient]
     @unit = params[:unit]
-    @this_week_events = @unit.events.published.this_week
-    @coming_up_events = @unit.events.published.coming_up
+    @this_week_events   = @unit.events.published.this_week
+    @coming_up_events   = @unit.events.published.coming_up
+    @further_out_events = @unit.events.published.further_out.rsvp_required
   end
 
   def subject

@@ -1,2 +1,4 @@
-h1(style="margin-bottom: 0.5em; color: black;") Coming up
+h1(style="margin-bottom: 0.25em; color: black; font-size: 3em;")
+  | This week at 
+  span(style="white-space: nowrap;") = @unit.name
 = render partial: "event", collection: @this_week_events, locals: { unit_membership: @recipient }

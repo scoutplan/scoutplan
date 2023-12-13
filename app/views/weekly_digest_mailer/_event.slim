@@ -1,10 +1,10 @@
 - presenter = EventPresenter.new(event, unit_membership)
 
 = magic_link_to(unit_membership, [event.unit, event], style: "text-decoration: none; color: black;") do
-  section.py-2.border-t.border-black
+  section.py-4.border-t.border-black
     h2 = event.title
     - if event.short_description.present?
-      p(style="margin-bottom: 0.5em; font-size: 16px;") = event.short_description
+      p(style="font-size: 16px;") = event.short_description
   
   section
     time
@@ -22,19 +22,23 @@
   - if event.location.present?
     section.py-2
       address(style="font-style: normal;")
-        = image_tag attachments["location_dot"].url, style: "height: 1.5em; margin-right: 0.5em; vertical-align: middle;"
+        = image_tag "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("app/assets/images/email/location_dot.png")))}",
+                    style: "height: 1.5em; margin-right: 0.5em; vertical-align: middle;"
         = event.location
 
-- unless event.requires_rsvp?
-  = magic_link_to(unit_membership, "View details", [event.unit, event], class: "block font-bold underline text-blue-500 py-4")
+= magic_link_to(unit_membership, "View details", [event.unit, event], class: "block font-bold underline text-blue-500 py-2")        
 
 - if event.requires_rsvp?
-  section.py-4
+  section.py-2
     - if event.rsvp_open?
       - if event.rsvps.where(unit_membership: unit_membership).exists?
-        = "Change your RSVP"
+        = magic_link_to(unit_membership, unit_event_edit_rsvps_url(event.unit, event), class: "text-yellow-700 font-bold") do
+            = "Change your RSVP"
       - else
-        p = "Your RSVP is needed"
+        p.text-yellow-700.font-bold.mb-2
+          = image_tag "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("app/assets/images/email/rsvp_warning.png")))}",
+                      style: "height: 1.5em; margin-right: 0.25em; vertical-align: middle;"        
+          = "Your RSVP is needed"
         div
           = magic_link_to(unit_membership, unit_event_edit_rsvps_url(event.unit, event), class: "block button button-rsvp") do
             = "Respond now"

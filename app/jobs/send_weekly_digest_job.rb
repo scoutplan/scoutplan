@@ -5,7 +5,6 @@ class SendWeeklyDigestJob < ApplicationJob
     unit = Unit.find(unit_id)
     return unless timestamp ? timestamp == unit.settings(:communication).digest_config_timestamp : true && unit.settings(:communication).digest == "true"
 
-    ap unit.members.count
     WeeklyDigestNotification.with(unit: unit).deliver_later(unit.members)
     SendWeeklyDigestJob.schedule_next_job(unit)
     unit.settings(:communication).update!(digest_last_ran_at: DateTime.current)
