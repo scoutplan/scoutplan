@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "rails_helper"
+require "icalendar"
 
 # rubocop:disable Metrics/BlockLength
 describe "events", type: :feature do
@@ -15,23 +16,19 @@ describe "events", type: :feature do
     @event = FactoryBot.create(:event, :draft, unit: @unit, title: "Draft Event")
 
     @admin_member = @unit.memberships.create(user: @admin_user, role: "admin", status: :active)
-    @normal_member = @unit.memberships.create(user: @normal_user, role: "member", status: :active)
+    @normal_member = @unit.memberships.create(user: @normal_user, role: "member", status: :active, member_type: :adult, ical_suppress_declined: true)
   end
 
-  require "icalendar"
-
   describe "ical" do
-    it "works" do
+    it "responds with a valid iCal feed" do
       starts_at = 36.hours.from_now
       ends_at = 38.hours.from_now
-      event = FactoryBot.create( \
-        :event,
-        :published,
-        unit: @unit,
-        description: Faker::Lorem.paragraph(sentence_count: 3),
-        starts_at: starts_at,
-        ends_at: ends_at \
-      )
+      event = FactoryBot.create(:event,
+                                :published,
+                                unit:        @unit,
+                                starts_at:   starts_at,
+                                ends_at:     ends_at,
+                                description: Faker::Lorem.paragraph(sentence_count: 3))
       visit(calendar_feed_unit_events_path(@unit, @normal_member.token))
 
       cals = Icalendar::Calendar.parse(page.body)
@@ -53,31 +50,46 @@ describe "events", type: :feature do
       expect(page.status_code).to eq(404)
     end
 
+    it "excludes events where the entire family has declined" do
+      new_event = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit)
+      visit(calendar_feed_unit_events_path(@unit, @normal_member.token))
+      cals = Icalendar::Calendar.parse(page.body)
+      cal = cals.first
+      cal_event = cal.events.first
+      expect(cal.events.count).to eq(1)
+      new_event.rsvps.create!(unit_membership: @normal_member, response: :declined, respondent: @normal_member)
+      visit(calendar_feed_unit_events_path(@unit, @normal_member.token))
+      cals = Icalendar::Calendar.parse(page.body)
+      cal = cals.first
+      cal_event = cal.events.first
+      expect(cal.events.count).to eq(0)
+    end
+
     it "includes cancelled and draft events for admins" do
       @unit.events.destroy_all
       FactoryBot.create( \
         :event,
         :published,
-        unit: @unit,
+        unit:        @unit,
         description: Faker::Lorem.paragraph(sentence_count: 3),
-        starts_at: 36.hours.from_now,
-        ends_at: 38.hours.from_now \
+        starts_at:   36.hours.from_now,
+        ends_at:     38.hours.from_now \
       )
       FactoryBot.create( \
         :event,
         :cancelled,
-        unit: @unit,
+        unit:        @unit,
         description: Faker::Lorem.paragraph(sentence_count: 3),
-        starts_at: 40.hours.from_now,
-        ends_at: 42.hours.from_now \
+        starts_at:   40.hours.from_now,
+        ends_at:     42.hours.from_now \
       )
       FactoryBot.create( \
         :event,
         :draft,
-        unit: @unit,
+        unit:        @unit,
         description: Faker::Lorem.paragraph(sentence_count: 3),
-        starts_at: 50.hours.from_now,
-        ends_at: 52.hours.from_now \
+        starts_at:   50.hours.from_now,
+        ends_at:     52.hours.from_now \
       )
       expect(@unit.events.count).to eq(3)
       visit(calendar_feed_unit_events_path(@unit, @admin_member.token))

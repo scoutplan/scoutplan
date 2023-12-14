@@ -34,7 +34,7 @@ article.py-4
         - rsvp_service.family_accepted.each do |rsvp|
           .table-row.gap-2
             .table-cell
-              = rsvp.member.display_first_name
+              = rsvp.unit_membership.display_first_name
             .table-cell.pl-2
               - rsvp.event_shift_ids.each do |shift_id|
                 - shift = @event.shifts.find_by(id: shift_id)

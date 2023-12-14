@@ -3,6 +3,7 @@ class EventRsvp < ApplicationRecord
 
   belongs_to :event
   belongs_to :unit_membership
+  belongs_to :member, class_name: "UnitMembership", foreign_key: "unit_membership_id"
   belongs_to :respondent, class_name: "UnitMembership"
 
   before_save :enforce_approval_policy
@@ -16,8 +17,6 @@ class EventRsvp < ApplicationRecord
 
   enum response: { declined: 0, accepted: 1, declined_pending: 2, accepted_pending: 3 }
 
-  alias_attribute :member, :unit_membership
-
   delegate :reply_to, to: :event
   delegate :organizers?, to: :event
   delegate_missing_to :unit_membership
@@ -27,7 +26,7 @@ class EventRsvp < ApplicationRecord
   scope :adult, -> { joins(:unit_membership).merge(UnitMembership.adult) }
 
   def common_unit?
-    errors.add(:event, "and Member must belong to the same Unit") unless event.unit == member.unit
+    errors.add(:event, "and Member must belong to the same Unit") unless event.unit == unit_membership.unit
   end
 
   def response_allowed?

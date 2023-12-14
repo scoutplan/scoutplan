@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_22_174519) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_08_185049) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "unaccent"
@@ -526,6 +526,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_22_174519) do
     t.boolean "allow_youth_rsvps", default: false
     t.string "type", default: "UnitMembership", null: false
     t.string "token"
+    t.boolean "ical_suppress_declined", default: false, null: false
   end
 
   create_table "units", force: :cascade do |t|

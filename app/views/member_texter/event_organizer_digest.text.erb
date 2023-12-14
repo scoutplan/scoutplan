@@ -2,7 +2,7 @@
 Hi, <%= @member.display_first_name %>. New RSVPs for <%= @event.title %> have arrived:
 
 <% @new_rsvps.each do |rsvp| %>
-* <%= rsvp.member.short_display_name %> <%= rsvp.accepted? ? 'is attending' : 'is not attending' %>
+* <%= rsvp.unit_membership.short_display_name %> <%= rsvp.accepted? ? 'is attending' : 'is not attending' %>
 <% end %>
 
 Visit <%= magic_url_for(@member, unit_event_rsvps_path(@event.unit, @event)) %> to see all RSVPs.

@@ -31,7 +31,7 @@
           th.px-4.py-2 = doc_type.description
 
       - @attendees.each do |rsvp|
-        - @payments_service.member = rsvp.member
+        - @payments_service.member = rsvp.unit_membership
 
         tr.hover:bg-stone-100
           // NAME
@@ -43,13 +43,13 @@
 
             = rsvp.full_display_name
 
-            - if rsvp.member.emailable?
-              .email-address.hidden = rsvp.member.email
+            - if rsvp.unit_membership.emailable?
+              .email-address.hidden = rsvp.unit_membership.email
 
           // PAID
           td.border-t.px-4.py-2.text-center
             - if @payments_service.paid?
-              = button_to unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.member.id, payment: "none"),
+              = button_to unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.unit_membership.id, payment: "none"),
                           class:    "rsvp-action-button unpay-rsvp-button block py-2 font-normal",
                           onclick:  "this.classList.add('processing');",
                           method:   :post,
@@ -62,7 +62,7 @@
                   i.fa-refresh.fas.fa-spin.inline-block.mr-2
 
             - else
-              = button_to unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.member.id, payment: "full"),
+              = button_to unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.unit_membership.id, payment: "full"),
                           onclick: "this.classList.add('processing');",
                           method:  :post,
                           form:    { "data-type": "turbo_stream" },

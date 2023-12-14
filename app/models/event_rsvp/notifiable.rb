@@ -12,8 +12,8 @@ module EventRsvp::Notifiable
   end
 
   def recipients
-    return member.family if requires_approval?
+    return unit_membership.family if requires_approval?
 
-    [member]
+    [unit_membership]
   end
 end

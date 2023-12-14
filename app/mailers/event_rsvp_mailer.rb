@@ -36,7 +36,7 @@ class EventRsvpMailer < ApplicationMailer
     @rsvp = params[:event_rsvp]
     @recipient = params[:recipient]
     @event = @rsvp.event
-    @member = @rsvp.member
+    @member = @rsvp.unit_membership
     @unit = @rsvp.unit
   end
 end
@@ -93,7 +93,7 @@ module RsvpMailPresenter
 
   class RsvpApproverActionRequiredMailPresenter < RsvpBaseMailPresenter
     def subject
-      "[#{unit.name}] Action required: approve #{rsvp.member.first_name}'s RSVP to the #{event.title}"
+      "[#{unit.name}] Action required: approve #{rsvp.unit_membership.first_name}'s RSVP to the #{event.title}"
     end
   end
 end
