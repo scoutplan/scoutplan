@@ -1,6 +1,3 @@
-# frozen_string_literal: true
-
-# Subclass for sending unit digests to members
 class UnitDigestTask < UnitTask
   DEFAULT_DAY = :sunday
   DEFAULT_HOUR = 8

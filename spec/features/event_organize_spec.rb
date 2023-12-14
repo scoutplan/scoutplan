@@ -76,31 +76,31 @@ describe "events", type: :feature do
       expect(page).to have_current_path(unit_event_rsvps_path(@unit, @rsvp_event1))
     end
 
-    # it "deletes declined RSVPs", js: true do
-    #   @rsvp_event1.rsvps.create(unit_membership: @normal_member, response: :declined, respondent: @admin_member)
-    #   visit unit_event_rsvps_path(@unit, @rsvp_event1)
+    it "deletes declined RSVPs", js: true do
+      @rsvp_event1.rsvps.create(unit_membership: @normal_member, response: :declined, respondent: @admin_member)
+      visit unit_event_rsvps_path(@unit, @rsvp_event1)
 
-    #   name_link = page.find("#unit_membership_#{@normal_member.id} > a")
-    #   name_link.click
+      name_link = page.find("#unit_membership_#{@normal_member.id} > a")
+      name_link.click
 
-    #   delete_button = page.find("#unit_membership_#{@normal_member.id} .delete-rsvp-button")
-    #   delete_button.click
+      delete_button = page.find("#unit_membership_#{@normal_member.id} .delete-rsvp-button")
+      delete_button.click
 
-    #   # this isn't really a good test. Needs improvement
-    # end
+      # this isn't really a good test. Needs improvement
+    end
 
-    # it "deletes accepted RSVPs", js: true do
-    #   @rsvp_event1.rsvps.create(unit_membership: @normal_member, response: :accepted, respondent: @admin_member)
-    #   visit unit_event_rsvps_path(@unit, @rsvp_event1)
+    it "deletes accepted RSVPs", js: true do
+      @rsvp_event1.rsvps.create(unit_membership: @normal_member, response: :accepted, respondent: @admin_member)
+      visit unit_event_rsvps_path(@unit, @rsvp_event1)
 
-    #   name_link = page.find("#unit_membership_#{@normal_member.id} > a")
-    #   name_link.click
+      name_link = page.find("#unit_membership_#{@normal_member.id} > a")
+      name_link.click
 
-    #   delete_button = page.find("#unit_membership_#{@normal_member.id} .delete-rsvp-button")
-    #   delete_button.click
+      delete_button = page.find("#unit_membership_#{@normal_member.id} .delete-rsvp-button")
+      delete_button.click
 
-    #   # also not a good test
-    # end
+      # also not a good test
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength
