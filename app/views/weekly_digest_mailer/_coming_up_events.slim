@@ -1,0 +1,4 @@
+- content_for :secondary do
+  h1(style="font-size: 2em; margin-bottom: 0.25em;") Coming up
+  table.w-full(cellpadding=0 cellspacing=0)
+    = render partial: "coming_up_event", collection: @coming_up_events, locals: { unit_membership: @recipient }

@@ -1,2 +1,12 @@
-= render "this_week_events" if @this_week_events.present?
-= render "this_week_empty" unless @this_week_events.present?
+= render "this_week_events"   if @this_week_events.present?
+= render "this_week_empty"    unless @this_week_events.present?
+= render "coming_up_events"   if @coming_up_events.present?
+= render "further_out_events" if @further_out_events.present?
+
+- content_for :footer do
+  p.text-sm.text-stone-300.mb-2 You're receiving this because you're an active member of #{@unit.name}. 
+    The links in this email are personalized to you. Please don't forward this email or share the links with others.
+
+  p.text-sm.text-stone-300
+    = magic_link_to(@recipient, "View the full #{@unit.name} schedule", unit_events_url(@unit), class: "text-white font-bold")
+  

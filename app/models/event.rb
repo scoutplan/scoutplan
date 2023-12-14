@@ -75,9 +75,10 @@ class Event < ApplicationRecord
   scope :past,          -> { where("starts_at < ?", Date.today.in_time_zone) }
   scope :future,        -> { where("ends_at >= ?", Date.today.in_time_zone) }
   scope :recent,        -> { where("starts_at BETWEEN ? AND ?", 4.weeks.ago, Date.today)}
-  scope :this_week,     -> { where("starts_at BETWEEN ? AND ?", Time.now, 7.days.from_now.at_end_of_day.in_time_zone) }
-  scope :upcoming,      -> { where("starts_at BETWEEN ? AND ?", Time.now, 35.days.from_now) }
+  scope :this_week,     -> { where("starts_at BETWEEN ? AND ?", Time.current, 6.days.from_now.at_end_of_day.in_time_zone) }
+  scope :upcoming,      -> { where("starts_at BETWEEN ? AND ?", Time.current, 35.days.from_now) }
   scope :coming_up,     -> { where("starts_at BETWEEN ? AND ?", 7.days.from_now, 35.days.from_now) }
+  scope :further_out,   -> { where("starts_at > ?", 35.days.from_now) }
   scope :rsvp_required, -> { where(requires_rsvp: true) }
   scope :today,         -> { where("starts_at BETWEEN ? AND ?", Time.zone.now.beginning_of_day, Time.zone.now.at_end_of_day) }
   scope :imminent, -> {
@@ -137,6 +138,10 @@ class Event < ApplicationRecord
 
   def rsvp_open?
     status == "published" && requires_rsvp && rsvp_closes_at.future?
+  end
+
+  def rsvp_closed?
+    !rsvp_open?
   end
 
   def rsvps?

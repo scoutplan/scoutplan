@@ -18,8 +18,9 @@ class WeeklyDigestMailer < ApplicationMailer
   def setup
     @recipient = params[:recipient]
     @unit = params[:unit]
-    @this_week_events = @unit.events.published.this_week
-    @coming_up_events = @unit.events.published.coming_up
+    @this_week_events   = @unit.events.published.this_week
+    @coming_up_events   = @unit.events.published.coming_up
+    @further_out_events = @unit.events.published.further_out.rsvp_required
   end
 
   def subject

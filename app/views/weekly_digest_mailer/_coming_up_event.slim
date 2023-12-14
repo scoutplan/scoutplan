@@ -1,0 +1,32 @@
+- event = coming_up_event
+- presenter = EventPresenter.new(event, unit_membership)
+
+tr
+  td(style="padding:10px 10px 10px 0;" class="border-t border-black" valign="top")
+    = magic_link_to(unit_membership, unit_event_url(event.unit, event), class: "text-black no-underline") do
+      div(style="margin-bottom: 0.25em; line-height: 1.0; font-weight: bold;") = event.starts_at.strftime("%b")
+      div(style="font-size:2em; font-weight:bold; line-height:1.0;")
+        = event.starts_at.strftime("%-d").strip
+        - unless presenter.single_day?
+          span(style="display: inline-block; margin: 0 0.15em;") &ndash;
+          = event.ends_at.strftime("%-d").strip
+      div(style="line-height: 1.0; font-weight: bold; font-size: 14px; margin-top:0.25em;") = event.starts_at.strftime("%a").upcase
+
+  td(class="border-t border-black py-2")
+    = magic_link_to(unit_membership, unit_event_url(event.unit, event), class: "text-black no-underline") do
+      p.font-bold.text-lg = event.title
+      - if event.short_description.present?
+        p(style="font-size: 16px;") = event.short_description
+      p.text-blue-500.underline.font-bold = "View details"
+
+    - if event.requires_rsvp?
+      - if event.rsvp_open?
+        - if event.rsvps.where(unit_membership: unit_membership).exists?
+          = "Change your RSVP"
+        - else
+          p
+            = "Your RSVP is needed "
+            = magic_link_to(unit_membership, unit_event_edit_rsvps_url(event.unit, event), class: "inline-block button button-rsvp px-2") do
+              = "Respond now"
+      - else
+        = "RSVP is Closed"

@@ -1,0 +1,8 @@
+
+<% rsvp_service = RsvpService.new(@recipient) %>This week at <%= @unit.name %>:
+
+<% @this_week_events.each do |event| rsvp_service.event = event %>
+* <%= event.title %> on <%= event.starts_at.strftime("%A") %><% if event.requires_rsvp? && !rsvp_service.family_fully_responded? %>(Your RSVP is needed)<% end %>
+<% end %>
+
+You're receiving this because you're an active member of <%= @unit.name %>. The links in this email are personalized to you. Please don't forward this email or share the links with others. Visit <%= magic_url_for(@recipient, unit_events_url(@unit)) %> to view the full schedule and RSVPs.

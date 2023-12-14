@@ -289,7 +289,7 @@ en:
         list:       "View as List"
 
       event_row:
-        rsvp_respond: "Respond"
+        rsvp_respond: "RSVP Needed"
         rsvp_change:  "Change"
         rsvp_complete: "Complete Your RSVP"
 

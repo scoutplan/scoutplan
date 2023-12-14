@@ -7,12 +7,17 @@ class UnitMemberships::TestCommunicationsController < UnitContextController
   end
 
   def create
+    @target_member = UnitMembership.find(params[:member_id])
     message_type = params[:message_type]
     return unless message_type
 
-    method_name = "send_#{message_type}"
-    @message_name = message_type.humanize.titleize
-    @target_member = UnitMembership.find(params[:member_id])
-    MemberNotifier.new(@target_member).send method_name
+    send_digest if message_type == "digest"
+  end
+
+  private
+
+  def send_digest
+    # SendWeeklyDigestJob.perform_now(@target_member)
+    WeeklyDigestNotification.with(unit: @target_member.unit).deliver_later(@target_member)
   end
 end
