@@ -14,7 +14,7 @@
 
 class UnitTaskService
   TASK_KEYS = { communication: {
-    digest:                 "UnitDigestTask",
+    # digest:                 "UnitDigestTask",
     daily_reminder:         "DailyReminderTask",
     rsvp_nag:               "RsvpNagTask",
     rsvp_last_call:         "RsvpLastCallTask",
@@ -33,6 +33,7 @@ class UnitTaskService
       end
     end
     setup_schedules
+    SendWeeklyDigestJob.schedule_next_job(@unit)
   end
 
   # given a setting category, key, and task class, create or destroy the task

@@ -92,10 +92,12 @@ document.addEventListener("turbo:load", function() {
     });
   });
 
-  document.querySelectorAll("input.switch").forEach(function(elem) {
+  document.querySelectorAll(".dp-switch").forEach(function(elem) {
+    const container = elem.closest(".switch-toggle-container");
+    container?.classList?.toggle("switch-on", elem.checked);
     elem.addEventListener("change", function(event) {
-      var wrapper = event.target.closest(".switch-wrapper");
-      wrapper.classList.toggle("switch-on", event.target.checked);
+      const container = event.target.closest(".switch-toggle-container");
+      container.classList.toggle("switch-on", event.target.checked);
     });
   });  
 });

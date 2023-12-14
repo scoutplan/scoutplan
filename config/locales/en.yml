@@ -705,32 +705,35 @@ en:
       back:           "Back to unit setup"
 
     descriptions:
-      daily_reminder: "Send a reminder 12 hours before an event starts."
-      digest:         "Send a message on Sunday mornings with the coming week's schedule, news, and RSVPs."
+      daily_reminder: "Send a reminder before an event starts."
+      daily_reminder_details: "Reminders are sent between 9 am and 6 pm on the day of or the day before an event starts, depending on start time."
+      digest:         "Send a weekly message with the coming week's schedule, news, and RSVPs."
       rsvp_nag:       "Send a message on Tuesday mornings, gently reminding members with outstanding RSVPs to respond."
-      rsvp_last_call: "Send a message to members the day before RSVPs close for an event."
-      event_organizer_digest: "Send a daily roundup of new RSVPs to event organizers."
+      rsvp_last_call: "The day before an event closes for RSVPs, send a reminder to members who haven't responded yet."
+      event_organizer_digest: "Send a daily summary of new RSVPs to event organizers."
 
     icons:
-      daily_reminder: "fa-sun"
+      daily_reminder: "fa-hand-point-ribbon"
       digest:         "fa-calendar-week"
-      rsvp_nag:       "fa-hand-point-ribbon"
+      rsvp_nag:       "fa-bell"
       rsvp_last_call: "fa-door-open"
       event_organizer_digest: "fa-clipboard-list"
 
     icon_colors:
-      daily_reminder: "text-yellow-400"
+      daily_reminder: "text-rose-600"
       digest:         "text-purple-600"
-      rsvp_nag:       "text-rose-600"
-      rsvp_last_call: "text-orange-500"
+      rsvp_nag:       "text-yellow-600"
+      rsvp_last_call: "text-indigo-500"
       event_organizer_digest: "text-cyan-500"
 
     labels:
-      daily_reminder: "Turn on event reminders"
-      digest:         "Turn on weekly newsletters"
-      rsvp_nag:       "Turn on RSVP prompts"
-      rsvp_last_call: "Turn on RSVP last call reminders"
-      event_organizer_digest: "Turn on event organizer RSVP notifications"
+      daily_reminder: "Send event reminders"
+      digest:         "Send weekly newsletters"
+      rsvp_nag:       "Send RSVP prompts"
+      rsvp_last_call: "Send RSVP last call reminders"
+      event_organizer_digest: "Send event organizer roundups"
+      digest_day_of_week: "Send on"
+      digest_hour_of_day: "Send at"
     
     policies:
       buttons:
@@ -741,13 +744,13 @@ en:
 
     titles:
       unit_profile:   "Edit your unit information"
-      communications: "Communications"
+      communications: "Automated messages"
       daily_reminder: "Event reminders"
       policies:       "Policies"
       rsvp_nag:       "RSVP prompts"
       rsvp_last_call: "RSVP last calls"
       digest:         "Weekly newsletters"
-      event_organizer_digest: "Event organizer RSVP notification"
+      event_organizer_digest: "Event organizer roundups"
 
     notices:
       update_success: "Your unit profile has been updated"
