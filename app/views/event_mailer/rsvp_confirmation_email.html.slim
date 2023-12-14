@@ -10,7 +10,7 @@
   p
     = "Here's where things stand: "
     strong
-      = RsvpService.new(@rsvp.member, @rsvp.event).family_responses_in_words
+      = RsvpService.new(@rsvp.unit_membership, @rsvp.event).family_responses_in_words
 
   - if @rsvp.event.rsvp_open?
     p

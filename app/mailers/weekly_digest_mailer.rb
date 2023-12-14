@@ -9,7 +9,6 @@ class WeeklyDigestMailer < ApplicationMailer
   helper ApplicationHelper
 
   def weekly_digest_notification
-    # attachments.inline["location_dot"] = File.read(Rails.root.join("app/assets/images/location_dot.png"))
     Rails.logger.warn("WeeklyDigestMailer#weekly_digest_notification to: #{to_address} from: #{from_address}")
     mail(to: to_address, from: from_address, subject: subject)
   end

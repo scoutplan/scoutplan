@@ -40,7 +40,7 @@ RSpec.describe EventMailer, type: :mailer do
   # describe 'rsvp_confirmation_email' do
   #   before do
   #     @rsvp = FactoryBot.create(:event_rsvp)
-  #     @mail = EventMailer.with(rsvp: @rsvp, member: @rsvp.member).rsvp_confirmation_email
+  #     @mail = EventMailer.with(rsvp: @rsvp, member: @rsvp.unit_membership).rsvp_confirmation_email
   #   end
 
   #   it 'renders the headers' do

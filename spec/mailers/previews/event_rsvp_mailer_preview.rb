@@ -2,13 +2,13 @@
 class EventRsvpMailerPreview < ActionMailer::Preview
   def event_rsvp_notification
     setup
-    EventRsvpMailer.with(event_rsvp: @event_rsvp, recipient: @event_rsvp.member).event_rsvp_notification
+    EventRsvpMailer.with(event_rsvp: @event_rsvp, recipient: @event_rsvp.unit_membership).event_rsvp_notification
   end
 
   def event_rsvp_notification_rsvp_closed
     setup
     @event.update(rsvp_closes_at: 2.days.ago)
-    EventRsvpMailer.with(event_rsvp: @event_rsvp, recipient: @event_rsvp.member).event_rsvp_notification
+    EventRsvpMailer.with(event_rsvp: @event_rsvp, recipient: @event_rsvp.unit_membership).event_rsvp_notification
   end
 
   def event_rsvp_youth_accepted_pending
@@ -25,7 +25,7 @@ class EventRsvpMailerPreview < ActionMailer::Preview
 
   # def event_rsvp_youth_accepted_pending_single_parent
   #   @event_rsvp = FactoryBot.create(:event_rsvp, response: "accepted_pending")
-  #   @member = @event_rsvp.member
+  #   @member = @event_rsvp.unit_membership
   #   @member.update(member_type: "youth")
 
   #   parent = FactoryBot.create(:member, unit: @member.unit)
@@ -47,7 +47,7 @@ class EventRsvpMailerPreview < ActionMailer::Preview
 
   def event_rsvp_youth_declined_pending
     @event_rsvp = FactoryBot.create(:event_rsvp, response: "declined_pending")
-    @member = @event_rsvp.member
+    @member = @event_rsvp.unit_membership
     @member.update(member_type: "youth")
     2.times do
       parent = FactoryBot.create(:member, unit: @member.unit)
@@ -89,7 +89,7 @@ class EventRsvpMailerPreview < ActionMailer::Preview
     @event_rsvp = FactoryBot.create(:event_rsvp, response: "accepted", unit: Unit.first)
     @event      = @event_rsvp.event
     @unit       = @event_rsvp.unit
-    @member     = @event_rsvp.member
+    @member     = @event_rsvp.unit_membership
     @event.update(status: "published", requires_rsvp: true)
 
     @youth_member = FactoryBot.create(:member, :youth, unit: @unit)

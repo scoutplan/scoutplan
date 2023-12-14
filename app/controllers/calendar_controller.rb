@@ -16,6 +16,7 @@ class CalendarController < ApplicationController
 
     events.each do |event|
       next unless policy.show?(event)
+      next unless include_in_feed?(event)
 
       @cal.add_event(event.to_ical_event(@member))
     end
@@ -45,8 +46,22 @@ class CalendarController < ApplicationController
     scope.all
   end
 
+  def include_in_feed?(event)
+    rsvp_service.event = event
+
+    return true unless event.requires_rsvp?
+    return true unless @member.ical_suppress_declined?
+    return true unless rsvp_service.family_fully_responded?
+
+    !rsvp_service.family_fully_declined?
+  end
+
   def policy
     @policy ||= EventPolicy.new(@member)
+  end
+
+  def rsvp_service
+    @rsvp_service ||= RsvpService.new(@member)
   end
 
   def tzid

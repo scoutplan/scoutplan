@@ -27,7 +27,7 @@
     - message += magic_url_for(@recipient, unit_event_edit_rsvps_url(@unit, @event))
     - message += ". RSVPs close #{string_for_time_internal_from_day(@event.rsvp_closes_at)}."
 
-    - if @recipient == @rsvp.member
+    - if @recipient == @rsvp.unit_membership
       - message += " We've notified them and we'll let you know when your RSVP has been confirmed."
 
 = message

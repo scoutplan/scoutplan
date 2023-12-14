@@ -22,7 +22,7 @@
         table.w-full
           - @family_rsvps.accepted.each do |rsvp|
             tr
-              td.py-1 = rsvp.member.short_display_name
+              td.py-1 = rsvp.unit_membership.short_display_name
               td.text-right = number_to_currency(rsvp.cost)
           
           - @payments.each do |payment|

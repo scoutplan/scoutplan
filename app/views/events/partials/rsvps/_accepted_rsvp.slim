@@ -5,7 +5,7 @@
 
 // kludge alert: setting this instance variable is ugly
 - @payments_service = PaymentsService.new(@event)
-- @member = rsvp.member
+- @member = rsvp.unit_membership
 - @rsvp = rsvp
 
 ul.m-0
@@ -21,7 +21,7 @@ ul.m-0
     - if rsvp.includes_activity
       li
         = button_to \
-          unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.member.id, activity: :no),
+          unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.unit_membership.id, activity: :no),
           onclick: "this.classList.add('processing');",
           method: :post,
           form: { "data-type": "turbo_stream" },
@@ -36,7 +36,7 @@ ul.m-0
     - else
       li
         = button_to \
-          unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.member.id, activity: :yes),
+          unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.unit_membership.id, activity: :yes),
           onclick: "this.classList.add('processing');",
           method: :post,
           form: { "data-type": "turbo_stream" },
@@ -52,7 +52,7 @@ ul.m-0
   // Change to Declined
   li
     = button_to \
-      unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.member.id, response: :declined),
+      unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.unit_membership.id, response: :declined),
       onclick: "this.classList.add('processing');",
       method: :post,
       form: { "data-type": "turbo_stream" },
@@ -68,7 +68,7 @@ ul.m-0
   / // Mark as paid
   / - if !rsvp.paid
   /   li
-  /     = button_to unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.member.id, payment: "full"),
+  /     = button_to unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.unit_membership.id, payment: "full"),
   /                 onclick: "this.classList.add('processing');",
   /                 method:  :post,
   /                 form:    { "data-type": "turbo_stream" },
@@ -84,7 +84,7 @@ ul.m-0
   / // Mark as unpaid
   / - if rsvp.paid
   /   li
-  /     = button_to unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.member.id, payment: "none"),
+  /     = button_to unit_event_rsvps_path(@event.unit, @event, member_id: rsvp.unit_membership.id, payment: "none"),
   /                 class:    "rsvp-action-button unpay-rsvp-button block py-2 font-normal",
   /                 onclick:  "this.classList.add('processing');",
   /                 method:   :post,
@@ -98,7 +98,7 @@ ul.m-0
   /       = t("events.organize.actions.mark_as_unpaid")
 
   li
-    = link_to receive_unit_event_payments_path(@unit, @event, member: rsvp.member), data: { turbo_action: :advance } do
+    = link_to receive_unit_event_payments_path(@unit, @event, member: rsvp.unit_membership), data: { turbo_action: :advance } do
       span.w-7.text-center.inline-block.glyph
         i.fas.fa-money-bill.text-emerald-500.inline-block.hover:text-black
       span.pl-1.w-7.text-center.inline-block.hidden.processing-glyph

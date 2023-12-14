@@ -1,7 +1,7 @@
 p Hi, #{@recipient.first_name},
 
 p
-  - if @recipient == @rsvp.member
+  - if @recipient == @rsvp.unit_membership
     | We've received your RSVP that you 
   - else
     | #{@rsvp.respondent.first_name} has let us know that they 
@@ -33,7 +33,7 @@ p
                   style: "display: block; width: 100$; text-align: center;"
       p RSVPs close #{string_for_time_internal_from_day(@event.rsvp_closes_at)}
 
-    - if @recipient == @rsvp.member
+    - if @recipient == @rsvp.unit_membership
       |  We've notified them and we'll let you know when your RSVP has been confirmed.
 
 - if @rsvp.accepted? || @rsvp.accepted_pending?
