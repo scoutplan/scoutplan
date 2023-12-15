@@ -1,0 +1,12 @@
+= turbo_frame_tag "modal"
+  .absolute.z-50.inset-0.bg-black/10.backdrop-blur
+    .absolute.max-w-md.min-w-fit.top-1/4.left-1/2.bg-white.-translate-x-1/2.p-4.rounded-lg.drop-shadow-overhead
+      header.mb-4.pb-4.border-b
+        .flex.flex-row.justify-between.items-center
+          h2.font-bold.text-xl = "RSVP for #{ @rsvp.unit_membership.display_name }"
+          = link_to "Close", class: "text-gray-600 hover:text-gray-800", data: { turbo_frame: "modal", action: "click->modal#close" } do
+            i.fa-solid.fa-times
+        p #{@rsvp.event.title}
+        p.whitespace-nowrap #{@rsvp.event.date_to_s}
+      
+      = render partial: "form", locals: { rsvp: @rsvp }

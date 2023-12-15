@@ -1,1 +1,3 @@
-= link_to member.display_name, new_unit_event_rsvp_path(@event.unit, @event), class: "text-blue-600 hover:text-blue-800 underline"
+= link_to member.display_name, new_unit_event_rsvp_path(@event.unit, @event, unit_membership_id: member.id),
+          class: "text-blue-600 hover:text-blue-800 underline",
+          data: { turbo_frame: "modal" }

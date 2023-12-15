@@ -5,15 +5,13 @@
         h1.font-bold.text-4xl = t(".title", event_title: @event.title)
 
         div
-          = "Event details: "
-          = link_to "View", [@unit, @event]
-          = " or "
-          = link_to "Edit", edit_unit_event_path(@unit, @event)
+          = link_to "View Event Details", [@unit, @event], class: "inline-block px-4 py-2 rounded-l border border-stone-500 hover:bg-stone-100 font-bold"
+          = link_to "Edit Event Details", edit_unit_event_path(@unit, @event), class: "inline-block px-4 py-2 rounded-r border border-l-0 border-stone-500 hover:bg-stone-100 font-bold"
 
     section
       = render partial: "event_details", locals: { event: @event }
 
-    section.w-full.grid.grid-cols-4.gap-2
+    section.w-full.grid.grid-cols-1.lg:grid-cols-4.gap-1
       .flex.flex-col.gap-2.bg-green-100.p-4.pb-6.pt-2.rounded-lg
         header
           h2.font-bold.text-lg.text-green-800 = "Accepted"      

@@ -1,5 +1,5 @@
 class EventRsvpsController < EventContextController
-  before_action :find_rsvp, except: [:create]
+  before_action :find_rsvp, except: [:index, :new, :create]
 
   def create
     if params[:unit_memberships].present?
@@ -11,7 +11,10 @@ class EventRsvpsController < EventContextController
     end
   end
 
-  def edit
+  def edit; end
+
+  def new
+    @rsvp = @event.rsvps.new(unit_membership_id: params[:unit_membership_id])
   end
 
   def destroy
