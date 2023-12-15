@@ -1,0 +1,28 @@
+.border-t.border-b.py-4.mb-4.flex.flex-row.justify-between.divide-x
+  article.text-center.px-6
+    .text-4xl.font-bold.text-green-800 = @event_dashboard.accepted_youth_count
+    p = "Youth Going"
+
+  article.text-center.px-6
+    .text-4xl.font-bold.text-green-800 = @event_dashboard.accepted_adult_count
+    p = "Adults Going"
+
+  article.text-center.px-6
+    .text-4xl.font-bold.text-green-800 = @event_dashboard.accepted_count
+    p = "Total Going"
+
+  article.text-center.px-6
+    .text-4xl.font-bold.text-red-800 = @event_dashboard.declined_count
+    p = "Not Going"
+
+  article.text-center.px-6
+    .text-4xl.font-bold.text-yellow-800 = @event_dashboard.non_respondent_count
+    p = "No Response"
+
+  article.text-center.px-6
+    .text-4xl.font-bold = @event_dashboard.non_invitee_count
+    p = "No Response"
+
+  article.text-center.px-6
+    .text-4xl.font-bold = number_to_percentage(@event_dashboard.response_rate * 100, precision: 0)
+    p = "Response Rate"

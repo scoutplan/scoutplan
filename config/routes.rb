@@ -99,8 +99,9 @@ Rails.application.routes.draw do
 
     resources :events, path: "schedule" do
       resources :chat_messages, as: "discussion", path: "discussion"
-      resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
-      resources :event_rsvps, only: [:destroy]
+      get   "rsvps"
+      resources :event_rsvps, as: "rsvps", path: "rsvps"
+      resources :event_rsvps
       resources :payments, module: :events do
         collection do
           get :receive
@@ -116,7 +117,7 @@ Rails.application.routes.draw do
       resources :event_reminders, path: "reminders", as: "reminders", only: [:create]
       resources :locations, module: :events
       member do
-        get "dashboard", to: "event_dashboard#index"
+        get "dashboard", to: "event_dashboard#index", as: "dashboard"
       end
       collection do
         get "/", to: redirect("/units/%{unit_id}/schedule/list")
@@ -133,7 +134,6 @@ Rails.application.routes.draw do
         post "bulk_publish"
       end
       get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"
-      get   "rsvps"
       get   "cancel"
       get   "organize"
       get   "history"

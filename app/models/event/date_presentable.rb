@@ -15,6 +15,12 @@ module Event::DatePresentable
     !multiday?
   end
 
+  def date_to_s
+    return starts_at.strftime("%A, %B %-d, %Y") if single_day?
+
+    "#{starts_at.strftime('%A, %B %-d')} - #{ends_at.strftime('%A, %B %-d, %Y')}"
+  end
+
   def spans_months?
     starts_at.month != ends_at.month
   end

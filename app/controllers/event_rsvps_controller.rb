@@ -1,5 +1,5 @@
 class EventRsvpsController < EventContextController
-  before_action :find_rsvp,  only: [:destroy]
+  before_action :find_rsvp, except: [:create]
 
   def create
     if params[:unit_memberships].present?
@@ -9,6 +9,9 @@ class EventRsvpsController < EventContextController
       create_single
       redirect_to unit_event_rsvps_path(@unit, @event)
     end
+  end
+
+  def edit
   end
 
   def destroy
