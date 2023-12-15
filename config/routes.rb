@@ -5,6 +5,7 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
+  get 'event_dashboard/index'
   root to: "home#index"
 
   %w[404 500].each do |code|
@@ -114,6 +115,9 @@ Rails.application.routes.draw do
       resources :email_invitations, only: [:create]
       resources :event_reminders, path: "reminders", as: "reminders", only: [:create]
       resources :locations, module: :events
+      member do
+        get "dashboard", to: "event_dashboard#index"
+      end
       collection do
         get "/", to: redirect("/units/%{unit_id}/schedule/list")
         get "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link

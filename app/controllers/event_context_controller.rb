@@ -6,6 +6,6 @@ class EventContextController < UnitContextController
   private
 
   def find_event
-    @event = @unit.events.find(params[:event_id])
+    @event = @unit.events.find(params[:event_id] || params[:id])
   end
 end
