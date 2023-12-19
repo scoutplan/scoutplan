@@ -1,32 +1,50 @@
 = turbo_frame_tag "main"
   .max-w-7xl.mx-auto.px-4.sm:mt-6
     header.mb-4
+      = link_to [@unit, @event],
+                class: "font-bold text-indigo-600 hover:text-indigo-800",
+                data: { turbo_action: "advance" } do
+        i.fa-solid.fa-chevron-left.text-indigo-600
+        span.ml-2 = "Event Details"
+
+    header.mb-4
       .flex.flex-row.justify-between.items-center
-        h1.font-bold.text-4xl = t(".title", event_title: @event.title)
+        h1.font-bold.text-2xl.md:text-4xl = t(".title", event_title: @event.title)
 
-        div
-          = link_to "View Event Details", [@unit, @event], class: "inline-block px-4 py-2 rounded-l border border-stone-500 hover:bg-stone-100 font-bold"
-          = link_to "Edit Event Details", edit_unit_event_path(@unit, @event), class: "inline-block px-4 py-2 rounded-r border border-l-0 border-stone-500 hover:bg-stone-100 font-bold"
+    / section
+    /   = render partial: "event_details", locals: { event: @event }
 
-    section
-      = render partial: "event_details", locals: { event: @event }
+    section.w-full.grid.grid-cols-1.lg:grid-cols-4.gap-px
+      .bg-green-50
+        header.bg-green-800.p-4.drop-shadow-md
+          h2.font-bold.text-lg.text-green-50
+            i.fa-solid.fa-hiking.mr-2
+            = "Accepted"   
+        ol.p-4
+          = render partial: "rsvp", collection: @event.rsvps.accepted, locals: { x: "x" }
+        
+      .bg-red-50
+        header.bg-red-800.p-4.drop-shadow-md
+          h2.font-bold.text-lg.text-red-50
+            i.fa-solid.fa-couch.mr-2
+            = "Declined"
+        ol.p-4
+          = render partial: "rsvp", collection: @event.rsvps.declined
 
-    section.w-full.grid.grid-cols-1.lg:grid-cols-4.gap-1
-      .flex.flex-col.gap-2.bg-green-100.p-4.pb-6.pt-2.rounded-lg
-        header
-          h2.font-bold.text-lg.text-green-800 = "Accepted"      
-        = render partial: "rsvp", collection: @event.rsvps.accepted
-      .flex.flex-col.gap-2.bg-red-100.p-4.pb-6.pt-2.rounded-lg
-        header
-          h2.font-bold.text-lg.text-red-800 = "Declined"
-        = render partial: "rsvp", collection: @event.rsvps.declined
-      .flex.flex-col.gap-2.bg-yellow-100.p-4.pb-6.pt-2.rounded-lg
-        header
-          h2.font-bold.text-lg.text-yellow-800 = "No Response"      
-        = render partial: "member", collection: @event.non_respondents
-      .flex.flex-col.gap-2.bg-stone-100.p-4.pb-6.pt-2.rounded-lg
-        header
-          h2.font-bold.text-lg.text-stone-800 = "Friends & Family"
-        = render partial: "member", collection: @event.non_invitees
+      .bg-yellow-50
+        header.bg-yellow-800.p-4.drop-shadow-md
+          h2.font-bold.text-lg.text-yellow-50
+            i.fa-solid.fa-ghost.mr-2
+            = "No Response"
+        ol.p-4
+          = render partial: "member", collection: @event.non_respondents
 
-= turbo_frame_tag "modal"
+      .bg-sky-50
+        header.bg-sky-800.p-4.drop-shadow-md
+          h2.font-bold.text-lg.text-sky-50
+            i.fa-solid.fa-hand-wave.mr-2
+            = "Friends & Family"
+        ol.p-4
+          = render partial: "member", collection: @event.non_invitees
+
+  = turbo_frame_tag "modal", data: { controller: "modal" }

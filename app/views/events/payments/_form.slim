@@ -1,56 +1,115 @@
 - error_attributes = @payment.errors.collect(&:attribute).uniq
 
-= form_with model: @payment, url: unit_event_payments_path(@unit, @event, member: params[:member]) do |f|
-  .mb-4
+= form_with model: @payment,
+            url: unit_event_payments_path(@unit, @event, member: params[:member]) do |f|
+  .py-4
     = f.label :amount, "Amount received", class: "block mb-1"
-
-    .w-full.font-bold.block.rounded.border.border-stone-300.flex.flex-row
-      = f.text_field :amount, placeholder: "Amount", inputmode: "numeric",
-                     value: number_to_currency(@payment.amount_in_dollars, format: "%n"),
-                     required: true, class: "border-0 text-2xl pr-0"
+    = f.text_field :amount, placeholder: "Amount", inputmode: "numeric",
+                    value: number_to_currency(@payment.amount_in_dollars, format: "%n"),
+                    required: true, class: "w-full font-bold border rounded text-2xl p-2 border-stone-300"
 
     - if error_attributes.include?(:amount)
       p.mt-1.font-bold.text-sm.text-red-500= @payment.errors[:amount].first
 
   .mb-4
     = f.label :unit_membership_id, "Received From", class: "block mb-1"
-    = f.select :unit_membership_id, @current_member.family.collect { |m| [m.short_display_name, m.id] }, {},
+    = f.select :unit_membership_id, @payment.unit_membership.family.collect { |m| [m.short_display_name, m.id] }, {},
               class: "font-bold block w-full rounded border border-stone-300"
 
   .mb-4
-    h2.font-bold= "Payment Method"
+    h2.mb-1 = "Payment Method"
 
-    p.py-1
-      = f.label :method_check, :check, class: "flex flex-row items-center gap-2" do
-        = f.radio_button :method, :check, checked: true
-        i.fa-solid.fa-money-check-pen.text-sky-400.fa-fw
-        = "Check"
+    #payment_methods.grid.grid-cols-5.gap-0.divide-x.divide-stone-400.rounded-lg.border.border-stone-400
+      div
+        = f.radio_button :method, :check, checked: true, class: "peer hidden"
+        = f.label :method_check, :check, class: "peer-checked:bg-stone-100 rounded-l-lg active:pt-[17px] active:pb-[15px] text-center text-sm md:text-base block p-2 md:p-4 text-stone-800 font-bold relative" do
+          i.fa-solid.fa-money-check-pen.text-lg.mb-2
+          div = "Check"
+          div.h-4
+            .selected-glyph
+              i.fa-solid.fa-check-circle          
 
-    p.py-1
-      = f.label :method_cash, :check, class: "flex flex-row items-center gap-2" do
-        = f.radio_button :method, :cash
-        i.fa-solid.fa-money-bill.text-green-600.fa-fw
-        = "Cash"
+      div
+        = f.radio_button :method, :cash, class: "peer hidden"
+        = f.label :method_cash, :check, class: "peer-checked:bg-stone-100 text-center active:pt-[17px] active:pb-[15px] text-sm md:text-base block p-2 md:p-4 text-green-700 font-bold relative" do
+          i.fa-solid.fa-money-bill.text-lg.mb-2
+          div = "Cash"
+          div.h-4
+            .selected-glyph
+              i.fa-solid.fa-check-circle 
 
-    p.py-1
-      = f.label :method_venmo, :venmo, class: "flex flex-row items-center gap-2" do
-        = f.radio_button :method, :venmo
-        i.fa-solid.fa-v.text-sky-600.fa-fw
-        = "Venmo"
+      div
+        = f.radio_button :method, :venmo, class: "peer hidden"
+        = f.label :method_venmo, :venmo, class: "peer-checked:bg-stone-100 text-center active:pt-[17px] active:pb-[15px] peer-checked:pt-[17px] peer-checked:pb-[15px] text-sm md:text-base block p-2 md:p-4 text-sky-700 font-bold relative" do
+          i.fa-solid.fa-v.text-lg.mb-2
+          div = "Venmo"
+          div.h-4
+            .selected-glyph
+              i.fa-solid.fa-check-circle 
 
-    p.py-1
-      = f.label :method_zelle, :zelle, class: "flex flex-row items-center gap-2" do
-        = f.radio_button :method, :zelle
-        i.fa-solid.fa-z.text-purple-600.fa-fw
-        = "Zelle"
+      div
+        = f.radio_button :method, :zelle, class: "peer hidden",
+                         data: { action: "change->event-rsvp-payment#toggleNote(false)" }
+        = f.label :method_zelle, :zelle, class: "peer-checked:bg-stone-100 text-center active:pt-[17px] active:pb-[15px] text-sm md:text-base block p-2 md:p-4 text-purple-700 font-bold relative" do
+          i.fa-solid.fa-z.text-lg.mb-2
+          div = "Zelle"
+          div.h-4
+            .selected-glyph
+              i.fa-solid.fa-check-circle 
 
-    p.py-0
-      = f.label :method_other, :other, class: "flex flex-row items-center gap-2" do
-        = f.radio_button :method, :other, onfocus: "var e = document.getElementById('payment_note'); e.focus(); e.select();"
-        i.fa-solid.fa-tag.text-stone-500.fa-fw
-        = "Other"
+      div
+        = f.radio_button :method, :other, class: "peer hidden needs-note"
+        = f.label :method_other, :other,
+                  class: "peer-checked:bg-stone-100 rounded-r-lg text-center active:pt-[17px] active:pb-[15px] text-sm md:text-base block p-2 md:p-4 text-stone-800 font-bold relative" do
+          i.fa-solid.fa-tag.text-lg.mb-2
+          div = "Other"
+          div.h-4
+            .selected-glyph
+              i.fa-solid.fa-check-circle
 
-        = f.text_field :note, placeholder: "Note (e.g. sibling discount)", class: "px-2 py-1 border rounded border-stone-300 inline-block ml-2"
+    = f.text_field :note,
+                   placeholder: "Note (e.g. sibling discount)",
+                   aria: { label: "Note, such as sibling discount, previous balance, etc." },
+                   class: "w-full border rounded border-stone-300 block mt-4 placeholder-stone-300"
 
-  footer.mt-6
-    = f.submit t("payments.receive.record_payment"), class: "block rounded px-4 py-2 bg-green-600 text-white font-bold hover:bg-green-700 hover:text-white"
+  footer.mt-4
+    .flex.flex-col.md:flex-row.gap-2.justify-end
+      = button_tag "Cancel", class: "active:pt-[13px] active:pb-[11px] active:text-stone-500 font-bold border rounded-lg border-stone-400 bg-stone-50 px-5 py-3", data: { action: "click->modal#close" }
+      = f.submit t("payments.receive.record_payment"),
+                 class: "active:text-stone-200 active:pt-[13px] active:pb-[11px] block px-6 py-3 rounded-lg border border-stone-900 bg-stone-700 text-white font-bold"
+
+  css:
+    .selected-glyph {
+      display: none;
+    }
+
+    input[type="radio"]:checked ~ label .selected-glyph {
+      display: block;
+    }
+
+    #payment_note {
+      display: none;
+      opacity: 0;
+    }
+
+    .show-note ~ #payment_note {
+      display: block;
+      opacity: 1;
+    }
+
+  javascript:
+    var paymentMethods;
+
+    if (!paymentMethods) {
+      paymentMethods = document.querySelectorAll("#payment_methods input[type='radio']");
+      paymentMethods.forEach((method) => {
+        method.addEventListener("change", function() {
+          const elem = document.querySelector("#payment_methods");
+          const showNote = this.classList.contains("needs-note");
+          elem.classList.toggle("show-note", showNote);
+          if (showNote) {
+            document.querySelector("#payment_note").focus();
+          }
+        });
+      });
+    }

@@ -5,9 +5,8 @@ class EventRsvpsController < EventContextController
     if params[:unit_memberships].present?
       rsvps = create_batch
       redirect_to [@unit, @event], notice: "Your #{rsvps.count > 1 ? 'RSVPs have' : 'RSVP has'} been received."
-    elsif params[:member_id].present? && params[:response].present?
+    elsif params[:event_rsvp].present?
       create_single
-      redirect_to unit_event_rsvps_path(@unit, @event)
     end
   end
 

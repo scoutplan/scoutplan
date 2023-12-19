@@ -41,7 +41,7 @@ module Events
       @total_paid = @payments&.sum(:amount) || 0
       @amount_due = @total_cost - @total_paid
       @quantity = @amount_due / @item_amount
-      @payment = Payment.create!(event: @event, unit_membership: @current_member, amount: @amount_due, received_by: nil, method: "stripe")
+      @payment = Payment.new(event: @event, unit_membership: @current_member, amount: @amount_due, received_by: nil, method: "stripe")
 
       create_checkout_session
       redirect_to @session.url, allow_other_host: true
@@ -49,7 +49,7 @@ module Events
 
     def receive
       member = @unit.members.find(params[:member])
-      @payment = @event.payments.build(unit_membership: member)
+      @payment = @event.payments.build(unit_membership: member, method: :cash)
       
       @current_family = member.family
       @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))

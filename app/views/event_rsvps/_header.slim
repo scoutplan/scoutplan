@@ -1,0 +1,7 @@
+header.rounded-t-lg.mb-6
+  h2.font-semibold.text-4xl.mb-1 = "#{ @rsvp.unit_membership.display_name }'s RSVP"
+  p
+    = glyph_tag(@rsvp.event)
+    | &nbsp;
+    = @rsvp.event.title
+  p #{@rsvp.event.date_to_s}

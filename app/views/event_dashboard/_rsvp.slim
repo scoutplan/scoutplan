@@ -1,3 +1,15 @@
-= link_to rsvp.display_name, edit_unit_event_rsvp_path(@event.unit, @event, rsvp),
-          class: "text-blue-600 hover:text-blue-800 underline",
-          data: { turbo_frame: "modal" }
+li.flex.flex-row.justify-between
+  = link_to edit_unit_event_rsvp_path(@event.unit, @event, rsvp),
+            class: "text-blue-600 hover:text-blue-800 underline",
+            data: { turbo_frame: "modal" } do
+    = rsvp.display_name
+
+  - if rsvp.accepted? && @event.requires_payment?
+    - if @event.family_paid?(rsvp.member)
+      i.fa-regular.fa-circle-check.text-green-800.text-xl.mr-2(title="Payment received")
+    - else
+      = link_to receive_unit_event_payments_path(@unit, @event, member: rsvp.member),
+                class: "block px-2 -mr-2 text-sm",
+                title: "Payment not yet received. Click to record payment",
+                data: { turbo_frame: "modal" } do
+        i.fa-solid.fa-triangle-exclamation.text-green-800.text-xl.mr-2(title="Payment not yet received")

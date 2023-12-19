@@ -4,7 +4,7 @@
 # rubocop:disable Metrics/ClassLength
 class Event < ApplicationRecord
   include Notifiable, Remindable, Onlineable, Icalendarable, Replyable, Invitations,
-          DatePresentable, StaticMappable
+          DatePresentable, StaticMappable, Payments
   extend DateTimeAttributes
 
   date_time_attrs_for :starts_at, :ends_at
