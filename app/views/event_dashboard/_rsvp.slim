@@ -1,15 +1,19 @@
-li.flex.flex-row.justify-between
+li.flex.flex-row.justify-between.items-center
   = link_to edit_unit_event_rsvp_path(@event.unit, @event, rsvp),
-            class: "text-blue-600 hover:text-blue-800 underline",
+            class: "text-blue-600 hover:text-blue-800 underline py-1",
             data: { turbo_frame: "modal" } do
     = rsvp.display_name
 
-  - if rsvp.accepted? && @event.requires_payment?
-    - if @event.family_paid?(rsvp.member)
-      i.fa-regular.fa-circle-check.text-green-800.text-xl.mr-2(title="Payment received")
-    - else
-      = link_to receive_unit_event_payments_path(@unit, @event, member: rsvp.member),
-                class: "block px-2 -mr-2 text-sm",
-                title: "Payment not yet received. Click to record payment",
-                data: { turbo_frame: "modal" } do
-        i.fa-solid.fa-triangle-exclamation.text-green-800.text-xl.mr-2(title="Payment not yet received")
+  .text-lg
+    - if rsvp.accepted? && @event.requires_payment?
+      - if @event.family_paid?(rsvp.member)
+        = link_to unit_event_payments_path(@unit, @event),
+                  class: "block px-2 -mr-2",
+                  title: "Payment received. Click to view payment details." do
+          i.fa-regular.fa-circle-check.text-green-800
+      - else
+        = link_to receive_unit_event_payments_path(@unit, @event, member: rsvp.member),
+                  class: "block px-2 -mr-2",
+                  title: "Payment not yet received. Click to record payment",
+                  data: { turbo_frame: "modal" } do
+          i.fa-solid.fa-triangle-exclamation.text-green-800

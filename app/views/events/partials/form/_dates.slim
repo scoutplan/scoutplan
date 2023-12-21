@@ -1,86 +1,86 @@
-section.py-4
-  h2.font-bold.text-lg.mb-1
-    = t(".title")
-    = " "
-    span.font-normal.text-sm.text-stone-400.mb-3
-      = @current_unit.settings(:locale).time_zone
+section.py-4.grid.grid-cols-3.gap-4.border-t
+  .col-span-1
+    h2.text-lg Event dates
+    p.text-sm.text-sky-700 When does your event start and end? Choosing All Day will make the event appear on the calendar without a specific time.
+  .col-span-2
+    // all day
+    .pb-2
+      = render partial: "components/switch",
+                locals: { checked: @event.all_day?,
+                          label: "All day",
+                          object_name: "event",
+                          method: "all_day",
+                          checked_value: "true",
+                          unchecked_value: "false",
+                          data: { body_class: "event-all-day" } }
 
-  // all day
-  .py-2
-    = render partial: "components/switch",
-              locals: { checked: @event.all_day?,
-                        label: "All day",
+    .text-sm.text-stone-500.mt-3 = @current_unit.settings(:locale).time_zone
+
+    // starts at
+    .py-2
+      = f.label :starts_at, class: "font-bold block mb-1"
+
+      .flex.flex-grow.gap-x-4.items-center
+        = f.date_field :starts_at_date,
+                      class: "flex flex-grow border border-stone-300 dark:border-stone-700 rounded p-2 dark:bg-black",
+                      tabindex: -1,
+                      data: { event_edit_target: "startsAtDate", action: "change->event-edit#updateStartsAt" }
+
+        
+        .not-all-day.inline-block.flex.flex-grow.items-center.gap-x-4
+          span.font-bold = "at"
+          = f.time_field :starts_at_time,
+            class: "flex flex-grow border border-stone-300 dark:border-stone-700 rounded p-2 dark:bg-black",
+            list: "suggested_times",
+            tabindex: -1,
+            value: @event.starts_at.strftime("#{ @format_time }")
+
+
+    // ends at
+    .py-2
+      = f.label :ends_at, class: "font-bold block mb-1"
+
+      .flex.flex-grow.gap-x-4.items-center
+        = f.date_field :ends_at_date,
+                      class: "flex flex-grow border border-stone-300 dark:border-stone-700 rounded p-2 dark:bg-black",
+                      tabindex: -1,
+                      data: { event_edit_target: "endsAtDate" }
+        
+
+        .not-all-day.inline-block.flex.flex-grow.items-center.gap-x-4
+          span.font-bold = "at"
+          = f.time_field :ends_at_time,
+            class: "flex flex-grow border border-stone-300 dark:border-stone-700 rounded p-2 dark:bg-black",
+            step: "900",
+            tabindex: -1,
+            value: @event.ends_at.strftime("#{ @format_time }")
+
+    // repeat
+    .py-4
+      = render partial: "components/switch",
+              locals: { checked: false,
+                        label: "Repeats weekly",
                         object_name: "event",
-                        method: "all_day",
-                        checked_value: "true",
-                        unchecked_value: "false",
-                        data: { body_class: "event-all-day" } }
+                        method: "repeats",
+                        checked_value: "yes",
+                        unchecked_value: "no",
+                        data: { body_class: "event-repeats" } }
 
-  // starts at
-  .py-2
-    = f.label :starts_at, class: "font-bold block mb-1"
+    // repeat until
+    #repeat_fields.py-2
+      = f.label :repeats_until, class: "font-bold block mb-1"
+      / = f.date_field :repeats_until,
+      /                value: (@event.starts_at + 6.months).strftime("#{ @format_date }"),
+      /                class: "bg-white rounded w-full p-2 inline-block"
 
-    .flex.flex-grow.gap-x-4.items-center
-      = f.date_field :starts_at_date,
-                     class: "flex flex-grow border border-stone-300 dark:border-stone-700 rounded p-2 dark:bg-black",
-                     tabindex: -1,
-                     data: { event_edit_target: "startsAtDate", action: "change->event-edit#updateStartsAt" }
+      = f.select :repeats_until,
+                [],
+                {},
+                class: "bg-white rounded w-full p-2 inline-block border-stone-300",
+                data: { event_edit_target: "repeatsUntilSelect" }
 
-      
-      .not-all-day.inline-block.flex.flex-grow.items-center.gap-x-4
-        span.font-bold = "at"
-        = f.time_field :starts_at_time,
-          class: "flex flex-grow border border-stone-300 dark:border-stone-700 rounded p-2 dark:bg-black",
-          list: "suggested_times",
-          tabindex: -1,
-          value: @event.starts_at.strftime("#{ @format_time }")
-
-
-  // ends at
-  .py-2
-    = f.label :ends_at, class: "font-bold block mb-1"
-
-    .flex.flex-grow.gap-x-4.items-center
-      = f.date_field :ends_at_date,
-                     class: "flex flex-grow border border-stone-300 dark:border-stone-700 rounded p-2 dark:bg-black",
-                     tabindex: -1,
-                     data: { event_edit_target: "endsAtDate" }
-      
-
-      .not-all-day.inline-block.flex.flex-grow.items-center.gap-x-4
-        span.font-bold = "at"
-        = f.time_field :ends_at_time,
-          class: "flex flex-grow border border-stone-300 dark:border-stone-700 rounded p-2 dark:bg-black",
-          step: "900",
-          tabindex: -1,
-          value: @event.ends_at.strftime("#{ @format_time }")
-
-  // repeat
-  .py-4
-    = render partial: "components/switch",
-            locals: { checked: false,
-                      label: "Repeats weekly",
-                      object_name: "event",
-                      method: "repeats",
-                      checked_value: "yes",
-                      unchecked_value: "no",
-                      data: { body_class: "event-repeats" } }
-
-  // repeat until
-  #repeat_fields.py-2
-    = f.label :repeats_until, class: "font-bold block mb-1"
-    / = f.date_field :repeats_until,
-    /                value: (@event.starts_at + 6.months).strftime("#{ @format_date }"),
-    /                class: "bg-white rounded w-full p-2 inline-block"
-
-    = f.select :repeats_until,
-               [],
-               {},
-               class: "bg-white rounded w-full p-2 inline-block border-stone-300",
-               data: { event_edit_target: "repeatsUntilSelect" }
-
-  datalist#suggested_times
-    option(value="9:00 AM")
+    datalist#suggested_times
+      option(value="9:00 AM")
 
 css:
   #repeat_fields {

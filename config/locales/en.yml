@@ -184,6 +184,10 @@ en:
     index:
       title: "%{event_title} Event Dashboard"
 
+    dropdown:
+      edit: "Change event details"
+      payments: "Event payment history"
+
   events:
     object_name:          "event"
     draft-warning:        "This event is a draft, only visible to Unit Administrators & Event Organizers. When you're ready, %{href} to make it visible to everyone in %{unit_name}."
@@ -211,6 +215,10 @@ en:
       form:
         dates:
           title: "Dates & Times"
+    
+    payments:
+      index:
+        title: "%{event_title} Payment History"
 
     placeholders:
       title:        "Event title"
@@ -437,7 +445,7 @@ en:
 
     titles:
       new:  "Add an event"
-      edit: "Change event details"
+      edit: "Event settings"
       sub_event: "Add an activity to %{parent_event_title}"
       add_to_calendar: "Add this to your calendar"
         

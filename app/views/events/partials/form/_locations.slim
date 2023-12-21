@@ -1,7 +1,9 @@
-section.py-4
-  h2.font-bold.text-lg.mb-2 Location
+section.pt-8.pb-4.grid.grid-cols-3.gap-4.border-t
+  .col-span-1
+    h2.font-bold Event location
+    p Blurb
 
-  .py-2
+  .col-span-2
     = render partial: "components/switch",
             locals: { checked: @event.online,
             label: "This is an online event",
@@ -11,31 +13,31 @@ section.py-4
             unchecked_value: "false",
             data: { body_class: "event-online" } }
 
-  #fields_online.mt-2
-    = f.label :online_url, "Online web address", class: "font-bold block mb-2"
-    = f.url_field :website,
-                  placeholder: "Type a web address",
-                  autocomplete: "off",
-                  class: "rounded placeholder:text-stone-200 border-stone-300 dark:border-stone-700 w-full dark:bg-black"
+    #fields_online.mt-2
+      = f.label :online_url, "Online web address", class: "font-bold block mb-2"
+      = f.url_field :website,
+                    placeholder: "Type a web address",
+                    autocomplete: "off",
+                    class: "rounded placeholder:text-stone-200 border-stone-300 dark:border-stone-700 w-full dark:bg-black"
 
-  #fields_offline
-    #location_dropdowns
-      = render partial: "events/partials/form/location_dropdowns", locals: { unit: @unit, event: @event }
+    #fields_offline
+      #location_dropdowns
+        = render partial: "events/partials/form/location_dropdowns", locals: { unit: @unit, event: @event }
 
-    .py-4
-      = link_to unit_locations_path(@event.unit),
-                class: "text-blue-600 hover:text-blue-600 font-bold",
-                data: { turbo_action: "advance" } do
+      .py-4
+        = link_to unit_locations_path(@event.unit),
+                  class: "text-blue-600 hover:text-blue-600 font-bold",
+                  data: { turbo_action: "advance" } do
 
-        i.fa-solid.fa-book-atlas.mr-1
-        = t("locations.captions.address_book", unit_name: @unit.name)
+          i.fa-solid.fa-book-atlas.mr-1
+          = t("locations.captions.address_book", unit_name: @unit.name)
 
-      = button_tag class: "text-sm px-4 py-2 font-bold rounded border border-sky-600 text-sky-600 hover:border-sky-700 hover:text-sky-700",
-                  type: "button",
-                  data: { action: "click->event-edit#showLocation" } do
+        = button_tag class: "text-sm px-4 py-2 font-bold rounded border border-sky-600 text-sky-600 hover:border-sky-700 hover:text-sky-700",
+                    type: "button",
+                    data: { action: "click->event-edit#showLocation" } do
 
-        i.fa-solid.fa-plus.mr-1
-        = t("locations.buttons.add_location")
+          i.fa-solid.fa-plus.mr-1
+          = t("locations.buttons.add_location")
 
 css:
   #fields_offline {

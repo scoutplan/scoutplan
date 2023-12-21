@@ -2,17 +2,15 @@
   .max-w-7xl.mx-auto.px-4.sm:mt-6
     header.mb-4
       = link_to [@unit, @event],
-                class: "font-bold text-indigo-600 hover:text-indigo-800",
+                class: "font-bold text-violet-600 hover:text-violet-800",
                 data: { turbo_action: "advance" } do
-        i.fa-solid.fa-chevron-left.text-indigo-600
+        i.fa-solid.fa-chevron-left.text-violet-600
         span.ml-2 = "Event Details"
 
-    header.mb-4
+    header.mb-6
       .flex.flex-row.justify-between.items-center
         h1.font-bold.text-2xl.md:text-4xl = t(".title", event_title: @event.title)
-
-    / section
-    /   = render partial: "event_details", locals: { event: @event }
+        = render "dropdown"
 
     section.w-full.grid.grid-cols-1.lg:grid-cols-4.gap-px
       .bg-green-50

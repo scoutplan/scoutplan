@@ -1,19 +1,16 @@
 = turbo_frame_tag "main"
   .max-w-2xl.mx-auto.w-full
-    = link_to unit_event_path(@unit, @event),
-        class: "font-bold block py-4 text-cyan-500 hover:text-cyan-600",
+    = link_to dashboard_unit_event_path(@unit, @event),
+        class: "font-bold block py-4 text-violet-600",
         id: "cancel_location_button",
         data: { turbo_action: "advance", turbo_frame: "main" } do
         
-        i.fa-stack
-          i.fa-regular.fa-circle.fa-stack-2x
-          i.fa-solid.fa-arrow-left.fa-stack-1x
+      i.fa-solid.fa-chevron-left.mr-2
+      = "Back to #{@event.title} dashboard"
 
-        = "Back to #{@event.title}"
-
-    header.mt-6.py-4
+    header.mt-2.mb-4
       h1.text-4xl.font-bold.text-gray-900
-        | Payments
+        = t(".title", event_title: @event.title)
 
     table.w-full
       thead
