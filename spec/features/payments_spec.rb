@@ -50,7 +50,7 @@ describe "payments", type: :feature do
 
   describe "received payments" do
     it "records a payment" do
-      visit receive_unit_event_payments_path(@unit, @event, member: @member.id)
+      visit new_unit_event_payment_path(@unit, @event, member: @member.id)
       expect(page).to have_content("$1,300.00")
       expect(page).to have_content(I18n.t("payments.receive.record_payment"))
       fill_in("payment_amount", with: 1300)
@@ -60,7 +60,7 @@ describe "payments", type: :feature do
     end
 
     it "rejects bad input" do
-      visit receive_unit_event_payments_path(@unit, @event, member: @member.id)
+      visit new_unit_event_payment_path(@unit, @event, member: @member.id)
       fill_in("payment_amount", with: -1300)
       click_button(I18n.t("payments.receive.record_payment"))
     end

@@ -30,7 +30,7 @@ module Events
       @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
     end
 
-    def new
+    def new_stripe
       @current_family = @current_member.family
       @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
       @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
@@ -47,7 +47,7 @@ module Events
       redirect_to @session.url, allow_other_host: true
     end
 
-    def receive
+    def new
       member = @unit.members.find(params[:member])
       @payment = @event.payments.build(unit_membership: member, method: :cash)
       

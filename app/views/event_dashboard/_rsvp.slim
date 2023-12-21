@@ -1,4 +1,4 @@
-li.flex.flex-row.justify-between.items-center
+li.flex.flex-row.justify-between.items-center(id="#{dom_id(rsvp)}")
   = link_to edit_unit_event_rsvp_path(@event.unit, @event, rsvp),
             class: "text-blue-600 hover:text-blue-800 underline py-1",
             data: { turbo_frame: "modal" } do
@@ -12,8 +12,8 @@ li.flex.flex-row.justify-between.items-center
                   title: "Payment received. Click to view payment details." do
           i.fa-regular.fa-circle-check.text-green-800
       - else
-        = link_to receive_unit_event_payments_path(@unit, @event, member: rsvp.member),
+        = link_to new_unit_event_payment_path(@unit, @event, member: rsvp.member),
                   class: "block px-2 -mr-2",
-                  title: "Payment not yet received. Click to record payment",
+                  title: "Payment not yet received in full for this family. Click to record payment",
                   data: { turbo_frame: "modal" } do
           i.fa-solid.fa-triangle-exclamation.text-green-800

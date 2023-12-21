@@ -14,25 +14,25 @@
           p = event_prices(@event)
 
         section.px-6.py-2.bg-sky-900.text-sky-200.rounded-lg.my-1
-          table.w-full
+          table.w-full.text-sm
             thead
               tr
-                th.py-2.text-left.border-b.border-sky-600.font-normal = "Family member"
-                th.py-2.text-right.border-b.border-sky-600.font-normal = "Amount"
+                th.py-1.text-left.border-b.border-sky-600.font-normal = "Family member"
+                th.py-1.text-right.border-b.border-sky-600.font-normal = "Amount"
             
             tbody
               - @family_rsvps.accepted.each do |rsvp|
                 tr
-                  td.py-2 = rsvp.unit_membership.short_display_name
+                  td.py-1 = rsvp.unit_membership.short_display_name
                   td.text-right = number_to_currency(rsvp.cost)
               
               - @payments.each do |payment|
                 tr
-                  td.py-2 = "#{payment.method.capitalize} payment by #{payment.unit_membership.short_display_name} on #{payment.created_at.strftime("%b %-d")}"
+                  td.py-1 = "#{payment.method.capitalize} payment by #{payment.unit_membership.short_display_name} on #{payment.created_at.strftime("%b %-d")}"
                   td.text-right = number_to_currency(- payment.amount / 100)
 
               tr
-                td.py-2.border-t.border-sky-600 = "Amount due"
-                td.py-2.text-right.text-cyan-50.border-t.font-bold.border-sky-600 = number_to_currency(@amount_due)
+                td.py-1.border-t.border-sky-600 = "Amount due"
+                td.py-1.text-right.text-cyan-50.border-t.font-bold.border-sky-600 = number_to_currency(@amount_due)
 
         = render partial: "form"

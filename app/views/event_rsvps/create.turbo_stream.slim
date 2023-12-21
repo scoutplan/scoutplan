@@ -1,38 +1,11 @@
-// Stream out fresh HTML for each of the four columns
-// TODO: based on RSVP logic, only stream out necessary HTML instead of all
+// remove from No Response or Family & Friends
+= turbo_stream.remove dom_id(@rsvp.member)
 
-= turbo_stream.update "organize_category_no_response" do
-  = render partial:    "events/partials/rsvps/member",
-           collection: @event.non_respondents,
-           as:         :member,
-           layout:     "events/partials/rsvps/organize_entry"
+// add to either Accepted or Declined
+= turbo_stream.append("rsvps_#{@rsvp.response}") do
+  = render partial: "event_dashboard/rsvp",
+           locals:  { rsvp: @rsvp }
 
-= turbo_stream.update "organize_category_accepted" do
-  = render partial:    "events/partials/rsvps/accepted_rsvp",
-           collection: @event.rsvps.accepted.ordered,
-           as:         :rsvp,
-           layout:     "events/partials/rsvps/organize_entry"
-
-= turbo_stream.update "organize_category_declined" do
-  = render partial:    "events/partials/rsvps/declined_rsvp",
-           collection: @event.rsvps.declined.ordered,
-           as:         :rsvp,
-           layout:     "events/partials/rsvps/organize_entry"
-
-= turbo_stream.update "organize_category_family_and_friends" do
-  = render partial:    "events/partials/rsvps/member",
-           collection: @event.non_invitees,
-           as:         :member,
-           layout:     "events/partials/rsvps/organize_entry"
-
-= turbo_stream.update "organize_count_no_response" do
-  = @event.non_respondents.count
-
-= turbo_stream.replace "organize_count_accepted" do
-  = render partial: "events/partials/rsvps/attendance_badges", locals: { event: @event }
-
-= turbo_stream.update "organize_count_declined" do
-  = @event.rsvps.declined.count
-
-= turbo_stream.update "organize_count_family_and_friends" do
-  = @event.non_invitees.count
+// clear modal
+= turbo_stream.update "modal" do
+  = ""

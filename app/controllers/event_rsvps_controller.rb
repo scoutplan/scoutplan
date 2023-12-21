@@ -1,16 +1,33 @@
 class EventRsvpsController < EventContextController
-  before_action :find_rsvp, except: [:index, :new, :create]
+  before_action :find_rsvp, except: [:index, :new, :create, :create_batch]
 
   def create
-    if params[:unit_memberships].present?
-      rsvps = create_batch
-      redirect_to [@unit, @event], notice: "Your #{rsvps.count > 1 ? 'RSVPs have' : 'RSVP has'} been received."
-    elsif params[:event_rsvp].present?
-      create_single
+    event_rsvp_params = params[:event_rsvp].permit(:unit_membership_id, :response)
+    event_rsvp_params[:respondent] = @current_member
+    @rsvp = @event.rsvps.find_or_create_by!(event_rsvp_params)
+  end
+
+  def create_batch
+    params[:unit_memberships].each do |member_id, rsvp_attributes|
+      rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: member_id.to_i)
+      rsvp.respondent = @current_member
+      rsvp.response = rsvp_attributes[:response]
+      rsvp.note = params[:note]
+      rsvp.save if rsvp.changed?
     end
+
+    redirect_to [@unit, @event], notice: "Your RSVPs been received."
   end
 
   def edit; end
+
+  def update
+    if params[:event_rsvp][:response] == "delete"
+      @rsvp.destroy
+    else
+      @rsvp.update(params[:event_rsvp].permit(:unit_membership_id, :response))
+    end
+  end
 
   def new
     @rsvp = @event.rsvps.new(unit_membership_id: params[:unit_membership_id])
@@ -26,31 +43,6 @@ class EventRsvpsController < EventContextController
   end
 
   private
-
-  def create_batch
-    rsvps = []
-
-    params[:unit_memberships].each do |member_id, rsvp_attributes|
-      rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: member_id.to_i)
-      rsvp.respondent = @current_member
-      rsvp.response = rsvp_attributes[:response]
-      rsvp.note = params[:note]
-      rsvp.save if rsvp.changed?
-
-      rsvps << rsvp
-    end
-
-    rsvps
-  end
-
-  def create_single
-    rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: params[:member_id].to_i)
-    rsvp.respondent = @current_member
-    rsvp.response = params[:response]
-    rsvp.save!
-
-    [rsvp]
-  end
 
   def find_rsvp
     @rsvp = EventRsvp.find(params[:id])

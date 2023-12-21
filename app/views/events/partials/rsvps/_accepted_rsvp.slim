@@ -98,7 +98,7 @@ ul.m-0
   /       = t("events.organize.actions.mark_as_unpaid")
 
   li
-    = link_to receive_unit_event_payments_path(@unit, @event, member: rsvp.unit_membership), data: { turbo_action: :advance } do
+    = link_to new_unit_event_payment_path(@unit, @event, member: rsvp.unit_membership), data: { turbo_action: :advance } do
       span.w-7.text-center.inline-block.glyph
         i.fas.fa-money-bill.text-emerald-500.inline-block.hover:text-black
       span.pl-1.w-7.text-center.inline-block.hidden.processing-glyph

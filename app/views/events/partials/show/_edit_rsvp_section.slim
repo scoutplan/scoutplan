@@ -1,7 +1,7 @@
 - done_caption = @rsvps.present? ? "Update Your RSVPs" : t("events.edit_rsvps.captions.submit")
 
 section.bg-stone-100.dark:bg-stone-800.rounded.p-4.mb-2.mt-2.border.dark:border-stone-800
-  = form_with url: unit_event_rsvps_path(@unit, @event), method: :post, data: { controller: "dirt-detector" } do |f|
+  = form_with url: batch_unit_event_rsvps_path(@unit, @event), method: :post, data: { controller: "dirt-detector" } do |f|
     - if event.requires_rsvp
         = render partial: "edit_rsvp_form", locals: { event: event, f: f, presenter: presenter }
 

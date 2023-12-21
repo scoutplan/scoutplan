@@ -1,0 +1,19 @@
+= turbo_stream.remove dom_id(@rsvp)
+
+// add to either Accepted or Declined
+- if @rsvp.persisted?
+  = turbo_stream.append("rsvps_#{@rsvp.response}") do
+    = render partial: "event_dashboard/rsvp",
+            locals:  { rsvp: @rsvp }
+- elsif @rsvp.member.status_active?
+  = turbo_stream.append("members_registered") do
+    = render partial: "event_dashboard/member",
+            locals:  { member: @rsvp.member }
+- elsif @rsvp.member.status_registered?
+  = turbo_stream.append("members_registered") do
+    = render partial: "event_dashboard/member",
+            locals:  { member: @rsvp.member }
+
+// clear modal
+= turbo_stream.update "modal" do
+  = ""

@@ -43,7 +43,7 @@
                       i.fa-solid.fa-circle-check.mr-1
                       = "Payment received"
                   - else
-                    = link_to receive_unit_event_payments_path(@unit, @event, member: @rsvp.member),
+                    = link_to new_unit_event_payment_path(@unit, @event, member: @rsvp.member),
                               class: "font-bold text-sky-800",
                               data: { turbo_frame: "modal" } do
                       i.fa-solid.fa-circle-dollar.mr-1

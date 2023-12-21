@@ -100,13 +100,13 @@ Rails.application.routes.draw do
     resources :events, path: "schedule" do
       resources :chat_messages, as: "discussion", path: "discussion"
       get "rsvps"
-      resources :event_rsvps, as: "rsvps", path: "rsvps"
-      resources :event_rsvps
-      resources :payments, module: :events do
+      resources :event_rsvps, as: "rsvps", path: "rsvps" do
         collection do
-          get :receive
+          post "batch", to: "event_rsvps#create_batch"
         end
       end
+      resources :event_rsvps
+      resources :payments, module: :events
       resources :photos
 
       resources :event_attachments, path: "attachments", as: "attachments"

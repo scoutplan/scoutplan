@@ -6,6 +6,8 @@
         = render "header"
 
         = form_with model: [@unit, @event, @rsvp], html: { class: "#{action_name}" } do |f|
+          = f.hidden_field :unit_membership_id
+
           .grid.gap-0.rounded-lg.divide-x.border.border-stone-400.divide-stone-400.grid-cols-2
             div
               = f.radio_button :response, :accepted, class: "peer"
