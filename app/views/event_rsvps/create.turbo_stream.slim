@@ -6,6 +6,10 @@
   = render partial: "event_dashboard/rsvp",
            locals:  { rsvp: @rsvp }
 
+= turbo_stream.replace "event_stats" do
+  = render partial: "event_dashboard/event_stats",
+          locals:  { event_dashboard: EventDashboard.new(@event) }           
+
 // clear modal
 = turbo_stream.update "modal" do
   = ""

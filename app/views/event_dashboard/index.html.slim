@@ -16,8 +16,12 @@
 
     .hidden.bg-red-100.bg-green-100.bg-yellow-100.bg-sky-100
 
-    section.w-full.grid.grid-cols-1.lg:grid-cols-4.gap-px(data-controller="dashboard-drop" data-action="dragover->dashboard-drop#dragover dragleave->dashboard-drop#dragleave dragenter->dashboard-drop#dragenter")
-      #rsvps_accepted_column.member-column.bg-green-50.group(class="[&.droptarget]:bg-red-100")
+    section.w-full.grid.grid-cols-1.lg:grid-cols-4.gap-px(data-controller="dashboard-drop"
+      data-action="dragover->dashboard-drop#dragover dragleave->dashboard-drop#dragleave dragenter->dashboard-drop#dragenter drop->dashboard-drop#drop"
+      data-dashboard-drop-unit-id-value="#{@unit.id}"
+      data-dashboard-drop-event-id-value="#{@event.id}")
+
+      #rsvps_accepted_column.member-column.bg-green-50.group(class="[&.droptarget]:bg-green-100")
         header.bg-green-800.p-4.drop-shadow-md(class="group-[.droptarget]:bg-green-950")
           h2.font-bold.text-lg.text-green-50
             i.fa-solid.fa-hiking.mr-2
