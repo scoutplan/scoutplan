@@ -15,13 +15,24 @@ module Event::DatePresentable
     !multiday?
   end
 
-  def date_to_s
-    return starts_at.strftime("%A, %B %-d, %Y") if single_day?
-
-    "#{starts_at.strftime('%A, %B %-d')}&hairsp;&ndash;&hairsp;#{ends_at.strftime('%A, %B %-d, %Y')}".html_safe
-  end
-
   def spans_months?
     starts_at.month != ends_at.month
+  end
+
+  def date_to_s_short(options)
+    return "#{starts_at.strftime('%B %-d')}#{dash(options)}#{ends_at.strftime('%B %-d, %Y')}".html_safe if spans_months?
+
+    "#{starts_at.strftime('%B %-d')}#{dash(options)}#{ends_at.strftime('%-d, %Y')}".html_safe
+  end
+
+  def date_to_s(**options)
+    return date_to_s_short(options) if options[:format] == :short
+    return starts_at.strftime("%A, %B %-d, %Y") if single_day?
+
+    "#{starts_at.strftime('%A, %B %-d')}#{dash(options)}#{ends_at.strftime('%A, %B %-d, %Y')}".html_safe
+  end
+
+  def dash(options)
+    options[:plain_text] ? "—" : "&hairsp;&ndash;&hairsp;"
   end
 end

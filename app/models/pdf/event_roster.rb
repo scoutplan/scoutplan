@@ -5,9 +5,9 @@ class Pdf::EventRoster < Prawn::Document
     super(page_layout: :portrait)
     @event = event
     @unit = event.unit
-    @current_row = 1
+    @current_row = 3
     render_header
-    define_grid(columns: 7, rows: 35, gutter: 10)
+    define_grid(columns: 6, rows: 35, gutter: 10)
     render_roster
   end
 
@@ -18,38 +18,43 @@ class Pdf::EventRoster < Prawn::Document
   private
 
   def render_header
-    formatted_text [
-      { text: "#{unit.name} Roster".upcase,
-        size: 10, styles: [:bold], kerning: true }
-    ]
+    items = [
+      unit.name_and_location,
+      event.title,
+      event.location,
+      event.date_to_s(plain_text: true, format: :short)
+    ].compact
+
+    items.each do |item|
+      formatted_text [{ text: item, size: 10, styles: [:bold], kerning: true }]
+    end
   end
 
   def render_roster
-    move_down 20
+    column_headers = "   Last Name", "First Name", "Member Type"
+    column_headers.each_with_index do |header, index|
+      grid(@current_row - 1, index).bounding_box do
+        formatted_text [{ text: header, size: 10, styles: [:bold], kerning: true }]
+      end
+    end
     event.rsvps.joins(unit_membership: :user).order("users.last_name, users.first_name").each do |rsvp|
       render_rsvp(rsvp)
     end
   end
 
   def render_rsvp(rsvp)
-    grid(@current_row, 0).bounding_box do
-      formatted_text [
-        { text: rsvp.user.last_name,
-          size: 10, kerning: true }
-      ]
+    items = [
+      rsvp.user.last_name,
+      rsvp.user.first_name,
+      rsvp.member.member_type.capitalize
+    ]
+
+    items.each_with_index do |item, index|
+      grid(@current_row, index).bounding_box do
+        formatted_text [{ text: item, size: 10, kerning: true }]
+      end
     end
-    grid(@current_row, 1).bounding_box do
-      formatted_text [
-        { text: rsvp.user.first_name,
-          size: 10, kerning: true }
-      ]
-    end
-    grid(@current_row, 2).bounding_box do
-      formatted_text [
-        { text: rsvp.member.member_type.capitalize,
-          size: 10, kerning: true }
-      ]
-    end
+
     @current_row += 1
   end
 end

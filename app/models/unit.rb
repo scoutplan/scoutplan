@@ -66,6 +66,10 @@ class Unit < ApplicationRecord
     members.includes(:parent_relationships, :child_relationships).find_by(user: user)
   end
 
+  def name_and_location
+    "#{name} #{location}"
+  end
+
   def payments_enabled?
     payment_account.present? && payment_account.active?
   end

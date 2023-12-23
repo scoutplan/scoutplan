@@ -80,7 +80,7 @@ export default class extends Controller {
         break;
     }
 
-    event.target.classList.toggle("droptarget", false);
+    columnElem.classList.toggle("droptarget", false);
   }
 
   async createRsvp(unitMembershipId, response) {
