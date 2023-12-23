@@ -187,6 +187,7 @@ en:
     dropdown:
       edit: "Change event details"
       payments: "Event payment history"
+      pdf: "Download printable attendee roster"
 
   events:
     object_name:          "event"

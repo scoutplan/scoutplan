@@ -1,6 +1,12 @@
 class EventRsvpsController < EventContextController
   before_action :find_rsvp, except: [:index, :new, :create, :create_batch]
 
+  def index
+    respond_to do |format|
+      format.pdf { send_event_roster }
+    end
+  end
+
   def create
     event_rsvp_params = params[:event_rsvp].permit(:unit_membership_id, :response)
     event_rsvp_params[:respondent] = @current_member
@@ -72,5 +78,10 @@ class EventRsvpsController < EventContextController
   def find_event_responses
     @non_respondents = @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)
     @non_invitees = @event.unit.members - @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)
+  end
+
+  def send_event_roster
+    pdf = Pdf::EventRoster.new(@event)
+    send_data pdf.render, filename: pdf.filename, type: "application/pdf", disposition: "inline"
   end
 end
