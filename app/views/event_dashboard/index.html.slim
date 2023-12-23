@@ -12,21 +12,23 @@
         h1.text-2xl.md:text-4xl = t(".title", event_title: @event.title)
         = render "dropdown"
 
+    = render "event_details"
+
     section.w-full.grid.grid-cols-1.lg:grid-cols-4.gap-px
       .bg-green-50
         header.bg-green-800.p-4.drop-shadow-md
           h2.font-bold.text-lg.text-green-50
             i.fa-solid.fa-hiking.mr-2
             = "Accepted"   
-        ol.p-4#rsvps_accepted
-          = render partial: "rsvp", collection: @event.rsvps.accepted, locals: { x: "x" }
+        ol.p-4#rsvps_accepted(data-controller="sorted-list")
+          = render partial: "rsvp", collection: @event.rsvps.joins(unit_membership: :user).accepted.order("users.last_name, users.first_name"), locals: { x: "x" }
         
       .bg-red-50
         header.bg-red-800.p-4.drop-shadow-md
           h2.font-bold.text-lg.text-red-50
             i.fa-solid.fa-couch.mr-2
             = "Declined"
-        ol.p-4#rsvps_declined
+        ol.p-4#rsvps_declined(data-controller="sorted-list")
           = render partial: "rsvp", collection: @event.rsvps.declined
 
       .bg-yellow-50
@@ -34,7 +36,7 @@
           h2.font-bold.text-lg.text-yellow-50
             i.fa-solid.fa-ghost.mr-2
             = "No Response"
-        ol.p-4#members_active
+        ol.p-4#members_active(data-controller="sorted-list")
           = render partial: "member", collection: @event.non_respondents
 
       .bg-sky-50
@@ -42,7 +44,7 @@
           h2.font-bold.text-lg.text-sky-50
             i.fa-solid.fa-hand-wave.mr-2
             = "Family & Friends"
-        ol.p-4#members_registered
+        ol.p-4#members_registered(data-controller="sorted-list")
           = render partial: "member", collection: @event.non_invitees
 
   = turbo_frame_tag "modal", data: { controller: "modal" }

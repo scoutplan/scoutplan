@@ -22,7 +22,7 @@ section.py-4.grid.grid-cols-3.gap-4.border-t
 
       .flex.flex-grow.gap-x-4.items-center
         = f.date_field :starts_at_date,
-                      class: "flex flex-grow border border-stone-300 dark:border-stone-700 rounded p-2 dark:bg-black",
+                      class: "flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
                       tabindex: -1,
                       data: { event_edit_target: "startsAtDate", action: "change->event-edit#updateStartsAt" }
 
@@ -30,7 +30,7 @@ section.py-4.grid.grid-cols-3.gap-4.border-t
         .not-all-day.inline-block.flex.flex-grow.items-center.gap-x-4
           span.font-bold = "at"
           = f.time_field :starts_at_time,
-            class: "flex flex-grow border border-stone-300 dark:border-stone-700 rounded p-2 dark:bg-black",
+            class: "flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
             list: "suggested_times",
             tabindex: -1,
             value: @event.starts_at.strftime("#{ @format_time }")
@@ -42,7 +42,7 @@ section.py-4.grid.grid-cols-3.gap-4.border-t
 
       .flex.flex-grow.gap-x-4.items-center
         = f.date_field :ends_at_date,
-                      class: "flex flex-grow border border-stone-300 dark:border-stone-700 rounded p-2 dark:bg-black",
+                      class: "flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
                       tabindex: -1,
                       data: { event_edit_target: "endsAtDate" }
         
@@ -50,7 +50,7 @@ section.py-4.grid.grid-cols-3.gap-4.border-t
         .not-all-day.inline-block.flex.flex-grow.items-center.gap-x-4
           span.font-bold = "at"
           = f.time_field :ends_at_time,
-            class: "flex flex-grow border border-stone-300 dark:border-stone-700 rounded p-2 dark:bg-black",
+            class: "flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
             step: "900",
             tabindex: -1,
             value: @event.ends_at.strftime("#{ @format_time }")
@@ -76,7 +76,7 @@ section.py-4.grid.grid-cols-3.gap-4.border-t
       = f.select :repeats_until,
                 [],
                 {},
-                class: "bg-white rounded w-full p-2 inline-block border-stone-300",
+                class: "bg-white rounded w-full p-2 inline-block border-stone-400",
                 data: { event_edit_target: "repeatsUntilSelect" }
 
     datalist#suggested_times

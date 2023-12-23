@@ -10,19 +10,20 @@ module Events
       @payment = @event.payments.new(payment_params)
       @payment.received_by = @current_member
       @payment.amount *= 100
+      @payment.save!
 
-      authorize @payment
-      redirect_to unit_event_payments_path(@unit, @event), notice: "Payment was recorded." and return if @payment.save
+      # authorize @payment
+      # redirect_to unit_event_payments_path(@unit, @event), notice: "Payment was recorded." and return if @payment.save
 
-      member = @payment.unit_membership
-      @current_family = member.family
-      @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
-      @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
-      @total_cost = (@family_rsvps.accepted.youth.count * @event.cost_youth) + (@family_rsvps.accepted.adult.count * @event.cost_adult)
-      @total_paid = ((@payments&.sum(:amount) || 0) / 100)
-      @amount_due = @total_cost - @total_paid
+      # member = @payment.unit_membership
+      # @current_family = member.family
+      # @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
+      # @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
+      # @total_cost = (@family_rsvps.accepted.youth.count * @event.cost_youth) + (@family_rsvps.accepted.adult.count * @event.cost_adult)
+      # @total_paid = ((@payments&.sum(:amount) || 0) / 100)
+      # @amount_due = @total_cost - @total_paid
 
-      render :receive, status: :unprocessable_entity
+      # render :receive, status: :unprocessable_entity
     end
 
     def index

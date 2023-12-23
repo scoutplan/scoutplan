@@ -10,11 +10,11 @@
 
         .mb-4
           = f.label :password, class: "block uppercase text-sm font-bold tracking-wide mb-1"
-          = f.password_field :password, autofocus: true, autocomplete: "email", class: "w-full bg-white border border-stone-300 rounded px-3 py-2"
+          = f.password_field :password, autofocus: true, autocomplete: "email", class: "w-full bg-white border border-stone-400 rounded px-3 py-2"
 
         .mb-3
           = f.label :password_confirmation, class: "block uppercase text-sm font-bold tracking-wide mb-1"
-          = f.password_field :password_confirmation, autocomplete: "current-password", class: "w-full bg-white border border-stone-300 rounded px-3 py-2"
+          = f.password_field :password_confirmation, autocomplete: "current-password", class: "w-full bg-white border border-stone-400 rounded px-3 py-2"
 
         .pt-3.overflow-auto
           = f.submit t("devise.invitations.edit.submit_button"),

@@ -17,7 +17,7 @@ module Event::Payments
   end
 
   def family_paid?(member)
-    family_amount_due(member).zero?
+    !family_amount_due(member).positive?
   end
 
   # rubocop:disable Metrics/AbcSize

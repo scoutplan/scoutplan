@@ -1,8 +1,11 @@
-li.flex.flex-row.justify-between.items-center(id="#{dom_id(rsvp)}")
+li.flex.flex-row.justify-between.items-center(id="#{dom_id(rsvp)}" data-sort-text="#{rsvp.member.last_name.downcase} #{rsvp.member.first_name.downcase}")
   = link_to edit_unit_event_rsvp_path(@event.unit, @event, rsvp),
             class: "text-blue-600 hover:text-blue-800 underline py-1",
             data: { turbo_frame: "modal" } do
     = rsvp.display_name
+
+    - if rsvp.note.present?
+      i.fa-solid.fa-comment.text-green-800.ml-2(title='"#{rsvp.note}"')
 
   .text-lg
     - if rsvp.accepted? && @event.requires_payment?

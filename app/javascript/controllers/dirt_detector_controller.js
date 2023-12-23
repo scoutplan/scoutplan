@@ -8,7 +8,6 @@ export default class extends Controller {
   }
   
   soil(event) {
-    console.log("I've been soiled");
     this.element.classList.add("is-dirty");
   }
 }

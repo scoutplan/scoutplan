@@ -28,13 +28,13 @@
       .mb-0
         = f.label :email, "Your email address", class: "block font-bold mb-1"
         = f.email_field :email, autofocus: true, autocomplete: "email",
-                        class: "w-full bg-white border border-stone-300 rounded px-3 py-2 placeholder-stone-400",
+                        class: "w-full bg-white border border-stone-400 rounded px-3 py-2 placeholder-stone-400",
                         placeholder: "name@email.com"
 
       #password_wrapper.password-login.mt-3
         = f.label :email, "Your password", class: "block font-bold mb-1"
         = f.password_field :password, autocomplete: "current-password",
-                           class: "w-full bg-white border border-stone-300 rounded px-3 py-2 placeholder-stone-400",
+                           class: "w-full bg-white border border-stone-400 rounded px-3 py-2 placeholder-stone-400",
                            placeholder: "password"
 
         - if devise_mapping.rememberable? && false

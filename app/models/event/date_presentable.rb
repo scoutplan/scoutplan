@@ -18,7 +18,7 @@ module Event::DatePresentable
   def date_to_s
     return starts_at.strftime("%A, %B %-d, %Y") if single_day?
 
-    "#{starts_at.strftime('%A, %B %-d')} - #{ends_at.strftime('%A, %B %-d, %Y')}"
+    "#{starts_at.strftime('%A, %B %-d')}&hairsp;&ndash;&hairsp;#{ends_at.strftime('%A, %B %-d, %Y')}".html_safe
   end
 
   def spans_months?

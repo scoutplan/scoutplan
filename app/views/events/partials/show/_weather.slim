@@ -34,23 +34,23 @@ article.py-4
       - count += 1
 
       .table-row
-        .table-cell.border-t.border-stone-300.dark:border-stone-500.py-2.grow-0
+        .table-cell.border-t.border-stone-400.dark:border-stone-500.py-2.grow-0
           = date.strftime("%a")
 
-        .table-cell.border-t.border-stone-300.dark:border-stone-500.px-2.text-center
+        .table-cell.border-t.border-stone-400.dark:border-stone-500.px-2.text-center
           = raw(service.fa_icon_tag(conditions.main))
 
-        .table-cell.border-t.border-stone-300.dark:border-stone-500.px-2
+        .table-cell.border-t.border-stone-400.dark:border-stone-500.px-2
           = "#{conditions.temp_min.round}&deg;".html_safe
           - if count == 1
             .inline.uppercase.text-stone-500 = " Low"
 
-        .table-cell.border-t.border-stone-300.dark:border-stone-500.px-2
+        .table-cell.border-t.border-stone-400.dark:border-stone-500.px-2
           = "#{conditions.temp_max.round}&deg;".html_safe
           - if count == 1
             .inline.uppercase.text-stone-500 = " High"
 
-        .table-cell.border-t.border-stone-300.dark:border-stone-500.px-2
+        .table-cell.border-t.border-stone-400.dark:border-stone-500.px-2
           = "#{conditions.humidity.round}%".html_safe
           - if count == 1
             .inline.uppercase.text-stone-500 = " Humidity"

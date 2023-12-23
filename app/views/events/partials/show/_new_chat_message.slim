@@ -18,7 +18,7 @@
 
   .relative
     = f.text_field(:message,
-                  class: "w-full border border-stone-300 dark:bg-black dark:border-stone-600 placeholder-stone-300 rounded p-2 text-sm text-stone-900 pr-10",
+                  class: "w-full border border-stone-400 dark:bg-black dark:border-stone-600 placeholder-stone-300 rounded p-2 text-sm text-stone-900 pr-10",
                   placeholder: "Type a new message",
                   autocapitalize: "on",
                   onkeydown: "if (event.keyCode == 13 && !event.shiftKey) { event.preventDefault(); document.querySelector('#discussion_submit_button').click(); }")
