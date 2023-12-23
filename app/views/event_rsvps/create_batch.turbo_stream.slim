@@ -4,7 +4,6 @@
   = turbo_stream.remove dom_id(rsvp)
 
   // add to the appropriate column
-  // TODO: sort lists after add: https://github.com/hotwired/turbo/issues/109#issuecomment-761538869  
   - if rsvp.persisted?
     = turbo_stream.append("rsvps_#{rsvp.response}") do
       = render partial: "event_dashboard/rsvp",
@@ -18,8 +17,10 @@
       = render partial: "event_dashboard/member",
               locals:  { member: rsvp.member }
 
+= turbo_stream.replace "event_stats" do
+  = render partial: "event_dashboard/event_stats",
+          locals:  { event_dashboard: EventDashboard.new(@event) }
 
-
-  // clear modal
-  = turbo_stream.update "modal" do
-    = ""
+// clear modal
+= turbo_stream.update "modal" do
+  = ""

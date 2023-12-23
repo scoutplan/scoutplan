@@ -1,7 +1,8 @@
-li.flex.flex-row.justify-between.items-center(id="#{dom_id(rsvp)}" data-sort-text="#{rsvp.member.last_name.downcase} #{rsvp.member.first_name.downcase}")
+li.flex.flex-row.justify-between.items-center(draggable="false" id="#{dom_id(rsvp)}" data-sort-text="#{rsvp.member.last_name.downcase} #{rsvp.member.first_name.downcase}" data-action="dragstart->dashboard-drop#dragstart")
   = link_to edit_unit_event_rsvp_path(@event.unit, @event, rsvp),
             class: "text-blue-600 hover:text-blue-800 underline py-1",
-            data: { turbo_frame: "modal" } do
+            draggable: true,
+            data: { turbo_frame: "modal", action: "dragstart->dashboard-drop#dragstart drag->dashboard-drop#drag" } do
     = rsvp.display_name
 
     - if rsvp.note.present?
@@ -12,11 +13,13 @@ li.flex.flex-row.justify-between.items-center(id="#{dom_id(rsvp)}" data-sort-tex
       - if @event.family_paid?(rsvp.member)
         = link_to unit_event_payments_path(@unit, @event),
                   class: "block px-2 -mr-2",
+                  draggable: false,
                   title: "Payment received. Click to view payment details." do
           i.fa-regular.fa-circle-check.text-green-800
       - else
         = link_to new_unit_event_payment_path(@unit, @event, member: rsvp.member),
                   class: "block px-2 -mr-2",
                   title: "Payment not yet received in full for this family. Click to record payment",
+                  draggable: false,
                   data: { turbo_frame: "modal" } do
           i.fa-solid.fa-triangle-exclamation.text-green-800

@@ -3,8 +3,8 @@ class EventDashboard
 
   def initialize(event)
     @event = event
-    @accepted = @event.rsvps.accepted
-    @declined = @event.rsvps.declined
+    @accepted = @event.rsvps.joins(unit_membership: :user).accepted.order("users.last_name, users.first_name")
+    @declined = @event.rsvps.joins(unit_membership: :user).declined.order("users.last_name, users.first_name")
   end
 
   def accepted_adult_count

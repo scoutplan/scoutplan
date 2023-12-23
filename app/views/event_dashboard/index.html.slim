@@ -12,39 +12,76 @@
         h1.text-2xl.md:text-4xl = t(".title", event_title: @event.title)
         = render "dropdown"
 
-    = render "event_details"
+    = render partial: "event_stats", locals: { event_dashboard: @event_dashboard }
 
-    section.w-full.grid.grid-cols-1.lg:grid-cols-4.gap-px
-      .bg-green-50
+    section.w-full.grid.grid-cols-1.lg:grid-cols-4.gap-px(data-controller="dashboard-drop" data-action="dragover->dashboard-drop#dragover dragleave->dashboard-drop#dragleave dragenter->dashboard-drop#dragenter")
+      #rsvps_accepted_column.member-column.bg-green-50
         header.bg-green-800.p-4.drop-shadow-md
           h2.font-bold.text-lg.text-green-50
             i.fa-solid.fa-hiking.mr-2
-            = "Accepted"   
-        ol.p-4#rsvps_accepted(data-controller="sorted-list")
-          = render partial: "rsvp", collection: @event.rsvps.joins(unit_membership: :user).accepted.order("users.last_name, users.first_name"), locals: { x: "x" }
+            = "Accepted"
+
+        ol#rsvps_accepted.p-4(data-controller="sorted-list")
+          = render partial: "rsvp", collection: @event_dashboard.accepted, locals: { x: "x" }
         
-      .bg-red-50
+      #rsvps_declined_column.member-column.bg-red-50
         header.bg-red-800.p-4.drop-shadow-md
           h2.font-bold.text-lg.text-red-50
             i.fa-solid.fa-couch.mr-2
             = "Declined"
-        ol.p-4#rsvps_declined(data-controller="sorted-list")
-          = render partial: "rsvp", collection: @event.rsvps.declined
 
-      .bg-yellow-50
+        ol#rsvps_declined.p-4(data-controller="sorted-list")
+          = render partial: "rsvp", collection: @event_dashboard.declined
+
+      #members_active_column.member-column.bg-yellow-50
         header.bg-yellow-800.p-4.drop-shadow-md
           h2.font-bold.text-lg.text-yellow-50
             i.fa-solid.fa-ghost.mr-2
             = "No Response"
-        ol.p-4#members_active(data-controller="sorted-list")
+
+        ol#members_active.p-4(data-controller="sorted-list")
           = render partial: "member", collection: @event.non_respondents
 
-      .bg-sky-50
+      #members_registered_column.member-column.bg-sky-50
         header.bg-sky-800.p-4.drop-shadow-md
           h2.font-bold.text-lg.text-sky-50
             i.fa-solid.fa-hand-wave.mr-2
             = "Family & Friends"
-        ol.p-4#members_registered(data-controller="sorted-list")
+
+        ol#members_registered.p-4(data-controller="sorted-list")
           = render partial: "member", collection: @event.non_invitees
 
   = turbo_frame_tag "modal", data: { controller: "modal" }
+
+  css:
+    #rsvps_accepted_column.droptarget {
+      background-color: 1px solid #dcfce7;
+    }
+
+    #rsvps_accepted_column.droptarget header {
+      background-color: #052e16;
+    }
+
+    #rsvps_declined_column.droptarget {
+      background-color: #fee2e2;
+    }
+
+    #rsvps_declined_column.droptarget header {
+      background-color: #450a0a;
+    }
+
+    #members_active_column.droptarget {
+      background-color: #fef9c3;
+    }
+
+    #members_active_column.droptarget header {
+      background-color: #422006;
+    }
+
+    #members_registered_column.droptarget {
+      background-color: #e0f2fe;
+    }
+
+    #members_registered_column.droptarget header {
+      background-color: #082f49;
+    }
