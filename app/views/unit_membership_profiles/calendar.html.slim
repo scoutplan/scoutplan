@@ -16,7 +16,7 @@
 
       = collection_select nil, :event_category_id, categories, :id, :name,
                           { include_blank: "Select an event category" },
-                          { class: "block py-2 w-full rounded border border-stone-300 font-bold",
+                          { class: "block py-2 w-full rounded border border-stone-400 font-bold",
                             data: { action: "change->calendar-preferences#changeCategory" } }
 
       - @unit.event_categories.each do |event_category|

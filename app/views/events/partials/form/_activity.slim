@@ -1,20 +1,26 @@
-section.py-4
-  = render partial: "components/switch",
-           locals: { checked: @event.includes_activity,
-                     label: "Includes activity",
-                     object_name: "event",
-                     method: "includes_activity",
-                     checked_value: "true",
-                     unchecked_value: "false",
-                     data: { body_class: "event-has-activity" } }
+section.py-4.grid.grid-cols-3.gap-8.border-t
+  .col-span-1
+    h2.text-lg Side activity
+    p.text-sm.text-sky-700 Is there an additional activity that your members need to sign up for?
+      If so, you can add it here.
 
-  #activity_fields.py-2
-    = f.label :activity_name, class: "font-bold block mb-2"
-    = f.text_field :activity_name,
-                   id: "activity_name_field",
-                   autocomplete: "off",
-                   class: "p-2 w-full placeholder-stone-400 disabled:text-stone-300 disabled:placeholder-stone-200 border border-stone-300 rounded",
-                   placeholder: "e.g. Rock climbing"
+  .col-span-2
+    = render partial: "components/switch",
+            locals: { checked: @event.includes_activity,
+                      label: "Includes activity",
+                      object_name: "event",
+                      method: "includes_activity",
+                      checked_value: "true",
+                      unchecked_value: "false",
+                      data: { body_class: "event-has-activity" } }
+
+    .mt-4
+      = f.label :activity_name, class: "block mb-1"
+      = f.text_field :activity_name,
+                    id: "activity_name_field",
+                    autocomplete: "off",
+                    class: "p-2 w-full placeholder-stone-400 disabled:text-stone-300 disabled:placeholder-stone-200 border border-stone-400 rounded",
+                    placeholder: "e.g. Rock climbing"
 
 css:
   #activity_fields {

@@ -14,7 +14,7 @@ section#messages_section.border-t.py-2
     .flex(data-controller="validation")
       = select_tag :message_type,
                    options_for_select(options),
-                   class: "w-full rounded border border-stone-300 font-bold",
+                   class: "w-full rounded border border-stone-400 font-bold",
                    onchange: "this.nextSibling.disabled = (this.value == '')"
       = submit_tag "Send",
                    disabled: true,

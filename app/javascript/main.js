@@ -97,7 +97,7 @@ document.addEventListener("turbo:load", function() {
     container?.classList?.toggle("switch-on", elem.checked);
     elem.addEventListener("change", function(event) {
       const container = event.target.closest(".switch-toggle-container");
-      container.classList.toggle("switch-on", event.target.checked);
+      container?.classList?.toggle("switch-on", event.target.checked);
     });
   });  
 });

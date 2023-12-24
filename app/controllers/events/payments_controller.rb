@@ -10,19 +10,20 @@ module Events
       @payment = @event.payments.new(payment_params)
       @payment.received_by = @current_member
       @payment.amount *= 100
+      @payment.save!
 
-      authorize @payment
-      redirect_to unit_event_payments_path(@unit, @event), notice: "Payment was recorded." and return if @payment.save
+      # authorize @payment
+      # redirect_to unit_event_payments_path(@unit, @event), notice: "Payment was recorded." and return if @payment.save
 
-      member = @payment.unit_membership
-      @current_family = member.family
-      @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
-      @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
-      @total_cost = (@family_rsvps.accepted.youth.count * @event.cost_youth) + (@family_rsvps.accepted.adult.count * @event.cost_adult)
-      @total_paid = ((@payments&.sum(:amount) || 0) / 100)
-      @amount_due = @total_cost - @total_paid
+      # member = @payment.unit_membership
+      # @current_family = member.family
+      # @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
+      # @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
+      # @total_cost = (@family_rsvps.accepted.youth.count * @event.cost_youth) + (@family_rsvps.accepted.adult.count * @event.cost_adult)
+      # @total_paid = ((@payments&.sum(:amount) || 0) / 100)
+      # @amount_due = @total_cost - @total_paid
 
-      render :receive, status: :unprocessable_entity
+      # render :receive, status: :unprocessable_entity
     end
 
     def index
@@ -30,7 +31,7 @@ module Events
       @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
     end
 
-    def new
+    def new_stripe
       @current_family = @current_member.family
       @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
       @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
@@ -41,15 +42,15 @@ module Events
       @total_paid = @payments&.sum(:amount) || 0
       @amount_due = @total_cost - @total_paid
       @quantity = @amount_due / @item_amount
-      @payment = Payment.create!(event: @event, unit_membership: @current_member, amount: @amount_due, received_by: nil, method: "stripe")
+      @payment = Payment.new(event: @event, unit_membership: @current_member, amount: @amount_due, received_by: nil, method: "stripe")
 
       create_checkout_session
       redirect_to @session.url, allow_other_host: true
     end
 
-    def receive
+    def new
       member = @unit.members.find(params[:member])
-      @payment = @event.payments.build(unit_membership: member)
+      @payment = @event.payments.build(unit_membership: member, method: :cash)
       
       @current_family = member.family
       @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))

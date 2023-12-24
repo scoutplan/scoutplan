@@ -2,6 +2,8 @@
 
 # a landscape view printable calendar with three columns (generally one column
 # per month)
+
+# rubocop:disable Metrics/ClassLength
 class Pdf::FridgeCalendar < Prawn::Document
   MAX_COLUMN_COUNT = 3
   MAX_ROW_COUNT = 10
@@ -32,6 +34,8 @@ class Pdf::FridgeCalendar < Prawn::Document
     )
   end
 
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def render_calendar
     embed_fonts
     define_grid(columns: 3, rows: 1, gutter: 20)
@@ -44,6 +48,7 @@ class Pdf::FridgeCalendar < Prawn::Document
 
     @events_by_month = @events.group_by { |e| [e.starts_at.year, e.starts_at.month] }
 
+    # rubocop:disable Metrics/BlockLength
     @events_by_month.each do |year_month, events|
       @year, @month = year_month
       index = 0
@@ -80,23 +85,25 @@ class Pdf::FridgeCalendar < Prawn::Document
 
         @current_column += 1
 
-        if @current_column >= MAX_COLUMN_COUNT
-          start_new_page
-          render_page_header
-          @current_column = 0
+        next unless @current_column >= MAX_COLUMN_COUNT
 
-          # if current month isn't done
-          if @current_month_column < columns_in_month
-            month_header_width = [columns_in_month - @current_month_column, MAX_COLUMN_COUNT].min
-            grid([0, @current_column], [0, month_header_width - 1]).bounding_box do
-              move_down PAGE_HEADER_HEIGHT
-              render_month_header
-            end
-          end
+        start_new_page
+        render_page_header
+        @current_column = 0
+
+        next unless @current_month_column < columns_in_month
+
+        month_header_width = [columns_in_month - @current_month_column, MAX_COLUMN_COUNT].min
+        grid([0, @current_column], [0, month_header_width - 1]).bounding_box do
+          move_down PAGE_HEADER_HEIGHT
+          render_month_header
         end
       end
     end
+    # rubocop:enable Metrics/BlockLength
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 
   def render_page_header
     grid([0, 0], [0, MAX_COLUMN_COUNT - 1]).bounding_box do

@@ -5,11 +5,11 @@
 
 .form-wrapper(class="#{@event.online ? 'online-event' : ''}" data-controller="body-classer event-edit" data-event-edit-season-end-date-value="#{ @unit.this_season_ends_at.to_datetime.iso8601 }" data-event-edit-unit-id-value="#{ @unit.id }" )
 
-  .mx-auto.max-w-xl.relative
+  .mx-auto.max-w-3xl.relative
     = render partial: "components/cancelled_badge" if @event.cancelled?
 
-    header
-      h2.font-bold.text-3xl
+    header.mb-8
+      h1.text-3xl
         - if @parent_event.present?
           = t("events.titles.sub_event", parent_event_title: @parent_event.title)
         - elsif @event.new_record?

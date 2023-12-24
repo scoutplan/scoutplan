@@ -1,13 +1,13 @@
-- family_member_ids = @current_member.family.map(&:id)
+- unit_membership ||= @current_member
+- family = unit_membership.family(include_self: :prepend)
+- family_member_ids = family.map(&:id)
 - rsvps = event.rsvps.where(unit_membership_id: family_member_ids)
 - @rsvps = rsvps
 - notes = rsvps.map(&:note).uniq.join(", ")
-- @needs_approval = false
-- @youth_respondent = false
 
-.table.w-full.divide-y-2.divide-red-500
-  - @current_member.family.each do |family_member|
-    .table-row.items-center.relative
+.rounded-lg.px-4.py-2.bg-amber-100.text-amber-800.flex.flex-col
+  .flex.flex-col.divide-y.divide-amber-300
+    - family.each do |family_member|
       - existing_rsvp = event.rsvps.find_by(unit_membership: family_member)
       - rsvp = event.rsvps.build( unit_membership: family_member,
                                   response: existing_rsvp&.response,
@@ -15,71 +15,56 @@
                                   event_shift_ids: existing_rsvp&.event_shift_ids )
 
       - policy = EventRsvpPolicy.new(@current_member, rsvp)  
-      - if policy.create? && @current_member.youth?
-        - @youth_respondent = true  
 
-      // family member name
-      .table-cell.pr-2.py-2.font-bold(class="#{ @event.shifts? ? 'align-top pt-4' : 'align-middle' }")
-        i.fa-user.fad.text-yellow-500
-        |&nbsp;&nbsp;
-        = presenter.family_context_name(family_member)
 
-      // "Going" three-way switch
-      .table-cell.px-3.py-2.response-wrapper
-        - if @event.shifts?
-          - @event.shifts.each do |shift|
-            .py-1
-              = render partial: "components/switch", locals: { checked: existing_rsvp&.event_shift_ids&.include?(shift.id),
-                                                               label: shift.name,
-                                                               object_name: "event[members][#{family_member.id}][shifts][#{shift.id}]",
-                                                               method: "response",
-                                                               checked_value: "accepted",
-                                                               unchecked_value: "declined",
-                                                               disabled: !policy.create? }
+      .flex.flex-row.items-center.justify-between.py-2
+        .font-bold(class="#{ @event.shifts? ? 'align-top pt-4' : 'align-middle' }")
+          i.fa-solid.fa-user.text-amber-600.mr-2
+          = presenter.family_context_name(family_member)
 
-        - else
-          = render partial: "components/double_throw_switch",
-                            locals: { object_name:   "unit_memberships[#{family_member.id}]",
-                                      method:        "response",
-                                      checked_left:  existing_rsvp&.declined? || existing_rsvp&.declined_pending?,
-                                      checked_right: existing_rsvp&.accepted? || existing_rsvp&.accepted_pending?,
-                                      label:         t("rsvp_accepted"),
-                                      left_value:    "declined",
-                                      right_value:   "accepted",
-                                      left_label:    "Regrets",
-                                      right_label:   "Going!",
-                                      disabled:      !policy.create? }
+        div.font-bold
+          - if @event.shifts?
+            - @event.shifts.each do |shift|
+              .py-1
+                = render partial: "components/switch", locals: { checked: existing_rsvp&.event_shift_ids&.include?(shift.id),
+                                                                label: shift.name,
+                                                                object_name: "event[members][#{family_member.id}][shifts][#{shift.id}]",
+                                                                method: "response",
+                                                                checked_value: "accepted",
+                                                                unchecked_value: "declined",
+                                                                disabled: !policy.create? }
 
-          - if existing_rsvp&.pending_approval?
-            - @needs_approval = true
-            
-            .inline-block.text-yellow-700.dark:text-yellow-500.text-sm
-              i.fa-regular.fa-info-circle.inline-block.px-2
-              - if existing_rsvp.respondent == @current_member then
-                = "pending approval"
-              - else
-                = "pending your approval"
+          - else
+            = render partial: "components/double_throw_switch",
+                              locals: { object_name:   "unit_memberships[#{family_member.id}]",
+                                        method:        "response",
+                                        checked_left:  existing_rsvp&.declined? || existing_rsvp&.declined_pending?,
+                                        checked_right: existing_rsvp&.accepted? || existing_rsvp&.accepted_pending?,
+                                        label:         t("rsvp_accepted"),
+                                        left_value:    "declined",
+                                        right_value:   "accepted",
+                                        left_label:    "Regrets",
+                                        right_label:   "Going!",
+                                        disabled:      !policy.create? }
 
-// note field
-.mt-2
-  = text_field_tag :note,
-    notes,
-    class: "rounded p-2 block w-full placeholder-stone-300 border border-stone-200 dark:bg-stone-950 dark:border-stone-700 dark:placeholder-stone-500",
-    placeholder: t("events.rsvp.note_placeholder"),
-    autocomplete: "off"
+            - if existing_rsvp&.pending_approval?            
+              .inline-block.text-yellow-700.dark:text-yellow-500.text-sm
+                i.fa-regular.fa-info-circle.inline-block.px-2
+                - if existing_rsvp.respondent == @current_member then
+                  = "pending approval"
+                - else
+                  = "pending your approval"
 
-javascript:
-  document.querySelector("#note").addEventListener("input", function(event) {
-    var submitElem = document.querySelector("#accept");
-    submitElem.disabled = false;
-  });
+  // note field
+  .mt-3.mb-2
+    = f.label :note, class: "block mb-1"
+    = text_field_tag :note,
+      notes,
+      class: "rounded p-2 block w-full placeholder-stone-300 border border-amber-400 dark:bg-stone-950 dark:border-stone-700 dark:placeholder-stone-500",
+      placeholder: t("events.rsvp.note_placeholder"),
+      autocomplete: "off"
 
-  document.querySelectorAll(".response-wrapper input").forEach(function(elem) {
-    elem.addEventListener("click", function(event) {
-      var submitElem = document.querySelector("#accept");
-      submitElem.disabled = false;
-    });
-  });
+
 
 css:
   .table.divide-y .table-row {

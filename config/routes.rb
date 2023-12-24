@@ -5,6 +5,7 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
+  get 'event_dashboard/index'
   root to: "home#index"
 
   %w[404 500].each do |code|
@@ -98,13 +99,14 @@ Rails.application.routes.draw do
 
     resources :events, path: "schedule" do
       resources :chat_messages, as: "discussion", path: "discussion"
-      resources :event_rsvps, as: "rsvps", path: "rsvps", only: %i[create]
-      resources :event_rsvps, only: [:destroy]
-      resources :payments, module: :events do
+      get "rsvps"
+      resources :event_rsvps, as: "rsvps", path: "rsvps" do
         collection do
-          get :receive
+          post "batch", to: "event_rsvps#create_batch"
         end
       end
+      resources :event_rsvps
+      resources :payments, module: :events
       resources :photos
 
       resources :event_attachments, path: "attachments", as: "attachments"
@@ -114,6 +116,9 @@ Rails.application.routes.draw do
       resources :email_invitations, only: [:create]
       resources :event_reminders, path: "reminders", as: "reminders", only: [:create]
       resources :locations, module: :events
+      member do
+        get "dashboard", to: "event_dashboard#index", as: "dashboard"
+      end
       collection do
         get "/", to: redirect("/units/%{unit_id}/schedule/list")
         get "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
@@ -129,7 +134,6 @@ Rails.application.routes.draw do
         post "bulk_publish"
       end
       get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"
-      get   "rsvps"
       get   "cancel"
       get   "organize"
       get   "history"

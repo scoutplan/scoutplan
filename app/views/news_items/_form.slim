@@ -1,7 +1,5 @@
 = form_with model: [@unit, @news_item], builder: ApplicationFormBuilder do |f|
 
-  = styled_header_tag t("announcements.titles.new")
-
   // TITLE
   section.bg-stone-100.px-4.py-4.mb-2.rounded
     = f.label :title, class: "block md:inline-block md:w-[20%] mb-2 text-sm font-bold tracking-wide uppercase"

@@ -1,0 +1,56 @@
+= turbo_frame_tag "modal"
+  .absolute.z-50.inset-0.bg-black/10.backdrop-blur
+    .absolute.inset-1
+      .max-w-xl.top-1/4.left-1/2.bg-white.-translate-x-1/2.rounded-lg.drop-shadow-overhead.modal-dialog.p-4.pt-6.relative
+        = render partial: "components/close_button"
+        = render "header"
+
+        = form_with model: [@unit, @event, @rsvp], html: { class: "#{action_name}" } do |f|
+          = f.hidden_field :unit_membership_id
+
+          .grid.gap-0.rounded-lg.divide-x.border.border-stone-400.divide-stone-400.grid-cols-2
+            div
+              = f.radio_button :response, :accepted, class: "peer"
+              = f.label :response, value: "accepted", class: "peer-checked:bg-stone-100 text-center text-sm md:text-base block p-2 md:p-4 rounded-lg text-green-800 font-bold relative" do
+                i.fa-solid.fa-hiking.text-3xl.mb-2
+                div = "Going"
+                div.h-4
+                  .selected-glyph
+                    i.fa-solid.fa-check-circle
+
+            div
+              = f.radio_button :response, :declined, class: "peer"
+              = f.label :response, value: "declined", class: "peer-checked:bg-stone-100 text-center text-sm md:text-base block p-2 md:p-4 rounded-lg text-red-800 font-bold" do
+                i.fa-solid.fa-couch.text-3xl.mb-2
+                div = "Not going"
+                div.h-4
+                  .selected-glyph
+                    i.fa-solid.fa-check-circle
+
+          footer.mt-6
+            .flex.flex-col.md:flex-row.gap-2.justify-end
+              = button_tag "Cancel", class: "active:pt-[13px] active:pb-[11px] active:text-stone-500 font-bold border rounded-lg border-stone-400 bg-stone-50 px-5 py-3", data: { action: "click->modal#close" }
+              = f.submit "Save this response", class: "active:text-stone-200 active:pt-[13px] active:pb-[11px] block px-6 py-3 rounded-lg border border-stone-900 bg-stone-700 text-white font-bold"
+
+  css:
+    input[type="radio"] {
+      display: none;
+    }
+
+    input[type="radio"] ~ label {
+
+    }
+
+
+
+    input[type="radio"]:checked ~ label {
+
+    }
+
+    .selected-glyph {
+      display: none;
+    }
+
+    input[type="radio"]:checked ~ label .selected-glyph {
+      display: block;
+    }

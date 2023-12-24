@@ -1,0 +1,28 @@
+= turbo_frame_tag "modal"
+  .absolute.z-50.inset-0.bg-black/10.backdrop-blur(data-action="click->modal#click")
+    .absolute.inset-1
+      .max-w-xl.top-1/4.left-1/2.bg-white.-translate-x-1/2.rounded-lg.drop-shadow-overhead.modal-dialog.p-4.pt-6.relative
+        = render partial: "components/close_button"
+        = render "header"
+
+        = form_with url: batch_unit_event_rsvps_path(@event.unit, @event), method: :post, format: :turbo_stream, data: { controller: "dirt-detector" } do |f|
+          = render partial: "events/edit_rsvp_form", locals: { event: @event, f: f, presenter: @presenter, unit_membership: @rsvp.unit_membership }
+
+          footer.mt-6
+            .flex.flex-row.justify-between.items-baseline
+              div
+                - if @rsvp.accepted? && @event.requires_payment?
+                  - if @event.family_paid?(@rsvp.member)
+                    .font-bold.text-sky-800
+                      i.fa-solid.fa-circle-check.mr-1
+                      = "Payment received"
+                  - else
+                    = link_to new_unit_event_payment_path(@unit, @event, member: @rsvp.member),
+                              class: "font-bold text-sky-800",
+                              data: { turbo_frame: "modal" } do
+                      i.fa-solid.fa-circle-dollar.mr-1
+                      = "Record a payment"
+
+              .flex.flex-col.md:flex-row.gap-2.justify-end
+                = button_tag "Cancel", class: "font-bold border rounded border-stone-400 bg-stone-50 px-5 py-2", data: { action: "click->modal#close" }
+                = f.submit "Update response", class: "block px-6 py-2 rounded border border-stone-900 bg-stone-700 text-white font-bold"

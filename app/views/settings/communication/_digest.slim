@@ -3,7 +3,7 @@
 - icon_class = t("settings.icons.#{task_key}")
 - icon_color = t("settings.icon_colors.#{task_key}")
 
-article#digest_settings.py-4.switch-toggle-container.border.border-stone-300.rounded.p-4
+article#digest_settings.py-4.switch-toggle-container.border.border-stone-400.rounded.p-4
   h2.font-bold.text-xl.mb-2
     i(class="fa-solid fa-fw mr-1 #{icon_class} #{icon_color}")
     = t("settings.titles.#{task_key}")
@@ -17,7 +17,7 @@ article#digest_settings.py-4.switch-toggle-container.border.border-stone-300.rou
     = label_tag :digest_day_of_week, t("settings.labels.digest_day_of_week"), class: "block font-bold mb-1"
 
     .flex.flex-row.gap-2.items-center
-      = weekday_select "settings[communication]", "digest_day_of_week", { selected: @unit.settings(:communication).digest_day_of_week.capitalize }, class: "w-full rounded border-stone-300"
+      = weekday_select "settings[communication]", "digest_day_of_week", { selected: @unit.settings(:communication).digest_day_of_week.capitalize }, class: "w-full rounded border-stone-400"
       = " at "
       = select_hour(@unit.settings(:communication).digest_hour_of_day.to_i,
                     { prefix: "settings[communication]",
@@ -25,7 +25,7 @@ article#digest_settings.py-4.switch-toggle-container.border.border-stone-300.rou
                       leading_zeros: false,
                       use_two_digit_numbers: false,
                       ampm: true },
-                    class: "w-full rounded border-stone-300")
+                    class: "w-full rounded border-stone-400")
 
 / See build_options in https://github.com/rails/rails/blob/049c95161d32092663376b0b14d1a454fd43aa01/actionview/lib/action_view/helpers/date_helper.rb#L1194
 

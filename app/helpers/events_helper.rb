@@ -1,21 +1,26 @@
 # frozen_string_literal: true
 
-# helpers for Event views
 module EventsHelper
   require "cgi"
   RSVP_GLYPH_CLASSES = { nil => "ghost", "accepted" => "hiking", "declined" => "couch" }.freeze
   RSVP_GLYPH_COLORS = { nil => "text-gray-100", "accepted" => "text-green-500", "declined" => "text-red-500"}.freeze
   MAP_BASE_URL = "https://www.google.com/maps/"
+  CLASS_GLYPH_WRAPPER = "event-category-glyph"
 
   # given an Event, return a FontAwesome-formatted <i> tag corresponding to
   # the associated EventCategory
-  def glyph_tag(event)
-    content_tag(:span, class: "event-category-glyph") do
+  def glyph_tag(event, **options)
+    ap options[:classes]
+
+    style = options[:exclude_color] ? "" : "color:#{event&.category&.color}"
+    classes = "fa-solid mr-1 fa-fw fa-#{event&.category&.glyph} #{options[:classes]}}"
+
+    content_tag(:span, class: CLASS_GLYPH_WRAPPER) do
       content_tag(
         :i,
         nil,
-        class: "text-center fa-solid fa-#{event&.category&.glyph}",
-        style: "color:#{event&.category&.color}",
+        class: classes,
+        style: style,
         title: event&.event_category&.name
       )
     end

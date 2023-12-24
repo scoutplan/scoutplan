@@ -1,36 +1,44 @@
-.mt-2.py-2(data-controller="event-shift")
-  = render partial: "components/switch",
-          locals: { checked: @event.shifts?,
-                    label: "Time slots",
-                    object_name: "event",
-                    method: "rsvp_limit",
-                    checked_value: "true",
-                    unchecked_value: "false",
-                    data: { body_class: "event-time-shifts" } }
+section.py-4.grid.grid-cols-3.gap-8.border-t
+  .col-span-1
+    h2.text-lg Time slots
+    p.text-sm.text-sky-700 Does your event have multiple shifts or time slots?
+      Add as many slots as you need. You can also use this feature for things
+      like potluck dish sign-ups.
 
-  #event_shift_fields
-    .pt-4
-      ul.font-bold#existing_event_shifts(data-event-shift-target="list")
-        - @event.event_shifts.each do |shift|
-          li
-            i.fa-solid.fa-clock.mr-2.text-sky-300
-            = shift.name
+  .col-span-2
+    div(data-controller="event-shift")
+      = render partial: "components/switch",
+              locals: { checked: @event.shifts?,
+                        label: "Time slots",
+                        object_name: "event",
+                        method: "rsvp_limit",
+                        checked_value: "true",
+                        unchecked_value: "false",
+                        data: { body_class: "event-time-shifts" } }
 
-      .hidden
-        = select_tag("event_shifts",
-                    nil,
-                    id: "event_shifts",
-                    name: "event_shifts[]",
-                    multiple: true,
-                    data: { event_shift_target: "select" } )
+      #event_shift_fields
+        div
+          ul.font-bold#existing_event_shifts(data-event-shift-target="list")
+            - @event.event_shifts.each do |shift|
+              li
+                i.fa-solid.fa-clock.mr-2.text-sky-300
+                = shift.name
 
-      .flex.flex-row.gap-3.items-center.mt-4
-        = text_field :event_shift,
-                    :name,
-                    class: "w-48 bg-white border border-stone-300 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300",
-                    placeholder: t("events.form.placeholders.shift_name"),
-                    data: { event_shift_target: "name" }
+          .hidden
+            = select_tag("event_shifts",
+                        nil,
+                        id: "event_shifts",
+                        name: "event_shifts[]",
+                        multiple: true,
+                        data: { event_shift_target: "select" } )
 
-        = link_to t("events.form.add_shift"), "#",
-                  class: "block font-bold border rounded px-4 py-2 whitespace-nowrap border-stone-500 text-stone-500 hover:border-stone-600 hover:text-stone-600",
-                  data: { action: "click->event-shift#add" }
+          .flex.flex-row.gap-3.items-center.mt-4
+            = text_field :event_shift,
+                        :name,
+                        class: "w-48 bg-white border border-stone-400 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300",
+                        placeholder: t("events.form.placeholders.shift_name"),
+                        data: { event_shift_target: "name" }
+
+            = link_to t("events.form.add_shift"), "#",
+                      class: "block font-bold border rounded px-4 py-2 whitespace-nowrap border-stone-500 text-stone-500 hover:border-stone-600 hover:text-stone-600",
+                      data: { action: "click->event-shift#add" }

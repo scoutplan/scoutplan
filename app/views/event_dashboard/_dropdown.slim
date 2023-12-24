@@ -1,0 +1,22 @@
+.dropdown.relative.text-right
+  = link_to "#", class: "dropdown-button inline-block text-stone-500 hover:text-stone-900 dark:hover:text-stone-300" do
+    i.fa-circle-ellipsis.far.fa-2xl
+
+  nav.dropdown-menu.absolute.right-0.bg-brand-500.text-white.drop-shadow-lg.rounded.m-2.z-10.animate-pop-open.text-left
+    = link_to edit_unit_event_path(@unit, @event),
+              class: "whitespace-nowrap block px-4 py-2 rounded hover:bg-brand-600",
+              data: { turbo_action: "advance" } do
+      i.fa-regular.fa-pencil.fa-fw.mr-2              
+      = t(".edit")
+      
+    = link_to unit_event_payments_path(@unit, @event),
+              class: "whitespace-nowrap block px-4 py-2 rounded hover:bg-brand-600",
+              data: { turbo_action: "advance" } do
+      i.fa-regular.fa-circle-dollar.fa-fw.mr-2
+      = t(".payments")
+
+    = link_to unit_event_event_rsvps_path(@unit, @event, format: :pdf),
+              class: "whitespace-nowrap block px-4 py-2 rounded hover:bg-brand-600",
+              data: { turbo_action: "advance" } do
+      i.fa-regular.fa-print.fa-fw.mr-2
+      = t(".pdf")

@@ -1,14 +1,55 @@
 class EventRsvpsController < EventContextController
-  before_action :find_rsvp,  only: [:destroy]
+  before_action :find_rsvp, except: [:index, :new, :create, :create_batch]
+
+  def index
+    respond_to do |format|
+      format.pdf { send_event_roster }
+    end
+  end
 
   def create
-    if params[:unit_memberships].present?
-      rsvps = create_batch
-      redirect_to [@unit, @event], notice: "Your #{rsvps.count > 1 ? 'RSVPs have' : 'RSVP has'} been received."
-    elsif params[:member_id].present? && params[:response].present?
-      create_single
-      redirect_to unit_event_rsvps_path(@unit, @event)
+    event_rsvp_params = params[:event_rsvp].permit(:unit_membership_id, :response)
+    event_rsvp_params[:respondent] = @current_member
+    @rsvp = @event.rsvps.find_or_create_by!(event_rsvp_params)
+  end
+
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
+  def create_batch
+    @rsvps = []
+    params[:unit_memberships].each do |member_id, rsvp_attributes|
+      rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: member_id.to_i)
+      rsvp.respondent = @current_member
+      rsvp.response = rsvp_attributes[:response]
+      rsvp.note = params[:note]
+      if rsvp.changed?
+        rsvp.save
+        @rsvps << rsvp
+      end
     end
+
+    respond_to do |format|
+      format.html { redirect_to [@unit, @event], notice: "Your RSVPs been received." }
+      format.turbo_stream
+    end
+  end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
+
+  def edit
+    @presenter = EventPresenter.new(@event, @current_member)
+  end
+
+  def update
+    if params[:event_rsvp][:response] == "delete"
+      @rsvp.destroy
+    else
+      @rsvp.update(params[:event_rsvp].permit(:unit_membership_id, :response))
+    end
+  end
+
+  def new
+    @rsvp = @event.rsvps.new(unit_membership_id: params[:unit_membership_id])
   end
 
   def destroy
@@ -21,31 +62,6 @@ class EventRsvpsController < EventContextController
   end
 
   private
-
-  def create_batch
-    rsvps = []
-
-    params[:unit_memberships].each do |member_id, rsvp_attributes|
-      rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: member_id.to_i)
-      rsvp.respondent = @current_member
-      rsvp.response = rsvp_attributes[:response]
-      rsvp.note = params[:note]
-      rsvp.save if rsvp.changed?
-
-      rsvps << rsvp
-    end
-
-    rsvps
-  end
-
-  def create_single
-    rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: params[:member_id].to_i)
-    rsvp.respondent = @current_member
-    rsvp.response = params[:response]
-    rsvp.save!
-
-    [rsvp]
-  end
 
   def find_rsvp
     @rsvp = EventRsvp.find(params[:id])
@@ -62,5 +78,10 @@ class EventRsvpsController < EventContextController
   def find_event_responses
     @non_respondents = @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)
     @non_invitees = @event.unit.members - @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)
+  end
+
+  def send_event_roster
+    pdf = Pdf::EventRoster.new(@event)
+    send_data pdf.render, filename: pdf.filename, type: "application/pdf", disposition: "inline"
   end
 end

@@ -1,0 +1,23 @@
+// remove from wherever the RSVP currently is
+= turbo_stream.remove dom_id(@rsvp)
+
+// add to the appropriate column
+// TODO: sort lists after add: https://github.com/hotwired/turbo/issues/109#issuecomment-761538869  
+- if @rsvp.persisted?
+  = turbo_stream.append("rsvps_#{@rsvp.response}") do
+    = render partial: "event_dashboard/rsvp",
+            locals:  { rsvp: @rsvp }
+- elsif @rsvp.member.status_active?
+  = turbo_stream.append("members_active") do
+    = render partial: "event_dashboard/member",
+            locals:  { member: @rsvp.member }
+- elsif @rsvp.member.status_registered?
+  = turbo_stream.append("members_registered") do
+    = render partial: "event_dashboard/member",
+            locals:  { member: @rsvp.member }
+
+
+
+// clear modal
+= turbo_stream.update "modal" do
+  = ""

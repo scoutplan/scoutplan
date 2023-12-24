@@ -8,6 +8,8 @@ html.scroll-smooth
     = favicon_link_tag "favicon.ico"
     = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
     = stylesheet_link_tag "application", "data-turbo-track": "reload"
+    = stylesheet_link_tag "https://rsms.me/inter/inter.css"
+
     = javascript_importmap_tags
     = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: "anonymous"
     = javascript_include_tag "main"

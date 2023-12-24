@@ -1,0 +1,60 @@
+= turbo_frame_tag "main"
+  .max-w-7xl.mx-auto.px-4.sm:mt-6
+    header.mb-4
+      = link_to [@unit, @event],
+                class: "font-bold text-violet-600 hover:text-violet-800",
+                data: { turbo_action: "advance" } do
+        i.fa-solid.fa-chevron-left.text-violet-600
+        span.ml-2 = "Event Details"
+
+    header.mb-6
+      .flex.flex-row.justify-between.items-center
+        h1.text-2xl.md:text-4xl = t(".title", event_title: @event.title)
+        = render "dropdown"
+
+    = render partial: "event_stats", locals: { event_dashboard: @event_dashboard }
+
+    .hidden.bg-red-100.bg-green-100.bg-yellow-100.bg-sky-100
+
+    section.w-full.grid.grid-cols-1.lg:grid-cols-4.gap-px(data-controller="dashboard-drop"
+      data-action="dragover->dashboard-drop#dragover dragleave->dashboard-drop#dragleave dragenter->dashboard-drop#dragenter drop->dashboard-drop#drop"
+      data-dashboard-drop-unit-id-value="#{@unit.id}"
+      data-dashboard-drop-event-id-value="#{@event.id}")
+
+      #rsvps_accepted_column.member-column.bg-green-50.group(class="[&.droptarget]:bg-green-100")
+        header.bg-green-800.p-4.drop-shadow-md(class="group-[.droptarget]:bg-green-950")
+          h2.font-bold.text-lg.text-green-50
+            i.fa-solid.fa-hiking.mr-2
+            = "Accepted"
+
+        ol#rsvps_accepted.p-4(data-controller="sorted-list")
+          = render partial: "rsvp", collection: @event_dashboard.accepted, locals: { x: "x" }
+        
+      #rsvps_declined_column.member-column.bg-red-50.group(class="[&.droptarget]:bg-red-100")
+        header.bg-red-800.p-4.drop-shadow-md(class="group-[.droptarget]:bg-red-950")
+          h2.font-bold.text-lg.text-red-50
+            i.fa-solid.fa-couch.mr-2
+            = "Declined"
+
+        ol#rsvps_declined.p-4(data-controller="sorted-list")
+          = render partial: "rsvp", collection: @event_dashboard.declined
+
+      #members_active_column.member-column.bg-yellow-50.group(class="[&.droptarget]:bg-yellow-100")
+        header.bg-yellow-800.p-4.drop-shadow-md(class="group-[.droptarget]:bg-yellow-950")
+          h2.font-bold.text-lg.text-yellow-50
+            i.fa-solid.fa-ghost.mr-2
+            = "No Response"
+
+        ol#members_active.p-4(data-controller="sorted-list")
+          = render partial: "member", collection: @event.non_respondents
+
+      #members_registered_column.member-column.bg-sky-50.group(class="[&.droptarget]:bg-sky-100")
+        header.bg-sky-800.p-4.drop-shadow-md(class="group-[.droptarget]:bg-sky-950")
+          h2.font-bold.text-lg.text-sky-50
+            i.fa-solid.fa-hand-wave.mr-2
+            = "Family & Friends"
+
+        ol#members_registered.p-4(data-controller="sorted-list")
+          = render partial: "member", collection: @event.non_invitees
+
+  = turbo_frame_tag "modal", data: { controller: "modal" }
