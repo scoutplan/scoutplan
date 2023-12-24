@@ -12,7 +12,7 @@ article.py-4
       = accepted_count.zero? ? t("events.show.captions.attendees_zero") : "#{pluralize(accepted_count, 'person')} #{substantive_verb(accepted_count)} going."
 
     .right
-      = link_to unit_event_rsvps_path(@event.unit, @event),
+      = link_to dashboard_unit_event_path(@event.unit, @event),
                 class: "block py-2 px-3 rounded text-center bg-violet-600 hover:bg-violet-700 text-violet-100 font-bold",
                 data: { turbo_action: "advance" } do
         = t("events.show.buttons.organize")
