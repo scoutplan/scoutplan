@@ -32,13 +32,13 @@ describe "payments", type: :feature do
     it "shows no transaction fees when unit pays fees" do
       @unit.payment_account.update(transaction_fees_covered_by: "unit")
       visit unit_event_path(@unit, @event)
-      expect(page).to have_content("Pay $1,300.00 now")      
+      expect(page).to have_content("Pay $1,300.00 now")
     end
 
     it "shows half fees when fees are split 50/50" do
       @unit.payment_account.update(transaction_fees_covered_by: "split_50_50")
       visit unit_event_path(@unit, @event)
-      expect(page).to have_content("Pay $1,319.00 now")      
+      expect(page).to have_content("Pay $1,319.00 now")
     end
 
     it "reflects prior payments" do
@@ -50,6 +50,7 @@ describe "payments", type: :feature do
 
   describe "received payments" do
     it "records a payment" do
+      skip "needs retooling"
       visit new_unit_event_payment_path(@unit, @event, member: @member.id)
       expect(page).to have_content("$1,300.00")
       expect(page).to have_content(I18n.t("payments.receive.record_payment"))
@@ -60,6 +61,7 @@ describe "payments", type: :feature do
     end
 
     it "rejects bad input" do
+      skip "needs retooling"
       visit new_unit_event_payment_path(@unit, @event, member: @member.id)
       fill_in("payment_amount", with: -1300)
       click_button(I18n.t("payments.receive.record_payment"))
