@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_08_185049) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_27_160824) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "unaccent"
@@ -224,14 +224,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_08_185049) do
     t.string "name"
     t.string "glyph"
     t.string "color"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "event_invitations", force: :cascade do |t|
-    t.integer "event_id", null: false
-    t.integer "unit_membership_id", null: false
-    t.string "method", default: "email", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

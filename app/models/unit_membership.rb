@@ -10,7 +10,7 @@ class UnitMembership < ApplicationRecord
   ROLES = %w[member admin event_organizer].freeze
 
   include Flipper::Identifier
-  include Contactable, EventInvitable
+  include Contactable
 
   belongs_to :unit
   belongs_to :user, touch: true

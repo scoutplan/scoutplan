@@ -24,10 +24,6 @@ class EventReminderMailer < ApplicationMailer
     }
   end
 
-  def persist_invitation
-    EventInvitation.find_or_create_by!(event: @event, unit_membership: @member)
-  end
-
   def setup
     @event = params[:event]
     @member = params[:recipient]
