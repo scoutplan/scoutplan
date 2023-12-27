@@ -189,6 +189,9 @@ en:
       payments: "Event payment history"
       pdf: "Download printable attendee roster"
 
+    rsvp:
+      pending_approval: "This RSVP is pending parent or guardian approval"
+
   events:
     object_name:          "event"
     draft-warning:        "This event is a draft, only visible to Unit Administrators & Event Organizers. When you're ready, %{href} to make it visible to everyone in %{unit_name}."
@@ -315,7 +318,7 @@ en:
         show_details:      "See event details"
 
       tooltips:
-        response_received: "Click to view and change your RSVP"
+        response_received: "Your family has fully responded. Thank you!"
 
     form:
       timezone_prompt: "Dates and times are %{timezone_name}"
@@ -362,7 +365,7 @@ en:
       buttons:
         duplicate:      "Duplicate"
         add_sub_event:  "Add an Activity"
-        history:        "View changes over time"
+        history:        "View edit history of this event"
         organize:       "See all RSVPs"
         back:           "Event schedule"
 

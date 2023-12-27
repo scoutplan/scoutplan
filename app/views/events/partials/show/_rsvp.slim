@@ -7,23 +7,25 @@
 
 article.py-4
   - if rsvp_service.any_responses?
-    .flex.flex-col.md:flex-row.justify-between.md:items-center.gap-3
-      div.left.font-bold
-        - if rsvp_service.family_fully_responded?
-          i.fa-stack.mr-1(title="#{t('events.show.captions.full_response')}")
-            i.fa-solid.fa-circle.fa-stack-2x.text-yellow-500
-            i.fa-solid.fa-check.fa-stack-1x.text-white
+    .flex.flex-col.md:justify-between.md:flex-row.md:items-center.gap-1
+      .flex.flex-row.gap-1
+        div.left
+          - if rsvp_service.family_fully_responded?
+            i.fa-stack(title="#{t('events.show.captions.full_response')}")
+              i.fa-solid.fa-circle.fa-stack-2x.text-amber-300
+              i.fa-solid.fa-clipboard-check.fa-stack-1x.text-amber-800
 
-        - if rsvp_service.family_fully_declined?
-          = t("events.show.full_decline")
-        - else
-          = rsvp_service.family_responses_in_words
+        div.middle
+          - if rsvp_service.family_fully_declined?
+            = t("events.show.full_decline")
+          - else
+            = rsvp_service.family_responses_in_words
 
       div.right
         // Update RSVPs button (if allowed)
         - if policy(@event).rsvp? && @event.rsvp_open?
           = link_to "Change your RSVP", unit_event_edit_rsvps_path(@event.unit, @event),
-                    class: "cta-button text-center block md:inline-block font-bold bg-amber-300 text-amber-900 hover:bg-yellow-400 rounded px-4 py-2",
+                    class: "cta-button text-center block md:inline-block font-bold bg-amber-300 text-amber-900 hover:bg-amber-400 rounded px-4 py-2 whitespace-nowrap",
                     data: { turbo_action: "advance", turbo_frame: "main" }
         - else
           .inline-block.font-bold.text-gray-400.text-sm.mt-1
@@ -39,7 +41,7 @@ article.py-4
               - rsvp.event_shift_ids.each do |shift_id|
                 - shift = @event.shifts.find_by(id: shift_id)
                 .inline-block.px-2.py-1.mr-1.border.border-sky-300.rounded
-                  i.fa-solid.fa-circle-check.text-yellow-500.mr-1
+                  i.fa-solid.fa-circle-check.text-amber-500.mr-1
                   = shift.name
 
 
@@ -47,14 +49,14 @@ article.py-4
     .flex.flex-col.md:flex-row.md:justify-between.md:items-center.gap-2
       div
         i.fa-stack.mr-1
-          i.fa-solid.fa-circle.fa-stack-2x.text-yellow-400
-          i.fa-solid.fa-exclamation-triangle.mr-1.text-yellow-900.fa-stack-1x
+          i.fa-solid.fa-circle.fa-stack-2x.text-amber-400
+          i.fa-solid.fa-exclamation-triangle.mr-1.text-amber-900.fa-stack-1x
         = t("events.index.rsvp.none_cta")
       
       div
         - if policy(@event).rsvp? && @event.rsvp_open?
           = link_to "Respond Now", unit_event_edit_rsvps_path(@event.unit, @event),
-                    class: "cta-button block md:inline-block font-bold text-center bg-yellow-400 rounded text-yellow-800 hover:bg-yellow-500 hover:text-yellow-900 px-4 py-2",
+                    class: "cta-button block md:inline-block font-bold text-center bg-amber-400 rounded text-amber-800 hover:bg-amber-500 hover:text-amber-900 px-4 py-2",
                     data: { turbo_action: "advance", turbo_frame: "main" }
 
   - elsif !@event.rsvp_open?

@@ -6,7 +6,8 @@
         = render "header"
 
         = form_with url: batch_unit_event_rsvps_path(@event.unit, @event), method: :post, format: :turbo_stream, data: { controller: "dirt-detector" } do |f|
-          = render partial: "events/edit_rsvp_form", locals: { event: @event, f: f, presenter: @presenter, unit_membership: @rsvp.unit_membership }
+          section.my-2.rounded.bg-amber-50.text-amber-800.border.border-amber-200
+            = render partial: "events/edit_rsvp_form", locals: { event: @event, f: f, presenter: @presenter, unit_membership: @rsvp.unit_membership }
 
           footer.mt-6
             .flex.flex-row.justify-between.items-baseline

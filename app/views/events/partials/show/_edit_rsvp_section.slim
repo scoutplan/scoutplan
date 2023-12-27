@@ -1,6 +1,6 @@
 - done_caption = @rsvps.present? ? "Update Your RSVPs" : t("events.edit_rsvps.captions.submit")
 
-section.bg-stone-100.dark:bg-stone-800.rounded.p-4.mb-2.mt-2.border.dark:border-stone-800
+section.my-2.rounded.bg-amber-50.text-amber-800.border.border-amber-200
   = form_with url: batch_unit_event_rsvps_path(@unit, @event), method: :post, data: { controller: "dirt-detector" } do |f|
     - if event.requires_rsvp
         = render partial: "edit_rsvp_form", locals: { event: event, f: f, presenter: presenter }
@@ -8,13 +8,13 @@ section.bg-stone-100.dark:bg-stone-800.rounded.p-4.mb-2.mt-2.border.dark:border-
     - if @youth_respondent
       - presenter = EventPresenter.new
       - names = @current_member.parents.map(&:display_first_name)
-      .block.dirty-warning.pt-4.text-yellow-700.dark:text-yellow-500
+      .block.dirty-warning.pt-4.text-amber-700.dark:text-amber-500
 
         i.fa-solid.fa-exclamation-triangle.mr-2
         = t("events.rsvp.youth_rsvp_warning",
             names: presenter.grammatical_list(@current_member.parents.map(&:display_first_name), "or"))  
 
-    footer.flex.flex-col.md:flex-row.pt-4.gap-2
+    footer.flex.flex-col.md:flex-row.p-4.gap-2
       - done_caption = "Approve and Send" if @needs_approval && @can_approve
       = f.submit done_caption,
         id: "accept",
@@ -22,15 +22,14 @@ section.bg-stone-100.dark:bg-stone-800.rounded.p-4.mb-2.mt-2.border.dark:border-
                 block md:inline-block \
                 w-full md:w-min \
                 px-4 py-2 \
-                bg-yellow-300 hover:bg-yellow-500 text-yellow-800 hover:text-yellow-900 \
-                disabled:bg-yellow-200 disabled:text-yellow-400 \
-                dark:disabled:bg-yellow-900 dark:disabled:text-yellow-700 \
+                bg-amber-300 hover:bg-amber-500 text-amber-800 hover:text-amber-900 \
+                disabled:bg-amber-200 disabled:text-amber-400 \
+                dark:disabled:bg-amber-900 dark:disabled:text-amber-700 \
                 rounded",
-        data: { turbo_frame: "main", turbo_action: "restore" },
-        disabled: !@needs_approval
+        data: { turbo_frame: "main", turbo_action: "restore" }
 
       = link_to t("global.nevermind"),
         unit_event_path(event.unit, event),
-        class:  "font-bold no-underline text-center block md:inline-block px-4 py-2 mr-0 md:mr-2 mb-2 md:mb-0 border border-yellow-800 text-yellow-800 \
-                 hover:text-yellow-900 dark:text-yellow-300 dark:hover:text-yellow-400 dark:border-yellow-300 rounded",
+        class:  "font-bold no-underline text-center block md:inline-block px-4 py-2 mr-0 md:mr-2 mb-2 md:mb-0 border border-amber-800 text-amber-800 \
+                 hover:text-amber-900 dark:text-amber-300 dark:hover:text-amber-400 dark:border-amber-300 rounded",
         data: { turbo_action: "advance", turbo_frame: "main" }

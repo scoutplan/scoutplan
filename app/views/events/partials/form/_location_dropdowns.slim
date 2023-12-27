@@ -2,13 +2,17 @@
 
 - unit_locations = unit.locations.reject { |l| l.full_address.empty? }.sort_by(&:display_name)
 - locations_array = unit_locations.map { |l| [l.display_address, l.id] }
-/ - locations_array.append(["-----", nil])
-/ - locations_array.append(["Add new location...", "_new"])
+- locations_array.append(["Add new location...", "_new"])
 
 - ["arrival", "departure", "activity"].each_with_index do |location_type, index|
   - event_location = event&.event_locations&.find_by(location_type: location_type)
-  /- options = options_from_collection_for_select(locations, :id, :display_address, event_location&.location&.id)
   - options = options_for_select(locations_array, event_location&.location&.id)
+
+  / - options = ""
+  / - locations_array.each do |location|
+  /   - options += "<option value='#{location[1]}' #{location[1] == event_location ? " selected" : ""}>#{location[0]}</option>"
+
+  - puts options
 
   .py-3
     = label_tag :location_type, t("events.form.#{location_type}"), class: "block font-bold mb-1"
