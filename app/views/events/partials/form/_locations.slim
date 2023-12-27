@@ -1,7 +1,7 @@
-section.pt-8.pb-4.grid.grid-cols-3.gap-4.border-t
+section.pt-8.pb-4.grid.grid-cols-3.gap-5.border-t
   .col-span-1
-    h2.font-bold Event location
-    p Blurb
+    h2.text-lg Event location
+    p.text-sm.text-sky-700 Where will this event take place? If you have a departure location, you can add that, too. If it's an online event, you can add a web address.
 
   .col-span-2
     = render partial: "components/switch",
@@ -25,13 +25,6 @@ section.pt-8.pb-4.grid.grid-cols-3.gap-4.border-t
         = render partial: "events/partials/form/location_dropdowns", locals: { unit: @unit, event: @event }
 
       .py-4
-        = link_to unit_locations_path(@event.unit),
-                  class: "text-blue-600 hover:text-blue-600 font-bold",
-                  data: { turbo_action: "advance" } do
-
-          i.fa-solid.fa-book-atlas.mr-1
-          = t("locations.captions.address_book", unit_name: @unit.name)
-
         = button_tag class: "text-sm px-4 py-2 font-bold rounded border border-sky-600 text-sky-600 hover:border-sky-700 hover:text-sky-700",
                     type: "button",
                     data: { action: "click->event-edit#showLocation" } do

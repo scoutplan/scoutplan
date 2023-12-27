@@ -3,20 +3,20 @@
 - accepted_count = @event.rsvps.accepted.count
 
 article.py-4
+  header.font-normal.mb-4.text-sm.text-violet-500.dark:text-violet-300.pl-2
+    i.fa-solid.fa-user-crown.mr-2(title="#{t('events.show.captions.organize_title')}")
+    = t("events.show.captions.organize_reason")
+
   .flex.flex-col.md:flex-row.gap-3.justify-between.md:items-center
-    .left.font-bold
+    .left
       i.fa-stack.mr-1(title="#{t('events.show.titles.organize')}")
         i.fa-solid.fa-circle.fa-stack-2x.text-violet-700
-        i.fa-solid.fa-clipboard-check.fa-stack-1x.text-white
+        i.fa-solid.fa-clipboard-check.fa-stack-1x.text-violet-50
 
       = accepted_count.zero? ? t("events.show.captions.attendees_zero") : "#{pluralize(accepted_count, 'person')} #{substantive_verb(accepted_count)} going."
 
     .right
       = link_to dashboard_unit_event_path(@event.unit, @event),
-                class: "block py-2 px-3 rounded text-center bg-violet-600 hover:bg-violet-700 text-violet-100 font-bold",
+                class: "block py-2 px-3 rounded text-center bg-violet-700 hover:bg-violet-800 text-violet-50 font-bold",
                 data: { turbo_action: "advance" } do
         = t("events.show.buttons.organize")
-
-  footer.font-normal.mt-4.text-sm.text-violet-700.dark:text-violet-300.pl-2
-    i.fa-solid.fa-user-crown.mr-2(title="#{t('events.show.captions.organize_title')}")
-    = t("events.show.captions.organize_reason")

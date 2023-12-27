@@ -90,6 +90,7 @@ class Event < ApplicationRecord
   scope :recent_and_future, -> { where("starts_at > ?", 4.weeks.ago) }
   scope :recent_and_upcoming, -> { where("starts_at BETWEEN ? AND ?", 4.weeks.ago, 35.days.from_now)}
   scope :next_season, -> { where("starts_at BETWEEN ? AND ?", next_season_starts_at, next_season_ends_at) }
+  scope :intending_to_go, -> { where("response IN ['accepted', 'accepted_pending']") }
 
   acts_as_taggable_on :tags
   acts_as_taggable_tenant :unit_id

@@ -1,12 +1,10 @@
 = turbo_frame_tag "main"
-  .mx-auto.max-w-xl
+  header.mx-auto.max-w-3xl.mb-8
     = link_to unit_events_path(@unit),
               class: "block text-sky-800 dark:text-sky-300 hover:text-sky-900 mb-4 font-bold",
               data: { turbo_action: "advance" } do
-      i.fa-stack
-        i.fa-regular.fa-circle.fa-stack-2x
-        i.fa-solid.fa-arrow-left.fa-stack-1x
-      = "Back to event schedule"
+      i.fa-solid.fa-chevron-left
+      = " Back to event schedule"
 
   = render partial: "form"
 

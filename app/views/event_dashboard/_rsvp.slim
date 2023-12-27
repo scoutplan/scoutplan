@@ -4,6 +4,9 @@ li.flex.flex-row.justify-between.items-center(draggable="false" id="#{dom_id(rsv
             draggable: true,
             data: { turbo_frame: "modal", action: "dragstart->dashboard-drop#dragstart drag->dashboard-drop#drag" } do
     = rsvp.display_name
+    - if rsvp.pending_approval?
+      = content_tag :span, title: t(".pending_approval") do
+        i.fa-regular.fa-info-circle.text-green-800.ml-2
 
     - if rsvp.note.present?
       i.fa-solid.fa-comment.text-green-800.ml-2(title='"#{rsvp.note}"')

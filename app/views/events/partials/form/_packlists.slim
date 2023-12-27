@@ -1,10 +1,12 @@
-section.py-4
-  h4.font-bold.pb-4
-    = t("events.form.packing_lists")
+section.pt-8.pb-4.grid.grid-cols-3.gap-5.border-t
+  .col-span-1
+    h2.text-lg Packing Lists
+    p.text-sm.text-sky-700 Give your members all the details they need to know about this event.
 
-  - if @unit.packing_lists.any?
-    ul
-      = render partial: "events/partials/form/packing_list", collection: @unit.packing_lists
-  - else
-    = "#{@unit.name} hasn't made any packing lists yet. "
-    = link_to "Make one now.", new_unit_packing_list_path(@unit), class: "text-blue-600 hover:underline"
+  .col-span-2
+    - if @unit.packing_lists.any?
+      ul
+        = render partial: "events/partials/form/packing_list", collection: @unit.packing_lists
+    - else
+      = "#{@unit.name} hasn't made any packing lists yet. "
+      = link_to "Make one now.", new_unit_packing_list_path(@unit), class: "text-blue-600 hover:underline"

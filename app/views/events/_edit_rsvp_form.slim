@@ -5,7 +5,7 @@
 - @rsvps = rsvps
 - notes = rsvps.map(&:note).uniq.join(", ")
 
-.rounded-lg.px-4.py-2.bg-amber-100.text-amber-800.flex.flex-col
+.rounded-lg.px-4.py-2.flex.flex-col
   .flex.flex-col.divide-y.divide-amber-300
     - family.each do |family_member|
       - existing_rsvp = event.rsvps.find_by(unit_membership: family_member)
@@ -35,6 +35,14 @@
                                                                 disabled: !policy.create? }
 
           - else
+            - if existing_rsvp&.pending_approval?            
+              .inline-block.text-yellow-700.dark:text-yellow-500.text-sm.mx-2
+                i.fa-regular.fa-info-circle.inline-block.px-1
+                - if existing_rsvp.respondent == @current_member then
+                  = "pending approval"
+                - else
+                  = "pending your approval"
+
             = render partial: "components/double_throw_switch",
                               locals: { object_name:   "unit_memberships[#{family_member.id}]",
                                         method:        "response",
@@ -47,13 +55,6 @@
                                         right_label:   "Going!",
                                         disabled:      !policy.create? }
 
-            - if existing_rsvp&.pending_approval?            
-              .inline-block.text-yellow-700.dark:text-yellow-500.text-sm
-                i.fa-regular.fa-info-circle.inline-block.px-2
-                - if existing_rsvp.respondent == @current_member then
-                  = "pending approval"
-                - else
-                  = "pending your approval"
 
   // note field
   .mt-3.mb-2

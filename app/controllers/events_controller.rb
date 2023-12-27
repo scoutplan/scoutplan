@@ -431,15 +431,21 @@ class EventsController < UnitContextController
   end
 
   def prepare_turbo_stream
-    earliest_event = @unit.events.find(params[:before])
-    query_starts_at = earliest_event.starts_at.beginning_of_month - 1.month
-    query_ends_at = earliest_event.starts_at
+    if params[:before].present?
+      earliest_event = @unit.events.find(params[:before])
+      query_starts_at = earliest_event.starts_at.beginning_of_month - 1.month
+      query_ends_at = earliest_event.starts_at
+    elsif params[:year].present? && params[:month].present?
+      query_starts_at = Date.new(params[:year].to_i, params[:month].to_i, 1).beginning_of_month - 1.month
+      query_ends_at = query_starts_at.end_of_month.end_of_day
+    end
 
     scope = Event.unscoped.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = scope.where(unit_id: @unit.id)
     scope = scope.where("starts_at >= ? AND starts_at < ?", query_starts_at, query_ends_at)
     scope = scope.order(starts_at: :asc)
     scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+
     @events = scope.all
   end
 
