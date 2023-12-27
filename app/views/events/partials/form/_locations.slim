@@ -1,12 +1,12 @@
 section.pt-8.pb-4.grid.grid-cols-3.gap-5.border-t
   .col-span-1
-    h2.text-lg Event location
+    h2.text-lg = t(".title")
     p.text-sm.text-sky-700 Where will this event take place? If you have a departure location, you can add that, too. If it's an online event, you can add a web address.
 
   .col-span-2
     = render partial: "components/switch",
             locals: { checked: @event.online,
-            label: "This is an online event",
+            label: t(".switch_label"),
             object_name: "event",
             method: "online",
             checked_value: "true",
@@ -14,23 +14,15 @@ section.pt-8.pb-4.grid.grid-cols-3.gap-5.border-t
             data: { body_class: "event-online" } }
 
     #fields_online.mt-2
-      = f.label :online_url, "Online web address", class: "font-bold block mb-2"
+      = f.label :online_url, t(".label"), class: "block mb-2"
       = f.url_field :website,
-                    placeholder: "Type a web address",
+                    placeholder: t(".placeholder_online"),
                     autocomplete: "off",
-                    class: "rounded placeholder:text-stone-200 border-stone-400 dark:border-stone-700 w-full dark:bg-black"
+                    class: "rounded placeholder:text-stone-400 border-stone-400 dark:border-stone-700 w-full dark:bg-black"
 
     #fields_offline
       #location_dropdowns
         = render partial: "events/partials/form/location_dropdowns", locals: { unit: @unit, event: @event }
-
-      .py-4
-        = button_tag class: "text-sm px-4 py-2 font-bold rounded border border-sky-600 text-sky-600 hover:border-sky-700 hover:text-sky-700",
-                    type: "button",
-                    data: { action: "click->event-edit#showLocation" } do
-
-          i.fa-solid.fa-plus.mr-1
-          = t("locations.buttons.add_location")
 
 css:
   #fields_offline {
@@ -47,6 +39,14 @@ css:
 
   .event-online #fields_offline {
     display: none;
+  }
+
+  option[value="_separator"] {
+    font-size: 1px;
+    min-height: 1px;
+    max-height: 1px;
+    padding: 0;
+    background-color: #000000;
   }
 
 javascript:

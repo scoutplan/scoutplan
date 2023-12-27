@@ -1,6 +1,6 @@
 - return unless @event.organizable? && EventPolicy.new(@current_member, @event).rsvps?
 
-- accepted_count = @event.rsvps.accepted.count
+- accepted_count = @event.rsvps.accepted_intent.count
 
 article.py-4
   header.font-normal.mb-4.text-sm.text-violet-500.dark:text-violet-300.pl-2

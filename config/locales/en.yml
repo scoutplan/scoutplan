@@ -219,6 +219,12 @@ en:
       form:
         dates:
           title: "Dates & Times"
+
+        locations:
+          label: "Online web address"
+          placeholder_online: "Type or paste a web address"
+          switch_label: "This is an online event"
+          title: "Event location"
     
     payments:
       index:

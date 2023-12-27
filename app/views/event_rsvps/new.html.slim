@@ -28,9 +28,9 @@
                     i.fa-solid.fa-check-circle
 
           footer.mt-6
-            .flex.flex-col.md:flex-row.gap-2.justify-end
-              = button_tag "Cancel", class: "active:pt-[13px] active:pb-[11px] active:text-stone-500 font-bold border rounded-lg border-stone-400 bg-stone-50 px-5 py-3", data: { action: "click->modal#close" }
-              = f.submit "Save this response", class: "active:text-stone-200 active:pt-[13px] active:pb-[11px] block px-6 py-3 rounded-lg border border-stone-900 bg-stone-700 text-white font-bold"
+            .flex.flex-col.md:flex-row.gap-2.items-baseline
+              = f.submit "Save response", class: "block px-6 py-2 rounded bg-stone-700 hover:bg-stone-800 text-stone-50 font-bold"
+              = button_tag "Cancel", class: "font-bold text-stone-500 rounded-lg px-5 py-3", data: { action: "click->modal#close" }
 
   css:
     input[type="radio"] {
@@ -40,8 +40,6 @@
     input[type="radio"] ~ label {
 
     }
-
-
 
     input[type="radio"]:checked ~ label {
 

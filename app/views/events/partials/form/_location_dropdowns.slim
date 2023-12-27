@@ -8,16 +8,11 @@
   - event_location = event&.event_locations&.find_by(location_type: location_type)
   - options = options_for_select(locations_array, event_location&.location&.id)
 
-  / - options = ""
-  / - locations_array.each do |location|
-  /   - options += "<option value='#{location[1]}' #{location[1] == event_location ? " selected" : ""}>#{location[0]}</option>"
-
-  - puts options
-
   .py-3
-    = label_tag :location_type, t("events.form.#{location_type}"), class: "block font-bold mb-1"
+    = label_tag :location_type, t("events.form.#{location_type}"), class: "block mb-1"
     = select_tag "event[event_locations_attributes][#{index}][location_id]",
                  options,
                  include_blank: "None",
-                 class: "rounded border-stone-400 dark:border-stone-700 w-full dark:bg-black"
+                 class: "location-selector rounded border-stone-400 dark:border-stone-700 w-full dark:bg-black",
+                 data: { action: "change->event-edit#updateLocation" }
     = hidden_field_tag "event[event_locations_attributes][#{index}][location_type]", location_type
