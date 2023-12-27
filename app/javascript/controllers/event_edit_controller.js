@@ -45,6 +45,11 @@ export default class extends Controller {
     document.querySelector("#location_name").focus();
   }
 
+  updateLocation(event) {
+    var location = event.target.value;
+    if (location == "_new") { this.showLocation(); }
+  }
+
   updateRsvpClosesAt() {
     var startsAt = this.startsAtDateTarget.value;
     var rsvpClosesAt = this.rsvpClosesAtTarget.value;

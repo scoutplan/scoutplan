@@ -7,17 +7,13 @@
   = render partial: "locations/form_fields", locals: { f: f }
 
   footer.py-4
-    .flex.flex-row.justify-between
-      #footer_left
-        // this space left intentionally blank
-      
-      #footer-right.flex.flex-col.md:flex-row.md:justify-end.gap-2
-        = link_to location.new_record? ? "Cancel" : t("global.discard_changes"),
-          return_path ||= unit_locations_path(@unit),
-          class: "text-center font-bold no-underline inline-block w-full md:w-fit px-4 py-3 md:py-2 text-brand-500 hover:text-brand-600 rounded border border-brand-500 hover:border-brand-600",
-          id: "cancel_location_button",
-          data: { turbo_action: "advance", turbo_frame: "main" }
+    .flex.flex-col.md:flex-row.gap-2
+      = f.submit location.new_record? ? "Add Location" : t("global.save_changes"),
+        class: "text-stone-50 font-bold inline-block w-full md:w-fit px-4 py-3 md:py-2 bg-stone-800 hover:bg-stone-900 rounded cursor-pointer",
+        id: "add_location_button"
 
-        = f.submit location.new_record? ? "Add Location" : t("global.save_changes"),
-          class: "text-white font-bold inline-block w-full md:w-fit px-4 py-3 md:py-2 bg-brand-500 hover:bg-brand-600 border-brand-500 hover:border-brand-600 border rounded cursor-pointer",
-          id: "add_location_button"
+      = link_to location.new_record? ? "Cancel" : t("global.discard_changes"),
+        return_path ||= unit_locations_path(@unit),
+        class: "text-center font-bold no-underline inline-block w-full md:w-fit px-4 py-3 md:py-2 text-stone-500",
+        id: "cancel_location_button",
+        data: { turbo_action: "advance", turbo_frame: "main" }

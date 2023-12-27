@@ -1,5 +1,5 @@
 = turbo_frame_tag "modal"
-  .absolute.z-50.inset-0.bg-black/10.backdrop-blur(data-action="click->modal#click")
+  .absolute.z-50.inset-0.bg-black/10.backdrop-blur
     .absolute.inset-1
       .max-w-xl.top-1/4.left-1/2.bg-white.-translate-x-1/2.rounded-lg.drop-shadow-overhead.modal-dialog.p-4.pt-6.relative
         = render partial: "components/close_button"
@@ -11,6 +11,10 @@
 
           footer.mt-6
             .flex.flex-row.justify-between.items-baseline
+              .flex.flex-col.md:flex-row.gap-2
+                = f.submit "Update response", class: "block px-6 py-2 rounded bg-stone-700 hover:bg-stone-800 text-stone-50 font-bold"
+                = button_tag "Cancel", class: "text-stone-500 font-bold rounded px-5 py-2", data: { action: "click->modal#close" }
+
               div
                 - if @rsvp.accepted? && @event.requires_payment?
                   - if @event.family_paid?(@rsvp.member)
@@ -24,6 +28,3 @@
                       i.fa-solid.fa-circle-dollar.mr-1
                       = "Record a payment"
 
-              .flex.flex-col.md:flex-row.gap-2.justify-end
-                = button_tag "Cancel", class: "font-bold border rounded border-stone-400 bg-stone-50 px-5 py-2", data: { action: "click->modal#close" }
-                = f.submit "Update response", class: "block px-6 py-2 rounded border border-stone-900 bg-stone-700 text-white font-bold"
