@@ -9,10 +9,10 @@ article.py-4
 
   .relative
     // day name(s)
-    .flex.flex-row.justify-between.items-center
-      .uppercase.text-sm.font-bold.tracking-wider = @event.starts_at.in_time_zone.strftime('%a')
+    .flex.flex-row.justify-between.items-center.font-bold.text-lg
+      .uppercase.tracking-wider = @event.starts_at.in_time_zone.strftime('%a')
       - if multiday
-        .uppercase.text-sm.font-bold.tracking-wider = @event.ends_at.in_time_zone.strftime('%a')    
+        .uppercase.tracking-wider = @event.ends_at.in_time_zone.strftime('%a')    
 
     .flex.flex-row.justify-between.items-center.relative
       // horizontal line for multi-day events
@@ -40,26 +40,34 @@ article.py-4
 
       // moon and blurb if event is multi-day and 4 or more days long
       - elsif multiday
-        .interim-day.bg-white.dark:bg-stone-900.px-1.text-center.relative.uppercase.font-bold.tracking-wider
+        .interim-day.bg-white.dark:bg-stone-900.px-1.text-center.relative.uppercase.font-semibold.tracking-wider
           i.fa-solid.fa-fw.fa-moon.text-purple-500.mr-1
           = "#{duration_in_days} Nights"
 
-      // end day number, if mulit-day
+      // end day number, if multi-day
       - if multiday
         .end-day.dark:bg-stone-900.pl-2.text-right.relative
-          .inline-block.bg-white.dark:bg-stone-900.pl-1.font-bold.text-6xl = @event.ends_at.day
+          .inline-block.bg-white.dark:bg-stone-900.pl-1.font-semibold.text-6xl = @event.ends_at.day
 
     // times
     .flex.flex-row.justify-between.items-center.relative
       - unless @event.all_day?
-        .font-bold.whitespace-nowrap
-          = @event.starts_at.in_time_zone.strftime('%-I:%M %p')
-          - if !multiday
-            | &hairsp;&ndash;&hairsp;
-            = @event.ends_at.in_time_zone.strftime('%-I:%M %p')
+        .font-semibold.whitespace-nowrap.text-xl
+          = @event.starts_at.in_time_zone.strftime("%-I:%M")
+          | &thinsp;
+          .inline.text-stone-600.text-sm = @event.starts_at.in_time_zone.strftime("%p")
 
-      - if multiday && !@event.all_day?
-        .font-bold.whitespace-nowrap = @event.ends_at.in_time_zone.strftime('%-I:%M %p')               
+          - if !multiday
+            | &thinsp;&ndash;&thinsp;
+            = @event.ends_at.in_time_zone.strftime("%-I:%M")
+            | &thinsp;
+            .inline.text-stone-600.text-sm = @event.ends_at.in_time_zone.strftime("%p")
+
+        - if multiday
+          .font-semibold.whitespace-nowrap.text-lg
+            = @event.ends_at.in_time_zone.strftime("%-I:%M")
+            | &thinsp;
+            .inline.text-stone-600.text-sm = @event.starts_at.in_time_zone.strftime("%p")
 
   - if @event.series?
     .text-sm.text-gray-500.mt-4

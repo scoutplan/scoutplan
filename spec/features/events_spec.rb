@@ -158,10 +158,10 @@ describe "events", type: :feature do
       it "hides times for all-day events" do
         path = unit_event_path(@unit, @draft_event)
         visit(path)
-        expect(page).to have_content(@draft_event.starts_at.strftime("%-I:%M %p"))
+        expect(page).to have_content(@draft_event.starts_at.strftime("%-I:%M"))
         @draft_event.update!(all_day: true)
         visit(path)
-        expect(page).not_to have_content(@draft_event.starts_at.strftime("%-I:%M %p"))
+        expect(page).not_to have_content(@draft_event.starts_at.strftime("%-I:%M"))
       end
 
       it "returns to the previous view" do

@@ -11,14 +11,25 @@ require "humanize"
 class EventsController < UnitContextController
   skip_before_action :authenticate_user!, only: [:public]
   before_action :find_event, except: %i[
-    list calendar paged_list spreadsheet create new bulk_publish public my_rsvps signups repeat_options
+    index list calendar paged_list spreadsheet create new bulk_publish public my_rsvps signups repeat_options
   ]
   before_action :collate_rsvps, only: [:show, :rsvps]
   before_action :set_calendar_dates, only: [:calendar, :list, :paged_list]
   before_action :remember_unit_events_path, only: [:list, :calendar]
   layout :current_layout
 
+  def index
+    variant = cookies[:event_index_variation] || "list"
+    case variant
+    when "list"
+      redirect_to list_unit_events_path(@unit)
+    when "calendar"
+      redirect_to calendar_redirect_unit_events_path(@unit)
+    end
+  end
+
   def calendar
+    cookies[:event_index_variation] = "calendar"
     unless params[:year] && params[:month]
       redirect_to calendar_unit_events_path(@unit, year: Date.today.year, month: Date.today.month) and return
     end
@@ -32,7 +43,10 @@ class EventsController < UnitContextController
 
   def list
     respond_to do |format|
-      format.html { find_list_events }
+      format.html {
+        cookies[:event_index_variation] = "list"
+        find_list_events
+      }
       format.pdf { send_fridge_calendar }
       format.turbo_stream { prepare_turbo_stream }
     end

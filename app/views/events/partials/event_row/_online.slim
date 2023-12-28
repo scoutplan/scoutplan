@@ -3,17 +3,16 @@
 .flex.flex-row.gap-3.items-center.my-1
   div.-ml-1.relative.dropdown.group
     = link_to "#",
-              class: "dropdown-button px-1 py-1 rounded font-bold hover:bg-blue-100 dark:hover:bg-blue-900 group-[&.menu-open]:bg-blue-100 dark:group-[&.menu-open]:bg-blue-600" do
-      i.fa-solid.fa-video.mr-2
+              class: "dropdown-button px-1 py-1 rounded font-semibold hover:bg-blue-100 dark:hover:bg-blue-900 group-[&.menu-open]:bg-blue-100 dark:group-[&.menu-open]:bg-blue-600" do
+      i.fa-solid.fa-video.mr-2.text-indigo-600
       = event.hostname
       i.fa-solid.fa-chevron-down.ml-1
 
     .dropdown-menu.absolute.top-full.w-full.z-10.drop-shadow.rounded.ml-2.mt-2.bg-white.dark:bg-stone-900.border.border-stone-400.dark:border-stone-700
-      - if event.joinable?
-        = link_to website,
-                  class: "block px-2 py-1 hover:bg-blue-800 hover:text-white",
-                  target: "_new"
-          = t("events.show.captions.open_link")
+      = link_to website,
+                class: "block px-2 py-1 hover:bg-blue-800 hover:text-white",
+                target: "_new"
+        = t("events.show.captions.open_link")
 
       div(data-controller="clipboard" data-clipboard-text-value="#{website}")
         = link_to "#",
