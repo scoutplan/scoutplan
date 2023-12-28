@@ -32,6 +32,15 @@ module Event::DatePresentable
     "#{starts_at.strftime('%A, %B %-d')}#{dash(options)}#{ends_at.strftime('%A, %B %-d, %Y')}".html_safe
   end
 
+  # single day: "13"
+  # multi-day: "13–15"
+  # spanning month boundary: "31–2"
+  def dates_to_s(**options)
+    return starts_at.strftime("%-d") if single_day?
+
+    "#{starts_at.strftime('%-d')}#{dash(options)}#{ends_at.strftime('%-d')}".html_safe
+  end  
+
   def dash(options)
     options[:plain_text] ? "—" : "&hairsp;&ndash;&hairsp;"
   end

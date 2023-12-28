@@ -8,7 +8,7 @@
 article.py-4
   - if rsvp_service.any_responses?
     .flex.flex-col.md:justify-between.md:flex-row.md:items-center.gap-1
-      .flex.flex-row.gap-1
+      .flex.flex-row.gap-1.items-baseline
         div.left
           - if rsvp_service.family_fully_responded?
             i.fa-stack(title="#{t('events.show.captions.full_response')}")

@@ -19,26 +19,26 @@
         title: t("events.index.tooltips.response_received"),
         class: "block py-2 text-sm",
         data: { turbo_action: "advance", turbo_frame: "main" } do
-        .inline-block.font-bold.mr-1
+        .inline-block.font-semibold.mr-1
           i.fa-solid.fa-clipboard-check.fa-fw.text-amber-600.mr-1(title="#{t("events.index.tooltips.response_received")}")
           = t("events.index.rsvp.response_received")
 
-        .inline-block.rounded.px-2.py-1.border.border-amber-800.text-amber-800.font-bold.ml-1.hover:bg-amber-400.hover:text-amber-900.dark:text-amber-500.dark:hover:text-amber-800.dark:border-amber-500
+        .inline-block.rounded.px-2.py-1.border.border-amber-800.text-amber-800.font-semibold.ml-1.hover:bg-amber-400.hover:text-amber-900.dark:text-amber-500.dark:hover:text-amber-800.dark:border-amber-500
           = "Change"
 
     - elsif family_has_rsvps
       = link_to t("events.index.event_row.rsvp_complete"),
                 unit_event_edit_rsvps_path(@unit, event),
-                class: "inline-block px-4 py-2 mb-2 text-center bg-amber-300 dark:bg-amber-800 dark:text-amber-200 dark:hover:bg-amber-900 hover:bg-amber-400 font-bold rounded text-amber-800",
+                class: "inline-block px-4 py-2 mb-2 text-center bg-amber-300 dark:bg-amber-800 dark:text-amber-200 dark:hover:bg-amber-900 hover:bg-amber-400 font-semibold rounded text-amber-800",
                 data: { turbo_action: "advance", turbo_frame: "main" }
 
     - else
       = link_to t("events.index.event_row.rsvp_respond"),
                 unit_event_edit_rsvps_path(@unit, event),
-                class: "inline-block px-4 py-2 mb-2 text-center bg-amber-300 dark:bg-amber-800 dark:text-amber-200 dark:hover:bg-amber-900 hover:bg-amber-400 font-bold rounded text-amber-800",
+                class: "inline-block px-4 py-2 mb-2 text-center bg-amber-300 dark:bg-amber-800 dark:text-amber-200 dark:hover:bg-amber-900 hover:bg-amber-400 font-semibold rounded text-amber-800",
                 data: { turbo_action: "advance", turbo_frame: "main" }
 
 - else
-  .font-bold.text-sm
+  .font-semibold.text-sm
     i.fa-solid.fa-ban.mr-2
     = t("events.index.rsvp.closed")

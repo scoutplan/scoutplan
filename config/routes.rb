@@ -120,7 +120,6 @@ Rails.application.routes.draw do
         get "dashboard", to: "event_dashboard#index", as: "dashboard"
       end
       collection do
-        get "/", to: redirect("/units/%{unit_id}/schedule/list")
         get "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
         get "public",      to: "events#public", as: "public"
         get "signups",     to: "events#signups", as: "signups"
