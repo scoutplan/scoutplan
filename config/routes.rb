@@ -103,6 +103,7 @@ Rails.application.routes.draw do
       resources :event_rsvps, as: "rsvps", path: "rsvps" do
         collection do
           post "batch", to: "event_rsvps#create_batch"
+          post "batch_member", to: "event_rsvps#create_batch_member" # kludge alert
         end
       end
       resources :event_rsvps
