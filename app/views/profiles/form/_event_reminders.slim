@@ -1,0 +1,23 @@
+section
+  h2.font-bold.mb-2 = "Send event reminders via email:"
+
+  .grid.grid-cols-1.gap-3
+    = switch("unit_memberships[settings][alerts]", :email_14_days,
+            { label: "14 days before",
+              checked: @member.ical_suppress_declined },
+            "true", "false")
+
+    = switch("unit_memberships[settings][alerts]", :email_7_days,
+            { label: "7 days before",
+              checked: @member.ical_suppress_declined },
+            "true", "false")
+
+    = switch("unit_memberships[settings][alerts]", :email_3_days,
+            { label: "3 days before",
+              checked: @member.ical_suppress_declined },
+            "true", "false")
+
+    = switch("unit_memberships[settings][alerts]", :email_12_hours,
+            { label: "12 hours before",
+              checked: @member.ical_suppress_declined },
+            "true", "false")          

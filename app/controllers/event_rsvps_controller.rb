@@ -1,5 +1,5 @@
 class EventRsvpsController < EventContextController
-  before_action :find_rsvp, except: [:index, :new, :create, :create_batch]
+  before_action :find_rsvp, except: [:index, :new, :create, :create_batch, :create_batch_member]
 
   def index
     respond_to do |format|
@@ -13,8 +13,6 @@ class EventRsvpsController < EventContextController
     @rsvp = @event.rsvps.find_or_create_by!(event_rsvp_params)
   end
 
-  # rubocop:disable Metrics/AbcSize
-  # rubocop:disable Metrics/MethodLength
   def create_batch
     @rsvps = []
     params[:unit_memberships].each do |member_id, rsvp_attributes|
@@ -27,14 +25,24 @@ class EventRsvpsController < EventContextController
         @rsvps << rsvp
       end
     end
-
-    respond_to do |format|
-      format.html { redirect_to [@unit, @event], notice: "Your RSVPs been received." }
-      format.turbo_stream
-    end
   end
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
+
+  # for some reason create_batch always arrives in turbo_stream format, so we had to
+  # create a separate method to handle the html format
+  def create_batch_member
+    @rsvps = []
+    params[:unit_memberships].each do |member_id, rsvp_attributes|
+      rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: member_id.to_i)
+      rsvp.respondent = @current_member
+      rsvp.response = rsvp_attributes[:response]
+      rsvp.note = params[:note]
+      if rsvp.changed?
+        rsvp.save
+        @rsvps << rsvp
+      end
+    end
+    redirect_to [@unit, @event], notice: "Your RSVPs been received."
+  end  
 
   def edit
     @presenter = EventPresenter.new(@event, @current_member)

@@ -1,7 +1,7 @@
 - done_caption = @rsvps.present? ? "Update Your RSVPs" : t("events.edit_rsvps.captions.submit")
 
 section.my-2.rounded.bg-amber-50.text-amber-800.border.border-amber-200
-  = form_with url: batch_unit_event_rsvps_path(@unit, @event), method: :post, data: { controller: "dirt-detector" } do |f|
+  = form_with url: batch_member_unit_event_rsvps_path(@unit, @event) do |f|
     - if event.requires_rsvp
         = render partial: "edit_rsvp_form", locals: { event: event, f: f, presenter: presenter }
 
@@ -14,7 +14,7 @@ section.my-2.rounded.bg-amber-50.text-amber-800.border.border-amber-200
         = t("events.rsvp.youth_rsvp_warning",
             names: presenter.grammatical_list(@current_member.parents.map(&:display_first_name), "or"))  
 
-    footer.flex.flex-col.md:flex-row.p-4.gap-2
+    footer.flex.flex-col.md:flex-row.p-4.pt-0.gap-2
       - done_caption = "Approve and Send" if @needs_approval && @can_approve
       = f.submit done_caption,
         id: "accept",
@@ -22,7 +22,7 @@ section.my-2.rounded.bg-amber-50.text-amber-800.border.border-amber-200
                 block md:inline-block \
                 w-full md:w-min \
                 px-4 py-2 \
-                bg-amber-300 hover:bg-amber-500 text-amber-800 hover:text-amber-900 \
+                bg-amber-300 hover:bg-amber-400 text-amber-800 hover:text-amber-950 \
                 disabled:bg-amber-200 disabled:text-amber-400 \
                 dark:disabled:bg-amber-900 dark:disabled:text-amber-700 \
                 rounded",
