@@ -14,8 +14,6 @@
 
 class UnitTaskService
   TASK_KEYS = { communication: {
-    # digest:                 "UnitDigestTask",
-    daily_reminder:         "DailyReminderTask",
     rsvp_nag:               "RsvpNagTask",
     rsvp_last_call:         "RsvpLastCallTask",
     event_organizer_digest: "EventOrganizerDigestTask"

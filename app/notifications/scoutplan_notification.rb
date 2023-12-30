@@ -16,11 +16,9 @@ class ScoutplanNotification < Noticed::Base
   end
 
   def sms_body(**assigns)
-    result = Time.use_zone(time_zone) do
+    Time.use_zone(time_zone) do
       renderer.render(template: "sms_notifications/#{base_name}", format: "text", assigns: assigns)
     end
-    ap result.inspect unless Rails.env.production?
-    result
   end
 
   def time_zone

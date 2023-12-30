@@ -37,7 +37,7 @@ class Unit < ApplicationRecord
 
   has_settings class_name: "UnitSettings" do |s|
     s.key :communication,
-          defaults: { digest: true, rsvp_nag: true, daily_reminder: true,
+          defaults: { digest: true, rsvp_nag: true, event_reminders: true,
                       digest_day_of_week: DEFAULT_DIGEST_DAY_OF_WEEK,
                       digest_hour_of_day: DEFAULT_DIGEST_HOUR_OF_DAY }
     s.key :appearance, defaults: { main_color: "#003F87" }

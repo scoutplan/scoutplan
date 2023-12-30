@@ -10,7 +10,7 @@ RSpec.describe EventReminderNotification do
     @member.user.update(phone: "+13395788645")
     @unit = @event.unit
     @unit.settings(:locale).time_zone = "America/New_York"
-    @unit.settings(:communication).daily_reminder = "true"
+    @unit.settings(:communication).event_reminders = "true"
   end
 
   it "creates a notifier" do

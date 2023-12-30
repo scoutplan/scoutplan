@@ -23,7 +23,7 @@ RSpec.describe Event, type: :model do
     describe "after_commit" do
       before do
         @unit = FactoryBot.create(:unit)
-        @unit.settings(:communication).daily_reminder = "yes"
+        @unit.settings(:communication).event_reminders = "yes"
         @unit.save!
       end
 

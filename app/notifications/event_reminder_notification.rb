@@ -8,6 +8,6 @@ class EventReminderNotification < ScoutplanNotification
   param :event
 
   def feature_enabled?
-    recipient.unit.settings(:communication).daily_reminder == "true"
+    recipient.unit.settings(:communication).event_reminders == "true"
   end
 end

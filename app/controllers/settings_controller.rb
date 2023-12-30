@@ -48,7 +48,6 @@ class SettingsController < UnitContextController
     ap "set_schedule"
     Time.zone = @unit.settings(:locale).time_zone
     set_digest_schedule
-    set_reminder_schedule
     set_rsvp_nag_schedule
   end
 
@@ -88,21 +87,6 @@ class SettingsController < UnitContextController
     digest_task.schedule.add_recurrence_rule IceCube::Rule.minutely(60) if digest_schedule_params[:every_hour] == "yes"
 
     digest_task.save_schedule
-  end
-
-  def set_reminder_schedule
-    reminder_enabled = params.dig(:settings, :communication, :daily_reminder) == "yes"
-    reminder_task = @unit.tasks.find_or_create_by(key: "daily_reminder", type: "DailyReminderTask")
-
-    if reminder_enabled
-      rule = IceCube::Rule.daily.hour_of_day(7).minute_of_hour(0)
-      reminder_task.clear_schedule
-      reminder_task.schedule.start_time = DateTime.now.in_time_zone # this should put IceCube into the unit's local time zone
-      reminder_task.schedule.add_recurrence_rule rule
-      reminder_task.save_schedule
-    else
-      reminder_task.destroy
-    end
   end
 
   def find_unit

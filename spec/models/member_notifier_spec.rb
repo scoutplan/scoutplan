@@ -23,15 +23,6 @@ RSpec.describe MemberNotifier, type: :model do
     it "sends a test message" do
       expect { @notifier.send_test_message }.not_to raise_exception
     end
-
-    it "skips reminders when member has declined" do
-      Timecop.freeze(DateTime.now.change( { hour: 9, minute: 0 } ))
-      event = FactoryBot.create(:event, unit: @unit, starts_at: 12.hours.from_now,
-                                        requires_rsvp: true, rsvp_closes_at: 4.hours.from_now)
-      event.rsvps.create!(unit_membership: @member, response: :declined, respondent: @member)
-      expect { @notifier.send_daily_reminder }.to change { enqueued_jobs.count }.by(0)
-      Timecop.return
-    end
   end
 
   describe "weekly digest" do
