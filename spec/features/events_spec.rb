@@ -236,7 +236,7 @@ describe "events", type: :feature do
     end
 
     it "prevents access to the Organize page" do
-      visit unit_event_rsvps_path(@unit, @draft_event)
+      visit dashboard_unit_event_path(@unit, @draft_event)
       expect(page).to have_current_path(list_unit_events_path(@unit))
     end
 

@@ -1,18 +1,12 @@
-header.relative.mb-4
-  .mb-4
-    = back_link_to t("events.show.buttons.back"),
-                   unit_events_path(@unit, anchor: "#{@event.id}"),
-                   class: "text-cyan-600",
-                   data: { turbo_action: "advance" }
-
+header.mb-8
   .flex.flex-row.gap-1.items-center
     .block
       i.fa-stack(title="#{@event.category.name}")
         i.fa-solid.fa-circle.fa-stack-2x(style="color: #{@event&.category&.color}")
         i.fa-solid.fa-stack-1x.text-white(class="fa-#{@event&.category&.glyph}")
 
-    h3.leading-none.text-3xl.md:text-4xl.whitespace-nowrap.overflow-hidden.mr-2.text-ellipsis
-      = @event.title
+    h1.text-3xl.md:text-4xl.whitespace-nowrap.text-ellipsis
+      = @event.title    
 
     .ml-auto.flex.flex-row.gap-3.items-center
       .dropdown.relative(data-controller="dropdown")
@@ -29,10 +23,12 @@ header.relative.mb-4
             hr
             = render partial: "events/partials/show/sidecar/adjacent_events"
 
-  ul.tag-list.py-2
-    - @event.tag_list.each do |tag|
-      li.inline-block.align-bottom.mx-1.whitespace-nowrap.font-bold.border-rose-700.text-rose-700.border.rounded-md.py-1.px-2.text-sm.dark:text-rose-400.dark:border-rose-400
-        i.fa-solid.fa-tag.mr-1
-        = tag
+  - if @event.tag_list.present?
+    ul.tag-list.py-2
+      - @event.tag_list.each do |tag|
+        li.inline-block.align-bottom.mx-1.whitespace-nowrap.font-bold.border-rose-700.text-rose-700.border.rounded-md.py-1.px-2.text-sm.dark:text-rose-400.dark:border-rose-400
+          i.fa-solid.fa-tag.mr-1
+          = tag
   
-  = content_tag(:p, @event.short_description, class: "mt-2 font-bold") if @event.short_description.present?          
+  - if @event.short_description.present?
+    h2.ml-11.text-stone-500.text-xl = @event.short_description  

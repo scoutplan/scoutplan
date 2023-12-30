@@ -183,14 +183,6 @@ class EventsController < UnitContextController
     redirect_to unit_events_path(@unit), notice: "#{@event.title} has been permanently removed from the schedule."
   end
 
-  # organizer-facing view showing all RSVPs for an event
-  def rsvps
-    authorize @event
-    find_next_and_previous_events
-    @page_title = [@event.title, "Organize"]
-    @non_invitees = @event.unit.members.status_registered - @event.rsvps.collect(&:member)
-  end
-
   # member-facing view showing all RSVPable events and their responses
   def my_rsvps
     @events = @unit.events.rsvp_required.published.future

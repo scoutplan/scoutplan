@@ -3,11 +3,19 @@
   /! Current unit id: #{@unit.id}
   /! Current user id: #{current_user.id}
   /! #{@event.email}
-  = render partial: "events/partials/show/watermarks"
-  .max-w-2xl.mx-auto
-    article.event.mx-auto.max-w-2xl.md:mt-0.relative(class="#{(@event.organizable? && policy(@event).rsvps?) ? 'event-organizable' : ''}")
+
+  article.event.mx-auto.max-w-3xl
+    header.mb-6
+      = link_to unit_events_path(@unit, anchor: "#{@event.id}"),
+                class: "font-semibold text-sky-500 hover:text-sky-600",
+                data: { turbo_action: "advance" } do
+        i.fa-solid.fa-chevron-left
+        span.ml-2 = "Back to event schedule"
+
+    .p-12.rounded-lg.bg-white.drop-shadow-overhead        
+      = render partial: "events/partials/show/header"
+
       section.grid.grid-col-1.divide-y.divide-stone-300.dark:divide-stone-700
-        = render partial: "events/partials/show/header"
         = render partial: "events/partials/show/date"
         = render partial: "events/partials/show/rsvp"
         = render partial: "events/partials/show/organize"
@@ -21,6 +29,7 @@
         = render partial: "events/partials/show/attachments"
 
       = render partial: "events/partials/show/packing_lists"
+  = render partial: "events/partials/show/watermarks"
 
 javascript:
   document.title = "#{@event.title.html_safe} · #{@unit.name.html_safe}"

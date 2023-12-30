@@ -1,6 +1,5 @@
-p.event-location
+p.event-location.text-stone-500
   - if event.online
     .link-placeholder.h-5
   - elsif location = event.location
-    i.fa-solid.fa-location-dot.text-stone-500.mr-1
-    span.font-bold = event.location
+    span = event.location
