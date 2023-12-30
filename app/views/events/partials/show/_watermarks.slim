@@ -1,5 +1,4 @@
 - return unless @event.cancelled? || @event.draft?
 
-.fixed.inset-0
-  .absolute.-z-10.transform.-rotate-45.text-huge.font-bold.text-red-500.uppercase.text-opacity-20.tracking-widest.-translate-x-1/2.-translate-y-1/4(style="left:50%;top:50%;")
-    = t("index.events.#{@event.status}")
+.absolute.z-10.transform.-rotate-45.text-huge.font-bold.text-red-500.uppercase.text-opacity-20.tracking-widest.-translate-x-1/2.-translate-y-1/4(style="left:50%;top:50%;")
+  = t("index.events.#{@event.status}")

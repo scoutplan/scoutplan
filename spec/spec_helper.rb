@@ -25,6 +25,7 @@ end
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  config.full_backtrace = true
   config.include Warden::Test::Helpers, type: :feature
   config.include Warden::Test::Helpers, type: :request
   config.include FactoryBot::Syntax::Methods

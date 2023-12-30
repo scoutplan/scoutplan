@@ -1,8 +1,8 @@
 = turbo_frame_tag "main"
   = render partial: "layouts/flash"
   
-  .max-w-2xl.mx-auto
-    header.relative.my-2
+  .max-w-3xl.mx-auto.rounded-xl.p-12.dark:bg-stone-800.bg-white.md:drop-shadow-overhead
+    header.-mb-8
       .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
 
       .flex.flex-row.justify-between.items-center
@@ -34,4 +34,8 @@
 
       #events_list .more-past-events-item:first-of-type {
         display: block;
+      }
+
+      .event + .event {
+        border-top: 1px solid #e2e8f0;
       }

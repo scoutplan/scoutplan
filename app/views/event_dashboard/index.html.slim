@@ -2,7 +2,7 @@
   .max-w-7xl.mx-auto.px-4.sm:mt-6
     header.mb-6
       = link_to [@unit, @event],
-                class: "font-semibold bg-violet-700 text-violet-100 rounded-lg px-4 py-2 hover:bg-violet-800",
+                class: "font-semibold text-violet-800",
                 data: { turbo_action: "advance" } do
         i.fa-solid.fa-chevron-left
         span.ml-2 = "Back to event details"
@@ -16,25 +16,13 @@
 
     .hidden.bg-red-100.bg-green-100.bg-yellow-100.bg-sky-100
 
-    section.w-full.grid.grid-cols-1.lg:grid-cols-9.gap-1(data-controller="dashboard-drop"
+    section.w-full.grid.grid-cols-1.lg:grid-cols-9.gap-px.md:gap-1(data-controller="dashboard-drop"
       data-action="dragover->dashboard-drop#dragover dragleave->dashboard-drop#dragleave dragenter->dashboard-drop#dragenter drop->dashboard-drop#drop"
       data-dashboard-drop-unit-id-value="#{@unit.id}"
       data-dashboard-drop-event-id-value="#{@event.id}")
 
-      / .col-span-7.bg-stone-100.p-4.py-2.border-t-4.text-stone-600.font-semibold.border-stone-400.text-sm
-      /   = @event_dashboard.active_count
-      /   = " Active Members"
-
-      / .col-span-5.bg-emerald-100.text-emerald-600.p-4.border-t-8.border-emerald-600
-      /   .inline.text-xl.font-normal = number_to_percentage(@event_dashboard.response_rate * 100, precision: 0)
-      /   = " Response Rate"
-
-      / .col-span-2.bg-rose-100.text-rose-600.p-4.border-t-8.border-rose-600
-      /   .inline.text-xl.font-normal = number_to_percentage((1 - @event_dashboard.response_rate) * 100, precision: 0)
-      /   = " Non-Response Rate"
-
-      #rsvps_accepted_column.col-span-3.text-xl.member-column.bg-stone-100.rounded-tl-lg.group(class="[&.droptarget]:bg-green-100")
-        header.bg-green-800.p-4.drop-shadow-md.rounded-tl-lg(class="group-[.droptarget]:bg-green-950")
+      #rsvps_accepted_column.md:col-span-3.text-xl.member-column.bg-stone-100.md:rounded-tl-lg.group(class="[&.droptarget]:bg-green-100")
+        header.bg-green-800.p-4.drop-shadow-md.md:rounded-tl-lg(class="group-[.droptarget]:bg-green-950")
           p.text-lg.font-medium.text-green-300 = number_to_percentage((@event_dashboard.accept_rate) * 100, precision: 0)
           .flex.flex-row.justify-between.items-end
             h2.font-medium.text-lg.text-green-100
@@ -52,7 +40,7 @@
         ol#rsvps_accepted.p-4.divide-y(data-controller="sorted-list")
           = render partial: "rsvp", collection: @event_dashboard.accepted, locals: { x: "x" }
         
-      #rsvps_declined_column.col-span-2.member-column.bg-stone-100.group(class="[&.droptarget]:bg-red-100")
+      #rsvps_declined_column.md:col-span-2.member-column.bg-stone-100.group(class="[&.droptarget]:bg-red-100")
         header.bg-red-800.p-4.drop-shadow-md(class="group-[.droptarget]:bg-red-950")
           p.text-lg.font-medium.text-red-300 = number_to_percentage((@event_dashboard.decline_rate) * 100, precision: 0)
           h2.font-medium.text-lg.text-red-50
@@ -62,7 +50,7 @@
         ol#rsvps_declined.p-4.divide-y(data-controller="sorted-list")
           = render partial: "rsvp", collection: @event_dashboard.declined
 
-      #members_active_column.col-span-2.member-column.bg-stone-100.group(class="[&.droptarget]:bg-yellow-50")
+      #members_active_column.md:col-span-2.member-column.bg-stone-100.group(class="[&.droptarget]:bg-yellow-50")
         header.bg-yellow-800.p-4.drop-shadow-md(class="group-[.droptarget]:bg-yellow-950")
           p.text-lg.font-medium.text-yellow-300 = number_to_percentage((1 - @event_dashboard.response_rate) * 100, precision: 0)
           h2.font-medium.text-lg.text-yellow-50
@@ -72,7 +60,7 @@
         ol#members_active.p-4.divide-y(data-controller="sorted-list")
           = render partial: "member", collection: @event.non_respondents
 
-      #members_registered_column.col-span-2.member-column.bg-stone-100.rounded-tr-lg.group(class="[&.droptarget]:bg-sky-100")
+      #members_registered_column.md:col-span-2.member-column.bg-stone-100.rounded-tr-lg.group(class="[&.droptarget]:bg-sky-100")
         header.bg-sky-800.p-4.drop-shadow-md.rounded-tr-lg(class="group-[.droptarget]:bg-sky-950")
           p.text-lg.font-medium.text-yellow-500 &nbsp;            
           h2.font-medium.text-lg.text-sky-50

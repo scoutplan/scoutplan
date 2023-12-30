@@ -7,6 +7,8 @@
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.configure do
+  config.active_support.deprecation = :raise
+
   config.middleware.use RackSessionAccess::Middleware
   config.hosts << "127.0.0.1"
   config.hosts << "www.example.com"

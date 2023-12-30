@@ -1,9 +1,10 @@
 - return unless event.requires_rsvp && EventPolicy.new(@current_member, event).organize?
 
-= link_to dashboard_unit_event_path(@unit, event),
-          class: "inline-block px-4 py-2 mb-2 font-semibold rounded text-center text-violet-600 outline outline-1 outline-violet-600 dark:border-violet-300 dark:text-violet-300 hover:text-violet-100 hover:bg-violet-800 hover:border-violet-800",
-          title: "View & organize RSVPs",
-          id: "organize_#{dom_id(event)}_link",
-          data: { turbo_action: "advance", turbo_frame: "main" }
-  i.fa-solid.fa-clipboard-list.mr-2
-  = t(".organize")
+.mb-2
+  = link_to dashboard_unit_event_path(@unit, event),
+            class: "inline-block px-4 py-2 mb-2 font-semibold rounded-lg text-center bg-violet-100 hover:bg-violet-200 text-violet-800",
+            title: "View & organize RSVPs",
+            id: "organize_#{dom_id(event)}_link",
+            data: { turbo_action: "advance", turbo_frame: "main" }
+    i.fa-solid.fa-clipboard-list.mr-2
+    = t(".organize")
