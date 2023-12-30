@@ -28,6 +28,12 @@
           autocomplete: "off",
           placeholder: "Named color (e.g. \"Periwinkle\") or hex value (e.g. \"#44AA22\")"
 
+    article.py-4
+      = switch(:event_category, :send_reminders,
+              { label: "Send reminders for events in this category",
+                checked: @event_category.send_reminders },
+              "true", "false")
+
   footer.mt-2
     .flex.flex-row.justify-between
       div

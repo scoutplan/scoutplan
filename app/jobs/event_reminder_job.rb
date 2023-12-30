@@ -7,6 +7,7 @@ class EventReminderJob < ApplicationJob
     @event = Event.find(event_id)
     return unless @event.present?
     return unless @event.updated_at == event_updated_at
+    return unless @event.event_category.send_reminders?
 
     @event.remind!
   rescue ActiveRecord::RecordNotFound => e
