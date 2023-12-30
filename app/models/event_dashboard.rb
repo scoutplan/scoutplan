@@ -31,7 +31,7 @@ class EventDashboard
     @response_count ||= accepted_adult_count + accepted_youth_count + declined_count
   end
 
-  def active_count
+  def membership_count
     @active_count ||= accepted_adult_count + accepted_youth_count + declined_count + non_respondent_count
   end
 
@@ -39,7 +39,19 @@ class EventDashboard
     @response_rate ||= response_count / active_count.to_f
   end
 
+  def decline_rate
+    @decline_rate ||= declined_count / active_count.to_f
+  end
+
+  def accept_rate
+    @accept_rate ||= accepted_count / active_count.to_f
+  end
+
   def non_invitee_count
     @non_invitee_count ||= @event.non_invitees.count
+  end
+
+  def active_count
+    @active_count ||= accepted_adult_count + accepted_youth_count + declined_count + non_respondent_count
   end
 end

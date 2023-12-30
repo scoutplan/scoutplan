@@ -27,7 +27,7 @@ RSpec.describe MemberNotifier, type: :model do
     it "skips reminders when member has declined" do
       Timecop.freeze(DateTime.now.change( { hour: 9, minute: 0 } ))
       event = FactoryBot.create(:event, unit: @unit, starts_at: 12.hours.from_now,
-                                        requires_rsvp: true, status: :published)
+                                        requires_rsvp: true, rsvp_closes_at: 4.hours.from_now)
       event.rsvps.create!(unit_membership: @member, response: :declined, respondent: @member)
       expect { @notifier.send_daily_reminder }.to change { enqueued_jobs.count }.by(0)
       Timecop.return
@@ -43,7 +43,7 @@ RSpec.describe MemberNotifier, type: :model do
       @member.save!
       @event = FactoryBot.create(:event, unit: @unit, status: :published, starts_at: 5.days.from_now)
       @forbidden_event = FactoryBot.create(:event, unit: @unit, status: :published, starts_at: 5.days.from_now,
-                                                   title: "Forbidden Donut")
+                                                   title: "Forbidden Donut", rsvp_closes_at: 4.days.from_now)
       @forbidden_event.tag_list.add("trendy clique")
       @forbidden_event.save!
     end
@@ -70,11 +70,14 @@ RSpec.describe MemberNotifier, type: :model do
 
   describe "event organizer digest" do
     before do
-      @event = FactoryBot.create(:event, :requires_rsvp, unit: @unit, status: "published", starts_at: 12.hours.from_now)
+      starts_at = 12.hours.from_now
+      @event = FactoryBot.create(:event, :requires_rsvp, unit: @unit, status: "published", starts_at: 12.hours.from_now,
+                                 rsvp_closes_at: 1.day.ago)
       @event.event_organizers.create!(unit_membership: @member, assigned_by: @member)
       accepting_member = FactoryBot.create(:member, unit: @unit)
       declining_member = FactoryBot.create(:member, unit: @unit)
-      @event.rsvps.create!(unit_membership: accepting_member, response: :accepted, respondent: @member, created_at: 1.day.ago)
+      @event.rsvps.create!(unit_membership: accepting_member, response: :accepted, respondent: @member,
+                           created_at: 1.day.ago)
       @event.rsvps.create!(unit_membership: declining_member, response: :declined, respondent: @member)
     end
 

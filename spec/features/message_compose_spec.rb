@@ -22,7 +22,7 @@ describe "messages", type: :feature do
     MemberRelationship.create(parent_unit_membership: @third_member, child_unit_membership: @fourth_member)
 
     @event = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit,
-      starts_at: 7.days.from_now, ends_at: 8.days.from_now)
+      starts_at: 7.days.from_now, ends_at: 8.days.from_now, rsvp_closes_at: 6.days.from_now)
 
     @event.rsvps.create!(unit_membership: @second_member, response: :accepted, respondent: @second_member)
 

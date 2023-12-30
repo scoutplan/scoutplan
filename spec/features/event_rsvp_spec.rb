@@ -10,7 +10,7 @@ describe "event_rsvp", type: :feature do
     @child = FactoryBot.create(:member, :youth, unit: @unit)
     @member.child_relationships.create(child_unit_membership: @child)
 
-    @event = FactoryBot.create(:event, :requires_rsvp, :published, unit: @unit)
+    @event = FactoryBot.create(:event, :requires_rsvp, :published, unit: @unit, rsvp_closes_at: 1.day.from_now)
     login_as(@member.user)
   end
 

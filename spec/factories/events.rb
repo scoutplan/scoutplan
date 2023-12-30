@@ -26,6 +26,8 @@ FactoryBot.define do
 
   trait :requires_rsvp do
     requires_rsvp { true }
+    status { :published }
+    rsvp_closes_at { 13.day.from_now }
   end
 
   trait :draft do
