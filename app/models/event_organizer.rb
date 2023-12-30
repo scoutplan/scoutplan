@@ -12,8 +12,6 @@ class EventOrganizer < ApplicationRecord
 
   enum role: { organizer: "organizer", money: "money" }
 
-  alias_attribute :member, :unit_membership
-
   delegate_missing_to :user
 
   accepts_nested_attributes_for :unit_membership

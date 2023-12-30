@@ -1,12 +1,12 @@
-header.mb-8
+header.mb-4.md:mb-8
   .flex.flex-row.gap-1.items-center
-    .block
+    h1.text-3xl.md:text-4xl.whitespace-nowrap.text-ellipsis
+      = @event.title    
+
+    .hidden.md:block
       i.fa-stack(title="#{@event.category.name}")
         i.fa-solid.fa-circle.fa-stack-2x(style="color: #{@event&.category&.color}")
         i.fa-solid.fa-stack-1x.text-white(class="fa-#{@event&.category&.glyph}")
-
-    h1.text-3xl.md:text-4xl.whitespace-nowrap.text-ellipsis
-      = @event.title    
 
     .ml-auto.flex.flex-row.gap-3.items-center
       .dropdown.relative(data-controller="dropdown")
@@ -31,4 +31,4 @@ header.mb-8
           = tag
   
   - if @event.short_description.present?
-    h2.ml-11.text-stone-500.text-xl = @event.short_description  
+    h2.text-stone-500.text-xl = @event.short_description  

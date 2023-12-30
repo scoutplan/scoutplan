@@ -52,7 +52,7 @@ class MemberNotifier < ApplicationNotifier
     events = if @member.settings(:communication).receives_all_rsvps == "true"
                @unit.events.future.rsvp_required
              else
-               @unit.events.future.rsvp_required.select { |event| event.organizers.map(&:member).include? @member }
+               @unit.events.future.rsvp_required.select { |event| event.organizers.map(&:unit_membership).include? @member }
              end
 
     return unless events.present?

@@ -1,2 +1,0 @@
-module DocumentTypesHelper
-end

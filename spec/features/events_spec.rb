@@ -235,11 +235,6 @@ describe "events", type: :feature do
       expect(page).to have_current_path(list_unit_events_path(@unit))
     end
 
-    it "prevents access to the Organize page" do
-      visit dashboard_unit_event_path(@unit, @draft_event)
-      expect(page).to have_current_path(list_unit_events_path(@unit))
-    end
-
     it "hides the add event button on the Index page" do
       login_as(@normal_user, scope: :user)
       visit unit_events_path(@unit)

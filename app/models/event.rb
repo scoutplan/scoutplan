@@ -278,7 +278,7 @@ class Event < ApplicationRecord
   end
 
   def organizer?(member)
-    organizers.map(&:member).include?(member)
+    organizers.map(&:unit_membership).include?(member)
   end
 
   def organizers?

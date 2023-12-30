@@ -6,7 +6,7 @@ RSpec.describe MemberNotifier do
     @event_organizer = FactoryBot.create(:unit_membership)
     @unit = @event_organizer.unit
     @event = FactoryBot.create(:event, :requires_rsvp, unit: @unit)
-    @event.organizers.create!(member: @event_organizer, assigned_by: @event_organizer)
+    @event.organizers.create!(unit_membership: @event_organizer, assigned_by: @event_organizer)
     @event.rsvps.create!(unit_membership: @event_organizer, respondent: @event_organizer, response: "accepted")
     @task = @unit.tasks.create!(key: "event_organizer_digest", type: "EventOrganizerDigestTask")
   end

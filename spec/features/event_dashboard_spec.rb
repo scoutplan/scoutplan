@@ -23,4 +23,15 @@ describe "Event Dashboard", type: :feature do
     visit path
     expect(page).to have_content(@child.display_name)
   end
+
+  describe "non-admin" do
+    before do
+      @member.update(role: :member)
+    end
+
+    it "prevents dashboard access" do
+      visit dashboard_unit_event_path(@unit, @event)
+      expect(page).to have_current_path(list_unit_events_path(@unit))
+    end
+  end
 end
