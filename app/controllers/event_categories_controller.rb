@@ -49,7 +49,7 @@ class EventCategoriesController < UnitContextController
   private
 
   def event_category_params
-    params.require(:event_category).permit(:name, :glyph, :color)
+    params.require(:event_category).permit(:name, :glyph, :color, :send_reminders)
   end
 
   def find_event_category

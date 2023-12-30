@@ -29,4 +29,10 @@ RSpec.describe EventReminderJob, type: :job do
     expect { EventReminderJob.perform_now(@event_with_rsvps.id, @event_with_rsvps.updated_at) }
       .to change { ActiveJob::Base.queue_adapter.enqueued_jobs.count }.by(@event_with_rsvps.rsvps.accepted.count)
   end
+
+  it "doesn't enqueue a job if reminders are disabled for the event category" do
+    @event.event_category.update!(send_reminders: false)
+    expect { EventReminderJob.perform_now(@event.id, @event.updated_at) }
+      .to change { ActiveJob::Base.queue_adapter.enqueued_jobs.count }.by(0)
+  end
 end
