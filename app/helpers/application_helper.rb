@@ -96,33 +96,4 @@ module ApplicationHelper
 
     "#{member.first_name}'s"
   end
-
-  # given an array of words, return a grammatically correct
-  # list, e.g.
-  # ['Red'] => "Red"
-  # ['Red', 'white'] => "Red and white"
-  # ['Red', 'white', 'blue'] => "Red, white, and blue"
-  # And, yes, it includes an Oxford comma. Deal with it.
-  def list_of_words(words, linking_verb: false)
-    return "" unless words
-
-    case words.count
-    when 0
-      ""
-    when 1
-      if linking_verb
-        "#{words.first}#{words.first.downcase == 'you' ? ' are' : ' is'}"
-      else
-        words.first
-      end
-    when 2
-      "#{words.first} and #{words.last}#{linking_verb ? ' are' : ''}"
-    else
-      "#{words[0..-2].join(', ')}, and #{words.last}#{linking_verb ? ' are' : ''}"
-    end
-  end
-
-  def substantive_verb(count)
-    count == 1 ? "is" : "are"
-  end
 end

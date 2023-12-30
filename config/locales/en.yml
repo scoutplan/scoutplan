@@ -30,6 +30,23 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  be_conjugations:
+    past:
+      singular: was
+      plural: were
+    present:
+      first_person_singular: am
+      singular: is
+      plural: are
+    present_perfect:
+      first_person_singular: have
+      second_person_singular: have
+      singular: has
+      plural: have
+    future:
+      singular: will be
+      plural: will be
+      
   you_parenths: "(you)"
   app_name: "Scoutplan"
   administration: "Administration"
@@ -75,6 +92,12 @@ en:
     remember_me: "Stay signed in for two weeks"
     nevermind: "Never Mind"
     zoom: "Zoom"
+
+    event_rsvp_responses:
+      accepted: "going"
+      declined: "not going"
+      accepted_pending: "going (pending approval)"
+      declined_pending: "not going (pending approval)"
 
   main_nav:
     events:        "Schedule"

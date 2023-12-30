@@ -16,7 +16,7 @@ class EventPromptTexter < UserTexter
 
   def body_text
     name_list = @family_presenter.active_member_names_list
-    verb = EventPresenter.new.substantive_verb(@family_presenter.active_member_names)
+    verb = @family_presenter.active_member_names.be_conjugation
     service = RsvpService.new(@member, @event)
     renderer.render(template: "user_texter/event_prompt",
                     format: "text",

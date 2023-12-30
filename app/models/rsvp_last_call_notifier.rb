@@ -13,7 +13,8 @@ class RsvpLastCallNotifier < ApplicationNotifier
   def perform
     return unless member.contactable?
 
-    @events = RsvpService.new(member).expiring_rsvp_events
+    # @events = RsvpService.new(member).expiring_rsvp_events
+    @events = member.unit.events.published.future.rsvp_required.rsvp_expiring_soon
     return unless @events.present?
 
     send_text  { |recipient| RsvpLastCallTexter.new(recipient, @events).send_message }

@@ -2,6 +2,7 @@
 
 require "rails_helper"
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe RsvpService, type: :model do
   before do
     # set up family
@@ -22,7 +23,6 @@ RSpec.describe RsvpService, type: :model do
     expect(@member.family(include_self: true).count).to eq(4)
   end
 
-  # rubocop:disable Metrics/BlockLength
   describe "unresponded_events method" do
     describe "active family has all declined" do
       it "returns no events" do
@@ -101,20 +101,6 @@ RSpec.describe RsvpService, type: :model do
       @service.record_family_response(:accepted)
       expect(@event.rsvps.count).to eq(3)
     end
-  end
-
-  describe "expiring rsvps" do
-    it "returns events that are expiring" do
-      @event.update!(starts_at: 14.day.from_now, ends_at: 15.day.from_now, rsvp_closes_at: 1.day.from_now)
-      service = RsvpService.new(@member)
-      expect(service.expiring_rsvp_events).to include(@event)
-    end
-
-    it "exlucdes events that aren't expiring" do
-      @event.update!(starts_at: 14.day.from_now, ends_at: 15.day.from_now, rsvp_closes_at: 2.days.from_now)
-      service = RsvpService.new(@member)
-      expect(service.expiring_rsvp_events).not_to include(@event)
-    end    
   end
 end
 # rubocop:enable Metrics/BlockLength
