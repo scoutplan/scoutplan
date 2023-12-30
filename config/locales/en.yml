@@ -182,7 +182,7 @@ en:
 
   event_dashboard:
     index:
-      title: "%{event_title} Event Dashboard"
+      title: "Event Dashboard"
 
     dropdown:
       edit: "Change event details"
@@ -248,7 +248,7 @@ en:
         update: "Your RSVPs have been updated"
 
     rsvp:
-      note_placeholder: "Note, e.g. \"Need a ride\", \"Arriving late\", etc."
+      note_placeholder: "e.g. \"Need a ride\", \"Arriving late\", etc."
       no_response:      "No response"
       closed:           "RSVPs are closed"
       past:             "Event has already occurred"

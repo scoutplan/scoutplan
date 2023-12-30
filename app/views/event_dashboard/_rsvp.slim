@@ -1,8 +1,10 @@
 li.flex.flex-row.justify-between.items-center(draggable="false" id="#{dom_id(rsvp)}" data-sort-text="#{rsvp.member.last_name.downcase} #{rsvp.member.first_name.downcase}" data-action="dragstart->dashboard-drop#dragstart")
   = link_to edit_unit_event_rsvp_path(@event.unit, @event, rsvp),
-            class: "text-blue-600 hover:text-blue-800 underline py-1",
+            class: "py-2",
+            id: dom_id(rsvp),
             draggable: true,
             data: { turbo_frame: "modal", action: "dragstart->dashboard-drop#dragstart drag->dashboard-drop#drag" } do
+    i.fa-solid.fa-user.text-stone-400.mr-2
     = rsvp.display_name
     - if rsvp.pending_approval?
       = content_tag :span, title: t(".pending_approval") do
@@ -17,7 +19,8 @@ li.flex.flex-row.justify-between.items-center(draggable="false" id="#{dom_id(rsv
         = link_to unit_event_payments_path(@unit, @event),
                   class: "block px-2 -mr-2",
                   draggable: false,
-                  title: "Payment received. Click to view payment details." do
+                  title: "Payment received. Click to view payment details.",
+                  data: { turbo_action: "advance" } do
           i.fa-regular.fa-circle-check.text-green-800
       - else
         = link_to new_unit_event_payment_path(@unit, @event, member: rsvp.member),

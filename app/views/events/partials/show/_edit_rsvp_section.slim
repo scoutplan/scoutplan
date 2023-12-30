@@ -1,7 +1,7 @@
 - done_caption = @rsvps.present? ? "Update Your RSVPs" : t("events.edit_rsvps.captions.submit")
 
-section.my-2.rounded.bg-amber-50.text-amber-800.border.border-amber-200
-  = form_with url: batch_member_unit_event_rsvps_path(@unit, @event) do |f|
+= form_with url: batch_member_unit_event_rsvps_path(@unit, @event) do |f|
+  section.my-2.p-4.rounded.bg-stone-100
     - if event.requires_rsvp
         = render partial: "edit_rsvp_form", locals: { event: event, f: f, presenter: presenter }
 
@@ -14,22 +14,22 @@ section.my-2.rounded.bg-amber-50.text-amber-800.border.border-amber-200
         = t("events.rsvp.youth_rsvp_warning",
             names: presenter.grammatical_list(@current_member.parents.map(&:display_first_name), "or"))  
 
-    footer.flex.flex-col.md:flex-row.p-4.pt-0.gap-2
-      - done_caption = "Approve and Send" if @needs_approval && @can_approve
-      = f.submit done_caption,
-        id: "accept",
-        class: "font-bold no-underline text-center \
-                block md:inline-block \
-                w-full md:w-min \
-                px-4 py-2 \
-                bg-amber-300 hover:bg-amber-400 text-amber-800 hover:text-amber-950 \
-                disabled:bg-amber-200 disabled:text-amber-400 \
-                dark:disabled:bg-amber-900 dark:disabled:text-amber-700 \
-                rounded",
-        data: { turbo_frame: "main", turbo_action: "restore" }
+  footer.flex.flex-col.md:flex-row.gap-2.mt-4
+    - done_caption = "Approve and Send" if @needs_approval && @can_approve
+    = f.submit done_caption,
+      id: "accept",
+      class: "font-semibold no-underline text-center \
+              block md:inline-block \
+              w-full md:w-min \
+              px-4 py-2 \
+              bg-amber-800 hover:bg-amber-900 text-amber-100 \
+              disabled:bg-amber-200 disabled:text-amber-400 \
+              dark:disabled:bg-amber-900 dark:disabled:text-amber-700 \
+              rounded",
+      data: { turbo_frame: "main", turbo_action: "restore" }
 
-      = link_to t("global.nevermind"),
-        unit_event_path(event.unit, event),
-        class:  "font-bold no-underline text-center block md:inline-block px-4 py-2 mr-0 md:mr-2 mb-2 md:mb-0 border border-amber-800 text-amber-800 \
-                 hover:text-amber-900 dark:text-amber-300 dark:hover:text-amber-400 dark:border-amber-300 rounded",
-        data: { turbo_action: "advance", turbo_frame: "main" }
+    = link_to t("global.nevermind"),
+      unit_event_path(event.unit, event),
+      class:  "font-semibold no-underline text-center block md:inline-block px-4 py-2 mr-0 md:mr-2 mb-2 md:mb-0 bg-amber-100 text-amber-800 \
+                hover:bg-amber-300 dark:text-amber-300 dark:hover:text-amber-400 dark:border-amber-300 rounded",
+      data: { turbo_action: "advance", turbo_frame: "main" }

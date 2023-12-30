@@ -29,8 +29,10 @@
 
           footer.mt-6
             .flex.flex-col.md:flex-row.gap-2.items-baseline
-              = f.submit "Save response", class: "block px-6 py-2 rounded bg-stone-700 hover:bg-stone-800 text-stone-50 font-bold"
-              = button_tag "Cancel", class: "font-bold text-stone-500 rounded-lg px-5 py-3", data: { action: "click->modal#close" }
+              = f.submit "Save response", class: "block px-6 py-2 rounded bg-purple-700 hover:bg-purple-800 text-purple-50 font-semibold"
+              = button_tag "Cancel", class: "text-purple-800 bg-purple-100 hover:bg-purple-200 font-semibold rounded px-5 py-2", data: { action: "click->modal#close" }
+
+
 
   css:
     input[type="radio"] {

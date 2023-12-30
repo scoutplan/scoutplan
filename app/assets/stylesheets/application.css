@@ -105,10 +105,12 @@ input.dt-switch:disabled ~ .dt-switch-container {
 
 input.dt-switch.left-value:checked ~ .dt-switch-container .switch-button {
   transform: translateX(0);
+  transition: transform 0.25s;
 }
 
 input.dt-switch.right-value:checked ~ .dt-switch-container .switch-button {
   transform: translateX(195%);
+  transition: transform 0.25s;  
 }
 
 @media (prefers-color-scheme: dark) {
