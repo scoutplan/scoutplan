@@ -18,6 +18,6 @@ class FamilyPresenter
   end
 
   def active_member_names_list
-    list_of_words(active_member_names)
+    active_member_names.to_grammatical_list
   end
 end

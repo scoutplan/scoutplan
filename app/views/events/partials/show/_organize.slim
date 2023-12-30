@@ -13,7 +13,7 @@ article.py-4
         i.fa-solid.fa-circle.fa-stack-2x.text-violet-700
         i.fa-solid.fa-clipboard-check.fa-stack-1x.text-violet-50
 
-      = accepted_count.zero? ? t("events.show.captions.attendees_zero") : "#{pluralize(accepted_count, 'person')} #{substantive_verb(accepted_count)} going."
+      = accepted_count.zero? ? t("events.show.captions.attendees_zero") : "#{pluralize(accepted_count, 'person')} are going."
 
     .right
       = link_to dashboard_unit_event_path(@event.unit, @event),

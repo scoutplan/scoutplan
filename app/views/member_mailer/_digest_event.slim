@@ -38,17 +38,17 @@
         div(style="margin-bottom:0.5rem;")
           - if response == "accepted" && names.present?
             div(style="font-weight:600;color:#0891B2;font-size:18px;")
-              = [presenter.grammatical_list(names), presenter.substantive_verb(names), "going"].join(" ").upcase_first
+              = [names.to_grammatical_list, names.be_conjugation, "going"].join(" ").upcase_first
           - elsif response == "declined" && names.present?
             div(style="font-weight:600;color:#EF4444;font-size:18px;")
-              = [presenter.grammatical_list(names), presenter.substantive_verb(names), "not going"].join(" ").upcase_first
+              = [names.to_grammatical_list, names.be_conjugation, "not going"].join(" ").upcase_first
 
     // family non-respondents
     - non_respondents = @service.family_non_respondents
     - if non_respondents.present?
       - names = non_respondents.map{ |member| member == @member ? "you" : member.display_first_name }
       div(style="font-weight:600;color:#0891B2;font-size:18px;")
-        = [presenter.grammatical_list(names), presenter.pluperfect_verb(names), "not responded"].join(" ").upcase_first
+        = [names.to_grammatical_list, names.be_conjugation(tense: :present_perfect), "not responded"].join(" ").upcase_first
 
 
     // TODO: this if statement should call into a Policy instead

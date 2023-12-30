@@ -1,11 +1,5 @@
 # frozen_string_literal: true
 
-# Service for dealing with event RSVPs
-# rubocop:disable Metrics/ClassLength
-# rubocop:disable Metrics/AbcSize
-# rubocop:disable Metrics/CyclomaticComplexity
-# rubocop:disable Metrics/MethodLength
-# rubocop:disable Metrics/PerceivedComplexity
 class RsvpService < ApplicationService
   attr_accessor :member, :event
 
@@ -42,13 +36,10 @@ class RsvpService < ApplicationService
   end
 
   # a list of events where the RSVPs are closing in the next 24 hours
-  def expiring_rsvp_events
-    start_time = Date.tomorrow.beginning_of_day
-    end_time = Date.tomorrow.end_of_day
-    result = unit.events.published.future.rsvp_required
-    result = result.select { |e| e.rsvp_closes_at.tomorrow? }
-    result
-  end
+  # def expiring_rsvp_events
+  #   result = unit.events.published.future.rsvp_required
+  #   result.select { |e| e.rsvp_closes_at.tomorrow? }
+  # end
 
   def family_members
     @member.family(include_self: :prepend)
@@ -61,14 +52,11 @@ class RsvpService < ApplicationService
     @event.unit.members.status_active - @event.rsvps.collect(&:member)
   end
 
-  # for the current Member and Event, have we received responses from all active family members?
   def family_fully_responded?
     active_family_rsvp_ids = event.rsvps.map(&:unit_membership_id) & active_family_members.map(&:id) # intersection
     active_family_rsvp_ids.count == active_family_members.count
   end
 
-  # has a family completely declined an event?
-  # this feels a little kludgy...is there a more elegant way?
   def family_fully_declined?
     return false unless event.requires_rsvp?
     return false unless family_fully_responded?
@@ -79,21 +67,20 @@ class RsvpService < ApplicationService
     true
   end
 
-  # this can be improved
   def family_responses_in_words
-    family_accepted = family_rsvps.select(&:accepted?).sort_by { |r| r.member == @member ? 0 : 1 }
-    family_declined = family_rsvps.select(&:declined?).sort_by { |r| r.member == @member ? 0 : 1 }
-    pending_family_accepted = family_rsvps.select(&:accepted_pending?).sort_by { |r| r.member == @member ? 0 : 1 }
-    pending_family_declined = family_rsvps.select(&:declined_pending?).sort_by { |r| r.member == @member ? 0 : 1 }
+    clauses = []
 
-    return "No responses yet." unless family_accepted.any? || family_declined.any?
+    EventRsvp::RESPONSE_OPTIONS.each do |response|
+      responses = family_rsvps.select { |r| r.response == response }
+      next unless responses.count.positive?
 
-    going = "#{list_of_words(family_accepted.map { |r| r.display_first_name(@member) }, linking_verb: true)} going" if family_accepted.any?
-    not_going = "#{list_of_words(family_declined.map { |r| r.display_first_name(@member) }, linking_verb: true)} not#{family_accepted.present? ? '' : ' going'}" if family_declined.any?
-    pending_going = "#{list_of_words(pending_family_accepted.map { |r| r.display_first_name(@member) }, linking_verb: true)} going (pending approval)" if pending_family_accepted.any?
-    pending_not_going = "#{list_of_words(pending_family_declined.map { |r| r.display_first_name(@member) }, linking_verb: true)} not#{pending_family_accepted.present? ? '' : ' going (pending approval)'}" if pending_family_declined.any?
+      names = responses.map { |r| r.display_first_name(@member) }
+      clauses << [names.to_grammatical_list,
+                  names.be_conjugation,
+                  I18n.t("global.event_rsvp_responses.#{response}")].join(" ")
+    end
 
-    [going, not_going, pending_going, pending_not_going].compact.join("; ").sentence_case + ". "
+    clauses.join("; ").upcase_first
   end
 
   def family_non_respondents
@@ -152,31 +139,7 @@ class RsvpService < ApplicationService
     unit.events.future.published.rsvp_required
   end
 
-  def list_of_words(words, linking_verb: false)
-    return "" unless words
-
-    case words.count
-    when 0
-      ""
-    when 1
-      if linking_verb
-        "#{words.first}#{words.first.downcase == 'you' ? ' are' : ' is'}"
-      else
-        words.first
-      end
-    when 2
-      "#{words.first} and #{words.last}#{linking_verb ? ' are' : ''}"
-    else
-      "#{words[0..-2].join(', ')}, and #{words.last}#{linking_verb ? ' are' : ''}"
-    end
-  end
-
   def unit
     @member.unit
   end
 end
-# rubocop:enable Metrics/PerceivedComplexity
-# rubocop:enable Metrics/MethodLength
-# rubocop:enable Metrics/CyclomaticComplexity
-# rubocop:enable Metrics/AbcSize
-# rubocop:enable Metrics/ClassLength

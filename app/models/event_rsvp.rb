@@ -1,4 +1,6 @@
 class EventRsvp < ApplicationRecord
+  RESPONSE_OPTIONS = %w[accepted declined accepted_pending declined_pending].freeze
+
   include Notifiable
 
   belongs_to :event
@@ -15,7 +17,7 @@ class EventRsvp < ApplicationRecord
   validate :common_unit?
   validate :response_allowed?
 
-  enum response: { declined: 0, accepted: 1, declined_pending: 2, accepted_pending: 3 }
+  enum response: RESPONSE_OPTIONS
 
   delegate :reply_to, to: :event
   delegate :organizers?, to: :event
@@ -24,8 +26,8 @@ class EventRsvp < ApplicationRecord
   scope :ordered, -> { includes(unit_membership: :user).order("users.last_name, users.first_name") }
   scope :youth, -> { joins(:unit_membership).merge(UnitMembership.youth) }
   scope :adult, -> { joins(:unit_membership).merge(UnitMembership.adult) }
-  scope :accepted_intent, -> { where(response: ["accepted", "accepted_pending"]) }
-  scope :declined_intent, -> { where(response: ["declined", "declined_pending"]) }
+  scope :accepted_intent, -> { where(response: %w[accepted accepted_pending]) }
+  scope :declined_intent, -> { where(response: %w[declined declined_pending]) }
 
   def common_unit?
     errors.add(:event, "and Member must belong to the same Unit") unless event.unit == unit_membership.unit
