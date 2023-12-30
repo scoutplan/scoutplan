@@ -9,7 +9,7 @@ class ThingWithDate
   attr_accessor :happens_at
 end
 
-RSpec.describe DailyReminderTask, type: :model do
+RSpec.describe ThingWithDate, type: :model do
   before do
     @thing = ThingWithDate.new
   end

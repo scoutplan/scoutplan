@@ -59,24 +59,23 @@ describe "unit settings", type: :feature do
 
     describe "communication settings" do
       before do
-        @unit.settings(:communication).daily_reminder = false
+        @unit.settings(:communication).event_reminders = false
         @unit.settings(:communication).rsvp_nag = false
         @unit.settings(:communication).digest = false
         @unit.save
         @unit.reload
       end
 
-      it "saves daily reminder settings" do
-        expect(@unit.settings(:communication).daily_reminder).to be_falsey
+      it "saves event reminder settings" do
+        expect(@unit.settings(:communication).event_reminders).to be_falsey
         expect(@unit.tasks.count).to eq(0)
 
         visit unit_setting_path(@member.unit, category: "communications")
-        page.find("#settings_communication_daily_reminder", visible: false).click
+        page.find("#settings_communication_event_reminders", visible: false).click
         click_button I18n.t("settings.buttons.save")
 
         @unit.reload
-        expect(@unit.settings(:communication).daily_reminder).to be_truthy
-        expect(@unit.tasks.count).to eq(1)
+        expect(@unit.settings(:communication).event_reminders).to be_truthy
       end
 
       it "saves rsvp nag settings" do
@@ -109,14 +108,14 @@ describe "unit settings", type: :feature do
         expect(@unit.tasks.count).to eq(0)
 
         visit unit_setting_path(@member.unit, category: "communications")
-        page.find("#settings_communication_daily_reminder", visible: false).click
+        page.find("#settings_communication_event_reminders", visible: false).click
         page.find("#settings_communication_rsvp_nag", visible: false).click
         # page.find("#settings_communication_digest", visible: false).click
         click_button I18n.t("settings.buttons.save")
 
         @unit.reload
         # expect(@unit.settings(:communication).digest).to be_truthy
-        expect(@unit.tasks.count).to eq(2)
+        expect(@unit.tasks.count).to eq(1)
       end
     end
   end

@@ -93,18 +93,6 @@
               |&nbsp;
               |Digest
 
-          // Daily reminder button
-          li.inline
-            = button_to create_test_communication_path(@unit, @target_membership, message_type: :daily_reminder),
-              method: :post,
-              remote: true,
-              class: 'inline-block bg-gray-200 hover:bg-gray-300 text-black rounded border px-4 py-1 mr-2',
-              form: { style: 'display: inline-block;' },
-              disabled: !@target_membership.contactable? do
-              i.fas.fa-envelope.mr-1.text-gray-500
-              |&nbsp;
-              |Daily Reminder
-
           // test message button
           li.inline
             = button_to create_test_communication_path(@unit, @target_membership, message_type: :test_message),

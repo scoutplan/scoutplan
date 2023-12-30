@@ -111,12 +111,10 @@ The Docker Compose stack includes mailcatcher. Once the stack's up, visit http:/
 
 Features are gated by Flipper and need to be enabled:
 
-* :daily_reminder
 * :receive_event_publish_notice
 * :receive_bulk_publish_notice
 * :receive_rsvp_confirmation
 * :receive_digest
-* :receive_daily_reminder
 
 ## Sources
 

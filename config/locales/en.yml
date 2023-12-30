@@ -600,9 +600,6 @@ en:
     member_mailer:
       digest_email:
         title: "Coming Up This Week"
-      daily_reminder:
-        this: "This"
-        multiple_events: "Today's Events"
       rsvp_nag:
         subject: "Your RSVP is needed!"
 
@@ -661,7 +658,6 @@ en:
   
   tasks:
     undefined_description:      "Undefined Task"
-    daily_reminder_description: "Daily Reminders"
     unit_digest_description:    "Unit Digest"
     rsvp_reminders:             "RSVP Reminders"
 
@@ -749,29 +745,29 @@ en:
       back:           "Back to unit setup"
 
     descriptions:
-      daily_reminder: "Send a reminder before an event starts."
-      daily_reminder_details: "Reminders are sent between 9 am and 6 pm on the day of or the day before an event starts, depending on start time."
+      event_reminders: "Send an email and text message about 12 hours before an event starts"
+      event_reminders_details: "Reminders are sent between 9 am and 6 pm on the day of or the day before an event starts, depending on start time."
       digest:         "Send a weekly message with the coming week's schedule, news, and RSVPs."
       rsvp_nag:       "Send a message on Tuesday mornings, gently reminding members with outstanding RSVPs to respond."
       rsvp_last_call: "The day before an event closes for RSVPs, send a reminder to members who haven't responded yet."
       event_organizer_digest: "Send a daily summary of new RSVPs to event organizers."
 
     icons:
-      daily_reminder: "fa-hand-point-ribbon"
+      event_reminders: "fa-hand-point-ribbon"
       digest:         "fa-calendar-week"
       rsvp_nag:       "fa-bell"
       rsvp_last_call: "fa-door-open"
       event_organizer_digest: "fa-clipboard-list"
 
     icon_colors:
-      daily_reminder: "text-rose-600"
+      event_reminders: "text-rose-600"
       digest:         "text-purple-600"
       rsvp_nag:       "text-yellow-600"
       rsvp_last_call: "text-indigo-500"
       event_organizer_digest: "text-cyan-500"
 
     labels:
-      daily_reminder: "Send event reminders"
+      event_reminders: "Send event reminders"
       digest:         "Send weekly newsletters"
       rsvp_nag:       "Send RSVP prompts"
       rsvp_last_call: "Send RSVP last call reminders"
@@ -789,7 +785,7 @@ en:
     titles:
       unit_profile:   "Edit your unit information"
       communications: "Automated messages"
-      daily_reminder: "Event reminders"
+      event_reminders: "Event reminders"
       policies:       "Policies"
       rsvp_nag:       "RSVP prompts"
       rsvp_last_call: "RSVP last calls"

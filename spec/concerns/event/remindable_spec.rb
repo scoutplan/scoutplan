@@ -2,21 +2,15 @@
 
 require "rails_helper"
 
-RSpec.describe Event::Onlineable, type: :concern do
+RSpec.describe Event::Remindable, type: :concern do
   before do
-    @event = FactoryBot.create(:event)
+    @event = FactoryBot.create(:event, :published)
   end
 
   describe "methods" do
     describe "create_reminder_job!" do
       it "enqueues an EventReminderJob" do
-        skip
-      end
-    end
-
-    describe "remind!" do
-      it "sends an EventReminder" do
-        skip
+        expect { @event.create_reminder_job! }.to have_enqueued_job(EventReminderJob)
       end
     end
   end

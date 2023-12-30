@@ -61,24 +61,6 @@ class MemberMailer < ScoutplanMailer
   end
   # rubocop:enable Metrics/AbcSize
 
-  # rubocop:disable Metrics/AbcSize
-  def daily_reminder_email
-    Rails.logger.info "Emailing Daily Reminder to #{@member.flipper_id}..."
-    @events = @unit.events.published.imminent
-    @rsvp_closes_three_days = @unit.events.published.where(
-      "rsvp_closes_at BETWEEN ? AND ?",
-      3.days.from_now.beginning_of_day,
-      3.days.from_now.end_of_day
-    )
-
-    mail(
-      to:      @to_address,
-      from:    @from_address,
-      subject: daily_reminder_subject
-    )
-  end
-  # rubocop:enable Metrics/AbcSize
-
   def rsvp_last_call_email
     @events = Event.find(params[:event_ids])
     @unit = @events.first.unit
@@ -116,14 +98,6 @@ class MemberMailer < ScoutplanMailer
 
   def unit_email_address
     @unit.slug + "@" + ENV.fetch("EMAIL_DOMAIN", nil)
-  end
-
-  def daily_reminder_subject
-    Time.zone = @unit.settings(:locale).time_zone
-
-    res = "#{@unit.name} — Event Reminder"
-    res += ": #{@events.first.title}" if @events.count == 1
-    res
   end
 
   def find_member

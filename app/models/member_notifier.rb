@@ -37,13 +37,6 @@ class MemberNotifier < ApplicationNotifier
     send_text { |recipient| DigestTexter.new(recipient, @this_week_events).send_message }
   end
 
-  def send_daily_reminder
-    return unless daily_reminder?
-
-    send_email { |recipient| MemberMailer.with(member: recipient).daily_reminder_email.deliver_later }
-    send_text  { |recipient| DailyReminderTexter.new(recipient).send_message }
-  end
-
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/PerceivedComplexity
@@ -107,19 +100,6 @@ class MemberNotifier < ApplicationNotifier
   end
 
   private
-
-  # should member receive daily reminders?
-  def daily_reminder?
-    events = @member.unit.events.published.imminent
-
-    # strip out events that the family has explicitly declined
-    service = RsvpService.new(@member)
-    events = events.reject do |event|
-      service.event = event
-      event.requires_rsvp && service.family_fully_declined?
-    end
-    events.count.positive?
-  end
 
   def find_events
     policy = EventPolicy.new(@member, nil)

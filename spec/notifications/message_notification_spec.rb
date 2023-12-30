@@ -8,7 +8,7 @@ RSpec.describe MessageNotification do
     @member = FactoryBot.create(:unit_membership, unit: @event.unit)
     @member.user.update(phone: "+13395788645")
     @unit = @event.unit
-    @unit.settings(:communication).daily_reminder = "true"
+    @unit.settings(:communication).event_reminders = "true"
     @message = FactoryBot.create(:message, unit: @unit, author: @member, body: "<div>asd</div>")
   end
 
@@ -24,6 +24,6 @@ RSpec.describe MessageNotification do
 
   it "doesn't deliver email if deliver_email is disabled" do
     expect { MessageNotification.with(message: @message).deliver([@member]) }
-    .to change { ActionMailer::Base.deliveries.count }.by(0)
+      .to change { ActionMailer::Base.deliveries.count }.by(0)
   end
 end

@@ -5,7 +5,7 @@ require "active_job/test_helper"
 RSpec.describe EventReminderJob, type: :job do
   before do
     @unit = FactoryBot.create(:unit)
-    @unit.settings(:communication).daily_reminder = "yes"
+    @unit.settings(:communication).event_reminders = "yes"
     @event = FactoryBot.create(:event, :published, unit: @unit)
     @event_with_rsvps = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit)
 
