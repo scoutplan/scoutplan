@@ -1,5 +1,8 @@
-.max-w-full.mx-auto.rounded-xl.p-12.dark:bg-stone-800.bg-white.md:drop-shadow-overhead
-  header.-mb-8
+- display_year = Date.current.year
+- display_month = Date.current.month
+
+.max-w-full.mx-auto.rounded-xl.p-4.mt-4.md:p-12.dark:bg-stone-800.bg-white.md:drop-shadow-overhead
+  header
     .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
 
     .flex.flex-row.justify-between.items-center
@@ -11,4 +14,27 @@
         .dropdown
           = link_to "#", class: "dropdown-button inline-block text-stone-500 hover:text-stone-900 dark:hover:text-stone-300" do
             i.fa-circle-ellipsis.far.fa-2xl
-          = render partial: "events/partials/index/dropdown"  
+          = render partial: "events/partials/index/dropdown"
+
+  .md:grid.md:grid-cols-3.md:gap-10
+    - 3.times do |i|
+      ol.month
+        = render partial: "event", collection: @events.select { |e| e.starts_at.year == display_year && e.starts_at.month == display_month }
+
+      - display_month += 1
+      - if display_month > 12
+        - display_month = 1
+        - display_year += 1
+
+css:
+  li.event {
+    border-top: 1px solid #e2e8f0;
+  }
+
+  ol.month li.event:nth-of-type(2) {
+    border-top: none;
+  }
+
+  .event-month-boundary {
+    padding-top: 0;
+  }
