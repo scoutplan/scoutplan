@@ -1,5 +1,5 @@
 class EventRsvpsController < EventContextController
-  before_action :find_rsvp, except: [:index, :new, :create, :create_batch, :create_batch_member]
+  before_action :find_rsvp, except: [:index, :new, :create, :create_batch, :create_batch_member, :popup]
 
   def index
     respond_to do |format|
@@ -11,6 +11,9 @@ class EventRsvpsController < EventContextController
     event_rsvp_params = params[:event_rsvp].permit(:unit_membership_id, :response)
     event_rsvp_params[:respondent] = @current_member
     @rsvp = @event.rsvps.find_or_create_by!(event_rsvp_params)
+  end
+
+  def popup
   end
 
   def create_batch

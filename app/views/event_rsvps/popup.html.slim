@@ -1,0 +1,15 @@
+- presenter = EventPresenter.new(@event, @current_member)
+
+
+= turbo_frame_tag "rsvp_#{@event.id}_popup"
+  .callout.ml-16.z-50(style="width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid red;")
+  .p-6.rounded-lg.bg-amber-100.z-50.relative.drop-shadow-overhead
+    = form_with url: batch_unit_event_rsvps_path(@event.unit, @event), method: :post, format: :turbo_stream, data: { controller: "dirt-detector" } do |f|
+      section.p-4.rounded.bg-amber-200
+        = render partial: "events/edit_rsvp_form", locals: { event: @event, unit: @unit, presenter: presenter, f: f }
+
+      footer.mt-6
+        .flex.flex-row.justify-between.items-baseline
+          .flex.flex-col.md:flex-row.gap-2
+            = f.submit "Update response", class: "block px-6 py-2 rounded bg-purple-700 hover:bg-purple-800 text-purple-50 font-semibold"
+            = button_tag "Cancel", class: "text-purple-800 bg-purple-100 hover:bg-purple-200 font-semibold rounded px-5 py-2", data: { action: "click->modal#close" }

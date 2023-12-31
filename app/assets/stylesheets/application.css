@@ -121,6 +121,7 @@ span.dt-switch {
     height: 2.5em;
     position: relative;
     padding: 0.25em;
+    width: 14.5em;
     flex-shrink: 0;
     transition: background-color 0.25s;
 
