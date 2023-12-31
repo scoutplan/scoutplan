@@ -53,4 +53,19 @@ input.dp-switch:disabled + label {
   input.dp-switch:disabled + label .switch-button, .switch-disabled .switch-button {
     background: #222;
   }
+
+  .dt-switch {
+    background: red;
+  }
+
+  .dt-switch .switch-container {
+    background: #666;
+    display: inline-block;
+    border-radius: 9999px;
+    width: 3.5em;
+    height: 2em;
+    position: relative;
+    padding: 0.25em;
+    flex-shrink: 0;
+  }
 }

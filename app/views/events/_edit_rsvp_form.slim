@@ -5,7 +5,7 @@
 - @rsvps = rsvps
 - notes = rsvps.map(&:note).uniq.join(", ")
 
-.table.w-full
+ul.divide-y.divide-stone-200
   - family.each_with_index do |family_member, index|
     - existing_rsvp = event.rsvps.find_by(unit_membership: family_member)
     - rsvp = event.rsvps.build( unit_membership: family_member,
@@ -15,12 +15,12 @@
 
     - policy = EventRsvpPolicy.new(@current_member, rsvp)  
 
-    .table-row
-      .table-cell.py-2.font-semibold(class="#{ @event.shifts? ? 'align-top pt-4' : 'align-middle' } #{index.zero? ? '' : 'border-t'}")
+    li.flex.flex-row.justify-between.items-center.py-2
+      div
         i.fa-solid.fa-user.text-stone-500.mr-2
         = presenter.family_context_name(family_member)
 
-      .table-cell.py-2(class="#{index.zero? ? '' : 'border-t'}")
+      div
         - if @event.shifts?
           - @event.shifts.each do |shift|
             .py-1
@@ -31,7 +31,6 @@
                                                               checked_value: "accepted",
                                                               unchecked_value: "declined",
                                                               disabled: !policy.create? }
-
         - else
           - if existing_rsvp&.pending_approval?            
             .inline-block.text-yellow-700.dark:text-yellow-500.text-sm.mx-2
@@ -39,19 +38,17 @@
               - if existing_rsvp.respondent == @current_member then
                 = "pending approval"
               - else
-                = "pending your approval"
+                = "pending your approval"       
 
-          = render partial: "components/double_throw_switch",
-                            locals: { object_name:   "unit_memberships[#{family_member.id}]",
-                                      method:        "response",
-                                      checked_left:  existing_rsvp&.declined? || existing_rsvp&.declined_pending?,
-                                      checked_right: existing_rsvp&.accepted? || existing_rsvp&.accepted_pending?,
-                                      label:         t("rsvp_accepted"),
-                                      left_value:    "declined",
-                                      right_value:   "accepted",
-                                      left_label:    "Regrets",
-                                      right_label:   "Going!",
-                                      disabled:      !policy.create? }
+        = double_throw_switch("unit_memberships[#{family_member.id}]", "response",
+                              checked_left:  existing_rsvp&.declined? || existing_rsvp&.declined_pending?,
+                              checked_right: existing_rsvp&.accepted? || existing_rsvp&.accepted_pending?,
+                              checked_center: !existing_rsvp.present?,
+                              left_value:    "declined",
+                              right_value:   "accepted",
+                              left_label:    "Regrets",
+                              right_label:   "Going!",
+                              disabled:      !policy.create? )
 
 
 // note field

@@ -32,6 +32,10 @@ class EventRsvpsController < EventContextController
   def create_batch_member
     @rsvps = []
     params[:unit_memberships].each do |member_id, rsvp_attributes|
+      if rsvp_attributes[:response] == "nil"
+        @event.rsvps.find_by(unit_membership_id: member_id.to_i)&.destroy
+        next
+      end
       rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: member_id.to_i)
       rsvp.respondent = @current_member
       rsvp.response = rsvp_attributes[:response]
@@ -42,7 +46,7 @@ class EventRsvpsController < EventContextController
       end
     end
     redirect_to [@unit, @event], notice: "Your RSVPs been received."
-  end  
+  end
 
   def edit
     @presenter = EventPresenter.new(@event, @current_member)
