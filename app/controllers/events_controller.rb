@@ -476,6 +476,17 @@ class EventsController < UnitContextController
     scope.order(starts_at: :asc)
   end
 
+  def scope_for_pdf
+    scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = if params[:season] == "next"
+              scope.where("starts_at BETWEEN ? AND ?", @unit.next_season_starts_at, @unit.next_season_ends_at)
+            else
+              scope.where("starts_at BETWEEN ? AND ?", Date.current.beginning_of_month, @unit.season_ends_at)
+            end
+    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope.order(starts_at: :asc)
+  end
+
   def scope_for_paged_list
     scope = @unit.events.future.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
@@ -491,7 +502,7 @@ class EventsController < UnitContextController
   end
 
   def send_fridge_calendar
-    pdf = Pdf::FridgeCalendar.new(@unit, scope_for_list.all)
+    pdf = Pdf::FridgeCalendar.new(@unit, scope_for_pdf.all)
     send_data(pdf.render, filename: pdf.filename, type: "application/pdf", disposition: "inline")
   end
 
