@@ -11,7 +11,7 @@ require "humanize"
 class EventsController < UnitContextController
   skip_before_action :authenticate_user!, only: [:public]
   before_action :find_event, except: %i[
-    index list calendar paged_list spreadsheet create new bulk_publish public my_rsvps signups repeat_options
+    index list calendar threeup paged_list spreadsheet create new bulk_publish public my_rsvps signups repeat_options
   ]
   before_action :collate_rsvps, only: [:show, :rsvps]
   before_action :set_calendar_dates, only: [:calendar, :list, :paged_list]
@@ -49,6 +49,15 @@ class EventsController < UnitContextController
       }
       format.pdf { send_fridge_calendar }
       format.turbo_stream { prepare_turbo_stream }
+    end
+  end
+
+  def threeup
+    respond_to do |format|
+      format.html {
+        cookies[:event_index_variation] = "threeup"
+        find_list_events
+      }
     end
   end
 

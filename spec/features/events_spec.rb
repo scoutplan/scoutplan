@@ -267,6 +267,7 @@ describe "events", type: :feature do
 
     it "works across multiple months" do
       event1 = FactoryBot.create(:event, :published, unit: @unit, starts_at: 1.hour.from_now, ends_at: 2.hours.from_now)
+      puts event1.inspect
       event2 = FactoryBot.create(:event, :published, unit: @unit, starts_at: 1.month.from_now, ends_at: 1.month.from_now + 1.hour)
       path = calendar_unit_events_path(@unit, year: Date.today.year, month: Date.today.month)
 
