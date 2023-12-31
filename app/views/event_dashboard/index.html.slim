@@ -38,7 +38,7 @@
                 .table-cell.px-1.font-mdeium = "Adults"
 
         ol#rsvps_accepted.p-4.divide-y(data-controller="sorted-list")
-          = render partial: "rsvp", collection: @event_dashboard.accepted, locals: { x: "x" }
+          = render partial: "rsvp", collection: @event_dashboard.accepted
         
       #rsvps_declined_column.md:col-span-2.member-column.bg-stone-100.group(class="[&.droptarget]:bg-red-100")
         header.bg-red-800.p-4.drop-shadow-md(class="group-[.droptarget]:bg-red-950")
