@@ -39,6 +39,6 @@ li.relative.event.md:-mx-2.md:px-2.hover:bg-stone-100.dark:hover:bg-stone-800(cl
 
   // second row
   .flex.flex-col.gap-1.md:flex-row.md:justify-between.md:items-center
-    = render partial: "events/partials/event_row/rsvp", locals: { event: event }
+    = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: event }
     = render partial: "events/partials/event_row/organize", locals: { event: event }
     = render partial: "events/partials/event_row/online", locals: { event: event }

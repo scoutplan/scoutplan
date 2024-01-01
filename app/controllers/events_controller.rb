@@ -20,11 +20,14 @@ class EventsController < UnitContextController
 
   def index
     variant = cookies[:event_index_variation] || "list"
+    # variant ||= "list"
     case variant
-    when "list"
-      redirect_to list_unit_events_path(@unit)
     when "calendar"
       redirect_to calendar_redirect_unit_events_path(@unit)
+    when "threeup"
+      redirect_to threeup_unit_events_path(@unit)
+    else
+      redirect_to list_unit_events_path(@unit)
     end
   end
 
@@ -53,10 +56,17 @@ class EventsController < UnitContextController
   end
 
   def threeup
+    @display_year = params[:year]&.to_i || Date.current.year
+    @display_month = params[:month]&.to_i || Date.current.month
+    @start_date = Date.new(@display_year, @display_month, 1)
+    @end_date = (@start_date + 3.months).end_of_month
+    @back_date = Date.new(@display_year, @display_month, 1) - 3.months
+    @forward_date = Date.new(@display_year, @display_month, 1) + 3.months
+
     respond_to do |format|
       format.html {
         cookies[:event_index_variation] = "threeup"
-        find_list_events
+        find_threeup_events
       }
     end
   end
@@ -506,6 +516,14 @@ class EventsController < UnitContextController
     scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
     scope = params[:before].present? ? scope.where("id < ?", params[:before]) : scope.future
+    scope.order(starts_at: :asc)
+    @events = scope.all
+  end
+
+  def find_threeup_events
+    scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope = scope.where("ends_at > ? AND starts_at < ?", @start_date, @end_date)
     scope.order(starts_at: :asc)
     @events = scope.all
   end

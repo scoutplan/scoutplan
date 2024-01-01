@@ -3,7 +3,10 @@
 = turbo_frame_tag "rsvp_#{@event.id}_popup"
   .z-40.fixed.inset-0.bg-black/10.backdrop-blur
     .z-40.p-6.rounded-lg.bg-white.absolute.drop-shadow-overhead.mt-2.left-1/2.top-1/2.-translate-x-1/2.-translate-y-1/2
-      = render partial: "components/close_button"
+      = button_tag nil,
+             class: "text-gray-600 hover:text-gray-800 text-xl absolute top-0 right-0 p-4",
+             data: { action: "click->popup#close" } do
+        i.fa-solid.fa-times 
       = render partial: "event_rsvps/header", locals: { unit_membership: @current_member, event: @event }
       = form_with url: batch_unit_event_rsvps_path(@event.unit, @event), method: :post, format: :turbo_stream, data: { controller: "dirt-detector" } do |f|
         section.p-4.rounded-lg.bg-stone-100
@@ -13,5 +16,5 @@
           .flex.flex-row.justify-between.items-baseline
             .flex.flex-col.md:flex-row.gap-2
               = f.submit "Change RSVPs", class: "block px-6 py-2 rounded-lg bg-amber-300 hover:bg-amber-400 text-amber-900 font-semibold"
-              = button_tag "Cancel", class: "text-amber-700 bg-amber-100 hover:bg-amber-200 font-semibold rounded-lg px-5 py-2", data: { action: "click->modal#close" }
+              = button_tag "Cancel", class: "text-amber-700 bg-amber-100 hover:bg-amber-200 font-semibold rounded-lg px-5 py-2", data: { action: "click->popup#close" }
     

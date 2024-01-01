@@ -22,7 +22,7 @@ article.py-4
             = rsvp_service.family_responses_in_words
 
       div.right
-        = render partial: "events/partials/event_row/rsvp", locals: { event: @event }
+        = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: @event, show_rsvp: params[:variation] == "rsvp" }
     
     - if @event.shifts?
       .table.border-spacing-2.text-sm

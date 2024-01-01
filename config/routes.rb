@@ -119,6 +119,7 @@ Rails.application.routes.draw do
       resources :locations, module: :events
       member do
         get "dashboard", to: "event_dashboard#index", as: "dashboard"
+        get "rsvp",      to: "events#show", as: "rsvp", defaults: { variation: "rsvp" }
       end
       collection do
         get "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
@@ -127,14 +128,15 @@ Rails.application.routes.draw do
         get "list"
         get "paged_list"
         get "threeup"
+        get "threeup/:year/:month", to: "events#threeup"
         get "calendar", to: redirect { |path_params, _|
-          "/units/#{ path_params[:unit_id] }/schedule/calendar/#{Date.today.year}/#{Date.today.month}"
+          "/units/#{path_params[:unit_id]}/schedule/calendar/#{Date.today.year}/#{Date.today.month}"
         }, as: "calendar_redirect"
         get "calendar/:year/:month", to: "events#calendar", as: "calendar"
         get "spreadsheet", to: "events#index", defaults: { variation: "spreadsheet" }
         post "bulk_publish"
       end
-      get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"
+      # get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"
       get   "cancel"
       get   "organize"
       get   "history"
