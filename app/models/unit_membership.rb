@@ -110,6 +110,10 @@ class UnitMembership < ApplicationRecord
     res
   end
 
+  def family_name
+    family.map(&:last_name).uniq.join(" / ")
+  end
+
   def contactable_object
     user
   end

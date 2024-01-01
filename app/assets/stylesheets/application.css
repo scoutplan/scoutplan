@@ -136,12 +136,15 @@ span.dt-switch {
       font-weight: 600;
       text-align: center;
       z-index: 10;
+      font-weight: 600;
       position: relative;
       padding: 0.25rem 0;
+      cursor: pointer;
 
       &.center-label {
         width: 2em;
         color: rgba(255, 255, 255, 0.0);
+        cursor: default;
       }
     }
 
@@ -184,10 +187,18 @@ span.dt-switch {
 
   input.right-value:checked ~ .switch-container .left-label {
     color: #ecfccb;
+
+    &:hover {
+      color: white;
+    }
   }
 
   input.left-value:checked ~ .switch-container .right-label {
     color: #fee2e2;
+
+    &:hover {
+      color: white;
+    }
   }
 
   input.center-value:checked ~ .switch-container {
@@ -199,6 +210,21 @@ span.dt-switch {
   } */
 }
 
+.dt-switch-indicator {
+  display: none;
+}
+
+.dt-switch.selected-left ~ .dt-switch-indicator-left {
+  display: inline-block;
+}
+
+.dt-switch.selected-center ~ .dt-switch-indicator-center {
+  display: inline-block;
+}
+
+.dt-switch.selected-right ~ .dt-switch-indicator-right {
+  display: inline-block;
+}
 
 @media (prefers-color-scheme: dark) {
   input.dt-switch.right-value:disabled:checked ~ .dt-switch-container, .switch-disabled .dt-switch-container {

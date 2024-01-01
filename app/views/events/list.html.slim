@@ -1,7 +1,7 @@
 = turbo_frame_tag "main"
   = render partial: "layouts/flash"
   
-  .max-w-3xl.mx-auto.rounded-xl.p-12.dark:bg-stone-800.bg-white.md:drop-shadow-overhead
+  .max-w-3xl.mx-auto.rounded-xl.p-12.dark:bg-stone-800.bg-white.md:shadow-overhead
     header.-mb-8
       .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
 
@@ -11,7 +11,7 @@
             = t("events.index.page_title")
 
         .right
-          .dropdown
+          .dropdown.relative
             = link_to "#", class: "dropdown-button inline-block text-stone-500 hover:text-stone-900 dark:hover:text-stone-300" do
               i.fa-circle-ellipsis.far.fa-2xl
             = render partial: "events/partials/index/dropdown"

@@ -18,6 +18,7 @@ module.exports = {
         buttonactive: 'inset 0 2px 0px 0 #d6d3d1, inset 0 -2px 0px 0 #ffffff;',
         buttondark: 'inset 0 2px 0 0 #78716c, inset 0 -2px 0 0 rgb(0, 0, 0);',
         buttondarkactive: 'inset 0 3px 0 0 #0c0a09, inset 0 2px 6px 2px #78716c;',
+        'overhead': '0 0 1rem rgba(0, 0, 0, 0.1)',
       },
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],

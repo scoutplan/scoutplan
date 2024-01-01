@@ -19,15 +19,15 @@ module TagsHelper
   # rubocop:disable Layout/MultilineOperationIndentation
   # rubocop:disable Layout/LineLength
   def double_throw_switch(object_name, method, options = {})
-    content_tag(:span, class: "dt-switch switch-wrapper #{options[:disabled] ? 'disabled' : ''}") do
+    content_tag(:span, class: "dt-switch switch-wrapper #{options[:disabled] ? 'disabled' : ''}", data: { controller: "double-throw-switch" }) do
       radio_button(object_name, method, options[:left_value], { class: "left-value dp-switch", checked: options[:checked_left], disabled: options[:disabled] }) +
       radio_button(object_name, method, "nil", { class: "center-value dp-switch", checked: options[:checked_center], disabled: options[:disabled] }) +
       radio_button(object_name, method, options[:right_value], { class: "right-value  dp-switch", checked: options[:checked_right], disabled: options[:disabled] }) +
       content_tag(:span, class: "switch-container #{options[:disabled] ? 'disabled' : ''}") do
         content_tag(:div, nil, class: "switch-button") +
-        label(object_name, method, value: options[:left_value], class: "left-label") { options[:left_label] } +
-        label(object_name, method, "", value: "nil", class: "center-label") { "dummy" } +
-        label(object_name, method, value: options[:right_value], class: "right-label") { options[:right_label] }
+        label(object_name, method, value: options[:left_value], class: "left-label", data: { action: "click->double-throw-switch#click", position: "left" }) { options[:left_label] } +
+        label(object_name, method, "", value: "nil", class: "center-label", data: { action: "click->double-throw-switch#click", position: "center" }) { "dummy" } +
+        label(object_name, method, value: options[:right_value], class: "right-label", data: { action: "click->double-throw-switch#click", position: "right" }) { options[:right_label] }
       end
     end
   end
