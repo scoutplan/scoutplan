@@ -24,3 +24,8 @@
 // clear modal
 = turbo_stream.update "modal" do
   = ""
+
+
+// THESE STREAMS TARGET THE EVENTS INDEX VIEW
+= turbo_stream.replace dom_id(@event) do
+  = render partial: "events/event", locals:  { event: @event }

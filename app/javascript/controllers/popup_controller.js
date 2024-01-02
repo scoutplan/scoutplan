@@ -15,7 +15,8 @@ export default class extends Controller {
 
   close(event) {
     this.element.closest("details").removeAttribute("open");
-    // this.element.querySelector("details").removeAttribute("open");
+    event.preventDefault();
+    event.stopPropagation();
   }
 
   click(event) {

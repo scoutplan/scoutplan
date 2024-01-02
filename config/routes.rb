@@ -5,6 +5,7 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
+  get 'family_rsvps/index'
   get 'event_dashboard/index'
   root to: "home#index"
 
@@ -99,6 +100,7 @@ Rails.application.routes.draw do
 
     resources :events, path: "schedule" do
       resources :chat_messages, as: "discussion", path: "discussion"
+      resources :family_rsvps, only: [:index]
       resources :event_rsvps, as: "rsvps", path: "rsvps" do
         collection do
           get "popup"

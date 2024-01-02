@@ -3,7 +3,7 @@
     .absolute.inset-1
       .max-w-lg.top-1/4.left-1/2.bg-white.-translate-x-1/2.rounded-lg.drop-shadow-overhead.modal-dialog.p-6.relative
         = render partial: "components/close_button"
-        = render "header", locals: { unit_membership: @rsvp.unit_membership, event: @event }
+        = render partial: "header", locals: { unit_membership: @rsvp.unit_membership, event: @event }
 
         = form_with url: batch_unit_event_rsvps_path(@event.unit, @event), method: :post, format: :turbo_stream, data: { controller: "dirt-detector" } do |f|
           section.p-4.rounded-lg.bg-stone-100

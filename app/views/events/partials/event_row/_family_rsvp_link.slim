@@ -16,12 +16,11 @@
 .my-2
   - if event.rsvp_open?
     - if policy(event).rsvp?
-      = content_tag(:details, details_tag_attributes) do
-        summary.rounded-lg.cursor-pointer.inline-block.px-4.py-2.mb-2.text-center.font-semibold.bg-amber-200.hover:bg-amber-300.text-amber-900(class="group-[.response-needed]:text-amber-50 group-[.response-needed]:bg-amber-600 group-[.response-needed]:hover:bg-amber-700" title="#{rsvp_service.family_responses_in_words}")
-          i.fa-regular.fa-exclamation-circle.mr-2(class="group-[.fully-responded]:hidden")
-          = family_fully_responded ? "Change RSVPs" : "RSVP Needed"
-
-        = turbo_frame_tag "rsvp_#{event.id}_popup", src: popup_unit_event_rsvps_path(@unit, event), loading: :lazy, role: "dialog", data: { controller: "popup" }
+        = link_to unit_event_family_rsvps_path(@unit, event),
+                  class: "block px-4 py-2 mb-2 text-center font-semibold bg-amber-200 hover:bg-amber-300 text-amber-900",
+                  title: "#{rsvp_service.family_responses_in_words}",
+                  data: { turbo_frame: "modal" } do
+          = family_fully_responded ? "Change RSVPs" : "RSVPs Needed"
 
   - else
     .font-semibold.text-sm

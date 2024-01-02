@@ -2,9 +2,9 @@
 - presenter = @presenter || EventPresenter.new
 - presenter.event = event
 
-= render partial: "month_header", locals: { event: event }
+= render partial: "events/month_header", locals: { event: event }
 
-li.relative.event.md:-mx-2.md:px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#{row_classes(event)}" id="event_#{event.id}")
+li.relative.event.md:-mx-2.md:px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#{row_classes(event)}" id="#{dom_id(event)}")
   .flex.flex-row.items-center
     = link_to unit_event_path(@unit, event),
               class: "event py-2 block w-full dark:border-stone-700",
@@ -35,10 +35,10 @@ li.relative.event.md:-mx-2.md:px-2.hover:bg-stone-100.dark:hover:bg-stone-800(cl
           = render partial: "events/partials/event_row/title_badge", locals: { event: event }
           = render partial: "events/partials/event_row/tags", locals: { event: event }
           = render partial: "events/partials/index/short_description", locals: { event: event }
-          = render partial: "event_location", locals: { event: event }
+          = render partial: "events/event_location", locals: { event: event }
 
   // second row
   .flex.flex-col.gap-1.md:flex-row.md:justify-between.md:items-center
-    = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: event }
+    = render partial: "events/partials/event_row/family_rsvp_link", locals: { event: event }
     = render partial: "events/partials/event_row/organize", locals: { event: event }
     = render partial: "events/partials/event_row/online", locals: { event: event }

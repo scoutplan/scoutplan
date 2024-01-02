@@ -1,45 +1,47 @@
-- display_year = Date.current.year
-- display_month = Date.current.month
+= turbo_frame_tag "main"
+  = render partial: "layouts/flash"
 
-= @start_date
-= @end_date
+  - display_year = @query_year
+  - display_month = @query_month
 
-.max-w-full.mx-auto.rounded-xl.py-4.mt-4.md:p-12.dark:bg-stone-800.bg-white.md:drop-shadow-overhead
-  .flex.flex-row.justify-between
-    = link_to threeup_unit_events_path(@unit) + "/#{@back_date.year}/#{@back_date.month}",
-              class: "ml-2 block p-6 text-brand-500 mt-12 text-2xl grow-0",
-              data: { turbo_action: "advance", turbo_frame: "main" } do
-      i.fa-solid.fa-chevron-left
+  .max-w-full.mx-4.rounded-xl.py-12.m-4.dark:bg-stone-800.bg-white.md:shadow-overhead
+    .flex.flex-row.justify-between
+      = link_to threeup_unit_events_path(@unit) + "/#{@back_date.year}/#{@back_date.month}",
+                class: "ml-2 block p-6 text-brand-500 hover:text-brand-700 mt-14 text-2xl grow-0",
+                data: { turbo_action: "advance", turbo_frame: "main" } do
+        i.fa-solid.fa-chevron-left
 
-    div.grow
-      header
-        .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
+      div.grow
+        header.mb-2
+          .text-sm.font-semibold.uppercase.text-stone-500.dark:text-stone-300.tracking-widest = @unit.name
 
-        .flex.flex-row.justify-between.items-center
-          .left
-            h1.text-4xl.mb-2
-              = t("events.index.page_title")
+          .flex.flex-row.justify-between.items-center
+            .left
+              h1.text-4xl.mb-2
+                = t("events.index.page_title")
 
-          .right
-            .dropdown
-              = link_to "#", class: "dropdown-button inline-block text-stone-500 hover:text-stone-900 dark:hover:text-stone-300" do
-                i.fa-circle-ellipsis.far.fa-2xl
-              = render partial: "events/partials/index/dropdown"
+            .right
+              .dropdown
+                = link_to "#", class: "dropdown-button inline-block text-stone-500 hover:text-stone-900 dark:hover:text-stone-300" do
+                  i.fa-circle-ellipsis.far.fa-2xl
+                = render partial: "events/partials/index/dropdown"
 
-      .md:grid.md:grid-cols-3.md:gap-10.grow.w-full
-        - 3.times do |i|
-          ol.month
-            = render partial: "event", collection: @events.select { |e| e.starts_at.year == display_year && e.starts_at.month == display_month }
+        .md:grid.md:grid-cols-3.md:gap-16.grow.w-full
+          - 3.times do |i|
+            ol.month
+              = render partial: "event", collection: @events.select { |e| e.starts_at.year == display_year && e.starts_at.month == display_month }
 
-          - display_month += 1
-          - if display_month > 12
-            - display_month = 1
-            - display_year += 1
+            - display_month += 1
+            - if display_month > 12
+              - display_month = 1
+              - display_year += 1
 
-    = link_to threeup_unit_events_path(@unit) + "/#{@forward_date.year}/#{@forward_date.month}",
-              class: "ml-2 block p-6 text-brand-500 mt-12 text-2xl grow-0",
-              data: { turbo_action: "advance", turbo_frame: "main" } do
-      i.fa-solid.fa-chevron-right            
+      = link_to threeup_unit_events_path(@unit) + "/#{@forward_date.year}/#{@forward_date.month}",
+                class: "block p-6 text-brand-500 hover:text-brand-700 mt-14 text-2xl grow-0",
+                data: { turbo_action: "advance", turbo_frame: "main" } do
+        i.fa-solid.fa-chevron-right   
+
+  = turbo_frame_tag "modal", data: { controller: "modal" }               
 
 css:
   li.event {

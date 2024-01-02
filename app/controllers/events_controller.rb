@@ -56,12 +56,12 @@ class EventsController < UnitContextController
   end
 
   def threeup
-    @display_year = params[:year]&.to_i || Date.current.year
-    @display_month = params[:month]&.to_i || Date.current.month
-    @start_date = Date.new(@display_year, @display_month, 1)
+    @query_year = params[:year]&.to_i || Date.current.year
+    @query_month = params[:month]&.to_i || Date.current.month
+    @start_date = Date.new(@query_year, @query_month, 1)
     @end_date = (@start_date + 3.months).end_of_month
-    @back_date = Date.new(@display_year, @display_month, 1) - 3.months
-    @forward_date = Date.new(@display_year, @display_month, 1) + 3.months
+    @back_date = Date.new(@query_year, @query_month, 1) - 3.months
+    @forward_date = Date.new(@query_year, @query_month, 1) + 3.months
 
     respond_to do |format|
       format.html {

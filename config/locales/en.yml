@@ -410,7 +410,7 @@ en:
         organize_reason:  "This section is visible to you because you're a unit administrator or an event organizer"
         organize_title:   "You have elevated permissions"
         attendees_zero:   "No one's signed up yet."
-        full_response:    "Your family has responded"
+        full_response:    "Your family has responded. Thank you!"
 
       cancel:
         notice:       "Cancelling a published event will remove it from the calendar. Are you sure you want to proceed?"

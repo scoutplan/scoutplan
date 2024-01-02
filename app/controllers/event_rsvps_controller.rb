@@ -19,6 +19,10 @@ class EventRsvpsController < EventContextController
   def create_batch
     @rsvps = []
     params[:unit_memberships].each do |member_id, rsvp_attributes|
+      if rsvp_attributes[:response] == "nil"
+        @event.rsvps.find_by(unit_membership_id: member_id.to_i)&.destroy
+        next
+      end      
       rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: member_id.to_i)
       rsvp.respondent = @current_member
       rsvp.response = rsvp_attributes[:response]

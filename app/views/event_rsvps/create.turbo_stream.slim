@@ -1,6 +1,7 @@
 // remove from No Response or Family & Friends
 = turbo_stream.remove dom_id(@rsvp.member)
 
+// THESE STREAMS TARGET THE DASHBOARD VIEW
 // add to either Accepted or Declined
 = turbo_stream.append("rsvps_#{@rsvp.response}") do
   = render partial: "event_dashboard/rsvp",
