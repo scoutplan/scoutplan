@@ -3,10 +3,6 @@
 - accepted_count = @event.rsvps.accepted_intent.count
 
 article.py-4
-  header.font-normal.mb-4.text-sm.text-violet-500.dark:text-violet-300.pl-2
-    i.fa-solid.fa-user-crown.mr-2(title="#{t('events.show.captions.organize_title')}")
-    = t("events.show.captions.organize_reason")
-
   .flex.flex-col.md:flex-row.gap-3.justify-between.md:items-center
     .left
       i.fa-stack.mr-1(title="#{t('events.show.titles.organize')}")
@@ -14,6 +10,8 @@ article.py-4
         i.fa-solid.fa-clipboard-check.fa-stack-1x.text-violet-50
 
       = accepted_count.zero? ? t("events.show.captions.attendees_zero") : "#{pluralize(accepted_count, 'person')} are going."
+
+      i.fa-regular.fa-info-circle.text-violet-500.ml-2(title="#{t("events.show.captions.organize_reason")}")
 
     .right
       = link_to dashboard_unit_event_path(@event.unit, @event),

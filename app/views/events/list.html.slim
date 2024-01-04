@@ -2,7 +2,7 @@
   = render partial: "layouts/flash"
   
   .max-w-3xl.mx-auto.rounded-xl.p-12.dark:bg-stone-800.bg-white.md:shadow-overhead
-    header.-mb-8
+    header
       .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
 
       .flex.flex-row.justify-between.items-center
@@ -24,18 +24,20 @@
                 class: "text-transparent",
                 data: { pagination_target: "nextPageLink" }
 
-    javascript:
-      document.title = `#{["Event Schedule", @unit.name].join(" · ")}`;
+  = turbo_frame_tag "modal", data: { controller: "modal" }
 
-    css:
-      #events_list .more-past-events-item {
-        display: none;
-      }
+  javascript:
+    document.title = `#{["Event Schedule", @unit.name].join(" · ")}`;
 
-      #events_list .more-past-events-item:first-of-type {
-        display: block;
-      }
+  css:
+    #events_list .more-past-events-item {
+      display: none;
+    }
 
-      .event + .event {
-        border-top: 1px solid #e2e8f0;
-      }
+    #events_list .more-past-events-item:first-of-type {
+      display: block;
+    }
+
+    .event + .event {
+      border-top: 1px solid #e2e8f0;
+    }

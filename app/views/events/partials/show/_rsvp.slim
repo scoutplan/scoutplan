@@ -8,7 +8,7 @@
 article.py-4
   - if rsvp_service.any_responses?
     .flex.flex-col.md:justify-between.md:flex-row.md:items-center.gap-1
-      .flex.flex-row.gap-1.items-baseline
+      .flex.flex-row.gap-1.items-center
         div.left
           - if rsvp_service.family_fully_responded?
             i.fa-stack(title="#{t('events.show.captions.full_response')}")
@@ -48,9 +48,7 @@ article.py-4
       
       div
         - if policy(@event).rsvp? && @event.rsvp_open?
-          = link_to "Respond Now", unit_event_edit_rsvps_path(@event.unit, @event),
-                    class: "cta-button block md:inline-block font-bold text-center bg-amber-400 rounded text-amber-800 hover:bg-amber-500 hover:text-amber-900 px-4 py-2",
-                    data: { turbo_action: "advance", turbo_frame: "main" }
+          = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: @event, show_rsvp: params[:variation] == "rsvp" }
 
   - elsif !@event.rsvp_open?
     .flex.flex-row.justify-between.items-center

@@ -5,11 +5,7 @@
 // add to either Accepted or Declined
 = turbo_stream.append("rsvps_#{@rsvp.response}") do
   = render partial: "event_dashboard/rsvp",
-           locals:  { rsvp: @rsvp }
-
-= turbo_stream.replace "event_stats" do
-  = render partial: "event_dashboard/event_stats",
-          locals:  { event_dashboard: EventDashboard.new(@event) }           
+           locals:  { rsvp: @rsvp }      
 
 // clear modal
 = turbo_stream.update "modal" do

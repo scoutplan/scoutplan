@@ -9,11 +9,11 @@ tr
     - elsif !EventPolicy.new(unit_membership, further_out_event).rsvp?
       = "Not authorized"
     - elsif rsvp_service.family_fully_responded?
-      = magic_link_to(unit_membership, unit_event_edit_rsvps_url(further_out_event.unit, further_out_event), class: "text-yellow-300") do
+      = magic_link_to(unit_membership, unit_event_family_rsvps_url(further_out_event.unit, further_out_event), class: "text-yellow-300") do
         = "Change your RSVP"
     - elsif rsvp_service.family_rsvps.any?
-      = magic_link_to(unit_membership, unit_event_edit_rsvps_url(further_out_event.unit, further_out_event), class: "text-yellow-300") do
+      = magic_link_to(unit_membership, unit_event_family_rsvps_url(further_out_event.unit, further_out_event), class: "text-yellow-300") do
         = "Complete your RSVP"
     - else
-      = magic_link_to(unit_membership, unit_event_edit_rsvps_url(further_out_event.unit, further_out_event), class: "text-yellow-300") do
+      = magic_link_to(unit_membership, unit_event_family_rsvps_url(further_out_event.unit, further_out_event), class: "text-yellow-300") do
         = "RSVP needed"

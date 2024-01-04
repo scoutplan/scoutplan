@@ -59,17 +59,17 @@
           
         - elsif family_rsvps.count.zero?
           = magic_link_to @member, "RSVP Needed",
-                    unit_event_edit_rsvps_url(event.unit, event),
+                    unit_event_family_rsvps_url(event.unit, event),
                     class: "rsvp-link rsvp-needed-link"
 
         - elsif !@service.family_fully_responded?
           = magic_link_to @member, "Complete your RSVP",
-                    unit_event_edit_rsvps_url(event.unit, event),
+                    unit_event_family_rsvps_url(event.unit, event),
                     class: "rsvp-link rsvp-needed-link"
 
         - else
           = magic_link_to @member, "Change RSVP",
-                    unit_event_edit_rsvps_url(event.unit, event),
+                    unit_event_family_rsvps_url(event.unit, event),
                     class: "rsvp-link rsvp-change-link"
 
 css:

@@ -32,7 +32,7 @@
   section.py-2
     - if event.rsvp_open?
       - if event.rsvps.where(unit_membership: unit_membership).exists?
-        = magic_link_to(unit_membership, unit_event_edit_rsvps_url(event.unit, event), class: "text-yellow-700 font-bold") do
+        = magic_link_to(unit_membership, unit_event_family_rsvps_url(event.unit, event), class: "text-yellow-700 font-bold") do
             = "Change your RSVP"
       - else
         p.text-yellow-700.font-bold.mb-2
@@ -40,7 +40,7 @@
                       style: "height: 1.5em; margin-right: 0.25em; vertical-align: middle;"        
           = "Your RSVP is needed"
         div
-          = magic_link_to(unit_membership, unit_event_edit_rsvps_url(event.unit, event), class: "block button button-rsvp") do
+          = magic_link_to(unit_membership, unit_event_family_rsvps_url(event.unit, event), class: "block button button-rsvp") do
             = "Respond now"
     - else
       = "RSVP is Closed"

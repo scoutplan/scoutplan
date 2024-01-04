@@ -17,7 +17,7 @@
   - if event.rsvp_open?
     - if policy(event).rsvp?
         = link_to unit_event_family_rsvps_path(@unit, event),
-                  class: "block px-4 py-2 mb-2 text-center font-semibold bg-amber-200 hover:bg-amber-300 text-amber-900",
+                  class: "block px-4 py-2 mb-2 text-center rounded-lg font-semibold bg-amber-200 hover:bg-amber-300 text-amber-900",
                   title: "#{rsvp_service.family_responses_in_words}",
                   data: { turbo_frame: "modal" } do
           = family_fully_responded ? "Change RSVPs" : "RSVPs Needed"

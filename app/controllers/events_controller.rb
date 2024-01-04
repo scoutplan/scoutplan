@@ -523,7 +523,7 @@ class EventsController < UnitContextController
   def find_threeup_events
     scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
-    scope = scope.where("ends_at > ? AND starts_at < ?", @start_date, @end_date)
+    scope = scope.where("ends_at > ? AND starts_at < ?", @start_date.beginning_of_month, @end_date)
     scope.order(starts_at: :asc)
     @events = scope.all
   end

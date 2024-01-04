@@ -26,7 +26,7 @@ tr
         - else
           p
             = "Your RSVP is needed "
-            = magic_link_to(unit_membership, unit_event_edit_rsvps_url(event.unit, event), class: "inline-block button button-rsvp px-2") do
+            = magic_link_to(unit_membership, unit_event_family_rsvps_url(event.unit, event), class: "inline-block button button-rsvp px-2") do
               = "Respond now"
       - else
         = "RSVP is Closed"

@@ -45,7 +45,7 @@ ul
                 - else
                   = "pending your approval"       
 
-            = double_throw_switch("unit_memberships[#{family_member.id}][#{@event.id}]", "response",
+            = double_throw_switch("unit_memberships[#{family_member.id}]", "response",
                                   checked_left:  existing_rsvp&.declined? || existing_rsvp&.declined_pending?,
                                   checked_right: existing_rsvp&.accepted? || existing_rsvp&.accepted_pending?,
                                   checked_center: !existing_rsvp.present?,
