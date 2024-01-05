@@ -254,62 +254,6 @@ class EventsController < UnitContextController
     redirect_to unit_events_path(@unit)
   end
 
-  # POST /units/:unit_id/events/:id/rsvp
-  def create_or_update_rsvps
-    note = params[:note]
-    params[:event][:members].each do |member_id, values|
-      member = @current_unit.members.find(member_id)
-      values[:event_rsvp] ||= {}
-      shifts = values[:shifts]
-      accepted_shifts = shifts.present? ? shifts.select { |_, v| v[:response] == "accepted" }.keys : []
-
-      response = if shifts.present?
-                   accepted_shifts.count.positive? ? "accepted" : "declined"
-                 else
-                   values[:event_rsvp][:response]
-                 end
-
-      if response == "nil"
-        @event.rsvps.find_by(unit_membership_id: member_id)&.destroy
-        next
-      end
-
-      # youth responses are always pending
-      # TODO: move this logic elsewhere
-      if response == "accepted" && @current_member.youth?
-        response = "accepted_pending"
-      elsif response == "declined" && @current_member.youth?
-        response = "declined_pending"
-      end
-
-      includes_activity = values[:event_rsvp][:includes_activity] == "1"
-      rsvp = @event.rsvps.create_with(
-        response:          response,
-        note:              note,
-        respondent:        @current_member,
-        event_shift_ids:   accepted_shifts,
-        includes_activity: includes_activity
-      ).find_or_create_by!(unit_membership_id: member_id)
-
-      rsvp.update!(response:   response,
-                   respondent: @current_member,
-                   note:       note,
-                   event_shift_ids: accepted_shifts)
-
-      EventNotifier.send_rsvp_confirmation(rsvp)
-    end
-
-    @unit = @event.unit
-    @current_member = @unit.membership_for(current_user)
-    @current_family = @current_member.family
-
-    if (member_id = params[:member_id].presence)
-      redirect_to unit_member_path(@unit, member_id), notice: t("events.edit_rsvps.notices.update")
-    else
-      redirect_to unit_event_path(@unit, @event), notice: t("events.edit_rsvps.notices.update")
-    end
-  end
-
   # GET cancel
   # display cancel dialog where user confirms cancellation and where
   # notification options are chosen

@@ -16,7 +16,17 @@
     = render partial: "event_dashboard/member",
             locals:  { member: @rsvp.member }
 
+= turbo_stream.replace("rsvps_accepted_header") do
+  = render partial: "event_dashboard/header_accepted", locals: { event_dashboard: @event_dashboard }
 
+= turbo_stream.replace("rsvps_declined_header") do
+  = render partial: "event_dashboard/header_declined", locals: { event_dashboard: @event_dashboard }
+
+= turbo_stream.replace("members_active_header") do
+  = render partial: "event_dashboard/header_active", locals: { event_dashboard: @event_dashboard }
+
+= turbo_stream.replace("members_registered_header") do
+  = render partial: "event_dashboard/header_registered", locals: { event_dashboard: @event_dashboard }  
 
 // clear modal
 = turbo_stream.update "modal" do

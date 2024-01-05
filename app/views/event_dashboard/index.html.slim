@@ -1,5 +1,5 @@
 = turbo_frame_tag "main"
-  .max-w-7xl.mx-auto.px-4.sm:mt-6
+  .max-w-7xl.mx-auto.px-4.sm:mt-6(data-controller="name-filter")
     header.mb-6
       = link_to [@unit, @event],
                 class: "font-semibold text-violet-800",
@@ -16,58 +16,58 @@
 
     .hidden.bg-red-100.bg-green-100.bg-yellow-100.bg-sky-100
 
-    section.w-full.grid.grid-cols-1.lg:grid-cols-9.gap-px.md:gap-1(data-controller="dashboard-drop"
+    section.w-full.grid.grid-cols-1.lg:grid-cols-9.gap-px.md:gap-1(
+      data-controller="dashboard-drop"
       data-action="dragover->dashboard-drop#dragover dragleave->dashboard-drop#dragleave dragenter->dashboard-drop#dragenter drop->dashboard-drop#drop"
       data-dashboard-drop-unit-id-value="#{@unit.id}"
       data-dashboard-drop-event-id-value="#{@event.id}")
 
       #rsvps_accepted_column.md:col-span-3.text-xl.member-column.bg-stone-100.md:rounded-tl-lg.group(class="[&.droptarget]:bg-green-100")
-        header.bg-green-800.p-4.drop-shadow-md.md:rounded-tl-lg(class="group-[.droptarget]:bg-green-950")
-          p.text-lg.font-medium.text-green-300 = number_to_percentage((@event_dashboard.accept_rate) * 100, precision: 0)
-          .flex.flex-row.justify-between.items-end
-            h2.font-medium.text-lg.text-green-100
-              span.text-6xl.font-normal = @event_dashboard.accepted_count
-              = " Accepted"
-
-            .text-normal.rounded-lg.bg-green-700.table.text-sm.text-green-100.p-1
-              .table-row
-                .table-cell.px-1.text-center.text-xl = @event_dashboard.accepted_youth_count
-                .table-cell.px-1.text-center.text-xl = @event_dashboard.accepted_adult_count
-              .table-row
-                .table-cell.px-1.font-medium = "Youth"
-                .table-cell.px-1.font-mdeium = "Adults"
+        = render partial: "event_dashboard/header_accepted", locals: { event_dashboard: @event_dashboard }
 
         ol#rsvps_accepted.p-4.divide-y(data-controller="sorted-list")
           = render partial: "rsvp", collection: @event_dashboard.accepted
         
       #rsvps_declined_column.md:col-span-2.member-column.bg-stone-100.group(class="[&.droptarget]:bg-red-100")
-        header.bg-red-800.p-4.drop-shadow-md(class="group-[.droptarget]:bg-red-950")
-          p.text-lg.font-medium.text-red-300 = number_to_percentage((@event_dashboard.decline_rate) * 100, precision: 0)
-          h2.font-medium.text-lg.text-red-50
-            span.text-6xl.font-normal = @event_dashboard.declined_count
-            = " Declined"
+        = render partial: "event_dashboard/header_declined", locals: { event_dashboard: @event_dashboard }
 
         ol#rsvps_declined.p-4.divide-y(data-controller="sorted-list")
           = render partial: "rsvp", collection: @event_dashboard.declined
 
-      #members_active_column.md:col-span-2.member-column.bg-stone-100.group(class="[&.droptarget]:bg-yellow-50")
-        header.bg-yellow-800.p-4.drop-shadow-md(class="group-[.droptarget]:bg-yellow-950")
-          p.text-lg.font-medium.text-yellow-300 = number_to_percentage((1 - @event_dashboard.response_rate) * 100, precision: 0)
-          h2.font-medium.text-lg.text-yellow-50
-            span.text-6xl.font-normal = @event_dashboard.non_respondent_count
-            = " No Response"
+      #members_active_column.md:col-span-2.member-column.bg-stone-100.group(class="[&.droptarget]:bg-yellow-50" data-drop-group="non-respondents")
+        = render partial: "event_dashboard/header_active", locals: { event_dashboard: @event_dashboard }
 
         ol#members_active.p-4.divide-y(data-controller="sorted-list")
           = render partial: "member", collection: @event.non_respondents
 
-      #members_registered_column.md:col-span-2.member-column.bg-stone-100.rounded-tr-lg.group(class="[&.droptarget]:bg-sky-100")
-        header.bg-sky-800.p-4.drop-shadow-md.rounded-tr-lg(class="group-[.droptarget]:bg-sky-950")
-          p.text-lg.font-medium.text-yellow-500 &nbsp;            
-          h2.font-medium.text-lg.text-sky-50
-            span.text-6xl.font-normal = @event_dashboard.non_invitee_count
-            = " Family & Friends"
+      #members_registered_column.md:col-span-2.member-column.bg-stone-100.rounded-tr-lg.group(class="[&.droptarget]:bg-sky-100" data-drop-group="non-respondents")
+        = render partial: "event_dashboard/header_registered", locals: { event_dashboard: @event_dashboard }
 
         ol#members_registered.divide-y.p-4(data-controller="sorted-list")
           = render partial: "member", collection: @event.non_invitees
 
   = turbo_frame_tag "modal", data: { controller: "modal" }
+
+  = turbo_stream.update "page_title" do
+    = t(".page_title", event_title: @event.title)
+
+  css:
+    .filtering-names .filtered-out {
+      display: none;
+    }
+
+    .dragging-from-accepted #rsvps_accepted_column {
+      opacity: 0.3;
+    }
+
+    .dragging-from-declined #rsvps_declined_column {
+      opacity: 0.3;
+    }
+
+    .dragging-from-members #members_active_column {
+      opacity: 0.3;
+    }
+
+    .dragging-from-members #members_registered_column {
+      opacity: 0.3;
+    }

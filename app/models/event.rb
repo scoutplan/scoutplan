@@ -31,6 +31,7 @@ class Event < ApplicationRecord
   has_many :members, through: :event_rsvps
   has_many :rsvp_tokens, dependent: :destroy
   has_many :sub_events, class_name: "Event", foreign_key: "parent_event_id"
+  has_many :unit_memberships, through: :event_rsvps
 
   has_one :chat, as: :chattable, dependent: :destroy
 
@@ -209,11 +210,11 @@ class Event < ApplicationRecord
 
   # members who haven't RSVP'ed
   def non_respondents
-    unit.members.status_active - rsvps.collect(&:member)
+    unit.members.status_active - unit_memberships
   end
 
   def non_invitees
-    unit.members.status_registered - rsvps.collect(&:member)
+    unit.members.joins(:user).status_registered - unit_memberships.joins(:user)
   end
 
   def primary_location

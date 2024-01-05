@@ -1,11 +1,11 @@
-li.flex.flex-row.justify-between.items-center(draggable="false" id="#{dom_id(rsvp)}" data-sort-text="#{rsvp.member.last_name.downcase} #{rsvp.member.first_name.downcase}" data-action="dragstart->dashboard-drop#dragstart")
-  = link_to edit_unit_event_rsvp_path(@event.unit, @event, rsvp),
+li.filterable-item.flex.flex-row.justify-between.items-center(draggable="false" id="#{dom_id(rsvp)}" data-sort-text="#{rsvp.member.last_name.downcase} #{rsvp.member.first_name.downcase}" data-action="dragstart->dashboard-drop#dragstart")
+  = link_to unit_event_family_rsvps_path(@event.unit, @event, unit_membership_id: rsvp.unit_membership_id),
             class: "py-2",
             id: dom_id(rsvp),
             draggable: true,
-            data: { turbo_frame: "modal", action: "dragstart->dashboard-drop#dragstart drag->dashboard-drop#drag" } do
+            data: { turbo_frame: "modal", action: "dragstart->dashboard-drop#dragstart dragend->dashboard-drop#dragend drag->dashboard-drop#drag" } do
     i.fa-solid.fa-user.text-stone-400.mr-2
-    = rsvp.display_name
+    span.filterable-name = rsvp.display_name
     - if rsvp.pending_approval?
       = content_tag :span, title: t(".pending_approval") do
         i.fa-regular.fa-info-circle.text-green-800.ml-2

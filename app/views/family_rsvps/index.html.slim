@@ -3,7 +3,7 @@
     .absolute.inset-1
       .max-w-lg.top-1/4.left-1/2.bg-white.-translate-x-1/2.rounded-lg.drop-shadow-overhead.modal-dialog.p-6.relative
         = render partial: "components/close_button"
-        = render partial: "event_rsvps/header", locals: { unit_membership: @family_rsvp.unit_membership, event: @event }
+        = render partial: "header", locals: { unit_membership: @family_rsvp.unit_membership, event: @event }
 
         = form_with url: unit_event_family_rsvps_path(@event.unit, @event, unit_membership_id: @family_rsvp.unit_membership.id),
                     method: :post, format: :turbo_stream, data: { controller: "dirt-detector" } do |f|
@@ -13,5 +13,5 @@
           footer.mt-2
             .flex.flex-row.justify-between.items-baseline
               .flex.flex-col.md:flex-row.gap-2
-                = f.submit "Update response", class: "block px-6 py-2 rounded-lg bg-amber-700 hover:bg-amber-800 text-amber-50 font-semibold"
-                = button_tag "Cancel", class: "text-amber-800 bg-amber-100 hover:bg-amber-200 font-semibold rounded-lg px-5 py-2", data: { action: "click->modal#close" }
+                = f.submit "Update response", class: "block px-6 py-2 rounded-lg bg-stone-700 hover:bg-stone-800 text-stone-50 font-semibold"
+                = button_tag "Cancel", class: "text-stone-800 bg-stone-100 hover:bg-stone-200 font-semibold rounded-lg px-5 py-2", data: { action: "click->modal#close" }

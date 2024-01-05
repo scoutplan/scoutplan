@@ -28,7 +28,7 @@ ul
           // switch
           - if @event.shifts?
             - @event.shifts.each do |shift|
-              .py-1
+              .py-1.ml-1.bg-stone-100
                 = render partial: "components/switch", locals: { checked: existing_rsvp&.event_shift_ids&.include?(shift.id),
                                                                 label: shift.name,
                                                                 object_name: "event[members][#{family_member.id}][shifts][#{shift.id}]",
@@ -54,6 +54,7 @@ ul
                                   left_label:    "Regrets",
                                   right_label:   "Going!",
                                   disabled:      !policy.create?,
+                                  wrapper_classes: "pl-1 bg-stone-100 relative",
                                   data: { controller: "double-throw-switch" } )
 
             .dt-switch-indicator.dt-switch-indicator-left.absolute.left-0.top-1/2.-translate-y-1/2

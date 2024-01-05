@@ -36,7 +36,11 @@ class EventDashboard
   end
 
   def response_rate
-    @response_rate ||= response_count / active_count.to_f
+    @response_rate ||= decline_rate + accept_rate
+  end
+
+  def non_response_rate
+    @non_response_rate ||= 1 - response_rate
   end
 
   def decline_rate

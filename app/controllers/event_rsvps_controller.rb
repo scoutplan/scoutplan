@@ -11,6 +11,7 @@ class EventRsvpsController < EventContextController
     event_rsvp_params = params[:event_rsvp].permit(:unit_membership_id, :response)
     event_rsvp_params[:respondent] = @current_member
     @rsvp = @event.rsvps.find_or_create_by!(event_rsvp_params)
+    @event_dashboard = EventDashboard.new(@event)
   end
 
   def popup; end
@@ -25,6 +26,7 @@ class EventRsvpsController < EventContextController
     else
       @rsvp.update(params[:event_rsvp].permit(:unit_membership_id, :response))
     end
+    @event_dashboard = EventDashboard.new(@event)
   end
 
   def new

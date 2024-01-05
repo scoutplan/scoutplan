@@ -1,7 +1,7 @@
 class EventRsvp < ApplicationRecord
   RESPONSE_OPTIONS = { accepted: 1, accepted_pending: 3, declined: 0, declined_pending: 2 }.freeze
 
-  include Notifiable
+  # include Notifiable
 
   belongs_to :event
   belongs_to :unit_membership

@@ -19,7 +19,7 @@ module TagsHelper
   # rubocop:disable Layout/MultilineOperationIndentation
   # rubocop:disable Layout/LineLength
   def double_throw_switch(object_name, method, options = {})
-    content_tag(:span, class: "dt-switch switch-wrapper #{options[:disabled] ? 'disabled' : ''}", data: { controller: "double-throw-switch" }) do
+    content_tag(:span, class: "block dt-switch switch-wrapper #{options[:disabled] ? 'disabled' : ''} #{options[:wrapper_classes]}", data: { controller: "double-throw-switch" }) do
       radio_button(object_name, method, options[:left_value], { class: "left-value dp-switch", checked: options[:checked_left], disabled: options[:disabled] }) +
       radio_button(object_name, method, "nil", { class: "center-value dp-switch", checked: options[:checked_center], disabled: options[:disabled] }) +
       radio_button(object_name, method, options[:right_value], { class: "right-value  dp-switch", checked: options[:checked_right], disabled: options[:disabled] }) +

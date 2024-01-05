@@ -7,7 +7,6 @@ export default class extends Controller {
   
   dragover(event) {
     const columnElem = event.target.closest(".member-column");
-    console.log(columnElem);
 
     if (columnElem == null) {
       event.dataTransfer.dropEffect = "none";
@@ -25,14 +24,30 @@ export default class extends Controller {
       event.dataTransfer.dropEffect = "move";
       return;
     }
+
+    if (!columnElem) { return;}
     
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
-    columnElem?.classList?.toggle("droptarget", true);  
+    const dropGroup = columnElem.dataset.dropGroup;
+    if (dropGroup) {
+      const dropGroupElems = document.querySelectorAll(`[data-drop-group="${dropGroup}"]`);
+      dropGroupElems.forEach(function(elem) {
+        elem.classList.toggle("droptarget", true);
+      });
+    }
+    columnElem.classList.toggle("droptarget", true);
   }
 
   drag(event) {
     this.draggedElem = event.target;
+  }
+
+  dragend(event) {
+    this.element.classList.toggle("dragging", false);
+    this.element.classList.toggle("dragging-from-members", false);
+    this.element.classList.toggle("dragging-from-accepted", false);
+    this.element.classList.toggle("dragging-from-declined", false);    
   }
 
   dragenter(event) {
@@ -42,10 +57,24 @@ export default class extends Controller {
   dragleave(event) {
     event.preventDefault();
     const columnElem = event.target.closest(".member-column");
-    columnElem?.classList?.toggle("droptarget", false);
+    if (!columnElem) { return; }
+
+    const dropGroup = columnElem.dataset.dropGroup;
+    if (dropGroup) {
+      const dropGroupElems = document.querySelectorAll(`[data-drop-group="${dropGroup}"]`);
+      dropGroupElems.forEach(function(elem) {
+        elem.classList.toggle("droptarget", false);
+      });
+    }    
+    columnElem.classList.toggle("droptarget", false);
   }
 
   dragstart(event) {
+    this.element.classList.toggle("dragging", true);
+    const fromColumn = event.target.closest(".member-column");
+    this.element.classList.toggle("dragging-from-members", fromColumn.id.startsWith("members"));
+    this.element.classList.toggle("dragging-from-accepted", fromColumn.id.startsWith("rsvps_accepted"));
+    this.element.classList.toggle("dragging-from-declined", fromColumn.id.startsWith("rsvps_declined"));
     event.dataTransfer.dropEffect = "move";
     event.dataTransfer.setData("text/plain", event.target.parentElement.id);
   }

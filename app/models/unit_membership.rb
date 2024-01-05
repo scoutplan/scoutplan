@@ -62,7 +62,7 @@ class UnitMembership < ApplicationRecord
   accepts_nested_attributes_for :user
   accepts_nested_attributes_for :child_relationships,
                                 allow_destroy: true,
-                                reject_if: ->(attributes) { attributes["child_unit_membership_id"].blank? }
+                                reject_if:     ->(attributes) { attributes["child_unit_membership_id"].blank? }
   accepts_nested_attributes_for :parent_relationships, allow_destroy: true
 
   has_settings do |s|
@@ -90,6 +90,10 @@ class UnitMembership < ApplicationRecord
     parents.flat_map(&:children) - [self]
   end
 
+  def coparents
+    children.flat_map(&:parents) - [self]
+  end
+
   def display_first_name(member = nil)
     return "you" if member == self
 
@@ -104,7 +108,7 @@ class UnitMembership < ApplicationRecord
   # member.family(include_self: :prepend) => [member, parent1, parent2, child1, child2]
   #
   def family(include_self: :append)
-    res = (children | parents | siblings)
+    res = (children | parents | siblings | coparents).uniq
     res.append(self) if [true, :append].include?(include_self)
     res.unshift(self) if include_self == :prepend
     res
@@ -126,13 +130,11 @@ class UnitMembership < ApplicationRecord
     user.smsable? && settings(:communication).via_sms
   end
 
-  # rubocop:disable Style/RedundantBegin
   def time_zone
-    @time_zone ||= begin
-      user.settings(:locale).time_zone || unit.settings(:locale).time_zone || Rails.configuration.default_time_zone
-    end
+    @time_zone ||= user.settings(:locale).time_zone ||
+                   unit.settings(:locale).time_zone ||
+                   Rails.configuration.default_time_zone
   end
-  # rubocop:enable Style/RedundantBegin
 
   def sender_name_and_address
     "#{user.display_name} at #{unit.name} <#{unit.from_address}>"
