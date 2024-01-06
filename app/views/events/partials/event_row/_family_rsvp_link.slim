@@ -1,5 +1,6 @@
 - return unless event.requires_rsvp && user_signed_in?
 
+/ TODO: roll all this the FamilyRsvp object
 - family_has_rsvps = false
 - family_fully_responded = true
 - event_rsvps = event.rsvps.includes(:unit_membership)
@@ -16,7 +17,7 @@
 .my-2
   - if event.rsvp_open?
     - if policy(event).rsvp?
-        = link_to unit_event_family_rsvps_path(@unit, event),
+        = link_to new_unit_event_family_rsvp_path(@unit, event),
                   class: "block px-4 py-2 mb-2 text-center rounded-lg font-semibold bg-amber-200 hover:bg-amber-300 text-amber-900",
                   title: "#{rsvp_service.family_responses_in_words}",
                   data: { turbo_frame: "modal" } do

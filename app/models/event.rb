@@ -210,11 +210,12 @@ class Event < ApplicationRecord
 
   # members who haven't RSVP'ed
   def non_respondents
-    unit.members.status_active - unit_memberships
+    # unit.unit_memberships.includes([:user]).status_active - unit_memberships
+    unit.unit_memberships.includes(:user).status_active.where("id NOT IN (?)", unit_memberships.map(&:id))
   end
 
   def non_invitees
-    unit.members.joins(:user).status_registered - unit_memberships.joins(:user)
+    unit.unit_memberships.joins(:user).status_registered - unit_memberships
   end
 
   def primary_location

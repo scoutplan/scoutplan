@@ -11,7 +11,7 @@ class FamilyRsvp
   end
 
   def active_family_members
-    family_members.select(&:status_active?)
+    @active_family_members ||= family_members.select(&:status_active?)
   end
 
   def active_family_member_ids
@@ -23,11 +23,11 @@ class FamilyRsvp
   end
 
   def event_rsvps
-    @event_rsvps ||= event.rsvps.where(unit_membership_id: family_member_ids)
+    @event_rsvps ||= event.rsvps.where(unit_membership: family_members)
   end
 
   def family_fully_responded?
-    @event_rsvps.map(&:unit_membership_id) & active_family_member_ids == active_family_member_ids
+    event_rsvps.map(&:unit_membership) & active_family_members == active_family_members
   end
 
   def accepted?
@@ -67,5 +67,44 @@ class FamilyRsvp
       names.be_conjugation,
       I18n.t("global.event_rsvp_responses.#{response}")
     ].join(" ")
+  end
+
+  ### Response methods
+
+  def responses
+    event_rsvps.map(&:response).uniq
+  end
+
+  def acceptances?
+    responses.include? "accepted"
+  end
+
+  def declines?
+    responses.include? "declined"
+  end
+
+  ### Status methods
+
+  def status
+    return :completed if event_rsvps&.map(&:unit_membership_id) & active_family_member_ids == active_family_member_ids
+    return :partial if event_rsvps.any?
+
+    :none
+  end
+
+  def completed?
+    status == :completed
+  end
+
+  def partial?
+    status == :partial
+  end
+
+  def none?
+    status == :none
+  end
+
+  def new_record?
+    status == :none
   end
 end

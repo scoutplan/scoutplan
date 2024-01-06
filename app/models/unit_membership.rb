@@ -40,6 +40,7 @@ class UnitMembership < ApplicationRecord
   has_many :event_organizers
   has_many :organized_events, through: :event_organizers, source: :event
   has_many :notifications, as: :recipient, dependent: :destroy
+  has_many :payments, dependent: :destroy
   has_noticed_notifications
   has_secure_token
 
@@ -87,11 +88,7 @@ class UnitMembership < ApplicationRecord
   end
 
   def siblings
-    parents.flat_map(&:children) - [self]
-  end
-
-  def coparents
-    children.flat_map(&:parents) - [self]
+    parents.includes(:children).flat_map(&:children) - [self]
   end
 
   def display_first_name(member = nil)
@@ -108,7 +105,7 @@ class UnitMembership < ApplicationRecord
   # member.family(include_self: :prepend) => [member, parent1, parent2, child1, child2]
   #
   def family(include_self: :append)
-    res = (children | parents | siblings | coparents).uniq
+    res = (children | parents | siblings).uniq
     res.append(self) if [true, :append].include?(include_self)
     res.unshift(self) if include_self == :prepend
     res

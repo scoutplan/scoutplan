@@ -1,8 +1,0 @@
-li.filterable-item(id="#{dom_id(member)}")
-  = link_to unit_event_family_rsvps_path(@event.unit, @event, unit_membership_id: member.id),
-            class: "block py-2",
-            id: dom_id(member),
-            draggable: true,
-            data: { turbo_frame: "modal", action: "dragstart->dashboard-drop#dragstart dragend->dashboard-drop#dragend drag->dashboard-drop#drag" } do
-    i.fa-solid.fa-user.text-stone-400.mr-2
-    span.filterable-name = member.display_name

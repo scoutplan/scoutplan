@@ -153,6 +153,9 @@ GEM
       msgpack (~> 1.2)
     brow (0.4.1)
     builder (3.2.4)
+    bullet (7.1.5)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.11)
     byebug (11.1.3)
     capybara (3.39.2)
       addressable
@@ -610,6 +613,7 @@ GEM
       unf_ext
     unf_ext (0.0.8.2)
     unicode-display_width (2.5.0)
+    uniform_notifier (1.16.0)
     version_gem (1.1.3)
     warden (1.2.9)
       rack (>= 2.0.9)
@@ -643,6 +647,7 @@ DEPENDENCIES
   aws-sdk-s3
   blazer
   bootsnap
+  bullet
   byebug (~> 11.1)
   capybara
   capybara_test_helpers

@@ -14,6 +14,14 @@ article.py-4
             i.fa-stack(title="#{t('events.show.captions.full_response')}")
               i.fa-solid.fa-circle.fa-stack-2x.text-amber-300
               i.fa-solid.fa-clipboard-check.fa-stack-1x.text-amber-800
+          - elsif rsvp_service.family_rsvps.any?
+            i.fa-stack(title="#{t('events.show.captions.partial_response')}")
+              i.fa-solid.fa-circle.fa-stack-2x.text-amber-300
+              i.fa-solid.fa-exclamation-triangle.fa-stack-1x.text-amber-800
+          - else
+            i.fa-stack(title="#{t('events.show.captions.no_response')}")
+              i.fa-solid.fa-circle.fa-stack-2x.text-amber-300          
+              i.fa-solid.fa-exclamation-triangle.fa-stack-1x.text-amber-800
 
         div.middle
           - if rsvp_service.family_fully_declined?
@@ -42,7 +50,7 @@ article.py-4
     .flex.flex-col.md:flex-row.md:justify-between.md:items-center.gap-2
       div
         i.fa-stack.mr-1
-          i.fa-solid.fa-circle.fa-stack-2x.text-amber-400
+          i.fa-solid.fa-circle.fa-stack-2x.text-amber-300
           i.fa-solid.fa-exclamation-triangle.mr-1.text-amber-900.fa-stack-1x
         = t("events.index.rsvp.none_cta")
       

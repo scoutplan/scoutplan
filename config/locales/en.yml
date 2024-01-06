@@ -341,7 +341,7 @@ en:
         list:       "View as List"
 
       event_row:
-        rsvp_respond: "RSVP Needed"
+        rsvp_respond: "Please RSVP"
         rsvp_change:  "Change"
         rsvp_complete: "Complete Your RSVP"
 
@@ -419,6 +419,8 @@ en:
         organize_title:   "You have elevated permissions"
         attendees_zero:   "No one's signed up yet."
         full_response:    "Your family has responded. Thank you!"
+        partial_response: "Your family RSVP is incomplete."
+        no_response:      "Your family hasn't responded yet."
 
       cancel:
         notice:       "Cancelling a published event will remove it from the calendar. Are you sure you want to proceed?"

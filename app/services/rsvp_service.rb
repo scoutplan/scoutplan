@@ -107,7 +107,7 @@ class RsvpService < ApplicationService
   # for the current member, return the next
   # event that isn't fully responded by the family
   def next_pending_event
-    unit = member.unit
+    unit = unit_membership.unit
     candidate_events = unit.events.published.rsvp_required.where("starts_at BETWEEN ? AND ?",
                                                                  DateTime.now,
                                                                  30.days.from_now)
@@ -120,7 +120,7 @@ class RsvpService < ApplicationService
 
   # record a response to event for the unit_membership's active family
   def record_family_response(response)
-    members = member.family(include_self: true)
+    members = unit_membership.family(include_self: true)
     members.each do |family_member|
       next unless family_member.status_active?
 

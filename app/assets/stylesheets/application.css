@@ -113,102 +113,97 @@ input.dt-switch.right-value:checked ~ .dt-switch-container .switch-button {
   transition: transform 0.25s;  
 }
 
-span.dt-switch {
-  .switch-container {
-    background: grey;
-    display: inline-block;
-    border-radius: 9999px;
-    height: 2.5em;
-    position: relative;
-    padding: 0.25em;
-    width: 14.5em;
-    flex-shrink: 0;
-    transition: background-color 0.25s;
-
-    &.disabled {
-      background: #ccc;
-    }
-
-    label {
-      display: inline-block;
-      color: white;
-      width: 6em;
-      font-weight: 600;
-      text-align: center;
-      z-index: 10;
-      font-weight: 600;
-      position: relative;
-      padding: 0.25rem 0;
-      cursor: pointer;
-
-      &.center-label {
-        width: 2em;
-        color: rgba(255, 255, 255, 0.0);
-        cursor: default;
-      }
-    }
-
-    .switch-button {
-      background: white;
-      display: block;
-      position: absolute;
-      width: 6em;
-      height: 2em;
-      border-radius: 9999px;
-      transform: translateX(0);
-      transition: all 0.25s;
-    }
-  }
-
-  input.center-value:checked ~ .switch-container .switch-button {
-    transform: translateX(6em);
-    width: 2em;
-  }
-
-  input.right-value:checked ~ .switch-container .switch-button {
-    transform: translateX(8em);
-  }  
-
-  input.right-value:checked + .switch-container {
-    background: #4d7c0f;
-  }
-  
-  input.left-value:checked ~ .switch-container {
-    background: #b91c1c;
-  }
-
-  input.left-value:checked ~ .switch-container .left-label {
-    color: #7f1d1d;
-  }
-
-  input.right-value:checked ~ .switch-container .right-label {
-    color: #4d7c0f;
-  }
-
-  input.right-value:checked ~ .switch-container .left-label {
-    color: #ecfccb;
-
-    &:hover {
-      color: white;
-    }
-  }
-
-  input.left-value:checked ~ .switch-container .right-label {
-    color: #fee2e2;
-
-    &:hover {
-      color: white;
-    }
-  }
-
-  input.center-value:checked ~ .switch-container {
-    background: #78716c;
-  }
-
-  /* input.left-value:checked:disabled ~ label.left-label, input.right-value:checked:disabled ~ label.right-label {
-    color: #d6d3d1;
-  } */
+span.dt-switch .switch-container {
+  background: grey;
+  display: inline-block;
+  border-radius: 9999px;
+  height: 2.5em;
+  position: relative;
+  padding: 0.25em;
+  width: 14.5em;
+  flex-shrink: 0;
+  transition: background-color 0.25s;
 }
+
+span.dt-switch .switch-container.disabled {
+  background: #ccc;
+}  
+
+span.dt-switch .switch-container label {
+  display: inline-block;
+  color: white;
+  width: 6em;
+  font-weight: 600;
+  text-align: center;
+  z-index: 10;
+  font-weight: 600;
+  position: relative;
+  padding: 0.25rem 0;
+  cursor: pointer;
+}
+
+span.dt-switch .switch-container label.center-label {
+  width: 2em;
+  color: rgba(255, 255, 255, 0.0);
+  cursor: default;
+}
+
+span.dt-switch .switch-container .switch-button {
+  background: white;
+  display: block;
+  position: absolute;
+  width: 6em;
+  height: 2em;
+  border-radius: 9999px;
+  transform: translateX(0);
+  transition: all 0.25s;
+}
+
+span.dt-switch input.center-value:checked ~ .switch-container .switch-button {
+  transform: translateX(6em);
+  width: 2em;
+}
+
+span.dt-switch input.right-value:checked ~ .switch-container .switch-button {
+  transform: translateX(8em);
+}  
+
+span.dt-switch input.right-value:checked + .switch-container {
+  background: #4d7c0f;
+}
+
+span.dt-switch input.left-value:checked ~ .switch-container {
+  background: #b91c1c;
+}
+
+span.dt-switch input.left-value:checked ~ .switch-container .left-label {
+  color: #7f1d1d;
+}
+
+span.dt-switch input.right-value:checked ~ .switch-container .right-label {
+  color: #4d7c0f;
+}
+
+span.dt-switch input.right-value:checked ~ .switch-container .left-label {
+  color: #ecfccb;
+}
+
+span.dt-switch input.right-value:checked ~ .switch-container .left-label:hover {
+  color: white;
+}
+
+span.dt-switch input.left-value:checked ~ .switch-container .right-label {
+  color: #fee2e2;
+}
+
+span.dt-switch input.left-value:checked ~ .switch-container .right-label:hover {
+  color: white;
+}
+
+span.dt-switch input.center-value:checked ~ .switch-container {
+  background: #78716c;
+}
+
 
 .dt-switch-indicator {
   display: none;
@@ -311,4 +306,13 @@ form.is-dirty .dirty-warning {
 
 .dropdown.dropdown-active .dropdown-menu {
   display: block;
+}
+
+details > summary {
+  list-style: none;
+}
+
+details > summary::marker, /* Latest Chrome, Edge, Firefox */ 
+details > summary::-webkit-details-marker /* Safari */ {
+  display: none;
 }

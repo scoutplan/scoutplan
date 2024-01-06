@@ -14,7 +14,9 @@ class EventRsvpsController < EventContextController
     @event_dashboard = EventDashboard.new(@event)
   end
 
-  def popup; end
+  def popup
+    @family_rsvp = FamilyRsvp.new(@current_member, @event)
+  end
 
   def edit
     @presenter = EventPresenter.new(@event, @current_member)

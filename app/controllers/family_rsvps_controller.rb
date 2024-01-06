@@ -3,8 +3,9 @@ class FamilyRsvpsController < EventContextController
 
   before_action :find_unit_membership
 
-  def index
+  def new
     @family_rsvp = FamilyRsvp.new(@unit_membership, @event)
+    authorize @family_rsvp
   end
 
   def create

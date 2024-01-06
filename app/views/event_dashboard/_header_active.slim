@@ -1,4 +1,4 @@
-header#members_active_header.bg-yellow-800.p-4.drop-shadow-md(class="group-[.droptarget]:bg-yellow-950")
+header#members_active_header.sticky.top-12.bg-yellow-800.p-4.drop-shadow-md(class="group-[.droptarget]:bg-yellow-950")
   p.text-lg.font-medium.text-yellow-300 = number_to_percentage(event_dashboard.non_response_rate * 100, precision: 0)
   h2.font-medium.text-lg.text-yellow-50
     span.text-6xl.font-normal = event_dashboard.non_respondent_count

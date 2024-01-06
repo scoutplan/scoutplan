@@ -1,7 +1,7 @@
 class EventRsvp < ApplicationRecord
   RESPONSE_OPTIONS = { accepted: 1, accepted_pending: 3, declined: 0, declined_pending: 2 }.freeze
 
-  # include Notifiable
+  include Notifiable
 
   belongs_to :event
   belongs_to :unit_membership
@@ -12,6 +12,7 @@ class EventRsvp < ApplicationRecord
 
   has_many :documents, as: :documentable, dependent: :destroy
   has_one :unit, through: :unit_membership
+  has_one :user, through: :unit_membership
   validates_uniqueness_of :event, scope: :unit_membership
   validates :response, presence: { message: "requires a response" }
   validate :common_unit?

@@ -8,13 +8,13 @@
              data: { action: "click->popup#close" } do
         i.fa-solid.fa-times 
       = render partial: "family_rsvps/header", locals: { unit_membership: @current_member, event: @event }
-      = form_with url: unit_event_family_rsvps_path(@event.unit, @event), method: :post, format: :turbo_stream, data: { controller: "dirt-detector" } do |f|
+      = form_with url: new_unit_event_family_rsvp_path(@event.unit, @event), method: :post, format: :turbo_stream, data: { controller: "dirt-detector" } do |f|
         section.p-4.rounded-lg.bg-stone-100
           = render partial: "events/edit_rsvp_fields", locals: { event: @event, unit: @unit, presenter: presenter, f: f }
 
         footer.mt-2
           .flex.flex-row.justify-between.items-baseline
             .flex.flex-col.md:flex-row.gap-2
-              = f.submit "Change RSVPs", class: "block px-6 py-2 rounded-lg bg-amber-300 hover:bg-amber-400 text-amber-900 font-semibold"
+              = f.submit @family_rsvp.new_record? ? "Send your RSVP" : "Change your RSVP", class: "block px-6 py-2 rounded-lg bg-amber-300 hover:bg-amber-400 text-amber-900 font-semibold"
               = button_tag "Cancel", class: "text-amber-700 bg-amber-100 hover:bg-amber-200 font-semibold rounded-lg px-5 py-2", data: { action: "click->popup#close" }
     
