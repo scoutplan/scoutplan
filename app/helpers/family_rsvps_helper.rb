@@ -1,0 +1,2 @@
+module FamilyRsvpsHelper
+end

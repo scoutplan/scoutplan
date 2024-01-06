@@ -8,12 +8,20 @@
 article.py-4
   - if rsvp_service.any_responses?
     .flex.flex-col.md:justify-between.md:flex-row.md:items-center.gap-1
-      .flex.flex-row.gap-1.items-baseline
+      .flex.flex-row.gap-1.items-center
         div.left
           - if rsvp_service.family_fully_responded?
             i.fa-stack(title="#{t('events.show.captions.full_response')}")
               i.fa-solid.fa-circle.fa-stack-2x.text-amber-300
               i.fa-solid.fa-clipboard-check.fa-stack-1x.text-amber-800
+          - elsif rsvp_service.family_rsvps.any?
+            i.fa-stack(title="#{t('events.show.captions.partial_response')}")
+              i.fa-solid.fa-circle.fa-stack-2x.text-amber-300
+              i.fa-solid.fa-exclamation-triangle.fa-stack-1x.text-amber-800
+          - else
+            i.fa-stack(title="#{t('events.show.captions.no_response')}")
+              i.fa-solid.fa-circle.fa-stack-2x.text-amber-300          
+              i.fa-solid.fa-exclamation-triangle.fa-stack-1x.text-amber-800
 
         div.middle
           - if rsvp_service.family_fully_declined?
@@ -22,14 +30,7 @@ article.py-4
             = rsvp_service.family_responses_in_words
 
       div.right
-        // Update RSVPs button (if allowed)
-        - if policy(@event).rsvp? && @event.rsvp_open?
-          = link_to "Change your RSVP", unit_event_edit_rsvps_path(@event.unit, @event),
-                    class: "cta-button text-center block md:inline-block font-semibold bg-amber-200 text-amber-900 hover:bg-amber-300 rounded-lg px-4 py-2 whitespace-nowrap",
-                    data: { turbo_action: "advance", turbo_frame: "main" }
-        - else
-          .inline-block.font-bold.text-gray-400.text-sm.mt-1
-            = t("events.rsvp.closed")
+        = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: @event, show_rsvp: params[:variation] == "rsvp" }
     
     - if @event.shifts?
       .table.border-spacing-2.text-sm
@@ -49,15 +50,13 @@ article.py-4
     .flex.flex-col.md:flex-row.md:justify-between.md:items-center.gap-2
       div
         i.fa-stack.mr-1
-          i.fa-solid.fa-circle.fa-stack-2x.text-amber-400
+          i.fa-solid.fa-circle.fa-stack-2x.text-amber-300
           i.fa-solid.fa-exclamation-triangle.mr-1.text-amber-900.fa-stack-1x
         = t("events.index.rsvp.none_cta")
       
       div
         - if policy(@event).rsvp? && @event.rsvp_open?
-          = link_to "Respond Now", unit_event_edit_rsvps_path(@event.unit, @event),
-                    class: "cta-button block md:inline-block font-bold text-center bg-amber-400 rounded text-amber-800 hover:bg-amber-500 hover:text-amber-900 px-4 py-2",
-                    data: { turbo_action: "advance", turbo_frame: "main" }
+          = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: @event, show_rsvp: params[:variation] == "rsvp" }
 
   - elsif !@event.rsvp_open?
     .flex.flex-row.justify-between.items-center

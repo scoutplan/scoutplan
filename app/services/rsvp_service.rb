@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 class RsvpService < ApplicationService
-  attr_accessor :member, :event
+  attr_accessor :unit_membership, :event
 
-  def initialize(member, event = nil)
-    @member = member
-    @member = event.unit.members.find_by(user: member) if member.is_a?(User) && event.present?
+  def initialize(user_or_unit_membership, event = nil)
+    @unit_membership = user_or_unit_membership
+    if user_or_unit_membership.is_a?(User) && event.present?
+      @unit_membership = event.unit.unit_memberships.find_by(user: user_or_unit_membership)
+    end
     @event = event
     super()
   end
@@ -19,7 +21,7 @@ class RsvpService < ApplicationService
     # return @unresponded_events if @unresponded_events.present?
 
     res = []
-    # family = @member.family
+    # family = unit_membership.family
     # family_member_ids = family.map(&:id)
     events.each do |event|
       self.event = event
@@ -42,14 +44,14 @@ class RsvpService < ApplicationService
   # end
 
   def family_members
-    @member.family(include_self: :prepend)
+    unit_membership.family(include_self: :prepend)
   end
 
   # for the current Event, return an array of members who haven't responded
   def non_respondents
-    raise ArgumentError, "Event attribute must be set" unless @event.present?
+    raise ArgumentError, "Event attribute must be set" unless event.present?
 
-    @event.unit.members.status_active - @event.rsvps.collect(&:member)
+    event.unit.members.status_active - event.rsvps.collect(&:unit_membership)
   end
 
   def family_fully_responded?
@@ -70,30 +72,32 @@ class RsvpService < ApplicationService
   def family_responses_in_words
     clauses = []
 
-    EventRsvp::RESPONSE_OPTIONS.each do |response|
-      responses = family_rsvps.select { |r| r.response == response }
+    EventRsvp::RESPONSE_OPTIONS.each do |response, _intval|
+      responses = family_rsvps.select { |r| r.response == response.to_s }
       next unless responses.count.positive?
 
-      names = responses.map { |r| r.display_first_name(@member) }
-      clauses << [names.to_grammatical_list,
-                  names.be_conjugation,
-                  I18n.t("global.event_rsvp_responses.#{response}")].join(" ")
+      names = responses.map { |r| r.display_first_name(unit_membership) }
+      clauses << response_clause(response, names)
     end
 
     clauses.join("; ").upcase_first
   end
 
-  def family_non_respondents
-    return unless @event.present?
+  def response_clause(response, names)
+    [names.to_grammatical_list, names.be_conjugation, I18n.t("global.event_rsvp_responses.#{response}")].join(" ")
+  end
 
-    active_family_members - @event.rsvps.map(&:unit_membership)
+  def family_non_respondents
+    return unless event.present?
+
+    active_family_members - event.rsvps.map(&:unit_membership)
   end
 
   def family_rsvps
     return @family_rsvps if @family_rsvps.present?
 
     family_member_ids = family_members.map(&:id)
-    @family_rsvps = @event.rsvps.where(unit_membership: family_member_ids)
+    @family_rsvps = event.rsvps.where(unit_membership: family_member_ids)
   end
 
   def family_accepted
@@ -103,7 +107,7 @@ class RsvpService < ApplicationService
   # for the current member, return the next
   # event that isn't fully responded by the family
   def next_pending_event
-    unit = member.unit
+    unit = unit_membership.unit
     candidate_events = unit.events.published.rsvp_required.where("starts_at BETWEEN ? AND ?",
                                                                  DateTime.now,
                                                                  30.days.from_now)
@@ -114,18 +118,18 @@ class RsvpService < ApplicationService
     nil
   end
 
-  # record a response to @event for the @member's active family
+  # record a response to event for the unit_membership's active family
   def record_family_response(response)
-    members = member.family(include_self: true)
+    members = unit_membership.family(include_self: true)
     members.each do |family_member|
       next unless family_member.status_active?
 
       record_response(family_member, response)
     end
-    MemberNotifier.new(member).send_family_rsvp_confirmation(event)
+    MemberNotifier.new(unit_membership).send_family_rsvp_confirmation(event)
   end
 
-  # record a response to @event for a given member
+  # record a response to event for a given member
   def record_response(member, response)
     rsvp = event.rsvps.create_with(respondent: member, response: response)
                 .find_or_create_by!(event: event, unit_membership: member)
@@ -140,6 +144,6 @@ class RsvpService < ApplicationService
   end
 
   def unit
-    @member.unit
+    unit_membership.unit
   end
 end

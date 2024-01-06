@@ -1,5 +1,5 @@
 = turbo_frame_tag "modal"
-  .absolute.z-50.inset-0.bg-black/10.backdrop-blur(data-action="keydown->modal#keydown")
+  .fixed.z-50.inset-0.bg-black/10.backdrop-blur(data-action="keydown->modal#keydown")
     .absolute.inset-1
       .relative.max-w-xl.top-1/2.left-1/2.bg-white.-translate-x-1/2.-translate-y-1/2.rounded-lg.drop-shadow-overhead.p-6.modal-dialog
         header.mb-4
@@ -13,13 +13,8 @@
           p = EventPresenter.new(@event, @current_member).full_dates_to_s
           p = event_prices(@event)
 
-        section.px-6.py-2.bg-sky-900.text-sky-200.rounded-lg.my-1
+        section.px-6.py-2.bg-sky-900.text-sky-100.rounded-lg.my-1
           table.w-full.text-sm
-            thead
-              tr
-                th.py-1.text-left.border-b.border-sky-600.font-normal = "Family member"
-                th.py-1.text-right.border-b.border-sky-600.font-normal = "Amount"
-            
             tbody
               - @family_rsvps.accepted.each do |rsvp|
                 tr
@@ -33,6 +28,6 @@
 
               tr
                 td.py-1.border-t.border-sky-600 = "Amount due"
-                td.py-1.text-right.text-cyan-50.border-t.font-bold.border-sky-600 = number_to_currency(@amount_due)
+                td.py-1.text-right.border-t.font-bold.border-sky-600 = number_to_currency(@amount_due)
 
         = render partial: "form"

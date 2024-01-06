@@ -71,9 +71,9 @@ section(style="font-weight:bold; padding-bottom:0.5rem;")
     - if @event.rsvp_open? && EventPolicy.new(@member, @event).rsvp?
       p(style="padding-top: 1rem;")
         - if @family_rsvps.any?
-          = link_to "Change your response", magic_url_for(@member, unit_event_edit_rsvps_url(@unit, @unit.events.first)), class: "rsvp-link"
+          = link_to "Change your response", magic_url_for(@member, unit_event_family_rsvps_url(@unit, @unit.events.first)), class: "rsvp-link"
         - else
-          = link_to "Respond now", magic_url_for(@member, unit_event_edit_rsvps_url(@unit, @unit.events.first)), class: "rsvp-link"
+          = link_to "Respond now", magic_url_for(@member, unit_event_family_rsvps_url(@unit, @unit.events.first)), class: "rsvp-link"
 
 - if @event.description.present?
   section(style="line-height:140%; padding: 1rem 0; border-top: 1px solid #ddd;")

@@ -5,7 +5,6 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
-  get 'event_dashboard/index'
   root to: "home#index"
 
   %w[404 500].each do |code|
@@ -27,7 +26,7 @@ Rails.application.routes.draw do
   get "new_unit/code", to: "new_unit#code"
   post "new_unit/check_code", to: "new_unit#check_code"
   get "new_unit/user_info", to: "new_unit#user_info"
-  post "new_unit/save_user_info", to: "new_unit#save_user_info"  
+  post "new_unit/save_user_info", to: "new_unit#save_user_info"
   get "new_unit/unit_info", to: "new_unit#unit_info"
   post "new_unit/save_unit_info", to: "new_unit#save_unit_info"
   get "new_unit/add_members", to: "new_unit#add_members"
@@ -99,8 +98,10 @@ Rails.application.routes.draw do
 
     resources :events, path: "schedule" do
       resources :chat_messages, as: "discussion", path: "discussion"
+      resources :family_rsvps, only: [:new, :create]
       resources :event_rsvps, as: "rsvps", path: "rsvps" do
         collection do
+          get "popup"
           post "batch", to: "event_rsvps#create_batch"
           post "batch_member", to: "event_rsvps#create_batch_member" # kludge alert
         end
@@ -118,6 +119,7 @@ Rails.application.routes.draw do
       resources :locations, module: :events
       member do
         get "dashboard", to: "event_dashboard#index", as: "dashboard"
+        get "rsvp",      to: "events#show", as: "rsvp", defaults: { variation: "rsvp" }
       end
       collection do
         get "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
@@ -126,14 +128,15 @@ Rails.application.routes.draw do
         get "list"
         get "paged_list"
         get "threeup"
+        get "threeup/:year/:month", to: "events#threeup"
         get "calendar", to: redirect { |path_params, _|
-          "/units/#{ path_params[:unit_id] }/schedule/calendar/#{Date.today.year}/#{Date.today.month}"
+          "/units/#{path_params[:unit_id]}/schedule/calendar/#{Date.today.year}/#{Date.today.month}"
         }, as: "calendar_redirect"
         get "calendar/:year/:month", to: "events#calendar", as: "calendar"
         get "spreadsheet", to: "events#index", defaults: { variation: "spreadsheet" }
         post "bulk_publish"
       end
-      get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"
+      # get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"
       get   "cancel"
       get   "organize"
       get   "history"

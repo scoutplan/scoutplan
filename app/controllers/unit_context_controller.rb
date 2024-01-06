@@ -32,7 +32,7 @@ class UnitContextController < ApplicationController
     return unless params[:unit_id].present? || params[:id].present?
 
     # TODO: scope this to the current user's memberships
-    @current_unit = @unit = Unit.includes(:unit_memberships).find(params[:unit_id] || params[:id])
+    @current_unit = @unit = Unit.find(params[:unit_id] || params[:id])
     @current_member = @membership = @unit.membership_for(current_user)
     Time.zone = @unit.settings(:locale).time_zone
   end

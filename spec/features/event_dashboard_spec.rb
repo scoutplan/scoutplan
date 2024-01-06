@@ -18,7 +18,6 @@ describe "Event Dashboard", type: :feature do
   end
 
   it "shows youth RSVP on dashboard" do
-    puts @member.inspect
     path = dashboard_unit_event_path(@unit, @event)
     visit path
     expect(page).to have_content(@child.display_name)

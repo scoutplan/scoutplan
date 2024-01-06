@@ -1,5 +1,5 @@
 class EventRsvpsController < EventContextController
-  before_action :find_rsvp, except: [:index, :new, :create, :create_batch, :create_batch_member]
+  before_action :find_rsvp, except: [:index, :new, :create, :create_batch, :create_batch_member, :popup]
 
   def index
     respond_to do |format|
@@ -11,38 +11,12 @@ class EventRsvpsController < EventContextController
     event_rsvp_params = params[:event_rsvp].permit(:unit_membership_id, :response)
     event_rsvp_params[:respondent] = @current_member
     @rsvp = @event.rsvps.find_or_create_by!(event_rsvp_params)
+    @event_dashboard = EventDashboard.new(@event)
   end
 
-  def create_batch
-    @rsvps = []
-    params[:unit_memberships].each do |member_id, rsvp_attributes|
-      rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: member_id.to_i)
-      rsvp.respondent = @current_member
-      rsvp.response = rsvp_attributes[:response]
-      rsvp.note = params[:note]
-      if rsvp.changed?
-        rsvp.save
-        @rsvps << rsvp
-      end
-    end
+  def popup
+    @family_rsvp = FamilyRsvp.new(@current_member, @event)
   end
-
-  # for some reason create_batch always arrives in turbo_stream format, so we had to
-  # create a separate method to handle the html format
-  def create_batch_member
-    @rsvps = []
-    params[:unit_memberships].each do |member_id, rsvp_attributes|
-      rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: member_id.to_i)
-      rsvp.respondent = @current_member
-      rsvp.response = rsvp_attributes[:response]
-      rsvp.note = params[:note]
-      if rsvp.changed?
-        rsvp.save
-        @rsvps << rsvp
-      end
-    end
-    redirect_to [@unit, @event], notice: "Your RSVPs been received."
-  end  
 
   def edit
     @presenter = EventPresenter.new(@event, @current_member)
@@ -54,6 +28,7 @@ class EventRsvpsController < EventContextController
     else
       @rsvp.update(params[:event_rsvp].permit(:unit_membership_id, :response))
     end
+    @event_dashboard = EventDashboard.new(@event)
   end
 
   def new

@@ -1,5 +1,5 @@
 class EventRsvp < ApplicationRecord
-  RESPONSE_OPTIONS = %w[accepted accepted_pending declined declined_pending].freeze
+  RESPONSE_OPTIONS = { accepted: 1, accepted_pending: 3, declined: 0, declined_pending: 2 }.freeze
 
   include Notifiable
 
@@ -12,12 +12,13 @@ class EventRsvp < ApplicationRecord
 
   has_many :documents, as: :documentable, dependent: :destroy
   has_one :unit, through: :unit_membership
+  has_one :user, through: :unit_membership
   validates_uniqueness_of :event, scope: :unit_membership
   validates :response, presence: { message: "requires a response" }
   validate :common_unit?
   validate :response_allowed?
 
-  enum response: { declined: 0, accepted: 1, declined_pending: 2, accepted_pending: 3 }
+  enum response: RESPONSE_OPTIONS
 
   delegate :reply_to, to: :event
   delegate :organizers?, to: :event

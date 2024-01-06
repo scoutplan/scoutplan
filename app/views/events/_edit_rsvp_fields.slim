@@ -1,0 +1,83 @@
+- unit_membership ||= @current_member
+- family = unit_membership.family(include_self: :prepend)
+- family_member_ids = family.map(&:id)
+- rsvps = event.rsvps.where(unit_membership_id: family_member_ids)
+- @rsvps = rsvps
+- notes = rsvps.map(&:note).uniq.join(", ")
+
+ul
+  - family.each_with_index do |family_member, index|
+    - existing_rsvp = event.rsvps.find_by(unit_membership: family_member)
+    - rsvp = event.rsvps.build( unit_membership: family_member,
+                                response: existing_rsvp&.response,
+                                includes_activity: existing_rsvp&.includes_activity,
+                                event_shift_ids: existing_rsvp&.event_shift_ids )
+
+    - policy = EventRsvpPolicy.new(@current_member, rsvp)  
+
+    li.relative.member-rsvp-item
+      // horizontal line
+      .absolute.left-0.right-0.top-1/2.border-t.border-stone-500.border-dotted
+
+      .flex.flex-row.justify-between.items-center.py-2.gap-20
+        // person name
+        .relative.block.whitespace-nowrap.pr-1.pl-7.bg-stone-100
+          = presenter.family_context_name(family_member)
+
+        div
+          // switch
+          - if @event.shifts?
+            - @event.shifts.each do |shift|
+              .py-1.ml-1.bg-stone-100
+                = render partial: "components/switch", locals: { checked: existing_rsvp&.event_shift_ids&.include?(shift.id),
+                                                                label: shift.name,
+                                                                object_name: "event[members][#{family_member.id}][shifts][#{shift.id}]",
+                                                                method: "response",
+                                                                checked_value: "accepted",
+                                                                unchecked_value: "declined",
+                                                                disabled: !policy.create? }
+          - else
+            - if existing_rsvp&.pending_approval?            
+              .inline-block.text-yellow-700.dark:text-yellow-500.text-sm.mx-2
+                i.fa-regular.fa-info-circle.inline-block.px-1
+                - if existing_rsvp.respondent == @current_member then
+                  = "pending approval"
+                - else
+                  = "pending your approval"       
+
+            = double_throw_switch("unit_memberships[#{family_member.id}]", "response",
+                                  checked_left:  existing_rsvp&.declined? || existing_rsvp&.declined_pending?,
+                                  checked_right: existing_rsvp&.accepted? || existing_rsvp&.accepted_pending?,
+                                  checked_center: !existing_rsvp.present?,
+                                  left_value:    "declined",
+                                  right_value:   "accepted",
+                                  left_label:    "Regrets",
+                                  right_label:   "Going!",
+                                  disabled:      !policy.create?,
+                                  wrapper_classes: "pl-1 bg-stone-100 relative",
+                                  data: { controller: "double-throw-switch" } )
+
+            .dt-switch-indicator.dt-switch-indicator-left.absolute.left-0.top-1/2.-translate-y-1/2
+              i.fa-solid.fa-fw.fa-user-xmark.text-red-600.mr-1
+
+            .dt-switch-indicator.dt-switch-indicator-center.absolute.left-0.top-1/2.-translate-y-1/2
+              i.fa-solid.fa-fw.fa-user.text-stone-500.mr-1
+
+            .dt-switch-indicator.dt-switch-indicator-right.absolute.left-0.top-1/2.-translate-y-1/2
+              i.fa-solid.fa-fw.fa-user-check.text-lime-600.mr-5
+
+// note field
+.mt-3.mt-2.text-sm
+  = f.label :note, class: "block mb-1"
+  = text_field_tag :note,
+    notes,
+    class: "rounded text-sm p-2 block w-full placeholder-stone-400 border border-stone-200 dark:bg-stone-950 dark:border-stone-700 dark:placeholder-stone-500",
+    placeholder: t("events.rsvp.note_placeholder"),
+    autocomplete: "off"
+
+
+
+css:
+  .table.divide-y .table-row {
+    border-top: 1px solid red;
+  }

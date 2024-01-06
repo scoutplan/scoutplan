@@ -73,10 +73,10 @@
                    class: "w-full border rounded border-stone-400 block mt-4 placeholder-stone-300"
 
   footer.mt-4
-    .flex.flex-col.md:flex-row.gap-2.justify-end
-      = button_tag "Cancel", class: "active:pt-[13px] active:pb-[11px] active:text-stone-500 font-bold border rounded-lg border-stone-400 bg-stone-50 px-5 py-3", data: { action: "click->modal#close" }
+    .flex.flex-col.md:flex-row.gap-2
       = f.submit t("payments.receive.record_payment"),
-                 class: "active:text-stone-200 active:pt-[13px] active:pb-[11px] block px-6 py-3 rounded-lg border border-stone-900 bg-stone-700 text-white font-bold"
+                 class: "bg-stone-800 text-white font-semibold rounded-lg px-4 py-2"
+      = button_tag "Cancel", class: "font-semibold bg-stone-200 rounded-lg px-4 py-2", data: { action: "click->modal#close" }
 
   css:
     .selected-glyph {

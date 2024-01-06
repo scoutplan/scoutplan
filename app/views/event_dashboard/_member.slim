@@ -1,8 +1,0 @@
-li(id="#{dom_id(member)}")
-  = link_to new_unit_event_rsvp_path(@event.unit, @event, unit_membership_id: member.id),
-            class: "block py-2",
-            id: dom_id(member),
-            draggable: true,
-            data: { turbo_frame: "modal", action: "dragstart->dashboard-drop#dragstart drag->dashboard-drop#drag" } do
-    i.fa-solid.fa-user.text-stone-400.mr-2
-    = member.display_name

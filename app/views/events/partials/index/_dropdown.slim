@@ -16,7 +16,7 @@ aside.block.w-80.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.rounded
         i.fa-fw.fa-solid.fa-calendar-plus.mr-2
         = t("events.captions.new_short")
 
-    - if action_name == "list"
+    - if action_name != "calendar"
       = link_to calendar_unit_events_path(@unit, year: Date.today.year, month: Date.today.month),
                 class: "block px-4 py-2 rounded hover:bg-brand-600",
                 data: { turbo_action: "advance" } do
@@ -24,13 +24,21 @@ aside.block.w-80.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.rounded
         i.fa-fw.fa-solid.fa-calendar.mr-2
         = t("events.index.buttons.calendar")
 
-    - elsif action_name == "calendar"
+    - if action_name != "list"
       = link_to list_unit_events_path(@unit),
                 class: "block px-4 py-2 rounded hover:bg-brand-600",
                 data: { turbo_action: "advance" } do
 
         i.fa-fw.fa-solid.fa-list.mr-2
         = t("events.index.buttons.list")
+
+    - if action_name != "threeup"
+      = link_to threeup_unit_events_path(@unit),
+                class: "block px-4 py-2 rounded hover:bg-brand-600",
+                data: { turbo_action: "advance" } do
+
+        i.fa-fw.fa-solid.fa-columns-3.mr-2
+        = t("events.index.buttons.threeup")
 
     / past events
     - if action_name == "list"

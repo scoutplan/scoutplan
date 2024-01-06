@@ -1,0 +1,32 @@
+- return unless event.requires_rsvp && user_signed_in?
+
+- family_has_rsvps = false
+- family_fully_responded = true
+- event_rsvps = event.rsvps.includes(:unit_membership)
+- rsvp_service = RsvpService.new(@current_member, event)
+- @current_member.family.each do |member|
+  - rsvp = event_rsvps.select { |r| r.unit_membership == member }&.first
+  - family_has_rsvps = family_has_rsvps || rsvp.present?
+  - family_fully_responded = family_fully_responded && rsvp.present?
+
+- show_rsvp ||= false
+- details_tag_attributes = {class: "inline-block group #{family_fully_responded ? 'fully-responded' : 'response-needed' }"}
+- details_tag_attributes[:open] = "" if show_rsvp
+
+- if event.rsvp_open?
+  - if policy(event).rsvp?
+    = content_tag(:details, details_tag_attributes) do
+      summary.rounded-lg.cursor-pointer.inline-block.px-4.py-2.text-center.font-semibold.bg-amber-200.hover:bg-amber-300.text-amber-800(title="#{rsvp_service.family_responses_in_words}")
+        - case when family_fully_responded
+          = "Change your RSVP"
+        - when family_has_rsvps
+          = "Complete your RSVP"
+        - else
+          = family_fully_responded ? "Change RSVPs" : "Please RSVP"
+
+      = turbo_frame_tag "rsvp_popup", src: popup_unit_event_rsvps_path(@unit, event), role: "dialog", data: { controller: "popup" }
+
+- else
+  .font-semibold.text-sm
+    i.fa-solid.fa-ban.mr-2
+    = t("events.index.rsvp.closed")

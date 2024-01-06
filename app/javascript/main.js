@@ -31,7 +31,10 @@ document.addEventListener("turbo:load", function() {
   document.querySelectorAll(".dropdown-button").forEach(function(linkElem) {
     if (linkElem.classList.contains("dropdown-ready")) { return; }
     linkElem.addEventListener("click", function(event) {
-      event.target.closest(".dropdown").classList.toggle("menu-open");
+      const dropdownContainer = event.target.closest(".dropdown");
+      const autofocusElem = dropdownContainer.querySelector("[autofocus]");
+      dropdownContainer.classList.toggle("menu-open");
+      if (dropdownContainer.classList.contains("menu-open")) { autofocusElem?.focus(); }
       event.preventDefault();
       return false;
     });

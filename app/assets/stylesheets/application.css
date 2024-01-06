@@ -113,6 +113,114 @@ input.dt-switch.right-value:checked ~ .dt-switch-container .switch-button {
   transition: transform 0.25s;  
 }
 
+span.dt-switch .switch-container {
+  background: grey;
+  display: inline-block;
+  border-radius: 9999px;
+  height: 2.5em;
+  position: relative;
+  padding: 0.25em;
+  width: 14.5em;
+  flex-shrink: 0;
+  transition: background-color 0.25s;
+}
+
+span.dt-switch .switch-container.disabled {
+  background: #ccc;
+}  
+
+span.dt-switch .switch-container label {
+  display: inline-block;
+  color: white;
+  width: 6em;
+  font-weight: 600;
+  text-align: center;
+  z-index: 10;
+  font-weight: 600;
+  position: relative;
+  padding: 0.25rem 0;
+  cursor: pointer;
+}
+
+span.dt-switch .switch-container label.center-label {
+  width: 2em;
+  color: rgba(255, 255, 255, 0.0);
+  cursor: default;
+}
+
+span.dt-switch .switch-container .switch-button {
+  background: white;
+  display: block;
+  position: absolute;
+  width: 6em;
+  height: 2em;
+  border-radius: 9999px;
+  transform: translateX(0);
+  transition: all 0.25s;
+}
+
+span.dt-switch input.center-value:checked ~ .switch-container .switch-button {
+  transform: translateX(6em);
+  width: 2em;
+}
+
+span.dt-switch input.right-value:checked ~ .switch-container .switch-button {
+  transform: translateX(8em);
+}  
+
+span.dt-switch input.right-value:checked + .switch-container {
+  background: #4d7c0f;
+}
+
+span.dt-switch input.left-value:checked ~ .switch-container {
+  background: #b91c1c;
+}
+
+span.dt-switch input.left-value:checked ~ .switch-container .left-label {
+  color: #7f1d1d;
+}
+
+span.dt-switch input.right-value:checked ~ .switch-container .right-label {
+  color: #4d7c0f;
+}
+
+span.dt-switch input.right-value:checked ~ .switch-container .left-label {
+  color: #ecfccb;
+}
+
+span.dt-switch input.right-value:checked ~ .switch-container .left-label:hover {
+  color: white;
+}
+
+span.dt-switch input.left-value:checked ~ .switch-container .right-label {
+  color: #fee2e2;
+}
+
+span.dt-switch input.left-value:checked ~ .switch-container .right-label:hover {
+  color: white;
+}
+
+span.dt-switch input.center-value:checked ~ .switch-container {
+  background: #78716c;
+}
+
+
+.dt-switch-indicator {
+  display: none;
+}
+
+.dt-switch.selected-left ~ .dt-switch-indicator-left {
+  display: inline-block;
+}
+
+.dt-switch.selected-center ~ .dt-switch-indicator-center {
+  display: inline-block;
+}
+
+.dt-switch.selected-right ~ .dt-switch-indicator-right {
+  display: inline-block;
+}
+
 @media (prefers-color-scheme: dark) {
   input.dt-switch.right-value:disabled:checked ~ .dt-switch-container, .switch-disabled .dt-switch-container {
     background: #444 !important;
@@ -198,4 +306,13 @@ form.is-dirty .dirty-warning {
 
 .dropdown.dropdown-active .dropdown-menu {
   display: block;
+}
+
+details > summary {
+  list-style: none;
+}
+
+details > summary::marker, /* Latest Chrome, Edge, Firefox */ 
+details > summary::-webkit-details-marker /* Safari */ {
+  display: none;
 }

@@ -19,10 +19,16 @@ module Event::DatePresentable
     starts_at.month != ends_at.month
   end
 
-  def date_to_s_short(options)
+  def date_to_s_xs(options = {})
+    return "#{starts_at.strftime('%b %-d')}#{dash(options)}#{ends_at.strftime('%b %-d, %Y')}".html_safe if spans_months?
+
+    "#{starts_at.strftime('%b %-d')}#{dash(options)}#{ends_at.strftime('%-d, %Y')}"
+  end
+
+  def date_to_s_short(options = {})
     return "#{starts_at.strftime('%B %-d')}#{dash(options)}#{ends_at.strftime('%B %-d, %Y')}".html_safe if spans_months?
 
-    "#{starts_at.strftime('%B %-d')}#{dash(options)}#{ends_at.strftime('%-d, %Y')}".html_safe
+    "#{starts_at.strftime('%B %-d')}#{dash(options)}#{ends_at.strftime('%-d, %Y')}"
   end
 
   def date_to_s(**options)

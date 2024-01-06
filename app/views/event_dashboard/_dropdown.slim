@@ -2,21 +2,28 @@
   = link_to "#", class: "dropdown-button inline-block text-stone-500 hover:text-stone-900 dark:hover:text-stone-300" do
     i.fa-circle-ellipsis.far.fa-2xl
 
-  nav.dropdown-menu.absolute.right-0.bg-brand-500.text-white.drop-shadow-lg.rounded.m-2.z-10.animate-pop-open.text-left
+  nav.dropdown-menu.absolute.right-0.bg-stone-700.text-stone-100.drop-shadow-lg.rounded.m-2.z-10.animate-pop-open.text-left
+    .p-2
+      = search_field :filter_names, nil,
+                  class: "w-full p-2 rounded bg-stone-100 text-stone-800 text-placeholder-400 outline-0 ring-0 focus:ring-0 border-0",
+                  autofocus: true,
+                  placeholder: t(".filter_names_placeholder"),
+                  data: { name_filter_target: "termTextField",
+                          action: "input->name-filter#filterNames" }
     = link_to edit_unit_event_path(@unit, @event),
-              class: "whitespace-nowrap block px-4 py-2 rounded hover:bg-brand-600",
+              class: "whitespace-nowrap block px-4 py-2 rounded hover:bg-stone-600",
               data: { turbo_action: "advance" } do
       i.fa-regular.fa-pencil.fa-fw.mr-2              
       = t(".edit")
       
     = link_to unit_event_payments_path(@unit, @event),
-              class: "whitespace-nowrap block px-4 py-2 rounded hover:bg-brand-600",
+              class: "whitespace-nowrap block px-4 py-2 rounded hover:bg-stone-600",
               data: { turbo_action: "advance" } do
       i.fa-regular.fa-circle-dollar.fa-fw.mr-2
       = t(".payments")
 
     = link_to unit_event_event_rsvps_path(@unit, @event, format: :pdf),
-              class: "whitespace-nowrap block px-4 py-2 rounded hover:bg-brand-600",
+              class: "whitespace-nowrap block px-4 py-2 rounded hover:bg-stone-600",
               data: { turbo_action: "advance" } do
       i.fa-regular.fa-print.fa-fw.mr-2
       = t(".pdf")

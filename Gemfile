@@ -89,6 +89,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "bullet"
   gem "factory_bot_rails", "~> 6.2"
   gem "listen", "~> 3.7"
   gem "pry-rails"

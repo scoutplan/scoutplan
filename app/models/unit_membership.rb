@@ -40,6 +40,7 @@ class UnitMembership < ApplicationRecord
   has_many :event_organizers
   has_many :organized_events, through: :event_organizers, source: :event
   has_many :notifications, as: :recipient, dependent: :destroy
+  has_many :payments, dependent: :destroy
   has_noticed_notifications
   has_secure_token
 
@@ -62,7 +63,7 @@ class UnitMembership < ApplicationRecord
   accepts_nested_attributes_for :user
   accepts_nested_attributes_for :child_relationships,
                                 allow_destroy: true,
-                                reject_if: ->(attributes) { attributes["child_unit_membership_id"].blank? }
+                                reject_if:     ->(attributes) { attributes["child_unit_membership_id"].blank? }
   accepts_nested_attributes_for :parent_relationships, allow_destroy: true
 
   has_settings do |s|
@@ -87,7 +88,7 @@ class UnitMembership < ApplicationRecord
   end
 
   def siblings
-    parents.flat_map(&:children) - [self]
+    parents.includes(:children).flat_map(&:children) - [self]
   end
 
   def display_first_name(member = nil)
@@ -104,10 +105,14 @@ class UnitMembership < ApplicationRecord
   # member.family(include_self: :prepend) => [member, parent1, parent2, child1, child2]
   #
   def family(include_self: :append)
-    res = (children | parents | siblings)
+    res = (children | parents | siblings).uniq
     res.append(self) if [true, :append].include?(include_self)
     res.unshift(self) if include_self == :prepend
     res
+  end
+
+  def family_name
+    family.map(&:last_name).uniq.join(" / ")
   end
 
   def contactable_object
@@ -122,13 +127,11 @@ class UnitMembership < ApplicationRecord
     user.smsable? && settings(:communication).via_sms
   end
 
-  # rubocop:disable Style/RedundantBegin
   def time_zone
-    @time_zone ||= begin
-      user.settings(:locale).time_zone || unit.settings(:locale).time_zone || Rails.configuration.default_time_zone
-    end
+    @time_zone ||= user.settings(:locale).time_zone ||
+                   unit.settings(:locale).time_zone ||
+                   Rails.configuration.default_time_zone
   end
-  # rubocop:enable Style/RedundantBegin
 
   def sender_name_and_address
     "#{user.display_name} at #{unit.name} <#{unit.from_address}>"

@@ -205,12 +205,14 @@ en:
 
   event_dashboard:
     index:
+      page_title: "Event Dashboard - %{event_title}"
       title: "Event Dashboard"
 
     dropdown:
       edit: "Change event details"
       payments: "Event payment history"
       pdf: "Download printable attendee roster"
+      filter_names_placeholder: "Type to filter names"
 
     rsvp:
       pending_approval: "This RSVP is pending parent or guardian approval"
@@ -248,6 +250,11 @@ en:
           placeholder_online: "Type or paste a web address"
           switch_label: "This is an online event"
           title: "Event location"
+
+      show:
+        costs:
+          paid:   "You've paid. Thanks!"
+          unpaid: "Your payment is outstanding."
     
     payments:
       index:
@@ -296,6 +303,7 @@ en:
       buttons:
         calendar:     "View as calendar"
         list:         "View as a list"
+        threeup:      "View three months"
         print:        "Download printable PDF"
         next_season:  "Download next season"
         subscribe:    "Add to your calendar"
@@ -333,7 +341,7 @@ en:
         list:       "View as List"
 
       event_row:
-        rsvp_respond: "RSVP Needed"
+        rsvp_respond: "Please RSVP"
         rsvp_change:  "Change"
         rsvp_complete: "Complete Your RSVP"
 
@@ -410,7 +418,9 @@ en:
         organize_reason:  "This section is visible to you because you're a unit administrator or an event organizer"
         organize_title:   "You have elevated permissions"
         attendees_zero:   "No one's signed up yet."
-        full_response:    "Your family has responded"
+        full_response:    "Your family has responded. Thank you!"
+        partial_response: "Your family RSVP is incomplete."
+        no_response:      "Your family hasn't responded yet."
 
       cancel:
         notice:       "Cancelling a published event will remove it from the calendar. Are you sure you want to proceed?"
