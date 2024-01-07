@@ -49,8 +49,8 @@
                 data: { turbo_action: "advance" }
         = t("events.index.buttons.today")
 
-    h1.hidden.md:inline-block.font-bold.text-4xl.ml-6
-      = first_day_of_month.strftime("%B %Y")        
+    h1.hidden.md:inline-block.text-4xl.ml-6
+      = first_day_of_month.strftime("%B %Y")
     
     .right.ml-auto
       .dropdown.relative
@@ -125,12 +125,10 @@
 
           - display_day += 1
 
-      // end of 7-day loop
-    // end of until loop
+  = turbo_stream.update "page_title" do
+    = t("events.index.page_title", unit_name: @unit.name)  
 
 javascript:
-  document.title = "#{@unit.name} · Event Calendar"
-
   document.addEventListener("turbo:load", function() {
     document.body.classList.remove("showing-as-list");
     document.body.classList.add("showing-as-calendar");
