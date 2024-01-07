@@ -87,7 +87,7 @@ class EmailEvaluator
     client = OpenAI::Client.new(access_token: ENV.fetch("OPENAI_ACCESS_TOKEN"))
     response = client.completions(
       parameters: {
-        model: "text-davinci-003",
+        model: "gpt-3.5-turbo-instruct",
         prompt: ai_prompt,
         temperature: 0,
         max_tokens: 1000

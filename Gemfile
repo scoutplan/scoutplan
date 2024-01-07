@@ -72,7 +72,7 @@ gem "StreetAddress"
 gem "stripe"
 gem "tailwindcss-rails"
 gem "timecop"
-gem "trix"
+# gem "trix"
 gem "turbo-rails"
 gem "twilio-ruby"
 
