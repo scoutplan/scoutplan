@@ -70,6 +70,10 @@ class Unit < ApplicationRecord
     "#{name} #{location}"
   end
 
+  def next_event
+    @next_event ||= events.future.published.order(:starts_at).first
+  end
+
   def payments_enabled?
     payment_account.present? && payment_account.active?
   end

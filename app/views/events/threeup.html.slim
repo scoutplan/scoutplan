@@ -18,7 +18,7 @@
           .flex.flex-row.justify-between.items-center
             .left
               h1.text-4xl.mb-2
-                = t("events.index.page_title")
+                = t("events.index.title")
 
             .right
               .dropdown
@@ -42,6 +42,9 @@
         i.fa-solid.fa-chevron-right   
 
   = turbo_frame_tag "modal", data: { controller: "modal" }
+
+  = turbo_stream.update "page_title" do
+    = t("events.index.page_title", unit_name: @unit.name)  
 
 css:
   li.event {

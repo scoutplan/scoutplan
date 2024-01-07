@@ -1,10 +1,10 @@
 - organizers = @event.organizers
 - organizer_ids = organizers.map(&:unit_membership_id)
 
-section.pt-8.pb-4.grid.grid-cols-3.gap-5.border-t
+section.py-4.grid.grid-cols-1.md:grid-cols-3.gap-8.border-t
   .col-span-1
     h2.text-lg Event Organizers
-    p.text-sm.text-sky-700 Who's responsible for this event? You can add multiple organizers who will be authorized to view RSVPs.
+    p.text-sm.text-sky-700.dark:text-sky-400 Who's responsible for this event? You can add multiple organizers who will be authorized to view RSVPs.
 
   .col-span-2
     = content_tag :section,
