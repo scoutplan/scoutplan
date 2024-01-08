@@ -13,8 +13,8 @@ Rails.application.routes.draw do
 
   devise_for :users, path: "", controllers: {
     omniauth_callbacks: "users/omniauth_callbacks",
-    sessions: "users/sessions",
-    registrations: "users/registrations"
+    sessions:           "users/sessions",
+    registrations:      "users/registrations"
   }
 
   get "sms", to: "inbound_sms#receive"
@@ -213,7 +213,8 @@ Rails.application.routes.draw do
   # Member profile settings
   get "member_profile", to: "unit_membership_profiles#index", as: "member_profiles"
   get "member_profile/:unit_membership_id", to: "unit_membership_profiles#index", as: "member_profile"
-  get "member_profile/:unit_membership_id/calendar", to: "unit_membership_profiles#calendar", as: "member_calendar_profile"
+  get "member_profile/:unit_membership_id/calendar", to: "unit_membership_profiles#calendar",
+                                                     as: "member_calendar_profile"
   post "member_profile/:unit_membership_id", to: "unit_membership_profiles#update", as: "update_member_profile"
 
   resources :member_relationships, as: "relationships", path: "relationships", only: %i[destroy]

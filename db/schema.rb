@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_30_130833) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_07_144356) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "unaccent"
@@ -562,6 +562,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_30_130833) do
     t.integer "invited_by_id"
     t.string "invited_by_type"
     t.string "nickname"
+    t.datetime "password_changed_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

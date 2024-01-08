@@ -31,7 +31,7 @@ class ProfilesController < ApplicationController
   end
 
   def perform_password_update
-    if @member.update!(member_params)
+    if @member.update!(member_params.merge(password_changed_at: Time.now))
       redirect_to root_path, notice: "Password updated"
     else
       render "change_password"

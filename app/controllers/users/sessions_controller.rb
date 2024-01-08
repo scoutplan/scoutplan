@@ -9,19 +9,17 @@ module Users
       stored_location_for(resource) || root_path
     end
 
+    # rubocop:disable Metrics/AbcSize
     def create
       sign_in_via_magic_link if params[:token].present?
 
       if params[:user][:email].present? && params[:user][:password].present?
-        self.resource = warden.authenticate!(auth_options)
-        set_flash_message!(:notice, :signed_in)
-        sign_in(resource_name, resource)
-        yield resource if block_given?
-        redirect_to params[:user_return_to] || root_path and return
+        sign_in_via_password
       elsif params[:user][:email].present?
         send_session_email if resolve_user
       end
     end
+    # rubocop:enable Metrics/AbcSize
 
     private
 
@@ -55,6 +53,15 @@ module Users
       magic_link.user.remember_me!
       session[:via_magic_link] = true
       redirect_to magic_link.path
+    end
+
+    def sign_in_via_password
+      self.resource = warden.authenticate!(auth_options)
+      set_flash_message!(:notice, :signed_in)
+      sign_in(resource_name, resource)
+      yield resource if block_given?
+      session[:via_magic_link] = false
+      redirect_to params[:user_return_to] || root_path and return
     end
 
     def target_path

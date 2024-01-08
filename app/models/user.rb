@@ -92,6 +92,10 @@ class User < ApplicationRecord
     self.password_confirmation = generated_password
   end
 
+  def password_set?
+    password_changed_at.present?
+  end
+
   def super_admin?
     (ENV["SCOUTPLAN_ADMINS"]&.split(",") || ["admin@scoutplan.org"]).include?(email)
   end
