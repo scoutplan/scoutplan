@@ -1,4 +1,4 @@
-class EventRsvpMailer < ApplicationMailer
+class EventRsvpConfirmationMailer < ApplicationMailer
   MAP_ATTACHMENT_NAME = "map.png".freeze
 
   layout "basic_mailer"
@@ -7,8 +7,8 @@ class EventRsvpMailer < ApplicationMailer
 
   before_action :setup
 
-  def event_rsvp_notification
-    attach_files
+  def event_rsvp_confirmation
+    attach_files if @rsvp.accepted?
     @presenter = RsvpMailPresenter::Factory.build(@rsvp, @recipient)
     mail(to:       @presenter.to_address,
          from:     @presenter.from_address,

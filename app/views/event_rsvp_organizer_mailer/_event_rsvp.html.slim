@@ -1,0 +1,7 @@
+li
+  = event_rsvp.unit_membership.display_name
+  - if event_rsvp.recent?
+    - background_color = event_rsvp.accepted? ? "#65a30d" : "#dc2626"
+
+    span(style="line-height: 1.0; background-color: #{background_color}; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; display:inline-block; padding: 0.3rem 0.5rem; margin-left: 0.5rem; color: white; font-size: 0.8rem; border-radius: 0.25rem;")
+      | New

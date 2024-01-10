@@ -316,3 +316,7 @@ details > summary::marker, /* Latest Chrome, Edge, Firefox */
 details > summary::-webkit-details-marker /* Safari */ {
   display: none;
 }
+
+.date-badge-now ~ .date-badge-next {
+  display: none;
+}

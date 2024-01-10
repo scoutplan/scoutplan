@@ -29,6 +29,7 @@ class EventRsvp < ApplicationRecord
   scope :adult, -> { joins(:unit_membership).merge(UnitMembership.adult) }
   scope :accepted_intent, -> { where(response: %w[accepted accepted_pending]) }
   scope :declined_intent, -> { where(response: %w[declined declined_pending]) }
+  scope :recent, -> { where("event_rsvps.updated_at > ?", 24.hours.ago) }
 
   def common_unit?
     errors.add(:event, "and Member must belong to the same Unit") unless event.unit == unit_membership.unit
@@ -89,5 +90,9 @@ class EventRsvp < ApplicationRecord
 
   def pending_approval?(val = nil)
     %w[declined_pending accepted_pending].include?(val || response)
+  end
+
+  def recent?
+    updated_at > 1.day.ago
   end
 end

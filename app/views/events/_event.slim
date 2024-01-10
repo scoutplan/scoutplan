@@ -7,7 +7,7 @@
 li.relative.event.md:px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#{row_classes(event)}" id="#{dom_id(event)}")
   .flex.flex-row.items-center
     = link_to unit_event_path(@unit, event),
-              class: "event py-2 block w-full dark:border-stone-700",
+              class: "event py-2 block w-full",
               name:  event.id,
               data:  { turbo_action: "advance",
                        turbo_frame: "main",

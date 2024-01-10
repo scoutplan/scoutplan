@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/ClassLength
 class MemberMailer < ScoutplanMailer
   before_action :set_addresses
   before_action :time_zone
@@ -29,16 +28,16 @@ class MemberMailer < ScoutplanMailer
     )
   end
 
-  def event_organizer_daily_digest_email
-    @event = params[:event]
-    @member = params[:member]
-    @rsvps = params[:rsvps]
-    @last_ran_at = params[:last_ran_at] || @event.created_at
+  # def event_organizer_daily_digest_email
+  #   @event = params[:event]
+  #   @member = params[:member]
+  #   @rsvps = params[:rsvps]
+  #   @last_ran_at = params[:last_ran_at] || @event.created_at
 
-    mail(to:      @member.email,
-         from:    @from_address,
-         subject: "#{@event.unit.name} #{@event.title} RSVPs")
-  end
+  #   mail(to:      @member.email,
+  #        from:    @from_address,
+  #        subject: "#{@event.unit.name} #{@event.title} RSVPs")
+  # end
 
   # rubocop:disable Metrics/AbcSize
   def message_email
@@ -108,4 +107,3 @@ class MemberMailer < ScoutplanMailer
     Time.zone = @unit.settings(:locale).time_zone
   end
 end
-# rubocop:enable Metrics/ClassLength

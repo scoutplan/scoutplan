@@ -1,0 +1,4 @@
+- @event_rsvp_groups.each do |group|
+  = t("." + group[0]).upcase + ":"
+  = render partial: "event_rsvp", collection: group[1], formats: [ :text ]
+  = "\n\n"

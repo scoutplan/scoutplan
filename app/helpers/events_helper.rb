@@ -26,11 +26,9 @@ module EventsHelper
     end
   end
 
-  # given an Event, return a space-delimited string of classes to apply to a table row
-  # in the Events#index view
   def row_classes(event)
     result = []
-    result << "event-past" if event.ends_at.localtime.past?
+    result << "event-past" if event.ends_at.past?
     result << "event-future" if event.starts_at > 3.months.from_now
     result << "event-rsvp"   if event.requires_rsvp
     result << "event-draft"  if event.draft?
