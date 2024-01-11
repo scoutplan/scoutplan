@@ -38,8 +38,8 @@ RSpec.describe MemberMailer, type: :mailer do
       before do
         @family_member1 = FactoryBot.create(:member, unit: @unit)
         @family_member2 = FactoryBot.create(:member, unit: @unit)
-        @family_member1.parent_relationships.create(parent_member: @member)
-        @family_member2.parent_relationships.create(parent_member: @member)
+        @family_member1.parent_relationships.create(parent_unit_membership: @member)
+        @family_member2.parent_relationships.create(parent_unit_membership: @member)
       end
 
       it "renders the correct status for an event with no family RSVPs" do

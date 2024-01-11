@@ -1,1 +1,1 @@
-<%= @recipient.display_name %>
+Your RSVP for <%= @event_rsvp.event.title %> has been received. Visit <%= magic_url_for(@recipient, rsvp_unit_event_url(@event_rsvp.unit, @event_rsvp.event)) %> if you need to change your RSVP.

@@ -10,15 +10,20 @@ RSpec.describe EventRsvp::Notifiable, type: :concern do
   end
 
   describe "callbacks" do
-    it "enqueues a two email jobs" do
+    it "enqueues an email job" do
       rsvp = FactoryBot.build(:event_rsvp, event: @event, member: @member, respondent: @member)
 
-      expect { rsvp.save! }.to have_enqueued_job(Noticed::DeliveryMethods::Email).twice
+      expect { rsvp.save! }.to have_enqueued_job(Noticed::DeliveryMethods::Email)
     end
 
-    it "enqueues two SMS jobs" do
+    it "enqueues an SMS job" do
       rsvp = FactoryBot.build(:event_rsvp, event: @event, member: @member, respondent: @member)
-      expect { rsvp.save! }.to have_enqueued_job(Noticed::DeliveryMethods::Twilio).twice
+      expect { rsvp.save! }.to have_enqueued_job(Noticed::DeliveryMethods::Twilio)
+    end
+
+    it "enqueues an organizer notification job" do
+      rsvp = FactoryBot.build(:event_rsvp, event: @event, member: @member, respondent: @member)
+      expect { rsvp.save! }.to have_enqueued_job(EventRsvpOrganizerNotificationJob)
     end
   end
 end

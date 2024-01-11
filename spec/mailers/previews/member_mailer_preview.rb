@@ -52,8 +52,8 @@ class MemberMailerPreview < ActionMailer::Preview
     unit = member.unit
     child1 = FactoryBot.create(:member, unit: unit)
     child2 = FactoryBot.create(:member, unit: unit)
-    member.child_relationships.create(child_member: child1)
-    member.child_relationships.create(child_member: child2)
+    member.child_relationships.create(child_unit_membership: child1)
+    member.child_relationships.create(child_unit_membership: child2)
     unit = member.unit
     event = FactoryBot.create(:event, :requires_rsvp, unit: unit)
     event.rsvps.create!(member: child2, response: :accepted, respondent: member)
@@ -65,8 +65,8 @@ class MemberMailerPreview < ActionMailer::Preview
     unit = member.unit
     child1 = FactoryBot.create(:member, unit: unit)
     child2 = FactoryBot.create(:member, unit: unit)
-    member.child_relationships.create(child_member: child1)
-    member.child_relationships.create(child_member: child2)
+    member.child_relationships.create(child_unit_membership: child1)
+    member.child_relationships.create(child_unit_membership: child2)
     event = FactoryBot.create(:event, :published, :requires_rsvp, unit: unit, rsvp_closes_at: 1.day.from_now)
     MemberMailer.with(event_ids: [event.id], member: member).rsvp_last_call_email
   end  
@@ -76,8 +76,8 @@ class MemberMailerPreview < ActionMailer::Preview
     unit = member.unit
     child1 = FactoryBot.create(:member, unit: unit)
     child2 = FactoryBot.create(:member, unit: unit)
-    member.child_relationships.create(child_member: child1)
-    member.child_relationships.create(child_member: child2)
+    member.child_relationships.create(child_unit_membership: child1)
+    member.child_relationships.create(child_unit_membership: child2)
     event = FactoryBot.create(:event, :published, :requires_rsvp, unit: unit, rsvp_closes_at: 1.day.from_now)
     event.rsvps.create!(member: child2, response: :accepted, respondent: member)
     MemberMailer.with(event_ids: [event.id], member: member).rsvp_last_call_email

@@ -1,5 +1,5 @@
 div(style="padding: 2rem; color: rgb(237, 233, 254); background-color: rgb(91, 33, 182); margin-top: 2rem; border-radius: 1rem; text-align: center;")
-  p(style="font-size: 4rem; line-height: 1.0;") #{number_to_percentage(@dashboard.response_rate, precision: 2)}
+  p(style="font-size: 4rem; line-height: 1.0;") #{number_to_percentage(@dashboard.response_rate * 100, precision: 0)}
   p response rate
   p = "(#{@dashboard.response_count} of #{@dashboard.active_count} active members)"
 

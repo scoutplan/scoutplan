@@ -16,14 +16,6 @@ GIT
       rubocop (~> 1.21)
 
 GIT
-  remote: https://github.com/scoutplan/noticed.git
-  revision: a451f4fbd963aea2a6f891d424da80e325d76d1a
-  specs:
-    noticed (1.6.3)
-      http (>= 4.0.0)
-      rails (>= 5.2.0)
-
-GIT
   remote: https://github.com/scoutplan/semaphores.git
   revision: ad2e3b546cd72b3e1aab503c967a475086003e06
   specs:
@@ -341,6 +333,9 @@ GEM
       racc (~> 1.4)
     nokogiri (1.16.0-x86_64-linux)
       racc (~> 1.4)
+    noticed (1.6.3)
+      http (>= 4.0.0)
+      rails (>= 5.2.0)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
       jwt (>= 1.0, < 3.0)
@@ -679,7 +674,7 @@ DEPENDENCIES
   loofah (>= 2.19.1)
   memory_profiler
   nokogiri (>= 1.14.3)
-  noticed!
+  noticed
   omniauth
   omniauth-google-oauth2
   omniauth-rails_csrf_protection (~> 1.0)

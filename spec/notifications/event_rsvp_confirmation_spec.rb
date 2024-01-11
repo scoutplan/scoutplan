@@ -27,11 +27,11 @@ RSpec.describe EventRsvpConfirmation do
 
   describe "methods" do
     it "renders the SMS body correctly" do
-      @rsvp = @event.rsvps.create!(unit_membership: @youth, response: "accepted", respondent: @parent)
-      ap @rsvp
-      confirmation = EventRsvpConfirmation.with(event_rsvp: @rsvp, recipient: @parent)
-      ap confirmation
-      expect(confirmation.sms_body).to include(@event.title)
+      rsvp = @event.rsvps.create!(unit_membership: @youth, response: "accepted", respondent: @parent)
+      confirmation = EventRsvpConfirmation.with(event_rsvp: rsvp)
+      body = confirmation.sms_body(recipient: @youth, event_rsvp: rsvp)
+      puts body
+      expect(body).to include(@event.title)
     end
   end
 end

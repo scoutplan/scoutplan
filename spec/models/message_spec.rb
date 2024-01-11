@@ -9,7 +9,7 @@ RSpec.describe Message, type: :model do
     @adult = FactoryBot.create(:member)
     @unit = @adult.unit
     @youth = FactoryBot.create(:member, :youth, unit: @unit)
-    @adult.child_relationships.create(child_member: @youth)
+    @adult.child_relationships.create(child_unit_membership: @youth)
   end
 
   it "has a valid factory" do

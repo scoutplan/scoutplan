@@ -11,6 +11,16 @@ RSpec.describe EventRsvpOrganizerNotification do
     expect(@youth.parents.count).to eq(1)
   end
 
+  describe "Twilio" do
+    it "renders the SMS body" do
+      @event.rsvps.create!(unit_membership: @youth, response: "accepted", respondent: @youth)
+      notification = EventRsvpOrganizerNotification.new(event: @event)
+      body = notification.sms_body(recipient: @youth, event: @event)
+      expect(body).to include(@event.title)
+      expect(body).to include(@youth.short_display_name)
+    end
+  end
+
   describe "youth RSVP" do
     it "creates an RSVP" do
       expect { @event.rsvps.create!(unit_membership: @youth, response: "accepted", respondent: @youth) }

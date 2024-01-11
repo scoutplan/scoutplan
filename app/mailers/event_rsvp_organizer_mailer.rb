@@ -8,7 +8,6 @@ class EventRsvpOrganizerMailer < ApplicationMailer
   helper MagicLinksHelper
 
   def event_rsvp_organizer_notification
-    ap "HERE!!!!!"
     mail(to:       to_address,
          from:     from_address,
          reply_to: reply_to,
@@ -43,6 +42,6 @@ class EventRsvpOrganizerMailer < ApplicationMailer
   end
 
   def subject
-    "[#{unit.name}] You have new RSVPs for #{event.title}"
+    "#{super} You have new RSVPs for #{event.title}"
   end
 end

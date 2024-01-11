@@ -42,8 +42,8 @@ RSpec.describe UnitMembership, type: :model do
       @member = FactoryBot.create(:unit_membership)
       @child1 = FactoryBot.create(:unit_membership, unit: @member.unit)
       @child2 = FactoryBot.create(:unit_membership, unit: @member.unit)
-      MemberRelationship.create(parent_member: @member, child_member: @child1)
-      MemberRelationship.create(parent_member: @member, child_member: @child2)
+      MemberRelationship.create(parent_unit_membership: @member, child_unit_membership: @child1)
+      MemberRelationship.create(parent_unit_membership: @member, child_unit_membership: @child2)
     end
 
     it "returns correct number of family members" do

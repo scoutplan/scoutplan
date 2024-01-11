@@ -1,1 +1,7 @@
-Hi there
+New RSVPs for <%= @event.title %> have arrived:
+
+<% @event.event_rsvps.recent.each do |rsvp| %>
+* <%= rsvp.unit_membership.short_display_name %> <%= rsvp.accepted? ? 'is attending' : 'is not attending' %>
+<% end %>
+
+Visit <%= magic_url_for(@recipient, dashboard_unit_event_url(@event.unit, @event)) %> to see all RSVPs.

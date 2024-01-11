@@ -1,5 +1,5 @@
 module EventRsvp::Notifiable
-  RUN_TIME = 19
+  RUN_TIME = 19 # 7pm
 
   extend ActiveSupport::Concern
 
@@ -17,24 +17,17 @@ module EventRsvp::Notifiable
 
   def enqueue_notifications
     EventRsvpConfirmation.with(event_rsvp: self).deliver_later(confirmation_recipients)
-    EventRsvpOrganizerNotification.with(event: event, wait_until: send_organizer_notification_at)
-                                  .deliver_later(organizer_recipients)
-  end
+    return unless send_organizer_notification?
 
-  def organizer_recipients
-    (event.organizers.map(&:unit_membership) + unit.unit_memberships.select do |um|
-      um.settings(:communication).receives_all_rsvps == "true"
-    end).uniq
+    EventRsvpOrganizerNotificationJob.set(wait_until: 1.day.from_now).perform_later(event)
   end
 
   def send_organizer_notification_at
     Time.zone = unit.time_zone
-    DateTime.current.change(hour: RUN_TIME, min: 0, sec: 0).utc
+    DateTime.current.next_occurence_of(hour: RUN_TIME).utc
   end
 
   def send_organizer_notification?
-    return true
-
     event.event_rsvps.recent.count == 1
   end
 end

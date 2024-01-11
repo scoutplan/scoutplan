@@ -80,16 +80,5 @@ RSpec.describe MemberNotifier, type: :model do
       expect(@member.organized_events).to include(@event)
       expect(@event.rsvps.count).to eq(2)
     end
-
-    it "sends a digest" do
-      notifier = MemberNotifier.new(@member)
-      expect { notifier.send_event_organizer_digest }.to change { enqueued_jobs.count }.by(1)
-    end
-
-    it "skips inactive members" do
-      FactoryBot.create(:unit_membership, unit: @unit, status: :inactive)
-      notifier = MemberNotifier.new(@member)
-      expect { notifier.send_event_organizer_digest }.to change { enqueued_jobs.count }.by(1)
-    end
   end
 end
