@@ -1,0 +1,7 @@
+h3(style="margin-bottom: 0.25rem; font-weight: 600;")
+  = t("." + event_rsvp_group[0])
+  span(style="font-weight: 400;")
+    | &nbsp;(#{event_rsvp_group[1].count})
+
+ul(style="margin-bottom: 1rem;")
+  = render partial: "event_rsvp", collection: event_rsvp_group[1], formats: [ :html ]

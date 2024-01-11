@@ -1,19 +1,37 @@
-# frozen_string_literal: true
-
 module EventRsvp::Notifiable
+  RUN_TIME = 19 # 7pm
+
   extend ActiveSupport::Concern
 
   included do
-    after_save_commit :enqueue_notify_job
+    before_save :enqueue_organization_notification, if: :send_organizer_notification?
+    after_save_commit :enqueue_confirmation
   end
 
-  def enqueue_notify_job
-    EventRsvpNotification.with(event_rsvp: self).deliver_later(recipients)
-  end
+  private
 
-  def recipients
-    return unit_membership.family if requires_approval?
+  def confirmation_recipients
+    return unit_membership.family if requires_approval? # <- code smell
 
     [unit_membership]
+  end
+
+  def enqueue_organization_notification
+    puts "Enqueuing EventRsvpOrganizerNotificationJob for #{event.title}"
+    EventRsvpOrganizerNotificationJob.set(wait_until: send_organizer_notification_at).perform_later(event)
+  end
+
+  def enqueue_confirmation
+    EventRsvpConfirmation.with(event_rsvp: self).deliver_later(confirmation_recipients)
+  end
+
+  def send_organizer_notification_at
+    Time.zone = unit.time_zone
+    Time.current.next_occurrence_of(hour: RUN_TIME).utc
+  end
+
+  def send_organizer_notification?
+    puts event.event_rsvps.recent.count.zero?
+    event.event_rsvps.recent.count.zero?
   end
 end

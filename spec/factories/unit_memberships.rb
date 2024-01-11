@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :unit_membership,
-          aliases: %i[member parent_member child_member respondent] do
+          aliases: %i[member parent_unit_membership child_unit_membership respondent] do
     unit
     user
     email  { Faker::Internet.email }

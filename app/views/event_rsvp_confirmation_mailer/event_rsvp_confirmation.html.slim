@@ -1,8 +1,10 @@
 p Hi, #{@recipient.first_name},
 
 p
-  - if @recipient == @rsvp.unit_membership
+  - if @recipient == @rsvp.unit_membership && @recipient == @rsvp.respondent
     | We've received your RSVP that you 
+  - elsif @recipient == @rsvp.unit_membership  
+    | #{@rsvp.respondent.display_name} has let us know that you   
   - else
     | #{@rsvp.respondent.first_name} has let us know that they 
 

@@ -9,7 +9,7 @@ describe "user profile", type: :feature do
     @user = @member.user
     @unit = @member.unit
     @youth_member = FactoryBot.create(:member, :youth, unit: @unit)
-    @member.child_relationships.create!(child_member: @youth_member)
+    @member.child_relationships.create!(child_unit_membership: @youth_member)
     login_as(@member.user, scope: :user)
   end
 

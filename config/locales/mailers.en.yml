@@ -1,0 +1,5 @@
+en:
+  event_rsvp_organizer_mailer:
+    event_rsvp_organizer_notification:
+      accepted: Accepted
+      declined: Declined

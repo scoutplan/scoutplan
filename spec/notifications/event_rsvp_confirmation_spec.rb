@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe EventRsvpNotification do
+RSpec.describe EventRsvpConfirmation do
   before do
     @event = FactoryBot.create(:event, :published, :requires_rsvp, allow_youth_rsvps: true)
     @unit = @event.unit
@@ -22,6 +22,16 @@ RSpec.describe EventRsvpNotification do
     it "notifies youth and parent" do
       expect { @event.rsvps.create(unit_membership: @youth, response: "declined", respondent: @youth) }
         .to have_enqueued_job.at_least(:once)
+    end
+  end
+
+  describe "methods" do
+    it "renders the SMS body correctly" do
+      rsvp = @event.rsvps.create!(unit_membership: @youth, response: "accepted", respondent: @parent)
+      confirmation = EventRsvpConfirmation.with(event_rsvp: rsvp)
+      body = confirmation.sms_body(recipient: @youth, event_rsvp: rsvp)
+      puts body
+      expect(body).to include(@event.title)
     end
   end
 end

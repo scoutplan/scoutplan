@@ -1,11 +1,11 @@
 - if event.in_progress?
-  .inline-block.event-tag-in-progress.font-semibold.tracking-wide.text-xs.rounded.bg-emerald-600.text-emerald-100.px-2.py-1
+  .date-badge-now.inline-block.event-tag-in-progress.font-semibold.tracking-wide.text-xs.rounded.bg-emerald-600.text-emerald-100.px-2.py-1(title="This event is happening now.")
     = t(".now")
 
 - elsif event.today?
-  .inline-block.event-tag-today.font-semibold.tracking-wide.text-xs.rounded.bg-lime-600.text-lime-100.px-2.py-1
+  .date-badge-today.inline-block.event-tag-today.font-semibold.tracking-wide.text-xs.rounded.bg-lime-600.text-lime-100.px-2.py-1(title="This event is happening today.")
     = t(".today")
 
 - elsif event == @unit.next_event
-  .inline-block.event-tag-next.font-semibold.tracking-wide.text-xs.rounded.bg-teal-600.text-teal-100.px-2.py-1
+  .date-badge-next.inline-block.event-tag-next.font-semibold.tracking-wide.text-xs.rounded.bg-teal-600.text-teal-100.px-2.py-1(title="This is the next event on the schedule.")
     = t(".next")

@@ -234,8 +234,12 @@ en:
 
     partials:
       event_row:
+        family_rsvp_link:
+          new: "RSVP needed"
+          update: "Change Your RSVP"
+          
         organize:
-          organize: "View RSVPs"
+          organize: "Event Dashboard"
 
         today:
           now: "Now"

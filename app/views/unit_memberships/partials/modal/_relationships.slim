@@ -9,27 +9,27 @@ div.pt-4
   span#relationship_show_panel
       - @target_membership.child_relationships.each do |relationship|
         = link_to \
-          unit_member_path(@current_unit, relationship.child_member),
+          unit_member_path(@current_unit, relationship.child_unit_membership),
           class: 'inline-block',
           style: 'margin-right: 0.5rem; margin-bottom: 0.5rem;',
-          title: "#{relationship.parent_member.display_first_name} can RSVP on behalf of #{relationship.child_member.display_first_name}" \
+          title: "#{relationship.parent_unit_membership.display_first_name} can RSVP on behalf of #{relationship.child_unit_membership.display_first_name}" \
           do
 
           i.fas.fa-user
           |&nbsp;&nbsp;
-          = relationship.child_member.short_display_name
+          = relationship.child_unit_membership.short_display_name
 
       - @target_membership.parent_relationships.each do |relationship|
         = link_to \
-          unit_member_path(@current_unit, relationship.parent_member),
+          unit_member_path(@current_unit, relationship.parent_unit_membership),
           class: 'btn btn-outline-secondary btn-sm',
           style: 'margin-right: 0.5rem; margin-bottom: 0.5rem;',
-          title: "#{relationship.parent_member.display_first_name} can RSVP on behalf of #{relationship.child_member.display_first_name}" \
+          title: "#{relationship.parent_unit_membership.display_first_name} can RSVP on behalf of #{relationship.child_unit_membership.display_first_name}" \
           do
 
           i.far.fa-user
           |&nbsp;&nbsp;
-          = relationship.parent_member.short_display_name
+          = relationship.parent_unit_membership.short_display_name
 
   = link_to \
     "#",
@@ -51,11 +51,11 @@ div.pt-4
           = crf.check_box :_destroy, class: 'btn-check destroy_relationship_input'
           = crf.label :_destroy,
                       class: 'btn btn-sm btn-outline-danger destroy_relationship_label',
-                      title: "Remove relationship to #{relationship.child_member.display_first_name}",
+                      title: "Remove relationship to #{relationship.child_unit_membership.display_first_name}",
                       data: { 'bs-toggle' => 'tooltip' } do
             i.fas.fa-times
             |&nbsp;&nbsp;
-            = relationship.child_member.full_display_name
+            = relationship.child_unit_membership.full_display_name
 
     / parent relationships
     - @target_membership.parent_relationships.each do |relationship|
@@ -65,11 +65,11 @@ div.pt-4
           = crf.check_box :_destroy, class: 'btn-check destroy_relationship_input'
           = crf.label :_destroy,
                       class: 'btn btn-sm btn-outline-danger destroy_relationship_label',
-                      title: "Remove relationship to #{relationship.child_member.display_first_name}",
+                      title: "Remove relationship to #{relationship.child_unit_membership.display_first_name}",
                       data: { 'bs-toggle' => 'tooltip' } do
             i.fas.fa-times
             |&nbsp;&nbsp;
-            = relationship.child_member.full_display_name
+            = relationship.child_unit_membership.full_display_name
 
     / add a child relationship dropdown
     = f.fields_for :child_relationships, @target_membership.child_relationships.new do |crf|

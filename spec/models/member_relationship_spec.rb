@@ -9,39 +9,39 @@ RSpec.describe MemberRelationship, type: :model do
     it "prevents duplicates" do
       example = FactoryBot.create(:member_relationship)
       dupe = FactoryBot.build(:member_relationship,
-                              parent_member: example.parent_member,
-                              child_member:  example.parent_member)
+                              parent_unit_membership: example.parent_unit_membership,
+                              child_unit_membership:  example.parent_unit_membership)
       expect(dupe).not_to be_valid
     end
 
     it "prevents self reference" do
       member = FactoryBot.create(:member)
-      example = FactoryBot.build(:member_relationship, parent_member: member, child_member: member)
+      example = FactoryBot.build(:member_relationship, parent_unit_membership: member, child_unit_membership: member)
       expect(example).not_to be_valid
     end
 
     it "requires a parent" do
-      expect(FactoryBot.build(:member_relationship, parent_member: nil)).not_to be_valid
+      expect(FactoryBot.build(:member_relationship, parent_unit_membership: nil)).not_to be_valid
     end
 
     it "requires a child" do
-      expect(FactoryBot.build(:member_relationship, child_member: nil)).not_to be_valid
+      expect(FactoryBot.build(:member_relationship, child_unit_membership: nil)).not_to be_valid
     end
   end
 
   describe "relationships" do
     before do
-      @parent_member = FactoryBot.create(:parent_member)
-      @child_member  = FactoryBot.create(:child_member, unit: @parent_member.unit)
-      @parent_member.child_relationships.create!(child_member: @child_member)
+      @parent_unit_membership = FactoryBot.create(:parent_unit_membership)
+      @child_unit_membership  = FactoryBot.create(:child_unit_membership, unit: @parent_unit_membership.unit)
+      @parent_unit_membership.child_relationships.create!(child_unit_membership: @child_unit_membership)
     end
 
     it "establishes child relationship" do
-      expect(@parent_member.children).to include(@child_member)
+      expect(@parent_unit_membership.children).to include(@child_unit_membership)
     end
 
     it "establishes parent relationship" do
-      expect(@child_member.parents).to include(@parent_member)
+      expect(@child_unit_membership.parents).to include(@parent_unit_membership)
     end
   end
 end

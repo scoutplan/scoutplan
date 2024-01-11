@@ -1,0 +1,7 @@
+= render partial: "header", formats: [ :html ]
+
+p(style="margin-bottom: 1.5rem;") New RSVPs have arrived. Here's where things stand:
+
+= render partial: "event_rsvp_group", collection: @event_rsvp_groups, formats: [ :html ]
+= render partial: "stats", formats: [ :html ]
+= render partial: "footer", formats: [ :html ]

@@ -12,7 +12,7 @@
         i.fa-solid.fa-chevron-left
 
       div.grow
-        header.mb-2
+        header.mb-2.pl-2
           .text-sm.font-semibold.uppercase.text-stone-500.dark:text-stone-300.tracking-widest = @unit.name
 
           .flex.flex-row.justify-between.items-center
@@ -47,10 +47,6 @@
     = t("events.index.page_title", unit_name: @unit.name)  
 
 css:
-  li.event {
-    border-top: 1px solid #e2e8f0;
-  }
-
   ol.month li.event:nth-of-type(2) {
     border-top: none;
   }
@@ -58,3 +54,7 @@ css:
   .event-month-boundary {
     padding-top: 0;
   }
+
+  .event + .event {
+    border-top: 1px solid #e2e8f0;
+  }  

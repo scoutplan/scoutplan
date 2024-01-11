@@ -9,9 +9,9 @@ RSpec.describe SmsResponseService, type: :model do
     @child1 = FactoryBot.create(:member, unit: @unit)
     @child2 = FactoryBot.create(:member, unit: @unit)
     @spouse = FactoryBot.create(:member, unit: @unit, status: "registered")
-    MemberRelationship.create!(parent_member: @member, child_member: @child1)
-    MemberRelationship.create!(parent_member: @member, child_member: @child2)
-    MemberRelationship.create!(parent_member: @member, child_member: @spouse)
+    MemberRelationship.create!(parent_unit_membership: @member, child_unit_membership: @child1)
+    MemberRelationship.create!(parent_unit_membership: @member, child_unit_membership: @child2)
+    MemberRelationship.create!(parent_unit_membership: @member, child_unit_membership: @spouse)
 
     @event = FactoryBot.create(:event, unit: @member.unit, requires_rsvp: true, starts_at: 1.week.from_now, status: :published)
     @service = RsvpService.new(@member, @event)

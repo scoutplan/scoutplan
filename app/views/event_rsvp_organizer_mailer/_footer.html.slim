@@ -1,0 +1,15 @@
+- content_for(:footer) do
+  p(style="font-size:0.9rem; color: #ccc;")
+    - if @recipient.admin?
+      = "You're receiving this because you're a Scoutplan administrator for #{@unit.name}."
+    - elsif @recipient.role == "organizer"
+      You're receiving this because you're a Scoutplan organizer for #{@unit.name}.
+    - else
+      You're receiving this because you're a Scoutplan organizer for #{@event.title}.
+
+    | &nbsp;
+
+    = magic_link_to @recipient,
+                    unit_events_url(@unit),
+                    style: "color: white;" do
+      = "View the full #{@unit.name} schedule"

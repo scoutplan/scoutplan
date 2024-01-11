@@ -7,9 +7,9 @@ GIT
 
 GIT
   remote: https://github.com/scoutplan/daypack.git
-  revision: 6272618473f03d561ad1b6235c53ce0f62508045
+  revision: efe87e542472a8c09a8074f52e9b0d7006dc42e0
   specs:
-    daypack (0.2.2)
+    daypack (0.3.1)
       activesupport (~> 7.1)
       i18n (~> 1.14)
       rspec (~> 3.12)
@@ -194,7 +194,7 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.5.0)
     docile (1.4.0)
-    domain_name (0.6.20231109)
+    domain_name (0.6.20240107)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -271,9 +271,9 @@ GEM
       activesupport (>= 6.0.0)
       railties (>= 6.0.0)
     io-console (0.7.1)
-    irb (1.11.0)
+    irb (1.11.1)
       rdoc
-      reline (>= 0.3.8)
+      reline (>= 0.4.2)
     jmespath (1.6.2)
     js_regex (3.11.0)
       character_set (~> 1.4)
@@ -364,7 +364,7 @@ GEM
       activerecord (>= 6.1)
       request_store (~> 1.4)
     parallel (1.24.0)
-    parser (3.2.2.4)
+    parser (3.3.0.2)
       ast (~> 2.4.1)
       racc
     pdf-core (0.9.0)
@@ -385,7 +385,7 @@ GEM
     psych (5.1.2)
       stringio
     public_suffix (5.0.4)
-    puma (5.6.7)
+    puma (5.6.8)
       nio4r (~> 2.0)
     pundit (2.3.1)
       activesupport (>= 3.0.0)
@@ -451,7 +451,7 @@ GEM
       redis-client (>= 0.17.0)
     redis-client (0.18.0)
       connection_pool
-    regexp_parser (2.8.3)
+    regexp_parser (2.9.0)
     regexp_property_values (1.4.0)
     reline (0.4.2)
       io-console (~> 0.5)
@@ -674,7 +674,7 @@ DEPENDENCIES
   loofah (>= 2.19.1)
   memory_profiler
   nokogiri (>= 1.14.3)
-  noticed (~> 1.6)
+  noticed
   omniauth
   omniauth-google-oauth2
   omniauth-rails_csrf_protection (~> 1.0)
