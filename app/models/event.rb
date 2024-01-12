@@ -215,7 +215,7 @@ class Event < ApplicationRecord
   end
 
   def non_invitees
-    unit.unit_memberships.joins(:user).status_registered - unit_memberships
+    unit.unit_memberships.joins(:user).status_registered.order("users.last_name, users.first_name") - unit_memberships
   end
 
   def primary_location
