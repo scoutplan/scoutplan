@@ -12,7 +12,7 @@ li.filterable-item.flex.flex-row.justify-between.items-center(draggable="false" 
         i.fa-regular.fa-info-circle.text-green-800.ml-2
 
     - if rsvp.note.present?
-      i.fa-solid.fa-comment.text-green-800.ml-2(title='"#{rsvp.note}"')
+      i.fa-solid.fa-comment.text-green-800.dark:text-green-600.ml-2(title='"#{rsvp.note}"')
 
   .text-lg
     - if rsvp.accepted? && @event.requires_payment?
@@ -22,11 +22,11 @@ li.filterable-item.flex.flex-row.justify-between.items-center(draggable="false" 
                   draggable: false,
                   title: "Payment received. Click to view payment details.",
                   data: { turbo_action: "advance" } do
-          i.fa-regular.fa-circle-check.text-green-800
+          i.fa-regular.fa-circle-check.text-green-800.dark:text-green-600
       - else
         = link_to new_unit_event_payment_path(@unit, @event, member: rsvp.unit_membership),
                   class: "block px-2 -mr-2",
                   title: "Payment not yet received in full for this family. Click to record payment",
                   draggable: false,
                   data: { turbo_frame: "modal" } do
-          i.fa-solid.fa-triangle-exclamation.text-green-800
+          i.fa-solid.fa-triangle-exclamation.text-green-800.dark:text-green-600

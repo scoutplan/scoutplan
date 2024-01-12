@@ -33,9 +33,9 @@ input.dp-switch:checked + label .switch-button {
   transition: transform 0.25s;
 }
 
-input.dp-switch:disabled + label .switch-container {
+/* input.dp-switch:disabled + label .switch-container {
   background: #ccc;
-}
+} */
 
 input.dp-switch:disabled + label {
   color: #aaa;
@@ -54,9 +54,9 @@ input.dp-switch:disabled + label {
     background: #222;
   }
 
-  .dt-switch {
+  /* .dt-switch {
     background: red;
-  }
+  } */
 
   .dt-switch .switch-container {
     background: #666;

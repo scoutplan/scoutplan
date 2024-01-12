@@ -1,4 +1,4 @@
-header#rsvps_declined_header.sticky.top-12.bg-red-800.p-4.drop-shadow-md(class="group-[.droptarget]:bg-red-950")
+header#rsvps_declined_header.sticky.top-12.bg-red-800.dark:bg-red-900.p-4.drop-shadow-md(class="group-[.droptarget]:bg-red-950")
   p.text-lg.font-medium.text-red-300 = number_to_percentage((event_dashboard.decline_rate) * 100, precision: 0)
   h2.font-medium.text-lg.text-red-50
     span.text-6xl.font-normal = @event_dashboard.declines_count
