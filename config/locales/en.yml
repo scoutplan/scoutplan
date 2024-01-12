@@ -206,13 +206,15 @@ en:
   event_dashboard:
     index:
       page_title: "Event Dashboard - %{event_title}"
-      title: "Event Dashboard"
 
     dropdown:
       edit: "Change event details"
       payments: "Event payment history"
       pdf: "Download printable attendee roster"
       filter_names_placeholder: "Type to filter names"
+
+    header:
+      title: "Event Dashboard"
 
     rsvp:
       pending_approval: "This RSVP is pending parent or guardian approval"

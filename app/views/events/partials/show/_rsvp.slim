@@ -1,11 +1,11 @@
 / On mobile, this flexbox renders as a column, thus stacking the title, family members,
 / and button. On desktop it becomes a row with title + family on left, button on right
 
-- return unless @event.requires_rsvp
+- return unless event.requires_rsvp
 
-- rsvp_service = RsvpService.new(@current_member, @event)
+- rsvp_service = RsvpService.new(@current_member, event)
 
-article.py-4
+article#rsvp_section.py-4
   - if rsvp_service.any_responses?
     .flex.flex-col.md:justify-between.md:flex-row.md:items-center.gap-1
       .flex.flex-row.gap-1.items-center
@@ -30,9 +30,9 @@ article.py-4
             = rsvp_service.family_responses_in_words
 
       div.right
-        = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: @event, show_rsvp: params[:variation] == "rsvp" }
+        = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: event, show_rsvp: params[:variation] == "rsvp" }
     
-    - if @event.shifts?
+    - if event.shifts?
       .table.border-spacing-2.text-sm
         - rsvp_service.family_accepted.each do |rsvp|
           .table-row.gap-2
@@ -40,13 +40,13 @@ article.py-4
               = rsvp.unit_membership.display_first_name
             .table-cell.pl-2
               - rsvp.event_shift_ids.each do |shift_id|
-                - shift = @event.shifts.find_by(id: shift_id)
+                - shift = event.shifts.find_by(id: shift_id)
                 .inline-block.px-2.py-1.mr-1.border.border-sky-300.rounded
                   i.fa-solid.fa-circle-check.text-amber-500.mr-1
                   = shift.name
 
 
-  - elsif policy(@event).rsvp? && @event.rsvp_open?
+  - elsif policy(event).rsvp? && event.rsvp_open?
     .flex.flex-col.md:flex-row.md:justify-between.md:items-center.gap-2
       div
         i.fa-stack.mr-1
@@ -55,10 +55,10 @@ article.py-4
         = t("events.index.rsvp.none_cta")
       
       div
-        - if policy(@event).rsvp? && @event.rsvp_open?
-          = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: @event, show_rsvp: params[:variation] == "rsvp" }
+        - if policy(event).rsvp? && event.rsvp_open?
+          = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: event, show_rsvp: params[:variation] == "rsvp" }
 
-  - elsif !@event.rsvp_open?
+  - elsif !event.rsvp_open?
     .flex.flex-row.justify-between.items-center
       div
         = t("events.index.rsvp.closed")
