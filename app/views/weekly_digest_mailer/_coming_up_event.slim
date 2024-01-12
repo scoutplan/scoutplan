@@ -22,11 +22,18 @@ tr
     - if event.requires_rsvp?
       - if event.rsvp_open?
         - if event.rsvps.where(unit_membership: unit_membership).exists?
-          = "Change your RSVP"
+          = magic_link_to(unit_membership, rsvp_unit_event_url(event.unit, event), class: "text-yellow-700 font-bold") do
+            = "Change your RSVP"
+
+          p(style="font-size:14px;") = I18n.t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at))
+
         - else
           p
             = "Your RSVP is needed "
-            = magic_link_to(unit_membership, unit_event_family_rsvps_url(event.unit, event), class: "inline-block button button-rsvp px-2") do
+            = magic_link_to(unit_membership, rsvp_unit_event_url(event.unit, event), class: "inline-block button button-rsvp px-2") do
               = "Respond now"
+
+          p = I18n.t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at))              
+
       - else
         = "RSVP is Closed"

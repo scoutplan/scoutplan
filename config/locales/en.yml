@@ -237,10 +237,13 @@ en:
         family_rsvp_link:
           new: "RSVP needed"
           update: "Change Your RSVP"
-          
+
         organize:
           organize: "Event Dashboard"
 
+        rsvp_closes_at:
+          rsvp_closes_at: "Closes in %{when}"
+          
         today:
           now: "Now"
           today: "Today"
