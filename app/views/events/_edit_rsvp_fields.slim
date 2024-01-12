@@ -3,7 +3,7 @@
 - family_member_ids = family.map(&:id)
 - rsvps = event.rsvps.where(unit_membership_id: family_member_ids)
 - @rsvps = rsvps
-- notes = rsvps.map(&:note).uniq.join(", ")
+- notes = rsvps.map(&:note).uniq.compact.join(", ")
 
 ul
   - family.each_with_index do |family_member, index|

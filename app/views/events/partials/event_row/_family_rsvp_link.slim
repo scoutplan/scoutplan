@@ -10,9 +10,6 @@
   - family_has_rsvps = family_has_rsvps || rsvp.present?
   - family_fully_responded = family_fully_responded && rsvp.present?
 
-- show_rsvp ||= false
-- details_tag_attributes = {class: "inline-block group #{family_fully_responded ? 'fully-responded' : 'response-needed' }"}
-- details_tag_attributes[:open] = "" if show_rsvp
 
 - if event.rsvp_open?
   - if policy(event).rsvp?

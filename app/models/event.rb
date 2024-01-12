@@ -209,11 +209,9 @@ class Event < ApplicationRecord
 
   # members who haven't RSVP'ed
   def non_respondents
-    # unit.unit_memberships.includes([:user]).status_active - unit_memberships
-    unit.unit_memberships.includes(:user)
-        .status_active
-        .where("unit_memberships.id NOT IN (?)", unit_memberships.map(&:id))
-        .order("users.last_name, users.first_name")
+    unit.unit_memberships.includes([:user]).status_active - unit_memberships
+    # unit.unit_memberships.includes([:user]).status_active.where("id NOT IN (?)", unit_memberships.map(&:id))
+    # unit.unit_memberships.includes([:user]).status_active.where("id NOT IN (?)", event_rsvps.map(&:unit_membership_id))
   end
 
   def non_invitees

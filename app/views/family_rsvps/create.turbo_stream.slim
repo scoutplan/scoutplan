@@ -1,3 +1,7 @@
+// invoked from Events#list, Events#show, and EventDashboard#index
+// hence, we will stream responses that target all three
+
+// THESE STREAMS TARGET EventDashboard#index
 - @rsvps.each do |rsvp|
 
   // remove from wherever the RSVP currently is
@@ -29,10 +33,14 @@
   = turbo_stream.replace("members_registered_header") do
     = render partial: "event_dashboard/header_registered", locals: { event_dashboard: @event_dashboard }        
 
-// clear modal
+// clear modal (applies to Events#list and EventDashboard#index)
 = turbo_stream.update "modal" do
   = ""
 
-// THESE STREAMS TARGET THE EVENTS INDEX VIEW
+// THIS STREAM TARGETS Events#index VIEW
 = turbo_stream.replace dom_id(@event) do
   = render partial: "events/event", locals:  { event: @event }
+
+// THIS STREAM TARGETS Events#show VIEW
+= turbo_stream.replace "rsvp_section" do
+  = render partial: "events/partials/show/rsvp", locals: { event: @event }

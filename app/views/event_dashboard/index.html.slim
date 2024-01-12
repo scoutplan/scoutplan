@@ -1,51 +1,7 @@
 = turbo_frame_tag "main"
   .max-w-7xl.mx-auto.px-4.sm:mt-6(data-controller="name-filter")
-    header.mb-6
-      = link_to [@unit, @event],
-                class: "font-semibold text-violet-800",
-                data: { turbo_action: "advance" } do
-        i.fa-solid.fa-chevron-left
-        span.ml-2 = "Back to event details"
-
-    header.mb-6
-      .flex.flex-row.justify-between.items-center
-        div
-          h1.text-2xl.md:text-4xl = @event.title
-          h2.text-xl.md:text-2xl.text-stone-500 = t(".title")
-        = render "dropdown"
-
-    .hidden.bg-red-100.bg-green-100.bg-yellow-100.bg-sky-100
-
-    section.w-full.grid.grid-cols-1.lg:grid-cols-9.gap-px.md:gap-1(
-      data-controller="dashboard-drop"
-      data-action="dragover->dashboard-drop#dragover dragleave->dashboard-drop#dragleave dragenter->dashboard-drop#dragenter drop->dashboard-drop#drop"
-      data-dashboard-drop-unit-id-value="#{@unit.id}"
-      data-dashboard-drop-event-id-value="#{@event.id}")
-
-      #rsvps_accepted_column.md:col-span-3.text-xl.member-column.bg-stone-100.md:rounded-tl-lg.group(class="[&.droptarget]:bg-green-100")
-        = render partial: "event_dashboard/header_accepted", locals: { event_dashboard: @event_dashboard }
-
-        ol#rsvps_accepted.p-4.divide-y(data-controller="sorted-list")
-          = render partial: "rsvp", collection: @event_dashboard.acceptances
-          / = render partial: "rsvp", collection: @event.event_rsvps.includes(unit_membership: [:user, :children]).accepted_intent.order("users.last_name, users.first_name")
-        
-      #rsvps_declined_column.md:col-span-2.member-column.bg-stone-100.group(class="[&.droptarget]:bg-red-100")
-        = render partial: "event_dashboard/header_declined", locals: { event_dashboard: @event_dashboard }
-
-        ol#rsvps_declined.p-4.divide-y(data-controller="sorted-list")
-          = render partial: "rsvp", collection: @event_dashboard.declines
-
-      #members_active_column.md:col-span-2.member-column.bg-stone-100.group(class="[&.droptarget]:bg-yellow-50" data-drop-group="non-respondents")
-        = render partial: "event_dashboard/header_active", locals: { event_dashboard: @event_dashboard }
-
-        ol#members_active.p-4.divide-y(data-controller="sorted-list")
-          = render partial: "unit_membership", collection: @event.non_respondents
-
-      #members_registered_column.md:col-span-2.member-column.bg-stone-100.rounded-tr-lg.group(class="[&.droptarget]:bg-sky-100" data-drop-group="non-respondents")
-        = render partial: "event_dashboard/header_registered", locals: { event_dashboard: @event_dashboard }
-
-        ol#members_registered.divide-y.p-4(data-controller="sorted-list")
-          = render partial: "unit_membership", collection: @event.non_invitees
+    = render partial: "header"
+    = render partial: "columns"
 
   = turbo_frame_tag "modal", data: { controller: "modal" }
 
