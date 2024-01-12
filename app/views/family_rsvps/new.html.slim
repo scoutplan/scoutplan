@@ -1,19 +1,21 @@
 = turbo_frame_tag "modal"
   .fixed.z-50.inset-0.bg-black/10.backdrop-blur
     .absolute.inset-1
-      .max-w-lg.top-1/4.left-1/2.bg-white.-translate-x-1/2.rounded-lg.drop-shadow-overhead.modal-dialog.p-6.relative
+      .max-w-lg.top-1/4.left-1/2.bg-white.dark:bg-stone-700.-translate-x-1/2.rounded-lg.drop-shadow-overhead.modal-dialog.p-6.relative
         = render partial: "components/close_button"
         = render partial: "header", locals: { unit_membership: @family_rsvp.unit_membership, event: @event }
 
         = form_with url: unit_event_family_rsvps_path(@event.unit, @event, unit_membership_id: @family_rsvp.unit_membership.id),
                     method: :post, format: :turbo_stream, data: { controller: "dirt-detector" } do |f|
-          section.p-4.rounded-lg.bg-stone-100
+          section.p-4.rounded-lg.bg-stone-100.dark:bg-stone-700.dark:border.border-stone-500
             = render partial: "events/edit_rsvp_fields", locals: { event: @event, f: f, presenter: @presenter, unit_membership: @unit_membership }
 
-          footer.mt-2
+          footer.mt-4
             .flex.flex-row.justify-between.items-baseline
               .flex.flex-col.md:flex-row.gap-2
                 = f.submit @family_rsvp.new_record? ? "Send your response" : "Update your response",
-                           class: "block px-6 py-2 rounded-lg bg-stone-700 hover:bg-stone-800 text-stone-50 font-semibold cursor-pointer",
+                           class: "block px-6 py-2 rounded-lg bg-amber-400 hover:bg-amber-500 text-amber-950 font-semibold cursor-pointer",
                            id: "accept"
-                = button_tag "Cancel", class: "text-stone-800 bg-stone-200 hover:bg-stone-300 font-semibold rounded-lg px-5 py-2", data: { action: "click->modal#close" }
+                = button_tag "Cancel",
+                             class: "text-amber-800 bg-amber-200 hover:bg-amber-300 font-semibold rounded-lg px-5 py-2",
+                             data: { action: "click->modal#close" }

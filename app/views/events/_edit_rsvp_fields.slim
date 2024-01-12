@@ -21,14 +21,14 @@ ul
 
       .flex.flex-row.justify-between.items-center.py-2.gap-20
         // person name
-        .relative.block.whitespace-nowrap.pr-1.pl-7.bg-stone-100
+        .relative.block.whitespace-nowrap.pr-1.pl-7.bg-stone-100.dark:bg-stone-700
           = presenter.family_context_name(family_member)
 
         div
           // switch
           - if @event.shifts?
             - @event.shifts.each do |shift|
-              .py-1.ml-1.bg-stone-100
+              .py-1.ml-1.bg-stone-100.dark:bg-stone-700
                 = render partial: "components/switch", locals: { checked: existing_rsvp&.event_shift_ids&.include?(shift.id),
                                                                 label: shift.name,
                                                                 object_name: "event[members][#{family_member.id}][shifts][#{shift.id}]",
@@ -54,7 +54,7 @@ ul
                                   left_label:    "Regrets",
                                   right_label:   "Going!",
                                   disabled:      !policy.create?,
-                                  wrapper_classes: "pl-1 bg-stone-100 relative",
+                                  wrapper_classes: "pl-1 bg-stone-100 dark:bg-stone-700 relative",
                                   data: { controller: "double-throw-switch" } )
 
             .dt-switch-indicator.dt-switch-indicator-left.absolute.left-0.top-1/2.-translate-y-1/2
@@ -71,7 +71,7 @@ ul
   = f.label :note, class: "block mb-1"
   = text_field_tag :note,
     notes,
-    class: "rounded text-sm p-2 block w-full placeholder-stone-400 border border-stone-200 dark:bg-stone-950 dark:border-stone-700 dark:placeholder-stone-500",
+    class: "rounded text-sm p-2 block w-full placeholder-stone-400 border border-stone-200 dark:bg-stone-900 dark:border-stone-700 dark:placeholder-stone-500",
     placeholder: t("events.rsvp.note_placeholder"),
     autocomplete: "off"
 
