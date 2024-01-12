@@ -53,6 +53,4 @@ class EventRsvpConfirmationText
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/PerceivedComplexity
   # rubocop:enable Metrics/CyclomaticComplexity
-
-  message
 end

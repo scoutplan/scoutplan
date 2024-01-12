@@ -18,7 +18,7 @@
   - if policy(event).rsvp?
     - if family_fully_responded
       = link_to new_unit_event_family_rsvp_path(@unit, event),
-                class: "block px-4 py-2 text-center rounded-lg font-semibold ring-1 ring-inset ring-amber-500 text-amber-700",
+                class: "block px-4 py-2 text-center rounded-lg font-semibold ring-1 ring-inset ring-amber-500 text-amber-700 hover:bg-amber-100",
                 title: "#{rsvp_service.family_responses_in_words}",
                 data: { turbo_frame: "modal" } do
         = t(".update")
