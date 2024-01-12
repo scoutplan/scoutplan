@@ -1,19 +1,26 @@
 - rsvp_service = RsvpService.new(unit_membership, further_out_event)
 
 tr
-  td.pr-2.py-1 = further_out_event.starts_at.strftime("%b %-d")
-  td.px-2 = further_out_event.title
-  td.pl-1
+  td.pr-2.py-2(valign="top") = further_out_event.starts_at.strftime("%b %-d")
+  td.px-2.py-2(valign="top") = further_out_event.title
+  td.pl-1.py-2(valign="top")
     - if further_out_event.rsvp_closed?
       = "RSVPs closed"
     - elsif !EventPolicy.new(unit_membership, further_out_event).rsvp?
       = "Not authorized"
+
     - elsif rsvp_service.family_fully_responded?
-      = magic_link_to(unit_membership, unit_event_family_rsvps_url(further_out_event.unit, further_out_event), class: "text-yellow-300") do
+      = magic_link_to(unit_membership, rsvp_unit_event_url(further_out_event.unit, further_out_event), class: "text-yellow-300") do
         = "Change your RSVP"
+
+      p(style="font-size:14px; color: #ccc;") = I18n.t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: distance_of_time_in_words_to_now(further_out_event.rsvp_closes_at))
+
     - elsif rsvp_service.family_rsvps.any?
-      = magic_link_to(unit_membership, unit_event_family_rsvps_url(further_out_event.unit, further_out_event), class: "text-yellow-300") do
+      = magic_link_to(unit_membership, rsvp_unit_event_url(further_out_event.unit, further_out_event), class: "text-yellow-300") do
         = "Complete your RSVP"
+      p(style="font-size:14px; color: #ccc;") = I18n.t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: distance_of_time_in_words_to_now(further_out_event.rsvp_closes_at))
+      
     - else
-      = magic_link_to(unit_membership, unit_event_family_rsvps_url(further_out_event.unit, further_out_event), class: "text-yellow-300") do
+      = magic_link_to(unit_membership, rsvp_unit_event_url(further_out_event.unit, further_out_event), class: "text-yellow-300") do
         = "RSVP needed"
+      p(style="font-size:14px; color: #ccc;") = I18n.t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: distance_of_time_in_words_to_now(further_out_event.rsvp_closes_at))
