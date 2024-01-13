@@ -1,2 +1,6 @@
 span.text-sm.font-semibold.text-center
-  = t(".rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at))
+  = t(".rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at)).downcase
+
+  - if event.limits_headcount?
+    = ", "
+    = t(".headcount_remaining", count: event.headcount_remaining)

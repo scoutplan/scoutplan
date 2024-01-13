@@ -24,6 +24,10 @@ FactoryBot.define do
     address { Faker::Address.street_address }
   end
 
+  trait :limit_headcount do
+    max_total_attendees { 10 }
+  end
+
   trait :requires_rsvp do
     requires_rsvp { true }
     status { :published }
