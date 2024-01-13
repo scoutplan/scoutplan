@@ -245,6 +245,10 @@ en:
 
         rsvp_closes_at:
           rsvp_closes_at: "Closes in %{when}"
+          headcount_remaining:
+            zero: "no spots remaining"
+            one: "one spot remaining"
+            other: "%{count} spots remaining"
           
         today:
           now: "Now"
@@ -260,10 +264,16 @@ en:
           switch_label: "This is an online event"
           title: "Event location"
 
+        headcount_limit:
+          limit_headcount: "Limit headcount to "
+
       show:
         costs:
           paid:   "You've paid. Thanks!"
           unpaid: "Your payment is outstanding."
+
+        organize:
+          headcount_limit: " (limit %{limit})"
     
     payments:
       index:

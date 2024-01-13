@@ -17,7 +17,6 @@ module EventRsvp::Notifiable
   end
 
   def enqueue_organization_notification
-    puts "Enqueuing EventRsvpOrganizerNotificationJob for #{event.title}"
     EventRsvpOrganizerNotificationJob.set(wait_until: send_organizer_notification_at).perform_later(event)
   end
 
@@ -31,7 +30,6 @@ module EventRsvp::Notifiable
   end
 
   def send_organizer_notification?
-    puts event.event_rsvps.recent.count.zero?
     event.event_rsvps.recent.count.zero?
   end
 end

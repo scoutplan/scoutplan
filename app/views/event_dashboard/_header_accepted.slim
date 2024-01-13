@@ -3,6 +3,8 @@ header#rsvps_accepted_header.sticky.top-12.bg-green-800.dark:bg-green-900.p-4.dr
   .flex.flex-row.justify-between.items-end
     h2.font-medium.text-lg.text-green-100
       span.text-6xl.font-normal = event_dashboard.acceptance_count
+      - if event_dashboard.event.limits_headcount?
+        = " of #{event_dashboard.event.max_total_attendees}"
       = " Accepted"
 
     .text-normal.rounded-lg.bg-green-700.table.text-sm.text-green-100.p-1

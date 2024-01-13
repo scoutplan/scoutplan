@@ -126,13 +126,26 @@ class Event < ApplicationRecord
     (cost_adult + cost_youth).positive?
   end
 
+  ### RSVP-related methods
+  def headcount_limit_reached?
+    return false unless limits_headcount?
+
+    rsvps.accepted.count >= max_total_attendees
+  end
+
+  def headcount_remaining
+    return 0 unless limits_headcount?
+
+    max_total_attendees - rsvps.accepted.count
+  end
+
   # override getter
   def rsvp_closes_at
     read_attribute(:rsvp_closes_at)&.at_end_of_day || starts_at
   end
 
   def rsvp_open?
-    status == "published" && requires_rsvp && rsvp_closes_at.future?
+    status == "published" && requires_rsvp && rsvp_closes_at.future? && !headcount_limit_reached?
   end
 
   def rsvp_closed?
@@ -207,11 +220,8 @@ class Event < ApplicationRecord
     document_types.present?
   end
 
-  # members who haven't RSVP'ed
   def non_respondents
-    unit.unit_memberships.includes([:user]).status_active - unit_memberships
-    # unit.unit_memberships.includes([:user]).status_active.where("id NOT IN (?)", unit_memberships.map(&:id))
-    # unit.unit_memberships.includes([:user]).status_active.where("id NOT IN (?)", event_rsvps.map(&:unit_membership_id))
+    unit.unit_memberships.includes([:user]).order("users.last_name, users.first_name").status_active - unit_memberships
   end
 
   def non_invitees
@@ -220,6 +230,10 @@ class Event < ApplicationRecord
 
   def primary_location
     event_locations.select { |el| el.location_type == "arrival" || el.location_type == "activity" }.first&.location
+  end
+
+  def limits_headcount?
+    max_total_attendees&.positive?
   end
 
   def location

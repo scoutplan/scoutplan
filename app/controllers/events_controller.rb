@@ -338,6 +338,7 @@ class EventsController < UnitContextController
                                       :short_description, :requires_rsvp, :includes_activity, :activity_name,
                                       :all_day, :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
+                                      :max_total_attendees,
                                       :note, :cost_youth, :cost_adult, :online, :website, :tag_list, :rsvp_closes_at,
                                       :notify_members, :notify_recipients, :notify_message, :document_library_ids,
                                       packing_list_ids: [], attachments: [],
