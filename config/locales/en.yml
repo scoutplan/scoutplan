@@ -371,22 +371,24 @@ en:
         response_received: "You have RSVP'ed"
         closed:            "RSVPs are closed"
         none_cta:          "Your response is needed"
+        not_open:          "RSVPs aren't open yet"
         show_details:      "See event details"
 
       tooltips:
         response_received: "Your family has fully responded. Thank you!"
 
     form:
-      timezone_prompt: "Dates and times are %{timezone_name}"
-      rsvp_closes_at:  "RSVP closes on"
-      delete_caption:  "Delete this event"
-      delete_series_caption: "Delete this event series"
-      delete_confirm:  "Are you sure you want to permanently delete this event and any RSVPs associated with it?"
-      departure:   "Depart From"
-      arrival:     "Arrive At"
-      activity:    "Side Activity"
-      packing_lists:   "Packing lists"
-      add_shift:        "Add Time Slot"
+      add_shift:              "Add Time Slot"
+      timezone_prompt:        "Dates and times are %{timezone_name}"
+      delete_caption:         "Delete this event"
+      delete_series_caption:  "Delete this event series"
+      delete_confirm:         "Are you sure you want to permanently delete this event and any RSVPs associated with it?"
+      departure:              "Depart From"
+      arrival:                "Arrive At"
+      activity:               "Side Activity"
+      packing_lists:          "Packing lists"
+      rsvp_closes_at:         "RSVP closes on"
+      rsvp_opens_at:          "RSVP opens on"
       placeholders:
         shift_name:   "e.g. 10-11:30 AM"
 

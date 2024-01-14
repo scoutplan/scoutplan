@@ -23,7 +23,7 @@
                 data: { turbo: false } do |f|
                 
         .divide-y.divide-stone-300.-mt-2
-          - %w[basics rsvp activity dates locations description organizers packlists attachments cancel_delete].each do |section|
+          - %w[basics dates rsvp activity locations description organizers packlists attachments cancel_delete].each do |section|
             = render partial: "events/partials/form/#{section}", locals: { f: f, section: section }
 
         = render partial: "events/partials/form/footer", locals: { f: f }

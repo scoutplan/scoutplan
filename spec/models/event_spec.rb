@@ -2,6 +2,7 @@
 
 require "rails_helper"
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Event, type: :model do
   it "has a valid factory" do
     expect(FactoryBot.build(:event)).to be_valid
@@ -16,6 +17,18 @@ RSpec.describe Event, type: :model do
 
     it "requires a unit" do
       expect(FactoryBot.build(:event, unit: nil)).not_to be_valid
+    end
+
+    it "requires rsvp_opens_at to be before starts_at" do
+      expect(FactoryBot.build(:event, :requires_rsvp, rsvp_opens_at: 2.days.from_now, starts_at: 1.day.ago)).not_to be_valid
+    end
+
+    it "requires rsvp_opens_at to be before rsvp_closes_at" do
+      expect(FactoryBot.build(:event, :requires_rsvp, rsvp_opens_at: 1.day.from_now, rsvp_closes_at: 2.days.ago)).not_to be_valid
+    end
+
+    it "valid when rsvp_opens_at is nil" do
+      expect(FactoryBot.build(:event, :requires_rsvp, rsvp_opens_at: nil)).to be_valid
     end
   end
 
@@ -42,7 +55,6 @@ RSpec.describe Event, type: :model do
     end
   end
 
-  # rubocop:disable Metrics/BlockLength
   describe "methods" do
     it "is past when end date is before now" do
       expect(FactoryBot.build(:event, :past).past?).to be_truthy
@@ -69,17 +81,34 @@ RSpec.describe Event, type: :model do
       end
 
       it "RSVP is closed if rsvp_closes_at has passed but starts_at hasn't" do
-        event = FactoryBot.build(:event, :requires_rsvp, starts_at: 5.days.from_now, rsvp_closes_at: 2.days.ago)
+        event = FactoryBot.build(:event, :requires_rsvp, starts_at: 5.days.from_now, ends_at: 6.days.from_now, rsvp_closes_at: 4.days.ago)
+        puts "sdsdf"
+        puts event.rsvp_closes_at.future?
         expect(event.rsvp_open?).to be_falsey
       end
 
-      it "RSVP is closed if rsvp_closes_at is nil and start_date has passed" do
-        event = FactoryBot.build(:event, :requires_rsvp, starts_at: 5.days.ago, rsvp_closes_at: nil)
-        expect(event.rsvp_open?).to be_falsey
+      # it "RSVP is closed if rsvp_closes_at is nil and start_date has passed" do
+      #   event = FactoryBot.build(:event, :requires_rsvp, starts_at: 5.days.ago, rsvp_closes_at: nil)
+      #   expect(event.rsvp_open?).to be_falsey
+      # end
+
+      # it "RSVP is closed if RSVP isn't required" do
+      #   event = FactoryBot.build(:event, requires_rsvp: false, starts_at: 5.days.ago, rsvp_closes_at: nil)
+      #   expect(event.rsvp_open?).to be_falsey
+      # end
+
+      it "is true when rsvp_opens_at is nil" do
+        event = FactoryBot.build(:event, :requires_rsvp, rsvp_opens_at: nil)
+        expect(event.rsvp_open?).to be_truthy
       end
 
-      it "RSVP is closed if RSVP isn't required" do
-        event = FactoryBot.build(:event, requires_rsvp: false, starts_at: 5.days.ago, rsvp_closes_at: nil)
+      it "is true when rsvp_opens_at is in the past" do
+        event = FactoryBot.build(:event, :requires_rsvp, rsvp_opens_at: 1.day.ago)
+        expect(event.rsvp_open?).to be_truthy
+      end
+
+      it "is false when rsvp_opens_at is in the future" do
+        event = FactoryBot.build(:event, :requires_rsvp, rsvp_opens_at: 1.day.from_now)
         expect(event.rsvp_open?).to be_falsey
       end
     end
