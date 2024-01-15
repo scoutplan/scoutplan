@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_07_144356) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_13_183738) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "unaccent"
@@ -277,7 +277,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_07_144356) do
     t.datetime "updated_at", null: false
     t.boolean "requires_rsvp", default: false
     t.integer "max_total_attendees"
-    t.string "rsvp_opens_at"
     t.integer "event_category_id"
     t.integer "series_parent_id"
     t.integer "status", default: 0
@@ -297,6 +296,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_07_144356) do
     t.boolean "all_day", default: false
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.string "token"
+    t.datetime "rsvp_opens_at"
     t.index ["token"], name: "index_events_on_token", unique: true
     t.index ["unit_id"], name: "index_events_on_unit_id"
   end

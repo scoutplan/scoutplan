@@ -139,8 +139,6 @@ class EventsController < UnitContextController
 
   # POST /:unit_id/events/new
   def new
-    authorize Event
-
     if params[:parent_event_id]
       @parent_event = @unit.events.find(params[:parent_event_id])
       redirect_to unit_events_path(@unit), status: :user_not_authorized unless EventPolicy.new(current_member, @parent_event).edit?
@@ -151,6 +149,7 @@ class EventsController < UnitContextController
     else
       build_prototype_event
     end
+    authorize @event
     @presenter = EventPresenter.new(@event, current_member)
   end
 
@@ -283,10 +282,11 @@ class EventsController < UnitContextController
   # from 10 AM to 4 PM with RSVPs closing a week before start
   def build_prototype_event
     @event = Event.new(
-      unit: @unit,
-      starts_at: 28.days.from_now.next_occurring(:saturday).change({ hour: 10 }),
-      ends_at: 28.days.from_now.next_occurring(:saturday).change({ hour: 16 }),
-      rsvp_closes_at: 21.days.from_now.next_occurring(:saturday).change({ hour: 10 })
+      unit:           @unit,
+      starts_at:      28.days.from_now.next_occurring(:saturday).change({ hour: 10 }),
+      ends_at:        28.days.from_now.next_occurring(:saturday).change({ hour: 16 }),
+      rsvp_closes_at: 21.days.from_now.next_occurring(:saturday).change({ hour: 10 }),
+      rsvp_opens_at:  Date.today
     )
     if (date_s = params[:date]).present?
       @event.starts_at = date_s.to_date
@@ -338,8 +338,8 @@ class EventsController < UnitContextController
                                       :short_description, :requires_rsvp, :includes_activity, :activity_name,
                                       :all_day, :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
-                                      :max_total_attendees,
-                                      :note, :cost_youth, :cost_adult, :online, :website, :tag_list, :rsvp_closes_at,
+                                      :max_total_attendees, :rsvp_closes_at, :rsvp_opens_at,
+                                      :note, :cost_youth, :cost_adult, :online, :website, :tag_list,
                                       :notify_members, :notify_recipients, :notify_message, :document_library_ids,
                                       packing_list_ids: [], attachments: [],
                                       event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy],

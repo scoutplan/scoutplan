@@ -71,21 +71,25 @@ class Event < ApplicationRecord
   # TODO: clean up this mess
   scope :past,          -> { where("starts_at < ?", Date.today.in_time_zone) }
   scope :future,        -> { where("ends_at > ?", Date.today) }
-  scope :recent,        -> { where("starts_at BETWEEN ? AND ?", 4.weeks.ago, Date.today)}
-  scope :this_week,     -> { where("starts_at BETWEEN ? AND ?", Time.current, 6.days.from_now.at_end_of_day.in_time_zone) }
+  scope :recent,        -> { where("starts_at BETWEEN ? AND ?", 4.weeks.ago, Date.today) }
+  scope :this_week,     lambda {
+                          where("starts_at BETWEEN ? AND ?", Time.current, 6.days.from_now.at_end_of_day.in_time_zone)
+                        }
   scope :upcoming,      -> { where("starts_at BETWEEN ? AND ?", Time.current, 35.days.from_now) }
   scope :coming_up,     -> { where("starts_at BETWEEN ? AND ?", 7.days.from_now, 35.days.from_now) }
   scope :further_out,   -> { where("starts_at > ?", 35.days.from_now) }
   scope :rsvp_required, -> { where(requires_rsvp: true) }
-  scope :today,         -> { where("starts_at BETWEEN ? AND ?", Time.zone.now.beginning_of_day, Time.zone.now.at_end_of_day) }
-  scope :imminent, -> {
+  scope :today,         lambda {
+                          where("starts_at BETWEEN ? AND ?", Time.zone.now.beginning_of_day, Time.zone.now.at_end_of_day)
+                        }
+  scope :imminent, lambda {
     where("starts_at BETWEEN ? AND ?",
           Time.zone.now.hour < 12 ? Time.zone.now.middle_of_day : Time.zone.now.end_of_day,
           Time.zone.now.hour < 12 ? Time.zone.now.end_of_day : Time.zone.now.end_of_day + 12.hours)
   }
 
   scope :recent_and_future, -> { where("starts_at > ?", 4.weeks.ago) }
-  scope :recent_and_upcoming, -> { where("starts_at BETWEEN ? AND ?", 4.weeks.ago, 35.days.from_now)}
+  scope :recent_and_upcoming, -> { where("starts_at BETWEEN ? AND ?", 4.weeks.ago, 35.days.from_now) }
   scope :next_season, -> { where("starts_at BETWEEN ? AND ?", next_season_starts_at, next_season_ends_at) }
   scope :intending_to_go, -> { where("response IN ['accepted', 'accepted_pending']") }
   scope :rsvp_expiring_soon, -> { where("rsvp_closes_at BETWEEN ? AND ?", Time.current, Date.tomorrow.at_end_of_day) }
@@ -101,10 +105,18 @@ class Event < ApplicationRecord
     event_category.name
   end
 
+  # rubocop:disable Metrics/AbcSize
   def dates_are_subsequent
     errors.add(:ends_at, "must be after start_date") if starts_at > ends_at
-    errors.add(:rsvp_closes_at, "must be before start_date") if requires_rsvp && rsvp_closes_at > starts_at
+    return unless requires_rsvp?
+
+    errors.add(:rsvp_closes_at, "must be before start_date") if rsvp_closes_at > starts_at
+    return unless rsvp_opens_at.present?
+
+    errors.add(:rsvp_opens_at, "must be before start_date") if rsvp_opens_at > starts_at
+    errors.add(:rsvp_opens_at, "must be before rsvp_closes_at") if rsvp_opens_at > rsvp_closes_at
   end
+  # rubocop:enable Metrics/AbcSize
 
   def full_title
     "#{unit.name} #{title}"
@@ -145,7 +157,11 @@ class Event < ApplicationRecord
   end
 
   def rsvp_open?
-    status == "published" && requires_rsvp && rsvp_closes_at.future? && !headcount_limit_reached?
+    status == "published" &&
+      requires_rsvp? &&
+      rsvp_closes_at.future? &&
+      !headcount_limit_reached? &&
+      (rsvp_opens_at.nil? || rsvp_opens_at.past?)
   end
 
   def rsvp_closed?

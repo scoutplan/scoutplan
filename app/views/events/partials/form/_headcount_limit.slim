@@ -1,6 +1,6 @@
 - switch_options = { checked: event.limits_headcount?, label: t(".limit_headcount"), data: { action: "change->enable#change" }}
 
-.py-2.field-wrapper.flex.flex-row.gap-2.items-center(data-controller="enable")
+.py-0.field-wrapper.flex.flex-row.gap-2.items-center(data-controller="enable")
   = switch("", :limit_headcount, switch_options, "true", "false")
 
   = f.text_field :max_total_attendees,

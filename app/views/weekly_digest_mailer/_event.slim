@@ -35,7 +35,8 @@
         = magic_link_to(unit_membership, unit_event_family_rsvps_url(event.unit, event), class: "text-yellow-700 font-bold") do
             = "Change your RSVP"
 
-        = t("events.partials.event_row.rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at))
+        p(style="margin-top: 0.5em;")
+          = t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at))
 
       - else
         p.text-yellow-700.font-bold.mb-2
@@ -46,7 +47,8 @@
           = magic_link_to(unit_membership, unit_event_family_rsvps_url(event.unit, event), class: "block button button-rsvp") do
             = "Respond now"
 
-        = t("events.partials.event_row.rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at))
+        p(style="margin-top: 0.5em;")
+          = t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at))
         
     - else
       = "RSVP is Closed"

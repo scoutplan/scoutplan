@@ -30,7 +30,12 @@
   .text-amber-600.whitespace-nowrap.text-center
     = render partial: "events/partials/event_row/rsvp_closes_at", locals: { event: event }
 
+- elsif event.rsvp_opens_at&.future?
+  .font-semibold.text-sm.text-amber-600
+    i.fa-solid.fa-ban.mr-2
+    = t("events.index.rsvp.not_open")
+
 - else
-  .font-semibold.text-sm
+  .font-semibold.text-sm.text-amber-600
     i.fa-solid.fa-ban.mr-2
     = t("events.index.rsvp.closed")

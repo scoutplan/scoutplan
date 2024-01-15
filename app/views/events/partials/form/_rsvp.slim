@@ -18,7 +18,12 @@ section.py-4.grid.grid-cols-1.md:grid-cols-3.gap-8.border-t
         = render partial: "events/partials/form/headcount_limit", locals: { f: f, event: @event } 
 
       .py-2.field-wrapper
-        = f.label :rsvp_closes_at, t("events.form.rsvp_closes_at"), class: "block font-bold mb-2"
+        = f.label :rsvp_closes_at, t("events.form.rsvp_opens_at"), class: "block mb-2"
+        = f.date_field :rsvp_opens_at,
+          class: "bg-white dark:bg-black border border-stone-400 dark:border-stone-700 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300" 
+
+      .py-2.field-wrapper
+        = f.label :rsvp_closes_at, t("events.form.rsvp_closes_at"), class: "block mb-2"
         = f.date_field :rsvp_closes_at,
           class: "bg-white dark:bg-black border border-stone-400 dark:border-stone-700 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300",
           data: { target: "event-edit.rsvpClosesAt", action: "change->event-edit#updateRsvpClosesAt" }
@@ -43,7 +48,7 @@ section.py-4.grid.grid-cols-1.md:grid-cols-3.gap-8.border-t
                               class: "w-24 border border-stone-400 dark:border-stone-700 rounded bg-white dark:bg-black p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
                               min: 0
 
-= render partial: "events/partials/form/event_shifts", locals: { member: @current_member, f: f }
+      = render partial: "events/partials/form/event_shifts", locals: { member: @current_member, f: f }
 
 css:
   #rsvp_fields {
