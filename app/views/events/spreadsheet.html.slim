@@ -1,0 +1,16 @@
+- Date::DATE_FORMATS[:day] = "%a"
+- Date::DATE_FORMATS[:month_and_date] = "%b %d"
+
+table.mx-auto
+  thead
+    tr
+      th.p-1.border.border-stone-600 = "Day"
+      th.p-1.border.border-stone-600 = "Date"
+      th.p-1.border.border-stone-600 = "Title"
+      th.p-1.border.border-stone-600 = "Location"
+      th.p-1.border.border-stone-600 = "Organizers"
+  tbody
+    = render partial: "events/partials/spreadsheet/event", collection: @events
+
+style
+  = render partial: "events/partials/spreadsheet/event_category", collection: @unit.event_categories

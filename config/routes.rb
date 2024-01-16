@@ -129,11 +129,13 @@ Rails.application.routes.draw do
         get "paged_list"
         get "threeup"
         get "threeup/:year/:month", to: "events#threeup"
-        get "calendar", to: redirect { |path_params, _|
-          "/units/#{path_params[:unit_id]}/schedule/calendar/#{Date.today.year}/#{Date.today.month}"
-        }, as: "calendar_redirect"
+        # get "calendar", to: redirect { |path_params, _|
+        #   "/units/#{path_params[:unit_id]}/schedule/calendar/#{Date.today.year}/#{Date.today.month}"
+        # }, as: "calendar_redirect"
+        # get "calendar"
+        get "calendar", to: "events#calendar", as: "calendar_redirect"
         get "calendar/:year/:month", to: "events#calendar", as: "calendar"
-        get "spreadsheet", to: "events#index", defaults: { variation: "spreadsheet" }
+        get "spreadsheet", to: "events#spreadsheet"
         post "bulk_publish"
       end
       # get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"

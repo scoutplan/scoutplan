@@ -96,4 +96,29 @@ module ApplicationHelper
 
     "#{member.first_name}'s"
   end
+
+  # rubocop:disable Metrics/AbcSize
+  # Amount should be a decimal between 0 and 1. Lower means darker
+  def darken_color(hex_color, amount=0.4)
+    hex_color = hex_color.gsub("#", "")
+    rgb = hex_color.scan(/../).map(&:hex)
+    rgb[0] = (rgb[0].to_i * amount).round
+    rgb[1] = (rgb[1].to_i * amount).round
+    rgb[2] = (rgb[2].to_i * amount).round
+    "#%02x%02x%02x" % rgb
+  end
+
+  # Amount should be a decimal between 0 and 1. Higher means lighter
+  def lighten_color(hex_color, amount = 0.7)
+    hex_color = HtmlColor.to_hex(hex_color) unless hex_color.starts_with?("#")
+    return "" unless hex_color.respond_to?(:gsub)
+
+    hex_color = hex_color.gsub("#", "")
+    rgb = hex_color.scan(/../).map(&:hex)
+    rgb[0] = [(rgb[0].to_i + 255 * amount).round, 255].min
+    rgb[1] = [(rgb[1].to_i + 255 * amount).round, 255].min
+    rgb[2] = [(rgb[2].to_i + 255 * amount).round, 255].min
+    "#%02x%02x%02x" % rgb
+  end
+  # rubocop:enable Metrics/AbcSize
 end

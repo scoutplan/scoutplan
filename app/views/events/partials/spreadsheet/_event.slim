@@ -1,0 +1,6 @@
+tr.event.event-row(class="event-category-#{event.event_category.id}")
+  td.p-1.border.border-stone-600 = event.starts_at.strftime("%a")
+  td.p-1.border.border-stone-600 = event.starts_at.strftime("%b %d")
+  td.p-1.border.border-stone-600 = event.title
+  td.p-1.border.border-stone-600 = event.location
+  td.p-1.border.border-stone-600 = event.event_organizers.join(", ")

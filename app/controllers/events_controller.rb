@@ -6,7 +6,6 @@ require "humanize"
 # rubocop:disable Metrics/ClassLength
 # rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/MethodLength
-# rubocop:disable Metrics/PerceivedComplexity
 # rubocop:disable Metrics/CyclomaticComplexity
 class EventsController < UnitContextController
   skip_before_action :authenticate_user!, only: [:public]
@@ -32,12 +31,21 @@ class EventsController < UnitContextController
   end
 
   def calendar
-    cookies[:event_index_variation] = "calendar"
+    month = params[:month] || cookies[:calendar_month] || Date.today.year
+    year = params[:year] || cookies[:calendar_year] || Date.today.month
+
     unless params[:year] && params[:month]
-      redirect_to calendar_unit_events_path(@unit, year: Date.today.year, month: Date.today.month) and return
+      redirect_to calendar_unit_events_path(@unit, year: year, month: month) and return
     end
 
+    cookies[:event_index_variation] = "calendar"
+    cookies[:calendar_year] = year
+    cookies[:calendar_month] = month
     @events = scope_for_calendar.all
+  end
+
+  def spreadsheet
+    find_list_events
   end
 
   def history
@@ -46,10 +54,10 @@ class EventsController < UnitContextController
 
   def list
     respond_to do |format|
-      format.html {
+      format.html do
         cookies[:event_index_variation] = "list"
         find_list_events
-      }
+      end
       format.pdf { send_fridge_calendar }
       format.turbo_stream { prepare_turbo_stream }
     end
@@ -64,10 +72,10 @@ class EventsController < UnitContextController
     @forward_date = Date.new(@query_year, @query_month, 1) + 3.months
 
     respond_to do |format|
-      format.html {
+      format.html do
         cookies[:event_index_variation] = "threeup"
         find_threeup_events
-      }
+      end
     end
   end
 
@@ -173,8 +181,14 @@ class EventsController < UnitContextController
 
   # PATCH /:unit_id/events/:event_id
   def update
-    destroy and return if params[:event_action] == "delete"
+    case params[:event_action]
+    when "delete" then destroy
+    when "delete_series" then destroy_series
+    else update_event
+    end
+  end
 
+  def update_event
     authorize @event
     service = EventUpdateService.new(@event, @current_member, event_params)
     service.perform
@@ -184,21 +198,24 @@ class EventsController < UnitContextController
     EventOrganizerService.new(@event, @current_member).update(params[:event_organizers])
 
     if cookies[:event_index_variation] == "calendar"
-      redirect_to calendar_unit_events_path(@unit), notice: t("events.update_confirmation", title: @event.title)
+      redirect_to unit_events_path(@unit), notice: t("events.update_confirmation", title: @event.title)
     else
       redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
     end
   end
 
-  # DELETE /:unit_id/events/:event_id
   def destroy
     authorize @event
-    if @event.series_parent.present?
-      @unit.events.where(series_parent_id: @event.series_parent_id).destroy_all
-    else
-      @event.destroy!
-    end
+    @event.destroy!
     redirect_to unit_events_path(@unit), notice: "#{@event.title} has been permanently removed from the schedule."
+  end
+
+  def destroy_series
+    authorize @event
+    events = @unit.events.where(series_parent_id: @event.id).or(Event.where(id: @event.id))
+    events.destroy_all
+    redirect_to unit_events_path(@unit),
+                notice: "The #{@event.title} series has been permanently removed from the schedule."
   end
 
   # member-facing view showing all RSVPable events and their responses
@@ -218,13 +235,13 @@ class EventsController < UnitContextController
   def render_printable_signups
     events = @events.select(&:rsvp_open?)
 
-    render(locals: { events: events },
-           pdf: "#{@unit.name} Signups as of #{Date.today.strftime('%-d %B %Y')}",
-           layout: "pdf",
-           encoding: "utf8",
+    render(pdf:         "#{@unit.name} Signups as of #{Date.today.strftime('%-d %B %Y')}",
+           layout:      "pdf",
+           encoding:    "utf8",
            orientation: "landscape",
-           margin: { top: 20, bottom: 20 },
-           header: { html: { template: "events/partials/index/signup_header" } } )
+           locals:      { events: events },
+           margin:      { top: 20, bottom: 20 },
+           header:      { html: { template: "events/partials/index/signup_header" } })
   end
 
   def publish
@@ -303,11 +320,11 @@ class EventsController < UnitContextController
     @non_respondents = @event.unit.members.status_active - @event.rsvps.collect(&:member)
   end
 
-  def destroy_series
-    return unless @event.series_parent.present?
+  # def destroy_series
+  #   return unless @event.series_parent.present?
 
-    @unit.events.where(series_parent_id: @event.series_parent_id).destroy_all
-  end
+  #   @unit.events.where(series_parent_id: @event.series_parent_id).destroy_all
+  # end
 
   # set sensible default start and end times based on the day of the week
   def set_default_times
@@ -426,7 +443,7 @@ class EventsController < UnitContextController
   def scope_for_calendar
     scope = @unit.events
     scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
-    scope.where("starts_at BETWEEN ? AND ?", @start_date, @end_date)
+    scope.where("starts_at BETWEEN ? AND ?", @start_date - 1.week, @end_date + 1.week)
   end
 
   def scope_for_list
@@ -501,5 +518,4 @@ end
 # rubocop:enable Metrics/ClassLength
 # rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/AbcSize
-# rubocop:enable Metrics/PerceivedComplexity
 # rubocop:enable Metrics/CyclomaticComplexity

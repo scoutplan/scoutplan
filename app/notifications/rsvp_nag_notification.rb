@@ -7,8 +7,6 @@ class RsvpNagNotification < ScoutplanNotification
   deliver_by :email, mailer: "RsvpNagMailer", if: :email?
   deliver_by :twilio, if: :sms?, format: :format_for_twilio, credentials: :twilio_credentials, ignore_failure: true
 
-  before_send :feature_enabled?
-
   param :event
 
   def format_for_twilio

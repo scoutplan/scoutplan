@@ -7,10 +7,10 @@
       Deleting it will completely and permanently remove the event without the option of restoring it later.
 
     = f.button t("events.form.delete_caption"),
-              type: "submit",
-              name: "event_action",
-              value: "delete",
-              class: "text-center inline-block px-4 py-2 text-red-500 font-semibold bg-stone-100 hover:border-stone-400 border border-stone-200 rounded whitespace-nowrap"
+               type: "submit",
+               name: "event_action",
+               value: "delete",
+               class: "text-center inline-block px-4 py-2 text-red-500 font-semibold bg-stone-100 hover:border-stone-400 border border-stone-200 rounded whitespace-nowrap"
 
   - if @event.series?
 
@@ -19,7 +19,7 @@
       p.mb-2 The event is part of a series. Deleting the series will remove all events in the series without the option of restoring them later.
 
       = f.button t("events.form.delete_series_caption"),
-                type: "submit",
-                name: "event_action",
-                value: "delete_series",
-                class: "text-center inline-block px-4 py-2 text-red-500 font-semibold bg-stone-100 hover:border-stone-400 border border-stone-200 rounded whitespace-nowrap"
+                 type: "submit",
+                 name: "event_action",
+                 value: "delete_series",
+                 class: "text-center inline-block px-4 py-2 text-red-500 font-semibold bg-stone-100 hover:border-stone-400 border border-stone-200 rounded whitespace-nowrap"

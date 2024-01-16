@@ -8,7 +8,7 @@ RSpec.describe RsvpNagNotification do
     @member = FactoryBot.create(:unit_membership, unit: @event.unit)
     @member.user.update(phone: "+13395788645")
     @unit = @event.unit
-    @unit.settings(:communication).event_reminders = "true"
+    @unit.settings(:communication).update(digest: "true")
   end
 
   it "creates a notifier" do
