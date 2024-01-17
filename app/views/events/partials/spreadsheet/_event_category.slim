@@ -1,1 +1,2 @@
-= ".event-category-#{event_category.id} { background-color: #{lighten_color(event_category.color || "#aaaaaa")}; }"
+= ".event-category-#{event_category.id} { background-color: #{lighten_color(event_category.color || "#aaaaaa", 0.7)}; }"
+= ".selected.event-category-#{event_category.id} { background-color: #{lighten_color(event_category.color || "#aaaaaa", 0.4)}; }"

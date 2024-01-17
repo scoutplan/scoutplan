@@ -1,16 +1,76 @@
 - Date::DATE_FORMATS[:day] = "%a"
 - Date::DATE_FORMATS[:month_and_date] = "%b %d"
+- @row_number = 0
 
-table.mx-auto
-  thead
-    tr
-      th.p-1.border.border-stone-600 = "Day"
-      th.p-1.border.border-stone-600 = "Date"
-      th.p-1.border.border-stone-600 = "Title"
-      th.p-1.border.border-stone-600 = "Location"
-      th.p-1.border.border-stone-600 = "Organizers"
-  tbody
-    = render partial: "events/partials/spreadsheet/event", collection: @events
+.table.text-sm.mx-auto.relative(data-controller="spreadsheet")
+  .table-row.header(data-spreadsheet-target="header")
+    .table-cell.border.border-stone-500.bg-stone-100
+    .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Day"
+    .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Date"
+    .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Title"
+    .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100.min-w-48 = "Description"
+    .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100.min-w-48 = "Location"
+    .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Organizers"
+  = render partial: "events/partials/spreadsheet/event", collection: @events
 
 style
   = render partial: "events/partials/spreadsheet/event_category", collection: @unit.event_categories
+
+css:
+  .event-row.selected {
+    outline: 3px solid green;
+    outline-offset: 0;
+    box-shadow: inset 0px 0px 0px 1px white;
+  }
+
+  .row-number {
+    cursor: move;
+  }
+
+  .table-cell input[type="text"]:focus {
+    outline: 3px solid green;
+    outline-offset: 0;
+    box-shadow: inset 0px 0px 0px 1px white;
+  }
+
+  .table-cell input[type="text"]:selection {
+    background-color: transparent;
+  }
+
+  .table-cell input[type="text"]:after {
+    outline: none;
+  }
+
+  .table-cell input[type="text"]:before {
+    outline: none;
+  }
+
+  .table-cell input[type="text"] {
+    padding: 0.25rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
+  }
+
+  .droptarget {
+    background: red !important;
+  }
+
+  .droptarget-top {
+    border-top: 6px solid black;
+  }
+
+  .droptarget-bottom {
+    border-bottom: 6px solid black;
+  }
+
+
+  .table-row.cell-selected .cell-row-number {
+    background: #ddd;
+    border-right: 3px solid green;
+  }
+
+  .table-row.header .cell-selected {
+    background: #ddd;
+    border-bottom: 3px solid green;
+  }
