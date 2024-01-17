@@ -8,7 +8,7 @@ class RsvpNagJob < ApplicationJob
 
     return unless RsvpNagJob.should_run?(unit) && RsvpNagJob.settings_are_current?(unit, timestamp)
 
-    unit.members.each { |member| perform_for_member(member) }
+    unit.unit_memberships.each { |member| perform_for_member(member) }
     RsvpNagJob.schedule_next_job(unit)
     unit.settings(:communication).update!(rsvp_nag_last_ran_at: DateTime.current)
   end
@@ -16,18 +16,17 @@ class RsvpNagJob < ApplicationJob
   def perform_for_member(member)
     return unless member.contactable?
 
-    event = next_needing_rsvp
-    return unless EventRsvpPolicy.new(member, event.first).create?
+    event = next_needing_rsvp(member)
+    return unless event.present?
+    return unless EventPolicy.new(member, event).rsvp?
 
-    RsvpNagNotifier.with(event: event).deliver_later(member)
-      # WeeklyDigestNotification.with(unit: unit).deliver_later(unit.members)      
+    RsvpNagNotification.with(event: event).deliver_later(member)
   end
 
-  def next_needing_rsvp
-    events = @unit.events.published.rsvp_required.future.order(:starts_at).select do |event|
-      FamilyRsvp.new(member, event).incomplete?
-    end
-    events.first
+  def next_needing_rsvp(member)
+    events = @unit.events.published.rsvp_required.future.order(:starts_at)
+    events = events.select { |event| event.rsvp_open? && FamilyRsvp.new(member, event).incomplete? }
+    events&.first
   end
 
   def self.schedule_next_job(unit)

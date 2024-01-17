@@ -8,6 +8,7 @@ class RsvpNagMailer < ApplicationMailer
   before_action :setup
 
   def rsvp_nag_notification
+    puts @event
     mail(to: to_address, from: from_address, subject: subject)
   end
 

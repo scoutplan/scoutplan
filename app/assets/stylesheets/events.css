@@ -214,7 +214,7 @@ input[type="date"].error {
 }
 
 .event-next {
-  border-top: 2px solid rgb(13, 148, 136) !important;
+  border-top: 3px solid rgb(13, 148, 136) !important;
 }
 
 tr:hover td a.row-link {

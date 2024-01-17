@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe RsvpNagNotification do
   before do
     @event = FactoryBot.create(:event)
-    @member = FactoryBot.create(:unit_membership, unit: @event.unit)
+    @member = FactoryBot.create(:unit_membership, :adult, unit: @event.unit)
     @member.user.update(phone: "+13395788645")
     @unit = @event.unit
     @unit.settings(:communication).update(digest: "true")
