@@ -9,6 +9,7 @@ RSpec.describe RsvpNagNotification do
     @member.user.update(phone: "+13395788645")
     @unit = @event.unit
     @unit.settings(:communication).update(digest: "true")
+    Flipper.enable(:rsvp_nag, @member)
   end
 
   it "creates a notifier" do
@@ -19,5 +20,10 @@ RSpec.describe RsvpNagNotification do
     Flipper.enable(:deliver_email)
     expect { RsvpNagNotification.with(event: @event).deliver([@member]) }
       .to change { ActionMailer::Base.deliveries.count }.by(1)
+  end
+
+  it "doesn't deliver an email if the feature is disabled" do
+    Flipper.disable(:deliver_email)
+    expect { RsvpNagNotification.with(event: @event).deliver([@member]) }.not_to change { ActionMailer::Base.deliveries.count }
   end
 end

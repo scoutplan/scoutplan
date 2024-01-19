@@ -3,8 +3,6 @@
 # The Mailer class for sending email relating to specific events
 #
 class EventMailer < ScoutplanMailer
-  helper MagicLinksHelper
-
   def cancellation_email
     @member = params[:member]
     @event = params[:event]

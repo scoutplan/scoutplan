@@ -6,6 +6,8 @@ class ApplicationMailer < ActionMailer::Base
   layout "mailer"
   before_action :set_time_zone
 
+  helper MagicLinksHelper
+
   def set_time_zone
     Time.zone = "Eastern Time (US & Canada)"
   end

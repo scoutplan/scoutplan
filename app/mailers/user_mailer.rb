@@ -3,7 +3,6 @@
 # The Mailer class for sending email relating to specific events
 #
 class UserMailer < ApplicationMailer
-  helper MagicLinksHelper
   layout "user_mailer"
 
   def session_email

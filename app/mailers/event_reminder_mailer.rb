@@ -4,7 +4,6 @@ class EventReminderMailer < ApplicationMailer
   layout "basic_mailer"
 
   helper ApplicationHelper
-  helper MagicLinksHelper
 
   before_action :setup
 
@@ -20,15 +19,15 @@ class EventReminderMailer < ApplicationMailer
       mime_type:           "multipart/mixed",
       content_type:        "text/calendar; method=REQUEST; charset=UTF-8; component=VEVENT",
       content_disposition: "attachment; filename=#{@event.ical_filename}",
-      content:             @event.to_ical(@member)
+      content:             @event.to_ical(@recipient)
     }
   end
 
   def setup
+    @recipient = params[:recipient]
     @event = params[:event]
-    @member = params[:recipient]
     @unit = @event.unit
-    @family = @member.family
+    @family = @recipient.family
     @family_rsvps = @event.rsvps.where(unit_membership_id: @family.pluck(:id)) || []
   end
 
@@ -42,6 +41,6 @@ class EventReminderMailer < ApplicationMailer
   end
 
   def to_address
-    email_address_with_name(@member.email, @member.full_display_name)
+    email_address_with_name(@recipient.email, @recipient.full_display_name)
   end
 end

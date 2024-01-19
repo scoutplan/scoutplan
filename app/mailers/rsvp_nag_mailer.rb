@@ -1,14 +1,13 @@
 class RsvpNagMailer < ApplicationMailer
-  helper ApplicationHelper
-  helper MagicLinksHelper
   layout "basic_mailer"
+
+  helper ApplicationHelper
 
   attr_reader :recipient, :event, :unit
 
   before_action :setup
 
   def rsvp_nag_notification
-    puts @event
     mail(to: to_address, from: from_address, subject: subject)
   end
 
@@ -21,7 +20,7 @@ class RsvpNagMailer < ApplicationMailer
   end
 
   def subject
-    "[#{unit.name}] Are you going to the #{event.title}?"
+    "[#{unit.name}] Are you going to the #{event.title} on #{event.starts_at.strftime('%B %-d')}?"
   end
 
   def to_address

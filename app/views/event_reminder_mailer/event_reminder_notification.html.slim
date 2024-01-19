@@ -1,9 +1,9 @@
-- presenter = EventPresenter.new(@event, @member)
+- presenter = EventPresenter.new(@event, @recipient)
 
 h1(style="margin-bottom: 1rem;") = string_for_time_internal_from_day(@event.starts_at).capitalize
 
 section(style="font-weight:bold; padding-bottom:0.5rem;")
-  p(style="margin-bottom: 2rem;") = link_to(@event.title, magic_url_for(@member, unit_event_url(@unit.id, @event.id)),
+  p(style="margin-bottom: 2rem;") = link_to(@event.title, magic_url_for(@recipient, unit_event_url(@unit.id, @event.id)),
               style: "display: block; font-weight: bold; margin-top: 1rem; font-size: 2rem;")
 
   - if @event.multiday?
@@ -68,19 +68,16 @@ section(style="font-weight:bold; padding-bottom:0.5rem;")
             td
               = rsvp.present? ? I18n.t("rsvp_#{rsvp.response}").downcase : "No response"
 
-    - if @event.rsvp_open? && EventPolicy.new(@member, @event).rsvp?
+    - if @event.rsvp_open? && EventPolicy.new(@recipient, @event).rsvp?
       p(style="padding-top: 1rem;")
         - if @family_rsvps.any?
-          = link_to "Change your response", magic_url_for(@member, unit_event_family_rsvps_url(@unit, @unit.events.first)), class: "rsvp-link"
+          = link_to "Change your response", magic_url_for(@recipient, unit_event_family_rsvps_url(@unit, @unit.events.first)), class: "rsvp-link"
         - else
-          = link_to "Respond now", magic_url_for(@member, unit_event_family_rsvps_url(@unit, @unit.events.first)), class: "rsvp-link"
+          = link_to "Respond now", magic_url_for(@recipient, unit_event_family_rsvps_url(@unit, @unit.events.first)), class: "rsvp-link"
 
 - if @event.description.present?
   section(style="line-height:140%; padding: 1rem 0; border-top: 1px solid #ddd;")
     == @event.description
-
-footer(style="border-top: 1px solid #ddd; padding: 1rem 0;")
-  p The links in this email are personalized for you and expire in seven days. Please don't forward this email to others or share links.
 
 css:
   p {

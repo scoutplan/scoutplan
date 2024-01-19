@@ -4,11 +4,6 @@ class RsvpNagNotification < ScoutplanNotification
 
   param :event
 
-  def email?
-    puts "email?"
-    super
-  end
-
   def format_for_twilio
     {
       From: ENV.fetch("TWILIO_NUMBER"),
@@ -18,6 +13,6 @@ class RsvpNagNotification < ScoutplanNotification
   end
 
   def feature_enabled?
-    recipient.unit.settings(:communication).digest == "true"
+    recipient.unit.settings(:communication).digest == "true" && Flipper.enabled?(:rsvp_nag, recipient)
   end
 end

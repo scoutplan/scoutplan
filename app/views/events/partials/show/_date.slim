@@ -8,26 +8,6 @@ section.py-4
       = @presenter.month_name
 
     .relative
-      // times
-      .flex.flex-row.justify-between.items-center.relative
-        - unless @event.all_day?
-          .font-semibold.whitespace-nowrap.text-xl
-            = @event.starts_at.in_time_zone.strftime("%-I:%M")
-            | &thinsp;
-            .inline.text-stone-600.text-sm = @event.starts_at.in_time_zone.strftime("%p")
-
-            - if !multiday
-              | &thinsp;&ndash;&thinsp;
-              = @event.ends_at.in_time_zone.strftime("%-I:%M")
-              | &thinsp;
-              .inline.text-stone-600.text-sm = @event.ends_at.in_time_zone.strftime("%p")
-
-          - if multiday
-            .font-semibold.whitespace-nowrap.text-xl
-              = @event.ends_at.in_time_zone.strftime("%-I:%M")
-              | &thinsp;
-              .inline.text-stone-600.text-sm = @event.starts_at.in_time_zone.strftime("%p")    
-
       .flex.flex-row.justify-between.items-center.relative
         // horizontal line for multi-day events
         - if multiday
@@ -68,6 +48,26 @@ section.py-4
         .uppercase.tracking-wider = @event.starts_at.in_time_zone.strftime('%a')
         - if multiday
           .uppercase.tracking-wider = @event.ends_at.in_time_zone.strftime('%a')  
+
+      // times
+      .flex.flex-row.justify-between.items-center.relative
+        - unless @event.all_day?
+          .font-semibold.whitespace-nowrap.text-xl
+            = @event.starts_at.in_time_zone.strftime("%-I:%M")
+            | &thinsp;
+            .inline.text-stone-600.text-sm = @event.starts_at.in_time_zone.strftime("%p")
+
+            - if !multiday
+              | &thinsp;&ndash;&thinsp;
+              = @event.ends_at.in_time_zone.strftime("%-I:%M")
+              | &thinsp;
+              .inline.text-stone-600.text-sm = @event.ends_at.in_time_zone.strftime("%p")
+
+          - if multiday
+            .font-semibold.whitespace-nowrap.text-xl
+              = @event.ends_at.in_time_zone.strftime("%-I:%M")
+              | &thinsp;
+              .inline.text-stone-600.text-sm = @event.starts_at.in_time_zone.strftime("%p")              
 
     - if @event.series?
       .text-sm.text-gray-500.mt-4
