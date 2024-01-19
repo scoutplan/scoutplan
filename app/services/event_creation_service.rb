@@ -7,9 +7,15 @@ class EventCreationService < ApplicationService
     super()
   end
 
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def create(params)
     @event = @unit.events.new
     @event.assign_attributes(params)
+
+    zone = Time.find_zone!(@unit.time_zone)
+    @event.starts_at = zone.parse("#{params[:starts_at_date]} #{params[:starts_at_time]}")
+    @event.ends_at = zone.parse("#{params[:ends_at_date]} #{params[:ends_at_time]}")
 
     category_name = params[:event_category_proxy_name]
     unless @unit.event_categories.find_or_create_by(name: category_name)
@@ -24,6 +30,8 @@ class EventCreationService < ApplicationService
     create_series if params[:repeats] == "yes"
     @event
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 
   private
 

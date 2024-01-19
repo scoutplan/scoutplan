@@ -142,6 +142,8 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.1.1)
     bcrypt (3.1.20)
+    better_mailer_previews (1.0.2)
+      rails (>= 5.0.0)
     bigdecimal (3.1.5)
     bindex (0.8.1)
     blazer (3.0.2)
@@ -639,6 +641,7 @@ DEPENDENCIES
   auto_strip_attributes
   awesome_print
   aws-sdk-s3
+  better_mailer_previews
   blazer
   bootsnap
   bullet

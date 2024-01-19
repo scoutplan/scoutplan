@@ -79,7 +79,8 @@ body.showing-only-draft-events .event-row.event-draft {
   display: block; }  
 
 body.showing-only-draft-events .event-row.event-draft.event-past {
-  display: none; }  
+  display: none; 
+}  
 
 body.showing-only-draft-events #show-only-draft-events-link .menu-glyph-wrapper {
   display: inline-block; }
@@ -195,11 +196,26 @@ input[type="date"].error {
 .table.flush-table .table-row-group .table-cell:last-child {
   padding-right: 0 !important; }
 
-tr.event td a.row-link {
-  color: #666; }
 
-tr.event-past td a.row-link {
-  color: #aaa; }
+.threeup .event-past a.event {
+  color: #bbb;
+
+  .day {
+    color: #bbb;
+  }
+
+  .event-short-description {
+    color: #bbb;
+  }
+
+  i {
+    color: #bbb !important;
+  }
+}
+
+.event-next {
+  border-top: 3px solid rgb(13, 148, 136) !important;
+}
 
 tr:hover td a.row-link {
   color: #000; }

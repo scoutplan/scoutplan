@@ -1,7 +1,6 @@
 class MemberMailer < ScoutplanMailer
   before_action :set_addresses
   before_action :time_zone
-  helper MagicLinksHelper
 
   def family_rsvp_confirmation_email
     @event = Event.find(params[:event_id])

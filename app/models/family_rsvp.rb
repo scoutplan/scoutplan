@@ -96,6 +96,10 @@ class FamilyRsvp
     status == :completed
   end
 
+  def incomplete?
+    !completed?
+  end
+
   def partial?
     status == :partial
   end

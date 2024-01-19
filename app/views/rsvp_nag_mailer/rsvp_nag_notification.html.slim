@@ -1,0 +1,4 @@
+p(style="margin-bottom:2rem;") Hi, #{@recipient.first_name}, we're making plans for the #{@event.title} event and we need to know if you're planning to attend.
+
+p(style="text-align:center;")
+  = magic_link_to(@recipient, "RSVP Now", rsvp_unit_event_url(@unit, @event), class: "button button-rsvp")

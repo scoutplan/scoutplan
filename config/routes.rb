@@ -5,6 +5,7 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
+  mount BetterMailerPreviews::Engine, at: "/better_mailer_previews" if Rails.env.development?
   root to: "home#index"
 
   %w[404 500].each do |code|
@@ -129,11 +130,13 @@ Rails.application.routes.draw do
         get "paged_list"
         get "threeup"
         get "threeup/:year/:month", to: "events#threeup"
-        get "calendar", to: redirect { |path_params, _|
-          "/units/#{path_params[:unit_id]}/schedule/calendar/#{Date.today.year}/#{Date.today.month}"
-        }, as: "calendar_redirect"
+        # get "calendar", to: redirect { |path_params, _|
+        #   "/units/#{path_params[:unit_id]}/schedule/calendar/#{Date.today.year}/#{Date.today.month}"
+        # }, as: "calendar_redirect"
+        # get "calendar"
+        get "calendar", to: "events#calendar", as: "calendar_redirect"
         get "calendar/:year/:month", to: "events#calendar", as: "calendar"
-        get "spreadsheet", to: "events#index", defaults: { variation: "spreadsheet" }
+        get "spreadsheet", to: "events#spreadsheet"
         post "bulk_publish"
       end
       # get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"

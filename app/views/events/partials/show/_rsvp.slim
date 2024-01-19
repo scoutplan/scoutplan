@@ -58,6 +58,11 @@ article#rsvp_section.py-4
         - if policy(event).rsvp? && event.rsvp_open?
           = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: event, show_rsvp: params[:variation] == "rsvp" }
 
+  - elsif event.rsvp_opens_at&.future?
+    .font-semibold.text-sm.text-amber-600
+      i.fa-solid.fa-ban.mr-2
+      = t("events.index.rsvp.not_open")
+
   - elsif !event.rsvp_open?
     .flex.flex-row.justify-between.items-center
       div

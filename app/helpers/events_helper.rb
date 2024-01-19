@@ -26,6 +26,7 @@ module EventsHelper
     end
   end
 
+  # rubocop:disable Metrics/AbcSize
   def row_classes(event)
     result = []
     result << "event-past" if event.ends_at.past?
@@ -33,9 +34,11 @@ module EventsHelper
     result << "event-rsvp"   if event.requires_rsvp
     result << "event-draft"  if event.draft?
     result << "event-cancelled" if event.cancelled?
+    result << "event-next" if event == event.unit.next_event
 
     result.join(" ")
   end
+  # rubocop:enable Metrics/AbcSize
 
   # given an EventRsvp object, return a fully-formed span tag containing the correct
   # FontAwesome glphy

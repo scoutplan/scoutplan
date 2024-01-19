@@ -82,8 +82,6 @@ RSpec.describe Event, type: :model do
 
       it "RSVP is closed if rsvp_closes_at has passed but starts_at hasn't" do
         event = FactoryBot.build(:event, :requires_rsvp, starts_at: 5.days.from_now, ends_at: 6.days.from_now, rsvp_closes_at: 4.days.ago)
-        puts "sdsdf"
-        puts event.rsvp_closes_at.future?
         expect(event.rsvp_open?).to be_falsey
       end
 

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class WeeklyDigestMailer < ApplicationMailer
-  helper MagicLinksHelper
   layout "basic_mailer"
 
   before_action :setup

@@ -10,6 +10,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backdropBrightness: {
+        500: '5'
+      },
+      backdropSaturate: {
+        10: '.10'
+      },
       dropShadow: {
         overhead: '0 0 1rem rgba(0, 0, 0, 0.1)',
       },
