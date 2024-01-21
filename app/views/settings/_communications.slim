@@ -1,4 +1,4 @@
-- task_keys = { rsvp_nag: "RsvpNagTask", rsvp_last_call: "RsvpLastCallTask", event_organizer_digest: "EventOrganizerDigestTask" }
+- task_keys = { rsvp_last_call: "RsvpLastCallTask", event_organizer_digest: "EventOrganizerDigestTask" }
 
 .h-4
 
@@ -30,6 +30,7 @@ header.mb-2
   fieldset.grid.grid-cols-1.md:grid-cols-2.gap-2.pb-2
     = render "settings/communication/digest"
     = render "settings/communication/event_reminders"
+    = render "settings/communication/rsvp_nag"
 
     - task_keys.each do |task_key, _|
       = render partial: "settings/task", locals: { task_key: task_key }
