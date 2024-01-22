@@ -9,16 +9,18 @@ article.py-4
         i.fa-solid.fa-circle.fa-stack-2x.text-violet-700
         i.fa-solid.fa-clipboard-check.fa-stack-1x.text-violet-50
 
-
       = acceptance_count.zero? ? t("events.show.captions.attendees_zero") : "#{pluralize(acceptance_count, 'person')} #{acceptance_count == 1 ? "is" : "are"} going"
 
       - if @event.limits_headcount?
-        = t(".headcount_limit", limit: @event.max_total_attendees)
+        | &nbsp;
+        .inline-block.bg-purple-100.text-purple-600.px-2.py-1.rounded.uppercase.spacing-wide.font-semibold.text-sm
+          i.fa-solid.fa-exclamation-triangle.mr-1
+          = t(".headcount_limit", limit: @event.max_total_attendees)
 
-      i.fa-regular.fa-info-circle.text-violet-500.ml-2(title="#{t("events.show.captions.organize_reason")}")
 
     .right
+      i.fa-regular.fa-info-circle.text-violet-500.mr-2(title="#{t("events.show.captions.organize_reason")}")
       = link_to dashboard_unit_event_path(@event.unit, @event),
-                class: "block py-2 px-3 rounded-lg text-center bg-violet-700 hover:bg-violet-800 text-violet-50 font-semibold",
+                class: "inline-block py-2 px-3 rounded-lg text-center bg-violet-700 hover:bg-violet-800 text-violet-50 font-semibold",
                 data: { turbo_action: "advance" } do
         = t("events.show.buttons.organize")

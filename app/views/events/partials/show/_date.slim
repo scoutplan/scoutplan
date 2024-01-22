@@ -15,7 +15,7 @@ section.py-4
 
         // start day number
         .start-dayz.block.dark:bg-stone-900.pr-2.relative
-          .inline-block.bg-white.dark:bg-stone-900.pr-1.font-normal.text-6xl = @event.starts_at.day
+          .inline-block.bg-white.dark:bg-stone-900.pr-1.text-6xl = @event.starts_at.day
 
         // moons, if event is multi-day and less than 4 days long
         - if multiday && duration_in_days < max_intermediate_days
@@ -25,7 +25,7 @@ section.py-4
           - interim_date = @event.starts_at + 1.day
           - while interim_date.beginning_of_day < @event.ends_at.beginning_of_day
             .interim-day.bg-white.dark:bg-stone-900.text-stone-500.px-2.relative
-              .font-bold.text-2xl = interim_date.day
+              .text-2xl = interim_date.day
 
             .interim-day.bg-white.dark:bg-stone-900.text-purple-500.px-1.relative
               i.fa-solid.fa-moon
@@ -41,7 +41,7 @@ section.py-4
         // end day number, if multi-day
         - if multiday
           .end-day.dark:bg-stone-900.pl-2.text-right.relative
-            .inline-block.bg-white.dark:bg-stone-900.pl-1.font-normal.text-6xl = @event.ends_at.day
+            .inline-block.bg-white.dark:bg-stone-900.pl-1.text-6xl = @event.ends_at.day
 
       // day name(s)
       .flex.flex-row.justify-between.items-center.font-bold.text-lg.text-stone-500

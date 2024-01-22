@@ -273,7 +273,7 @@ en:
           unpaid: "Your payment is outstanding."
 
         organize:
-          headcount_limit: " (limit %{limit})"
+          headcount_limit: "limit %{limit}"
     
     payments:
       index:
