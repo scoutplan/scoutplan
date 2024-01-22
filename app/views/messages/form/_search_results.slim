@@ -1,3 +1,3 @@
 ul#recipient_search_results.hidden.absolute.top-full.bg-messages-800.text-messages-100.max-h-96.overflow-y-scroll.rounded-b.z-50(data-message-form-target="addressBook")
-  = turbo_frame_tag :addressables
-    = render partial: "addressable", collection: @addressables, cached: true
+  = turbo_frame_tag :addressables, src: addressables_unit_messages_path(@unit), lazy: true
+    / = render partial: "addressable", collection: @addressables, cached: true
