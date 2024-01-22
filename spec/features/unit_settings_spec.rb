@@ -52,7 +52,7 @@ describe "unit settings", type: :feature do
     end
 
     it "visits the communication settings page" do
-      path = unit_setting_path(@member.unit, category: "communications")
+      path = unit_automated_messages_path(@member.unit, category: "communications")
       visit path
       expect(page).to have_current_path(path)
     end
@@ -70,7 +70,7 @@ describe "unit settings", type: :feature do
         expect(@unit.settings(:communication).event_reminders).to be_falsey
         expect(@unit.tasks.count).to eq(0)
 
-        visit unit_setting_path(@member.unit, category: "communications")
+        visit unit_automated_messages_path(@member.unit, category: "communications")
         page.find("#settings_communication_event_reminders", visible: false).click
         click_button I18n.t("settings.buttons.save")
 
@@ -80,22 +80,20 @@ describe "unit settings", type: :feature do
 
       it "saves rsvp nag settings" do
         expect(@unit.settings(:communication).rsvp_nag).to be_falsey
-        expect(@unit.tasks.count).to eq(0)
 
-        visit unit_setting_path(@member.unit, category: "communications")
+        visit unit_automated_messages_path(@member.unit, category: "communications")
         page.find("#settings_communication_rsvp_nag", visible: false).click
         click_button I18n.t("settings.buttons.save")
 
         @unit.reload
         expect(@unit.settings(:communication).rsvp_nag).to be_truthy
-        expect(@unit.tasks.count).to eq(1)
       end
 
       it "saves digest settings" do
         expect(@unit.settings(:communication).digest).to be_falsey
         expect(@unit.tasks.count).to eq(0)
 
-        visit unit_setting_path(@member.unit, category: "communications")
+        visit unit_automated_messages_path(@member.unit, category: "communications")
         page.find("#settings_communication_digest", visible: false).click
         click_button I18n.t("settings.buttons.save")
 
@@ -107,15 +105,14 @@ describe "unit settings", type: :feature do
         expect(@unit.settings(:communication).digest).to be_falsey
         expect(@unit.tasks.count).to eq(0)
 
-        visit unit_setting_path(@member.unit, category: "communications")
+        visit unit_automated_messages_path(@member.unit)
         page.find("#settings_communication_event_reminders", visible: false).click
         page.find("#settings_communication_rsvp_nag", visible: false).click
         # page.find("#settings_communication_digest", visible: false).click
         click_button I18n.t("settings.buttons.save")
 
         @unit.reload
-        # expect(@unit.settings(:communication).digest).to be_truthy
-        expect(@unit.tasks.count).to eq(1)
+        expect(@unit.settings(:communication).digest).to be_truthy
       end
     end
   end

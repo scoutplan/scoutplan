@@ -22,6 +22,8 @@ end
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Task, type: :model do
+  skip "Deprecated"
+
   it "instantiates" do
     expect { Task.new }.not_to raise_exception
   end

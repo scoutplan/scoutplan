@@ -1,10 +1,5 @@
 # rubocop:disable Metrics/ClassLength
 class Unit < ApplicationRecord
-  DEFAULT_DIGEST_HOUR_OF_DAY = 9
-  DEFAULT_DIGEST_DAY_OF_WEEK = "Sunday".freeze
-  DEFAULT_RSVP_NAG_HOUR_OF_DAY = 10
-  DEFAULT_RSVP_NAG_DAY_OF_WEEK = "Tuesday".freeze
-
   include Seasons, DistributionLists
 
   has_one :payment_account
@@ -40,10 +35,10 @@ class Unit < ApplicationRecord
   has_settings class_name: "UnitSettings" do |s|
     s.key :appearance, defaults: { main_color: "#003F87" }
     s.key :communication, defaults: { config_timestamp: nil, digest: true, rsvp_nag: "true", event_reminders: true,
-                                      digest_day_of_week: DEFAULT_DIGEST_DAY_OF_WEEK,
-                                      digest_hour_of_day: DEFAULT_DIGEST_HOUR_OF_DAY,
-                                      rsvp_nag_day_of_week: DEFAULT_RSVP_NAG_DAY_OF_WEEK,
-                                      rsvp_nag_hour_of_day: DEFAULT_RSVP_NAG_HOUR_OF_DAY }
+                                      digest_day_of_week: SendWeeklyDigestJob::DEFAULT_DAY_OF_WEEK,
+                                      digest_hour_of_day: SendWeeklyDigestJob::DEFAULT_HOUR_OF_DAY,
+                                      rsvp_nag_day_of_week: RsvpNagJob::DEFAULT_DAY_OF_WEEK,
+                                      rsvp_nag_hour_of_day: RsvpNagJob::DEFAULT_HOUR_OF_DAY }
     s.key :locale, defaults: { time_zone: "Eastern Time (US & Canada)",
                                meeting_location: nil, meeting_address: nil }
     s.key :utilities, defaults: { fire_scheduled_tasks: false }

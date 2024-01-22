@@ -1,4 +1,7 @@
 class RsvpNagJob < ApplicationJob
+  DEFAULT_DAY_OF_WEEK = "Tuesday".freeze
+  DEFAULT_HOUR_OF_DAY = 10
+
   queue_as :default
 
   attr_reader :unit
@@ -30,8 +33,6 @@ class RsvpNagJob < ApplicationJob
   end
 
   def self.schedule_next_job(unit)
-    return unless should_run?(unit)
-
     Time.zone = unit.time_zone
     timestamp = DateTime.current
     unit.settings(:communication).update!(rsvp_nag_config_timestamp: timestamp)
@@ -39,6 +40,8 @@ class RsvpNagJob < ApplicationJob
   end
 
   def self.next_run_time(unit)
+    return unless should_run?(unit)
+
     Time.zone = unit.time_zone
     day_of_week = unit.settings(:communication).rsvp_nag_day_of_week.downcase
     hour_of_day = unit.settings(:communication).rsvp_nag_hour_of_day.to_i
