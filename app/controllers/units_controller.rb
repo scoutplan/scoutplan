@@ -7,7 +7,8 @@ class UnitsController < UnitContextController
     authorize @unit
     @unit.update(unit_params) if params[:unit].present?
     @unit.update_settings(settings_params) if params[:settings].present?
-    UnitTaskService.new(@unit).setup_tasks_from_settings
+    schedule_jobs
+    # UnitTaskService.new(@unit).setup_tasks_from_settings
     redirect_to unit_settings_path(@unit), notice: I18n.t("settings.notices.update_success")
   end
 
@@ -21,6 +22,11 @@ class UnitsController < UnitContextController
     return unless params[:unit].present?
 
     params.require(:unit).permit(:name, :location, :logo, :email, :slug, :allow_youth_rsvps)
+  end
+
+  def schedule_jobs
+    SendWeeklyDigestJob.schedule_next_job(@unit)
+    RsvpNagJob.schedule_next_job(@unit)
   end
 
   def settings_params

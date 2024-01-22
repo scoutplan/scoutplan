@@ -12,9 +12,7 @@
         section.p-4.rounded-lg.bg-stone-100
           = render partial: "events/edit_rsvp_fields", locals: { event: @event, unit: @unit, presenter: presenter, f: f }
 
-        footer.mt-2
-          .flex.flex-row.justify-between.items-baseline
-            .flex.flex-col.md:flex-row.gap-2
-              = f.submit @family_rsvp.new_record? ? "Send your RSVP" : "Change your RSVP",
-                         class: "block px-6 py-2 rounded-lg bg-amber-300 hover:bg-amber-400 text-amber-900 font-semibold"
-              = button_tag "Cancel", class: "text-amber-700 bg-amber-100 hover:bg-amber-200 font-semibold rounded-lg px-5 py-2", data: { action: "click->popup#close" }
+        footer.mt-2.flex.flex-col.md:flex-row.items-baseline.gap-2
+          = f.submit @family_rsvp.new_record? ? "Send your RSVP" : "Change your RSVP",
+                      class: "block w-full md:w-min px-6 py-2 rounded-lg bg-amber-300 hover:bg-amber-400 text-amber-900 font-semibold"
+          = button_tag "Cancel", class: "block w-full md:w-min text-amber-700 bg-amber-100 hover:bg-amber-200 font-semibold rounded-lg px-5 py-2", data: { action: "click->popup#close" }

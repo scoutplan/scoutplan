@@ -8,7 +8,7 @@ class RsvpNagNotification < ScoutplanNotification
     {
       From: ENV.fetch("TWILIO_NUMBER"),
       To:   recipient.phone,
-      Body: sms_body(recipient: recipient)
+      Body: sms_body(recipient: recipient, event: params[:event], unit: params[:event].unit)
     }
   end
 

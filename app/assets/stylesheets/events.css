@@ -213,7 +213,7 @@ input[type="date"].error {
   }
 }
 
-.event-next {
+.showing-past-events .event-next {
   border-top: 3px solid rgb(13, 148, 136) !important;
 }
 

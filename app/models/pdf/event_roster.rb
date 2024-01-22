@@ -37,7 +37,7 @@ class Pdf::EventRoster < Prawn::Document
         formatted_text [{ text: header, size: 10, styles: [:bold], kerning: true }]
       end
     end
-    event.rsvps.joins(unit_membership: :user).order("users.last_name, users.first_name").each do |rsvp|
+    event.rsvps.accepted.joins(unit_membership: :user).order("users.last_name, users.first_name").each do |rsvp|
       render_rsvp(rsvp)
     end
   end

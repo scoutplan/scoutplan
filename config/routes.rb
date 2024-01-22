@@ -160,6 +160,7 @@ Rails.application.routes.draw do
     post "search", to: "search#results", as: "search"
     get "search", to: "search#results"
     get "settings", to: "settings#index", as: "settings"
+    get "settings/automated_messages", to: "settings#automated_messages", as: "automated_messages"
     get "settings/:category", to: "settings#edit", as: "setting"
 
     # redirect the old /events path. We can probably get rid of this

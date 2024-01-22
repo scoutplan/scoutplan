@@ -10,12 +10,10 @@
           section.p-4.rounded-lg.bg-stone-100.dark:bg-stone-700.dark:border.border-stone-500
             = render partial: "events/edit_rsvp_fields", locals: { event: @event, f: f, presenter: @presenter, unit_membership: @unit_membership }
 
-          footer.mt-4
-            .flex.flex-row.justify-between.items-baseline
-              .flex.flex-col.md:flex-row.gap-2
-                = f.submit @family_rsvp.new_record? ? "Send your response" : "Update your response",
-                           class: "block px-6 py-2 rounded-lg bg-amber-400 hover:bg-amber-500 text-amber-950 font-semibold cursor-pointer",
-                           id: "accept"
-                = button_tag "Cancel",
-                             class: "text-amber-800 bg-amber-200 hover:bg-amber-300 font-semibold rounded-lg px-5 py-2",
-                             data: { action: "click->modal#close" }
+          footer.mt-4.flex.flex-col.md:flex-row.gap-2
+            = f.submit @family_rsvp.new_record? ? "Send your response" : "Update your response",
+                        class: "block px-6 py-2 rounded-lg bg-amber-400 hover:bg-amber-500 text-amber-950 font-semibold cursor-pointer",
+                        id: "accept"
+            = button_tag "Cancel",
+                          class: "text-amber-800 bg-amber-200 hover:bg-amber-300 font-semibold rounded-lg px-5 py-2",
+                          data: { action: "click->modal#close" }
