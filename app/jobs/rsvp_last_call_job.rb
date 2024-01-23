@@ -1,12 +1,13 @@
 class RsvpLastCallJob < ApplicationJob
   queue_as :default
 
-  attr_reader :event
+  attr_reader :event, :timestamp
 
-  def perform(**args)
-    return unless should_run?
+  def perform(event_id, timestamp)
+    @event = Event.find(event_id)
+    @timestamp = timestamp
+    return unless should_run? && latest_version?
 
-    @event = args[:event]
     RsvpLastCallNotification.with(event: event).deliver_later(recipients)
   end
 
@@ -18,5 +19,9 @@ class RsvpLastCallJob < ApplicationJob
 
   def should_run?
     event.rsvp_open?
+  end
+
+  def latest_version?
+    timestamp == event.updated_at
   end
 end

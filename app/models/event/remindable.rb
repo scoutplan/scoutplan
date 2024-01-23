@@ -20,7 +20,7 @@ module Event::Remindable
     return unless published? && !ended? && requires_rsvp?
 
     run_time = unit.in_business_hours(starts_at - LAST_CALL_LEAD_TIME)
-    EventLastCallJob.set(wait_until: run_time).perform_later(id, updated_at)
+    RsvpLastCallJob.set(wait_until: run_time).perform_later(id, updated_at)
   end
 
   def remind!
