@@ -1,20 +1,20 @@
 module Event::Payments
   extend ActiveSupport::Concern
 
-  def create_reminder_job!
-    return unless published? && !ended?
+  # def create_reminder_job!
+  #   return unless published? && !ended?
 
-    run_time = starts_at - LEAD_TIME
-    run_time = unit.in_business_hours(run_time) if ENV["RAILS_ENV"] == "production"
-    EventReminderJob.set(wait_until: run_time).perform_later(id, updated_at)
-  end
+  #   run_time = starts_at - LEAD_TIME
+  #   run_time = unit.in_business_hours(run_time) if ENV["RAILS_ENV"] == "production"
+  #   EventReminderJob.set(wait_until: run_time).perform_later(id, updated_at)
+  # end
 
-  def remind!
-    return unless published?
-    return if ended?
+  # def remind!
+  #   return unless published?
+  #   return if ended?
 
-    EventReminderNotification.with(event: self).deliver_later(notification_recipients)
-  end
+  #   EventReminderNotification.with(event: self).deliver_later(notification_recipients)
+  # end
 
   def family_paid?(member)
     !family_amount_due(member).positive?

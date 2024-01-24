@@ -17,7 +17,8 @@ class ScoutplanNotification < Noticed::Base
 
   def sms_body(**assigns)
     Time.use_zone(time_zone) do
-      renderer.render(template: "sms_notifications/#{self.class.name.underscore}", format: "text", assigns: assigns)
+      template = "sms_notifications/#{self.class.name.underscore}"
+      renderer.render(template: template, format: "text", assigns: assigns)
     end
   end
 
