@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "rails_helper"
 
 shared_examples_for "remindable" do
@@ -10,6 +8,6 @@ shared_examples_for "remindable" do
   end
 
   it "has a create_reminder_job! method" do
-    expect(model.new).to respond_to(:create_reminder_job!)
+    expect(model.new).to respond_to(:enqueue_reminder_job!)
   end
 end

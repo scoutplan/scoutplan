@@ -1,7 +1,3 @@
-# frozen_string_literal: true
-
-# linking class between Events and UnitMemberships
-# as event organizers
 class EventOrganizer < ApplicationRecord
   belongs_to :event
   belongs_to :unit_membership
