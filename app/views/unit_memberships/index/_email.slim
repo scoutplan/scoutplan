@@ -1,4 +1,5 @@
 - return unless unit_membership.contactable?(via: :email)
+- return unless @current_member.admin? || unit_membership.roster_display_email?
 
 .mb-2.font-bold
   = unit_membership.email

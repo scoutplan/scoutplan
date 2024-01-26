@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_13_183738) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_26_024051) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "unaccent"
@@ -520,6 +520,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_13_183738) do
     t.string "type", default: "UnitMembership", null: false
     t.string "token"
     t.boolean "ical_suppress_declined", default: false, null: false
+    t.boolean "roster_display_phone", default: false
+    t.boolean "roster_display_email", default: false
   end
 
   create_table "units", force: :cascade do |t|
