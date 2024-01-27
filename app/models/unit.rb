@@ -92,14 +92,12 @@ class Unit < ApplicationRecord
   end
 
   def business_hours
-    [9, 18]
+    [9, 18] # 9am to 6pm
   end
 
   # given a datetime, returns the nearest datetime that is within business hours
   # rubocop:disable Metrics/AbcSize
   def in_business_hours(datetime)
-    return datetime unless ENV["RAILS_ENV"] == "production"
-
     if datetime.in_time_zone(time_zone).hour < business_hours.first
       datetime.in_time_zone(time_zone).change(hour: business_hours.first, min: 0, sec: 0).utc
     elsif datetime.in_time_zone(time_zone).hour >= business_hours.last
