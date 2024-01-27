@@ -15,9 +15,12 @@ class UnitMembershipsController < ApplicationController
     @membership.build_user
   end
 
-  def edit; end
+  def edit
+    authorize @target_membership
+  end
 
   def new
+    authorize(UnitMembership)
     @target_membership = @unit.memberships.build(role: "member")
     @target_membership.build_user
   end
@@ -55,6 +58,7 @@ class UnitMembershipsController < ApplicationController
   end
 
   def update
+    authorize(@target_membership)
     @target_membership.assign_attributes(member_params)
     update_settings_params
     return unless @target_membership.save!
@@ -116,7 +120,7 @@ class UnitMembershipsController < ApplicationController
 
   def member_params
     params.require(:unit_membership).permit(
-      :status, :role, :member_type, :tag_list, :ical_suppress_declined,
+      :status, :role, :member_type, :tag_list, :ical_suppress_declined, :roster_display_phone, :roster_display_email,
       child_relationships_attributes:  [:id, :child_unit_membership_id, :_destroy],
       parent_relationships_attributes: [:id, :_destroy],
       user_attributes:                 [:id, :first_name, :last_name, :phone, :email, :nickname]

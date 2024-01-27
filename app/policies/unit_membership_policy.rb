@@ -7,7 +7,7 @@ class UnitMembershipPolicy < UnitContextPolicy
   # end
 
   def index?
-    admin?
+    true
   end
 
   def show?
@@ -20,6 +20,10 @@ class UnitMembershipPolicy < UnitContextPolicy
 
   def edit?
     admin? || self? || child?
+  end
+
+  def update?
+    edit?
   end
 
   def new?
