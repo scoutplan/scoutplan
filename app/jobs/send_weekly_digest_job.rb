@@ -8,7 +8,7 @@ class SendWeeklyDigestJob < ApplicationJob
     unit = Unit.find(unit_id)
     return unless SendWeeklyDigestJob.should_run?(unit) && SendWeeklyDigestJob.settings_are_current?(unit, timestamp)
 
-    WeeklyDigestNotification.with(unit: unit).deliver_later(unit.members)
+    WeeklyDigestNotifier.with(unit: unit).deliver_later(unit.members)
     SendWeeklyDigestJob.schedule_next_job(unit)
 
     # this could move to the Notification class

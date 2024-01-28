@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe RsvpLastCallNotification do
+RSpec.describe RsvpLastCallNotifier do
   before do
     @event = FactoryBot.create(:event)
     @unit = @event.unit
@@ -11,12 +11,12 @@ RSpec.describe RsvpLastCallNotification do
   end
 
   it "creates a notifier" do
-    expect(RsvpLastCallNotification.new).to be_a(ScoutplanNotification)
+    expect(RsvpLastCallNotifier.new).to be_a(ScoutplanNotifier)
   end
 
   it "delivers an email" do
     Flipper.enable(:deliver_email)
-    expect { RsvpLastCallNotification.with(event: @event).deliver([@member]) }
+    expect { RsvpLastCallNotifier.with(event: @event).deliver([@member]) }
       .to change { ActionMailer::Base.deliveries.count }.by(1)
   end
 end

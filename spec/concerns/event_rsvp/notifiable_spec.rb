@@ -13,17 +13,17 @@ RSpec.describe EventRsvp::Notifiable, type: :concern do
     it "enqueues an email job" do
       rsvp = FactoryBot.build(:event_rsvp, event: @event, member: @member, respondent: @member)
 
-      expect { rsvp.save! }.to have_enqueued_job(Noticed::DeliveryMethods::Email)
+      expect { rsvp.save! }.to have_enqueued_job(Noticed::EventJob)
     end
 
     it "enqueues an SMS job" do
       rsvp = FactoryBot.build(:event_rsvp, event: @event, member: @member, respondent: @member)
-      expect { rsvp.save! }.to have_enqueued_job(Noticed::DeliveryMethods::Twilio)
+      expect { rsvp.save! }.to have_enqueued_job(Noticed::EventJob)
     end
 
     it "enqueues an organizer notification job" do
       rsvp = FactoryBot.build(:event_rsvp, event: @event, member: @member, respondent: @member)
-      expect { rsvp.save! }.to have_enqueued_job(EventRsvpOrganizerNotificationJob)
+      expect { rsvp.save! }.to have_enqueued_job(Noticed::EventJob)
     end
   end
 end

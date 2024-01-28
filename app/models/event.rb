@@ -157,7 +157,7 @@ class Event < ApplicationRecord
   end
 
   def rsvp_open?
-    status == "published" &&
+    published? &&
       requires_rsvp? &&
       rsvp_closes_at.future? &&
       !headcount_limit_reached? &&

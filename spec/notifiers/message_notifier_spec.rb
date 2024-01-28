@@ -1,8 +1,6 @@
-# frozen_string_literal: true
-
 require "rails_helper"
 
-RSpec.describe MessageNotification do
+RSpec.describe MessageNotifier do
   before do
     @event = FactoryBot.create(:event)
     @member = FactoryBot.create(:unit_membership, unit: @event.unit)
@@ -13,17 +11,17 @@ RSpec.describe MessageNotification do
   end
 
   it "creates a notifier" do
-    expect(MessageNotification.new).to be_a(ScoutplanNotification)
+    expect(MessageNotifier.new).to be_a(ScoutplanNotifier)
   end
 
   it "delivers an email" do
     Flipper.enable(:deliver_email)
-    expect { MessageNotification.with(message: @message).deliver([@member]) }
+    expect { MessageNotifier.with(message: @message).deliver([@member]) }
       .to change { ActionMailer::Base.deliveries.count }.by(1)
   end
 
   it "doesn't deliver email if deliver_email is disabled" do
-    expect { MessageNotification.with(message: @message).deliver([@member]) }
+    expect { MessageNotifier.with(message: @message).deliver([@member]) }
       .to change { ActionMailer::Base.deliveries.count }.by(0)
   end
 end

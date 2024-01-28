@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-class MessageNotification < ScoutplanNotification
-  deliver_by :database
-  deliver_by :email, mailer: "MessageMailer", if: :email?
-  deliver_by :twilio, if: :sms?, format: :format_for_twilio, credentials: :twilio_credentials,
+class MessageNotifier < ScoutplanNotifier
+  deliver_by :email, mailer: "MessageMailer", method: :message_notification, if: :email?
+  deliver_by :twilio_messaging, if: :sms?, format: :format_for_twilio, credentials: :twilio_credentials,
              ignore_failure: true, debug: true
 
-  param :message
+  required_param :message
 
   def feature_enabled?
     true
@@ -14,7 +13,7 @@ class MessageNotification < ScoutplanNotification
 
   def email?
     result = super
-    Rails.logger.warn("MessageNotification#email? #{result}")
+    Rails.logger.warn("MessageNotifier#email? #{result}")
     result
   end
 

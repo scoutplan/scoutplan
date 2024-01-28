@@ -1,8 +1,6 @@
-# frozen_string_literal: true
-
 require "rails_helper"
 
-RSpec.describe EventRsvpConfirmation do
+RSpec.describe EventRsvpOrganizerNotifier do
   before do
     @event = FactoryBot.create(:event, :published, :requires_rsvp, allow_youth_rsvps: true)
     @unit = @event.unit
@@ -13,25 +11,20 @@ RSpec.describe EventRsvpConfirmation do
     expect(@youth.parents.count).to eq(1)
   end
 
-  describe "youth RSVP" do
-    it "creates an RSVP" do
-      expect { @event.rsvps.create!(unit_membership: @youth, response: "accepted", respondent: @youth) }
-        .to change(EventRsvp, :count).by(1)
-    end
-
-    it "notifies youth and parent" do
-      expect { @event.rsvps.create(unit_membership: @youth, response: "declined", respondent: @youth) }
-        .to have_enqueued_job.at_least(:once)
+  describe "Twilio" do
+    it "renders the SMS body" do
+      @event.rsvps.create!(unit_membership: @youth, response: "accepted", respondent: @youth)
+      notification = EventRsvpOrganizerNotifier.new(event: @event)
+      body = notification.sms_body(recipient: @youth, event: @event)
+      expect(body).to include(@event.title)
+      expect(body).to include(@youth.short_display_name)
     end
   end
 
-  describe "methods" do
-    it "renders the SMS body correctly" do
-      rsvp = @event.rsvps.create!(unit_membership: @youth, response: "accepted", respondent: @parent)
-      confirmation = EventRsvpConfirmation.with(event_rsvp: rsvp)
-      body = confirmation.sms_body(recipient: @youth, event_rsvp: rsvp)
-      puts body
-      expect(body).to include(@event.title)
+  describe "youth RSVP" do
+    it "creates an RSVP" do
+      expect { @event.rsvps.create!(unit_membership: @youth, response: "accepted", respondent: @youth) }
+        .to have_enqueued_job.at_least(:once)
     end
   end
 end

@@ -7,7 +7,7 @@ RSpec.describe RsvpLastCallJob, type: :job do
     @non_respondent = FactoryBot.create(:unit_membership, unit: @unit)
   end
 
-  it "invokes the RsvpLastCallNotification" do
+  it "invokes the RsvpLastCallNotifier" do
     expect { RsvpLastCallJob.new.perform(@event.id, @event.updated_at) }.to have_enqueued_job.at_least(:once)
   end
 end

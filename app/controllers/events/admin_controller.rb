@@ -9,7 +9,7 @@ module Events
     def index; end
 
     def remind
-      EventReminderNotification.with(event: @event).deliver_later(@current_member)
+      EventReminderNotifier.with(event: @event).deliver_later(@current_member)
       redirect_to unit_event_admin_path(@unit, @event), notice: "Reminder sent!"
     end
 

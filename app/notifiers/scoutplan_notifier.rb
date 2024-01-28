@@ -1,4 +1,4 @@
-class ScoutplanNotification < Noticed::Base
+class ScoutplanNotifier < Noticed::Event
   def format_for_twilio
     {
       From: ENV.fetch("TWILIO_NUMBER"),
