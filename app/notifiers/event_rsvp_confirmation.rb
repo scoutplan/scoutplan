@@ -1,5 +1,10 @@
 class EventRsvpConfirmation < ScoutplanNotifier
-  deliver_by :email, mailer: "EventRsvpConfirmationMailer", method: :event_rsvp_confirmation, if: :email?
+  deliver_by :email do |config|
+    config.mailer = "EventRsvpConfirmationMailer"
+    config.method = :event_rsvp_confirmation
+    config.if = ->{ :email? }
+  end
+
   deliver_by :twilio_messaging, if: :sms?, format: :format_for_twilio, credentials: :twilio_credentials,
              ignore_failure: false, debug: true
 
