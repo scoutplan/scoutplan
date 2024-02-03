@@ -14,8 +14,8 @@ RSpec.describe EventRsvpOrganizerNotifier do
   describe "Twilio" do
     it "renders the SMS body" do
       @event.rsvps.create!(unit_membership: @youth, response: "accepted", respondent: @youth)
-      notification = EventRsvpOrganizerNotifier.new(event: @event)
-      body = notification.sms_body(recipient: @youth, event: @event)
+      notifier = EventRsvpOrganizerNotifier.with(event: @event)
+      body = notifier.sms_body(recipient: @youth, event: @event)
       expect(body).to include(@event.title)
       expect(body).to include(@youth.short_display_name)
     end

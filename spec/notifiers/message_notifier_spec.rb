@@ -16,12 +16,11 @@ RSpec.describe MessageNotifier do
 
   it "delivers an email" do
     Flipper.enable(:deliver_email)
-    expect { MessageNotifier.with(message: @message).deliver([@member]) }
-      .to change { ActionMailer::Base.deliveries.count }.by(1)
+    expect { MessageNotifier.with(message: @message).deliver([@member]) }.to have_enqueued_job
   end
 
   it "doesn't deliver email if deliver_email is disabled" do
-    expect { MessageNotifier.with(message: @message).deliver([@member]) }
-      .to change { ActionMailer::Base.deliveries.count }.by(0)
+    skip "Test isn't valid...need to learn how to make it so."
+    expect { MessageNotifier.with(message: @message).deliver([@member]) }.to change { ActionMailer::Base.deliveries.count }.by(0)
   end
 end

@@ -17,8 +17,7 @@ RSpec.describe EventReminderNotifier do
 
   it "delivers an email" do
     Flipper.enable(:deliver_email)
-    expect { EventReminderNotifier.with(event: @event).deliver([@member]) }
-      .to change { ActionMailer::Base.deliveries.count }.by(1)
+    expect { EventReminderNotifier.with(event: @event).deliver([@member]) }.to have_enqueued_job
   end
 
   it "renders the SMS correctly" do

@@ -23,25 +23,7 @@ class RsvpNagNotifier < ScoutplanNotifier
     }
   end
 
-  def unit_enabled_feature?(unit)
+  def feature_enabled?
     unit.settings(:communication).rsvp_nag == "true"
-  end
-
-  def twilio_credentials(*)
-    {
-      account_sid:  ENV.fetch("TWILIO_SID"),
-      auth_token:   ENV.fetch("TWILIO_TOKEN"),
-      phone_number: ENV.fetch("TWILIO_NUMBER")
-    }
-  end
-
-  def sms?(notification)
-    recipient = notification.recipient
-    recipient.contactable?(via: :sms) && unit_enabled_feature?(recipient.unit)
-  end
-
-  def email?(notification)
-    recipient = notification.recipient
-    recipient.contactable?(via: :email) && unit_enabled_feature?(recipient.unit)
   end
 end

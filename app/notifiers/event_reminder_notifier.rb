@@ -1,8 +1,18 @@
 class EventReminderNotifier < ScoutplanNotifier
   LEAD_TIME = 12.hours.freeze
 
-  deliver_by :email, mailer: "EventReminderMailer", method: :event_reminder_notification, if: :email?
-  deliver_by :twilio_messaging, if: :sms?, format: :format_for_twilio, credentials: :twilio_credentials, ignore_failure: true
+  deliver_by :email do |config|
+    config.mailer = "EventReminderMailer"
+    config.method = :event_reminder_notification
+    config.if = :email?
+  end
+
+  deliver_by :twilio_messaging do |config|
+    config.json = :format_for_twilio
+    config.credentials = :twilio_credentials
+    config.ignore_failure = true
+    config.if = :sms?
+  end
 
   required_param :event
 
