@@ -2,7 +2,7 @@
 - Date::DATE_FORMATS[:month_and_date] = "%b %d"
 - @row_number = 0
 
-.table.text-sm.mx-auto.relative(data-controller="spreadsheet")
+.table.text-sm.max-w-full.mx-auto.relative(data-controller="spreadsheet")
   .table-row.header(data-spreadsheet-target="header")
     .table-cell.border.border-stone-500.bg-stone-100
     .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Day"
@@ -17,6 +17,13 @@ style
   = render partial: "events/partials/spreadsheet/event_category", collection: @unit.event_categories
 
 css:
+  .trix-content {
+    overflow: hidden !important;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
   .event-row.selected {
     outline: 3px solid green;
     outline-offset: 0;

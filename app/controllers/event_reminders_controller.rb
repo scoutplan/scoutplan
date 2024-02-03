@@ -4,7 +4,7 @@ class EventRemindersController < UnitContextController
   before_action :find_event
 
   def create
-    EventReminderNotification.with(event: @event).deliver_later(members)
+    EventReminderNotifier.with(event: @event).deliver_later(members)
   end
 
   private

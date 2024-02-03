@@ -13,7 +13,7 @@ module Event::Payments
   #   return unless published?
   #   return if ended?
 
-  #   EventReminderNotification.with(event: self).deliver_later(notification_recipients)
+  #   EventReminderNotifier.with(event: self).deliver_later(notification_recipients)
   # end
 
   def family_paid?(member)

@@ -17,6 +17,6 @@
   .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-16(data-action="click->spreadsheet#selectCell") = event.starts_at.strftime("%b %d")
   .table-cell.p-0.border-b.border-r.border-stone-500.border-px.cursor-crosshair(data-action="click->spreadsheet#selectCell")
     input(type="text" name="event[#{event.id}][title]" value=event.title class="text-sm")
-  .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-48(data-action="click->spreadsheet#selectCell") = event.description
+  .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair(data-action="click->spreadsheet#selectCell") = event.description
   .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-48(data-action="click->spreadsheet#selectCell") = event.location
   .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-48(data-action="click->spreadsheet#selectCell") = event.event_organizers.join(", ")

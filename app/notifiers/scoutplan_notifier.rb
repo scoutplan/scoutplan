@@ -1,17 +1,9 @@
-class ScoutplanNotification < Noticed::Base
-  def format_for_twilio
+class ScoutplanNotifier < Noticed::Event
+  def format_for_twilio(notification)
     {
       From: ENV.fetch("TWILIO_NUMBER"),
       To:   recipient.phone,
       Body: sms_body(recipient: recipient, event: params[:event], params: params)
-    }
-  end
-
-  def twilio_credentials
-    {
-      account_sid:  ENV.fetch("TWILIO_SID"),
-      auth_token:   ENV.fetch("TWILIO_TOKEN"),
-      phone_number: ENV.fetch("TWILIO_NUMBER")
     }
   end
 
@@ -26,18 +18,26 @@ class ScoutplanNotification < Noticed::Base
     unit&.time_zone || Rails.application.config.default_time_zone
   end
 
+  def twilio_credentials(*)
+    {
+      account_sid:  ENV.fetch("TWILIO_SID"),
+      auth_token:   ENV.fetch("TWILIO_TOKEN"),
+      phone_number: ENV.fetch("TWILIO_NUMBER")
+    }
+  end
+
   def unit; end
 
   def base_name
     self.class.name.underscore.split("_")[0..-2].join("_")
   end
 
-  def email?
-    recipient.contactable?(via: :email) && feature_enabled?
+  def email?(notification = nil)
+    notification.recipient.contactable?(via: :email) && feature_enabled?
   end
 
-  def sms?
-    recipient.contactable?(via: :sms) && feature_enabled?
+  def sms?(notification = nil)
+    notification.recipient.contactable?(via: :sms) && feature_enabled?
   end
 
   # override in subclasses

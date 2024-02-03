@@ -41,7 +41,6 @@ class UnitMembership < ApplicationRecord
   has_many :organized_events, through: :event_organizers, source: :event
   has_many :notifications, as: :recipient, dependent: :destroy
   has_many :payments, dependent: :destroy
-  has_noticed_notifications
   has_secure_token
 
   alias_method :rsvps, :event_rsvps

@@ -27,9 +27,9 @@ RSpec.describe SendWeeklyDigestJob, type: :job do
     expect { SendWeeklyDigestJob.perform_now(@unit.id, timestamp) }.not_to raise_error
   end
 
-  describe "WeeklyDigestNotification" do
+  describe "WeeklyDigestNotifier" do
     it "sends a notification" do
-      expect { WeeklyDigestNotification.with(unit: @unit).deliver(@unit.members) }.not_to raise_error
+      expect { WeeklyDigestNotifier.with(unit: @unit).deliver(@unit.members) }.not_to raise_error
     end
   end
 
