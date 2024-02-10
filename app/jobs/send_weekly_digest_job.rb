@@ -4,17 +4,22 @@ class SendWeeklyDigestJob < ApplicationJob
 
   queue_as :default
 
-  def perform(unit_id, timestamp)
-    unit = Unit.find(unit_id)
-    return unless SendWeeklyDigestJob.should_run?(unit) && SendWeeklyDigestJob.settings_are_current?(unit, timestamp)
+  attr_reader :unit, :timestamp
+
+  def perform(unit_id, timestamp = nil)
+    @unit, @timestamp = Unit.find(unit_id), timestamp
+    return unless should_run? && settings_are_current?
 
     WeeklyDigestNotifier.with(unit: unit).deliver_later(unit.members)
-    SendWeeklyDigestJob.schedule_next_job(unit)
-
-    # this could move to the Notification class
+    schedule_next_job!
     unit.settings(:communication).update!(digest_last_ran_at: DateTime.current)
   end
 
+  def schedule_next_job!
+    self.class.schedule_next_job(unit)
+  end
+
+  ### Class methods
   def self.schedule_next_job(unit)
     return unless unit.settings(:communication).digest == "true"
 
@@ -31,11 +36,15 @@ class SendWeeklyDigestJob < ApplicationJob
     next_occurring(DateTime.current, day_of_week, hour_of_day).utc
   end
 
-  def self.should_run?(unit)
+  private
+
+  def should_run?
     unit.settings(:communication).digest == "true"
   end
 
-  def self.settings_are_current?(unit, timestamp)
+  def settings_are_current?
+    return true unless timestamp.present?
+
     timestamp.present? && timestamp == unit.settings(:communication).config_timestamp
   end
 end

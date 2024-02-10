@@ -14,15 +14,17 @@ class WeeklyDigestNotifier < ScoutplanNotifier
 
   required_param :unit
 
-  def format_for_twilio
-    {
-      From: ENV.fetch("TWILIO_NUMBER"),
-      To:   recipient.phone,
-      Body: sms_body(recipient: recipient, unit: params[:unit])
-    }
+  def feature_enabled?
+    true
   end
 
-  def feature_enabled?
-    recipient.unit.settings(:communication).digest == "true"
+  def format_for_twilio(notification)
+    recipient = notification.recipient
+    params = notification.params
+    {
+      "From" => ENV.fetch("TWILIO_NUMBER"),
+      "To"   => recipient.phone,
+      "Body" => sms_body(recipient: recipient, unit: params[:unit])
+    }
   end
 end
