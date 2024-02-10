@@ -6,7 +6,7 @@ class EventRsvpOrganizerNotificationJob < ApplicationJob
   def perform(event)
     @event = event
     @unit = event.unit
-    EventRsvpOrganizerNotification.with(event: event).deliver_later(organizer_recipients)
+    EventRsvpOrganizerNotifier.with(event: event).deliver_later(organizer_recipients)
   end
 
   private

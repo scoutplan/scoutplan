@@ -30,6 +30,7 @@ Style/HashSyntax:
 
 Layout/HashAlignment:
   EnforcedColonStyle: table
+  EnforcedHashRocketStyle: table
 
 Metrics/BlockLength:
   Exclude:

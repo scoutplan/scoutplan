@@ -1,5 +1,7 @@
 class ScoutplanNotifier < Noticed::Event
   def format_for_twilio(notification)
+    recipient = notification.recipient
+    params = notification.params
     {
       From: ENV.fetch("TWILIO_NUMBER"),
       To:   recipient.phone,

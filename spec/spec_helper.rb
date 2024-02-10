@@ -4,6 +4,9 @@ require "simplecov"
 require "factory_bot_rails"
 require "capybara/rspec"
 require "warden"
+require "coveralls"
+
+Coveralls.wear!("rails")
 
 SimpleCov.start do
   add_filter "spec"

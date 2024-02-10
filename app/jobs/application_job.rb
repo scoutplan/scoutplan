@@ -6,7 +6,7 @@ class ApplicationJob < ActiveJob::Base
 
   # Most jobs are safe to ignore if the underlying records are no longer available
   # discard_on ActiveJob::DeserializationError
-  
+
   # An extension to DateTime.next_occuring that allows you to also specify the hour of day
   # SendWeeklyDigestJob.next_occurring(Time.current, :monday, 8)
   # SendWeeklyDigestJob.next_occurring(Time.current, "monday", 8)

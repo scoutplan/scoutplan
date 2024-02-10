@@ -14,15 +14,6 @@ class RsvpNagNotifier < ScoutplanNotifier
 
   required_param :event
 
-  def format_for_twilio(notification)
-    recipient = notification.recipient
-    {
-      "From" => ENV.fetch("TWILIO_NUMBER"),
-      "To" => recipient.phone,
-      "Body" => sms_body(recipient: recipient, event: params[:event], unit: params[:event].unit)
-    }
-  end
-
   def feature_enabled?
     unit.settings(:communication).rsvp_nag == "true"
   end
