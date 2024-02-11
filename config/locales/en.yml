@@ -30,6 +30,8 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  back_to_app: "Back to Scoutplan"
+
   be_conjugations:
     past:
       singular: was
@@ -766,6 +768,10 @@ en:
       unpin_success:      "Your Email has been taken down"
       pending_success:    "Your Email has been sent for approval"
 
+  profiles:
+    index:
+      info: "Personal information"
+
   settings:
     edit:
       stripe_dashboard: "Visit Stripe Dashboard"
@@ -784,7 +790,7 @@ en:
       event_reminders_details: "Reminders are sent between 9 am and 6 pm on the day of or the day before an event starts, depending on start time."
       digest:         "Send a weekly message with the coming week's schedule, news, and RSVPs."
       rsvp_nag:       "Send a gentle nudge to members with outstanding RSVPs."
-      rsvp_last_call: "The day before an event closes for RSVPs, send a reminder to members who haven't responded yet."
+      rsvp_last_call: "Sends a reminder to non-respondents the day before RSVPs close for an event."
       event_organizer_digest: "Send a daily summary of new RSVPs to event organizers."
 
     icons:

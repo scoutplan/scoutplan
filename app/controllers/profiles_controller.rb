@@ -5,6 +5,8 @@ class ProfilesController < ApplicationController
 
   before_action :find_profile
 
+  def index; end
+
   def edit
     authorize @profile
   end

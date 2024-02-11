@@ -183,6 +183,11 @@ Rails.application.routes.draw do
     resources :unit_memberships, path: "members", as: "members" do
       post "invite", to: "unit_memberships#invite", as: "invite"
 
+      member do
+        get "profile", to: "profiles#index"
+        get "profile/info", to: "profiles#edit", as: "info"
+      end
+
       collection do
         post "bulk_update", to: "unit_memberships#bulk_update"
         get  "import",      to: "unit_memberships_import#new"

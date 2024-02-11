@@ -17,7 +17,7 @@ class UnitMemberships::TestCommunicationsController < UnitContextController
   private
 
   def send_digest
-    # SendWeeklyDigestJob.perform_now(@target_member)
-    WeeklyDigestNotifier.with(unit: @target_member.unit).deliver_later(@target_member)
+    SendWeeklyDigestJob.perform_now(@target_member.unit.id)
+    # WeeklyDigestNotifier.with(unit: @target_member.unit).deliver@target_member)
   end
 end
