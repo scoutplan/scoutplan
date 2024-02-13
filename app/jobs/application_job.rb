@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationJob < ActiveJob::Base
+  discard_on Noticed::ResponseUnsuccessful
+
   # Automatically retry jobs that encountered a deadlock
   # retry_on ActiveRecord::Deadlocked
 

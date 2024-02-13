@@ -63,6 +63,7 @@ Rails.application.routes.draw do
       collection do
         get  "drafts"
         get  "sent"
+        get  "outbox"
         post "recipients", as: "recipients"
         get  "addressables", as: "addressables"
         get  "select",     as: "select"

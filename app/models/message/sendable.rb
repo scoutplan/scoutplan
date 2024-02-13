@@ -17,7 +17,7 @@ module Message::Sendable
 
   def send!
     Rails.logger.warn "Sending message #{id}"
-    MessageNotification.with(message: self).deliver_later(recipients)
+    MessageNotifier.with(message: self).deliver_later(recipients)
     mark_as_sent!
   end
 
