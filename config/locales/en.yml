@@ -770,7 +770,9 @@ en:
 
   profiles:
     index:
-      info: "Personal information"
+      info:     "Personal information"
+      alerts:   "Alerts"
+      security: "Security"
 
   settings:
     edit:
