@@ -6,14 +6,18 @@ class SendWeeklyDigestJob < ApplicationJob
 
   attr_reader :unit, :timestamp
 
+  # rubocop:disable Metrics/AbcSize
   def perform(unit_id, timestamp = nil)
     @unit, @timestamp = Unit.find(unit_id), timestamp
-    return unless should_run? && settings_are_current?
+    Rails.logger.warn("Performing SendWeeklyDigestJob for {@unit.name}")
+    return unless enabled_by_unit? && settings_are_current?
 
-    WeeklyDigestNotifier.with(unit: unit).deliver_later(unit.members)
+    Rails.logger.warn("Invoking WeeklyDigestNotifier")
+    WeeklyDigestNotifier.with(unit: unit).deliver(unit.members)
     schedule_next_job!
     unit.settings(:communication).update!(digest_last_ran_at: DateTime.current)
   end
+  # rubocop:enable Metrics/AbcSize
 
   def schedule_next_job!
     self.class.schedule_next_job(unit)
@@ -38,13 +42,17 @@ class SendWeeklyDigestJob < ApplicationJob
 
   private
 
-  def should_run?
-    unit.settings(:communication).digest == "true"
+  def enabled_by_unit?
+    result = unit.settings(:communication).digest
+    Rails.logger.warn("Unit digest setting is #{result}")
+    result == "true"
   end
 
   def settings_are_current?
     return true unless timestamp.present?
 
-    timestamp.present? && timestamp == unit.settings(:communication).config_timestamp
+    config_timestamp = unit.settings(:communication).config_timestamp
+    Rails.logger.warn("Timestamp argument is #{timestamp}. Config timestamp is #{config_timestamp}")
+    timestamp.present? && timestamp == config_timestamp
   end
 end
