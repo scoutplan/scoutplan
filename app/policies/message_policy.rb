@@ -38,6 +38,10 @@ class MessagePolicy < UnitContextPolicy
     admin?
   end
 
+  def outbox?
+    admin?
+  end
+
   def duplicate?
     admin? || @message.author == @membership
   end

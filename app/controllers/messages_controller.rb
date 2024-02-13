@@ -6,7 +6,7 @@
 # rubocop:disable Metrics/PerceivedComplexity
 # rubocop:disable Metrics/CyclomaticComplexity
 class MessagesController < UnitContextController
-  before_action :find_message,      except: [:index, :drafts, :scheduled, :sent, :new, :create,
+  before_action :find_message,      except: [:index, :drafts, :outbox, :scheduled, :sent, :new, :create,
                                              :recipients, :addressables, :commit]
   before_action :set_message_token, only: [:new, :edit]
   before_action :set_addressables,  only: [:new, :edit, :addressables]
@@ -27,6 +27,12 @@ class MessagesController < UnitContextController
   def sent
     authorize Message
     scope = @unit.messages.includes(message_recipients: [unit_membership: :user]).sent.with_attached_attachments.order(updated_at: :desc)
+    set_page_and_extract_portion_from(scope.all, per_page: [20])
+  end
+
+  def outbox
+    authorize Message
+    scope = @unit.messages.includes(message_recipients: [unit_membership: :user]).outbox.with_attached_attachments.order(updated_at: :desc)
     set_page_and_extract_portion_from(scope.all, per_page: [20])
   end
 

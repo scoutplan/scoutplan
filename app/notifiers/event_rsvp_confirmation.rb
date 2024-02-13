@@ -18,11 +18,13 @@ class EventRsvpConfirmation < ScoutplanNotifier
     true
   end
 
-  def format_for_twilio
+  def format_for_twilio(notification)
+    recipient = notification.recipient
+    params = notification.params
     {
-      From: ENV.fetch("TWILIO_NUMBER"),
-      To:   recipient.phone,
-      Body: sms_body(recipient: recipient, event_rsvp: params[:event_rsvp])
+      "From" => ENV.fetch("TWILIO_NUMBER"),
+      "To"   => recipient.phone,
+      "Body" => sms_body(recipient: recipient, event_rsvp: params[:event_rsvp])
     }
   end
 end

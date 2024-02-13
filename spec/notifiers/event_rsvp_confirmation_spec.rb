@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe EventRsvpConfirmation do
+  include ActiveJob::TestHelper
+
   before do
     @event = FactoryBot.create(:event, :published, :requires_rsvp, allow_youth_rsvps: true)
     @unit = @event.unit
@@ -24,12 +26,24 @@ RSpec.describe EventRsvpConfirmation do
   end
 
   describe "methods" do
+    before do
+      @rsvp = @event.rsvps.create!(unit_membership: @youth, response: "accepted", respondent: @parent)
+    end
+
     it "renders the SMS body correctly" do
-      rsvp = @event.rsvps.create!(unit_membership: @youth, response: "accepted", respondent: @parent)
-      confirmation = EventRsvpConfirmation.with(event_rsvp: rsvp)
-      body = confirmation.sms_body(recipient: @youth, event_rsvp: rsvp)
-      puts body
+      confirmation = EventRsvpConfirmation.with(event_rsvp: @rsvp)
+      body = confirmation.sms_body(recipient: @youth, event_rsvp: @rsvp)
       expect(body).to include(@event.title)
+    end
+
+    it "delivers an email" do
+      Flipper.enable(:deliver_email)
+      clear_enqueued_jobs
+      expect { EventRsvpConfirmation.with(event_rsvp: @rsvp).deliver(@unit.unit_memberships.first) }.to have_enqueued_job(Noticed::EventJob)
+      perform_enqueued_jobs
+      expect(ActiveJob::Base.queue_adapter.enqueued_jobs.count).to be > 0
+      perform_enqueued_jobs
+      expect(ActionMailer::Base.deliveries.count).to eq(1)
     end
   end
 end
