@@ -3,6 +3,7 @@ li.filterable-item.flex.flex-row.justify-between.items-center(draggable="false" 
             class: "block p-2 -mx-2",
             id: dom_id(rsvp),
             draggable: true,
+            title: t(".tooltip", duration: distance_of_time_in_words_to_now(rsvp.created_at)),
             data: { turbo_frame: "modal", action: "dragstart->dashboard-drop#dragstart dragend->dashboard-drop#dragend drag->dashboard-drop#drag" } do
     - cache rsvp.unit_membership do
       i.fa-solid.fa-user.text-stone-400.mr-2
