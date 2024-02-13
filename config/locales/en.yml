@@ -218,6 +218,7 @@ en:
 
     rsvp:
       pending_approval: "This RSVP is pending parent or guardian approval"
+      tooltip: "Responded %{duration} ago"
 
   events:
     object_name:          "event"
