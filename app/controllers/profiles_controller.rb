@@ -5,9 +5,19 @@ class ProfilesController < ApplicationController
 
   before_action :find_profile
 
-  def index; end
+  def index
+    authorize @profile
+  end
 
   def edit
+    authorize @profile
+  end
+
+  def alerts
+    authorize @profile
+  end
+
+  def security
     authorize @profile
   end
 

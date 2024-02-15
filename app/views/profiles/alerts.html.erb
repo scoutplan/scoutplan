@@ -1,0 +1,40 @@
+<%= turbo_frame_tag "main" do %>
+  <div class="mx-auto max-w-xl">
+    <header class="mb-8">
+      <%= link_to profile_unit_member_path(@unit, @current_member),
+                  class: "font-bold text-brand-500",
+                  data: { turbo: "false" } do %>
+        <i class="fa-solid fa-chevron-left mr-1"></i>
+        <%= t("back") %>
+      <% end %>
+    </header>
+
+    <div class="bg-white drop-shadow-lg rounded-xl p-12">
+      <header class="mb-8">
+        <h1 class="text-4xl font-bold">
+          <%= "Alerts" %>
+          <div class="text-sm font-bold uppercase tracking-wider">
+            <%= @current_member.display_name %>
+          </div>
+        </h1>
+      </header>
+
+      <%= form_with model: [@unit, @current_member] do |f| %>
+        <section>
+          <h2 class="text-lg font-semibold mb-1">RSVP last call</h2>
+          <p class="mb-2">Receive an alert when the RSVP deadline is approaching for events you haven't responded to yet.</p>
+          <%= switch("settings[alerts]", "rsvp_last_call",
+                { label: "Receive last call alerts",
+                  checked: @current_member.settings(:alerts).rsvp_last_call},
+                  "true", "false" ) %>
+        </section>
+
+        <footer class="mt-8">
+          <%= f.button "Save settings", type: :submit,
+                       class: "block rounded bg-lime-600 text-lime-50 px-4 py-2 font-semibold"
+          %>
+        </footer>
+      <% end %>
+    </div>
+  </div>
+<% end %>

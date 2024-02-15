@@ -16,7 +16,7 @@ ul
         = t("profile.payments")
 
   li
-    = link_to edit_profile_path(@current_member),
+    = link_to profile_unit_member_path(@current_unit, @current_member),
               class: "block px-4 py-3 md:py-2 font-bold md:font-normal text-brand-500 md:text-stone-100 md:hover:bg-stone-600" do
       i.fa-fw.fa-solid.fa-user-gear.mr-2
       = t("profile.settings")

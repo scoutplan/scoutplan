@@ -1,16 +1,15 @@
 <%= turbo_frame_tag "main" do %>
   <div class="mx-auto max-w-xl">
-    <header>
+    <header class="mb-8">
       <%= link_to unit_path(@unit),
                   class: "font-bold text-brand-500",
-                  data: { turbo_action: "advance" } do %>
+                  data: { turbo: "false" } do %>
         <i class="fa-solid fa-chevron-left mr-1"></i>
         <%= t("back_to_app") %>
       <% end %>
     </header>
 
     <div class="bg-white drop-shadow-lg rounded-xl p-12">
-
       <header class="mb-4 px-2">
         <h1 class="text-4xl font-bold">
           <%= "#{@member.first_name}'s Profile" %>

@@ -1,0 +1,40 @@
+.max-w-md.mx-auto
+  header.py-4
+    = link_to profile_unit_member_path(@unit, @current_member),
+              class: "font-bold text-brand-500",
+              data: { turbo: "false" } do
+
+        i.fa-solid.fa-chevron-left.mr-1
+        = t("back")
+
+
+  .bg-white.drop-shadow-lg.rounded-xl.p-12
+    header.mb-4
+      h1.font-bold.text-2xl.md:text-4xl.mb-2
+        = "Security"
+        .text-sm.font-bold.uppercase.tracking-wider
+          = @current_member.display_name
+
+    = form_with model: @profile.member,
+                url: profile_change_password_path(@member),
+                data: { turbo: false },
+                builder: ApplicationFormBuilder do |f|
+
+      .flex.flex-col.gap-3
+        = f.fields_for :user, @member.user do |uf|
+          div
+            = uf.label :password, class: "block font-bold mb-1"
+            = uf.password_field :password, autofocus: true, class: "block w-full rounded border-stone-400 dark:bg-stone-800 dark:border-stone-500"
+
+          div
+            = uf.label :password_confirmation, class: "block font-bold mb-1"
+            = uf.password_field :password_confirmation, class: "block w-full rounded border-stone-400 dark:bg-stone-800 dark:border-stone-500"
+
+        footer.py-2
+          p.mb-6
+            i.fa-regular.fa-exclamation-triangle.mr-2.text-amber-500
+            | Changing #{possessive_name_or_pronoun(@member, @current_member)} password will sign 
+            | #{pronoun(@member, @current_member)} out of Scoutplan. #{pronoun(@member, @current_member).capitalize} can sign back in using 
+            | #{possessive_pronoun(@member, @current_member)} new password.
+
+          = f.button("Change password", type: "submit", class: "block bg-green-600 text-white font-bold px-4 py-2 rounded")
