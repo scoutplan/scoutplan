@@ -3,11 +3,9 @@
   
   .max-w-3xl.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead
     header.pl-2
-      .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
-
       .flex.flex-row.justify-between.items-center
         .left
-          h1.text-4xl.mb-2
+          h1.text-4xl
             = t("events.index.title")
 
         .right
@@ -15,6 +13,8 @@
             = link_to "#", class: "dropdown-button inline-block text-stone-500 hover:text-stone-900 dark:hover:text-stone-300" do
               i.fa-circle-ellipsis.far.fa-2xl
             = render partial: "events/partials/index/dropdown"
+
+      .font-semibold.text-stone-500.dark:text-stone-300 = @unit.name
 
     ol#events_list
       = render @events
