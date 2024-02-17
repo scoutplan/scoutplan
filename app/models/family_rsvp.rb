@@ -6,6 +6,28 @@ class FamilyRsvp
     @event = event
   end
 
+  ### Payment methods
+  def balance_due
+    cost - amount_paid
+  end
+
+  def cost
+    event_rsvps.sum(&:cost)
+  end
+
+  def amount_paid
+    payments.sum(&:amount_in_dollars)
+  end
+
+  def paid_in_full?
+    balance_due.zero?
+  end
+
+  def payments
+    event.payments.where(unit_membership_id: family_member_ids)
+  end
+
+  ### Family member methods
   def family_members
     @family_members ||= unit_membership.family(include_self: :prepend)
   end
@@ -22,6 +44,7 @@ class FamilyRsvp
     @family_member_ids ||= family_members.map(&:id)
   end
 
+  ### RSVP methods
   def event_rsvps
     @event_rsvps ||= event.rsvps.where(unit_membership: family_members)
   end
@@ -70,7 +93,6 @@ class FamilyRsvp
   end
 
   ### Response methods
-
   def responses
     event_rsvps.map(&:response).uniq
   end

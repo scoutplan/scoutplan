@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "rails_helper"
 
 RSpec.describe EventRsvp, type: :model do
@@ -87,6 +85,41 @@ RSpec.describe EventRsvp, type: :model do
       rsvp = @event.rsvps.create!(unit_membership: @youth_member, respondent: @parent, response: "accepted")
       rsvp.update!(respondent: @youth_member, response: "declined")
       expect(rsvp.response).to eq("declined_pending")
+    end
+  end
+
+  describe "payments" do
+    before do
+      @youth_member = FactoryBot.create(:unit_membership, :youth)
+      @unit = @youth_member.unit
+      @unit.update(allow_youth_rsvps: true)
+      @parent = FactoryBot.create(:unit_membership, :adult, unit: @unit)
+      @parent.child_relationships.create(child_unit_membership: @youth_member)
+      @event = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit, cost_adult: 10, cost_youth: 5)
+      @youth_rsvp = @event.rsvps.create!(unit_membership: @youth_member, respondent: @parent, response: "accepted_pending")
+      @adult_rsvp = @event.rsvps.create!(unit_membership: @parent, respondent: @parent, response: "accepted")
+    end
+
+    it "calculates the cost based on member type" do
+      expect(@youth_rsvp.cost).to eq(5)
+      expect(@adult_rsvp.cost).to eq(10)
+    end
+
+    it "calculates the amount paid" do
+      @event.payments.create(unit_membership: @youth_member, amount: 100, method: "cash", received_by: @parent)
+      expect(@youth_rsvp.amount_paid).to eq(1)
+      expect(@youth_rsvp.balance_due).to eq(4)
+      expect(@youth_rsvp.paid_in_full?).to be_falsey
+
+      @event.payments.create(unit_membership: @youth_member, amount: 400, method: "cash", received_by: @parent)
+      expect(@youth_rsvp.amount_paid).to eq(5)
+      expect(@youth_rsvp.balance_due).to eq(0)
+      expect(@youth_rsvp.paid_in_full?).to be_truthy
+    end
+
+    it "ignores declined RSVPs" do
+      @adult_rsvp.update(response: "declined")
+      expect(@adult_rsvp.cost).to eq(0)
     end
   end
 end

@@ -31,6 +31,7 @@ class EventRsvp < ApplicationRecord
   scope :declined_intent, -> { where(response: %w[declined declined_pending]) }
   scope :recent, -> { where("event_rsvps.updated_at > ?", 24.hours.ago) }
 
+  ### validations
   def common_unit?
     errors.add(:event, "and Member must belong to the same Unit") unless event.unit == unit_membership.unit
   end
@@ -61,10 +62,30 @@ class EventRsvp < ApplicationRecord
     !done?
   end
 
+  ### payment methods
   def cost
-    member.youth? ? event.cost_youth : event.cost_adult
+    return 0 unless accepted? || accepted_pending?
+
+    adult? ? event.cost_adult : event.cost_youth
   end
 
+  def payments
+    event.payments.where(unit_membership: unit_membership)
+  end
+
+  def balance_due
+    cost - amount_paid
+  end
+
+  def amount_paid
+    payments.sum(&:amount_in_dollars)
+  end
+
+  def paid_in_full?
+    balance_due.zero?
+  end
+
+  ### approval methods
   def enforce_approval_policy
     return unless requires_approval?
 
