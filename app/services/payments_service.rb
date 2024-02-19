@@ -36,7 +36,7 @@ class PaymentsService
   end
 
   def family_amount_total
-    @event.cost_adult * (family_rsvps&.accepted&.adult&.count || 0) + @event.cost_youth * (family_rsvps&.accepted&.youth&.count || 0)
+    res = @event.cost_adult * (family_rsvps&.accepted&.adult&.count || 0) + @event.cost_youth * (family_rsvps&.accepted&.youth&.count || 0)
   end
 
   def family_amount_due

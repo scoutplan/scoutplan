@@ -1,6 +1,6 @@
 # rubocop:disable Metrics/ClassLength
 class Event < ApplicationRecord
-  include Notifiable, Remindable, Onlineable, Icalendarable, Replyable, DatePresentable, StaticMappable, Payments
+  include Notifiable, Remindable, Onlineable, Icalendarable, Replyable, DatePresentable, StaticMappable
   extend DateTimeAttributes
 
   date_time_attrs_for :starts_at, :ends_at
@@ -23,8 +23,8 @@ class Event < ApplicationRecord
   has_many :event_shifts, dependent: :destroy
   has_many :locations, as: :locatable, dependent: :destroy
   has_many :locations, through: :event_locations
-  has_many :payments
-  has_many :photos
+  has_many :payments, dependent: :destroy
+  has_many :photos, dependent: :destroy
   has_many :members, through: :event_rsvps
   has_many :rsvp_tokens, dependent: :destroy
   has_many :sub_events, class_name: "Event", foreign_key: "parent_event_id"

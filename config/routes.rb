@@ -7,6 +7,7 @@ require "sidekiq/web"
 Rails.application.routes.draw do
   mount BetterMailerPreviews::Engine, at: "/better_mailer_previews" if Rails.env.development?
   root to: "home#index"
+  get "up" => "rails/health#show", as: :rails_health_check
 
   %w[404 500].each do |code|
     get code, to: "errors#show", code: code
@@ -142,7 +143,6 @@ Rails.application.routes.draw do
       end
       # get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"
       get   "cancel"
-      get   "organize"
       get   "history"
       get   "add_to_calendar"
       post  "cancel", to: "events#perform_cancellation"
