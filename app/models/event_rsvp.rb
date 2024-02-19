@@ -85,6 +85,13 @@ class EventRsvp < ApplicationRecord
     balance_due.zero?
   end
 
+  def paid?
+    return :in_full if balance_due.zero?
+    return :partial if amount_paid.positive?
+
+    :none
+  end
+
   ### approval methods
   def enforce_approval_policy
     return unless requires_approval?

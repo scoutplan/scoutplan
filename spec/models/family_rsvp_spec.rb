@@ -33,12 +33,14 @@ RSpec.describe FamilyRsvp, type: :model do
       rsvp = FamilyRsvp.new(@youth_member, @event)
       expect(rsvp.amount_paid).to eq(1)
       expect(rsvp.balance_due).to eq(14)
-      expect(rsvp.paid_in_full?).to be_falsey
+      # expect(rsvp.paid_in_full?).to be_falsey
+      expect(rsvp.paid?).to eq(:partial)
 
       @event.payments.create(unit_membership: @youth_member, amount: 1400, method: "cash", received_by: @parent)
       expect(rsvp.amount_paid).to eq(15)
       expect(rsvp.balance_due).to eq(0)
-      expect(rsvp.paid_in_full?).to be_truthy
+      # expect(rsvp.paid_in_full?).to be_truthy
+      expect(rsvp.paid?).to eq(:in_full)
     end
   end
 end

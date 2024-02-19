@@ -1,4 +1,5 @@
 - return unless @event.requires_payment?
+- family_rsvp = FamilyRsvp.new(@current_member, @event)
 
 article.py-4.flex.flex-row.items-baseline.gap-8
   .fa-stack
@@ -20,10 +21,10 @@ article.py-4.flex.flex-row.items-baseline.gap-8
       = " per adult "
 
   div.text-lime-600
-    - if @event.family_paid?(@current_member)
+    - if family_rsvp.paid? == :in_full
       i.fa-solid.fa-check.text-lime-600.mr-2
       = t(".paid")  
     - else
       .font-bold
         i.fa-solid.fa-exclamation-triangle.text-lime-600.mr-1
-        = t(".unpaid")    
+        = t(".unpaid")

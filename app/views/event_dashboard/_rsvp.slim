@@ -17,7 +17,8 @@ li.filterable-item.flex.flex-row.justify-between.items-center(draggable="false" 
 
   .text-lg
     - if rsvp.accepted? && @event.requires_payment?
-      - if @event.family_paid?(rsvp.unit_membership)
+      - family_rsvp = FamilyRsvp.new(rsvp.unit_membership, @event)
+      - if family_rsvp.paid? == :in_full
         = link_to unit_event_payments_path(@unit, @event),
                   class: "block px-2 -mr-2",
                   draggable: false,

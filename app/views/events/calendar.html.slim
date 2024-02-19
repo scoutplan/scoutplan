@@ -4,61 +4,30 @@
 - days_in_last_month = first_day_of_last_month.end_of_month.day
 - display_day = - first_day_of_month.wday + 1
 - done = false
+- context = { first_day_of_month: Date.new(@current_year, @current_month, 1) }
 
 /! Current member id: #{@current_member.id}
 /! Current unit id: #{@unit.id}
 /! Current user id: #{current_user.id}
 .max-w-7xl.mx-auto
-  header.flex.flex-row.items-center.py-2.border-b.md:mt-12
-    nav.calendar-nav.left.text-sm.md:text-base
-      .month-picker.inline-block.dropdown.relative
-        = link_to "#",
-                  class: "dropdown-button inline-block w-44 py-1 px-2 mr-2 border rounded bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600" do
-          
-          .flex.flex-row.justify-between.items-center
-            .hidden.md:inline = first_day_of_month.strftime("%B %Y")
-            .inline.md:hidden = first_day_of_month.strftime("%b %Y")
-            
-            i.fa-chevron-down.fas.ml-2
-        
-        .dropdown-menu.absolute.bg-stone-800.text-stone-50.p-2.rounded.border.dark:border-stone-700
-          = render partial: "events/partials/index/month_picker", locals: { display_date: first_day_of_month }
+  header.flex.flex-row.items-center.justify-between.py-2.md:mt-8.relative.mb-2
+    // month & year
+    .absolute.inset-0.text-center.z-0
+      h1.hidden.md:inline-block.text-4xl.text-center
+        = context[:first_day_of_month].strftime("%B %Y")
 
-      // prev button
-      = link_to calendar_unit_events_path(@unit, month: @current_month > 1 ? @current_month - 1 : 12, year: @current_month > 1 ? @current_year : @current_year - 1),
-                title: t("events.index.buttons.hints.previous"),
-                class: "inline-block py-1 px-2 md:px-4 rounded-l border bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
-                data: { turbo_action: "advance" } do
-
-          i.fa-solid.fa-chevron-left.mr-1
-          .hidden.md:inline = t("events.index.buttons.previous")
-
-      // next button
-      = link_to calendar_unit_events_path(@unit, month: @current_month == 12 ? 1 : @current_month + 1, year: @current_month == 12 ? @current_year + 1 : @current_year),
-                title: t("events.index.buttons.hints.next"),
-                class: "inline-block py-1 px-2 md:px-4 rounded-r border bg-stone-100 hover:bg-stone-200 border-l-0 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
-                data: { turbo_action: "advance" } do
-
-          .hidden.md:inline = t("events.index.buttons.next")
-          i.fa-solid.fa-chevron-right.ml-1
-
-      // today button
-      = link_to calendar_unit_events_path(@unit, month: Time.now.month, year: Time.now.year),
-                title: t("events.index.buttons.hints.today"),
-                class: "inline-block px-3 py-1 ml-2 border rounded bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
-                data: { turbo_action: "advance" }
-        = t("events.index.buttons.today")
-
-    h1.hidden.md:inline-block.text-4xl.ml-6
-      = first_day_of_month.strftime("%B %Y")
+    // month picker, prev, next, today
+    .left.z-10
+      = render partial: "events/partials/index/calendar/calendar_nav", locals: { context: context }
     
-    .right.ml-auto
+    // dropdown menu
+    .right.z-10
       .dropdown.relative
         = link_to "#", class: "dropdown-button inline-block" do
           i.fa-circle-ellipsis.far.fa-2xl.text-stone-500.dark:text-stone-300
         = render partial: "events/partials/index/dropdown"
 
-  .table.px-0.w-full.table-fixed
+  .table.px-0.w-full.table-fixed.border-t
     .table-row.font-bold
       - 7.times do |dow|
         .table-cell.p-2
@@ -71,7 +40,7 @@
         - 7.times do |col|
           - cell_class = "cal-cell-dow-#{col}"
           - cell_class << " cal-weekend-cell" if Date::WEEKEND_DAYS.include? col
-          - display_date = first_day_of_month + display_day.days - 1
+          - display_date = context[:first_day_of_month] + display_day.days - 1
 
           - if display_day > days_in_month
             - day_number = display_day - days_in_month

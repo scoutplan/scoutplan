@@ -123,11 +123,6 @@ class EventsController < UnitContextController
     end
   end
 
-  def organize
-    @attendees = @event.rsvps.accepted
-    @payments_service = PaymentsService.new(@event)
-  end
-
   # GET /:unit_id/events/:event_id/edit
   def edit
     authorize @event
