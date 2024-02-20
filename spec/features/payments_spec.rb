@@ -24,6 +24,12 @@ describe "payments", type: :feature do
       Flipper.enable :payments
     end
 
+    it "doesn't show 'you've paid' if they're not going" do
+      @event.rsvps.destroy_all
+      visit unit_event_path(@unit, @event)
+      expect(page).not_to have_content("You've paid. Thanks!")
+    end
+
     it "shows full amount when members pay fees" do
       visit unit_event_path(@unit, @event)
       expect(page).to have_content("Pay $1,338.00 now")
