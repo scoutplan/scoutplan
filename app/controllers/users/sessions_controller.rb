@@ -9,17 +9,14 @@ module Users
       stored_location_for(resource) || root_path
     end
 
-    # rubocop:disable Metrics/AbcSize
     def create
-      sign_in_via_magic_link if params[:token].present?
+      sign_in_via_magic_link and return if params[:token].present?
+      return unless resolve_user
 
-      if params[:user][:email].present? && params[:user][:password].present?
-        sign_in_via_password
-      elsif params[:user][:email].present?
-        send_session_email if resolve_user
-      end
+      sign_in_via_password and return if params[:user][:password].present?
+
+      send_session_email if resolve_user
     end
-    # rubocop:enable Metrics/AbcSize
 
     private
 
@@ -34,10 +31,10 @@ module Users
     end
 
     def resolve_user
-      @user = User.find_by(email: params[:user][:email])
-      return false unless @user
+      return unless (email = params.dig(:user, :email))
 
-      @current_unit ||= @user.units.first
+      @user = User.find_by(email: email)
+      @current_unit ||= @user&.units&.first
       @user
     end
 

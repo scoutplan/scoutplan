@@ -21,6 +21,8 @@ RSpec.describe FamilyPresenter, type: :model do
       expect(presenter.active_member_names_list).to eq("you and #{child1.display_first_name}")
     end
 
+    # expected: "you, Lenna, and Lorina"
+    # got: "you, Lorina, and Lenna"
     it "returns 'you, X, and Y' if three active members" do
       child1 = FactoryBot.create(:member, unit: @member.unit)
       child2 = FactoryBot.create(:member, unit: @member.unit)

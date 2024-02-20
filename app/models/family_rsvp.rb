@@ -56,7 +56,7 @@ class FamilyRsvp
     event_rsvps.map(&:unit_membership) & active_family_members == active_family_members
   end
 
-  def accepted?
+  def any_accepted?
     responses = event_rsvps.map(&:response)
     return true if responses.include? "accepted"
 

@@ -20,11 +20,12 @@ article.py-4.flex.flex-row.items-baseline.gap-8
       .inline.text-4xl = number_to_currency(@event.cost_adult, precision: 0)
       = " per adult "
 
-  div.text-lime-600
-    - if family_rsvp.paid? == :in_full
-      i.fa-solid.fa-check.text-lime-600.mr-2
-      = t(".paid")  
-    - else
-      .font-bold
-        i.fa-solid.fa-exclamation-triangle.text-lime-600.mr-1
-        = t(".unpaid")
+  - if family_rsvp.any_accepted?
+    div.text-lime-600
+      - if family_rsvp.paid? == :in_full
+        i.fa-solid.fa-check.text-lime-600.mr-2
+        = t(".paid")  
+      - else
+        .font-bold
+          i.fa-solid.fa-exclamation-triangle.text-lime-600.mr-1
+          = t(".unpaid")
