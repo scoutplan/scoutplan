@@ -9,14 +9,16 @@ module Users
       stored_location_for(resource) || root_path
     end
 
+    # rubocop:disable Metrics/CyclomaticComplexity
     def create
       sign_in_via_magic_link and return if params[:token].present?
-      return unless resolve_user
+      redirect_to new_user_session_path and return unless resolve_user
 
       sign_in_via_password and return if params[:user][:password].present?
 
       send_session_email if resolve_user
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
 
     private
 
