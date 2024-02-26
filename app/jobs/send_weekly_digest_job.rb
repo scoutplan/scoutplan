@@ -29,7 +29,7 @@ class SendWeeklyDigestJob < ApplicationJob
 
     Time.zone = unit.time_zone
     timestamp = DateTime.current
-    unit.settings(:communication).update!(digest_config_timestamp: timestamp)
+    unit.settings(:communication).update!(config_timestamp: timestamp)
     SendWeeklyDigestJob.set(wait_until: next_run_time(unit)).perform_later(unit.id, timestamp)
   end
 

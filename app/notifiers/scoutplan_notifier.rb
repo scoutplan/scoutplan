@@ -35,6 +35,7 @@ class ScoutplanNotifier < Noticed::Event
   end
 
   def email?(notification = nil)
+    puts "Sdfsdfsd"
     notification.recipient.contactable?(via: :email) && feature_enabled?
   end
 
