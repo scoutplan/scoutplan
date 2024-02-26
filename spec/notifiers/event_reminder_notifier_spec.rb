@@ -18,6 +18,7 @@ RSpec.describe EventReminderNotifier do
   end
 
   it "delivers an email" do
+    clear_enqueued_jobs
     Flipper.enable(:deliver_email)
     expect { EventReminderNotifier.with(event: @event).deliver([@member]) }.to have_enqueued_job
     perform_enqueued_jobs
@@ -25,6 +26,7 @@ RSpec.describe EventReminderNotifier do
   end
 
   it "renders the SMS correctly" do
+    clear_enqueued_jobs
     Time.zone = "UTC" # server time
     notification = EventReminderNotifier.with(event: @event)
     sms = notification.sms_body(recipient: @member, event: @event, params: {})
