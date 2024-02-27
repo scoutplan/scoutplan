@@ -1,6 +1,10 @@
 require "rails_helper"
+require "sidekiq/testing"
 
 RSpec.describe EventRsvpOrganizerNotifier do
+  include ActiveJob::TestHelper
+  # include ActiveSupport::Testing::TaggedLogging
+
   before do
     @event = FactoryBot.create(:event, :published, :requires_rsvp, allow_youth_rsvps: true)
     @unit = @event.unit
@@ -26,5 +30,15 @@ RSpec.describe EventRsvpOrganizerNotifier do
       expect { @event.rsvps.create!(unit_membership: @youth, response: "accepted", respondent: @youth) }
         .to have_enqueued_job.at_least(:once)
     end
+  end
+
+  it "delivers" do
+    clear_enqueued_jobs
+    Sidekiq::Testing.fake!
+    organizer_recipients = [@parent]
+    expect { EventRsvpOrganizerNotifier.with(event: @event).deliver(organizer_recipients) }.to have_enqueued_job(Noticed::EventJob)
+    perform_enqueued_jobs
+    expect(ActiveJob::Base.queue_adapter.enqueued_jobs.count).to be > 0
+    perform_enqueued_jobs
   end
 end
