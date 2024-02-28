@@ -1,13 +1,17 @@
-= link_to [@unit, document_list_item],
-          class: "table-row hover:bg-stone-100" do
+.table-row.hover:bg-stone-100.multi-selector-wrapper
   - file = document_list_item.file
   - color_key = "file_color_#{file.filename.extension}"
   - color = t(color_key, default: "#b91c1c")
 
+  .table-cell.border-t.px-2.py-2.w-8
+    - if UnitDocumentPolicy.new(@current_member, document_list_item).edit?
+      = check_box_tag "document_ids[]", class: "multi-selector", data: { action: "change->document-index#toggleMultiSelect" }
+
   .table-cell.border-t.px-2.py-2
-    i(class="fa-fw fa-regular fa-file-#{file.filename.extension}" style="color: #{color}")
-    | &nbsp;
-    = file.filename.base
+    = link_to [@unit, document_list_item]
+      i(class="fa-fw fa-regular fa-file-#{file.filename.extension}" style="color: #{color}")
+      | &nbsp;
+      = file.filename.base
 
   .table-cell.border-t.px-2.py-2
     - document_list_item.document_tags.each do |tag|

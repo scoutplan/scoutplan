@@ -45,6 +45,7 @@ class Unit < ApplicationRecord
     s.key :locale, defaults: { time_zone: "Eastern Time (US & Canada)",
                                meeting_location: nil, meeting_address: nil }
     s.key :utilities, defaults: { fire_scheduled_tasks: false }
+    s.key :documents, defaults: { home_layout: "[]" }
   end
 
   def attachments

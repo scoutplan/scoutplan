@@ -1,0 +1,16 @@
+.max-w-2xl.mx-auto
+  header.mb-4
+    h1.text-2xl.font-medium Document settings
+
+    = form_with model: @unit, data: { turbo: false } do |f|
+      section.py-4
+        = f.label :home_layout, "Home Layout"
+        = text_area "settings[documents]",
+                    "home_layout",
+                      class: "w-full",
+                      placeholder: "YAML",
+                      value: @unit.settings(:documents).home_layout,
+                      style: "font-family: Courier; height: 60em;"
+
+      footer
+        = f.button "Save", type: "submit", class: "rounded font-semibold bg-lime-600 hover:bg-lime-700 text-white px-4 py-2"

@@ -62,6 +62,7 @@ Rails.application.routes.draw do
         collection do
           get "list"
           get "grid"
+          post "bulk_update"
         end
       end
     end
@@ -170,6 +171,7 @@ Rails.application.routes.draw do
     get "search", to: "search#results"
     get "settings", to: "settings#index", as: "settings"
     get "settings/automated_messages", to: "settings#automated_messages", as: "automated_messages"
+    get "settings/documents"
     get "settings/:category", to: "settings#edit", as: "setting"
 
     # redirect the old /events path. We can probably get rid of this

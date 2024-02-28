@@ -10,7 +10,10 @@
           h1.text-4xl.mb-2
             = t(".title")
 
-        .right
+        .right.flex.flex-row.gap-2
+          = link_to list_unit_documents_path(@unit), class: "text-stone-500 hover:text-stone-900 dark:hover:text-stone-300" do
+            = "View as grid"
+
           = render partial: "upload_form"
           / .dropdown.relative
           /   = link_to "#", class: "dropdown-button inline-block text-stone-500 hover:text-stone-900 dark:hover:text-stone-300" do

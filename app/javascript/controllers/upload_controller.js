@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = [ "fileinput", "form" ];
 
   connect() {
-    console.log("Hello, Stimulus!", this.element);
+    console.log("upload controller connected");
   }
 
   browse(event) {

@@ -1,0 +1,16 @@
+section.py-4
+  header.mb-4
+    h2.text-xl.font-medium = element_definition["title"]
+
+  ol#documents_list.grid.grid-cols-4.gap-4
+    - element_definition["tags"].each do |tag|
+      - name = tag["name"]
+      - icon = tag["icon"]
+      - color = tag["color"] || "#444444"
+
+      li
+        = link_to "#", class: "block p-4 font-medium bg-stone-100 hover:bg-stone-200", style: "aspect-ratio: 1 / 1;" do
+          div(style="color: #{color};")
+            .block
+              i.fa-solid.text-2xl(class="#{icon}")
+            = name.titleize

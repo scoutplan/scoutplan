@@ -1,0 +1,40 @@
+[
+  { "type": "periodical",
+    "title": "Legend Ledger",
+    "subtitle": "The Troop 2 newsletter",
+    "display": "big_tiles",
+    "tags": ["legend_ledger"],
+    "limit": 1,
+    "order_by": "created_at DESC"
+  },
+ 
+  { "type": "separator" },
+
+  { "type": "tag_tiles",
+    "title": "Troop 2 Manual",
+    "display": "tiles",
+    "tags": [
+      {
+        "name": "history",
+        "icon": "fa-scroll"
+      }
+    ]
+  },
+
+  { "type": "separator" },
+  
+  { "type": "tag_tiles",
+    "title": "Forms & Lists",
+    "display": "tiles",
+    "tags": [
+      {
+        "name": "health_forms",
+        "icon": "fa-notes-medical"
+      },
+      {
+        "name": "packing_lists",
+        "icon": "fa-backpack"
+      }
+    ]      
+  }  
+]
