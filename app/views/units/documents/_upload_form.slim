@@ -9,6 +9,6 @@
                       data: { action: "change->upload#perform", upload_target: "fileinput" }
       = f.submit "Upload", class: "rounded bg-lime-600 hover:bg-lime-700 text-lime-100 px-4 py-2 font-bold"
 
-  = button_tag class: "block rounded bg-lime-600 text-lime-50 px-3 py-2 font-semibold", data: { action: "click->upload#browse" } do
+  = button_tag class: "block rounded bg-lime-600 text-lime-50 px-4 py-2 font-semibold", data: { action: "click->upload#browse" } do
     i.fa-solid.fa-upload.mr-2
     = t(".new_document")

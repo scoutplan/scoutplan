@@ -4,11 +4,11 @@ class Units::DocumentsController < UnitContextController
   end
 
   def list
-    @documents = @unit.documents
+    @documents = @unit.documents.includes(file_attachment: :blob).order("active_storage_blobs.filename ASC")
   end
 
   def grid
-    @documents = @unit.documents
+    @documents = @unit.documents.includes(file_attachment: :blob).order("active_storage_blobs.filename ASC")
   end
 
   def create

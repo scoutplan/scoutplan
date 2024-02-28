@@ -1,7 +1,7 @@
 = turbo_frame_tag "main"
   = render partial: "layouts/flash"
 
-  .max-w-7xl.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead
+  .max-w-7xl.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead.group.view-as-list
     header.mb-8
       .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
 
@@ -17,5 +17,8 @@
           /     i.fa-circle-ellipsis.far.fa-2xl
           /   = render partial: "events/partials/index/dropdown"
 
-    ol#documents_list.grid.grid-cols-1.xl:grid-cols-6.lg:grid-cols-5.md:grid-cols-4.sm:grid-cols-2.gap-4
-      = render @documents
+    #documents_list.table.w-full.flex.flex-col.gap-4.divide-y
+      .table-row
+        .table-cell.px-2.py-2.font-semibold = "Name"
+        .table-cell.px-2.py-2.font-semibold = "Tags"
+      = render partial: "document_list_item", collection: @documents

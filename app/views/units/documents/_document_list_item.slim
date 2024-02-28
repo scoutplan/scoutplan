@@ -1,0 +1,19 @@
+= link_to [@unit, document_list_item],
+          class: "table-row hover:bg-stone-100" do
+  - file = document_list_item.file
+  - color_key = "file_color_#{file.filename.extension}"
+  - color = t(color_key, default: "#b91c1c")
+
+  .table-cell.border-t.px-2.py-2
+    i(class="fa-fw fa-regular fa-file-#{file.filename.extension}" style="color: #{color}")
+    | &nbsp;
+    = file.filename.base
+
+  .table-cell.border-t.px-2.py-2
+    - document_list_item.document_tags.each do |tag|
+      = tag.name
+
+    .flex.flex-row.gap-1
+      .inline-block.text-xs.text-semibold.bg-sky-100.text-sky-800.px-2.py-1.rounded = "manual"
+      .inline-block.text-xs.text-semibold.bg-rose-100.text-rose-800.px-2.py-1.rounded = "training"
+      .inline-block.text-xs.text-semibold.bg-amber-100.text-amber-800.px-2.py-1.rounded = "legend ledger"
