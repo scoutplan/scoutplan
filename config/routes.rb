@@ -57,6 +57,14 @@ Rails.application.routes.draw do
 
   # begin units
   resources :units, path: "u", only: %i[show index update] do
+    scope module: :units do
+      resources :documents, path: "library" do
+        collection do
+          get "list"
+          get "grid"
+        end
+      end
+    end
     resources :messages, path: "messages" do
       resources :message_attachments, path: "attachments", as: "attachments", only: [:destroy]
       post "duplicate"

@@ -50,6 +50,16 @@ ul.list-none
 
         = t("main_nav.communication")
 
+  // Communication
+  - if policy(:message).new? && Flipper.enabled?(:messages, @current_member)
+    li#main_nav_item_messages.md:inline-block
+      = link_to unit_documents_path(@current_unit),
+        class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-semibold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+        data: { turbo_frame: "main", turbo_action: "advance" } do
+
+        i.fa-solid.fa-books.mr-1
+        = t("main_nav.document_library")
+
   - if Flipper.enabled? :wiki_pages, @current_member
     - if policy(:wiki_page).index?
       li#main_nav_item_wiki.md:inline-block
