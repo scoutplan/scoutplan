@@ -57,6 +57,15 @@ Rails.application.routes.draw do
 
   # begin units
   resources :units, path: "u", only: %i[show index update] do
+    scope module: :units do
+      resources :documents, path: "library" do
+        collection do
+          get "tag/:tag", to: "documents#tag", as: "tag"
+          get "tag/:tag/:variant", to: "documents#tag", as: "tag_variant"
+          post "bulk_update"
+        end
+      end
+    end
     resources :messages, path: "messages" do
       resources :message_attachments, path: "attachments", as: "attachments", only: [:destroy]
       post "duplicate"
@@ -162,6 +171,7 @@ Rails.application.routes.draw do
     get "search", to: "search#results"
     get "settings", to: "settings#index", as: "settings"
     get "settings/automated_messages", to: "settings#automated_messages", as: "automated_messages"
+    get "settings/documents"
     get "settings/:category", to: "settings#edit", as: "setting"
 
     # redirect the old /events path. We can probably get rid of this

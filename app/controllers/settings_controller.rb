@@ -11,4 +11,8 @@ class SettingsController < UnitContextController
   def automated_messages
     authorize @unit, :edit?
   end
+
+  def documents
+    authorize @unit, :edit?
+  end
 end

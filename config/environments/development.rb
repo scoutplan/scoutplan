@@ -2,7 +2,7 @@
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.configure do
-  config.web_console.permissions = "172.0.0.0/8"
+  config.web_console.permissions = "0.0.0.0/0"
 
   config.hosts = [
     IPAddr.new("0.0.0.0/0"),        # All IPv4 addresses.

@@ -320,3 +320,21 @@ details > summary::-webkit-details-marker /* Safari */ {
 .date-badge-now ~ .date-badge-next {
   display: none;
 }
+
+.multi-selector, .multi-select-actions {
+  display: none;
+}
+
+.multi-selector-wrapper:hover .multi-selector {
+  display: block;
+}
+
+.multi-select-enabled {
+  .multi-selector {
+    display: block;
+  }
+
+  .multi-select-actions {
+    display: block;
+  }
+}

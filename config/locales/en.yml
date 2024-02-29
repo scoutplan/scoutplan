@@ -176,7 +176,7 @@ en:
 
     labels:
       status: "Status"
-
+  
   unit_settings:
     title: "Unit Settings"
     logo:  "Logo"
@@ -830,6 +830,20 @@ en:
     unit_profile:
       submit: "Save Changes"
   
+  units:
+    documents:
+      index:
+        title: "Document Library"
+
+      grid:
+        title: "Document Library"
+
+      list:
+        title: "Document Library"
+      
+      upload_form:
+        new_document: "Upload files"
+
   unit_memberships:
     partials:
       modal:

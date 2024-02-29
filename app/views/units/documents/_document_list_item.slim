@@ -1,0 +1,23 @@
+.table-row.hover:bg-stone-100.multi-selector-wrapper
+  - file = document_list_item.file
+  - color_key = "file_color_#{file.filename.extension}"
+  - color = t(color_key, default: "#b91c1c")
+
+  .table-cell.border-t.px-2.py-2
+    .w-4.shrink-0
+    - if UnitDocumentPolicy.new(@current_member, document_list_item).edit?
+      = check_box_tag "document_ids[]", value: document_list_item.id, class: "multi-selector", data: { action: "change->document-index#toggleMultiSelect" }
+
+  .table-cell.border-t.px-2.py-2
+    = link_to [@unit, document_list_item]
+      .inline-block.whitespace-nowrap.text-ellipsis.overflow-hidden
+        i(class="fa-fw fa-regular fa-file-#{file.filename.extension}" style="color: #{color}")
+        | &nbsp;
+        = file.filename.base
+
+  .table-cell.border-t.px-2.py-2
+    .flex.flex-row.gap-1
+      - document_list_item.document_tags.each do |tag|
+        .inline-block.text-xs.rounded.bg-rose-100.text-rose-800.px-2.py-1
+          = tag.name
+

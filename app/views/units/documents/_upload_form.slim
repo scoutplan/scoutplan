@@ -1,0 +1,14 @@
+= content_tag(:div, data: { controller: "upload" }) do
+  .hidden
+    = form_with url: unit_documents_path(@unit),
+                method: :post,
+                format: "turbo_stream",
+                data: { turbo_stream: "true", upload_target: "form" } do |f|
+
+      = f.file_field :documents, multiple: true, id: "upload_document_field",
+                      data: { action: "change->upload#perform", upload_target: "fileinput" }
+      = f.submit "Upload", class: "rounded bg-lime-600 hover:bg-lime-700 text-lime-100 px-4 py-2 font-bold"
+
+  = button_tag class: "block rounded bg-lime-600 text-lime-50 px-4 py-2 font-semibold", data: { action: "click->upload#browse" } do
+    i.fa-solid.fa-upload.mr-2
+    = t(".new_document")

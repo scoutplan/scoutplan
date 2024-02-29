@@ -3,6 +3,8 @@ class Unit < ApplicationRecord
   include Seasons, DistributionLists
 
   has_one :payment_account
+
+  has_many :documents, as: :documentable
   has_many :events
   has_many :event_categories
   has_many :unit_memberships
@@ -16,6 +18,7 @@ class Unit < ApplicationRecord
   has_many :photos, dependent: :destroy
   has_many :payments, through: :events
   has_many :wiki_pages
+
   has_one_attached :logo
 
   validates_presence_of :name
@@ -42,6 +45,7 @@ class Unit < ApplicationRecord
     s.key :locale, defaults: { time_zone: "Eastern Time (US & Canada)",
                                meeting_location: nil, meeting_address: nil }
     s.key :utilities, defaults: { fire_scheduled_tasks: false }
+    s.key :documents, defaults: { home_layout: "[]" }
   end
 
   def attachments
