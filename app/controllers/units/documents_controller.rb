@@ -5,7 +5,9 @@ class Units::DocumentsController < UnitContextController
   end
 
   def list
-    @documents = @unit.documents.includes(file_attachment: :blob).order("active_storage_blobs.filename ASC")
+    scope = @unit.documents.includes(file_attachment: :blob).order("active_storage_blobs.filename ASC")
+    scope = scope.tagged_with(params[:tag]) if params[:tag].present?
+    @documents = scope.all
   end
 
   def grid
@@ -27,10 +29,15 @@ class Units::DocumentsController < UnitContextController
   end
 
   def bulk_update
-    ap params
-    @documents = @unit.documents.find(params[:document_ids])
-    @documents.each do |document|
-      ap document
+    # ap params
+    tags = params[:multi_select_action][:tags]
+
+
+    params[:document_ids].each do |document_id|
+      document = @unit.documents.find(document_id)
+      document.document_tag_list.add(tags, parse: true)
+      # ap document
+      document.save
     end
   end
 end

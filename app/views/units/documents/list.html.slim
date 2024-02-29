@@ -1,7 +1,7 @@
 = turbo_frame_tag "main"
   = render partial: "layouts/flash"
 
-  .max-w-7xl.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead(data-controller="document-index")
+  .max-w-7xl.mt-4.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead(data-controller="document-index")
     header.mb-8.sticky.top-0
       .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
 
@@ -21,7 +21,7 @@
           /     i.fa-circle-ellipsis.far.fa-2xl
           /   = render partial: "events/partials/index/dropdown"
 
-    = form_with url: bulk_update_unit_documents_path(@unit), method: :post, data: { action: "submit->document-index#bulkUpdate" } do |form|
+    = form_with url: bulk_update_unit_documents_path(@unit), method: :post do |form|
       section.multi-select-actions
         = text_field :multi_select_action, :tags, placeholder: "Add tags", class: "multi-select-action-tags"
 

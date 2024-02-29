@@ -4,5 +4,7 @@ class Document < ApplicationRecord
   has_one_attached :file
 
   acts_as_taggable_on :document_tags
-  acts_as_taggable_tenant :unit_id
+  acts_as_taggable_tenant :documentable
+
+  scope :by_date, -> { order(created_at: :desc) }
 end

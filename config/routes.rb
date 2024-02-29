@@ -62,6 +62,7 @@ Rails.application.routes.draw do
         collection do
           get "list"
           get "grid"
+          get "tag/:tag", to: "documents#list", as: "tag"
           post "bulk_update"
         end
       end

@@ -5,7 +5,7 @@
 
   .table-cell.border-t.px-2.py-2.w-8
     - if UnitDocumentPolicy.new(@current_member, document_list_item).edit?
-      = check_box_tag "document_ids[]", class: "multi-selector", data: { action: "change->document-index#toggleMultiSelect" }
+      = check_box_tag "document_ids[]", value: document_list_item.id, class: "multi-selector", data: { action: "change->document-index#toggleMultiSelect" }
 
   .table-cell.border-t.px-2.py-2
     = link_to [@unit, document_list_item]
@@ -14,10 +14,12 @@
       = file.filename.base
 
   .table-cell.border-t.px-2.py-2
-    - document_list_item.document_tags.each do |tag|
-      = tag.name
-
     .flex.flex-row.gap-1
-      .inline-block.text-xs.text-semibold.bg-sky-100.text-sky-800.px-2.py-1.rounded = "manual"
-      .inline-block.text-xs.text-semibold.bg-rose-100.text-rose-800.px-2.py-1.rounded = "training"
-      .inline-block.text-xs.text-semibold.bg-amber-100.text-amber-800.px-2.py-1.rounded = "legend ledger"
+      - document_list_item.document_tags.each do |tag|
+        .inline-block.text-xs.rounded.bg-rose-100.text-rose-800.px-2.py-1
+          = tag.name
+
+    / .flex.flex-row.gap-1
+    /   .inline-block.text-xs.text-semibold.bg-sky-100.text-sky-800.px-2.py-1.rounded = "manual"
+    /   .inline-block.text-xs.text-semibold.bg-rose-100.text-rose-800.px-2.py-1.rounded = "training"
+    /   .inline-block.text-xs.text-semibold.bg-amber-100.text-amber-800.px-2.py-1.rounded = "legend ledger"
