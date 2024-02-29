@@ -3,9 +3,9 @@ class ScoutplanNotifier < Noticed::Event
     recipient = notification.recipient
     params = notification.params
     {
-      From: ENV.fetch("TWILIO_NUMBER"),
-      To:   recipient.phone,
-      Body: sms_body(recipient: recipient, event: params[:event], params: params)
+      "From" => ENV.fetch("TWILIO_NUMBER"),
+      "To"   => recipient.phone,
+      "Body" => sms_body(recipient: recipient, event: params[:event], params: params)
     }
   end
 
