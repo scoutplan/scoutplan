@@ -16,7 +16,8 @@
                     class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded px-3 py-2",
                     title: "Document library home",
                     data: { turbo_action: "advance" } do
-            i.fa-fw.fa-solid.fa-books
+            i.fa-fw.fa-solid.fa-books.mr-2
+            = "Library"
 
           - if variant == "grid"
             = link_to tag_variant_unit_documents_path(@unit, @tag, :list),
