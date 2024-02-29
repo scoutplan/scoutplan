@@ -28,10 +28,15 @@ class Units::DocumentsController < UnitContextController
     end
   end
 
+  def tag
+    scope = @unit.documents.includes(file_attachment: :blob).order("active_storage_blobs.filename ASC")
+    scope = scope.tagged_with(params[:tag]) if params[:tag].present? && params[:tag] != "all"
+    @documents = scope.all
+  end
+
   def bulk_update
     # ap params
     tags = params[:multi_select_action][:tags]
-
 
     params[:document_ids].each do |document_id|
       document = @unit.documents.find(document_id)

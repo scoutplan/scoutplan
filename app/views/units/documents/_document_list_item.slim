@@ -9,9 +9,10 @@
 
   .table-cell.border-t.px-2.py-2
     = link_to [@unit, document_list_item]
-      i(class="fa-fw fa-regular fa-file-#{file.filename.extension}" style="color: #{color}")
-      | &nbsp;
-      = file.filename.base
+      .inline-block.whitespace-nowrap.text-ellipsis
+        i(class="fa-fw fa-regular fa-file-#{file.filename.extension}" style="color: #{color}")
+        | &nbsp;
+        = file.filename.base
 
   .table-cell.border-t.px-2.py-2
     .flex.flex-row.gap-1

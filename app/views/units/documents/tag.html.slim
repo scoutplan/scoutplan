@@ -1,0 +1,6 @@
+= turbo_frame_tag "main"
+  = render partial: "layouts/flash"
+
+  - variant = request.cookies[:variant] || "list"
+
+  = render partial: "units/documents/#{variant}"
