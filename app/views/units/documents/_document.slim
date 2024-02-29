@@ -1,5 +1,5 @@
 li.mb-4.relative.group(id="#{dom_id(document)}")
-  = link_to [@unit, document] do
+  = link_to rails_blob_path(document.file, disposition: "attachment") do
     - file = document.file
 
     .flex.flex-row.items-center.bg-stone-100.p-4.mb-1(style="aspect-ratio: 1 / 1; width: 100%; height: auto;")

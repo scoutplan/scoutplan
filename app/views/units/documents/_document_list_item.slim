@@ -9,7 +9,7 @@
       = check_box_tag "document_ids[]", value: document_list_item.id, class: "multi-selector", data: { action: "change->document-index#toggleMultiSelect" }
 
   .table-cell.border-t.px-2.py-2
-    = link_to [@unit, document_list_item]
+    = link_to rails_blob_path(document_list_item.file, disposition: "attachment") do
       .inline-block.whitespace-nowrap.text-ellipsis.overflow-hidden
         i(class="fa-fw fa-regular fa-file-#{file.filename.extension}" style="color: #{color}")
         | &nbsp;
