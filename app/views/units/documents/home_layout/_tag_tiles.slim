@@ -4,7 +4,7 @@ section.py-4
   header.mb-4
     h2.text-xl.font-medium = element_definition["title"]
 
-  ol#documents_list.grid.grid-cols-4.gap-4
+  ol#documents_list.grid.lg:grid-cols-4.gap-4
     - element_definition["tiles"].each do |tile|
       - tag   = tile["tag"]
       - title = tile["title"] || tag.titleize
@@ -13,9 +13,9 @@ section.py-4
 
       li
         = link_to tag_unit_documents_path(@unit, tag),
-                  class: "block rounded p-4 font-medium bg-stone-100 hover:bg-stone-200",
-                  style: "aspect-ratio: 1 / 1; color: #{color};",
+                  class: "block rounded p-4 font-medium bg-stone-100 hover:bg-stone-200 lg:aspect-square",
+                  style: "color: #{color};",
                   data: { turbo_action: "advance" } do
-          .block
-            i.fa-solid.text-3xl(class="#{icon}")
+          .inline-block.lg:block
+            i.fa-fw.fa-solid.mr-2.text-3xl(class="#{icon}")
           = title
