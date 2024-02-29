@@ -60,9 +60,8 @@ Rails.application.routes.draw do
     scope module: :units do
       resources :documents, path: "library" do
         collection do
-          get "list"
-          get "grid"
           get "tag/:tag", to: "documents#tag", as: "tag"
+          get "tag/:tag/:variant", to: "documents#tag", as: "tag_variant"
           post "bulk_update"
         end
       end

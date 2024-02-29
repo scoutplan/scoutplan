@@ -1,24 +1,12 @@
-.max-w-7xl.mt-4.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead(data-controller="document-index")
-  header.mb-8.sticky.top-0
-    .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
+= form_with url: bulk_update_unit_documents_path(@unit), method: :post do |form|
+  section.multi-select-actions
+    = text_field :multi_select_action, :tags, placeholder: "Add tags", class: "multi-select-action-tags"
 
-    .flex.flex-row.justify-between.items-center
-      .left
-        h1.text-4xl.mb-2
-          = t(".title")
+  = turbo_frame_tag "documents" do
+    #documents_list.table.w-full.flex.flex-col.gap-4.divide-y
+      .table-row
+        .table-cell.px-2.py-2.font-semibold
+        .table-cell.px-2.py-2.font-semibold = "Name"
+        .table-cell.px-2.py-2.font-semibold = "Tags"
 
-      .right.flex.flex-row.gap-2
-        - if UnitDocumentPolicy.new(@current_member, Document).create?
-          = render partial: "upload_form"
-
-  = form_with url: bulk_update_unit_documents_path(@unit), method: :post do |form|
-    section.multi-select-actions
-      = text_field :multi_select_action, :tags, placeholder: "Add tags", class: "multi-select-action-tags"
-
-    = turbo_frame_tag :document_list do
-      #documents_list.table.w-full.flex.flex-col.gap-4.divide-y
-        .table-row
-          .table-cell.px-2.py-2.font-semibold
-          .table-cell.px-2.py-2.font-semibold = "Name"
-          .table-cell.px-2.py-2.font-semibold = "Tags"
-        = render partial: "document_list_item", collection: @documents
+      = render partial: "document_list_item", collection: @documents
