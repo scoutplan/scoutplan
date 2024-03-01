@@ -1,4 +1,8 @@
 class UnitDocumentPolicy < UnitContextPolicy
+  def index?
+    true
+  end
+
   def create?
     admin?
   end
@@ -13,5 +17,13 @@ class UnitDocumentPolicy < UnitContextPolicy
 
   def destroy?
     admin?
+  end
+
+  def tag?
+    index?
+  end
+
+  def bulk_updated?
+    update?
   end
 end

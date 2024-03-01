@@ -29,3 +29,6 @@
 
     - @home_layout.each do |element|
       = render partial: "units/documents/home_layout/#{element['type']}", locals: { element_definition: element }
+
+  = turbo_stream.update "page_title" do
+    = t(".page_title", unit_name: @unit.name)

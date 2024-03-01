@@ -9,9 +9,10 @@ li.mb-4.relative.group(id="#{dom_id(document)}")
     .whitespace-nowrap.mr-6.text-ellipsis.overflow-hidden
       = file.filename.base
 
-  .absolute.top-2.right-2.hidden.group-hover:block
-    = button_to [@unit, document],
-                method: :delete,
-                class: "bg-stone-200 hover:bg-stone-300 px-3 py-2 aspect-square",
-                data: { turbo_stream: "true", confirm: t(".confirm") } do
-      i.fa-solid.fa-trash-alt
+  - if UnitDocumentPolicy.new(@current_member, document).destroy?
+    .absolute.top-2.right-2.hidden.group-hover:block
+      = button_to [@unit, document],
+                  method: :delete,
+                  class: "bg-stone-200 hover:bg-stone-300 px-3 py-2 aspect-square",
+                  data: { turbo_stream: "true", confirm: t(".confirm") } do
+        i.fa-solid.fa-trash-alt

@@ -1,17 +1,24 @@
 class Units::DocumentsController < UnitContextController
   def index
+    authorize Document, policy_class: UnitDocumentPolicy
     @documents = @unit.documents
     @home_layout = YAML.load(@unit.settings(:documents).home_layout)
   end
 
   def create
+    authorize Document, policy_class: UnitDocumentPolicy
     @documents = []
     files = params[:documents].reject(&:blank?)
     files.each { |file| @documents << @unit.documents.create!(file: file) }
   end
 
+  def update
+    authorize Document, policy_class: UnitDocumentPolicy
+  end
+
   def destroy
     @document = @unit.documents.find(params[:id])
+    authorize @document, policy_class: UnitDocumentPolicy
     @document.destroy
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.remove(@document) }
@@ -20,6 +27,7 @@ class Units::DocumentsController < UnitContextController
 
   # rubocop:disable Metrics/AbcSize
   def tag
+    authorize Document, policy_class: UnitDocumentPolicy
     redirect_to tag_variant_unit_documents_path(@unit, tag: params[:tag], variant: cookies[:documents_variant] || "list") unless params[:variant].present?
 
     cookies[:documents_variant] = params[:variant]
@@ -33,6 +41,7 @@ class Units::DocumentsController < UnitContextController
   # rubocop:enable Metrics/AbcSize
 
   def bulk_update
+    authorize Document, policy_class: UnitDocumentPolicy
     tags = params[:multi_select_action][:tags]
 
     params[:document_ids].each do |document_id|

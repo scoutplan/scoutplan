@@ -10,7 +10,8 @@ section.py-6
 
     div.flex.flex-col.justify-between
       header
-        h2.text-lg.lg:text-3xl = document.file.filename.base
+        = link_to rails_blob_path(document.file, disposition: "attachment") do
+          h2.text-lg.lg:text-3xl = document.file.filename.base
 
       footer
         = link_to "Read the back issues",
