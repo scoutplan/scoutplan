@@ -2,7 +2,7 @@ section.py-4
   header.mb-4
     h2.text-xl.font-medium = element_definition["title"]
 
-  ol#documents_list.grid.lg:grid-cols-4.gap-4
+  ol.grid.lg:grid-cols-4.gap-4
     - element_definition["tiles"].each do |tile|
       - tag   = tile["tag"]
       - title = tile["title"] || tag.titleize

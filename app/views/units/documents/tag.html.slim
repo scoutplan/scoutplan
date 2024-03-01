@@ -7,39 +7,39 @@
   - variant = params[:variant] || request.cookies[:variant] || "grid"
 
   .max-w-7xl.relative.mt-4.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead(data-controller="document-index")
-    = form_with url: bulk_update_unit_documents_path(@unit), method: :post do |form|
-      header.mb-8
-        .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
+    header.mb-8
+      .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
 
-        .flex.flex-row.justify-between.items-center
-          .left
-            h1.text-4xl.mb-2 = @title
+      .flex.flex-row.justify-between.items-center
+        .left
+          h1.text-4xl.mb-2 = @title
 
-          .right.flex.flex-row.gap-2
-            = link_to unit_documents_path(@unit),
+        .right.flex.flex-row.gap-2
+          = link_to unit_documents_path(@unit),
+                    class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded px-3 py-2",
+                    title: "Document library home",
+                    data: { turbo_action: "advance" } do
+            i.fa-fw.fa-solid.fa-books.mr-2
+            = "Library"
+
+          - if variant == "grid"
+            = link_to tag_variant_unit_documents_path(@unit, @tag, :list),
                       class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded px-3 py-2",
-                      title: "Document library home",
+                      title: "View as list",
                       data: { turbo_action: "advance" } do
-              i.fa-fw.fa-solid.fa-books.mr-2
-              = "Library"
+              i.fa-fw.fa-solid.fa-list
 
-            - if variant == "grid"
-              = link_to tag_variant_unit_documents_path(@unit, @tag, :list),
-                        class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded px-3 py-2",
-                        title: "View as list",
-                        data: { turbo_action: "advance" } do
-                i.fa-fw.fa-solid.fa-list
+          - elsif variant == "list"
+            = link_to tag_variant_unit_documents_path(@unit, @tag, :grid),
+                      class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded px-3 py-2",
+                      title: "View as grid",
+                      data: { turbo_action: "advance" } do
+              i.fa-fw.fa-solid.fa-grid
 
-            - elsif variant == "list"
-              = link_to tag_variant_unit_documents_path(@unit, @tag, :grid),
-                        class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded px-3 py-2",
-                        title: "View as grid",
-                        data: { turbo_action: "advance" } do
-                i.fa-fw.fa-solid.fa-grid
+          - if UnitDocumentPolicy.new(@current_member, Document).create?
+            = render partial: "upload_form"
 
-            - if UnitDocumentPolicy.new(@current_member, Document).create?
-              = render partial: "upload_form"
-
+    = form_with url: bulk_update_unit_documents_path(@unit), method: :post do |form|
       = render partial: "units/documents/#{variant}"
 
       .absolute.right-0.top-0.bottom-0.w-96.bg-white.rounded-r-xl.border-l.border-stone-300.hidden
