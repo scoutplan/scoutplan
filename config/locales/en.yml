@@ -834,12 +834,11 @@ en:
     documents:
       index:
         title: "Document Library"
+        page_title: "Document Library - %{unit_name}"
 
-      grid:
+      tag:
         title: "Document Library"
-
-      list:
-        title: "Document Library"
+        page_title: "Document Library - %{unit_name}"
       
       upload_form:
         new_document: "Upload files"
