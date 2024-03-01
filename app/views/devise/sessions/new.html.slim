@@ -37,7 +37,7 @@
                            class: "w-full bg-white border border-stone-400 rounded px-3 py-2 placeholder-stone-400",
                            placeholder: "password"
 
-        - if devise_mapping.rememberable? && false
+        - if devise_mapping.rememberable?
           .py-2
             = f.check_box :remember_me, class: "mr-3 w-5 h-5 rounded text-brand-500 focus:ring-brand-500 border-brand-500"
             = f.label :remember_me, t("global.remember_me"), class: "font-bold"
