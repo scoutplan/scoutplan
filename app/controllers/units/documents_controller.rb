@@ -10,7 +10,7 @@ class Units::DocumentsController < UnitContextController
     @documents = []
     files = params[:documents].reject(&:blank?)
     files.each { |file| @documents << @unit.documents.create!(file: file) }
-    redirect_to tag_unit_documents_path(@unit)
+    redirect_to tag_unit_documents_path(@unit, :all)
   end
 
   def update
