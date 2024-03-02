@@ -1,5 +1,6 @@
 # rubocop:disable Metrics/ClassLength
 class Unit < ApplicationRecord
+  BUSINESS_HOURS = [9, 18].freeze
   include Seasons, DistributionLists
 
   has_one :payment_account
@@ -95,22 +96,21 @@ class Unit < ApplicationRecord
     settings(:locale).time_zone
   end
 
-  def business_hours
-    [9, 18] # 9am to 6pm
-  end
-
   # given a datetime, returns the nearest datetime that is within business hours
-  # rubocop:disable Metrics/AbcSize
   def in_business_hours(datetime)
-    if datetime.in_time_zone(time_zone).hour < business_hours.first
-      datetime.in_time_zone(time_zone).change(hour: business_hours.first, min: 0, sec: 0).utc
-    elsif datetime.in_time_zone(time_zone).hour >= business_hours.last
-      datetime.in_time_zone(time_zone).change(hour: business_hours.last, min: 0, sec: 0).utc
+    dt = datetime.in_time_zone(time_zone)
+    if dt.hour < BUSINESS_HOURS.first
+      dt.change(hour: BUSINESS_HOURS.first, min: 0, sec: 0).utc
+    elsif dt.hour >= BUSINESS_HOURS.last
+      dt.change(hour: BUSINESS_HOURS.last, min: 0, sec: 0).utc
     else
       datetime
     end
   end
-  # rubocop:enable Metrics/AbcSize
+
+  def datetime_in_business_hours(datetime)
+    in_business_hours(datetime)
+  end
 
   def to_s
     name

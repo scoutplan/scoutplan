@@ -20,10 +20,10 @@ class FamilyRsvp
   end
 
   def paid?
-    return :in_full if balance_due.zero?
+    return :in_full unless balance_due.positive?
     return :partial if amount_paid.positive?
 
-    :non
+    :none
   end
 
   def payments

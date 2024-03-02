@@ -126,12 +126,16 @@ class Event < ApplicationRecord
     requires_rsvp
   end
 
-  def past?
-    ends_at.past?
+  def started?
+    starts_at.past?
   end
 
   def ended?
     ends_at.past?
+  end
+
+  def past?
+    ended?
   end
 
   def requires_payment?
