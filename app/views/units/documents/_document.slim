@@ -4,10 +4,18 @@ li.mb-4.relative.group(id="#{dom_id(document)}")
 
     .flex.flex-row.items-center.bg-stone-100.p-4.mb-1(style="aspect-ratio: 1 / 1; width: 100%; height: auto;")
       - if file.representable?
-        = image_tag file.representation(resize_to_limit: [300, 300]), class: "block", style: "max-width: 100%; max-height: 100%; margin: auto;"
+        = image_tag file.representation(resize_to_limit: [200, 200]), class: "block", style: "max-width: 100%; max-height: 100%; margin: auto;"
 
-    .whitespace-nowrap.mr-6.text-ellipsis.overflow-hidden
+    .whitespace-nowrap.mr-6.text-ellipsis.overflow-hidden.mb-1
       = file.filename.base
+
+    .flex.flex-row.gap-1
+      - document.document_tags.each do |tag|
+        - hue = Digest::MD5.hexdigest(tag.name).to_i(16) % 360
+        - bgcolor = "hsl(#{hue}, 100%, 95%)"
+        - color = "hsl(#{hue}, 100%, 20%)"
+        .inline-block.text-xs.rounded.px-2.py-1(style="background-color: #{bgcolor}; color: #{color};")
+          = tag.name      
 
   - if UnitDocumentPolicy.new(@current_member, document).destroy?
     .absolute.top-2.right-2.hidden.group-hover:block

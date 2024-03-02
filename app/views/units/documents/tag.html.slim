@@ -7,7 +7,7 @@
   - variant = params[:variant] || request.cookies[:variant] || "grid"
 
   .max-w-7xl.relative.mt-4.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead(data-controller="document-index")
-    header.mb-8
+    header.mb-8.sticky.top-0
       .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
 
       .flex.flex-row.justify-between.items-center
@@ -40,8 +40,6 @@
             = render partial: "upload_form"
 
     = form_with url: bulk_update_unit_documents_path(@unit), method: :post do |form|
-      = render partial: "units/documents/#{variant}"
+      = render "multi_edit_pane"
 
-      .absolute.right-0.top-0.bottom-0.w-96.bg-white.rounded-r-xl.border-l.border-stone-300.hidden
-        .p-8
-          = text_field :multi_select_action, :tags, placeholder: "Add tags", class: "multi-select-action-tags w-full rounded border-stone-300"
+      = render partial: "units/documents/#{variant}"

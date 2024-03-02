@@ -1,23 +1,26 @@
-.table-row.hover:bg-stone-100.multi-selector-wrapper
+tr.hover:bg-stone-100.multi-selector-wrapper
   - file = document_list_item.file
   - color_key = "file_color_#{file.filename.extension}"
   - color = t(color_key, default: "#b91c1c")
 
-  .table-cell.border-t.px-2.py-2
+  td.border-t.px-2.py-2
     .w-4.shrink-0
     - if UnitDocumentPolicy.new(@current_member, document_list_item).edit?
-      = check_box_tag "document_ids[]", value: document_list_item.id, class: "multi-selector", data: { action: "change->document-index#toggleMultiSelect" }
+      = check_box_tag "document_ids[]", value: document_list_item.id, class: "multi-selector", data: { action: "change->document-index#openMultiSelect" }
 
-  .table-cell.border-t.px-2.py-2
-    = link_to rails_blob_path(document_list_item.file, disposition: "attachment") do
-      .inline-block.whitespace-nowrap.text-ellipsis.overflow-hidden
-        i(class="fa-fw fa-regular fa-file-#{file.filename.extension}" style="color: #{color}")
-        | &nbsp;
-        = file.filename.base
+  td.border-t.px-2.py-2
+    .overflow-hidden.w-full.text-ellipsis.line-clamp-1
+      = link_to rails_blob_path(document_list_item.file, disposition: "attachment") do
+          i(class="fa-fw fa-regular fa-file-#{file.filename.extension}" style="color: #{color}")
+          | &nbsp;
+          = file.filename.base
 
-  .table-cell.border-t.px-2.py-2
+  td.border-t.px-2.py-2
     .flex.flex-row.gap-1
       - document_list_item.document_tags.each do |tag|
-        .inline-block.text-xs.rounded.bg-rose-100.text-rose-800.px-2.py-1
+        - hue = Digest::MD5.hexdigest(tag.name).to_i(16) % 360
+        - bgcolor = "hsl(#{hue}, 100%, 95%)"
+        - color = "hsl(#{hue}, 100%, 20%)"
+        .inline-block.text-xs.rounded.px-2.py-1(style="background-color: #{bgcolor}; color: #{color};")
           = tag.name
 

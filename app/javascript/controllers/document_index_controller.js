@@ -5,7 +5,11 @@ export default class extends Controller {
     console.log("document-index controller connected");
   }
 
-  toggleMultiSelect(event) {
+  openMultiSelect(event) {
     this.element.classList.toggle("multi-select-enabled", true);
   }
+
+  closeMultiSelect(event) {
+    this.element.classList.toggle("multi-select-enabled", false);
+  }  
 }

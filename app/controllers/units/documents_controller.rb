@@ -10,6 +10,7 @@ class Units::DocumentsController < UnitContextController
     @documents = []
     files = params[:documents].reject(&:blank?)
     files.each { |file| @documents << @unit.documents.create!(file: file) }
+    redirect_to tag_unit_documents_path(@unit)
   end
 
   def update
@@ -40,14 +41,23 @@ class Units::DocumentsController < UnitContextController
   end
   # rubocop:enable Metrics/AbcSize
 
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def bulk_update
     authorize Document, policy_class: UnitDocumentPolicy
-    tags = params[:multi_select_action][:tags]
 
-    params[:document_ids].each do |document_id|
-      document = @unit.documents.find(document_id)
-      document.document_tag_list.add(tags, parse: true)
+    tags = params[:multi_select_action][:tags]
+    filename = params[:multi_select_action][:filename]
+    document_date = params[:multi_select_action][:document_date]
+    documents = @unit.documents.where(id: params[:document_ids])
+
+    documents.each do |document|
+      document.document_tag_list.add(tags, parse: true) if tags.present?
+      document.file.blob.update(filename: filename) if filename.present?
+      document.update(document_date: document_date) if document_date.present?
       document.save
     end
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 end
