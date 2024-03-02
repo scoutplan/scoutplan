@@ -6,5 +6,13 @@ class Document < ApplicationRecord
   acts_as_taggable_on :document_tags
   acts_as_taggable_tenant :documentable
 
-  scope :by_date, -> { order(created_at: :desc) }
+  scope :by_date, -> { order(document_date: :desc) }
+
+  before_commit :set_document_date, on: :create
+
+  private
+
+  def set_document_date
+    self.document_date = created_at
+  end
 end

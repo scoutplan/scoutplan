@@ -321,7 +321,7 @@ details > summary::-webkit-details-marker /* Safari */ {
   display: none;
 }
 
-.multi-selector, .multi-select-actions {
+.multi-selector {
   display: none;
 }
 
@@ -329,12 +329,16 @@ details > summary::-webkit-details-marker /* Safari */ {
   display: block;
 }
 
+#multi-select-actions {
+  height: 0;
+}
+
 .multi-select-enabled {
   .multi-selector {
     display: block;
   }
 
-  .multi-select-actions {
-    display: block;
+  #multi-select-actions {
+    height: auto;
   }
 }

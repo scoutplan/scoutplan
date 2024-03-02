@@ -1,0 +1,23 @@
+#multi-select-actions.overflow-hidden.sticky.top-16
+  .bg-sky-50.rounded.border.border-sky-200
+    // close button
+    .absolute.right-2.top-2
+      = button_tag type: "button", class: "px-3 py-2 hover:bg-sky-100 text-sky-800", data: { action: "click->document-index#closeMultiSelect" } do
+        i.fa-fw.fa-solid.fa-times
+
+    .px-6.py-6.flex.flex-col.lg:flex-row.gap-2.lg:items-end
+      section.lg:w-1/4
+        h3.font-semibold.mb-2 = t(".tags")
+        = text_field :multi_select_action, :tags, placeholder: "Tags (separate with commas)", class: "placeholder-stone-300 multi-select-action-tags w-full rounded border-sky-300"
+
+      section.lg:w-1/4
+        h3.font-semibold.mb-2 = t(".filename")
+        = text_field :multi_select_action, :filename, placeholder: "Filename", class: "placeholder-stone-300 multi-select-action-tags w-full rounded border-sky-300"
+
+      section.lg:w-1/4
+        h3.font-semibold.mb-2 = t(".document_date")
+        = date_field :multi_select_action, :document_date, placeholder: "Filename", class: "placeholder-stone-300 multi-select-action-tags w-full rounded border-sky-300"
+
+      section(style="padding-bottom:1px;")
+        = button_tag type: "submit", class: "multi-select-action-submit bg-sky-600 text-sky-100 rounded px-3 py-2 hover:bg-sky-700 border border-sky-600" do
+          = t("apply_changes")

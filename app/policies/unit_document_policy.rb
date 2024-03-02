@@ -23,7 +23,7 @@ class UnitDocumentPolicy < UnitContextPolicy
     index?
   end
 
-  def bulk_updated?
+  def bulk_update?
     update?
   end
 end

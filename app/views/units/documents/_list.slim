@@ -1,8 +1,7 @@
-= turbo_frame_tag "documents" do
-  #documents_list.table.w-full.flex.flex-col.gap-4.divide-y
-    .table-row
-      .table-cell.px-2.py-2.font-semibold
-      .table-cell.px-2.py-2.font-semibold = "Name"
-      .table-cell.px-2.py-2.font-semibold = "Tags"
+table#documents_list.w-full
+  tr
+    th.text-left.px-2.py-2.font-semibold
+    th.text-left.px-2.py-2.font-semibold = "Name"
+    th.text-left.px-2.py-2.font-semibold = "Tags"
 
-    = render partial: "document_list_item", collection: @documents
+  = render partial: "document_list_item", collection: @documents

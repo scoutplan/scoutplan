@@ -4,7 +4,7 @@
 
 section.py-6
   .flex.flex-row.gap-8
-    .w-2/3.h-auto.bg-stone-100.p-6(style="aspect-ratio: 1 / 1;")
+    .w-2/3.h-auto.bg-stone-100.rounded.p-6(style="aspect-ratio: 1 / 1;")
       = link_to rails_blob_path(document.file, disposition: "attachment") do
         = image_tag document.file.representation(resize_to_limit: [300, 300]), class: "block", style: "max-width: 100%; max-height: 100%; margin: auto;"
 
