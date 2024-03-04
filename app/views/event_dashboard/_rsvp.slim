@@ -18,17 +18,13 @@ li.filterable-item.flex.flex-row.justify-between.items-center(draggable="false" 
   .text-lg
     - if rsvp.accepted? && @event.requires_payment?
       - family_rsvp = FamilyRsvp.new(rsvp.unit_membership, @event)
-      - if family_rsvp.paid? == :in_full
-        = link_to unit_event_payments_path(@unit, @event),
-                  class: "block px-2 -mr-2",
-                  draggable: false,
-                  title: "Payment received. Click to view payment details.",
-                  data: { turbo_action: "advance" } do
+
+      = link_to new_unit_event_payment_path(@unit, @event, member: rsvp.unit_membership),
+                class: "block px-2 -mr-2",
+                title: "Payment not yet received in full for this family. Click to record payment",
+                draggable: false,
+                data: { turbo_frame: "modal" } do
+        - if family_rsvp.paid? == :in_full                
           i.fa-regular.fa-circle-check.text-green-800.dark:text-green-600
-      - else
-        = link_to new_unit_event_payment_path(@unit, @event, member: rsvp.unit_membership),
-                  class: "block px-2 -mr-2",
-                  title: "Payment not yet received in full for this family. Click to record payment",
-                  draggable: false,
-                  data: { turbo_frame: "modal" } do
+        - else
           i.fa-solid.fa-triangle-exclamation.text-green-800.dark:text-green-600
