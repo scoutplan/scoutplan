@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Events
   require "stripe"
 
@@ -11,26 +9,15 @@ module Events
       @payment.received_by = @current_member
       @payment.amount *= 100
       @payment.save!
-
-      # authorize @payment
-      # redirect_to unit_event_payments_path(@unit, @event), notice: "Payment was recorded." and return if @payment.save
-
-      # member = @payment.unit_membership
-      # @current_family = member.family
-      # @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
-      # @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
-      # @total_cost = (@family_rsvps.accepted.youth.count * @event.cost_youth) + (@family_rsvps.accepted.adult.count * @event.cost_adult)
-      # @total_paid = ((@payments&.sum(:amount) || 0) / 100)
-      # @amount_due = @total_cost - @total_paid
-
-      # render :receive, status: :unprocessable_entity
     end
 
     def index
-      @current_family = @current_member.family
-      @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
+      authorize @event, :organize?
+      @payments = @event.payments
     end
 
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/MethodLength
     def new_stripe
       @current_family = @current_member.family
       @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
@@ -51,7 +38,6 @@ module Events
     def new
       member = @unit.members.find(params[:member])
       @payment = @event.payments.build(unit_membership: member, method: :cash)
-      
       @current_family = member.family
       @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
       @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
@@ -62,6 +48,8 @@ module Events
       @payment.status = :paid
       authorize @payment
     end
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/MethodLength
 
     private
 

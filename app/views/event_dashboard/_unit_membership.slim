@@ -1,7 +1,6 @@
 li.filterable-item(id="#{dom_id(unit_membership)}")
   = link_to new_unit_event_family_rsvp_path(@event.unit, @event, unit_membership_id: unit_membership.id),
             class: "block p-2 -mx-2",
-            id: dom_id(unit_membership),
             draggable: true,
             data: { turbo_frame: "modal", action: "dragstart->dashboard-drop#dragstart dragend->dashboard-drop#dragend drag->dashboard-drop#drag" } do
     - cache unit_membership do

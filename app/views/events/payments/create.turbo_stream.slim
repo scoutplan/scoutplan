@@ -1,2 +1,9 @@
 = turbo_stream.update "modal" do
   = ""
+
+- @payment.unit_membership.family.each do |member|
+  - rsvp = @event.rsvps.find_by(unit_membership: member)
+  - next unless rsvp.present?
+
+  = turbo_stream.replace dom_id(rsvp)
+    = render partial: "event_dashboard/rsvp", locals: { rsvp: rsvp }

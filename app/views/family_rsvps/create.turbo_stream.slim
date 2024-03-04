@@ -6,6 +6,7 @@
 
   // remove from wherever the RSVP currently is
   = turbo_stream.remove dom_id(rsvp)
+  = turbo_stream.remove dom_id(rsvp.unit_membership)
 
   // add to the appropriate column
   - if rsvp.persisted?
