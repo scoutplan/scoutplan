@@ -4,6 +4,7 @@
 class EventReminderPreview < ActionMailer::Preview
   # https://stackoverflow.com/a/66861942/6756943
 
+  # rubocop:disable Metrics/AbcSize
   def event_reminder_notification_accepted
     around_email do
       event = Event.create!(
@@ -110,4 +111,5 @@ class EventReminderPreview < ActionMailer::Preview
       cornhole. Readymade squid keffiyeh, wayfarers tacos tousled dreamcatcher pug single-origin coffee man braid.
     DESC
   end
+  # rubocop:enable Metrics/AbcSize
 end

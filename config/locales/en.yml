@@ -237,6 +237,9 @@ en:
 
     partials:
       event_row:
+        fully_paid: "You've paid. Thanks!"
+        payment_outstanding: "Payment is outstanding."
+
         family_rsvp_link:
           new: "RSVP needed"
           update: "Change Your RSVP"
@@ -245,7 +248,7 @@ en:
           organize: "Event Dashboard"
 
         rsvp_closes_at:
-          rsvp_closes_at: "Closes in %{when}"
+          rsvp_closes_at: "(closes %{when})"
           headcount_remaining:
             zero: "no spots remaining"
             one: "one spot remaining"
