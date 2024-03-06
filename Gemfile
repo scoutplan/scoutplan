@@ -109,3 +109,5 @@ group :test do
 end
 
 gem "rack", "~> 2.2"
+
+gem "view_component", "~> 3.11"

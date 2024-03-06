@@ -1,13 +1,18 @@
 # frozen_string_literal: true
 
 class WeeklyDigestMailer < ApplicationMailer
-  layout "basic_mailer"
+  layout "even_more_basic_mailer"
 
   before_action :setup
 
   helper ApplicationHelper
 
   def weekly_digest_notification
+    Rails.logger.warn("WeeklyDigestMailer#weekly_digest_notification to: #{to_address} from: #{from_address}")
+    mail(to: to_address, from: from_address, subject: subject)
+  end
+
+  def weekly_digest_notification_new
     Rails.logger.warn("WeeklyDigestMailer#weekly_digest_notification to: #{to_address} from: #{from_address}")
     mail(to: to_address, from: from_address, subject: subject)
   end

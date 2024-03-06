@@ -1,0 +1,47 @@
+<%= render Email::Bg::Container.new do |email| %>
+  <% email.with_masthead_text(text: "RailsNotes UI", href: "https://railsnotesui.xyz") %>
+  <%= render Email::Heading.new(
+    text: "Another month, another update!",
+    size: "30px",
+    align: "center",
+    margin: "20px auto 30px auto"
+  ) %>
+  <%= render Email::Divider.new(color: Email::Colors::RED_500, thickness: "4px") %>
+  <%= render Email::Text.new(text: "Welcome to the weekly RailsNotes UI update!") %>
+  <%= render Email::Text.new(text: " Two key updates this month — I released two new sets of templates, and updated a few components to fix bugs, and add new parameters.") %>
+  <%# Section 1 %>
+  <%= render Email::Heading.new(text: "New templates", margin: "48px auto 16px auto") %>
+  <%# By passing a block to ::Text, we can use the HTML <b> tag for bold text %>
+  <%= render Email::Text.new do %>
+    This month I released <b>two new templates!</b>
+  <% end %>
+  <%= render Email::Text.new(text: "The Square templates make great alternatives to the basic ones. The Dark templates are more unique, for an opinionated / chic look (and are just cool!).") %>
+  <%= render Email::Text.new(text: "Both templates have interesting techniques you can grab from them, so they're both worth checking out.") %>
+  <%= render Email::Image.new(
+    src: "https://images.unsplash.com/photo-1534082753658-1dcb40af5719?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=400&q=80",
+    alt_text: "Markus Spiske on Unsplash",
+    border_radius: "16px"
+  ) %>
+  <%# Section 2 %>
+  <%= render Email::Heading.new(text: "Bug fixes and new parameters", margin: "48px auto 16px auto") %>
+  <%= render Email::Text.new(text: "A few creepy-crawly bugs managed to slip into the v1.0 release. This update fixed them all up.") %>
+  <%= render Email::Text.new do %>
+    I've also added a few extra parameters to a couple of components. You can now set the padding on a ::Container, and adjust the width and height of a ::Button.
+    For more info, you can read the <%= link_to "changelog.", "https://railsnotesui.xyz/changelog" %>
+  <% end %>
+  <%= render Email::Image.new(
+    src: "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=400&q=80",
+    alt_text: "Markus Spiske on Unsplash",
+    border_radius: "16px"
+  ) %>
+  <%# You can render an optional ::Footer at the end of your emails. %>
+  <%= render Email::Footer.new(font: :trebuchet_ms) do %>
+    © RailsNotes 2023
+    <%= render Email::SocialIcons.new(
+      x_url: "https://x.com/hrrsnbbnt",
+      instagram_url: "https://example.com",
+      facebook_url: "https://example.com",
+      icon_size: "24px"
+    ) %>
+  <% end %>
+<% end %>
