@@ -16,7 +16,7 @@
           = event.ends_at.strftime("%-d").strip
       div(style="font-weight: bold;")
         = event.starts_at.strftime("%l:%M %p").strip
-        span(style="display: inline-block; margin: 0 0.25em;") &ndash;
+        span(style="display: inline-block; margin: 0 0.1em;") &ndash;
         = event.ends_at.strftime("%l:%M %p").strip
 
   - if event.location.present?
@@ -28,27 +28,38 @@
 
 = magic_link_to(unit_membership, "View details", [event.unit, event], class: "block font-bold underline text-blue-500 py-2")        
 
-- if event.requires_rsvp?
+- if event.requirements?
   section.py-2
-    - if event.rsvp_open?
-      - if event.rsvps.where(unit_membership: unit_membership).exists?
-        = magic_link_to(unit_membership, unit_event_family_rsvps_url(event.unit, event), class: "text-yellow-700 font-bold") do
-            = "Change your RSVP"
+    - if event.requires_rsvp?
+      - if event.rsvp_open?
+        - if event.rsvps.where(unit_membership: unit_membership).exists?
+          = magic_link_to(unit_membership, unit_event_family_rsvps_url(event.unit, event), class: "text-yellow-700 font-bold") do
+              = "Change your RSVP"
 
-        p(style="margin-top: 0.5em;")
-          = t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at))
+          | &nbsp;
+          = t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: string_for_time_internal_from_day(event.rsvp_closes_at))
 
+          - if event.requires_payment?
+            - family_rsvp = FamilyRsvp.new(unit_membership, event)
+
+            p(style="color: #15803d; margin-top: 0.5em;")
+              - if family_rsvp.paid? == :in_full
+                = t("events.partials.event_row.fully_paid")
+              - else
+                = t("events.partials.event_row.payment_outstanding")        
+
+        - else
+          p.text-yellow-700.font-bold.mb-2
+            = image_tag "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("app/assets/images/email/rsvp_warning.png")))}",
+                        style: "height: 1.5em; margin-right: 0.25em; vertical-align: middle;"        
+            = "Your RSVP is needed"
+          div
+            = magic_link_to(unit_membership, unit_event_family_rsvps_url(event.unit, event), class: "block button button-rsvp") do
+              = "Respond now"
+              | &nbsp;
+              span(style="font-weight: 400;")
+                = t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: string_for_time_internal_from_day(event.rsvp_closes_at))
+          
       - else
-        p.text-yellow-700.font-bold.mb-2
-          = image_tag "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("app/assets/images/email/rsvp_warning.png")))}",
-                      style: "height: 1.5em; margin-right: 0.25em; vertical-align: middle;"        
-          = "Your RSVP is needed"
-        div
-          = magic_link_to(unit_membership, unit_event_family_rsvps_url(event.unit, event), class: "block button button-rsvp") do
-            = "Respond now"
+        = "RSVP is Closed"
 
-        p(style="margin-top: 0.5em;")
-          = t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at))
-        
-    - else
-      = "RSVP is Closed"

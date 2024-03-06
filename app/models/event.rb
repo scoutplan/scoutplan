@@ -142,6 +142,10 @@ class Event < ApplicationRecord
     (cost_adult + cost_youth).positive?
   end
 
+  def requirements?
+    requires_rsvp? || requires_payment? || documents_required?
+  end
+
   ### RSVP-related methods
   def headcount_limit_reached?
     return false unless limits_headcount?
