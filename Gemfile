@@ -75,6 +75,7 @@ gem "tailwindcss-rails"
 gem "timecop"
 gem "turbo-rails"
 gem "twilio-ruby"
+gem "view_component", "~> 3.11"
 
 gem "rack-mini-profiler", "~> 2.3"
 gem "stackprof"
@@ -110,4 +111,3 @@ end
 
 gem "rack", "~> 2.2"
 
-gem "view_component", "~> 3.11"
