@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+  body
+
+    = render Email::Bg::Container.new do |email|
+      - if @unit&.logo&.attached?
+        - email.with_masthead_image(src: "data:image/#{@unit&.logo.filename.extension};base64,#{Base64.encode64(@unit.logo.blob.download)}",
+                                    alt_text: "@unit.name Logo",
+                                    width_px: "300")
+      - else
+        - email.with_masthead_text(text: @unit.name, href: root_url)
+
+      = yield
+
+      = render Email::Footer.new(font: :trebuchet_ms) do
+        = render Email::Image.new(src: "data:image/png;base64,#{Base64.encode64(Rails.application.assets['scoutplan_logo.png'].to_s)}",
+                                  alt_text: "Scoutplan logo",
+                                  width_px: "100")

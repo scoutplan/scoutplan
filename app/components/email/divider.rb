@@ -22,16 +22,18 @@ class Email::Divider < Email::Base
     width: DividerStyles::WIDTH,
     color: DividerStyles::COLOR,
     thickness: DividerStyles::THICKNESS,
-    margin: "0 auto"
+    margin: "0 auto",
+    padding: "0"
   )
     @width = width
     @color = color
     @thickness = thickness
     @margin = margin # by default, center the divider
+    @padding = padding
   end
 
   erb_template <<~ERB
-    <table class="divider" role="presentation" style="margin-top: 25px; padding-top: 25px; border-top-width: <%= @thickness %>; border-top-color: <%= @color %>; border-top-style: solid; width: <%= @width %>; margin: <%= @margin %>">
+    <table class="divider" role="presentation" style="margin-top: 25px; padding-top: 25px; border-top-width: <%= @thickness %>; border-top-color: <%= @color %>; border-top-style: solid; width: <%= @width %>; margin: <%= @margin %>; padding: <%= @padding %>;">
     </table>
   ERB
 end

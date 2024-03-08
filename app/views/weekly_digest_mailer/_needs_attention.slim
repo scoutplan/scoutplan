@@ -1,0 +1,7 @@
+- return unless event.requires_rsvp?
+
+- family_rsvp = FamilyRsvp.new(recipient, event)
+
+= render "rsvp_closed" if event.rsvp_closed?
+= render partial: "complete_rsvp_prompt", locals: { event: event, recipient: recipient } if event.rsvp_open? && family_rsvp.response_incomplete?
+= render partial: "change_rsvp_prompt", locals: { event: event, recipient: recipient } if event.rsvp_open? && family_rsvp.response_complete?

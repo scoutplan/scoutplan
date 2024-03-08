@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop:disable Metrics/ClassLength
 class Event < ApplicationRecord
   include Notifiable, Remindable, Onlineable, Icalendarable, Replyable, DatePresentable, StaticMappable

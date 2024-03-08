@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 # Preview all emails at http://localhost:3000/rails/mailers/weekly_digest
 class WeeklyDigestPreview < ActionMailer::Preview
   # rubocop:disable Metrics/AbcSize
   def notification
     around_email do
       unit = Unit.first
+      location = unit.locations.create!(name: "Campsite 1", address: "123 Main St, Anytown, USA")
       recipient = unit.members.first
       unit.events.create!(
         title: "Camping Trip",
@@ -24,6 +27,7 @@ class WeeklyDigestPreview < ActionMailer::Preview
         cost_adult: 20.00,
         cost_youth: 20.00
       )
+      event.event_locations.create!(location: location, location_type: "arrival")
       event.rsvps.create_with(response: "accepted", respondent: recipient).find_or_create_by!(unit_membership: recipient)
 
       event = unit.events.create!(

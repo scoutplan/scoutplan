@@ -1,0 +1,6 @@
+= render Email::Button.new(text: "RSVP",
+                           href: magic_url_for(recipient, unit_event_family_rsvps_url(event.unit, event)),
+                           color: Email::Colors::YELLOW_400,
+                           text_color: Email::Colors::YELLOW_900,
+                           text_size: "14px",
+                           bold: true)

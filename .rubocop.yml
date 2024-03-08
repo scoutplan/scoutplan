@@ -46,6 +46,9 @@ Metrics/MethodLength:
     - "heredoc"
     - "method_call"
 
+Metrics/ClassLength:
+  Max: 200
+
 Naming/BlockForwarding:
   EnforcedStyle: explicit
 

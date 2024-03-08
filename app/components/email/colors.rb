@@ -27,6 +27,8 @@ module Email::Colors
   WHITE = "#FFFFFF"
   BLACK = "#000000"
 
+  BRAND_500 = "#E66425"
+
   # Gray
   GRAY_50 = "#FAFAFA"
   GRAY_100 = "#F4F4F5"
