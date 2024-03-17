@@ -15,13 +15,13 @@ ul
 
     - policy = EventRsvpPolicy.new(@current_member, rsvp)  
 
-    li.relative.member-rsvp-item
+    li.relative.member-rsvp-item.text-sm.md:text-base
       // horizontal line
-      .hidden.md:block.absolute.left-0.right-0.top-1/2.border-t.border-stone-500.border-dotted
+      .absolute.left-0.right-0.top-1/2.border-t.border-stone-500.border-dotted
 
-      .flex.flex-col.md:flex-row.justify-between.items-center.py-2.gap-2.md:gap-20
+      .flex.flex-row.justify-between.items-center.py-2.gap-2.md:gap-20
         // person name
-        .relative.block.whitespace-nowrap.pr-0.md:pr-1.pl-0.md:pl-7.bg-stone-100.dark:bg-stone-700
+        .relative.block.whitespace-nowrap.pr-0.md:pr-1.pl-0.bg-stone-100.dark:bg-stone-700
           = presenter.family_context_name(family_member)
 
         div
@@ -54,10 +54,10 @@ ul
                                   left_label:    "Regrets",
                                   right_label:   "Going!",
                                   disabled:      !policy.create?,
-                                  wrapper_classes: "pl-1 bg-stone-100 dark:bg-stone-700 relative",
+                                  wrapper_classes: "pl-1 bg-stone-100 dark:bg-stone-700 relative text-xs md:text-base",
                                   data: { controller: "double-throw-switch" } )
 
-            .hidden.md:block
+            div
               .dt-switch-indicator.dt-switch-indicator-left.absolute.left-0.top-1/2.-translate-y-1/2
                 i.fa-solid.fa-fw.fa-user-xmark.text-red-600.mr-1
 

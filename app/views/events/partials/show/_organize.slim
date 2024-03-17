@@ -21,6 +21,6 @@ article.py-4
     .right
       i.fa-regular.fa-info-circle.text-violet-500.mr-2(title="#{t("events.show.captions.organize_reason")}")
       = link_to dashboard_unit_event_path(@event.unit, @event),
-                class: "inline-block py-2 px-3 rounded-lg text-center bg-violet-700 hover:bg-violet-800 text-violet-50 font-semibold",
+                class: "inline-block py-2 px-3 rounded text-center bg-violet-700 hover:bg-violet-800 text-violet-50 font-semibold",
                 data: { turbo_action: "advance" } do
         = t("events.show.buttons.organize")
