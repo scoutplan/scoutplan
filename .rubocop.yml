@@ -32,6 +32,10 @@ Layout/HashAlignment:
   EnforcedColonStyle: table
   EnforcedHashRocketStyle: table  
 
+Metrics/AbcSize:
+  # Enabled: false
+  AllowedPatterns: ['^ *Rails.logger.*']
+
 Metrics/BlockLength:
   Exclude:
     - "spec/**/*"

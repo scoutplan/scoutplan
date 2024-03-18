@@ -15,7 +15,7 @@ describe "password prompt", type: :feature do
     expect(page).to have_current_path(list_unit_events_path(@unit))
     expect(page).to have_content("it looks like you signed in via an email link")
     click_on "Let's set a password now"
-    expect(page).to have_current_path(profile_change_password_path(@member))
+    expect(page).to have_current_path(security_unit_member_path(@unit, @member))
   end
 
   it "doesn't display the password prompt the user has a password set" do
@@ -42,7 +42,9 @@ describe "password prompt", type: :feature do
   it "updates the password_changed_at timestamp when the user sets a password" do
     expect(@user.password_set?).to be_falsey
     login_as(@member.user, scope: :user)
-    visit profile_change_password_path(@member)
+    path = security_unit_member_path(@unit, @member)
+    visit path
+
     fill_in "Password", with: "newpassword"
     fill_in "Password confirmation", with: "newpassword"
     click_on "Change password"

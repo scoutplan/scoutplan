@@ -172,6 +172,7 @@ Rails.application.routes.draw do
     get "settings", to: "settings#index", as: "settings"
     get "settings/automated_messages", to: "settings#automated_messages", as: "automated_messages"
     get "settings/documents"
+    get "settings/test_communications", to: "settings#test_communications", as: "test_communications"
     get "settings/:category", to: "settings#edit", as: "setting"
 
     # redirect the old /events path. We can probably get rid of this
@@ -182,6 +183,13 @@ Rails.application.routes.draw do
 
     resources :unit_memberships, path: "members", as: "members" do
       post "invite", to: "unit_memberships#invite", as: "invite"
+
+      member do
+        get "profile", to: "profiles#index"
+        get "profile/info", to: "profiles#edit", as: "info"
+        get "profile/alerts", to: "profiles#alerts", as: "alerts"
+        get "profile/security", to: "profiles#security", as: "security"
+      end
 
       collection do
         post "bulk_update", to: "unit_memberships#bulk_update"

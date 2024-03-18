@@ -1,0 +1,120 @@
+<%= turbo_frame_tag "main" do %>
+  <div class="mx-auto max-w-xl">
+    <header class="mb-8">
+      <%= link_to unit_path(@unit),
+                  class: "font-bold text-brand-500",
+                  data: { turbo: "false" } do %>
+        <i class="fa-solid fa-chevron-left mr-1"></i>
+        <%= t("back_to_app") %>
+      <% end %>
+    </header>
+
+    <div class="bg-white drop-shadow-overhead rounded-xl p-12 flex flex-col gap-2">
+      <header class="mb-4 px-2 flex flex-row justify-between items-baseline -mr-2">
+        <h1 class="text-4xl font-bold">
+          <%= "#{@member.first_name}'s Profile" %>
+          <div class="text-sm font-bold uppercase tracking-wider">
+            <%= @unit.name %>
+          </div>
+        </h1>
+      </header>
+
+      <section class="bg-stone-100 rounded-xl flex flex-col divide-y dark:divide-stone-600">
+        <%= link_to info_unit_member_path(@member),
+                    class: "block rounded-t-xl px-4 py-3 text-lg font-semibold hover:bg-stone-200 dark:hover:bg-black",
+                    data: { turbo_action: "advance" } do %>
+          <i class="fa-solid fa-fw fa-address-card mr-2"></i>
+          <%= t(".info") %>
+        <% end %>
+
+        <%= link_to alerts_unit_member_path(@member),
+                    class: "block px-4 py-3 text-lg font-semibold hover:bg-stone-200 dark:hover:bg-black hidden",
+                    data: { turbo_action: "advance" } do %>
+          <i class="fa-solid fa-fw fa-bell mr-2"></i>
+          <%= t(".alerts") %>
+        <% end %>
+
+        <%= link_to security_unit_member_path(@member),
+                    class: "block rounded-b-xl px-4 py-3 text-lg font-semibold hover:bg-stone-200 dark:hover:bg-black",
+                    data: { turbo_action: "advance" } do %>
+          <i class="fa-solid fa-fw fa-lock mr-2"></i>
+          <%= t(".security") %>
+        <% end %>                
+      </section>
+
+      <h3 class="mt-4 font-semibold">Edit family member profiles</h3>
+      <section class="bg-stone-100 rounded-xl flex flex-col divide-y dark:divide-stone-600">
+        <% @current_member.family.each do |family_member| %>
+          <% next if family_member == @member %>
+          <%= link_to profile_unit_member_path(@unit, family_member),
+                      class: "block px-4 py-3 text-lg font-semibold hover:bg-stone-200 dark:hover:bg-black",
+                      data: { turbo_action: "advance" } do %>
+            <i class="fa-solid fa-fw fa-user mr-2"></i>
+            <%= family_member.display_first_name %>
+          <% end %>
+        <% end %>
+      </section>
+    </div>
+  </div>
+<% end %>
+
+<%# = turbo_frame_tag "main"
+  .mx-auto.max-w-md
+    header.mt-8.mb-4.px-2
+      h1.text-4xl.font-bold
+        = "Unit Setup"
+        .text-sm.font-bold.uppercase.tracking-wider
+          = @unit.name        
+
+    .flex.flex-col.divide-y.dark:divide-stone-600
+      = link_to unit_setting_path(@unit, category: "unit_profile"),
+                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-200 dark:hover:bg-black",
+                data: { turbo_action: "advance" } do
+        i.fa-solid.fa-fw.fa-flag.mr-2
+        = "Unit Profile"
+
+      = link_to unit_setting_path(@unit, category: "policies"),
+                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-200 dark:hover:bg-black",
+                data: { turbo_action: "advance" } do
+        i.fa-solid.fa-fw.fa-user-shield.mr-2
+        = t(".policies")        
+
+      = link_to unit_event_categories_path(@unit),
+                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-200 dark:hover:bg-black",
+                data: { turbo_action: "advance" } do
+        i.fa-solid.fa-fw.fa-calendar-lines-pen.mr-2
+        = "Event Categories"
+
+      = link_to unit_locations_path(@unit),
+                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-200 dark:hover:bg-black",
+                data: { turbo_action: "advance" } do
+        i.fa-solid.fa-fw.fa-address-book.mr-2
+        = "Address Book"
+
+      = link_to unit_automated_messages_path(@unit),
+                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-200 dark:hover:bg-black",
+                data: { turbo_action: "advance" } do
+        i.fa-solid.fa-fw.fa-tower-broadcast.mr-2
+        = "Automated Messages"
+
+      = link_to unit_packing_lists_path(@unit),
+                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-200 dark:hover:bg-black",
+                data: { turbo_action: "advance" } do
+        i.fa-solid.fa-fw.fa-backpack.mr-2
+        = "Packing Lists"
+
+      - if Flipper.enabled? :payments, @current_member
+        / = link_to unit_setting_path(@unit, category: "payments"),
+        /           class: "block px-2 py-3 text-lg font-bold hover:bg-stone-200 dark:hover:bg-black",
+        /           data: { turbo_action: "advance" } do
+        /   i.fa-solid.fa-fw.fa-credit-card.mr-2
+        /   = "Payments"
+        = link_to unit_payments_path(@unit),
+                  class: "block px-2 py-3 text-lg font-bold hover:bg-stone-200 dark:hover:bg-black",
+                  data: { turbo_action: "advance" } do
+          i.fa-solid.fa-fw.fa-credit-card.mr-2.active-hidden
+          i.fa-solid.fa-fw.fa-rotate-right.fa-spin.mr-2.active
+          = "Payments"
+
+  javascript:
+    document.title = "Settings · #{@unit.name}" %>

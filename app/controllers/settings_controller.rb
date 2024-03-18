@@ -15,4 +15,6 @@ class SettingsController < UnitContextController
   def documents
     authorize @unit, :edit?
   end
+
+  def test_communications; end
 end
