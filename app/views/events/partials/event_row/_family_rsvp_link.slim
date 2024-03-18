@@ -15,23 +15,34 @@
   - if policy(event).rsvp?
     - if family_fully_responded
       = link_to new_unit_event_family_rsvp_path(@unit, event),
-                class: "whitespace-nowrap block px-4 py-2 text-center rounded-lg font-semibold ring-1 ring-inset ring-amber-500 text-amber-700 hover:bg-amber-100 dark:text-amber-500 dark:hover:bg-amber-950",
+                class: "whitespace-nowrap block px-4 py-2 text-center rounded font-semibold ring-1 ring-inset ring-amber-500 text-amber-700 hover:bg-amber-100 dark:text-amber-500 dark:hover:bg-amber-950",
                 title: "#{rsvp_service.family_responses_in_words}",
                 data: { turbo_frame: "modal" } do
         = t(".update")
       
     - else
       = link_to new_unit_event_family_rsvp_path(@unit, event),
-                class: "whitespace-nowrap block px-4 py-2 text-center rounded-lg font-semibold bg-amber-400 hover:bg-amber-500 text-amber-950",
+                class: "whitespace-nowrap block px-4 py-2 text-center rounded font-semibold bg-amber-300 hover:bg-amber-500 text-amber-950",
                 title: "#{rsvp_service.family_responses_in_words}",
                 data: { turbo_frame: "modal" } do
         = t(".new")
+        .inline-block.font-medium.text-sm.text-amber-800
+          | &nbsp;
+          = distance_of_time_in_words_to_now(event.rsvp_closes_at).downcase
 
-  .text-amber-600.whitespace-nowrap.text-center
-    = render partial: "events/partials/event_row/rsvp_closes_at", locals: { event: event }
+          - if event.limits_headcount?
+            = ", " + event.headcount_remaining.to_s + " spots"
+
+          = " left"
+
+          .hidden.md:inline-block
+            | &nbsp;
+            = "to respond"
+
+  / .text-amber-600.whitespace-nowrap.text-center
 
 - elsif event.rsvp_opens_at&.future?
-  .font-semibold.text-sm.text-amber-600
+  .font-semibold.text-sm.text-amber-600.text-center.md:text-left
     i.fa-solid.fa-ban.mr-2
     = t("events.index.rsvp.not_open")
 
