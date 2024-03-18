@@ -12,11 +12,9 @@ class SettingsController < UnitContextController
     authorize @unit, :edit?
   end
 
-<<<<<<< HEAD
   def documents
     authorize @unit, :edit?
-=======
-  def test_communications
->>>>>>> 21748ef8 (Progress)
   end
+
+  def test_communications; end
 end

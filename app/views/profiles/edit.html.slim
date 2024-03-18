@@ -1,7 +1,7 @@
-.max-w-xl.mx-auto
-  header.py-4
+.max-w-xl.mx-auto.mb-8
+  header.mb-8
     = link_to profile_unit_member_path(@unit, @current_member),
-              class: "font-bold no-underline inline-block w-full md:w-fit pb-6 text-brand-500 hover:text-brand-600",
+              class: "font-bold no-underline inline-block w-full md:w-fit text-brand-500 hover:text-brand-600",
               data: { turbo: false } do
         
         i.fa-solid.fa-chevron-left.mr-2
@@ -35,27 +35,27 @@
                                   class: "block rounded border border-stone-200 p-2 placeholder-stone-400 w-full dark:bg-stone-800 dark:border-stone-600",
                                   data: { profile_form_target: "emailField", action: "keyup->profile-form#changeSettings" }       
 
-                = switch(:unit_membership, :roster_display_phone,
-                        { label: "Show on member roster",
-                          checked: @member.roster_display_phone,
-                          class: "text-sm font-semibold whitespace-nowrap" },
-                        "true", "false")
+                = switch(:unit_membership, :roster_display_email,
+                          { label: "Show on member roster",
+                            checked: @member.roster_display_email,
+                            class: "text-sm font-semibold whitespace-nowrap" },
+                          "true", "false")
 
             section
-                = uf.label :phone, class: "block font-bold mb-1"
-                .flex.flex-col.md:flex-row.md:items-center.gap-3
-                  = uf.phone_field :phone,
-                                  autocomplete: "off",
-                                  placeholder: t("members.placeholders.phone"),
-                                  value: @member.phone.phony_formatted(country_code: "US"),
-                                  class: "block rounded border border-stone-200 p-2 placeholder-stone-400 w-full dark:bg-stone-800 dark:border-stone-600 dark:placeholder-stone-500",
-                                  data: { profile_form_target: "phoneField", action: "keyup->profile-form#changeSettings" }
+              = uf.label :phone, class: "block font-bold mb-1"
+              .flex.flex-col.md:flex-row.md:items-center.gap-3
+                = uf.phone_field :phone,
+                                autocomplete: "off",
+                                placeholder: t("members.placeholders.phone"),
+                                value: @member.phone.phony_formatted(country_code: "US"),
+                                class: "block rounded border border-stone-200 p-2 placeholder-stone-400 w-full dark:bg-stone-800 dark:border-stone-600 dark:placeholder-stone-500",
+                                data: { profile_form_target: "phoneField", action: "keyup->profile-form#changeSettings" }
 
-                  = switch(:unit_membership, :roster_display_email,
-                            { label: "Show on member roster",
-                              checked: @member.roster_display_email,
-                              class: "text-sm font-semibold whitespace-nowrap" },
-                            "true", "false")
+                = switch(:unit_membership, :roster_display_phone,
+                        { label: "Show on member roster",
+                          checked: @profile.member.roster_display_phone,
+                          class: "text-sm font-semibold whitespace-nowrap" },
+                        "true", "false")
 
           = render partial: "profiles/form/communication_settings_fields", locals: { f: f, member: @member }
           = render partial: "profiles/form/youth_rsvps", locals: { f: f, member: @member }
