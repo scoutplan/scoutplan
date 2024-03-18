@@ -30,7 +30,7 @@ describe "events", type: :feature do
 
       it "shows the headcount on the index page" do
         visit unit_events_path(@unit)
-        expect(page).to have_content("10 spots remaining")
+        expect(page).to have_content("10 spots left")
       end
 
       it "shows RSVP closed when the event is full" do
