@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ScoutplanNotifier < Noticed::Event
   def format_for_twilio(notification)
     recipient = notification.recipient

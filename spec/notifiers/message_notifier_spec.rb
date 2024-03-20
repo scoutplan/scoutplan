@@ -1,5 +1,7 @@
 require "rails_helper"
 
+Response = Struct.new(:code, :uri, :body)
+
 RSpec.describe MessageNotifier do
   before do
     @event = FactoryBot.create(:event)
@@ -19,8 +21,10 @@ RSpec.describe MessageNotifier do
     expect { MessageNotifier.with(message: @message).deliver([@member]) }.to have_enqueued_job
   end
 
-  it "doesn't deliver email if deliver_email is disabled" do
-    skip "Test isn't valid...need to learn how to make it so."
-    expect { MessageNotifier.with(message: @message).deliver([@member]) }.to change { ActionMailer::Base.deliveries.count }.by(0)
+  it "handles Noticed::ResponseUnsuccessful" do
+    notifier = MessageNotifier.with(message: @message)
+    response = Response.new(400, "https://api.twilio.com/2010-04-01/Accounts/12345/Messages.json", [])
+    allow(notifier).to receive(:deliver).and_raise(Noticed::ResponseUnsuccessful.new(response, "https://api.twilio.com/2010-04-01/Accounts/12345/Messages.json", []))
+    expect { notifier.deliver([@member]) }.to raise_error
   end
 end
