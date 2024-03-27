@@ -23,7 +23,8 @@ class EmailEvaluator
 
   # returns true if the email is an auto-responder
   def auto_responder?
-    return false unless (val = @mail.header[AUTO_RESPONDER_HEADER].present?)
+    val = @mail.header[AUTO_RESPONDER_HEADER]
+    return false unless val.present?
 
     AUTO_RESPONDER_VALUES.include?(val.value)
   end
