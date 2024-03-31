@@ -36,6 +36,7 @@ class Event < ApplicationRecord
 
   has_one_attached :static_map
   has_many_attached :attachments
+  has_many_attached :private_attachments
 
   has_paper_trail versions: { scope: -> { order("id desc") } }
 

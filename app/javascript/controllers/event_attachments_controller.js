@@ -2,11 +2,10 @@ import { Controller } from "@hotwired/stimulus"
 import { get } from "@rails/request.js"
 
 export default class extends Controller {
-  static targets = [ "deleteform", "fileinput", "privatefileinput", "documentLibraryIds", "startsAtDate", "endsAtDate", "rsvpClosesAt", "repeatsUntilSelect" ];
+  static targets = [ "deleteform", "fileinput", "documentLibraryIds" ];
   static values = { seasonEndDate: String, unitId: String };
 
   connect() {
-    this.populateRepeatUntilSelectOptions();
   }
 
   addAttachmentToPendingList(filename) {
@@ -38,44 +37,7 @@ export default class extends Controller {
 
   hideDocumentLibrary() {
     document.querySelector("#document_library_overlay").classList.add("hidden");
-  }    
-
-  showLocation() {
-    document.querySelector("#new_location_overlay").classList.remove("hidden");
-    document.querySelector("#location_name").focus();
-  }
-
-  updateLocation(event) {
-    var location = event.target.value;
-    if (location == "_new") { this.showLocation(); }
-  }
-
-  updateRsvpClosesAt() {
-    var startsAt = this.startsAtDateTarget.value;
-    var rsvpClosesAt = this.rsvpClosesAtTarget.value;
-    if (rsvpClosesAt > startsAt) {
-      this.rsvpClosesAtTarget.closest(".field-wrapper").classList.add("field_with_errors");
-    } else {
-      this.rsvpClosesAtTarget.closest(".field-wrapper").classList.remove("field_with_errors");
-    }
-  }
-
-  updateStartsAt() {
-    const startsAt = this.startsAtDateTarget.value;
-    const endsAt = this.endsAtDateTarget.value;
-    const rsvpClosesAt = this.rsvpClosesAtTarget.value;
-
-    if (startsAt < rsvpClosesAt) { this.rsvpClosesAtTarget.value = startsAt; }
-    if (startsAt > endsAt) { this.endsAtDateTarget.value = startsAt; }
-    this.populateRepeatUntilSelectOptions();
-  }
-
-  async populateRepeatUntilSelectOptions() {
-    const startsAt = this.startsAtDateTarget.value;
-    const unitId = this.unitIdValue;
-    const query = new URLSearchParams({ "a": "b", "starts_at": startsAt });
-    await get(`/u/${unitId}/events/repeat_options/${startsAt}`, { query: query, responseKind: "turbo-stream" });     
-  }
+  }  
 
   hideDocumentLibrary(event) {
     document.querySelector("#document_library_overlay").classList.add("hidden");

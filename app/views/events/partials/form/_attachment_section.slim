@@ -1,0 +1,28 @@
+section.py-4.grid.grid-cols-1.md:grid-cols-3.gap-8.border-t(data-controller="event-attachments")
+  .col-span-1
+    h2.text-lg = title
+    p.text-sm.text-sky-700.dark:text-sky-400 = description
+
+  .col-span-2
+    - if @event.attachments.any?
+      ul.existing_attachments(data-event-attachments-target="existingAttachmentsList")
+        - collection.each do |attachment|
+          li.py-1
+            span.mr-2.text-blue-500 = fontawesome_file_icon(attachment.filename.extension_without_delimiter)
+            = attachment.filename
+            / = link_to "Remove", "#", method: :delete, class: "text-red-600 hover:underline ml-2", data: { confirm: "Are you sure you want to remove this attachment?" }
+
+
+    #new_attachments.pt-4
+      .hidden
+        = f.file_field :attachments,
+                      multiple: true,
+                      data: { action: "change->event-edit#showAttachments", event_edit_target: "fileinput" }
+  
+
+      .flex.flex-col.md:flex-row.gap-2
+        = link_to "#", class: "inline-block font-bold border rounded px-4 py-2 whitespace-nowrap border-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800",
+                    data: { action: "click->event-edit#uploadFiles" },
+                    bogus: "false" do
+          i.fa-solid.fa-upload.mr-2
+          = "Upload files"
