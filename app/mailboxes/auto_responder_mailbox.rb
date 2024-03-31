@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class AutoResponderMailbox < ApplicationMailbox
   def process
-    inbound_email.bounce!
+    # quietly ignore auto-responder emails
   end
 end
