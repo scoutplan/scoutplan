@@ -9,10 +9,10 @@ export default class extends Controller {
     this.populateRepeatUntilSelectOptions();
   }
 
-  addAttachmentToPendingList(filename) {
-    var attachment_list = document.querySelector("#existing_attachments");
-    attachment_list.insertAdjacentHTML("beforeend", `<li class="pending-attachment py-1 font-bold text-green-600">${filename} (pending)</li>`);
-  }
+  // addAttachmentToPendingList(filename) {
+  //   var attachment_list = document.querySelector("#existing_attachments");
+  //   attachment_list.insertAdjacentHTML("beforeend", `<li class="pending-attachment py-1 font-bold text-green-600">${filename} (pending)</li>`);
+  // }
 
   attachFromLibrary(event) {
     console.log("attach from library");
@@ -91,15 +91,15 @@ export default class extends Controller {
     document.querySelector("#new_location_overlay").classList.add("hidden");
   }
 
-  showAttachments(event) {
-    this.clearPendingAttachments();
+  // showAttachments(event) {
+  //   this.clearPendingAttachments();
 
-    var attachment_list = document.querySelector("#existing_attachments");
-    for (let i = 0; i < this.fileinputTarget.files.length; i++) {
-      let file = this.fileinputTarget.files[i];
-      attachment_list.insertAdjacentHTML("beforeend", `<li class="pending-attachment py-1 font-bold text-green-600">${file.name} (pending)</li>`);
-    }
-  }
+  //   var attachment_list = document.querySelector("#existing_attachments");
+  //   for (let i = 0; i < this.fileinputTarget.files.length; i++) {
+  //     let file = this.fileinputTarget.files[i];
+  //     attachment_list.insertAdjacentHTML("beforeend", `<li class="pending-attachment py-1 font-bold text-green-600">${file.name} (pending)</li>`);
+  //   }
+  // }
 
   showPrivateAttachments(event) {
     this.clearPendingPrivateAttachments();

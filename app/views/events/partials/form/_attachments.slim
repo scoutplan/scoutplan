@@ -1,5 +1,13 @@
 = render partial: "events/partials/form/attachment_section",
-         locals: { f: f,
-            title: "Public attachments",
-            description: "Give your members all the details they need to know about this event.",
-            collection: @event.attachments.with_all_variant_records }
+         locals: { f:           f,
+                   title:       "Public attachments",
+                   field_name:  "attachments",
+                   description: "Give your members all the details they need to know about this event.",
+                   collection:  @event.attachments.with_all_variant_records }
+
+= render partial: "events/partials/form/attachment_section",
+         locals: { f:           f,
+                   title:       "Private attachments",
+                   field_name:  "private_attachments",
+                   description: "Store receipts and registration forms here. Only organizers can see these.",
+                   collection:  @event.private_attachments.with_all_variant_records }

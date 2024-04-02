@@ -425,6 +425,8 @@ en:
       payment_amount_prompt:    "%{amount} per person"
       description:              "Notes"
       full_decline:             "Your family isn't planning to attend"
+      private_attachments:      "Organizer attachments"
+      private_attachments_info: "Visible to you because you're an admin or event organizer"
 
       buttons:
         duplicate:      "Duplicate"
