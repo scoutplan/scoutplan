@@ -353,7 +353,7 @@ class EventsController < UnitContextController
                                       :max_total_attendees, :rsvp_closes_at, :rsvp_opens_at,
                                       :note, :cost_youth, :cost_adult, :online, :website, :tag_list,
                                       :notify_members, :notify_recipients, :notify_message, :document_library_ids,
-                                      packing_list_ids: [], attachments: [],
+                                      packing_list_ids: [], attachments: [], private_attachments: [],
                                       event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy],
                                       event_organizers_attributes: [:unit_membership_id])
     p[:packing_list_ids] = p[:packing_list_ids].reject(&:blank?) if p[:packing_list_ids].present?

@@ -36,6 +36,7 @@ class Event < ApplicationRecord
 
   has_one_attached :static_map
   has_many_attached :attachments
+  has_many_attached :private_attachments
 
   has_paper_trail versions: { scope: -> { order("id desc") } }
 
@@ -54,7 +55,7 @@ class Event < ApplicationRecord
   validate :dates_are_subsequent
   validates :attachments,
             content_type: [
-              "image/png", "image/jpg", "image/jpeg", "image/gif", "application/pdf",
+              "image/png", "image/jpg", "image/jpeg", "image/gif", "application/pdf", "text/plain",
               "application/msword",
               "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
               "application/vnd.ms-excel",

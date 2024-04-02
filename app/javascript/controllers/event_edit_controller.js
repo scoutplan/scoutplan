@@ -2,17 +2,17 @@ import { Controller } from "@hotwired/stimulus"
 import { get } from "@rails/request.js"
 
 export default class extends Controller {
-  static targets = [ "deleteform", "fileinput", "documentLibraryIds", "startsAtDate", "endsAtDate", "rsvpClosesAt", "repeatsUntilSelect" ];
+  static targets = [ "deleteform", "fileinput", "privatefileinput", "documentLibraryIds", "startsAtDate", "endsAtDate", "rsvpClosesAt", "repeatsUntilSelect" ];
   static values = { seasonEndDate: String, unitId: String };
 
   connect() {
     this.populateRepeatUntilSelectOptions();
   }
 
-  addAttachmentToPendingList(filename) {
-    var attachment_list = document.querySelector("#existing_attachments");
-    attachment_list.insertAdjacentHTML("beforeend", `<li class="pending-attachment py-1 font-bold text-green-600">${filename} (pending)</li>`);
-  }
+  // addAttachmentToPendingList(filename) {
+  //   var attachment_list = document.querySelector("#existing_attachments");
+  //   attachment_list.insertAdjacentHTML("beforeend", `<li class="pending-attachment py-1 font-bold text-green-600">${filename} (pending)</li>`);
+  // }
 
   attachFromLibrary(event) {
     console.log("attach from library");
@@ -91,12 +91,22 @@ export default class extends Controller {
     document.querySelector("#new_location_overlay").classList.add("hidden");
   }
 
-  showAttachments(event) {
-    this.clearPendingAttachments();
+  // showAttachments(event) {
+  //   this.clearPendingAttachments();
 
-    var attachment_list = document.querySelector("#existing_attachments");
+  //   var attachment_list = document.querySelector("#existing_attachments");
+  //   for (let i = 0; i < this.fileinputTarget.files.length; i++) {
+  //     let file = this.fileinputTarget.files[i];
+  //     attachment_list.insertAdjacentHTML("beforeend", `<li class="pending-attachment py-1 font-bold text-green-600">${file.name} (pending)</li>`);
+  //   }
+  // }
+
+  showPrivateAttachments(event) {
+    this.clearPendingPrivateAttachments();
+
+    var attachment_list = document.querySelector("#existing_private_attachments");
     for (let i = 0; i < this.fileinputTarget.files.length; i++) {
-      let file = this.fileinputTarget.files[i];
+      let file = this.privatefileinputTarget.files[i];
       attachment_list.insertAdjacentHTML("beforeend", `<li class="pending-attachment py-1 font-bold text-green-600">${file.name} (pending)</li>`);
     }
   }
@@ -109,9 +119,24 @@ export default class extends Controller {
     });
   }
 
+  clearPendingPrivateAttachments() {
+    var attachment_list = document.querySelector("#existing_private_attachments");
+    var pending_attachments = document.querySelectorAll(".pending-attachment");
+    pending_attachments.forEach(function(attachment) {
+      attachment_list.removeChild(attachment);
+    });
+  }
+
   uploadFiles(event) {
     console.log("upload files");
     this.fileinputTarget.click();
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  uploadPrivateFiles(event) {
+    console.log("upload files");
+    this.privatefileinputTarget.click();
     event.stopPropagation();
     event.preventDefault();
   }

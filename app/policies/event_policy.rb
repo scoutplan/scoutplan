@@ -75,6 +75,10 @@ class EventPolicy < UnitContextPolicy
     admin?
   end
 
+  def view_private_attachments?
+    organize?
+  end
+
   private
 
   # if the event is tagged, does the member possess those tags?
