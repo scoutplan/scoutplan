@@ -276,7 +276,7 @@ en:
       show:
         costs:
           paid:   "You've paid. Thanks!"
-          unpaid: "Your payment is outstanding."
+          unpaid: "Payment outstanding."
 
         organize:
           headcount_limit: "limit %{limit}"

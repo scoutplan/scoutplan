@@ -1,0 +1,6 @@
+- return unless @event.requires_rsvp?
+
+.flex.flex-col.md:grid.divide-stone-300.divide-y.md:divide-x.md:divide-y-0.md:grid.md:grid-flow-col.md:auto-cols-fr.md:py-2.md:-mx-2
+  = render partial: "events/partials/show/rsvp", locals: { event: @event }
+  = render partial: "events/partials/show/costs"
+  = render partial: "events/partials/show/organize"

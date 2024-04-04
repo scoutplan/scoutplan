@@ -11,7 +11,7 @@
   - family_has_rsvps = family_has_rsvps || rsvp.present?
   - family_fully_responded = family_fully_responded && rsvp.present?
 
-- details_tag_attributes = {class: "inline-block group #{family_fully_responded ? 'fully-responded' : 'response-needed' }"}
+- details_tag_attributes = {class: "block w-full group #{family_fully_responded ? 'fully-responded' : 'response-needed' }"}
 
 // if `/rsvp` is appended to the route, the controller sets show_rsvp to true
 // we handle that here by setting the <details> tag to open
@@ -21,7 +21,7 @@
 - if event.rsvp_open?
   - if policy(event).rsvp?
     = content_tag(:details, details_tag_attributes) do
-      summary.rounded-lg.cursor-pointer.inline-block.px-4.py-2.text-center.font-semibold.bg-amber-200.hover:bg-amber-300.text-amber-800(title="#{rsvp_service.family_responses_in_words}")
+      summary.rounded.cursor-pointer.px-4.py-2.text-center.font-semibold.bg-amber-200.hover:bg-amber-300.text-amber-800(title="#{rsvp_service.family_responses_in_words}")
         - case when family_fully_responded
           = "Change your RSVP"
         - when family_has_rsvps
