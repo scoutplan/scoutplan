@@ -1,0 +1,6 @@
+p(style="margin-bottom:2rem;") Hi, #{@recipient.first_name}, you're an organizer for the upcoming event, #{@event.title}.
+  Here's a quick reminder of what you need to do to prepare:
+
+p(style="text-align:center; margin-bottom:2rem;")
+  = magic_link_to(@recipient, "Download the organizer event brief", organizer_package_unit_event_url(@unit, @event), class: "button button-rsvp")
+
