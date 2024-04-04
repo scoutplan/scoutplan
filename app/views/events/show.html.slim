@@ -17,9 +17,7 @@
 
       section.grid.grid-col-1.divide-y.divide-stone-300.dark:divide-stone-700
         = render partial: "events/partials/show/date"
-        = render partial: "events/partials/show/rsvp", locals: { event: @event }
-        = render partial: "events/partials/show/organize"
-        = render partial: "events/partials/show/costs"
+        = render partial: "events/partials/show/rsvp_row"
         = render partial: "events/partials/show/location"
         = render partial: "events/partials/show/chat"
         = render partial: "events/partials/show/payment"
