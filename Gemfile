@@ -18,6 +18,7 @@ gem "bootsnap", require: false
 gem "chroma"
 gem "client_side_validations"
 gem "colorize"
+gem "combine_pdf"
 gem "convert_api"
 gem "coveralls_reborn", require: false
 gem "daypack", git: "https://github.com/scoutplan/daypack.git"

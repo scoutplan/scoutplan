@@ -121,7 +121,6 @@ Rails.application.routes.draw do
       resources :event_rsvps
       resources :payments, module: :events
       resources :photos
-
       resources :event_attachments, path: "attachments", as: "attachments"
       resources :event_activities
       resources :event_organizers, as: "organizers", path: "organizers"
@@ -132,6 +131,7 @@ Rails.application.routes.draw do
       member do
         get "dashboard", to: "event_dashboard#index", as: "dashboard"
         get "rsvp",      to: "events#show", as: "rsvp", defaults: { variation: "rsvp" }
+        get "organizer_package"
       end
       collection do
         get "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
