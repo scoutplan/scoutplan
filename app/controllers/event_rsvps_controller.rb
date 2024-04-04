@@ -64,7 +64,8 @@ class EventRsvpsController < EventContextController
   end
 
   def send_event_roster
-    pdf = Pdf::EventRoster.new(@event)
+    # pdf = Pdf::EventRoster.new(@event)
+    pdf = Pdf::EventOrganizerPackage.new(@event)
     send_data pdf.render, filename: pdf.filename, type: "application/pdf", disposition: "inline"
   end
 end

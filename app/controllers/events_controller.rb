@@ -282,6 +282,15 @@ class EventsController < UnitContextController
     redirect_to unit_events_path(@unit), notice: "Event has been cancelled."
   end
 
+  def organizer_package
+    respond_to do |format|
+      format.pdf do
+        pdf = Pdf::EventOrganizerPackage.new(@event)
+        send_data pdf.render, filename: pdf.filename, type: "application/pdf", disposition: "inline"
+      end
+    end
+  end
+
   # this override is needed to pass the membership instead of the user
   # as the object to be evaluated in Pundit policies
   def pundit_user
