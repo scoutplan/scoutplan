@@ -2,6 +2,9 @@
 
 - @display_month = event.starts_at.month
 - @display_year = event.starts_at.year
+
+- return if [@display_year, @display_month] == @current_month
+
 - class_name = "month-header-#{event.starts_at.strftime('%Y')}-#{event.starts_at.strftime('%m')}"
 
 li.pt-12.event-month-boundary.sticky.z-10.top-0(class="#{class_name}")

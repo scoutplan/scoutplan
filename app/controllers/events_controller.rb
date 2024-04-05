@@ -25,6 +25,8 @@ class EventsController < UnitContextController
       redirect_to calendar_redirect_unit_events_path(@unit)
     when "threeup"
       redirect_to threeup_unit_events_path(@unit)
+    when "fast_list"
+      redirect_to fast_list_unit_events_path(@unit)
     else
       redirect_to list_unit_events_path(@unit)
     end
@@ -55,12 +57,18 @@ class EventsController < UnitContextController
   def list
     respond_to do |format|
       format.html do
+        @current_month = params[:current_month]&.split("-")&.map(&:to_i)
         cookies[:event_index_variation] = "list"
         find_list_events
       end
       format.pdf { send_fridge_calendar }
       format.turbo_stream { prepare_turbo_stream }
     end
+  end
+
+  def fast_list
+    cookies[:event_index_variation] = "list"
+    find_fast_list_events
   end
 
   def threeup
@@ -478,12 +486,20 @@ class EventsController < UnitContextController
     scope.order(starts_at: :asc)
   end
 
+  # def find_list_events
+  #   scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+  #   scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+  #   scope = params[:before].present? ? scope.where("id < ?", params[:before]) : scope.future
+  #   scope.order(starts_at: :asc)
+  #   @events = scope.all
+  # end
+
   def find_list_events
     scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
     scope = params[:before].present? ? scope.where("id < ?", params[:before]) : scope.future
     scope.order(starts_at: :asc)
-    @events = scope.all
+    set_page_and_extract_portion_from scope
   end
 
   def find_threeup_events
