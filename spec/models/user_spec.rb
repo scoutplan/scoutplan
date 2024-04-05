@@ -20,5 +20,19 @@ RSpec.describe User, type: :model do
       expect(user.email).to be_present
       expect(user.anonymous_email?).to be_truthy
     end
+
+    describe "disable_delivery" do
+      before do
+        @member = FactoryBot.create(:unit_membership)
+        @user = @member.user
+      end
+
+      it "disables email" do
+        expect(@member.settings(:communication).via_email).to be_truthy
+        @user.disable_delivery!(method: :email)
+        @member.reload
+        expect(@member.settings(:communication).via_email).to be_falsey
+      end
+    end
   end
 end

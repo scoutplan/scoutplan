@@ -126,6 +126,12 @@ class UnitMembership < ApplicationRecord
     user.smsable? && settings(:communication).via_sms
   end
 
+  def disable_delivery!(method: nil)
+    return unless method
+
+    settings(:communication).update!(via_email: false) if method == :email
+  end
+
   def time_zone
     @time_zone ||= user.settings(:locale).time_zone ||
                    unit.settings(:locale).time_zone ||

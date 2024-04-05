@@ -92,6 +92,10 @@ class User < ApplicationRecord
     self.password_confirmation = generated_password
   end
 
+  def disable_delivery!(method: nil)
+    unit_memberships.each { |member| member.disable_delivery!(method: method) }
+  end
+
   def password_set?
     password_changed_at.present?
   end

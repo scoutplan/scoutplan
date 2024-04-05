@@ -13,39 +13,32 @@ class MailgunController < ApplicationController
   skip_before_action :verify_authenticity_token
   skip_before_action :authenticate_user!
 
-  #
   # POST /webhooks/mailgun/receive
-  #
+  # configure Mailgun to post exceptions to this URL
   def receive
     data = JSON.parse(request.body.read)
     sig_data = data["signature"]
-    head 500 and return unless verify(sig_data["token"], sig_data["timestamp"], sig_data["signature"])
+    head 500 and return unless authenticate(sig_data["token"], sig_data["timestamp"], sig_data["signature"])
 
     handler = create_handler(data["event-data"])
-    head :no_content, status: 200 and return unless handler
-
     handler.process
-    head 200
+    head :no_content, status: 200
   end
 
   private
 
-  #
-  # pass in event data and get back a handler object, if one exists
-  #
   def create_handler(event_data)
     event = event_data["event"]
     case event
     when "failed"
       Mailgun::FailureHandler.new(event_data)
+    else
+      Mailgun::NullHandler.new(event_data)
     end
   end
 
-  #
-  # ensure that the request is from Mailgun
-  #
-  def verify(token, timestamp, signature)
-    signing_key = ENV["MAILGUN_INGRESS_SIGNING_KEY"]
+  def authenticate(token, timestamp, signature)
+    signing_key = ENV.fetch("MAILGUN_INGRESS_SIGNING_KEY")
     digest = OpenSSL::Digest.new("SHA256")
     data = [timestamp, token].join
     signature == OpenSSL::HMAC.hexdigest(digest, signing_key, data)

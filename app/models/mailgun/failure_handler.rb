@@ -1,18 +1,24 @@
 # frozen_string_literal: true
 
 class Mailgun::FailureHandler
+  attr_reader :data, :reason, :user
+
   def initialize(data)
     @data = data
+    @reason = data["reason"]
   end
 
   def process
-    reason = @data["reason"]
+    return unless reason == "suppress-bounce"
 
-    if reason == "suppress-bounce"
-      ScoutplanAdminMailer.with(
-        from_address: @data["message"]["headers"]["from"],
-        to_address: @data["message"]["headers"]["to"],
-        message_id: @data["id"]).mail_failure_email.deliver_later
-    end
+    recipient_address = data.dig("message", "headers", "to")
+    @user = User.find_by(email: recipient_address)
+    user&.disable_delivery!(method: :email)
+    notify_admins
+  end
+
+  def notify_admins
+    admins = user.units.collect( |u| u.members.admin }.flatten
+    FailedEmailNotifier.with(self).deliver_later(admins)
   end
 end
