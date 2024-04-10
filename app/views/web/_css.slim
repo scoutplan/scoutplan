@@ -1,0 +1,121 @@
+  css:
+    body {
+      background: rgb(244, 246, 234);
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      background-image: url('https://images.squarespace-cdn.com/content/v1/5f31b0c91e47a83c6b3559d1/705a6ecf-5466-4df9-b662-cc46bbca0ee6/P6300222.jpg');
+      / background-image: url('https://local.scoutplan.org/charter-doc.jpg');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      height: 50rem;
+      color: #fff;
+
+      h1 {
+        position: absolute;
+        font-family: serif;
+        font-weight: 300;
+        font-size: 84px;
+        bottom: 5%;
+        line-height: 1.0;
+        filter: drop-shadow(0 0 10px rgb(0, 0, 0, 1));
+      }
+
+      .content {
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+        height: 100%;
+      }
+
+      .photo-annotation {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        font-size: 13px;
+        font-weight: 400;
+      }      
+
+      .top-gradient {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 200px;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), transparent);
+      }
+
+      .bottom-gradient {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 300px;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+      }
+
+      header {
+        margin: 0 auto;
+        position: relative;
+        display: flex;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgb(0, 0, 0, 0, 0));
+
+        a {
+          display: block;
+          padding: 0 0.5rem;
+          color: #fff;
+          text-decoration: none;
+          text-transform: uppercase;
+          font-size: 13px;
+          font-weight: 500;
+          letter-spacing: 0.1rem;
+        }
+
+        nav.main-nav {
+          display: flex;
+          justify-content: center;
+          align-content: center;
+          margin: 0 auto;
+
+          a {
+            display: inline-block;
+            padding: 2rem 0.5rem;
+          }
+        }
+
+        nav.cta {
+          position: absolute;
+          top: 1rem;
+          right: 0;
+          bottom: 0;
+
+          a {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border: 3px solid white;
+            border-radius: 9999px;
+          }
+        }
+
+        .logo {
+          position: absolute;
+          left: 0;
+          top: 0;
+
+          a {
+            display: inline-block;
+            padding: 2rem 0;
+            font-weight: 800;
+          }
+        }
+      }
+    }

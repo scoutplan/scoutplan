@@ -13,6 +13,8 @@ class Mailgun::FailureHandler
 
     recipient_address = data.dig("message", "headers", "to")
     @user = User.find_by(email: recipient_address)
+    return unless @user
+
     user&.disable_delivery!(method: :email)
     notify_admins
   end
