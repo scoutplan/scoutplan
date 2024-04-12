@@ -50,7 +50,7 @@ docker-compose.override.yml
 
 act.sh
 
-/certs
+/certs/*
 /coverage
 /_temp
 

@@ -5,6 +5,8 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
+  get "", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
+  get "*path", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
   mount BetterMailerPreviews::Engine, at: "/better_mailer_previews" if Rails.env.development?
   root to: "home#index"
   get "up" => "rails/health#show", as: :rails_health_check

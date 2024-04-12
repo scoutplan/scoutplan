@@ -12,8 +12,6 @@
     }
 
     .hero {
-      background-image: url('https://images.squarespace-cdn.com/content/v1/5f31b0c91e47a83c6b3559d1/705a6ecf-5466-4df9-b662-cc46bbca0ee6/P6300222.jpg');
-      / background-image: url('https://local.scoutplan.org/charter-doc.jpg');
       background-size: cover;
       background-position: center;
       position: relative;
@@ -24,9 +22,10 @@
         position: absolute;
         font-family: serif;
         font-weight: 300;
-        font-size: 84px;
+        font-size: 72px;
         bottom: 5%;
         line-height: 1.0;
+        font-family: clarendon-text-pro, serif;
         filter: drop-shadow(0 0 10px rgb(0, 0, 0, 1));
       }
 
@@ -43,6 +42,7 @@
         left: 0;
         font-size: 13px;
         font-weight: 400;
+        opacity: 0.8;
       }      
 
       .top-gradient {
@@ -103,6 +103,10 @@
             padding: 1rem 2rem;
             border: 3px solid white;
             border-radius: 9999px;
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.1);
+            }
           }
         }
 

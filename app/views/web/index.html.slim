@@ -1,32 +1,8 @@
 head
   = stylesheet_link_tag "https://rsms.me/inter/inter.css"
+  = stylesheet_link_tag "https://use.typekit.net/yrz7cru.css"
   = render "css"
   title = @unit.name
 
 body
-  section.hero
-    .top-gradient
-    .bottom-gradient
-    .content
-      header
-        .logo
-          a href="/" = "#{@unit.name} #{@unit.location}"
-
-        nav.main-nav
-          a href="/web/about" About
-          a href="/web/history" History
-          a href="#contact" Contact
-          = link_to "Member Login", unit_events_path(@unit)
-
-        nav.cta
-          a href="https://my.scouting.org/more-info/8309f208-e265-428c-a846-8417d4a1b72b&beascout=true" Become a scout
-
-      h1 A tradition of <br>leadership, skill, <br>and community service <br>since 1938.
-      / h1 History
-
-      p.photo-annotation
-        / | Photo: Troop 2 at BSA Sea Base in the Florida Keys
-        | Photo: Troop 2 original charter document, 1938
-
-  main
-    p Troop 2 was founded in 1938 and has been active in the community ever since.
+  = render partial: @partial_name
