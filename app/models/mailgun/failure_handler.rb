@@ -18,7 +18,9 @@ class Mailgun::FailureHandler
   end
 
   def notify_admins
-    admins = user.units.collect{ |u| u.members.admin }.flatten
+    return unless user.present?
+
+    admins = user.units&.collect{ |u| u.members.admin }.flatten
     FailedEmailNotifier.with(self).deliver_later(admins)
   end
 end
