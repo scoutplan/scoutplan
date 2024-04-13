@@ -5,6 +5,8 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
+  get "", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
+  get "*path", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
   mount BetterMailerPreviews::Engine, at: "/better_mailer_previews" if Rails.env.development?
   root to: "home#index"
   get "up" => "rails/health#show", as: :rails_health_check
@@ -66,6 +68,7 @@ Rails.application.routes.draw do
         end
       end
     end
+
     resources :messages, path: "messages" do
       resources :message_attachments, path: "attachments", as: "attachments", only: [:destroy]
       post "duplicate"
@@ -199,6 +202,8 @@ Rails.application.routes.draw do
 
       resources :test_communications, module: :unit_memberships, only: %i[index create]
     end
+
+    resources :web, only: [:index]
 
     resources :wiki_pages, path: "pages" do
       get "history"
