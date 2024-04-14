@@ -1,2 +1,2 @@
 | Hi, #{@recipient.first_name}, you're an organizer for the upcoming event, #{@event.title}. Here's a quick reminder of what you need to do to prepare:
-| Download the organizer event brief at #{magic_url_for(@recipient, organizer_package_unit_event_url(current_unit, @event, format: :pdf))}.
+| Download the organizer event brief at #{magic_url_for(@recipient, organizer_package_unit_event_url(@unit, @event, format: :pdf))}.

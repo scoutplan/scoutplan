@@ -1,5 +1,5 @@
 p(style="margin-bottom:2rem;") Hi, #{@recipient.first_name}, RSVPs for #{@event.title} are closing soon. Can you let us know you're plans (even if you're not attending)?
 
 p(style="text-align:center; margin-bottom:2rem;")
-  = magic_link_to(@recipient, "RSVP Now", rsvp_unit_event_url(current_unit, @event), class: "button button-rsvp")
+  = magic_link_to(@recipient, "RSVP Now", rsvp_unit_event_url(@unit, @event), class: "button button-rsvp")
 

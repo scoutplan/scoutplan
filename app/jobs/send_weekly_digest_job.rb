@@ -8,8 +8,8 @@ class SendWeeklyDigestJob < ApplicationJob
 
   # rubocop:disable Metrics/AbcSize
   def perform(unit_id, timestamp = nil)
-    current_unit, @timestamp = Unit.find(unit_id), timestamp
-    Rails.logger.warn("Performing SendWeeklyDigestJob for #{current_unit.name}")
+    @unit, @timestamp = Unit.find(unit_id), timestamp
+    Rails.logger.warn("Performing SendWeeklyDigestJob for #{unit.name}")
     return unless enabled_by_unit? && settings_are_current?
 
     Rails.logger.warn("Invoking WeeklyDigestNotifier")
