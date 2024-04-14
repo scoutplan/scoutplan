@@ -30,7 +30,7 @@ p
 
     - if @rsvp.approvers.include?(@recipient)
       p = link_to "Approve Now",
-                  magic_url_for(@recipient, unit_event_family_rsvps_url(current_unit, @event)),
+                  magic_url_for(@recipient, unit_event_family_rsvps_url(@unit, @event)),
                   class: "button button-rsvp",
                   style: "margin: 1rem 0 0.5rem 0; display: block; width: 100$; text-align: center;"
       p(style="font-size:14px; color: #888; margin-bottom: 1rem;") RSVPs close #{string_for_time_internal_from_day(@event.rsvp_closes_at)}
@@ -49,4 +49,4 @@ p
   p.text-sm.text-stone-300.mb-2 The links in this email are personalized to you. Please don't forward this email or share the links with others.
 
   p.text-sm.text-stone-300
-    = magic_link_to(@recipient, "View the full #{current_unit.name} schedule", unit_events_url(current_unit), class: "text-white font-bold")
+    = magic_link_to(@recipient, "View the full #{@unit.name} schedule", unit_events_url(@unit), class: "text-white font-bold")

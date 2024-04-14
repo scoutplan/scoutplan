@@ -4,7 +4,7 @@ div(style="padding: 2rem; color: rgb(237, 233, 254); background-color: rgb(91, 3
   p = "(#{@dashboard.response_count} of #{@dashboard.active_count} active members)"
 
   = magic_link_to @recipient,
-                  dashboard_unit_event_url(current_unit, @event),
+                  dashboard_unit_event_url(@unit, @event),
                   class: "button",
                   style: "border: 1px solid rgb(237, 233, 254); color: rgb(237, 233, 254); background-color: rgb(91, 33, 182); display: block; margin-top: 1rem;" do
     = "View the Event Dashboard"   

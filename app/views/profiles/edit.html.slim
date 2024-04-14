@@ -1,6 +1,6 @@
 .max-w-xl.mx-auto.mb-8
   header.mb-8
-    = link_to profile_unit_member_path(current_unit, current_member),
+    = link_to profile_unit_member_path(@unit, @current_member),
               class: "font-bold no-underline inline-block w-full md:w-fit text-brand-500 hover:text-brand-600",
               data: { turbo: false } do
         

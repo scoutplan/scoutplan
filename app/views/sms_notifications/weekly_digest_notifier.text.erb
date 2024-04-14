@@ -1,7 +1,7 @@
-Hi, <%= @recipient.first_name %>. This week at <%= current_unit.name %>:
+Hi, <%= @recipient.first_name %>. This week at <%= @unit.name %>:
 
-<% current_unit.events.published.this_week.each do |event| %>
+<% @unit.events.published.this_week.each do |event| %>
 * <%= event.title %> on <%= event.starts_at.in_time_zone.strftime('%A') %>
 <% end %>
 
-Visit <%= magic_url_for(@recipient, unit_events_url(current_unit)) %> for the full schedule.
+Visit <%= magic_url_for(@recipient, unit_events_url(@unit)) %> for the full schedule.
