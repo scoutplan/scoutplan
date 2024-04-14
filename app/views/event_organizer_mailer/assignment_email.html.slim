@@ -8,14 +8,14 @@ p Hi, #{@user.display_first_name},
   | you've been assigned 
   
 | as an organizer in <a href="#{root_url}">Scoutplan</a> for <b>#{@event.title}</b>, scheduled for <b>#{presenter.months_and_dates}</b>. 
-| As an event organizer, you now have access to the <a href="#{unit_event_rsvps_url(@unit, @event)}">event dashboard</a> where you can 
+| As an event organizer, you now have access to the <a href="#{unit_event_rsvps_url(current_unit, @event)}">event dashboard</a> where you can 
 | view and edit event RSVPs. 
 
 p You'll also receive an email summary on days when new RSVPs arrive so you can keep track of who's planning to attend.
 
 p
   = link_to "View the #{@event.title} dashboard",
-            unit_event_rsvps_url(@unit, @event),
+            unit_event_rsvps_url(current_unit, @event),
             class: "green-button",
             style: "display: block; width: 100%; color: white; padding: 10px 0; text-align: center; text-decoration: none; border-radius: 5px; font-weight: bold;"
 

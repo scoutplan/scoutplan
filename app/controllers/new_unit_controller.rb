@@ -50,8 +50,7 @@ class NewUnitController < ApplicationController
     redirect_to "/new_unit/unit_info"
   end
 
-  def unit_info
-  end
+  def unit_info; end
 
   def save_unit_info
     user = User.find(session[:user_id])
@@ -61,23 +60,20 @@ class NewUnitController < ApplicationController
     redirect_to unit_start_path(@unit) and return if @unit
   end
 
-  def add_members
-  end
+  def add_members; end
 
   def perform_import
     # TODO: import member list
     redirect_to "/new_unit/weekly_digest"
   end
 
-  def weekly_digest
-  end
+  def weekly_digest; end
 
   def save_communication_preferences
     redirect_to "/new_unit/done"
   end
 
-  def done
-  end
+  def done; end
 
   #-------------------------------------------------------------------------
   private

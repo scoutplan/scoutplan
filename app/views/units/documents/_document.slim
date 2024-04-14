@@ -17,9 +17,9 @@ li.mb-4.relative.group(id="#{dom_id(document)}")
         .inline-block.text-xs.rounded.px-2.py-1(style="background-color: #{bgcolor}; color: #{color};")
           = tag.name      
 
-  - if UnitDocumentPolicy.new(@current_member, document).destroy?
+  - if UnitDocumentPolicy.new(current_member, document).destroy?
     .absolute.top-2.right-2.hidden.group-hover:block
-      = button_to [@unit, document],
+      = button_to [current_unit, document],
                   method: :delete,
                   class: "bg-stone-200 hover:bg-stone-300 px-3 py-2 aspect-square",
                   data: { turbo_stream: "true", confirm: t(".confirm") } do

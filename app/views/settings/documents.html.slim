@@ -2,14 +2,14 @@
   header.mb-4
     h1.text-2xl.font-medium Document settings
 
-    = form_with model: @unit, data: { turbo: false } do |f|
+    = form_with model: current_unit, data: { turbo: false } do |f|
       section.py-4
         = f.label :home_layout, "Home Layout"
         = text_area "settings[documents]",
                     "home_layout",
                       class: "w-full",
                       placeholder: "YAML",
-                      value: @unit.settings(:documents).home_layout,
+                      value: current_unit.settings(:documents).home_layout,
                       style: "font-family: Courier; height: 60em;"
 
       footer

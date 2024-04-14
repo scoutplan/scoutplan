@@ -3,7 +3,7 @@
     = render partial: "message_list", locals: { messages: @messages, title: "Scheduled messages", verb: "scheduled" }
 
   javascript:
-      document.title = "#{@unit.name} · Scheduled messages"
+      document.title = "#{current_unit.name} · Scheduled messages"
 
   css:
     .scheduled-messages-link { display: none; }

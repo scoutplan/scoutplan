@@ -10,12 +10,12 @@
 
       - unless @page.last?
         = link_to "Next page",
-                  sent_unit_messages_path(@unit, page: @page.next_param),
+                  sent_unit_messages_path(current_unit, page: @page.next_param),
                   class: "block mt-4 text-center text-transparent",
                   data: { pagination_target: "nextPageLink" }
 
   javascript:
-    document.title = `#{["Draft Messages", @unit.name].join(" · ")}`;
+    document.title = `#{["Draft Messages", current_unit.name].join(" · ")}`;
 
   css:
     .draft-messages-link { display: none; }

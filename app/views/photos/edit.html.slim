@@ -7,7 +7,7 @@
             = image_tag image.representation(resize_to_fit: [100, 100])
 
     = form_with model: @photo,
-                url: unit_photo_path(@unit, @photo, event_id: params[:event_id]),
+                url: unit_photo_path(current_unit, @photo, event_id: params[:event_id]),
                 method: :patch,
                 local: true,
                 multipart: true,

@@ -4,7 +4,7 @@ Hi, <%= @user.display_first_name %>. Here are your upcoming RSVPs:
 <%- unit = event.unit %>
 <%- member = unit.membership_for(@user) %>
 <%- service = RsvpService.new(member, event) %>
-<%= index + 1 %> — <%= event.title %><%= @unit_count > 1 ? " (#{event.unit.name})" : "" %>
+<%= index + 1 %> — <%= event.title %><%= current_unit_count > 1 ? " (#{event.unit.name})" : "" %>
 <%= event.starts_at.strftime("%B %e") %>
 <%= service.family_responses_in_words %>
 

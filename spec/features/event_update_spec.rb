@@ -1,10 +1,7 @@
-# Test update of an Event
-
 # frozen_string_literal: true
 
 require "rails_helper"
 
-# rubocop:disable Metrics/BlockLength
 describe "events", type: :feature do
   before do
     User.where(email: "test_admin@scoutplan.org").destroy_all
@@ -13,7 +10,7 @@ describe "events", type: :feature do
     @admin_user  = FactoryBot.create(:user, email: "test_admin@scoutplan.org")
     @normal_user = FactoryBot.create(:user, email: "test_normal@scoutplan.org")
 
-    @unit  = FactoryBot.create(:unit)
+    @unit = FactoryBot.create(:unit)
     @event = FactoryBot.create(:event, :draft, unit: @unit, title: "Draft Event")
 
     @admin_member = @unit.memberships.create(user: @admin_user, role: "admin", status: :active)
@@ -34,4 +31,3 @@ describe "events", type: :feature do
     end
   end
 end
-# rubocop:enable Metrics/BlockLength

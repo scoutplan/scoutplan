@@ -2,7 +2,7 @@ class EventReadiness
   attr_reader :unit_membership, :event
 
   def initialize(unit_membership, event)
-    @unit_membership = unit_membership
+    current_unit_membership = unit_membership
     @event = event
     @rsvp = event.rsvps.find_by(unit_membership: unit_membership)
   end

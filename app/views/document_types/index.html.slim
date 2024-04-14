@@ -7,12 +7,12 @@
       = render partial: "document_type", collection: @document_types
 
     .flex.flex-col.md:flex-row.gap-2.mt-4
-      = link_to new_unit_event_document_type_path(@unit, @event),
+      = link_to new_unit_event_document_type_path(current_unit, @event),
         class: "inline-block w-full md:w-fit bg-brand-500 text-white uppercase text-sm font-bold tracking-wider rounded px-4 py-2",
         data: { turbo_action: "advance" } do
         = "Add a Document Type"
 
-      = link_to unit_event_rsvps_path(@unit, @event),
+      = link_to unit_event_rsvps_path(current_unit, @event),
         class: "inline-block w-full md:w-fit bg-stone-200 text-stone-600 uppercase text-sm font-bold tracking-wider rounded px-4 py-2",
         data: { turbo_action: "advance" } do
         = "Done"      

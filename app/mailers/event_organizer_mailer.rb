@@ -12,12 +12,12 @@ class EventOrganizerMailer < ScoutplanMailer
     @recipient = params[:recipient]
     @event_organizer = params[:event_organizer]
     @event  = @event_organizer.event
-    @unit   = @event.unit
+    current_unit   = @event.unit
     @member = @event_organizer.unit_membership
     @user   = @member.user
   end
 
   def subject
-    "[#{@unit.name}] You've been added as an organizer for #{@event.title}"
+    "[#{current_unit.name}] You've been added as an organizer for #{@event.title}"
   end
 end

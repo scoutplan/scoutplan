@@ -23,7 +23,7 @@ class ChatMessagesController < UnitContextController
       :chat_messages,
       partial: "chat_messages/chat_message",
       target:  "chat_messages",
-      locals:  { chat_message: @chat_message, current_member: @current_member }
+      locals:  { chat_message: @chat_message, current_member: current_member }
     )
 
     respond_to do |format|
@@ -49,6 +49,6 @@ class ChatMessagesController < UnitContextController
   end
 
   def find_event
-    @event = @unit.events.find(params[:event_id])
+    @event = current_unit.events.find(params[:event_id])
   end
 end

@@ -5,8 +5,8 @@
 - family_has_rsvps = false
 - family_fully_responded = true
 - event_rsvps = event.rsvps.includes(:unit_membership)
-- rsvp_service = RsvpService.new(@current_member, event)
-- @current_member.family.each do |member|
+- rsvp_service = RsvpService.new(current_member, event)
+- current_member.family.each do |member|
   - rsvp = event_rsvps.select { |r| r.unit_membership == member }&.first
   - family_has_rsvps = family_has_rsvps || rsvp.present?
   - family_fully_responded = family_fully_responded && rsvp.present?
@@ -29,7 +29,7 @@
         - else
           = family_fully_responded ? "Change RSVPs" : "Please RSVP"
 
-      = turbo_frame_tag "rsvp_popup", src: popup_unit_event_rsvps_path(@unit, event), role: "dialog", data: { controller: "popup" }
+      = turbo_frame_tag "rsvp_popup", src: popup_unit_event_rsvps_path(current_unit, event), role: "dialog", data: { controller: "popup" }
 
 - elsif event.rsvp_opens_at&.future?
   .font-semibold.text-sm

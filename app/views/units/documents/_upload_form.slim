@@ -1,6 +1,6 @@
 = content_tag(:div, data: { controller: "upload" }) do
   .hidden
-    = form_with url: unit_documents_path(@unit),
+    = form_with url: unit_documents_path(current_unit),
                 method: :post,
                 format: "turbo_stream",
                 data: { turbo_stream: "true", upload_target: "form" } do |f|

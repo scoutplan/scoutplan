@@ -1,4 +1,4 @@
-- path = @event.present? ? new_unit_event_photo_path(@unit, @event) : new_unit_photo_path(@unit)
+- path = @event.present? ? new_unit_event_photo_path(current_unit, @event) : new_unit_photo_path(current_unit)
 
 .max-w-lg.mx-auto
   header.mb-8
@@ -23,11 +23,11 @@
 
             - if photo.event.present?
               location.block
-                = link_to photo.event.title, unit_event_photos_path(@unit, photo.event), data: { turbo_action: "advance" }, class: "text-blue-500 underline font-semibold"
+                = link_to photo.event.title, unit_event_photos_path(current_unit, photo.event), data: { turbo_action: "advance" }, class: "text-blue-500 underline font-semibold"
 
           // right
           div
-            = link_to edit_unit_photo_path(@unit, photo, event_id: photo.event_id),
+            = link_to edit_unit_photo_path(current_unit, photo, event_id: photo.event_id),
                       class: "text-stone-500 block p-1",
                       data: { turbo_action: "advance" } do
               i.fa-solid.fa-pencil-alt.mr-2

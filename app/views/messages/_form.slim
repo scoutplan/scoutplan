@@ -2,7 +2,7 @@
               "turbo:before-fetch-request@document->message-form#confirmLeave" ]
 
 = content_tag(:div, data: { controller: "message-form",
-                            message_form_unit_id_value: @unit.id,
+                            message_form_unit_id_value: current_unit.id,
                             action: actions.join(" ") }) do
 
   = hidden_field_tag :test_mode, "false", id: "test_mode", data: { message_form_target: "testMode" }
@@ -11,7 +11,7 @@
     = render partial: "messages/form/header"
     = render partial: "messages/form/attachments_form"
 
-    = form_with model: [@unit, @message],
+    = form_with model: [current_unit, @message],
                 data: { turbo_action: "advance", message_form_target: "form" } do |f|   
 
       section.flex.flex-col.divide-y.dark:divide-stone-600.text-sm.md:text-base

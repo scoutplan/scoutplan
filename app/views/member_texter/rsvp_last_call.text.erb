@@ -1,5 +1,5 @@
-Hi, <%= @member.display_first_name %>, <%= @unit.name %> here. RSVPs are about to close for:
+Hi, <%= @member.display_first_name %>, <%= current_unit.name %> here. RSVPs are about to close for:
 <% @events.each do |event| %>
 * <%= event.title %>
 <% end %>
-Visit <%= magic_url_for(@member, unit_my_rsvps_path(@unit)) %> to see details and respond. Thanks!
+Visit <%= magic_url_for(@member, unit_my_rsvps_path(current_unit)) %> to see details and respond. Thanks!

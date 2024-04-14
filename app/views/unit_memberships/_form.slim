@@ -2,7 +2,7 @@ header.py-4
   h3.text-4xl.font-bold
     = t("members.titles.#{@target_membership.new_record? ? "new" : "edit"}")
 
-= form_with model: [@unit, @target_membership],
+= form_with model: [current_unit, @target_membership],
             id: "member_info_form",
             data: { turbo: false, controller: "form-validation", action: "submit->form-validation#validate" } do |f|
   section.flex.flex-col.gap-4.divide-y.divide-stone-800

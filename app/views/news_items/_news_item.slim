@@ -4,7 +4,7 @@ article.border-t.px-2.py-4.hover:bg-stone-100.flex.justify-between.gap-8(id="#{ 
   span#left_side
     - if news_item.editable?
       = link_to \
-        edit_unit_announcement_path(@unit, news_item.id),
+        edit_unit_announcement_path(current_unit, news_item.id),
         data: { turbo_action: "advance" } do
 
         h5.text-lg.font-bold.flex.justify-between.mb-2
@@ -25,7 +25,7 @@ article.border-t.px-2.py-4.hover:bg-stone-100.flex.justify-between.gap-8(id="#{ 
       // DELETE
       - if news_item.deletable?
         = button_to \
-          unit_announcement_path(@unit, news_item),
+          unit_announcement_path(current_unit, news_item),
           method: :delete,
           title: t("announcements.delete_draft"),
           form_class: "inline-block",
@@ -35,7 +35,7 @@ article.border-t.px-2.py-4.hover:bg-stone-100.flex.justify-between.gap-8(id="#{ 
       // DEQUEUE / DEMOTE
       - if news_item.demotable?
         = button_to \
-          unit_news_item_dequeue_path(@unit, news_item),
+          unit_news_item_dequeue_path(current_unit, news_item),
           method: :post,
           form_class: "inline-block",
           title: t("announcements.dequeue"),

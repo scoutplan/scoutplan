@@ -1,7 +1,7 @@
-- return unless EventPolicy.new(@current_member, @event).edit?
+- return unless EventPolicy.new(current_member, @event).edit?
 
 li
-  = link_to new_unit_event_path(@unit, parent_event_id: @event.id),
+  = link_to new_unit_event_path(current_unit, parent_event_id: @event.id),
             class: "block py-1 font-bold hover:text-brand-500",
             data: { turbo_action: "advance" } do
     .fa-stack

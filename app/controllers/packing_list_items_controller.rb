@@ -4,12 +4,12 @@ class PackingListItemsController < UnitContextController
 
   def create
     @packing_list_item = @packing_list.packing_list_items.create(packing_list_item_params)
-    redirect_to unit_packing_list_path(@unit, @packing_list)
+    redirect_to unit_packing_list_path(current_unit, @packing_list)
   end
 
   def destroy
     @packing_list_item.destroy
-    redirect_to unit_packing_list_path(@unit, @packing_list)
+    redirect_to unit_packing_list_path(current_unit, @packing_list)
   end
 
   def edit; end
@@ -20,13 +20,13 @@ class PackingListItemsController < UnitContextController
 
   def update
     @packing_list_item.update(packing_list_item_params)
-    redirect_to unit_packing_list_path(@unit, @packing_list)
+    redirect_to unit_packing_list_path(current_unit, @packing_list)
   end
 
   private
 
   def find_packing_list
-    @packing_list = @unit.packing_lists.find(params[:packing_list_id])
+    @packing_list = current_unit.packing_lists.find(params[:packing_list_id])
   end
 
   def find_packing_list_item

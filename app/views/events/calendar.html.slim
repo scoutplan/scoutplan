@@ -6,8 +6,8 @@
 - done = false
 - context = { first_day_of_month: Date.new(@current_year, @current_month, 1) }
 
-/! Current member id: #{@current_member.id}
-/! Current unit id: #{@unit.id}
+/! Current member id: #{current_member.id}
+/! Current unit id: #{current_unit.id}
 /! Current user id: #{current_user.id}
 .max-w-7xl.mx-auto
   header.flex.flex-row.items-center.justify-between.py-2.md:mt-8.relative.mb-2
@@ -85,8 +85,8 @@
                     - if event.online
                       i.fa-solid.fa-laptop.ml-1(title="Online")
 
-                  - if EventPolicy.new(@current_member, event).edit?
-                    = link_to edit_unit_event_path(@unit, event),
+                  - if EventPolicy.new(current_member, event).edit?
+                    = link_to edit_unit_event_path(current_unit, event),
                               class: "event-edit-link ml-1 inline-block text-stone-500 hover:text-black",
                               data: { turbo_action: "advance" } do
 
@@ -95,7 +95,7 @@
           - display_day += 1
 
   = turbo_stream.update "page_title" do
-    = t("events.index.page_title", unit_name: @unit.name)  
+    = t("events.index.page_title", unit_name: current_unit.name)  
 
 javascript:
   document.addEventListener("turbo:load", function() {
@@ -109,7 +109,7 @@ javascript:
       elem.addEventListener("dblclick", function(elem) {
         var targetDate = elem.currentTarget.dataset.calDate;
         console.log(targetDate);
-        url = "#{new_unit_event_path(@unit)}" + "?date=" + targetDate;
+        url = "#{new_unit_event_path(current_unit)}" + "?date=" + targetDate;
         window.location.href = url;
         // console.log(elem);
       });

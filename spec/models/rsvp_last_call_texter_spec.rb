@@ -7,8 +7,7 @@ RSpec.describe RsvpLastCallTexter, type: :model do
   before do
     @member = FactoryBot.create(:member)
     @unit = @member.unit
-    @event = FactoryBot.create(:event, :requires_rsvp, :published, unit: @member.unit,
-                               starts_at: 2.weeks.from_now)
+    @event = FactoryBot.create(:event, :requires_rsvp, :published, unit: @unit, starts_at: 2.weeks.from_now)
   end
 
   describe "body" do

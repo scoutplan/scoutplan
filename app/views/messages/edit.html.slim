@@ -1,6 +1,6 @@
 = turbo_frame_tag "main"
   .min-w-3xl.max-w-4xl.mx-auto.pt-6
-    = link_to unit_messages_path(@unit),
+    = link_to unit_messages_path(current_unit),
           class: "inline-block font-bold pb-4 text-lime-700 hover:text-messages-800 dark:text-lime-400",
           data: { turbo_action: "advance" } do
       i.fa-solid.fa-chevron-left.mr-2
@@ -9,4 +9,4 @@
     = render partial: "form"
 
   javascript:
-    document.title = "Edit Message · #{@unit.name}"
+    document.title = "Edit Message · #{current_unit.name}"

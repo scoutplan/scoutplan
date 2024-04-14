@@ -1,1 +1,1 @@
-| RSVPs for #{@event.title} on #{@event.starts_at.strftime('%b %-d')} are closing soon. Visit #{magic_url_for(@recipient, rsvp_unit_event_url(@unit, @event))} and RSVP now!
+| RSVPs for #{@event.title} on #{@event.starts_at.strftime('%b %-d')} are closing soon. Visit #{magic_url_for(@recipient, rsvp_unit_event_url(current_unit, @event))} and RSVP now!

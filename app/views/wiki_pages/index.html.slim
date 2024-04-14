@@ -10,7 +10,7 @@
           h1.font-bold.text-4xl = t("wiki_pages.index.title")
 
         div
-          - if WikiPagePolicy.new(@current_member, @unit).create?
+          - if WikiPagePolicy.new(current_member, current_unit).create?
             = link_to new_unit_wiki_page_path,
                       class: "rounded border border-brand-500 text-brand-500 px-4 py-2 hover:bg-stone-100 hover:text-brand-600 font-bold",
                       data: { turbo_action: "advance" } do
@@ -23,4 +23,4 @@
       = render partial: "page", collection: @pages
 
 javascript:
-  document.title = "Pages · #{@unit.name}"
+  document.title = "Pages · #{current_unit.name}"

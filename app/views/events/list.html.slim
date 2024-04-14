@@ -16,7 +16,7 @@
               i.fa-circle-ellipsis.far.fa-2xl
             = render partial: "events/partials/index/dropdown"
 
-      .font-semibold.text-stone-500.dark:text-stone-300 = @unit.name
+      .font-semibold.text-stone-500.dark:text-stone-300 = current_unit.name
 
     ol#events_list
       = turbo_frame_tag "events-#{@page.number}"
@@ -28,14 +28,14 @@
         = turbo_frame_tag "events-#{@page.next_param}"
           - unless @page.last?
             = link_to "Next page",
-                      list_unit_events_path(@unit, page: @page.next_param, current_month: current_month.join("-")),
+                      list_unit_events_path(current_unit, page: @page.next_param, current_month: current_month.join("-")),
                       class: "text-transparentz",
                       data: { pagination_target: "nextPageLink" }
 
   = turbo_frame_tag "modal", data: { controller: "modal" }
 
   = turbo_stream.update "page_title" do
-    = t("events.index.page_title", unit_name: @unit.name)
+    = t("events.index.page_title", unit_name: current_unit.name)
 
   css:
     #events_list .more-past-events-item {

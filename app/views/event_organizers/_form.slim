@@ -4,7 +4,7 @@ div.rounded.p-4.bg-stone-100.mt-8
       = "Add an organizer"
 
     = f.select :unit_membership_id,
-      options_from_collection_for_select(@unit.members.adult.status_active, :id, :full_display_name),
+      options_from_collection_for_select(current_unit.members.adult.status_active, :id, :full_display_name),
       { include_blank: "Select a member" },
       { class: "rounded border-stone-200" }
 

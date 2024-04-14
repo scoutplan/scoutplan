@@ -14,7 +14,7 @@
   = render partial: "events/partials/spreadsheet/event", collection: @events
 
 style
-  = render partial: "events/partials/spreadsheet/event_category", collection: @unit.event_categories
+  = render partial: "events/partials/spreadsheet/event_category", collection: current_unit.event_categories
 
 css:
   .trix-content {

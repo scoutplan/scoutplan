@@ -10,7 +10,7 @@ li.flex.flex-row.justify-between.px-2.py-2
       = t("events.captions.previous_event")
 
   - if @event.next.present?
-    = link_to unit_event_path(@unit, @event.next),
+    = link_to unit_event_path(current_unit, @event.next),
               class: "block p-2 rounded hover:bg-brand-600",
               title: "#{@event.next.title} on #{@event.next.starts_at.strftime('%B %-d')}",
               data: { turbo_action: "advance" } do

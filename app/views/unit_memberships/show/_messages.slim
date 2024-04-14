@@ -9,7 +9,7 @@ section#messages_section.border-t.py-2
   h4.font-bold.mb-3
     = t("members.titles.messaging")
   
-  = form_tag create_test_communication_path(@unit, @target_membership), method: :post
+  = form_tag create_test_communication_path(current_unit, @target_membership), method: :post
     .flex(data-controller="validation")
       = select_tag :message_type,
                    options_for_select(options),

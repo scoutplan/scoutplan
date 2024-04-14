@@ -8,27 +8,26 @@ require "humanize"
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/CyclomaticComplexity
 class EventsController < UnitContextController
+  layout :current_layout
+
   skip_before_action :authenticate_user!, only: [:public]
-  before_action :find_event, except: %i[
-    index list calendar threeup paged_list spreadsheet create new bulk_publish public my_rsvps signups repeat_options
-  ]
+  before_action :find_event, except: %i[index list calendar threeup paged_list spreadsheet create new bulk_publish public my_rsvps signups repeat_options]
   before_action :collate_rsvps, only: [:show, :rsvps]
   before_action :set_calendar_dates, only: [:calendar, :list, :paged_list]
   before_action :remember_unit_events_path, only: [:list, :calendar]
-  layout :current_layout
 
   def index
     variant = cookies[:event_index_variation] || "list"
     # variant ||= "list"
     case variant
     when "calendar"
-      redirect_to calendar_redirect_unit_events_path(@unit)
+      redirect_to calendar_redirect_unit_events_path(current_unit)
     when "threeup"
-      redirect_to threeup_unit_events_path(@unit)
+      redirect_to threeup_unit_events_path(current_unit)
     when "fast_list"
-      redirect_to fast_list_unit_events_path(@unit)
+      redirect_to fast_list_unit_events_path(current_unit)
     else
-      redirect_to list_unit_events_path(@unit)
+      redirect_to list_unit_events_path(current_unit)
     end
   end
 
@@ -37,7 +36,7 @@ class EventsController < UnitContextController
     year = params[:year] || cookies[:calendar_year] || Date.today.month
 
     unless params[:year] && params[:month]
-      redirect_to calendar_unit_events_path(@unit, year: year, month: month) and return
+      redirect_to calendar_unit_events_path(current_unit, year: year, month: month) and return
     end
 
     cookies[:event_index_variation] = "calendar"
@@ -96,7 +95,7 @@ class EventsController < UnitContextController
   end
 
   def public
-    @events = @unit.events.published.future.limit(params[:limit] || 4)
+    @events = current_unit.events.published.future.limit(params[:limit] || 4)
 
     # TODO: limit this to the unit's designated site(s)
     response.headers["X-Frame-Options"] = "ALLOW"
@@ -106,24 +105,24 @@ class EventsController < UnitContextController
   def repeat_options
     @starts_at = params[:starts_at]&.to_date || Date.current
     @starts_at = @starts_at.advance(weeks: 1)
-    @ends_at = @unit.season_ends_at(@starts_at)
+    @ends_at = current_unit.season_ends_at(@starts_at)
   end
 
   def show
     authorize @event
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).rsvps?
-    @current_family = @current_member.family
-    if @event.requires_payment? && Flipper.enabled?(:payments, @unit)
+    @current_family = current_member.family
+    if @event.requires_payment? && Flipper.enabled?(:payments, current_unit)
       @payments = @event.payments.paid.where(unit_membership_id: @current_family.map(&:id))
       @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
       @subtotal = (@family_rsvps.accepted.youth.count * @event.cost_youth) + (@family_rsvps.accepted.adult.count * @event.cost_adult)
-      @transaction_fee = @unit.payments_enabled? ? StripePaymentService.new(@unit).member_transaction_fee(@subtotal) : 0
+      @transaction_fee = current_unit.payments_enabled? ? StripePaymentService.new(current_unit).member_transaction_fee(@subtotal) : 0
       @total_cost = @subtotal + @transaction_fee
       @total_paid = (@payments&.sum(:amount) || 0) / 100
       @amount_due = @total_cost - @total_paid
     end
-    page_title @unit.name, @event.title
+    page_title current_unit.name, @event.title
     respond_to do |format|
       format.html
       format.pdf { send_event_brief }
@@ -151,12 +150,12 @@ class EventsController < UnitContextController
   # POST /:unit_id/events/new
   def new
     if params[:parent_event_id]
-      @parent_event = @unit.events.find(params[:parent_event_id])
-      redirect_to unit_events_path(@unit), status: :user_not_authorized unless EventPolicy.new(current_member, @parent_event).edit?
+      @parent_event = current_unit.events.find(params[:parent_event_id])
+      redirect_to unit_events_path(current_unit), status: :user_not_authorized unless EventPolicy.new(current_member, @parent_event).edit?
     end
 
     if (source_event_id = params[:source_event_id])
-      @event = EventDuplicationService.new(@unit, source_event_id).build
+      @event = EventDuplicationService.new(current_unit, source_event_id).build
     else
       build_prototype_event
     end
@@ -167,9 +166,9 @@ class EventsController < UnitContextController
   # POST /:unit_id/events
   def create
     authorize :event, :create?
-    service = EventCreationService.new(@unit)
+    service = EventCreationService.new(current_unit)
     @event = service.create(event_params)
-    EventOrganizerService.new(@event, @current_member).update(params[:event_organizers])
+    EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
     EventService.new(@event, params).process_event_shifts
     return unless @event.present?
 
@@ -179,7 +178,7 @@ class EventsController < UnitContextController
       end
     end
 
-    redirect_to [@unit, @event], notice: t("helpers.label.event.create_confirmation", event_name: @event.title)
+    redirect_to [current_unit, @event], notice: t("helpers.label.event.create_confirmation", event_name: @event.title)
   end
 
   # PATCH /:unit_id/events/:event_id
@@ -193,15 +192,15 @@ class EventsController < UnitContextController
 
   def update_event
     authorize @event
-    service = EventUpdateService.new(@event, @current_member, event_params)
+    service = EventUpdateService.new(@event, current_member, event_params)
     service.perform
 
     EventService.new(@event, params).process_event_shifts
     EventService.new(@event, params).process_library_attachments
-    EventOrganizerService.new(@event, @current_member).update(params[:event_organizers])
+    EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
 
     if cookies[:event_index_variation] == "calendar"
-      redirect_to unit_events_path(@unit), notice: t("events.update_confirmation", title: @event.title)
+      redirect_to unit_events_path(current_unit), notice: t("events.update_confirmation", title: @event.title)
     else
       redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
     end
@@ -210,24 +209,24 @@ class EventsController < UnitContextController
   def destroy
     authorize @event
     @event.destroy!
-    redirect_to unit_events_path(@unit), notice: "#{@event.title} has been permanently removed from the schedule."
+    redirect_to unit_events_path(current_unit), notice: "#{@event.title} has been permanently removed from the schedule."
   end
 
   def destroy_series
     authorize @event
-    events = @unit.events.where(series_parent_id: @event.id).or(Event.where(id: @event.id))
+    events = current_unit.events.where(series_parent_id: @event.id).or(Event.where(id: @event.id))
     events.destroy_all
-    redirect_to unit_events_path(@unit),
+    redirect_to unit_events_path(current_unit),
                 notice: "The #{@event.title} series has been permanently removed from the schedule."
   end
 
   # member-facing view showing all RSVPable events and their responses
   def my_rsvps
-    @events = @unit.events.rsvp_required.published.future
+    @events = current_unit.events.rsvp_required.published.future
   end
 
   def signups
-    @events = @unit.events.rsvp_required.published.future
+    @events = current_unit.events.rsvp_required.published.future
     respond_to do |format|
       format.pdf do
         render_printable_signups
@@ -238,7 +237,7 @@ class EventsController < UnitContextController
   def render_printable_signups
     events = @events.select(&:rsvp_open?)
 
-    render(pdf:         "#{@unit.name} Signups as of #{Date.today.strftime('%-d %B %Y')}",
+    render(pdf:         "#{current_unit.name} Signups as of #{Date.today.strftime('%-d %B %Y')}",
            layout:      "pdf",
            encoding:    "utf8",
            orientation: "landscape",
@@ -267,17 +266,17 @@ class EventsController < UnitContextController
       event.update!(status: :published)
     end
 
-    # TODO: EventNotifier.after_bulk_publish(@unit, events)
+    # TODO: EventNotifier.after_bulk_publish(current_unit, events)
     flash[:notice] = t("events.index.bulk_publish.success_message")
 
-    redirect_to unit_events_path(@unit)
+    redirect_to unit_events_path(current_unit)
   end
 
   # GET cancel
   # display cancel dialog where user confirms cancellation and where
   # notification options are chosen
   def cancel
-    redirect_to [@unit, @event], alert: "Event is already cancelled." and return if @event.cancelled?
+    redirect_to [current_unit, @event], alert: "Event is already cancelled." and return if @event.cancelled?
   end
 
   # POST cancel
@@ -287,7 +286,7 @@ class EventsController < UnitContextController
 
     result = service.cancel
 
-    redirect_to unit_events_path(@unit), notice: "Event has been cancelled."
+    redirect_to unit_events_path(current_unit), notice: "Event has been cancelled."
   end
 
   def organizer_package
@@ -302,7 +301,7 @@ class EventsController < UnitContextController
   # this override is needed to pass the membership instead of the user
   # as the object to be evaluated in Pundit policies
   def pundit_user
-    @current_member
+    current_member
   end
 
   private
@@ -311,7 +310,7 @@ class EventsController < UnitContextController
   # from 10 AM to 4 PM with RSVPs closing a week before start
   def build_prototype_event
     @event = Event.new(
-      unit:           @unit,
+      unit:           current_unit,
       starts_at:      28.days.from_now.next_occurring(:saturday).change({ hour: 10 }),
       ends_at:        28.days.from_now.next_occurring(:saturday).change({ hour: 16 }),
       rsvp_closes_at: 21.days.from_now.next_occurring(:saturday).change({ hour: 10 }),
@@ -335,7 +334,7 @@ class EventsController < UnitContextController
   # def destroy_series
   #   return unless @event.series_parent.present?
 
-  #   @unit.events.where(series_parent_id: @event.series_parent_id).destroy_all
+  #   current_unit.events.where(series_parent_id: @event.series_parent_id).destroy_all
   # end
 
   # set sensible default start and end times based on the day of the week
@@ -355,10 +354,8 @@ class EventsController < UnitContextController
   end
 
   def find_event
-    @event = @unit.events.includes(:event_rsvps).find(params[:event_id] || params[:id])
-    # @current_unit = @event.unit
-    # @current_member = @current_unit.membership_for(current_user)
-    @presenter = EventPresenter.new(@event, @current_member)
+    @event = current_unit.events.includes(:event_rsvps).find(params[:event_id] || params[:id])
+    @presenter = EventPresenter.new(@event, current_member)
   end
 
   # permitted parameters
@@ -421,8 +418,8 @@ class EventsController < UnitContextController
   end
 
   def find_next_and_previous_events
-    @next_event = @unit.events.published.rsvp_required.where("starts_at > ?", @event.starts_at)&.first
-    @previous_event = @unit.events.published.rsvp_required.where("starts_at < ?", @event.starts_at)&.last
+    @next_event = current_unit.events.published.rsvp_required.where("starts_at > ?", @event.starts_at)&.first
+    @previous_event = current_unit.events.published.rsvp_required.where("starts_at < ?", @event.starts_at)&.last
   end
 
   def current_layout
@@ -431,7 +428,7 @@ class EventsController < UnitContextController
 
   def prepare_turbo_stream
     if params[:before].present?
-      earliest_event = @unit.events.find(params[:before])
+      earliest_event = current_unit.events.find(params[:before])
       query_starts_at = earliest_event.starts_at.beginning_of_month - 1.month
       query_ends_at = earliest_event.starts_at
     elsif params[:year].present? && params[:month].present?
@@ -440,10 +437,10 @@ class EventsController < UnitContextController
     end
 
     scope = Event.unscoped.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
-    scope = scope.where(unit_id: @unit.id)
+    scope = scope.where(unit_id: current_unit.id)
     scope = scope.where("starts_at >= ? AND starts_at < ?", query_starts_at, query_ends_at)
     scope = scope.order(starts_at: :asc)
-    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
 
     @events = scope.all
   end
@@ -453,65 +450,65 @@ class EventsController < UnitContextController
   end
 
   def scope_for_calendar
-    scope = @unit.events
-    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope = current_unit.events
+    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
     scope.where("starts_at BETWEEN ? AND ?", @start_date - 1.week, @end_date + 1.week)
   end
 
   def scope_for_list
-    scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = if params[:season] == "next"
-              scope.where("starts_at BETWEEN ? AND ?", @unit.next_season_starts_at, @unit.next_season_ends_at)
+              scope.where("starts_at BETWEEN ? AND ?", current_unit.next_season_starts_at, current_unit.next_season_ends_at)
             else
               scope.where("starts_at BETWEEN ? AND ?", @start_date.in_time_zone, @end_date.in_time_zone)
             end
-    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
     scope.order(starts_at: :asc)
   end
 
   def scope_for_pdf
-    scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = if params[:season] == "next"
-              scope.where("starts_at BETWEEN ? AND ?", @unit.next_season_starts_at, @unit.next_season_ends_at)
+              scope.where("starts_at BETWEEN ? AND ?", current_unit.next_season_starts_at, current_unit.next_season_ends_at)
             else
-              scope.where("starts_at BETWEEN ? AND ?", Date.current.beginning_of_month, @unit.season_ends_at)
+              scope.where("starts_at BETWEEN ? AND ?", Date.current.beginning_of_month, current_unit.season_ends_at)
             end
-    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
     scope.order(starts_at: :asc)
   end
 
   def scope_for_paged_list
-    scope = @unit.events.future.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
-    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope = current_unit.events.future.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
     scope.order(starts_at: :asc)
   end
 
   # def find_list_events
-  #   scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
-  #   scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+  #   scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+  #   scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
   #   scope = params[:before].present? ? scope.where("id < ?", params[:before]) : scope.future
   #   scope.order(starts_at: :asc)
   #   @events = scope.all
   # end
 
   def find_list_events
-    scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
-    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
     scope = params[:before].present? ? scope.where("id < ?", params[:before]) : scope.future
     scope.order(starts_at: :asc)
     set_page_and_extract_portion_from scope
   end
 
   def find_threeup_events
-    scope = @unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
-    scope = scope.published unless EventPolicy.new(current_member, @unit).view_drafts?
+    scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
     scope = scope.where("ends_at > ? AND starts_at < ?", @start_date.beginning_of_month, @end_date)
     scope.order(starts_at: :asc)
     @events = scope.all
   end
 
   def send_fridge_calendar
-    pdf = Pdf::FridgeCalendar.new(@unit, scope_for_pdf.all)
+    pdf = Pdf::FridgeCalendar.new(current_unit, scope_for_pdf.all)
     send_data(pdf.render, filename: pdf.filename, type: "application/pdf", disposition: "inline")
   end
 

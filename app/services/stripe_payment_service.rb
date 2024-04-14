@@ -5,7 +5,7 @@ class StripePaymentService
   STRIPE_PERCENTAGE = 0.029.freeze
 
   attr_accessor :unit
-  
+
   def initialize(unit)
     @unit = unit
     @payment_account = unit.payment_account
@@ -17,7 +17,7 @@ class StripePaymentService
     return 0 if @payment_account.transaction_fees_covered_by == "unit"
 
     multiplier = 1.0
-    fee = (subtotal * STRIPE_PERCENTAGE + STRIPE_BASE_FEE).round(2)
+    fee = ((subtotal * STRIPE_PERCENTAGE) + STRIPE_BASE_FEE).round(2)
     multiplier = 0.5 if @payment_account.transaction_fees_covered_by == "split_50_50"
 
     fee * multiplier

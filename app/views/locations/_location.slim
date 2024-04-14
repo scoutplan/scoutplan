@@ -1,5 +1,5 @@
 div.px-2.py-4.hover:bg-stone-100.dark:hover:bg-black
-  = link_to edit_unit_location_path(@unit, location),
+  = link_to edit_unit_location_path(current_unit, location),
             data: { turbo_action: "advance" } do
 
     = content_tag :div, location.name || location.map_name || "No name", class: "font-bold"

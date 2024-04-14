@@ -10,7 +10,7 @@
                   data: { action: "event-edit#hideLocation" } do
           i.fa-solid.fa-times
 
-      = render partial: "events/locations/form", locals: { location: Location.new, unit: @unit, event: @event }
+      = render partial: "events/locations/form", locals: { location: Location.new, unit: current_unit, event: @event }
 
 javascript:
   // override the Cancel button to simply dismiss the modal

@@ -1,16 +1,8 @@
 # frozen_string_literal: true
 
-# A class to notify members about various events. A Notifier
-# wraps both email and text (and any other future communication modes).
-#
-# The Notifier is responsible for honoring Unit, Member, and User communication
-# preferences and policies.
-
-# A Notifier class for sending messages to existing members (e.g. event reminders, etc.)
 class MemberNotifier < ApplicationNotifier
   def initialize(member)
     @member = member
-    @unit = member.unit
     super()
   end
 
@@ -67,7 +59,7 @@ class MemberNotifier < ApplicationNotifier
 
   def find_events
     policy = EventPolicy.new(@member, nil)
-    @this_week_events = @unit.events.published.this_week.select { |event| policy.show? event }
-    @upcoming_events = @unit.events.published.coming_up.select { |event| policy.show? event }
+    @this_week_events = current_unit.events.published.this_week.select { |event| policy.show? event }
+    @upcoming_events = current_unit.events.published.coming_up.select { |event| policy.show? event }
   end
 end

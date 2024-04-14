@@ -5,7 +5,7 @@
         | #{@target_membership.display_first_name} can RSVP on behalf of:
       - @target_membership.children.each do |relative|
         dd
-          = link_to unit_member_path(@unit, relative), class: "inline-block py-1", data: { turbo_action: "advance" } do
+          = link_to unit_member_path(current_unit, relative), class: "inline-block py-1", data: { turbo_action: "advance" } do
             i.fad.fa-user.text-sky-500.mr-2
             = relative.full_display_name
 
@@ -17,6 +17,6 @@
 
       - @target_membership.parents.each do |relative|
         dd
-          = link_to unit_member_path(@unit, relative), class: "inline-block py-1", data: { turbo_action: "advance" } do
+          = link_to unit_member_path(current_unit, relative), class: "inline-block py-1", data: { turbo_action: "advance" } do
             i.fad.fa-user.text-rose-500.mr-2
             = relative.full_display_name

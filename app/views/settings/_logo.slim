@@ -1,12 +1,12 @@
 h2.font-bold = t('unit_settings.logo')
 
-- if @unit.logo.attached?
+- if current_unit.logo.attached?
   .bg-gray-100.p-8
-    = image_tag @unit.logo, class: 'mx-auto'
+    = image_tag current_unit.logo, class: 'mx-auto'
 
 br
 
-= form_for @unit, url: update_unit_settings_path(@unit) do |f|
+= form_for current_unit, url: update_unit_settings_path(current_unit) do |f|
   = f.file_field :logo, class: 'px-4 py-2 rounded bg-gray-100 uppercase font-bold text-sm'
   br
   br

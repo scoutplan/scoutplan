@@ -1,7 +1,7 @@
-- return unless Flipper.enabled? :event_brief, @current_member
+- return unless Flipper.enabled? :event_brief, current_member
 
 li
-  = link_to unit_event_path(@unit, @event, format: :pdf),
+  = link_to unit_event_path(current_unit, @event, format: :pdf),
             class: "block px-4 py-2 hover:bg-brand-600",
             data: { turbo_action: "advance" } do
     i.fa-solid.fa-print.fa-fw.mr-2

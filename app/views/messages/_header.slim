@@ -8,13 +8,13 @@ header.flex.flex-row.justify-between.items-center.pb-4.mb-2.border-b.dark:border
         i.fa-solid.fa-chevron-down.ml-3.text-stone-500.dark:text-stone-400
 
     nav.dropdown-menu.absolute.top-full.right-0.mt-2.w-full.md:w-48.bg-messages-700.text-white.drop-shadow-lg.rounded-b
-      = link_to drafts_unit_messages_path(@unit),
+      = link_to drafts_unit_messages_path(current_unit),
                 class: "draft-messages-link block px-4 py-2 font-bold hover:bg-messages-800",
                 data: { turbo_action: "advance" } do
         i.fa-fw.fa-regular.fa-file-pen.mr-2
         = "Drafts"
 
-      = link_to sent_unit_messages_path(@unit),
+      = link_to sent_unit_messages_path(current_unit),
                 class: "sent-messages-link block px-4 py-2 font-bold hover:bg-messages-800",
                 data: { turbo_action: "advance" } do
         i.fa-fw.fa-regular.fa-paper-plane.mr-2
@@ -22,7 +22,7 @@ header.flex.flex-row.justify-between.items-center.pb-4.mb-2.border-b.dark:border
 
   .right
     - if policy(:message).new? || true
-      = link_to new_unit_message_path(@unit),
+      = link_to new_unit_message_path(current_unit),
                 class: "block px-4 py-2 rounded font-bold text-white bg-messages-700 hover:bg-messages-800 dark:hover:bg-messages-600",
                 data: { turbo_frame: "main", turbo_action: "advance" },
                 title: t("messages.tooltips.new_message") do

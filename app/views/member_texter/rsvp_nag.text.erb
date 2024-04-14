@@ -1,2 +1,2 @@
-Hi, <%= @member.display_first_name %>, <%= @unit.name %> here. We need your RSVP for the upcoming <%= @event.title %> event.
-Visit <%= magic_url_for(@member, unit_event_rsvp_path(@unit, @event)) %> to see details and respond. Thanks!
+Hi, <%= @member.display_first_name %>, <%= current_unit.name %> here. We need your RSVP for the upcoming <%= @event.title %> event.
+Visit <%= magic_url_for(@member, unit_event_rsvp_path(current_unit, @event)) %> to see details and respond. Thanks!

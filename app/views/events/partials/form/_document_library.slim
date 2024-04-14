@@ -1,8 +1,8 @@
 #document_library_overlay.fixed.inset-0.z-40.hidden
   #document_library_field.absolute.inset-0.py-24.backdrop-blur-sm.bg-black/20
     .max-w-lg.mx-auto.bg-white.px-6.pb-6.rounded.h-full.overflow-scroll
-      = render partial: "events/partials/document_library/header", locals: { unit: @unit, event: @event }
-      = render partial: "events/partials/document_library/form", locals: { unit: @unit, event: @event }
+      = render partial: "events/partials/document_library/header", locals: { unit: current_unit, event: @event }
+      = render partial: "events/partials/document_library/form", locals: { unit: current_unit, event: @event }
 
 javascript:
   // override the Cancel button to simply dismiss the modal

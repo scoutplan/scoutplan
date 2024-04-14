@@ -1,5 +1,5 @@
 - return unless @event.requires_payment? && \
-                Flipper.enabled?(:payments, @current_member) && \
+                Flipper.enabled?(:payments, current_member) && \
                 Flipper.enabled?(:payments, @current_unit) && \
                 @current_unit.payments_enabled?
 
@@ -25,7 +25,7 @@ section.py-4.font-bold.border-t.border-stone-800.dark:border-stone-700
                       onclick: "document.querySelector('#payment_breakout').classList.toggle('hidden'); return false;" do
               i.fa-regular.fa-info-circle.text-stone-500.ml-2
 
-            = link_to new_unit_event_payment_path(@unit, @event, payment_method: :stripe),
+            = link_to new_unit_event_payment_path(current_unit, @event, payment_method: :stripe),
                       class: "grow text-center inline-block rounded px-4 py-2 bg-lime-600 hover:bg-lime-700 text-lime-50",
                       data: { turbo: false } do
               i.fa-solid.fa-credit-card.mr-2
@@ -71,11 +71,11 @@ section.py-4.font-bold.border-t.border-stone-800.dark:border-stone-700
           - if @transaction_fee.positive?
             = number_to_currency(@transaction_fee, precision: 2)
           - else
-            = "Covered by #{@unit.name}"
+            = "Covered by #{current_unit.name}"
 
       - if @total_paid.positive?
         tr.border-t.border-lime-500
-          td.pr-2.py-1 = link_to "Previously paid", profile_payments_path(@current_member), class: "text-blue-500 underline hover:no-underline", data: { turbo_action: "advance" }
+          td.pr-2.py-1 = link_to "Previously paid", profile_payments_path(current_member), class: "text-blue-500 underline hover:no-underline", data: { turbo_action: "advance" }
           td
           td
           td

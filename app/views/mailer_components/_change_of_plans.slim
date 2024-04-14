@@ -4,6 +4,6 @@ section(style="border-top:1px solid #ccc; padding-top: 1rem;")
   h2 Change of plans? Let us know.
   p(style="margin: 1rem 0 0.5rem 0;")
     = link_to "Update your RSVP",
-              magic_url_for(@recipient, unit_event_family_rsvps_url(@unit, @event)),
+              magic_url_for(@recipient, unit_event_family_rsvps_url(current_unit, @event)),
               class: "button button-rsvp"
   p.text-sm(style="color: #888;")RSVPs close #{string_for_time_internal_from_day(@event.rsvp_closes_at)}

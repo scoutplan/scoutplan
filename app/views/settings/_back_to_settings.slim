@@ -1,5 +1,5 @@
 nav.mb-6.mt-4
-  = link_to unit_settings_path(@unit),
+  = link_to unit_settings_path(current_unit),
             class: "text-teal-600 font-bold text-center",
             data: { turbo_action: "advance" } do
     i.fa-solid.fa-chevron-left.mr-2

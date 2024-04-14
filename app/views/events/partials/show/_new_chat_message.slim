@@ -1,18 +1,18 @@
-- return unless ChatMessagePolicy.new(@current_member, ChatMessage.new).create?
+- return unless ChatMessagePolicy.new(current_member, ChatMessage.new).create?
 
 - if @event.chat.messages.count.zero?
   p.font-bold.text-stone-400.text-sm.mb-4
     = "No one has posted in the discussion yet."
 
 = form_with(model: ChatMessage.new,
-            url: unit_event_discussion_index_path(@unit, @event),
+            url: unit_event_discussion_index_path(current_unit, @event),
             :method => :post,
             :remote => true) do |f|
-  - if ChatMessagePolicy.new(@current_member, ChatMessage.new).impersonate? && params[:impersonate].present?
+  - if ChatMessagePolicy.new(current_member, ChatMessage.new).impersonate? && params[:impersonate].present?
     #chat_impersonation.text-xs.mb-2
       = f.label :post_as, class: "block mb-1 font-bold text-red-500"
       = f.select :author_id,
-                options_for_select(@unit.members.map { |m| [m.short_display_name, m.id] }, @current_member.id),
+                options_for_select(current_unit.members.map { |m| [m.short_display_name, m.id] }, current_member.id),
                 { include_blank: "Send as..." },
                 { class: "block w-full border border-red-500 placeholder-stone-300 rounded p-2 text-xs font-bold text-red-500" }
 

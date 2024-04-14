@@ -1,12 +1,12 @@
 header
   .logo
-    a href="/" = "#{@unit.name} #{@unit.location}"
+    a href="/" = "#{current_unit.name} #{current_unit.location}"
 
   nav.main-nav
     a href="history" History
     a href="eagles" Eagle Scouts
     a href="contact" Contact
-    = link_to "Member Login", unit_events_url(@unit, host: "go.scoutplan-local.org")
+    = link_to "Member Login", unit_events_url(current_unit, host: "go.scoutplan-local.org")
 
   nav.cta
     a href="https://my.scouting.org/more-info/8309f208-e265-428c-a846-8417d4a1b72b&beascout=true" Become a scout

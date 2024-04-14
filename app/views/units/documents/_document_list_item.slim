@@ -5,7 +5,7 @@ tr.hover:bg-stone-100.multi-selector-wrapper
 
   td.border-t.px-2.py-2
     .w-4.shrink-0
-    - if UnitDocumentPolicy.new(@current_member, document_list_item).edit?
+    - if UnitDocumentPolicy.new(current_member, document_list_item).edit?
       = check_box_tag "document_ids[]", value: document_list_item.id, class: "multi-selector", data: { action: "change->document-index#openMultiSelect" }
 
   td.border-t.px-2.py-2

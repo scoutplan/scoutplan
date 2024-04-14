@@ -16,7 +16,6 @@ class RsvpNagMailer < ApplicationMailer
   def setup
     @recipient = params[:recipient]
     @event = params[:event]
-    @unit = @event.unit
   end
 
   def subject

@@ -1,5 +1,5 @@
 - task_key = "rsvp_nag"
-- enabled = @unit.settings(:communication).rsvp_nag == "true"
+- enabled = current_unit.settings(:communication).rsvp_nag == "true"
 - icon_class = t("settings.icons.#{task_key}")
 - icon_color = t("settings.icon_colors.#{task_key}")
 
@@ -17,9 +17,9 @@ article#rsvp_nag_settings.py-4.switch-toggle-container.border.border-stone-400.r
     = label_tag :rsvp_nag_day_of_week, "Send on", class: "block font-bold mb-1"
 
     .flex.flex-row.gap-2.items-center
-      = weekday_select "settings[communication]", "rsvp_nag_day_of_week", { selected: @unit.settings(:communication).rsvp_nag_day_of_week.capitalize }, class: "w-full rounded border-stone-400"
+      = weekday_select "settings[communication]", "rsvp_nag_day_of_week", { selected: current_unit.settings(:communication).rsvp_nag_day_of_week.capitalize }, class: "w-full rounded border-stone-400"
       = " at "
-      = select_hour(@unit.settings(:communication).rsvp_nag_hour_of_day.to_i,
+      = select_hour(current_unit.settings(:communication).rsvp_nag_hour_of_day.to_i,
                     { prefix: "settings[communication]",
                       field_name: "rsvp_nag_hour_of_day",
                       leading_zeros: false,

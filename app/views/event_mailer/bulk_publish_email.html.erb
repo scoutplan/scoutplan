@@ -1,4 +1,4 @@
-<h1>New Calendar Items for <%= @unit.name %></h1>
+<h1>New Calendar Items for <%= current_unit.name %></h1>
 <ul>
   <% @events.each do |event| %>
     <li>
@@ -8,4 +8,4 @@
   <% end %>
 </ul>
 
-<p><%= link_to "View the full #{@unit.name} calendar", @url %></p>
+<p><%= link_to "View the full #{current_unit.name} calendar", @url %></p>

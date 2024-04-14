@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# a landscape view printable calendar with three columns (generally one column
-# per month)
-
 # rubocop:disable Metrics/ClassLength
 class Pdf::FridgeCalendar < Prawn::Document
   MAX_COLUMN_COUNT = 3
@@ -24,20 +21,9 @@ class Pdf::FridgeCalendar < Prawn::Document
     "#{@unit.name} Schedule as of #{DateTime.now.in_time_zone(@unit.settings(:locale).time_zone).strftime('%d %B %Y')}.pdf"
   end
 
-  def embed_fonts
-    return
-
-    font_families.update(
-      "FontAwesome" => {
-        normal: Rails.root.join("app/assets/webfonts/fa-solid-900.ttf")
-      }
-    )
-  end
-
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
   def render_calendar
-    embed_fonts
     define_grid(columns: 3, rows: 1, gutter: 20)
     @current_column = 0
 
@@ -169,53 +155,4 @@ class Pdf::FridgeCalendar < Prawn::Document
   end
 end
 
-  # def render_old
-  #   @events_by_month = @events.group_by { |e| [e.starts_at.year, e.starts_at.month] }
-
-  #   define_grid(columns: 3, rows: 1, gutter: 20)
-  #   @current_column = 0
-  #   @current_year = nil
-  #   self.line_width = 1
-
-  #   @events_by_month.each do |year_month, events|
-  #     year = year_month[0]
-  #     month = year_month[1]
-
-  #     grid(0, @current_column).bounding_box do
-  #       month_header = Date::MONTHNAMES[month]
-
-  #       if @current_year.nil? || year != @current_year
-  #         month_header = "#{Date::MONTHNAMES[month]} #{year}"
-  #         @current_year = year
-  #       end
-
-  #       # render month header
-  #       move_down 20
-  #       font_size 16
-  #       formatted_text [
-  #         { text: month_header, styles: [:bold], color: COLOR_BRAND, kerning: true }
-  #       ]
-  #       font_size 10
-  #       self.line_width = 1
-  #       stroke_horizontal_rule
-  #       move_down 10
-
-  #       # iterate over events
-  #       self.line_width = 0.5
-  #       @presenter = EventPresenter.new
-  #       @presenter.plain_text = true
-  #       @current_row = 0
-
-  #       events.each_with_index do |event, index|
-  #         render_event event
-  #       end
-  #     end
-  #     # render the month's events
-
-  #     @current_column += 1
-  #     if @current_column == 3
-  #       start_new_page
-  #       @current_column = 0
-  #     end
-  #   end
-  # end
+# rubocop:enable Metrics/ClassLength

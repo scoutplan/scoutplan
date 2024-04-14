@@ -5,7 +5,7 @@
     header.flex.flex-row.justify-between.items-center
       h1.font-bold.text-4xl = @page.title
 
-      = link_to t("wiki_pages.show.edit"), edit_unit_wiki_page_path(@unit, @page), class: "rounded border border-brand-500 text-brand-500 px-4 py-2 hover:bg-stone-100 hover:text-brand-600 font-bold", data: { turbo_action: "advance" }
+      = link_to t("wiki_pages.show.edit"), edit_unit_wiki_page_path(current_unit, @page), class: "rounded border border-brand-500 text-brand-500 px-4 py-2 hover:bg-stone-100 hover:text-brand-600 font-bold", data: { turbo_action: "advance" }
 
     .text-sm.font-bold.flex.flex-row.gap-1.py-2
       = render partial: "tag_list", locals: { tags: @page.wiki_page_tags, tag_class: "inline border rounded py-1 px-2" }
@@ -14,4 +14,4 @@
       == @page.body
   
   javascript:
-    document.title = "#{@page.title} · #{@unit.name}"
+    document.title = "#{@page.title} · #{current_unit.name}"

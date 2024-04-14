@@ -1,4 +1,4 @@
-= form_with model: [@unit, @packing_list] do |f|
+= form_with model: [current_unit, @packing_list] do |f|
   .flex.flex-col.gap-3
     section
       = f.label :name, class: "font-bold block mb-1"

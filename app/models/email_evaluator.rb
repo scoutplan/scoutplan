@@ -46,6 +46,8 @@ class EmailEvaluator
     "#{AI_PROMPT}\n\nText: #{@mail.body}"
   end
 
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def evaluate
     to_address = @mail.to.first
     from_address = @mail.from.first
@@ -67,6 +69,8 @@ class EmailEvaluator
 
     perform_ai_parsing if ai_parseable?
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 
   def find_event
     @mail.to.first.match(REGEXP_EVENT) do |m|
@@ -84,14 +88,17 @@ class EmailEvaluator
     end
   end
 
+  # OpenAI prompt:
+  # We are planning an event and receiving responses via email. From the following email text, generate a table of people, including me, and whether they're attending:
+  # Timmy, Taylor, and I will be there. Sally can't make it.
   def perform_ai_parsing
     client = OpenAI::Client.new(access_token: ENV.fetch("OPENAI_ACCESS_TOKEN"))
     response = client.completions(
       parameters: {
-        model: "gpt-3.5-turbo-instruct",
-        prompt: ai_prompt,
+        model:       "gpt-3.5-turbo-instruct",
+        prompt:      ai_prompt,
         temperature: 0,
-        max_tokens: 1000
+        max_tokens:  1000
       }
     )
 
@@ -103,12 +110,8 @@ class EmailEvaluator
       line_parts = line.split(" | ")
       next unless line_parts.length == 2
 
-      name = line_parts.first
-      attending = line_parts.last != "No"
+      # name = line_parts.first
+      # attending = line_parts.last != "No"
     end
   end
 end
-
-# We are planning an event and receiving responses via email. From the following email text, generate a table of people, including me, and whether they're attending:
-
-# Timmy, Taylor, and I will be there. Sally can't make it.

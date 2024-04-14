@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
-# responsible for performing bulk user imports
 class UnitMembershipsImportController < ApplicationController
   def new
-    @current_unit = @unit = Unit.find(params[:unit_id])
-    @current_member = @unit.membership_for(current_user)
+    @unit = Unit.find(params[:unit_id])
     authorize :member_import, :create?
-    page_title @unit.name, "Import Members"
+    page_title @current_unit.name, "Import Members"
   end
 
   def create
-    @current_unit = @unit = Unit.find(params[:unit_id])
-    @current_member = @unit.membership_for(current_user)
-    return unless @current_member.admin?
+    @unit = Unit.find(params[:unit_id])
+    current_member = @current_unit.membership_for(current_user)
+    return unless current_member.admin?
 
     file = params[:roster_file]
     results = CsvMemberImporter.perform_import(file, @unit)
@@ -21,6 +19,6 @@ class UnitMembershipsImportController < ApplicationController
   end
 
   def pundit_user
-    @current_member
+    current_member
   end
 end

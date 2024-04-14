@@ -1,5 +1,5 @@
 li
-  = link_to unit_unit_membership_path(@unit, member),
+  = link_to unit_unit_membership_path(current_unit, member),
     class: "block py-2 px-2 hover:bg-stone-100",
     data: { turbo_action: "advance", turbo_frame: "_top" } do
     

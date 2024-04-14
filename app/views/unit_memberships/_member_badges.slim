@@ -1,6 +1,6 @@
 span.text-xs.font-bold.whitespace-nowrap.flex.flex-row.gap-1
   - if unit_membership.admin?
-    span.inline-block.py-1.px-2.border.rounded-md.text-emerald-500.border-emerald-500(title="#{@unit.name} Administrator")
+    span.inline-block.py-1.px-2.border.rounded-md.text-emerald-500.border-emerald-500(title="#{current_unit.name} Administrator")
       i.fa-solid.fa-user-crown.mr-1 
       = "Administrator"
 

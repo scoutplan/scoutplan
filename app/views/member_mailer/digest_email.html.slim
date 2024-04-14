@@ -1,13 +1,13 @@
 - service = RsvpService.new(@member)
 
 - content_for :title do
-  = "This week at #{@unit.name}"
+  = "This week at #{current_unit.name}"
 
 - content_for :left_column do
 
   // outstanding RSVPs
   - if (unresponded_count = service.unresponded_events.count).positive?
-    = magic_link_to @member, unit_my_rsvps_url(@unit),
+    = magic_link_to @member, unit_my_rsvps_url(current_unit),
               style: "display:block;margin-bottom:1rem;color:#E66425;font-weight:bold;text-decoration:none;" do
                     
       div
@@ -32,8 +32,8 @@
 
 - content_for :footer do
   div(style="text-align:center;")
-    = magic_link_to @member, "Full #{ @unit.name} schedule",
-              unit_events_url(@unit),
+    = magic_link_to @member, "Full #{ current_unit.name} schedule",
+              unit_events_url(current_unit),
               style: "border:1px solid #F5F5F4;color:#F5F5F4;display:inline-block;padding:0.5rem 2rem;border-radius:4px;text-align:center;text-decoration:none;font-size:80%;font-weight:600;letter-spacing:1px;text-transform:uppercase;"
 
 css:

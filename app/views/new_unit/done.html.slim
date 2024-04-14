@@ -1,8 +1,8 @@
 h1.text-2xl.mb-4.font-bold = "Finished"
 
 p.mb-4
-  = "#{@unit.name} is all set up! From here you can:"
-  = link_to "add an event to your unit schedule", new_unit_event_path(@unit), class: "font-bold text-blue-500"
+  = "#{current_unit.name} is all set up! From here you can:"
+  = link_to "add an event to your unit schedule", new_unit_event_path(current_unit), class: "font-bold text-blue-500"
   = ", or "
-  = link_to "add members to your unit", new_unit_member_path(@unit), class: "font-bold text-blue-500"
+  = link_to "add members to your unit", new_unit_member_path(current_unit), class: "font-bold text-blue-500"
 

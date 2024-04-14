@@ -7,11 +7,11 @@ html(style="height:100%;")
       tr
         td(valign="top")
           table(style="width: 100%; background: #f5f5f4; color: #292524;" cellpadding=0 cellspacing=0)
-            - if @unit&.logo&.attached?
+            - if current_unit&.logo&.attached?
               tr
                 td(style="padding-top: 30px;" valign="top" align="center")
                   = link_to root_url, style: "display:block;" do
-                    = image_tag "data:image/#{@unit&.logo.filename.extension};base64,#{Base64.encode64(@unit.logo.blob.download)}",
+                    = image_tag "data:image/#{current_unit&.logo.filename.extension};base64,#{Base64.encode64(current_unit.logo.blob.download)}",
                                 style: "width:80%;max-height:150px;width:auto;text-decoration:none;color:rgb(255,255,255,1.0);"
 
             tr
@@ -36,8 +36,8 @@ html(style="height:100%;")
                 - if content_for?(:footer)
                   = yield :footer
 
-                - else @recipient.present? && @unit.present?
-                  = render partial: "layouts/default_footer", locals: { recipient: @recipient, unit: @unit }
+                - else @recipient.present? && current_unit.present?
+                  = render partial: "layouts/default_footer", locals: { recipient: @recipient, unit: current_unit }
   css:
     body {
       color: #333;

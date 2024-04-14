@@ -3,7 +3,7 @@
 
 = javascript_include_tag "events_form"
 
-.form-wrapper(class="#{@event.online ? 'online-event' : ''}" data-controller="body-classer event-edit" data-event-edit-season-end-date-value="#{ @unit.this_season_ends_at.to_datetime.iso8601 }" data-event-edit-unit-id-value="#{ @unit.id }" )
+.form-wrapper(class="#{@event.online ? 'online-event' : ''}" data-controller="body-classer event-edit" data-event-edit-season-end-date-value="#{ current_unit.this_season_ends_at.to_datetime.iso8601 }" data-event-edit-unit-id-value="#{ current_unit.id }" )
 
   .mx-auto.max-w-3xl.relative
     = render partial: "components/cancelled_badge" if @event.cancelled?
@@ -18,7 +18,7 @@
           = t("events.titles.edit")
 
     = form_with model: @event, scope: "event",
-                url: @event.new_record? ? unit_events_path(@unit) : unit_event_path(@unit, @event),
+                url: @event.new_record? ? unit_events_path(current_unit) : unit_event_path(current_unit, @event),
                 method: @event.new_record? ? "post" : "patch",
                 data: { turbo: false } do |f|
                 

@@ -1,4 +1,4 @@
-- categories = @unit.event_categories
+- categories = current_unit.event_categories
 
 .max-w-lg.mx-auto
   = link_to member_profile_path(@member.id),
@@ -11,7 +11,7 @@
 
   = content_tag(:div, data: { controller: "calendar-preferences" })
     .flex.flex-col.gap-4
-      p.font-bold When you <a href="#" class="text-blue-500 underline">subscribe to the #{@unit.name} schedule</a>, Scoutplan can add alerts to your calendar based on event categories.
+      p.font-bold When you <a href="#" class="text-blue-500 underline">subscribe to the #{current_unit.name} schedule</a>, Scoutplan can add alerts to your calendar based on event categories.
         Select an event category and then choose your alert preferences for that category.
 
       = collection_select nil, :event_category_id, categories, :id, :name,
@@ -19,7 +19,7 @@
                           { class: "block py-2 w-full rounded border border-stone-400 font-bold",
                             data: { action: "change->calendar-preferences#changeCategory" } }
 
-      - @unit.event_categories.each do |event_category|
+      - current_unit.event_categories.each do |event_category|
         = render partial: "event_category_preferences", locals: { member: @member, event_category: event_category }
 
 

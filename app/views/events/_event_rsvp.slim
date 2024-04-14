@@ -1,6 +1,6 @@
 // partial used in my_rsvps to render a single event
 
-- presenter = EventPresenter.new(event, @current_member)
+- presenter = EventPresenter.new(event, current_member)
 
 article.px-2.py-3
   .flex.flex-row.justify-between
@@ -20,14 +20,14 @@ article.px-2.py-3
           = presenter.location
       
       p
-        = link_to t("events.index.rsvp.show_details"), unit_event_path(@unit, event),
+        = link_to t("events.index.rsvp.show_details"), unit_event_path(current_unit, event),
           class: "text-blue-600 hover:underline",
           data: { turbo_action: "advance" }
 
     // right
     div.font-semibold.align-middle
       - rsvp_count = 0
-      - family = @current_member.family
+      - family = current_member.family
       - family.each do |member|
         - rsvp = event.rsvp_for(member)
         - rsvp_count += 1 if rsvp.present?

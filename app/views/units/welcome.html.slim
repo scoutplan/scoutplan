@@ -1,11 +1,11 @@
 .max-w-md.mx-auto
   header.mb-4
     h1.text-4xl.font-bold.mb-4
-      = "Welcome to Scoutplan, #{@current_member.first_name}!"
+      = "Welcome to Scoutplan, #{current_member.first_name}!"
 
   .flex.flex-col.gap-6
     article
-      p.text-lg #{@unit.name} uses Scoutplan to plan and track events, and to communicate with members.
+      p.text-lg #{current_unit.name} uses Scoutplan to plan and track events, and to communicate with members.
   
     article
       h2.font-bold.text-lg
@@ -17,14 +17,14 @@
       h2.font-bold.text-lg
         i.fa-solid.fa-calendar.fa-fw.text-emerald-500.mr-2
         | Subscribing to the calendar
-      p.text-lg You can add the #{@unit.name} schedule to your favorite calendar app by subscribing to the calendar:
+      p.text-lg You can add the #{current_unit.name} schedule to your favorite calendar app by subscribing to the calendar:
    
     article
       h2.font-bold.text-lg
         i.fa-solid.fa-calendar.fa-fw.text-emerald-500.mr-2
-        | #{@unit.name} schedule
+        | #{current_unit.name} schedule
       p.text-lg See a list of all upcoming events
 
 
 javascript:
-  document.title = "Welcome · #{@unit.name}!"
+  document.title = "Welcome · #{current_unit.name}!"

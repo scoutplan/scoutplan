@@ -6,6 +6,8 @@ class MessageMailer < ApplicationMailer
   before_action :set_message
   before_action :attach_files
 
+  attr_reader :unit
+
   def message_notification
     Rails.logger.warn("MessageMailer#message_notification to: #{to_address} from: #{from_address}")
     mail(to: to_address, from: from_address, reply_to: @message.email, subject: subject)
@@ -21,8 +23,8 @@ class MessageMailer < ApplicationMailer
 
   def from_address
     email_address_with_name(
-      @unit.from_address,
-      "#{@message.author.full_display_name} at #{@unit.name}"
+      unit.from_address,
+      "#{@message.author.full_display_name} at #{unit.name}"
     )
   end
 
@@ -33,7 +35,7 @@ class MessageMailer < ApplicationMailer
   end
 
   def subject
-    "[#{@unit.name}] #{@message.title}"
+    "[#{unit.name}] #{@message.title}"
   end
 
   def to_address

@@ -2,7 +2,6 @@
 
 require "rails_helper"
 
-# rubocop:disable Metrics/BlockLength
 describe "payments", type: :feature do
   before do
     @unit = FactoryBot.create(:unit_with_members)

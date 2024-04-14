@@ -1,6 +1,6 @@
 - accepted_reachable_rsvps = @event.rsvps.accepted.select { |r| r.member.contactable? }
-- recipients = [ ["Active Members (#{@unit.members.status_active.count} total, #{@unit.members.status_active.adult.count} adults)", "active_members"],
-                 ["Active + Family & Friends (#{@unit.members.select{|m| !m.status_inactive?}.count} total, #{@unit.members.adult.select{|m| !m.status_inactive?}.count} adults)", "all_members"] ]
+- recipients = [ ["Active Members (#{current_unit.members.status_active.count} total, #{current_unit.members.status_active.adult.count} adults)", "active_members"],
+                 ["Active + Family & Friends (#{current_unit.members.select{|m| !m.status_inactive?}.count} total, #{current_unit.members.adult.select{|m| !m.status_inactive?}.count} adults)", "all_members"] ]
 
 - recipients << ["Planned attendees (#{accepted_reachable_rsvps.count})", "event_#{@event.id}_attendees"] if @event.rsvps.present?
 - switch_caption = @event.new_record? ? "Notify members about this event" : "Notify members about changes to this event"

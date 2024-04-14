@@ -1,5 +1,5 @@
 li
   = link_to packing_list.name,
-            unit_packing_list_path(@unit, packing_list),
+            unit_packing_list_path(current_unit, packing_list),
             class: "block py-2 font-bold hover:text-brand-500",
             data: { turbo_action: "advance" }

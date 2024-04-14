@@ -2,13 +2,13 @@
   header.mb-8
     .flex.flex-col.md:flex-row.md:items-center.justify-between
       h1.text-3xl.font-bold.mb-2 = @gallery_title
-      = link_to new_unit_photo_path(@unit), class: "w-full md:w-fit bg-green-600 hover:bg-green-700 text-white px-4 py-3 md:py-2 font-bold rounded text-center" do
+      = link_to new_unit_photo_path(current_unit), class: "w-full md:w-fit bg-green-600 hover:bg-green-700 text-white px-4 py-3 md:py-2 font-bold rounded text-center" do
         i.fa-solid.fa-plus-circle.mr-2
         = "Post Photos"
 
   .grid.grid-cols-3.gap-4
     - @photos.each do |photo|
-      = link_to unit_photo_path(@unit, photo), data: { turbo_action: "advance" } do
+      = link_to unit_photo_path(current_unit, photo), data: { turbo_action: "advance" } do
         - if photo.image.representable?
           = image_tag photo.image.representation(resize_to_fill: [300, 300]), class: ""
         caption = photo.caption

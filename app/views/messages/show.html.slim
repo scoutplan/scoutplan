@@ -1,7 +1,7 @@
 = turbo_frame_tag "main"
   .min-w-3xl.max-w-4xl.mx-auto.pt-6
     header.mb-4
-      = link_to sent_unit_messages_path(@unit),
+      = link_to sent_unit_messages_path(current_unit),
             class: "inline-block font-bold pb-4 text-messages-700 hover:text-lime-800 dark:text-messages-500 dark:hover:text-messages-400",
             data: { turbo_action: "advance" } do
         i.fa-solid.fa-chevron-left.mr-2
@@ -18,7 +18,7 @@
                 i.fa-solid.fa-ellipsis-h
 
               .dropdown-menu.bg-messages-800.absolute.right-0.rounded-b
-                = link_to unit_message_duplicate_path(@unit, @message),
+                = link_to unit_message_duplicate_path(current_unit, @message),
                       class: "dropdown-item block whitespace-nowrap text-messages-100 px-3 py-2 hover:bg-messages-700",
                       data: { turbo_method: "post", turbo_action: "advance" } do
                   i.fa-solid.fa-copy.mr-2

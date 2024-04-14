@@ -3,9 +3,9 @@
 require "rails_helper"
 require "active_job/test_helper"
 
-include ActiveJob::TestHelper
-
 RSpec.describe EventNotifier, type: :model do
+  include ActiveJob::TestHelper
+
   describe "cancellation" do
     before do
       @event = FactoryBot.create(:event, :cancelled)

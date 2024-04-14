@@ -1,4 +1,4 @@
-- path = message.sent? ? unit_message_path(@unit, message) : edit_unit_message_path(@unit, message)
+- path = message.sent? ? unit_message_path(current_unit, message) : edit_unit_message_path(current_unit, message)
 
 article.hover:bg-stone-100.dark:hover:bg-stone-800.-mx-3.px-3
   = link_to path,
@@ -12,7 +12,7 @@ article.hover:bg-stone-100.dark:hover:bg-stone-800.-mx-3.px-3
           i.fa-regular.fa-paperclip.ml-2.text-stone-500.text-base
 
       .line-clamp-1.text-stone-500.dark:text-stone-400
-          = message.author == @current_member ? "You" : message.author.full_display_name
+          = message.author == current_member ? "You" : message.author.full_display_name
           
           i.fas.fa-arrow-right.mx-1
 

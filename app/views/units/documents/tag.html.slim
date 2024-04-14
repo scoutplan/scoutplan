@@ -1,6 +1,6 @@
 = turbo_frame_tag "main"
   = turbo_stream.update "page_title" do
-    = t(".page_title", unit_name: @unit.name)
+    = t(".page_title", unit_name: current_unit.name)
 
   = render partial: "layouts/flash"
 
@@ -8,14 +8,14 @@
 
   .max-w-7xl.relative.mt-4.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead(data-controller="document-index")
     header.mb-8.sticky.top-0
-      .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
+      .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = current_unit.name
 
       .flex.flex-row.justify-between.items-center
         .left
           h1.text-4xl.mb-2 = @title
 
         .right.flex.flex-row.gap-2
-          = link_to unit_documents_path(@unit),
+          = link_to unit_documents_path(current_unit),
                     class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded px-3 py-2",
                     title: "Document library home",
                     data: { turbo_action: "advance" } do
@@ -23,23 +23,23 @@
             = "Library"
 
           - if variant == "grid"
-            = link_to tag_variant_unit_documents_path(@unit, @tag, :list),
+            = link_to tag_variant_unit_documents_path(current_unit, @tag, :list),
                       class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded px-3 py-2",
                       title: "View as list",
                       data: { turbo_action: "advance" } do
               i.fa-fw.fa-solid.fa-list
 
           - elsif variant == "list"
-            = link_to tag_variant_unit_documents_path(@unit, @tag, :grid),
+            = link_to tag_variant_unit_documents_path(current_unit, @tag, :grid),
                       class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded px-3 py-2",
                       title: "View as grid",
                       data: { turbo_action: "advance" } do
               i.fa-fw.fa-solid.fa-grid
 
-          - if UnitDocumentPolicy.new(@current_member, Document).create?
+          - if UnitDocumentPolicy.new(current_member, Document).create?
             = render partial: "upload_form"
 
-    = form_with url: bulk_update_unit_documents_path(@unit), method: :post do |form|
+    = form_with url: bulk_update_unit_documents_path(current_unit), method: :post do |form|
       = render "multi_edit_pane"
 
       = render partial: "units/documents/#{variant}"

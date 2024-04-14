@@ -1,10 +1,10 @@
 // CENTER NAV
 ul.list-none
-  - if @current_member&.admin?
+  - if current_member&.admin?
 
     // Events
     li#main_nav_item_events.md:inline-block
-      = link_to unit_events_path(@current_unit),
+      = link_to unit_events_path(current_unit),
         class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-semibold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
         data: { turbo_frame: "main", turbo_action: "advance" } do
 
@@ -17,7 +17,7 @@ ul.list-none
   // Members
   - if policy(:unit_membership).index?
     li#main_nav_item_members.md:inline-block
-      = link_to unit_members_path(@current_unit),
+      = link_to unit_members_path(current_unit),
         class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-semibold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
         data: { turbo_frame: "main", turbo_action: "advance" } do
 
@@ -27,9 +27,9 @@ ul.list-none
         = t("main_nav.members")
 
   // Planner
-  - if policy(:event).plan? && Flipper.enabled?(:planner, @current_member)
+  - if policy(:event).plan? && Flipper.enabled?(:planner, current_member)
     li#main_nav_item_planner.md:inline-block
-      = link_to unit_plans_path(@current_unit),
+      = link_to unit_plans_path(current_unit),
         class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-semibold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
         data: { turbo_frame: "main", turbo_action: "advance" } do
 
@@ -39,9 +39,9 @@ ul.list-none
         = t("main_nav.planner")
 
   // Communication
-  - if policy(:message).new? && Flipper.enabled?(:messages, @current_member)
+  - if policy(:message).new? && Flipper.enabled?(:messages, current_member)
     li#main_nav_item_messages.md:inline-block
-      = link_to unit_messages_path(@current_unit),
+      = link_to unit_messages_path(current_unit),
         class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-semibold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
         data: { turbo_frame: "main", turbo_action: "advance" } do
 
@@ -50,19 +50,19 @@ ul.list-none
 
         = t("main_nav.communication")
 
-  - if (policy(:unit_document).index? && @unit.documents.any?) || policy(:unit_document).create?
+  - if (policy(:unit_document).index? && current_unit.documents.any?) || policy(:unit_document).create?
     li#main_nav_item_messages.md:inline-block
-      = link_to unit_documents_path(@current_unit),
+      = link_to unit_documents_path(current_unit),
         class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-semibold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
         data: { turbo_frame: "main", turbo_action: "advance" } do
 
         i.fa-solid.fa-books.mr-1
         = t("main_nav.document_library")
 
-  - if Flipper.enabled? :wiki_pages, @current_member
+  - if Flipper.enabled? :wiki_pages, current_member
     - if policy(:wiki_page).index?
       li#main_nav_item_wiki.md:inline-block
-        = link_to unit_wiki_pages_path(@current_unit),
+        = link_to unit_wiki_pages_path(current_unit),
           class: "text-brand-500 dark:text-brand-400 hover:text-brand-600 font-semibold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
           data: { turbo_frame: "main", turbo_action: "advance" } do
 

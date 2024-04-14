@@ -3,7 +3,7 @@
 require "twilio-ruby"
 require "json"
 
-# service for handling inbound SMS messages
+# rubocop:disable Metrics/ClassLength
 class SmsResponseService < ApplicationService
   attr_accessor :from, :body, :user, :context, :params, :request
 
@@ -154,7 +154,7 @@ class SmsResponseService < ApplicationService
   end
 
   def unit
-    @unit || @unit = candidate_event.unit
+    @unit ||= candidate_event.unit
   end
 
   def valid_request?

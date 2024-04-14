@@ -17,7 +17,7 @@ table.w-full.table-fixed.border-separate.border-spacing-0
         td(valign="top")
           - rsvps = event.rsvps.accepted
           - display_rsvps = rsvps.first(max_display_rsvps)
-          - presenter = EventPresenter.new(event, @current_member)
+          - presenter = EventPresenter.new(event, current_member)
           - blank_row_count = row_count - [max_display_rsvps, rsvps.size].min
 
           header

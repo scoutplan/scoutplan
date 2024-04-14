@@ -10,7 +10,7 @@
             = glyph_tag(@event)
             | &nbsp;
             = @event.title
-          p = EventPresenter.new(@event, @current_member).full_dates_to_s
+          p = EventPresenter.new(@event, current_member).full_dates_to_s
           p = event_prices(@event)
 
         section.px-6.py-2.bg-sky-900.text-sky-100.rounded-lg.my-1

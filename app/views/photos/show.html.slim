@@ -1,12 +1,12 @@
 .mx-auto.max-w-4xl
   header.mb-4
-    = link_to unit_photos_path(@unit), class: "" do
+    = link_to unit_photos_path(current_unit), class: "" do
       i.fa-solid.fa-grid.mr-1
       = "Return to gallery"
 
   .flex.flex-row.items-center
     - if @previous_photo.present?
-      = link_to unit_photo_path(@unit, @previous_photo), class: "px-4", data: { turbo_action: "advance" } do
+      = link_to unit_photo_path(current_unit, @previous_photo), class: "px-4", data: { turbo_action: "advance" } do
         i.fa-solid.fa-chevron-left.text-4xl.text-stone-300.hover:text-stone-500
 
     .flex.flex-col.gap-4
@@ -19,13 +19,13 @@
           dd = @photo.caption
           dd = @photo.description
           - if @photo.event.present?
-            dd = link_to @photo.event.title, unit_event_path(@unit, @photo.event), data: { turbo_action: "advance" }
+            dd = link_to @photo.event.title, unit_event_path(current_unit, @photo.event), data: { turbo_action: "advance" }
 
         .right-side
-          - if PhotoPolicy.new(@current_member, @photo).destroy?
-            = button_to unit_photo_path(@unit, @photo), method: :delete, data: { confirm: "Are you sure you want to delete this photo?" } do
+          - if PhotoPolicy.new(current_member, @photo).destroy?
+            = button_to unit_photo_path(current_unit, @photo), method: :delete, data: { confirm: "Are you sure you want to delete this photo?" } do
               i.fa-solid.fa-trash.text-stone-400.hover:text-stone-600
 
     - if @next_photo.present?
-      = link_to unit_photo_path(@unit, @next_photo), class: "px-4", data: { turbo_action: "advance" } do
+      = link_to unit_photo_path(current_unit, @next_photo), class: "px-4", data: { turbo_action: "advance" } do
         i.fa-solid.fa-chevron-right.text-4xl.text-stone-300.hover:text-stone-500

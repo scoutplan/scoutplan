@@ -1,4 +1,4 @@
-- rsvp_service = RsvpService.new(@current_member)
+- rsvp_service = RsvpService.new(current_member)
 
 .inline-block#notifications_wrapper
   - if (notification_count = rsvp_service.unresponded_events.count).positive?
