@@ -50,14 +50,6 @@ class EventRsvpsController < EventContextController
     @rsvp = EventRsvp.find(params[:id])
   end
 
-  def find_event
-    @event = @unit.events.find(params[:event_id])
-  end
-
-  def find_unit
-    @unit = Unit.find(params[:unit_id])
-  end
-
   def find_event_responses
     @non_respondents = @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)
     @non_invitees = @event.unit.members - @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)

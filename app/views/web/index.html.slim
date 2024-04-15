@@ -2,7 +2,7 @@ head
   = stylesheet_link_tag "https://rsms.me/inter/inter.css"
   = stylesheet_link_tag "https://use.typekit.net/yrz7cru.css"
   = render "css"
-  title = current_unit.name
+  title = @unit.name
 
 body
   = render partial: @partial_name

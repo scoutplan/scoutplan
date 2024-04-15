@@ -18,12 +18,6 @@ class MessageNotifier < ScoutplanNotifier
     true
   end
 
-  def email?
-    result = super
-    Rails.logger.warn("MessageNotifier#email? #{result}")
-    result
-  end
-
   def format_for_twilio(notification)
     recipient = notification.recipient
     params = notification.params

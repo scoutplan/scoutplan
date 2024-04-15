@@ -14,6 +14,12 @@ describe "event_rsvp", type: :feature do
     login_as(@member.user)
   end
 
+  it "displays the event rsvp popup" do
+    path = popup_unit_event_rsvps_path(@unit, @event)
+    visit path
+    expect(page).to have_current_path(path)
+  end
+
   it "records a youth rsvp" do
     skip "need to JS this"
     path = new_unit_event_family_rsvp_path(@unit, @event)
