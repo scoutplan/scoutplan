@@ -7,7 +7,7 @@
         = "#{@packing_list.name}"
 
       .flex.flex-row.gap-0
-        = button_to unit_packing_list_path(@unit, @packing_list),
+        = button_to unit_packing_list_path(current_unit, @packing_list),
                     method: :delete,
                     title: "Rename this packing list",
                     class: "text-stone-400" do
@@ -15,7 +15,7 @@
             i.fa-regular.fa-circle.fa-stack-2x
             i.fa-solid.fa-pencil.fa-stack-1x
 
-        = button_to unit_packing_list_path(@unit, @packing_list),
+        = button_to unit_packing_list_path(current_unit, @packing_list),
                     method: :delete,
                     title: "Delete this packing list",
                     class: "text-stone-400" do

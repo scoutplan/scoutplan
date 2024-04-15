@@ -2,6 +2,8 @@
 
 # business logic for Events
 class EventCreationService < ApplicationService
+  attr_reader :unit
+
   def initialize(unit = nil)
     @unit = unit
     super()
@@ -10,16 +12,16 @@ class EventCreationService < ApplicationService
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
   def create(params)
-    @event = @unit.events.new
+    @event = unit.events.new
     @event.assign_attributes(params)
 
-    zone = Time.find_zone!(@unit.time_zone)
+    zone = Time.find_zone!(unit.time_zone)
     @event.starts_at = zone.parse("#{params[:starts_at_date]} #{params[:starts_at_time]}")
     @event.ends_at = zone.parse("#{params[:ends_at_date]} #{params[:ends_at_time]}")
 
     category_name = params[:event_category_proxy_name]
-    unless @unit.event_categories.find_or_create_by(name: category_name)
-      @event.category = @unit.event_categories.create(name: category_name)
+    unless unit.event_categories.find_or_create_by(name: category_name)
+      @event.category = unit.event_categories.create(name: category_name)
     end
 
     # for some reason this isn't being assigned through assign_attributes,
@@ -36,7 +38,7 @@ class EventCreationService < ApplicationService
   private
 
   def create_category(name)
-    category = @unit.event_categories.create(name: name)
+    category = unit.event_categories.create(name: name)
     @event.category = category
   end
 

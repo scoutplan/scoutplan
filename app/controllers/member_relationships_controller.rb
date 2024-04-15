@@ -24,6 +24,6 @@ class MemberRelationshipsController < ApplicationController
   end
 
   def pundit_user
-    @current_member
+    current_member
   end
 end

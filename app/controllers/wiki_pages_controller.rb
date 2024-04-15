@@ -9,15 +9,15 @@ class WikiPagesController < UnitContextController
   end
 
   def new
-    @page = @unit.wiki_pages.new
+    @page = current_unit.wiki_pages.new
     authorize @page
   end
 
   def create
-    @page = @unit.wiki_pages.new(wiki_page_params)
+    @page = current_unit.wiki_pages.new(wiki_page_params)
     authorize @page
     if @page.save
-      redirect_to unit_wiki_pages_path(@unit)
+      redirect_to unit_wiki_pages_path(current_unit)
     else
       render :action => :new
     end
@@ -34,7 +34,7 @@ class WikiPagesController < UnitContextController
   def update
     authorize @page
     if @page.update!(wiki_page_params)
-      redirect_to unit_wiki_pages_path(@unit)
+      redirect_to unit_wiki_pages_path(current_unit)
     else
       render :action => :edit
     end
@@ -51,15 +51,15 @@ class WikiPagesController < UnitContextController
   end
 
   def find_page
-    @page = @unit.wiki_pages.find(params[:id] || params[:wiki_page_id])
+    @page = current_unit.wiki_pages.find(params[:id] || params[:wiki_page_id])
   end
 
   def find_pages
-    return @unit.wiki_pages.anyone unless user_signed_in?
+    return current_unit.wiki_pages.anyone unless user_signed_in?
 
-    return @unit.wiki_pages.anyone | @unit_wiki_pages.members_only unless @current_member.admin?
+    return current_unit.wiki_pages.anyone | current_unit_wiki_pages.members_only unless current_member.admin?
 
-    @unit.wiki_pages
+    current_unit.wiki_pages
   end
 
 

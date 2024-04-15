@@ -4,7 +4,7 @@
   .max-w-lg.mx-auto
     - unless params[:suppress_header].present?
       header.mb-4
-        = link_to unit_event_path(@unit, @event),
+        = link_to unit_event_path(current_unit, @event),
                   class: "block text-sky-800 hover:text-sky-900 mb-4",
                   data: { turbo_action: "advance" } do
           i.fa-stack
@@ -25,4 +25,4 @@
 
       dl#chat_messages.flex.flex-col.gap-1
         - @event.chat.messages.order(created_at: :desc).limit(limit).each do |message|
-          = render partial: "chat_messages/chat_message", locals: { chat_message: message, current_member: @current_member }
+          = render partial: "chat_messages/chat_message", locals: { chat_message: message, current_member: current_member }

@@ -1,6 +1,6 @@
 - return unless @event.attachments.attached? || @event.private_attachments.attached?
 
-- policy = EventPolicy.new(@current_member, @event)
+- policy = EventPolicy.new(current_member, @event)
 
 section.py-4.border-t.border-stone-800
   h2.mb-4.text-medium.font-lg

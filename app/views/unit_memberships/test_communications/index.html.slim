@@ -5,6 +5,6 @@
       p = @target_member.email
 
     = button_to "Send digest",
-                unit_member_test_communications_path(@unit, @current_member,message_type: "digest"),
+                unit_member_test_communications_path(current_unit, current_member,message_type: "digest"),
                 method: :post,
                 class: "block w-full px-4 py-2 rounded bg-stone-300 hover:bg-stone-400 dark:bg-stone-700 dark:hover:bg-stone-600 dark:text-stone-100 font-bold text-center"

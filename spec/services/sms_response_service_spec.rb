@@ -17,15 +17,15 @@ RSpec.describe SmsResponseService, type: :model do
     @service = RsvpService.new(@member, @event)
 
     values = { "type" => "event", "event_id" => @event.id, "members" => @member.family.select { |m| m.status_active? }.map(&:id) }
-    ConversationContext.create(identifier: @member.phone, values: values.to_json)    
+    ConversationContext.create(identifier: @member.phone, values: values.to_json)
   end
 
   it "is set up correctly" do
     expect(@member.family(include_self: true).count).to eq(4)
-    expect(@member.family.select { |m| m.status_active? }.count).to eq(3)
+    expect(@member.family.select(&:status_active?).count).to eq(3)
     expect(@service.family_fully_responded?).to be_falsey
   end
-  
+
   it "sets up context correctly" do
     ConversationContext.destroy_all
     params = { "From" => @member.phone, "Body" => "next" }

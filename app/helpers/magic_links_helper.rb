@@ -6,7 +6,7 @@ require "uri"
 module MagicLinksHelper
   # returns a fully-qualified URL from a member and a path. Use in lieu of
   # url_for when you want magic link.
-  # usage: magic_link_to(member, @event.title, unit_events_path(@unit, @event))
+  # usage: magic_link_to(member, @event.title, unit_events_path(current_unit, @event))
   # returns (e.g.) https://go.scoutplan.org/123456789abc
   def magic_url_for(member, options)
     return nil unless member

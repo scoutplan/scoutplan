@@ -15,24 +15,24 @@ class MessagesController < UnitContextController
 
   def index
     authorize Message
-    redirect_to drafts_unit_messages_path(@unit)
+    redirect_to drafts_unit_messages_path(current_unit)
   end
 
   def drafts
     authorize Message
-    scope = @unit.messages.includes(message_recipients: [unit_membership: :user]).draft_and_queued.with_attached_attachments.order(updated_at: :desc)
+    scope = current_unit.messages.includes(message_recipients: [unit_membership: :user]).draft_and_queued.with_attached_attachments.order(updated_at: :desc)
     set_page_and_extract_portion_from(scope.all, per_page: [20])
   end
 
   def sent
     authorize Message
-    scope = @unit.messages.includes(message_recipients: [unit_membership: :user]).sent.with_attached_attachments.order(updated_at: :desc)
+    scope = current_unit.messages.includes(message_recipients: [unit_membership: :user]).sent.with_attached_attachments.order(updated_at: :desc)
     set_page_and_extract_portion_from(scope.all, per_page: [20])
   end
 
   def outbox
     authorize Message
-    scope = @unit.messages.includes(message_recipients: [unit_membership: :user]).outbox.with_attached_attachments.order(updated_at: :desc)
+    scope = current_unit.messages.includes(message_recipients: [unit_membership: :user]).outbox.with_attached_attachments.order(updated_at: :desc)
     set_page_and_extract_portion_from(scope.all, per_page: [20])
   end
 
@@ -44,11 +44,11 @@ class MessagesController < UnitContextController
   end
 
   def create
-    @message = @unit.messages.create!(message_params)
+    @message = current_unit.messages.create!(message_params)
     associate_attachments
     handle_commit
     flash.now[:notice] = @notice
-    redirect_to unit_messages_path(@unit), notice: @notice
+    redirect_to unit_messages_path(current_unit), notice: @notice
   end
 
   def edit
@@ -61,12 +61,12 @@ class MessagesController < UnitContextController
     @message.update(message_params)
     associate_attachments
     handle_commit
-    redirect_to unit_messages_path(@unit), notice: @notice
+    redirect_to unit_messages_path(current_unit), notice: @notice
   end
 
   def destroy
     @message.destroy
-    redirect_to unit_messages_path(@unit), notice: t("messages.notices.delete_success")
+    redirect_to unit_messages_path(current_unit), notice: t("messages.notices.delete_success")
   end
 
   def duplicate
@@ -74,11 +74,11 @@ class MessagesController < UnitContextController
     new_message = @message.dup
     ap @message
     ap new_message
-    redirect_to edit_unit_message_path(@unit, new_message), notice: t("messages.notices.duplicate_success")
+    redirect_to edit_unit_message_path(current_unit, new_message), notice: t("messages.notices.duplicate_success")
   end
 
   def unpin
-    redirect_to unit_messages_path(@unit), notice: t("messages.notices.unpin_success")
+    redirect_to unit_messages_path(current_unit), notice: t("messages.notices.unpin_success")
   end
 
   def addressables; end
@@ -91,14 +91,14 @@ class MessagesController < UnitContextController
     type, id = key.split("_")
     @recipients = case type
                   when "membership"
-                    @unit.members.where(id: id).map { |m| CandidateMessageRecipient.new(m) }
+                    current_unit.members.where(id: id).map { |m| CandidateMessageRecipient.new(m) }
                   when "event"
-                    @unit.events.find(id).rsvps.accepted.map { |r| CandidateMessageRecipient.new(r.member) }
+                    current_unit.events.find(id).rsvps.accepted.map { |r| CandidateMessageRecipient.new(r.member) }
                   when "dl"
                     case id
-                    when "all" then @unit.members.status_active_and_registered.includes(:user, parents: [:user], children: [:user])
-                    when "active" then @unit.members.active.includes(:user, parents: [:user], children: [:user])
-                    when "adults" then @unit.members.active.adult.includes(:user, parents: [:user], children: [:user])
+                    when "all" then current_unit.members.status_active_and_registered.includes(:user, parents: [:user], children: [:user])
+                    when "active" then current_unit.members.active.includes(:user, parents: [:user], children: [:user])
+                    when "adults" then current_unit.members.active.adult.includes(:user, parents: [:user], children: [:user])
                     end
                   end
 
@@ -137,9 +137,9 @@ class MessagesController < UnitContextController
   end
 
   def set_addressables
-    lists = @unit.distribution_lists
-    events = @unit.events.includes(event_rsvps: [unit_membership: :user]).published.rsvp_required.recent_and_future
-    members = @unit.members.includes(:setting_objects, :event_rsvps, user: :setting_objects)
+    lists = current_unit.distribution_lists
+    events = current_unit.events.includes(event_rsvps: [unit_membership: :user]).published.rsvp_required.recent_and_future
+    members = current_unit.members.includes(:setting_objects, :event_rsvps, user: :setting_objects)
                    .order("users.last_name, users.first_name")
 
     @addressables = MessagingSearchResult.to_a(lists + events + members)
@@ -187,13 +187,13 @@ class MessagesController < UnitContextController
   end
 
   def send_preview
-    MemberNotifier.new(@current_member).send_message(@message, preview: true)
+    MemberNotifier.new(current_member).send_message(@message, preview: true)
   end
 
   def message_params
     result = params.require(:message).permit(:title, :body, :audience, :member_type,
                                              :member_status, :send_at, :author_id)
-    result.merge!(sender: @current_member)
+    result.merge!(sender: current_member)
     result
   end
 
@@ -222,7 +222,7 @@ class MessagesController < UnitContextController
   end
 
   def set_senders
-    @eligible_senders = @unit.members.adult.status_active_and_registered
+    @eligible_senders = current_unit.members.adult.status_active_and_registered
                              .includes(:user).order("users.first_name, users.last_name")
   end
 end

@@ -1,7 +1,7 @@
-- events = @unit.events
-- unit_attachments = @unit.attachments
+- events = current_unit.events
+- unit_attachments = current_unit.attachments
 
-/ - unit_attachments = @unit.attachments.where.not(record_type: "Event")
+/ - unit_attachments = current_unit.attachments.where.not(record_type: "Event")
 
 = form_with model: [unit, event] do |f|
   ul

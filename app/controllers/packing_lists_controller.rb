@@ -6,9 +6,9 @@ class PackingListsController < UnitContextController
 
   def create
     authorize :packing_list, :create?
-    @packing_list = @unit.packing_lists.new(packing_list_params)
+    @packing_list = current_unit.packing_lists.new(packing_list_params)
     if @packing_list.save
-      redirect_to unit_packing_list_path(@unit, @packing_list)
+      redirect_to unit_packing_list_path(current_unit, @packing_list)
     else
       render :new
     end
@@ -17,7 +17,7 @@ class PackingListsController < UnitContextController
   def destroy
     authorize @packing_list
     if @packing_list.destroy
-      redirect_to unit_packing_lists_path(@unit)
+      redirect_to unit_packing_lists_path(current_unit)
     else
       render :show
     end
@@ -28,7 +28,7 @@ class PackingListsController < UnitContextController
   end
 
   def show
-    @packing_list = @unit.packing_lists.find(params[:id])
+    @packing_list = current_unit.packing_lists.find(params[:id])
     authorize @packing_list
   end
 
@@ -39,6 +39,6 @@ class PackingListsController < UnitContextController
   end
 
   def find_packing_list
-    @packing_list = @unit.packing_lists.find(params[:id])
+    @packing_list = current_unit.packing_lists.find(params[:id])
   end
 end

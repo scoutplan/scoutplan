@@ -3,7 +3,7 @@
 
   .max-w-4xl.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead
     header.pb-8.border-b
-      .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = @unit.name
+      .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = current_unit.name
 
       .flex.flex-row.justify-between.items-center
         .left
@@ -12,23 +12,23 @@
 
         .right.flex.flex-row.gap-2
           .flex.flex-row
-            = link_to tag_variant_unit_documents_path(@unit, :all, :list),
+            = link_to tag_variant_unit_documents_path(current_unit, :all, :list),
                       class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded-l px-3 py-2",
                       title: "View as list",
                       data: { turbo_action: "advance" } do
               i.fa-fw.fa-solid.fa-list
 
-            = link_to tag_variant_unit_documents_path(@unit, :all, :grid),
+            = link_to tag_variant_unit_documents_path(current_unit, :all, :grid),
                       class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded-r border-l-0 px-3 py-2",
                       title: "View as grid",
                       data: { turbo_action: "advance" } do
               i.fa-fw.fa-solid.fa-grid
 
-          - if UnitDocumentPolicy.new(@current_member, Document).create?
+          - if UnitDocumentPolicy.new(current_member, Document).create?
             = render partial: "upload_form"
 
     - @home_layout.each do |element|
       = render partial: "units/documents/home_layout/#{element['type']}", locals: { element_definition: element }
 
   = turbo_stream.update "page_title" do
-    = t(".page_title", unit_name: @unit.name)
+    = t(".page_title", unit_name: current_unit.name)

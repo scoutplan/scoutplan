@@ -1,7 +1,7 @@
 section.w-full.grid.grid-cols-1.lg:grid-cols-9.gap-px.md:gap-1(
   data-controller="dashboard-drop"
   data-action="dragover->dashboard-drop#dragover dragleave->dashboard-drop#dragleave dragenter->dashboard-drop#dragenter drop->dashboard-drop#drop"
-  data-dashboard-drop-unit-id-value="#{@unit.id}"
+  data-dashboard-drop-unit-id-value="#{current_unit.id}"
   data-dashboard-drop-event-id-value="#{@event.id}")
 
   // column 1

@@ -27,7 +27,7 @@ module Users
       return unless (unit_id = cookies[:current_unit_id])
 
       begin
-        @current_unit = Unit.find(unit_id)
+        @unit = Unit.find(unit_id)
       rescue ActiveRecord::RecordNotFound
         cookies[:current_unit_id] = nil
       end
@@ -37,12 +37,12 @@ module Users
       return unless (email = params.dig(:user, :email))
 
       @user = User.find_by(email: email)
-      @current_unit ||= @user&.units&.first
+      @unit ||= @user&.units&.first
       @user
     end
 
     def send_session_email
-      member = @current_unit.membership_for(@user)
+      member = @unit.membership_for(@user)
       magic_link = MagicLink.generate_link(member, target_path, 1.hour)
       UserMailer.with(magic_link: magic_link).session_email.deliver_later
     end

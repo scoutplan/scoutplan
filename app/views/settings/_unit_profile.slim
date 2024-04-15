@@ -6,10 +6,10 @@ header.mb-8
   h1.font-bold.text-4xl
     = t("settings.titles.unit_profile")
 
-= form_for @unit, url: unit_path(@unit), class: 'w-full', builder: ApplicationFormBuilder do |f|
+= form_for current_unit, url: unit_path(current_unit), class: 'w-full', builder: ApplicationFormBuilder do |f|
   div.text-center.mb-6
-    - if @unit.logo.attached?
-      = image_tag @unit.logo,
+    - if current_unit.logo.attached?
+      = image_tag current_unit.logo,
                   class: "mx-auto mb-4 dark:invert"
                   
     = f.file_field :logo, class: "hidden", id: "file_selection_input"
@@ -39,7 +39,7 @@ header.mb-8
       = time_zone_select "settings",
                          "locale[time_zone]",
                           nil,
-                          { default: @unit.settings(:locale).time_zone },
+                          { default: current_unit.settings(:locale).time_zone },
                           { class: "w-full rounded border-stone-500  dark:bg-black" }
 
   footer.flex.flex-row.text-center.my-4

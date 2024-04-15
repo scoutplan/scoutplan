@@ -10,7 +10,7 @@
       ul
         - (1..12).each do |month|
           li
-            = link_to calendar_unit_events_path(@unit, month: "%02i" % month, year: year),
+            = link_to calendar_unit_events_path(current_unit, month: "%02i" % month, year: year),
                       class: "block hover:text-brand-500 px-1 pt-1",
                       data: { turbo_action: "advance" } do
               - if year == display_date.year && month == display_date.month

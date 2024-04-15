@@ -1,4 +1,4 @@
-- return unless @event.organizable? && EventPolicy.new(@current_member, @event).rsvps?
+- return unless @event.organizable? && EventPolicy.new(current_member, @event).rsvps?
 
 - acceptance_count = @event.rsvps.accepted_intent.count
 

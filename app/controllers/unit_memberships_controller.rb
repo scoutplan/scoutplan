@@ -1,17 +1,18 @@
-# rubocop:disable Metrics/ClassLength
-class UnitMembershipsController < ApplicationController
-  before_action :find_unit, only: %i[index new create bulk_update invite]
+# frozen_string_literal: true
+
+class UnitMembershipsController < UnitContextController
+  # before_action :find_unit, only: %i[index new create bulk_update invite]
   before_action :find_membership, except: %i[index new create bulk_update]
 
   def index
     authorize UnitMembership
-    @unit_memberships = @unit.memberships.includes(
+    @current_unit_memberships = current_unit.memberships.includes(
       :user, :tags,
       { parent_relationships: { parent_unit_membership: :user } },
       { child_relationships: { child_unit_membership: :user } }
     ).order("users.first_name, users.last_name ASC")
-    @page_title = @unit.name, t("members.titles.index", unit_name: "")
-    @membership = @unit.memberships.build
+    @page_title = current_unit.name, t("members.titles.index", unit_name: "")
+    @membership = current_unit.memberships.build
     @membership.build_user
   end
 
@@ -21,7 +22,7 @@ class UnitMembershipsController < ApplicationController
 
   def new
     authorize(UnitMembership)
-    @target_membership = @unit.memberships.build(role: "member")
+    @target_membership = current_unit.memberships.build(role: "member")
     @target_membership.build_user
   end
 
@@ -29,22 +30,22 @@ class UnitMembershipsController < ApplicationController
     authorize @target_membership
     @user = @target_membership.user
     @page_title = @user.full_name
-    @rsvp_events = @unit.events.published.future.rsvp_required
-    page_title [@unit.name, @user.full_display_name]
+    @rsvp_events = current_unit.events.published.future.rsvp_required
+    page_title [current_unit.name, @user.full_display_name]
   end
 
   # rubocop:disable Metrics/AbcSize
   def create
     find_or_create_user
 
-    @member = @unit.memberships.new(member_params)
+    @member = current_unit.memberships.new(member_params)
     @member.user_id = @user.id
     return unless @member.save!
 
     MemberRelationshipService.new(@member).update(params[:member_relationships])
 
-    flash[:notice] = t("members.confirmations.create", member_name: @member.full_display_name, unit_name: @unit.name)
-    redirect_to unit_members_path(@unit)
+    flash[:notice] = t("members.confirmations.create", member_name: @member.full_display_name, unit_name: current_unit.name)
+    redirect_to unit_members_path(current_unit)
   end
   # rubocop:enable Metrics/AbcSize
 
@@ -72,7 +73,7 @@ class UnitMembershipsController < ApplicationController
   def invite
     authorize @target_membership
     @target_membership.user.invite!(current_user)
-    redirect_to unit_member_path(@unit, @target_membership), notice: "Invitation sent"
+    redirect_to unit_member_path(current_unit, @target_membership), notice: "Invitation sent"
   end
 
   def update_settings_params
@@ -86,7 +87,7 @@ class UnitMembershipsController < ApplicationController
   end
 
   def pundit_user
-    @current_member
+    current_member
   end
 
   # POST /bulk_update
@@ -100,7 +101,7 @@ class UnitMembershipsController < ApplicationController
     end
 
     flash[:notice] = t("members.bulk_update.success_message")
-    redirect_to unit_members_path(@unit)
+    redirect_to unit_members_path(current_unit)
   end
 
   private
@@ -111,12 +112,7 @@ class UnitMembershipsController < ApplicationController
     @target_user = @target_membership.user
     @current_unit = @unit = @target_membership.unit
     @current_member = @unit.membership_for(current_user)
-  end
-
-  def find_unit
-    @current_unit = @unit = Unit.find(params[:unit_id])
-    @current_member = @unit.membership_for(current_user)
-  end
+  end  
 
   def member_params
     params.require(:unit_membership).permit(
@@ -139,4 +135,3 @@ class UnitMembershipsController < ApplicationController
     )
   end
 end
-# rubocop:enable Metrics/ClassLength

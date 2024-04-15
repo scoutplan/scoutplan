@@ -3,15 +3,15 @@
     = render partial: "layouts/flash"
     = render partial: "unit_memberships/index/header"
     
-    = form_tag bulk_update_unit_members_path(@unit), id: "bulk_edit_form"
+    = form_tag bulk_update_unit_members_path(current_unit), id: "bulk_edit_form"
       = render "member_bulk_edit_panel"
 
       - ("A".."Z").each do |letter|
-        - letter_memberships = @unit_memberships.select{ |m| m.first_name.first.downcase == letter.downcase }
+        - letter_memberships = @current_unit_memberships.select{ |m| m.first_name.first.downcase == letter.downcase }
         = render partial: "member_index", locals: { letter: letter, unit_memberships: letter_memberships } if letter_memberships.present?
 
   javascript:
-    document.title = "Member Roster · #{@unit.name}"
+    document.title = "Member Roster · #{current_unit.name}"
 
   scss:
     th.selection, td.selection {

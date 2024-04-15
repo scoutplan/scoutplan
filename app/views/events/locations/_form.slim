@@ -1,6 +1,6 @@
 // Location form intended for use when editing an Event
 
-= form_with model: [unit, location], url: unit_event_locations_path(@unit, @event.new_record? ? "new" : @event.id) do |f|
+= form_with model: [unit, location], url: unit_event_locations_path(current_unit, @event.new_record? ? "new" : @event.id) do |f|
 
   = hidden_field_tag :event_id, event.id
 
@@ -13,7 +13,7 @@
         id: "add_location_button"
 
       = link_to location.new_record? ? "Cancel" : t("global.discard_changes"),
-        return_path ||= unit_locations_path(@unit),
+        return_path ||= unit_locations_path(current_unit),
         class: "text-center font-bold no-underline inline-block w-full md:w-fit px-4 py-3 md:py-2 text-stone-500",
         id: "cancel_location_button",
         data: { turbo_action: "advance", turbo_frame: "main" }

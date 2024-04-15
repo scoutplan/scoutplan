@@ -1,4 +1,4 @@
-- @page_title = [@unit.name, "Members", @target_membership.full_display_name]
+- @page_title = [current_unit.name, "Members", @target_membership.full_display_name]
 
 = turbo_frame_tag "main"
   article.mt-8.max-w-2xl.mx-auto.flex.flex-col.gap-4.relative
@@ -9,4 +9,4 @@
     = render partial: "unit_memberships/show/watermark"
 
   javascript:
-    document.title = "#{@target_membership.full_display_name} · #{@unit.name}"
+    document.title = "#{@target_membership.full_display_name} · #{current_unit.name}"

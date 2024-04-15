@@ -5,19 +5,19 @@ class LocationsController < UnitContextController
   before_action :find_location, except: [:index, :new, :create]
 
   def index
-    @locations = @unit.locations.uniq.sort_by(&:display_name)
+    @locations = current_unit.locations.uniq.sort_by(&:display_name)
   end
 
   def create
-    @location = @unit.locations.new(location_params)
+    @location = current_unit.locations.new(location_params)
     authorize @location
     @location.save!
-    redirect_to unit_locations_path(@unit), notice: I18n.t("locations.notices.created")
+    redirect_to unit_locations_path(current_unit), notice: I18n.t("locations.notices.created")
   end
 
   def destroy
     @location.destroy
-    redirect_to unit_locations_path(@unit), notice: I18n.t("locations.notices.destroyed", location_name: @location.display_name)
+    redirect_to unit_locations_path(current_unit), notice: I18n.t("locations.notices.destroyed", location_name: @location.display_name)
   end
 
   def edit
@@ -27,7 +27,7 @@ class LocationsController < UnitContextController
   end
 
   def new
-    @location = @unit.locations.new
+    @location = current_unit.locations.new
     authorize @location
     @event_id = params[:event_id]
     @location_type = params[:location_type]
@@ -37,7 +37,7 @@ class LocationsController < UnitContextController
     authorize @location
     @location.assign_attributes(location_params)
     @location.save!
-    redirect_to params[:return_path] || unit_locations_path(@unit), notice: I18n.t("locations.notices.updated")
+    redirect_to params[:return_path] || unit_locations_path(current_unit), notice: I18n.t("locations.notices.updated")
   end
 
   private

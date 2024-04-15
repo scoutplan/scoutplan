@@ -10,7 +10,7 @@ class EventPresenter
 
   attr_accessor :event, :current_member, :plain_text
 
-  # EventPresenter.new(event: @event, current_member: @current_member)
+  # EventPresenter.new(event: @event, current_member: current_member)
   def initialize(event = nil, current_member = nil, plain_text: false)
     self.event = event
     self.current_member = current_member

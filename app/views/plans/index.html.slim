@@ -1,7 +1,7 @@
 = turbo_frame_tag "main"
   header.w-full.px-16.py-8.text-center.flex.flex-row.items-center
     h1.text-3xl.font-bold.mx-2
-      = t("planner.title", unit: @unit.name)
+      = t("planner.title", unit: current_unit.name)
 
     .category-filter.ml-auto.hidden
       = check_box_tag :show_meetings
@@ -32,7 +32,7 @@
           i.fas.fa-chevron-right          
 
   javascript:
-    document.title = "Planner · #{@unit.name}"
+    document.title = "Planner · #{current_unit.name}"
     document.head.appendChild(document.createElement("style")).innerHTML = ".event-camping-trip { display: none; }";
 
   scss:
@@ -120,7 +120,7 @@
 
   css:
     .card.event-troop-meeting h1 {
-      color: #{ @unit.planner.event_category_for(:camping_trip)&.color || '#333' };
+      color: #{ current_unit.planner.event_category_for(:camping_trip)&.color || '#333' };
     }
 
     .scrollable {

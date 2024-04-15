@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-# Service for duplicating Events
 class EventDuplicationService
   def initialize(unit, source_event_id)
     @unit = unit
     @source_event = @unit.events.find(source_event_id)
   end
 
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def build
     @new_event = @source_event.dup
     @new_event.starts_at = date_add_day_of_week(@source_event.starts_at, 1.year)
@@ -22,6 +23,8 @@ class EventDuplicationService
     end
     @new_event
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 
   # date_add_day_of_week(date, 1.year)
   def date_add_day_of_week(date, interval)

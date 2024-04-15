@@ -2,7 +2,7 @@ class FamilyEventRsvps
   attr_reader :unit_membership, :event
 
   def initialize(unit_membership, event)
-    @unit_membership, @event = unit_membership, event
+    current_unit_membership, @event = unit_membership, event
   end
 
   def family

@@ -1,5 +1,5 @@
 li
-  = link_to unit_event_path(@unit, event),
+  = link_to unit_event_path(current_unit, event),
     class: "block py-2 px-2 hover:bg-stone-100",
     data: { turbo_action: "advance", turbo_frame: "_top" } do
     

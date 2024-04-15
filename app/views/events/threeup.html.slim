@@ -6,14 +6,14 @@
 
   .max-w-full.mx-4.rounded-xl.py-12.m-4.dark:bg-stone-800.bg-white.md:shadow-overhead.showing-past-events
     .flex.flex-row.justify-between
-      = link_to threeup_unit_events_path(@unit) + "/#{@back_date.year}/#{@back_date.month}",
+      = link_to threeup_unit_events_path(current_unit) + "/#{@back_date.year}/#{@back_date.month}",
                 class: "ml-2 block p-6 text-brand-500 hover:text-brand-700 mt-14 text-2xl grow-0",
                 data: { turbo_action: "advance", turbo_frame: "main" } do
         i.fa-solid.fa-chevron-left
 
       div.grow
         header.mb-2.pl-2
-          .text-sm.font-semibold.uppercase.text-stone-500.dark:text-stone-300.tracking-widest = @unit.name
+          .text-sm.font-semibold.uppercase.text-stone-500.dark:text-stone-300.tracking-widest = current_unit.name
 
           .flex.flex-row.justify-between.items-center
             .left
@@ -36,7 +36,7 @@
               - display_month = 1
               - display_year += 1
 
-      = link_to threeup_unit_events_path(@unit) + "/#{@forward_date.year}/#{@forward_date.month}",
+      = link_to threeup_unit_events_path(current_unit) + "/#{@forward_date.year}/#{@forward_date.month}",
                 class: "block p-6 text-brand-500 hover:text-brand-700 mt-14 text-2xl grow-0",
                 data: { turbo_action: "advance", turbo_frame: "main" } do
         i.fa-solid.fa-chevron-right   
@@ -44,7 +44,7 @@
   = turbo_frame_tag "modal", data: { controller: "modal" }
 
   = turbo_stream.update "page_title" do
-    = t("events.index.page_title", unit_name: @unit.name)  
+    = t("events.index.page_title", unit_name: current_unit.name)  
 
 css:
   ol.month li.event:nth-of-type(2) {

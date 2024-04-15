@@ -20,7 +20,7 @@
       span.rounded.px-2.py-1.text-xs.tracking-wide.font-bold.text-white.bg-indigo-700.ml-2 Admin
 
     // close "X" button
-    = link_to unit_members_path(@unit),
+    = link_to unit_members_path(current_unit),
       class: 'inline-block float-right text-gray-500 hover:text-gray-500',
       data: { 'turbo-action' => 'advance' } do
       i.fa-times.far.hover:text-black
@@ -54,7 +54,7 @@
               | #{@target_membership.display_first_name} can RSVP on behalf of:
             - @target_membership.children.each do |relative|
               dd
-                = link_to unit_member_path(@unit, relative), class: 'inline-block py-2' do
+                = link_to unit_member_path(current_unit, relative), class: 'inline-block py-2' do
                   i.fas.fa-user.text-purple-500.mr-2
                   = relative.full_display_name
 
@@ -69,12 +69,12 @@
 
             - @target_membership.parents.each do |relative|
               dd
-                = link_to unit_member_path(@unit, relative), class: 'inline-block py-2' do
+                = link_to unit_member_path(current_unit, relative), class: 'inline-block py-2' do
                   i.far.fa-user.text-purple-500.mr-2
                   = relative.full_display_name
 
     // send messages
-    - if @current_member.admin?
+    - if current_member.admin?
       .rounded.bg-gray-100.p-4.mt-3
         h4.font-bold.mb-3
           = 'Send'
@@ -83,7 +83,7 @@
 
           // Digest button
           li.inline
-            = button_to create_test_communication_path(@unit, @target_membership, message_type: :digest),
+            = button_to create_test_communication_path(current_unit, @target_membership, message_type: :digest),
               method: :post,
               remote: true,
               class: 'inline-block bg-gray-200 hover:bg-gray-300 text-black rounded border px-4 py-1 mr-2',
@@ -95,7 +95,7 @@
 
           // test message button
           li.inline
-            = button_to create_test_communication_path(@unit, @target_membership, message_type: :test_message),
+            = button_to create_test_communication_path(current_unit, @target_membership, message_type: :test_message),
               method: :post,
               remote: true,
               class: 'inline-block bg-gray-200 hover:bg-gray-300 text-black rounded border px-4 py-1 mr-2',
@@ -112,13 +112,13 @@
       // Edit button (if authorized)
       - if policy(@target_membership).edit?
         = link_to 'Change Member Details',
-          edit_unit_member_path(@unit, @target_membership),
+          edit_unit_member_path(current_unit, @target_membership),
           class: 'inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-black text-sm font-bold tracking-wider uppercase',
           data: { turbo_action: 'advance' },
           title: 'Make changes to this member\'s details'
 
       // Done button
       = link_to t('global.done'),
-        unit_members_path(@unit),
+        unit_members_path(current_unit),
         class: 'bg-brand-500 inline-block px-4 py-2 mr-2 no-underline bg-gray-200 hover:bg-gray-300 rounded text-white text-sm font-bold tracking-wider uppercase',
         data: { turbo_frame: "main", turbo_action: "advance" }

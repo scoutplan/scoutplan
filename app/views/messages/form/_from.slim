@@ -1,7 +1,7 @@
 div#sender_wrapper.flex.flex-row.gap-6.py-2.items-center
   = content_tag :div, t("messages.form.labels.from")
   
-  - if MessagePolicy.new(@current_member, @message).send_on_behalf?
+  - if MessagePolicy.new(current_member, @message).send_on_behalf?
     = f.select :author_id,
                options_for_select(@eligible_senders.map { |s| [s.full_name, s.id, { data: { short_text: s.full_display_name, long_text: s.sender_name_and_address }   }] },
                                   @message.author_id),
@@ -11,5 +11,5 @@ div#sender_wrapper.flex.flex-row.gap-6.py-2.items-center
 
   - else
     = content_tag :div, class: "ellipsis truncate", id: "message_sender" do
-      span = "#{@message.author.full_display_name} at #{@unit.name} "
-      span = "<#{@unit.from_address}>"
+      span = "#{@message.author.full_display_name} at #{current_unit.name} "
+      span = "<#{current_unit.from_address}>"

@@ -19,7 +19,7 @@ class PhotoPolicy < UnitContextPolicy
   end
 
   def destroy?
-    admin? || @photo.author == @current_member
+    admin? || @photo.author == current_member
   end
 
   def show?

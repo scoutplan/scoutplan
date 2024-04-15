@@ -21,7 +21,7 @@
           = "Change your response"
 
 - content_for :footer do
-  = link_to "View the full #{ @unit.name} schedule",
-            list_unit_events_url(@unit),
+  = link_to "View the full #{ current_unit.name} schedule",
+            list_unit_events_url(current_unit),
             class: "button-light-on-dark",
             style: "color: #fff; text-decoration: underline;"

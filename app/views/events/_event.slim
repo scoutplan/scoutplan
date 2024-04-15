@@ -1,4 +1,4 @@
-- return unless EventPolicy.new(@current_member, event).show?
+- return unless EventPolicy.new(current_member, event).show?
 - presenter = @presenter || EventPresenter.new
 - presenter.event = event
 
@@ -6,7 +6,7 @@
 
 li.relative.z-0.event.md:px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#{row_classes(event)}" id="#{dom_id(event)}")
   .flex.flex-row.items-center
-    = link_to unit_event_path(@unit, event),
+    = link_to unit_event_path(current_unit, event),
               class: "event py-2 block w-full",
               name:  event.id,
               data:  { turbo_action: "advance",

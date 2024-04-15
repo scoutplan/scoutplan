@@ -194,7 +194,7 @@ describe "unit_memberships", type: :feature do
     end
 
     it "edits a member's email address" do
-      member = FactoryBot.create(:member, unit: @admin.unit)
+      member = FactoryBot.create(:member, unit: @unit)
       visit edit_unit_member_path(@unit, member)
 
       new_email = Faker::Internet.email

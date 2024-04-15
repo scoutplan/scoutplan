@@ -1,8 +1,8 @@
-- return unless event_deletable?(@current_member, @event)
+- return unless event_deletable?(current_member, @event)
 
 .hidden
   = button_to "Hidden Delete Button",
-    unit_event_path(@unit, @event),
+    unit_event_path(current_unit, @event),
     method: :delete,
     form: { id: "delete_event_form", method: :delete, data: { event_edit_target: "deleteform" } },
     data: { turbo_action: "advance", turbo_confirm: "Are you sure?" }

@@ -1,6 +1,6 @@
 // modal header
 header.mb-2.pb-4.border-b.border-stone-500
-  = back_link_to "Back to member list", unit_members_path(@unit),
+  = back_link_to "Back to member list", unit_members_path(current_unit),
             class: "text-sky-800 dark:text-sky-300 hover:text-sky-900 dark:hover:text-sky-400 mb-4",
             data: { turbo_action: "advance" }
 
@@ -9,7 +9,7 @@ header.mb-2.pb-4.border-b.border-stone-500
       = @target_membership.full_display_name
 
     .right
-      = link_to edit_unit_member_path(@unit, @target_membership),
+      = link_to edit_unit_member_path(current_unit, @target_membership),
                 class: "block rounded px-4 py-2 font-semibold border border-sky-500 text-sky-500 hover:text-sky-600 hover:border-sky-600 dark:hover:text-sky-400 dark:hover:border-sky-400",
                 data: { turbo_action: "advance" } do
         = "Edit Member"

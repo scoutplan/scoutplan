@@ -7,8 +7,8 @@ module Events
   # responds with a Turbo stream to update the Event form.
   class LocationsController < UnitContextController
     def create
-      @event = @unit.events.find(params[:event_id]) rescue nil
-      @location = @unit.locations.new(params.require(:location).permit(:name, :map_name, :address, :phone, :website))
+      @event = current_unit.events.find(params[:event_id]) rescue nil
+      @location = current_unit.locations.new(params.require(:location).permit(:name, :map_name, :address, :phone, :website))
       authorize @location
       @location.save!
 

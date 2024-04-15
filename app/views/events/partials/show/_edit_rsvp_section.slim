@@ -1,18 +1,18 @@
 - done_caption = @rsvps.present? ? "Update Your RSVPs" : t("events.edit_rsvps.captions.submit")
 
-= form_with url: batch_member_unit_event_rsvps_path(@unit, @event) do |f|
+= form_with url: batch_member_unit_event_rsvps_path(current_unit, @event) do |f|
   section.my-2.p-4.rounded.bg-stone-100
     - if event.requires_rsvp
         = render partial: "edit_rsvp_fields", locals: { event: event, f: f, presenter: presenter }
 
     - if @youth_respondent
       - presenter = EventPresenter.new
-      - names = @current_member.parents.map(&:display_first_name)
+      - names = current_member.parents.map(&:display_first_name)
       .block.dirty-warning.pt-4.text-amber-700.dark:text-amber-500
 
         i.fa-solid.fa-exclamation-triangle.mr-2
         = t("events.rsvp.youth_rsvp_warning",
-            names: presenter.grammatical_list(@current_member.parents.map(&:display_first_name), "or"))  
+            names: presenter.grammatical_list(current_member.parents.map(&:display_first_name), "or"))  
 
   footer.flex.flex-col.md:flex-row.gap-2.mt-4
     - done_caption = "Approve and Send" if @needs_approval && @can_approve

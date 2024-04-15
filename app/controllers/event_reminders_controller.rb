@@ -14,6 +14,6 @@ class EventRemindersController < UnitContextController
   end
 
   def members
-    [@current_member]
+    [current_member]
   end
 end

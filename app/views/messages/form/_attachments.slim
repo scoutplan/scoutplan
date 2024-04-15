@@ -2,4 +2,4 @@ div#attachments_section.flex.flex-row.gap-6.py-2.items-start(data-message-form-t
   = content_tag :div, t("messages.form.labels.attachments"), class: "py-2"
   #attachments_list.flex.flex-row.flex-wrap.gap-1.(data-message-form-target="attachmentsList")
     - @message.attachments.each do |attachment|
-      = render partial: "messages/form/attachment", locals: { attachment: attachment, message: @message, unit: @unit }
+      = render partial: "messages/form/attachment", locals: { attachment: attachment, message: @message, unit: current_unit }

@@ -1,6 +1,6 @@
 = turbo_frame_tag "main"
   header.mx-auto.max-w-3xl.mb-8
-    = link_to unit_events_path(@unit),
+    = link_to unit_events_path(current_unit),
               class: "block text-sky-800 dark:text-sky-300 hover:text-sky-900 mb-4 font-bold",
               data: { turbo_action: "advance" } do
       i.fa-solid.fa-chevron-left
@@ -9,4 +9,4 @@
   = render partial: "form"
 
 javascript:
-  document.title = "Add an Event · #{@unit.name}"  
+  document.title = "Add an Event · #{current_unit.name}"  

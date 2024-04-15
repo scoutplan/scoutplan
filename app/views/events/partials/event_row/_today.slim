@@ -6,6 +6,6 @@
   .date-badge-today.inline-block.event-tag-today.font-semibold.tracking-wide.text-xs.rounded.bg-lime-600.text-lime-100.px-2.py-1(title="This event is happening today.")
     = t(".today")
 
-- elsif event == @unit.next_event
+- elsif event == current_unit.next_event
   .date-badge-next.inline-block.event-tag-next.font-semibold.tracking-wide.text-xs.rounded.bg-teal-600.text-teal-100.px-2.py-1(title="This is the next event on the schedule.")
     = t(".next")

@@ -4,7 +4,7 @@ header#page_header.w-full.px-0.bg-white.z-10.items-center
     .flex.flex-grow
       // title
       h1.px-2.md:text-xl.font-bold.leading-0
-        = @unit.name
+        = current_unit.name
         |&nbsp;
         = t("events.index.title")
 
@@ -14,7 +14,7 @@ header#page_header.w-full.px-0.bg-white.z-10.items-center
 
         // Add Event button
         - if policy(:event).create?
-          = link_to new_unit_event_path(@unit),
+          = link_to new_unit_event_path(current_unit),
                     class:  "block font-bold text-sm text-white tracking-wider uppercase inline-block px-2 py-2 bg-brand-500 hover:bg-brand-600 rounded",
                     data: { turbo_frame: "main", turbo_action: "advance" } do
 
@@ -31,8 +31,8 @@ header#page_header.w-full.px-0.bg-white.z-10.items-center
 
           .dropdown-menu.origin-top-right.absolute.right-0.py-2.mt-px.min-w-max.rounded-md.shadow-lg.bg-stone-800.text-white.ring-1.ring-black.ring-opacity-5.divide-y.divide-stone-100.focus:outline-none
             .table
-              = render partial: "events/partials/index/dropdown_items/bulk_publish"   if @current_member.admin?
-              = render partial: "events/partials/index/dropdown_items/show_cancelled" if @current_member.admin?
+              = render partial: "events/partials/index/dropdown_items/bulk_publish"   if current_member.admin?
+              = render partial: "events/partials/index/dropdown_items/show_cancelled" if current_member.admin?
               = render partial: "events/partials/index/dropdown_items/show_only_rsvps"
               = render partial: "events/partials/index/dropdown_items/show_past_events"
 

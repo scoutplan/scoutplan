@@ -3,7 +3,7 @@
 # service for updating an event
 class EventUpdateService < EventService
   def initialize(event, current_member = nil, params = {})
-    @current_member = current_member
+    current_member = current_member
     super(event, params)
   end
 

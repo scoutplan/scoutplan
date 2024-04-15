@@ -14,13 +14,13 @@
 
         = form_with \
           model: event,
-          url: unit_event_send_rsvps_path(@unit, event, mode: "member", member_id: @target_membership.id),
+          url: unit_event_send_rsvps_path(current_unit, event, mode: "member", member_id: @target_membership.id),
           class: "w-full" do |f|
 
           = f.fields_for "members[]", @target_membership do |member_fields|
             = member_fields.fields_for "event_rsvp", rsvp do |rsvp_fields|
               dt.py-2.font-bold
-                = link_to unit_event_path(@unit, event) do
+                = link_to unit_event_path(current_unit, event) do
                   = event.starts_at.strftime("%-d %b")
                   = " "
                   = event.title

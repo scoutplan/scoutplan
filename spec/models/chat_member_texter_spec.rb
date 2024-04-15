@@ -5,7 +5,7 @@ require "action_controller"
 
 def render_text_body_to_console(body)
   return
-  
+
   puts
   puts "*********************************"
   puts body

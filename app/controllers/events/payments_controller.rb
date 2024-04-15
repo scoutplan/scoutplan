@@ -6,7 +6,7 @@ module Events
 
     def create
       @payment = @event.payments.new(payment_params)
-      @payment.received_by = @current_member
+      @payment.received_by = current_member
       @payment.amount *= 100
       @payment.save!
     end
@@ -19,24 +19,24 @@ module Events
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/MethodLength
     def new_stripe
-      @current_family = @current_member.family
+      @current_family = current_member.family
       @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
       @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
       @item_amount = @event.cost_youth * 100
       @subtotal = @family_rsvps.accepted.count * @item_amount
-      @transaction_fee = StripePaymentService.new(@unit).member_transaction_fee(@subtotal)
+      @transaction_fee = StripePaymentService.new(current_unit).member_transaction_fee(@subtotal)
       @total_cost = @subtotal + @transaction_fee
       @total_paid = @payments&.sum(:amount) || 0
       @amount_due = @total_cost - @total_paid
       @quantity = @amount_due / @item_amount
-      @payment = Payment.new(event: @event, unit_membership: @current_member, amount: @amount_due, received_by: nil, method: "stripe")
+      @payment = Payment.new(event: @event, unit_membership: current_member, amount: @amount_due, received_by: nil, method: "stripe")
 
       create_checkout_session
       redirect_to @session.url, allow_other_host: true
     end
 
     def new
-      member = @unit.members.find(params[:member])
+      member = current_unit.members.find(params[:member])
       @payment = @event.payments.build(unit_membership: member, method: :cash)
       @current_family = member.family
       @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
@@ -61,10 +61,10 @@ module Events
         line_items: line_items,
         mode: "payment",
         payment_intent_data: {
-          transfer_data: { destination: @unit.payment_account.account_id }
+          transfer_data: { destination: current_unit.payment_account.account_id }
         },
-        success_url: unit_event_url(@unit, @event),
-        cancel_url: unit_event_url(@unit, @event),
+        success_url: unit_event_url(current_unit, @event),
+        cancel_url: unit_event_url(current_unit, @event),
         client_reference_id: @payment.id
       }
 

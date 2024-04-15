@@ -9,17 +9,17 @@ class EventRsvpsController < EventContextController
 
   def create
     event_rsvp_params = params[:event_rsvp].permit(:unit_membership_id, :response)
-    event_rsvp_params[:respondent] = @current_member
+    event_rsvp_params[:respondent] = current_member
     @rsvp = @event.rsvps.find_or_create_by!(event_rsvp_params)
     @event_dashboard = EventDashboard.new(@event)
   end
 
   def popup
-    @family_rsvp = FamilyRsvp.new(@current_member, @event)
+    @family_rsvp = FamilyRsvp.new(current_member, @event)
   end
 
   def edit
-    @presenter = EventPresenter.new(@event, @current_member)
+    @presenter = EventPresenter.new(@event, current_member)
   end
 
   def update
@@ -48,14 +48,6 @@ class EventRsvpsController < EventContextController
 
   def find_rsvp
     @rsvp = EventRsvp.find(params[:id])
-  end
-
-  def find_event
-    @event = @unit.events.find(params[:event_id])
-  end
-
-  def find_unit
-    @unit = Unit.find(params[:unit_id])
   end
 
   def find_event_responses

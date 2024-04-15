@@ -7,16 +7,16 @@
         = t("event_categories.titles.index")
 
       .absolute.right-0.top-0
-        = link_to new_unit_event_category_path(@unit),
+        = link_to new_unit_event_category_path(current_unit),
           class: "inline-block px-4 py-2 rounded font-bold bg-lime-600 hover:bg-lime-700 text-white",
           data: { turbo_action: "advance" } do
           i.fa-solid.fa-plus.mr-2
           = t("global.add")
 
     ul.divide-y.dark:divide-stone-600
-      - @unit.event_categories.order(:name).each do |category|
+      - current_unit.event_categories.order(:name).each do |category|
         li.flex.flex-row.justify-between.items-center
-          = link_to edit_unit_event_category_path(@unit, category),
+          = link_to edit_unit_event_category_path(current_unit, category),
             class: "inline-block px-2 py-2 hover:bg-stone-100 dark:hover:bg-black",
             data: { turbo_action: "advance" } do
 
@@ -27,4 +27,4 @@
             i.fa-solid.fa-bell-slash.mr-2.text-stone-500(title="Reminders are disabled for this category")
 
   javascript:
-    document.title = "Event Categories · #{@unit.name}"            
+    document.title = "Event Categories · #{current_unit.name}"            

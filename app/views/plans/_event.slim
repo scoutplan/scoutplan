@@ -13,7 +13,7 @@
   .clear-both
   
   h3.font-bold.text-lg
-    = link_to unit_event_path(@unit, event) do
+    = link_to unit_event_path(current_unit, event) do
       = event.title
 
     - if event.draft?

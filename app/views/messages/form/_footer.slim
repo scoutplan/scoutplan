@@ -1,12 +1,12 @@
 footer.border-t.py-4.dark:border-stone-500.sticky.bottom-0.bg-white.dark:bg-stone-800
-  - unless MessagePolicy.new(@current_member, @message).create?
+  - unless MessagePolicy.new(current_member, @message).create?
     p.text-sm.font-bold
       i.fa-solid.fa-circle-info.mr-1
       | Your message will be sent to unit leadership for approval before being sent.
 
   .flex.flex-col.md:flex-row.bottom-0.sticky.gap-2.md:gap-10.md:justify-between
 
-    - submit_caption = MessagePolicy.new(@current_member, @message).create? ? t("messages.captions.send_message") : "Submit for Approval"
+    - submit_caption = MessagePolicy.new(current_member, @message).create? ? t("messages.captions.send_message") : "Submit for Approval"
 
     // LEFT SIDE
     div.flex.flex-col.md:flex-row
@@ -68,7 +68,7 @@ footer.border-t.py-4.dark:border-stone-500.sticky.bottom-0.bg-white.dark:bg-ston
 
     .right.flex.flex-row
       - if @message.deleteable?
-        = link_to unit_message_path(@unit, @message),
+        = link_to unit_message_path(current_unit, @message),
                   id: "delete_draft_link",
                   data: { turbo_method: :delete, turbo_action: "advance", turbo_confirm: "Are you sure you want to delete this draft?", skip_leave_confirmation: "true" },
                   class: "w-full md:w-fit px-3 py-2 -mr-3 text-messages-600 hover:text-messages-700 dark:hover:text-messages-400 cursor-pointer" do
@@ -76,7 +76,7 @@ footer.border-t.py-4.dark:border-stone-500.sticky.bottom-0.bg-white.dark:bg-ston
             i.fa-thin.fa-circle.fa-stack-2x
             i.fa-solid.fa-trash-can.fa-stack-1x
       - else
-        = link_to drafts_unit_messages_path(@unit),
+        = link_to drafts_unit_messages_path(current_unit),
                   id: "delete_draft_link",
                   class: "w-full md:w-fit px-3 py-2 -mr-3 text-messages-600 hover:text-messages-700 dark:hover:text-messages-400 cursor-pointer",
                   data: { action: "message-form#skipLeaveConfirmation" } do

@@ -1,4 +1,4 @@
-- enabled = (task = @unit.tasks.find_by(key: task_key)).present?
+- enabled = (task = current_unit.tasks.find_by(key: task_key)).present?
 - icon_class = t("settings.icons.#{task_key}")
 - icon_color = t("settings.icon_colors.#{task_key}")
 

@@ -1,7 +1,7 @@
-- covered_by = @unit.payment_account.transaction_fees_covered_by
+- covered_by = current_unit.payment_account.transaction_fees_covered_by
 - Stripe.api_key = ENV.fetch("STRIPE_SECRET_KEY")
-- account = Stripe::Account.retrieve(@unit.payment_account.account_id)
-- stripe_login_link = Stripe::Account.create_login_link(@unit.payment_account.account_id)
+- account = Stripe::Account.retrieve(current_unit.payment_account.account_id)
+- stripe_login_link = Stripe::Account.create_login_link(current_unit.payment_account.account_id)
 
 .h-4
 
@@ -11,10 +11,10 @@ header.mb-6
   h1.font-bold.text-4xl.mb-4
     = t("settings.titles.payments")
     .text-sm.font-bold.uppercase.tracking-wider
-      = @unit.name
+      = current_unit.name
 
 .flex.flex-col.gap-2.divide-y
-  = form_with model: @unit do |f|
+  = form_with model: current_unit do |f|
     article.pb-8
 
       h3.text-xl.font-bold.mb-1 = "Credit card transaction fees"
@@ -32,7 +32,7 @@ header.mb-6
         div
           = f.label :transaction_fees_covered_by_unit, class: "font-bold" do
             = f.radio_button :transaction_fees_covered_by, :unit, checked: (covered_by == "unit"), class: "mr-1"
-            = "#{@unit.name} pays"
+            = "#{current_unit.name} pays"
 
         div
           = f.label :transaction_fees_covered_by_split_50_50, class: "font-bold" do
@@ -56,10 +56,10 @@ header.mb-6
               i.fa-solid.fa-arrow-up-right-from-square.ml-2
 
   .py-4
-    = link_to unit_payments_path(@unit), class: "inline-block px-4 py-2 rounded border font-bold text-brand-500 border-brand-500 hover:text-brand-600 hover:border-brand-600" do
-      = "View #{@unit.name} transaction history"
+    = link_to unit_payments_path(current_unit), class: "inline-block px-4 py-2 rounded border font-bold text-brand-500 border-brand-500 hover:text-brand-600 hover:border-brand-600" do
+      = "View #{current_unit.name} transaction history"
 
 
 javascript:
-  document.title = "Payment Settings · #{@unit.name}"
+  document.title = "Payment Settings · #{current_unit.name}"
   

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Service for creating new Units
 class NewUnitService
   attr_accessor :unit, :user
 
@@ -19,7 +18,6 @@ class NewUnitService
     @unit
   end
 
-  #-------------------------------------------------------------------------
   private
 
   def create_unit

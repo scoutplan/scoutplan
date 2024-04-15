@@ -26,6 +26,6 @@ class MessageAttachmentsController < UnitContextController
   end
 
   def find_message
-    @message = @unit.messages.find(params[:message_id])
+    @message = current_unit.messages.find(params[:message_id])
   end
 end

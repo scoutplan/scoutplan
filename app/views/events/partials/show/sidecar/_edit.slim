@@ -1,7 +1,7 @@
-- return unless EventPolicy.new(@current_member, @event).edit?
+- return unless EventPolicy.new(current_member, @event).edit?
 
 li
-  = link_to edit_unit_event_path(@unit, @event),
+  = link_to edit_unit_event_path(current_unit, @event),
             class: "block px-4 py-2 hover:bg-brand-600",
             data: { turbo_action: "advance" } do
 

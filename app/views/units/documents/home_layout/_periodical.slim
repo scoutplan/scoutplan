@@ -1,5 +1,5 @@
 - tag = element_definition["tag"]
-- document = @unit.documents.tagged_with(tag).by_date.first
+- document = current_unit.documents.tagged_with(tag).by_date.first
 - return unless document
 
 section.py-6
@@ -15,5 +15,5 @@ section.py-6
 
       footer
         = link_to "Read the back issues",
-                  tag_unit_documents_path(@unit, tag), class: "inline-block border border-stone-300 text-stone-500 hover:border-stone-600 hover:bg-stone-100 hover:text-stone-900 rounded px-4 py-2",
+                  tag_unit_documents_path(current_unit, tag), class: "inline-block border border-stone-300 text-stone-500 hover:border-stone-600 hover:bg-stone-100 hover:text-stone-900 rounded px-4 py-2",
                   data: { turbo_action: "advance" }

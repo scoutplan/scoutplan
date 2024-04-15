@@ -12,7 +12,7 @@
     = render partial: "events/partials/show/flash"
 
 javascript:
-  document.title = "RSVP · #{@event.title} · #{@unit.name}"
+  document.title = "RSVP · #{@event.title} · #{current_unit.name}"
 
 css:
   #date_time_card {

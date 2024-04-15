@@ -4,9 +4,9 @@ section.py-4.grid.grid-cols-1.md:grid-cols-3.gap-8.border-t
     p.text-sm.text-sky-700.dark:text-sky-400 Give your members all the details they need to know about this event.
 
   .col-span-2
-    - if @unit.packing_lists.any?
+    - if current_unit.packing_lists.any?
       ul
-        = render partial: "events/partials/form/packing_list", collection: @unit.packing_lists
+        = render partial: "events/partials/form/packing_list", collection: current_unit.packing_lists
     - else
-      = "#{@unit.name} hasn't made any packing lists yet. "
-      = link_to "Make one now.", new_unit_packing_list_path(@unit), class: "text-blue-600 hover:underline"
+      = "#{current_unit.name} hasn't made any packing lists yet. "
+      = link_to "Make one now.", new_unit_packing_list_path(current_unit), class: "text-blue-600 hover:underline"

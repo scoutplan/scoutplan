@@ -1,8 +1,8 @@
-- return unless @event.cancellable?(@current_member) || @event.deleteable?(@current_member)
+- return unless @event.cancellable?(current_member) || @event.deleteable?(current_member)
 
 section.py-4
   a(id="canceldelete")
   h3.text-lg.mb-2 = "Danger zone"
   .border.border-red-200.my-4.rounded
-    = render partial: "events/partials/form/cancel_button" if @event.cancellable?(@current_member)
+    = render partial: "events/partials/form/cancel_button" if @event.cancellable?(current_member)
     = render partial: "events/partials/form/delete_button", locals: { f: f }

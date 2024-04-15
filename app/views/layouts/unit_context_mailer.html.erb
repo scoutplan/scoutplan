@@ -42,11 +42,11 @@
 
 <%# ---------------------------------------- %>
 <%# LOGO %>
-            <% if @unit&.logo&.attached? %>
+            <% if current_unit&.logo&.attached? %>
               <tr>
                   <td style="padding:30px 30px 15px 30px;text-align:center;font-size:24px;font-weight:bold;">
                       <%= link_to root_url do %>
-                        <%= image_tag "data:image/#{@unit&.logo.filename.extension};base64,#{Base64.encode64(@unit.logo.blob.download)}", style: "width:80%;max-width:150px;height:auto;border:none;text-decoration:none;color:rgb(255,255,255,1.0);" %>
+                        <%= image_tag "data:image/#{current_unit&.logo.filename.extension};base64,#{Base64.encode64(current_unit.logo.blob.download)}", style: "width:80%;max-width:150px;height:auto;border:none;text-decoration:none;color:rgb(255,255,255,1.0);" %>
                       <% end %>
                   </td>
               </tr>
@@ -75,8 +75,8 @@
             <% if content_for(:footer ) %>
               <tr class="footer">
                 <td style="padding:40px 70px;background-color:#44403C;color:#E7E5E4;font-weight:800;">
-                  <%= link_to unit_events_url(@unit) do %>
-                    <%= @unit.name %>
+                  <%= link_to unit_events_url(current_unit) do %>
+                    <%= current_unit.name %>
                 </td>
               </tr>
             <% end %>

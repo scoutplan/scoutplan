@@ -2,6 +2,6 @@
 = turbo_frame_tag("main")
   .max-w-xl.mx-auto.mt-4
     = back_link_to "Back to member list",
-                    unit_members_path(@unit),
+                    unit_members_path(current_unit),
                     class: "text-sky-500"
     = render partial: "form"

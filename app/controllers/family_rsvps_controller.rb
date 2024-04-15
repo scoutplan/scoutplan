@@ -4,7 +4,7 @@ class FamilyRsvpsController < EventContextController
   before_action :find_unit_membership
 
   def new
-    @family_rsvp = FamilyRsvp.new(@unit_membership, @event)
+    @family_rsvp = FamilyRsvp.new(@member, @event)
     authorize @family_rsvp
   end
 
@@ -30,7 +30,7 @@ class FamilyRsvpsController < EventContextController
 
     rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: unit_membership_id)
     rsvp.assign_attributes(
-      respondent: @current_member,
+      respondent: current_member,
       response:   rsvp_attributes[:response],
       note:       params[:note]
     )
@@ -38,11 +38,11 @@ class FamilyRsvpsController < EventContextController
   end
 
   def find_unit_membership
-    @unit_membership =
+    @member =
       if params[:unit_membership_id].present?
-        @unit.unit_memberships.find(params[:unit_membership_id])
+        current_unit.unit_memberships.find(params[:unit_membership_id])
       else
-        @current_member
+        current_member
       end
   end
 end

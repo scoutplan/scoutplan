@@ -5,7 +5,6 @@ class EventRsvpConfirmationText
     @rsvp = rsvp
     @recipient = recipient
     @event = rsvp.event
-    @unit = @event.unit
   end
 
   # rubocop:disable Metrics/AbcSize

@@ -1,16 +1,16 @@
-- return unless member.youth?
+- return unless @member.youth?
 - return unless @unit.allow_youth_rsvps?
 
 section.pt-4.border-t.dark:border-stone-700
   h2.font-bold.mb-1 = "Event RSVPs"
   
-  p.text-sm You can allow #{member.first_name} to RSVP to events on their own.
+  p.text-sm You can allow #{@member.first_name} to RSVP to events on their own.
     You'll be notified and their responses will be tentative until you approve.
   
   .mt-3
     = switch("unit_membership", "allow_youth_rsvps",
-             { label: "Allow #{member.first_name} to RSVP for events",
-               checked: member.allow_youth_rsvps?,
-               disabled: !member.contactable?(via: :email),
+             { label: "Allow #{@member.first_name} to RSVP for events",
+               checked: @member.allow_youth_rsvps?,
+               disabled: !@member.contactable?(via: :email),
                data: { profile_form_target: "youthRsvpsField" } },
              "true", "false")

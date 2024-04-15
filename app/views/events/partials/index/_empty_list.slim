@@ -3,6 +3,6 @@
 p.px-2.py-8.font-bold
   = "There are no events scheduled for this unit. "
   - if policy(:event).create?
-    = link_to new_unit_event_path(@unit), class: "underline hover:no-underline text-blue-500", data: { turbo_action: "advance" } do
+    = link_to new_unit_event_path(current_unit), class: "underline hover:no-underline text-blue-500", data: { turbo_action: "advance" } do
       = "Add one now "
       i.fa-solid.fa-arrow-right

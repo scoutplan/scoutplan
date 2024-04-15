@@ -11,7 +11,7 @@ section.py-4.grid.grid-cols-1.md:grid-cols-3.gap-8.border-t
                   class: "autocomplete",
                   data: { controller: "autocomplete",
                           autocomplete_target: "wrapper",
-                          autocomplete_url_value: unit_search_path(@unit) } do
+                          autocomplete_url_value: unit_search_path(current_unit) } do
 
       // select tag that actually gets submitted as part of the form
       // - select_name = "event[event_organizers_attributes][][unit_membership_id][]"
@@ -40,7 +40,7 @@ section.py-4.grid.grid-cols-1.md:grid-cols-3.gap-8.border-t
                           class: "absolute autocomplete-results min-w-72 max-h-96 bg-cyan-800 text-cyan-100 rounded overflow-auto z-10",
                           data: { autocomplete_target: "results" } do
 
-              - @unit.members.includes(:user).status_active_and_registered.each do |member|
+              - current_unit.members.includes(:user).status_active_and_registered.each do |member|
                 - display_class = organizer_ids.include?(member) ? "hidden existing" : ""
 
                 li(class="#{display_class}")

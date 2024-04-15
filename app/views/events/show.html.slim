@@ -1,12 +1,12 @@
 = turbo_frame_tag "main"
-  /! Current member id: #{@current_member.id}
-  /! Current unit id: #{@unit.id}
+  /! Current member id: #{current_member.id}
+  /! Current unit id: #{current_unit.id}
   /! Current user id: #{current_user.id}
   /! #{@event.email}
 
   article.event.mx-auto.max-w-3xl
     header.mb-6
-      = link_to unit_events_path(@unit, anchor: "#{@event.id}"),
+      = link_to unit_events_path(current_unit, anchor: "#{@event.id}"),
                 class: "font-semibold text-sky-500 hover:text-sky-600",
                 data: { turbo_action: "advance" } do
         i.fa-solid.fa-chevron-left
@@ -30,4 +30,4 @@
   = render partial: "events/partials/show/watermarks"
 
 javascript:
-  document.title = "#{@event.title.html_safe} · #{@unit.name.html_safe}"
+  document.title = "#{@event.title.html_safe} · #{current_unit.name.html_safe}"

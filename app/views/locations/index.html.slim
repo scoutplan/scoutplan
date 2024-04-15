@@ -6,10 +6,10 @@
     header.relative.mt-8.mb-6.pl-2
       h1.font-bold.text-4xl
         = t("locations.titles.index")
-        .text-sm.uppercase.tracking-wider.text-stone-500 = @unit.name
+        .text-sm.uppercase.tracking-wider.text-stone-500 = current_unit.name
 
       #header_right.absolute.right-0.top-1
-        = link_to new_unit_location_path(@unit),
+        = link_to new_unit_location_path(current_unit),
           class: "px-2 py-2 font-bold text-brand-500 border border-brand-500 rounded",
           data: { turbo_action: "advance" } do
 
@@ -20,4 +20,4 @@
       = render @locations
 
   javascript:
-    document.title = "Address Book · #{@unit.name}"      
+    document.title = "Address Book · #{current_unit.name}"      

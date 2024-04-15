@@ -1,7 +1,7 @@
 = turbo_frame_tag "main"
   .max-w-2xl.mx-auto.w-full
     header.mt-6.py-4
-      = link_to unit_event_path(@unit, @event),
+      = link_to unit_event_path(current_unit, @event),
                 class: "block text-sky-800 hover:text-sky-900 mb-4",
                 data: { turbo_action: "advance" } do
         i.fa-stack

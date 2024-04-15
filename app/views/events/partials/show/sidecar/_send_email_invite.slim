@@ -1,7 +1,7 @@
-- return unless Flipper.enabled? :email_invitations, @current_member
+- return unless Flipper.enabled? :email_invitations, current_member
 
 li
-  = button_to unit_event_email_invitations_path(@unit, @event),
+  = button_to unit_event_email_invitations_path(current_unit, @event),
               method: :post,
               remote: true,
               class: "block w-full px-4 py-2 text-left hover:bg-brand-600",

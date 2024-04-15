@@ -1,15 +1,15 @@
 - return unless user_signed_in?
 
-- ics_url = calendar_feed_unit_events_url(token: @current_member.token,
-                                          unit_id: @unit.to_param,
+- ics_url = calendar_feed_unit_events_url(token: current_member.token,
+                                          unit_id: current_unit.to_param,
                                           format: :ics,
                                           only_path: false,
                                           protocol: "webcal")
 
-aside.block.w-80.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.rounded.dropdown-menu.animate-pop-open.drop-shadow
+aside.block.w-80.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-20.rounded.dropdown-menu.animate-pop-open.drop-shadow
   nav
-    - if @current_member.admin?
-      = link_to new_unit_event_path(@unit),
+    - if current_member.admin?
+      = link_to new_unit_event_path(current_unit),
                 class: "block px-4 py-2 rounded hover:bg-brand-600",
                 data: { turbo_action: "advance" } do
 
@@ -17,7 +17,7 @@ aside.block.w-80.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.rounded
         = t("events.captions.new_short")
 
     - if action_name != "calendar"
-      = link_to calendar_unit_events_path(@unit, year: Date.today.year, month: Date.today.month),
+      = link_to calendar_unit_events_path(current_unit, year: Date.today.year, month: Date.today.month),
                 class: "block px-4 py-2 rounded hover:bg-brand-600",
                 data: { turbo_action: "advance" } do
 
@@ -25,7 +25,7 @@ aside.block.w-80.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.rounded
         = t("events.index.buttons.calendar")
 
     - if action_name != "list"
-      = link_to list_unit_events_path(@unit),
+      = link_to list_unit_events_path(current_unit),
                 class: "block px-4 py-2 rounded hover:bg-brand-600",
                 data: { turbo_action: "advance" } do
 
@@ -33,7 +33,7 @@ aside.block.w-80.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.rounded
         = t("events.index.buttons.list")
 
     - if action_name != "threeup"
-      = link_to threeup_unit_events_path(@unit),
+      = link_to threeup_unit_events_path(current_unit),
                 class: "block px-4 py-2 rounded hover:bg-brand-600",
                 data: { turbo_action: "advance" } do
 
@@ -42,22 +42,22 @@ aside.block.w-80.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-10.rounded
 
     / past events
     - if action_name == "list"
-      = link_to list_unit_events_path(@unit, before: @events&.first&.id, current_month: @display_month, display_year: @display_year),
+      = link_to list_unit_events_path(current_unit, before: @events&.first&.id, current_month: @display_month, display_year: @display_year),
                 class: "block px-4 py-2 rounded hover:bg-brand-600",
                 data: { turbo_stream: "true" } do
 
         i.fa-fw.fa-solid.fa-calendar-clock.mr-2
         = t("events.index.view.past")
 
-    = link_to list_unit_events_path(@unit, format: :pdf),
+    = link_to list_unit_events_path(current_unit, format: :pdf),
               class: "block px-4 py-2 rounded hover:bg-brand-600",
               data: { turbo_action: "advance" } do
 
       i.fa-fw.fa-solid.fa-print.mr-2
       = t("events.index.buttons.print")
 
-    - if @current_member.admin?
-        = link_to list_unit_events_path(@unit, format: :pdf, season: "next"),
+    - if current_member.admin?
+        = link_to list_unit_events_path(current_unit, format: :pdf, season: "next"),
                   class: "block px-4 py-2 rounded hover:bg-brand-600",
                   data: { turbo_action: "advance" } do
           

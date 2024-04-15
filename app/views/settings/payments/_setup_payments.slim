@@ -8,7 +8,7 @@ p.mb-6 Scoutplan uses <a class="text-blue-500 font-bold hover:underline" href="h
 
 p.mb-6 Are you authorized to make financial decisions on behalf of your unit and have access to your unit's banking information?
 
-= form_tag onboard_unit_payments_path(@unit), method: :post, data: { turbo: false } do
+= form_tag onboard_unit_payments_path(current_unit), method: :post, data: { turbo: false } do
   div
     = render partial: "components/switch",
             locals: { checked: false,

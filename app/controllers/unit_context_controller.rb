@@ -1,20 +1,15 @@
 # frozen_string_literal: true
 
-# an abstract controller to be subclassed for instances
-# where a Unit is being manipulated (which is to say, most)
 class UnitContextController < ApplicationController
-  prepend_before_action :find_unit_info
   prepend_before_action :set_unit_cookie
   before_action :build_event_presenter
   before_action :set_paper_trail_whodunnit
   around_action :time_zone
 
-  def current_unit
-    # @current_unit ||= Unit.includes(
-    #   :setting_objects,
-    #   unit_memberships: [:user, :parent_relationships, :child_relationships]
-    # ).find(unit_id_param)
+  helper_method :current_member
+  helper_method :current_unit
 
+  def current_unit
     @current_unit ||= Unit.find(unit_id_param)
   end
 
@@ -23,19 +18,10 @@ class UnitContextController < ApplicationController
   end
 
   def pundit_user
-    @membership
+    current_member
   end
 
   private
-
-  def find_unit_info
-    return unless params[:unit_id].present? || params[:id].present?
-
-    # TODO: scope this to the current user's memberships
-    @current_unit = @unit = Unit.find(params[:unit_id] || params[:id])
-    @current_member = @membership = @unit.membership_for(current_user)
-    Time.zone = @unit.settings(:locale).time_zone
-  end
 
   def set_unit_cookie
     cookies[:current_unit_id] = { value: current_unit&.id }
@@ -51,7 +37,7 @@ class UnitContextController < ApplicationController
   end
 
   def user_for_paper_trail
-    @current_member&.id
+    current_member&.id
   end
 
   def build_event_presenter

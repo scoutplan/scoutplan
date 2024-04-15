@@ -9,13 +9,13 @@
 
     .flex.flex-col.gap-1
       - @current_unit.events.published.future.rsvp_required.each do |event|
-        - presenter = EventPresenter.new(event, @current_member)
+        - presenter = EventPresenter.new(event, current_member)
         - family_has_rsvps = false
         - family_fully_responded = true
 
         article.rounded.p-4.bg-stone-100
           = link_to \
-            unit_event_path(@unit, event),
+            unit_event_path(current_unit, event),
             class: "block mb-5"
             do
             h3.font-bold.text-lg
@@ -34,7 +34,7 @@
 
           .flex.flex-col.md:flex-row.justify-between.gap-4
             .flex.flex-row.gap-4
-              - @current_member.family.each do |member|
+              - current_member.family.each do |member|
                 - rsvp = event.rsvp_for(member)
                 - next unless member.status_active? || rsvp&.accepted?
                 
@@ -51,14 +51,14 @@
                       i.fa-ghost.fas.text-stone-300(title="No response")
 
                   = member.display_first_name
-                  = " (you)" if member == @current_member
+                  = " (you)" if member == current_member
 
             div
               // "Change" RSVP button, if user's allowed to
               - if event.rsvp_open?
                 - if policy(event).rsvp?
                   - if family_has_rsvps
-                    = link_to unit_event_edit_rsvps_path(@unit, event),
+                    = link_to unit_event_edit_rsvps_path(current_unit, event),
                       class: "event-rsvp-link text-sm py-3 md:py-1 px-4 text-center \
                               block md:inline \
                               font-bold tracking-wider rounded \
@@ -69,7 +69,7 @@
                         = "Change your RSVPs"
                                       
                   - else
-                    = link_to unit_event_edit_rsvps_path(@unit, event),
+                    = link_to unit_event_edit_rsvps_path(current_unit, event),
                       class: "event-rsvp-link text-sm py-3 md:py-1 px-4 text-center \
                               block md:inline \
                               font-bold tracking-wider rounded text-yellow-800 bg-yellow-400 \

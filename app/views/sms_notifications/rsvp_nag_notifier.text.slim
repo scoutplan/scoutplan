@@ -1,1 +1,1 @@
-| Hi, #{@recipient.first_name}, we're making plans for the #{@event.title}. Can you let us know your plans? Visit #{magic_url_for(@recipient, rsvp_unit_event_url(@unit, @event))} to respond. RSVPs close in #{distance_of_time_in_words_to_now(@event.rsvp_closes_at)}.
+| Hi, #{@recipient.first_name}, we're making plans for the #{@event.title}. Can you let us know your plans? Visit #{magic_url_for(@recipient, rsvp_unit_event_url(current_unit, @event))} to respond. RSVPs close in #{distance_of_time_in_words_to_now(@event.rsvp_closes_at)}.

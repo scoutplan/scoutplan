@@ -17,7 +17,7 @@ class DocumentTypesController < EventContextController
 
   def create
     @document_type = @event.document_types.new(document_type_params)
-    redirect_to [@unit, @event], notice: "Document type added" if @document_type.save!
+    redirect_to [current_unit, @event], notice: "Document type added" if @document_type.save!
   end
 
   def destroy

@@ -3,6 +3,7 @@ class UnitMembershipProfilesController < ApplicationController
 
   def index
     redirect_to member_profile_path(current_user.unit_memberships.first.id) and return unless params[:unit_membership_id].present?
+
     @member = UnitMembership.find(params[:unit_membership_id])
     @unit = @member.unit
   end
@@ -26,5 +27,5 @@ class UnitMembershipProfilesController < ApplicationController
   # override this method to pass the UnitMembership to Pundit
   def pundit_user
     @member
-  end  
+  end
 end

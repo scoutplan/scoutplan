@@ -1,7 +1,7 @@
-- return unless @unit.packing_lists.empty?
+- return unless current_unit.packing_lists.empty?
 
 p.py-6.text-stone-500
   = "You don't have any packing lists. "
   = link_to "Start one now",
-            new_unit_packing_list_path(@unit),
+            new_unit_packing_list_path(current_unit),
             class: "text-brand-500"

@@ -4,7 +4,6 @@ class Pdf::EventRoster < Prawn::Document
   def initialize(event)
     super(page_layout: :portrait)
     @event = event
-    @unit = event.unit
     @current_row = 3
     render_header
     define_grid(columns: 6, rows: 35, gutter: 10)

@@ -7,7 +7,7 @@
       div
         - if policy(:message).create?
           = link_to "Write an Announcement",
-            new_unit_news_item_path(@unit),
+            new_unit_news_item_path(current_unit),
             class: "rounded bg-brand-500 uppercase text-sm font-bold tracking-wider text-white px-4 py-2",
             data: { turbo_frame: "main", turbo_action: "advance" }
 

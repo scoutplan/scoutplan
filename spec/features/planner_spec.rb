@@ -2,7 +2,6 @@
 
 require "rails_helper"
 
-# rubocop:disable Metrics/BlockLength
 describe "planner", type: :feature do
   before :each do
     @admin_user  = FactoryBot.create(:user, email: "test_admin@scoutplan.org")
@@ -14,11 +13,11 @@ describe "planner", type: :feature do
       @event = FactoryBot.create(
         :event,
         :published,
-        starts_at: (i * 7).days.from_now,
-        ends_at: ((i * 7) + 1).days.from_now,
+        starts_at:      ((i * 7) + 0).days.from_now,
+        ends_at:        ((i * 7) + 1).days.from_now,
         event_category: @meeting_category,
-        unit: @unit,
-        title: "Event #{i}"
+        unit:           @unit,
+        title:          "Event #{i}"
       )
     end
 

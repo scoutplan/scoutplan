@@ -6,7 +6,7 @@
 article.member(class="#{row_classes}")
   = render partial: "unit_memberships/index/checkbox", locals: { unit_membership: unit_membership }
 
-  = link_to unit_member_path(@unit, unit_membership), class: "block py-4 grow -mx-2 px-2 hover:bg-stone-100 dark:hover:bg-stone-800", data: { turbo_action: "advance" } do
+  = link_to unit_member_path(current_unit, unit_membership), class: "block py-4 grow -mx-2 px-2 hover:bg-stone-100 dark:hover:bg-stone-800", data: { turbo_action: "advance" } do
     = render partial: "unit_memberships/index/name", locals: { unit_membership: unit_membership }
     .extended-member-info
       = render partial: "unit_memberships/index/email", locals: { unit_membership: unit_membership }

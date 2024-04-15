@@ -10,7 +10,7 @@ module Settings
     end
 
     def onboard
-      redirect_to unit_settings_path(@unit) and return unless params[:unit][:auth] == "true"
+      redirect_to unit_settings_path(current_unit) and return unless params[:unit][:auth] == "true"
 
       create_stripe_account
       redirect_to stripe_onboard_link, allow_other_host: true
@@ -34,30 +34,30 @@ module Settings
         email: current_user.email,
         business_type: "non_profit",
         company: {
-          name: @unit.name
+          name: current_unit.name
         }
       )
 
-      PaymentAccount.create_with(account_id: account.id).find_or_create_by(unit: @unit)
+      PaymentAccount.create_with(account_id: account.id).find_or_create_by(unit: current_unit)
 
-      # @unit.payment_account.find_or_create_by(account_id: account.id)
+      # current_unit.payment_account.find_or_create_by(account_id: account.id)
     end
 
     def stripe_onboard_link
       Stripe::AccountLink.create({
-        account: @unit.payment_account.account_id,
+        account: current_unit.payment_account.account_id,
         refresh_url: refresh_unit_payments_url,
-        return_url: unit_settings_url(@unit),
+        return_url: unit_settings_url(current_unit),
         type: "account_onboarding"
       })["url"]
     end
 
     def stripe_return_url
-      return_from_onboarding_unit_payments_url(@unit)
+      return_from_onboarding_unit_payments_url(current_unit)
     end
 
     def stripe_refresh_url
-      refresh_unit_payments_url(@unit)
+      refresh_unit_payments_url(current_unit)
     end
   end
 end

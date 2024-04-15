@@ -1,6 +1,6 @@
-- return unless event.requires_rsvp && EventPolicy.new(@current_member, event).organize?
+- return unless event.requires_rsvp && EventPolicy.new(current_member, event).organize?
 
-= link_to dashboard_unit_event_path(@unit, event),
+= link_to dashboard_unit_event_path(current_unit, event),
           class: "whitespace-nowrap block md:inline-block px-4 py-2 font-semibold rounded-lg text-center bg-violet-100 hover:bg-violet-200 text-violet-800",
           title: "View & organize RSVPs",
           id: "organize_#{dom_id(event)}_link",

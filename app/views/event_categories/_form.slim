@@ -1,4 +1,4 @@
-= form_for [@unit, @event_category] do |f|
+= form_for [current_unit, @event_category] do |f|
   fieldset
     article.py-4
       = f.label :name, "Category Name", class: "block font-bold mb-1"
@@ -42,7 +42,7 @@
 
       div
         - if !f.object.new_record?
-          = link_to unit_event_category_remove_path(@unit, @event_category),
+          = link_to unit_event_category_remove_path(current_unit, @event_category),
                     class: "text-stone-400 hover:text-stone-800",
                     data: { turbo_action: "advance" } do
             .fa-stack

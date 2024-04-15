@@ -1,7 +1,7 @@
 = turbo_stream.prepend "events_list" do
   li.more-past-events-item
     - if @last_month.present?
-      = link_to list_unit_events_path(@unit, year: @last_month.year, month: @last_month.month),
+      = link_to list_unit_events_path(current_unit, year: @last_month.year, month: @last_month.month),
                 class: "group block py-2 text-center text-blue-500 hover:text-blue-600",
                 data: { turbo_stream: "true" } do
 

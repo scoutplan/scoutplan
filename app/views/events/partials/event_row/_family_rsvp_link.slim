@@ -4,8 +4,8 @@
 - family_has_rsvps = false
 - family_fully_responded = true
 - event_rsvps = event.rsvps.includes(:unit_membership)
-- rsvp_service = RsvpService.new(@current_member, event)
-- @current_member.family.each do |member|
+- rsvp_service = RsvpService.new(current_member, event)
+- current_member.family.each do |member|
   - rsvp = event_rsvps.select { |r| r.unit_membership == member }&.first
   - family_has_rsvps = family_has_rsvps || rsvp.present?
   - family_fully_responded = family_fully_responded && rsvp.present?
@@ -14,14 +14,14 @@
 - if event.rsvp_open?
   - if policy(event).rsvp?
     - if family_fully_responded
-      = link_to new_unit_event_family_rsvp_path(@unit, event),
-                class: "whitespace-nowrap block px-4 py-2 text-center rounded font-semibold ring-1 ring-inset ring-amber-500 text-amber-700 hover:bg-amber-100 dark:text-amber-500 dark:hover:bg-amber-950",
+      = link_to new_unit_event_family_rsvp_path(current_unit, event),
+                class: "whitespace-nowrap block px-4 py-2 text-center rounded font-semibold bg-amber-200 hover:bg-amber-300 text-amber-800 dark:text-amber-500 dark:hover:bg-amber-950",
                 title: "#{rsvp_service.family_responses_in_words}",
                 data: { turbo_frame: "modal" } do
         = t(".update")
       
     - else
-      = link_to new_unit_event_family_rsvp_path(@unit, event),
+      = link_to new_unit_event_family_rsvp_path(current_unit, event),
                 class: "whitespace-nowrap block px-4 py-2 text-center rounded font-semibold bg-amber-300 hover:bg-amber-500 text-amber-950",
                 title: "#{rsvp_service.family_responses_in_words}",
                 data: { turbo_frame: "modal" } do
@@ -38,8 +38,6 @@
           .hidden.md:inline-block
             | &nbsp;
             = "to respond"
-
-  / .text-amber-600.whitespace-nowrap.text-center
 
 - elsif event.rsvp_opens_at&.future?
   .font-semibold.text-sm.text-amber-600.text-center.md:text-left

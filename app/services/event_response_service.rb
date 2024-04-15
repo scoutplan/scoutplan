@@ -3,7 +3,7 @@
 # a serivce object to handle the response to an event
 # usage:
 # responses = [{ member: member1, response: "attending" }, { member: member2, response: "declined" }]
-# EventResponseService.new(event).process(@current_member, responses)
+# EventResponseService.new(event).process(current_member, responses)
 # called from:
 # 1. Event web page
 # 2. Event Organize page

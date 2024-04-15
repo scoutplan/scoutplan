@@ -1,7 +1,7 @@
-- return unless @current_member.admin?
+- return unless current_member.admin?
 
 li
-  = button_to unit_event_reminders_path(@unit, @event),
+  = button_to unit_event_reminders_path(current_unit, @event),
               method: :post,
               remote: true,
               class: "block w-full px-4 py-2 text-left hover:bg-brand-600",
