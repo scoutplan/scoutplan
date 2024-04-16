@@ -1,8 +1,8 @@
-- return if @unit.events.any?
-- return unless EventPolicy.new(@current_member, Event.new).create?
+- return if current_unit.events.any?
+- return unless EventPolicy.new(current_member, Event.new).create?
 
 .rounded.bg-sky-100.text-sky-800.w-3/4.mx-auto.p-6.mt-8
   = "You don't have anything on your schedule yet."
-  = link_to new_unit_event_path(@unit), class: "block font-bold" do
+  = link_to new_unit_event_path(current_unit), class: "block font-bold" do
     = "Add an event now"
     i.fa-solid.fa-arrow-right.ml-1
