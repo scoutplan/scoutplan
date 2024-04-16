@@ -4,11 +4,11 @@ head
 
 body(style="font-family: sans-serif; color: #57534e;")
   table(style="width: 500px; line-height: 110%;")
-    - if @user&.logo&.attached?
+    - if @unit&.logo&.attached?
       tr
         td(style="padding: 20px 0;")
           = link_to root_url do
-            = image_tag "data:image/#{@user&.logo.filename.extension};base64,#{Base64.encode64(File.read(Rails.root.join("app/assets/images/scoutplan_logo.png")))}",
+            = image_tag "data:image/#{@unit&.logo.filename.extension};base64,#{Base64.encode64(File.read(Rails.root.join("app/assets/images/scoutplan_logo.png")))}",
                         style: "width:80%;max-width:150px;height:auto;text-decoration:none;color:rgb(255,255,255,1.0);"
 
     tr

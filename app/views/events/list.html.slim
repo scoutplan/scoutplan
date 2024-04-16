@@ -18,6 +18,8 @@
 
       .font-semibold.text-stone-500.dark:text-stone-300 = current_unit.name
 
+    = render "blank_slate"
+
     ol#events_list
       = turbo_frame_tag "events-#{@page.number}"
         - @page.records.each do |event|
