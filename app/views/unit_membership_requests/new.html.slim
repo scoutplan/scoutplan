@@ -1,0 +1,28 @@
+main.max-w-md.mx-auto.mt-8
+  h1.text-3xl.mb-4 Looks like you're new here. Welcome!
+  
+  p.mb-4 Let's get a bit of information and then we'll notify your unit administrator to get you set up.
+
+  = form_with model: UnitMembershipRequest.new do |f|
+    = f.hidden_field :unit_id, value: cookies[:target_unit_id]
+
+    .flex.flex-col.gap-4
+      div
+        = f.label :first_name, class: "font-semibold"
+        = f.text_field :first_name, class: "block w-full mt-1 rounded border-stone-300", autofocus: true
+
+      div
+        = f.label :last_name, class: "font-semibold"
+        = f.text_field :last_name, class: "block w-full mt-1 rounded border-stone-300"
+
+      div
+        = f.label :email, class: "font-semibold"
+        = f.email_field :email, class: "block w-full mt-1 rounded border-stone-300", value: cookies[:email]
+
+      div
+        = f.label :phone, class: "font-semibold"
+        = f.phone_field :phone, class: "block w-full mt-1 rounded border-stone-300"       
+
+      footer.pt-4
+        = f.button type: "submit", class: "btn btn-primary px-4 py-2 bg-sky-600 text-sky-50 font-medium rounded" do
+          = "Request Access"

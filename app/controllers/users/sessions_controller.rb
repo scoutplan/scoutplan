@@ -4,21 +4,22 @@ module Users
   # override devise to allow for custom redirect after sign in
   class SessionsController < Devise::SessionsController
     before_action :find_unit
+    before_action :resolve_user
 
     def after_sign_in_path_for(resource)
       stored_location_for(resource) || root_path
     end
 
     def create
-      sign_in_via_magic_link and return if params[:token].present?
-      redirect_to new_user_session_path and return unless resolve_user
-
-      if params[:user][:password].present?
+      if params[:token].present?
+        sign_in_via_magic_link
+      elsif params[:user][:password].present?
         sign_in_via_password
-        return
+      elsif @user.nil? && cookies[:target_unit_id].present?
+        redirect_to welcome_path
+      else
+        send_session_email
       end
-
-      send_session_email if resolve_user
     end
 
     private
@@ -36,13 +37,16 @@ module Users
     def resolve_user
       return unless (email = params.dig(:user, :email))
 
+      cookies[:email] = email
       @user = User.find_by(email: email)
       @unit ||= @user&.units&.first
       @user
     end
 
     def send_session_email
-      member = @unit.membership_for(@user)
+      member = @unit.membership_for(@user) || @user.unit_memberships.first
+      redirect_to hello and return unless member
+
       magic_link = MagicLink.generate_link(member, target_path, 1.hour)
       UserMailer.with(magic_link: magic_link).session_email.deliver_later
     end

@@ -26,18 +26,12 @@
                 title: "#{rsvp_service.family_responses_in_words}",
                 data: { turbo_frame: "modal" } do
         = t(".new")
-        .inline-block.font-medium.text-sm.text-amber-800
-          | &nbsp;
-          = distance_of_time_in_words_to_now(event.rsvp_closes_at).downcase
+  .inline-block.font-medium.text-center.text-sm.text-amber-600
+    = "RSVPs close in "
+    = distance_of_time_in_words_to_now(event.rsvp_closes_at).downcase
 
-          - if event.limits_headcount?
-            = ", " + event.headcount_remaining.to_s + " spots"
-
-          = " left"
-
-          .hidden.md:inline-block
-            | &nbsp;
-            = "to respond"
+    - if event.limits_headcount?
+      = ", " + event.headcount_remaining.to_s + " spots open"
 
 - elsif event.rsvp_opens_at&.future?
   .font-semibold.text-sm.text-amber-600.text-center.md:text-left
