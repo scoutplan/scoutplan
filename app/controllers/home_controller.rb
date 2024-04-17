@@ -1,7 +1,5 @@
 class HomeController < ApplicationController
-  layout "public"
-
-  # skip_before_action :authenticate_user!
+  skip_before_action :authenticate_user!
 
   def index
     return unless current_user.present?
