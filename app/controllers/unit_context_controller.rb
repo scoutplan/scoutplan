@@ -2,6 +2,7 @@
 
 class UnitContextController < ApplicationController
   prepend_before_action :set_unit_cookie
+  prepend_before_action :capture_target_unit
   before_action :build_event_presenter
   before_action :set_paper_trail_whodunnit
   around_action :time_zone
@@ -42,5 +43,10 @@ class UnitContextController < ApplicationController
 
   def build_event_presenter
     @presenter = EventPresenter.new(nil, current_member)
+  end
+
+  def capture_target_unit
+    cookies[:target_unit_id] = unit_id_param
+    ap cookies[:target_unit_id]
   end
 end

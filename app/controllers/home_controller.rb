@@ -1,4 +1,6 @@
 class HomeController < ApplicationController
+  skip_before_action :authenticate_user!
+
   def index
     unit_id = current_user.unit_memberships.first.unit.id
     unit = Unit.find_by(id: unit_id)

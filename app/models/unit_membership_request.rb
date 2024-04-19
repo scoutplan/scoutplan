@@ -1,0 +1,2 @@
+class UnitMembershipRequest < ApplicationRecord
+end
