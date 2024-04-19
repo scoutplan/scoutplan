@@ -72,8 +72,6 @@ class MessagesController < UnitContextController
   def duplicate
     # authorize @message
     new_message = @message.dup
-    ap @message
-    ap new_message
     redirect_to edit_unit_message_path(current_unit, new_message), notice: t("messages.notices.duplicate_success")
   end
 
@@ -85,8 +83,6 @@ class MessagesController < UnitContextController
 
   def commit
     return unless (key = params[:key]).present?
-
-    ap params[:member_type]
 
     type, id = key.split("_")
     @recipients = case type
