@@ -10,8 +10,6 @@ module EventsHelper
   # given an Event, return a FontAwesome-formatted <i> tag corresponding to
   # the associated EventCategory
   def glyph_tag(event, **options)
-    ap options[:classes]
-
     style = options[:exclude_color] ? "" : "color:#{event&.category&.color}"
     classes = "fa-solid mr-1 fa-fw fa-#{event&.category&.glyph} #{options[:classes]}}"
 

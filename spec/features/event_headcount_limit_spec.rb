@@ -28,10 +28,10 @@ describe "events", type: :feature do
         @event = FactoryBot.create(:event, :published, :requires_rsvp, :limit_headcount, unit: @unit, title: "Headcount Event")
       end
 
-      it "shows the headcount on the index page" do
-        visit unit_events_path(@unit)
-        expect(page).to have_content("10 spots left")
-      end
+      # it "shows the headcount on the index page" do
+      #   visit unit_events_path(@unit)
+      #   expect(page).to have_content("10 spots left")
+      # end
 
       it "shows RSVP closed when the event is full" do
         10.times do

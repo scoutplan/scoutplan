@@ -47,6 +47,5 @@ class UnitContextController < ApplicationController
 
   def capture_target_unit
     cookies[:target_unit_id] = unit_id_param
-    ap cookies[:target_unit_id]
   end
 end
