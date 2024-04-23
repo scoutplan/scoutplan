@@ -13,7 +13,7 @@ module Users
     def create
       if params[:token].present?
         sign_in_via_magic_link
-      elsif params[:user][:password].present?
+      elsif params.dig(:user, :password).present?
         sign_in_via_password
       elsif @user.nil? && cookies[:target_unit_id].present?
         redirect_to welcome_path
