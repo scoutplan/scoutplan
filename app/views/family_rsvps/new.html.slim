@@ -8,12 +8,12 @@
         = form_with url: unit_event_family_rsvps_path(@event.unit, @event, unit_membership_id: @family_rsvp.unit_membership.id),
                     method: :post, format: :turbo_stream, data: { controller: "dirt-detector" } do |f|
           section.p-4.rounded-lg.bg-stone-100.dark:bg-stone-700.dark:border.border-stone-500
-            = render partial: "events/edit_rsvp_fields", locals: { event: @event, f: f, presenter: @presenter, unit_membership: current_member }
+            = render partial: "events/edit_rsvp_fields", locals: { event: @event, f: f, presenter: @presenter, unit_membership: @member }
 
           footer.mt-4.flex.flex-col.md:flex-row.gap-2
             = f.submit @family_rsvp.new_record? ? "Send your response" : "Update your response",
-                        class: "block px-6 py-2 rounded-lg bg-amber-400 hover:bg-amber-500 text-amber-950 font-semibold cursor-pointer",
+                        class: "block px-6 py-2 rounded bg-amber-400 hover:bg-amber-500 text-amber-950 font-semibold cursor-pointer",
                         id: "accept"
             = button_tag "Cancel",
-                          class: "text-amber-800 bg-amber-200 hover:bg-amber-300 font-semibold rounded-lg px-5 py-2",
+                          class: "text-amber-800 bg-amber-200 hover:bg-amber-300 font-semibold rounded px-5 py-2",
                           data: { action: "click->modal#close" }
