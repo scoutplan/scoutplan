@@ -3,7 +3,7 @@
 
 <%= string_for_time_internal_from_day(@event.starts_at).capitalize %>: <%= @event.title %>
 <%= presenter.months_and_dates %> (<%= presenter.days_to_s %>)
-Full details at <%= magic_url_for(@recipient, unit_event_url(current_unit, @event)) %>
+Full details at <%= magic_url_for(@recipient, unit_event_url(@unit, @event)) %>
 <% if @event.requires_rsvp? %>
 -----------------------------------------------------------------------
 Your family's RSVPs:
@@ -15,9 +15,9 @@ Your family's RSVPs:
 
 <% if @event.rsvp_open? && EventPolicy.new(@recipient, @event).rsvp? %>
 <% if @family_rsvps.any? %>
-Change your response at <%=magic_url_for(@recipient, unit_event_family_rsvps_url(current_unit, current_unit.events.first)) %>
+Change your response at <%=magic_url_for(@recipient, unit_event_family_rsvps_url(@unit, @unit.events.first)) %>
 <% else %>
-Respond at <%= magic_url_for(@recipient, unit_event_family_rsvps_url(current_unit, current_unit.events.first)) %>
+Respond at <%= magic_url_for(@recipient, unit_event_family_rsvps_url(@unit, @unit.events.first)) %>
 <% end # family_rsvps.any? %>
 <% end # rsvp_open %>
 <% end # if requires_rsvp %>
