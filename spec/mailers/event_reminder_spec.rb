@@ -1,5 +1,18 @@
 require "rails_helper"
 
 RSpec.describe EventReminderMailer, type: :mailer do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before do
+    @member = FactoryBot.create(:member)
+    @unit = @member.unit
+    @other_member = FactoryBot.create(:member, unit: @unit)
+    @event = FactoryBot.create(:event, :requires_rsvp, :published, unit: @unit)
+    @organizer = @event.event_organizers.create(unit_membership: @member, assigned_by: @other_member)
+  end
+
+  describe "event_reminder_notification" do
+    it "works" do
+      mail = EventReminderMailer.with(recipient: @member, event: @event).event_reminder_notification
+      expect { mail.deliver_now }.not_to raise_error
+    end
+  end
 end
