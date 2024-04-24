@@ -2,8 +2,10 @@
 
 # utilities for handling Unit seasons
 module Seasons
+  DEFAULT_SEASON_MONTH = 8
+
   def season_month
-    8
+    DEFAULT_SEASON_MONTH
   end
 
   def next_season_starts_at

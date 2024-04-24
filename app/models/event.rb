@@ -91,6 +91,7 @@ class Event < ApplicationRecord
 
   scope :recent_and_future, -> { where("starts_at > ?", 4.weeks.ago) }
   scope :recent_and_upcoming, -> { where("starts_at BETWEEN ? AND ?", 4.weeks.ago, 35.days.from_now) }
+  scope :this_season, -> { where("starts_at BETWEEN ? AND ?", this_season_starts_at, this_season_ends_at) }
   scope :next_season, -> { where("starts_at BETWEEN ? AND ?", next_season_starts_at, next_season_ends_at) }
   scope :intending_to_go, -> { where("response IN ['accepted', 'accepted_pending']") }
   scope :rsvp_expiring_soon, -> { where("rsvp_closes_at BETWEEN ? AND ?", Time.current, Date.tomorrow.at_end_of_day) }
@@ -104,6 +105,10 @@ class Event < ApplicationRecord
 
   def category_name
     event_category.name
+  end
+
+  def this_season_starts_at
+    unit.this_season_starts_at
   end
 
   # rubocop:disable Metrics/AbcSize

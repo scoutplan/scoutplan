@@ -14,14 +14,10 @@
           - @activity.equipment.each do |item|
             = f.text_field 'equipment[]', class: 'form-control'
 
-    footer.flex.gap-2
-      = f.submit t("planner.activities.add_modal.submit"),
-        class: "text-sm font-bold uppercase tracking-wide \
-                bg-brand-500 hover:bg-brand-600 \
-                px-6 py-2 rounded text-white"
+    footer.flex.gap-1
+      = f.button type: "submit", class: "bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-white submit-activity-button" do
+        i.fa-solid.fa-check
 
-      = link_to t("global.cancel"),
-        unit_event_event_activities_path(@event.unit, @event),
-        class: "text-sm uppercase tracking-wide font-bold \
-                bg-stone-200 hover:bg-stone-300 \
-                px-6 py-2 rounded"
+      = link_to unit_event_event_activities_path(@event.unit, @event),
+                class: "bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white" do
+        i.fa-solid.fa-times

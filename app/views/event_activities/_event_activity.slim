@@ -2,7 +2,7 @@
   class: "event-activity \
           text-neutral-900 text-sm font-bold \
           mb-1 block p-2 \
-          bg-neutral-200 rounded",
+          bg-sky-200 text-sky-900 rounded",
   id: "event_activity_#{event_activity.id}",
   data: { \
     sortable_update_url: "#{unit_event_event_activity_path(event_activity.event.unit, event_activity.event, event_activity)}",
@@ -21,4 +21,4 @@
       title: t("planner.activities.titles.delete_activity"),
       method: :delete,
       form_class: "inline-block" do
-        i.fa-trash-alt.fas.text-neutral-900.px-2.hover:text-red-500
+        i.fa-trash-alt.fas.text-sky-900.px-2.hover:text-red-500

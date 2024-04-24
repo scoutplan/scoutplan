@@ -1,26 +1,27 @@
-.shadow.inline-block.dark:bg-stone-800.w-72.h-128.p-6.rounded.bg-neutral-100.m-2(class="event-card event-#{event.category.name.parameterize}")
-  header
-    h1.float-left
-      .text-sm.font-bold.uppercase = event.starts_at.strftime('%b') 
-      .text-8xl = event.starts_at.strftime('%-d')
+.shadow.inline-block.dark:bg-stone-800.w-72.h-128.p-4.rounded.bg-neutral-100.m-2(class="event-card event-#{event.category.name.parameterize}")
+  div(class="#{event.past? ? 'opacity-20' : ''}")
+    header
+      h1.float-left
+        .text-sm.font-bold.uppercase = event.starts_at.strftime('%b') 
+        .text-4xl = event.starts_at.strftime('%-d')
 
-    .float-right.text-center
-      .text-sm.font-bold.uppercase = event.starts_at.strftime('%a')
+      .float-right.text-center
+        .text-sm.font-bold.uppercase = event.starts_at.strftime('%a')
 
-      span(title="#{event.category.name}")
-        i.mt-3.fad(class="fa-#{event.category.glyph}" style="color:#{event.category.color}")
+        span(title="#{event.category.name}")
+          i.mt-3.fad(class="fa-#{event.category.glyph}" style="color:#{event.category.color}")
 
-  .clear-both
-  
-  h3.font-bold.text-lg
-    = link_to unit_event_path(current_unit, event) do
-      = event.title
+    .clear-both
+    
+    h3.font-medium.text-lg
+      = link_to unit_event_path(current_unit, event, from: "planner"), data: { turbo_action: "advance" } do
+        = event.title
 
-    - if event.draft?
-      .inline-block.px-2.py-1.text-xs.font-semibold.bg-sky-500.text-white.uppercase.tracking-wider.rounded.ml-2
-        = "Draft"
-  
-  = (content_tag :p, event.short_description) if event.short_description.present?
+      - if event.draft?
+        .inline-block.px-2.py-1.text-xs.font-semibold.bg-sky-500.text-white.uppercase.tracking-wider.rounded.ml-2
+          = "Draft"
+    
+    = (content_tag :p, event.short_description) if event.short_description.present?
 
-  .mt-3.overflow-y-scroll
-    = render partial: "event_activities/event_activities", locals: { event: event }
+    .mt-1.overflow-y-scroll
+      = render partial: "event_activities/event_activities", locals: { event: event }

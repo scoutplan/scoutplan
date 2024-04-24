@@ -8,10 +8,11 @@
       = check_box_tag :show_activities
 
   .w-full
-    .relative.flex.items-center.justify-center(data-controller="paged-scroll")
+    .relative.flex(data-controller="paged-scroll")
       .scrollable.flex.overflow-x-scroll.pb-6(data-paged-scroll-target="scrollable")
         .flex.flex-nowrap.px-12.md:px-16
-          = render partial: "event", collection: @events
+          = render partial: "event_month", collection: @events.group_by{ |e| [e.starts_at.year, e.starts_at.month] }
+          / = render partial: "event", collection: @events
 
       // left scroll button
       = link_to "#",
@@ -33,7 +34,7 @@
 
   javascript:
     document.title = "Planner · #{current_unit.name}"
-    document.head.appendChild(document.createElement("style")).innerHTML = ".event-camping-trip { display: none; }";
+    // document.head.appendChild(document.createElement("style")).innerHTML = ".event-camping-trip { display: none; }";
 
   scss:
     main {

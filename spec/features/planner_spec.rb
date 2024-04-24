@@ -48,8 +48,10 @@ describe "planner", type: :feature do
     add_link = add_links.first
     add_link.click
 
+    submit_button = page.find(:css, ".submit-activity-button")
+
     fill_in :event_activity_title, with: "Fun Activity!"
-    expect { click_link_or_button("Add") }.to change { EventActivity.count }.by(1)
+    expect { submit_button.click }.to change { EventActivity.count }.by(1)
     expect(EventActivity.last.title).to eq("Fun Activity!")
   end
 end
