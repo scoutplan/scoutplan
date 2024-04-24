@@ -1,0 +1,8 @@
+- events = event_month.second
+- return unless events.count.positive?
+
+.flex.flex-col.gap-1
+  header
+    h2.text-center.font-medium.text-lg.text-brand-500 = events.first.starts_at.strftime('%B %Y')
+
+  = render partial: "event", collection: event_month.second
