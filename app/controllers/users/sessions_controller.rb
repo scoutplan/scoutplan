@@ -44,6 +44,8 @@ module Users
     end
 
     def send_session_email
+      return unless @unit
+
       member = @unit.membership_for(@user) || @user.unit_memberships.first
       redirect_to hello and return unless member
 
