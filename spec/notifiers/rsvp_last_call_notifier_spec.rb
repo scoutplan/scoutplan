@@ -23,4 +23,9 @@ RSpec.describe RsvpLastCallNotifier do
     # expect { RsvpLastCallNotifier.with(event: @event).deliver([@member]) }.to have_enqueued_job(ActionMailer::MailDeliveryJob)
     expect { RsvpLastCallNotifier.with(event: @event).deliver([@member]) }.to have_enqueued_job(Noticed::EventJob)
   end
+
+  it "renders SMS text" do
+    notifier = RsvpLastCallNotifier.new
+    expect{notifier.sms_body(recipient: @member, event: @event, unit: @unit)}.not_to raise_exception
+  end
 end
