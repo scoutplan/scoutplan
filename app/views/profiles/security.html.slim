@@ -30,10 +30,20 @@
             = uf.password_field :password_confirmation, class: "block w-full rounded border-stone-400 dark:bg-stone-800 dark:border-stone-500"
 
         footer.py-2
-          p.mb-6
-            i.fa-regular.fa-exclamation-triangle.mr-2.text-amber-500
-            | Changing #{possessive_name_or_pronoun(@member, @member)} password will sign 
-            | #{pronoun(@member, @member)} out of Scoutplan. #{pronoun(@member, @member).capitalize} can sign back in using 
-            | #{possessive_pronoun(@member, @member)} new password.
+          - if @member.errors.any?
+
+            ul.mb-6
+              - @member.errors.each do |error|
+                li
+                  i.fa-solid.fa-times-circle.mr-2.text-red-500
+                  / = error.details
+                  = error.full_message
+
+          - else
+            p.mb-6
+              i.fa-regular.fa-exclamation-triangle.mr-2.text-amber-500
+              | Changing #{possessive_name_or_pronoun(@member, @member)} password will sign 
+              | #{pronoun(@member, @member)} out of Scoutplan. #{pronoun(@member, @member).capitalize} can sign back in using 
+              | #{possessive_pronoun(@member, @member)} new password.
 
           = f.button("Change password", type: "submit", class: "block bg-green-600 text-white font-bold px-4 py-2 rounded")

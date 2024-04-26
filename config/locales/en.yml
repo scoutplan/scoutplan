@@ -874,3 +874,16 @@ en:
       new:           "Add a page"
       no_wiki_pages: "You don't have any pages yet. "
       new_cta:       "Start one now"
+
+
+
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              blank: "Your password can't be blank"
+              confirmation: "Your password and confirmation don't match"
+            password_confirmation:
+              # confirmation: "%{attribute} doesn't match"
