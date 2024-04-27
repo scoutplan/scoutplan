@@ -1,6 +1,6 @@
 = turbo_frame_tag "main"
-  header.w-full.px-16.py-8.text-center.flex.flex-row.items-center
-    h1.text-3xl.font-bold.mx-2
+  header.w-full.px-16.py-8
+    h1.text-4xl.font-medium.mx-2.text-center
       = t("planner.title", unit: current_unit.name)
 
     .category-filter.ml-auto.hidden
@@ -16,8 +16,8 @@
 
       // left scroll button
       = link_to "#",
-        class: "text-stone-100 bg-sky-500 bg-opacity-50 block absolute left-0 flex items-center justify-center \
-                hover:bg-opacity-75 \
+        class: "text-stone-100 bg-brand-500 bg-opacity-75 block absolute left-0 flex items-center justify-center \
+                hover:bg-opacity-100 \
                 text-2xl h-24 px-4 \
                 md:text-5xl md:h-36 md:px-4",
         data: { action: "paged-scroll#scrollLeft" } do
@@ -25,16 +25,22 @@
 
       // right scroll button
       = link_to "#",
-        class: "text-stone-100 bg-sky-500 bg-opacity-50 block absolute right-0 flex items-center justify-center \
-                hover:bg-opacity-75 \
+        class: "text-stone-100 bg-brand-500 bg-opacity-75 block absolute right-0 flex items-center justify-center \
+                hover:bg-opacity-100 \
                 text-2xl h-24 px-4 \
                 md:text-5xl md:h-36 md:px-4",
         data: { action: "paged-scroll#scrollRight" } do
-          i.fas.fa-chevron-right          
+          i.fas.fa-chevron-right
+
+  = turbo_stream.update "page_title" do
+    = t("planner.title", unit: current_unit.name)          
 
   javascript:
-    document.title = "Planner · #{current_unit.name}"
-    // document.head.appendChild(document.createElement("style")).innerHTML = ".event-camping-trip { display: none; }";
+    document.addEventListener("turbo:load", () => {
+      const scrollable = document.querySelector(".scrollable");
+      const firstFutureEvent = document.querySelectorAll(".event-future")[0];
+      if (firstFutureEvent) { scrollable.scrollLeft = scrollable.scrollWidth * 0.25; }
+    });
 
   scss:
     main {

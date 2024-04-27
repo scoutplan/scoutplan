@@ -1,5 +1,5 @@
 .shadow.inline-block.dark:bg-stone-800.w-72.h-128.p-4.rounded.bg-neutral-100.m-2(class="event-card event-#{event.category.name.parameterize}")
-  div(class="#{event.past? ? 'opacity-20' : ''}")
+  div(class="#{event.past? ? 'opacity-20' : ''} #{event.past? ? "event-past" : "event-future"}")
     header
       h1.float-left
         .text-sm.font-bold.uppercase = event.starts_at.strftime('%b') 

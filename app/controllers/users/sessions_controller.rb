@@ -10,6 +10,8 @@ module Users
       stored_location_for(resource) || root_path
     end
 
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/MethodLength
     def create
       if params[:token].present?
         sign_in_via_magic_link
@@ -17,10 +19,14 @@ module Users
         sign_in_via_password
       elsif @user.nil? && cookies[:target_unit_id].present?
         redirect_to welcome_path
-      else
+      elsif params.dig(:user, :email).present?
         send_session_email
+      else
+        redirect_to new
       end
     end
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/MethodLength
 
     private
 
