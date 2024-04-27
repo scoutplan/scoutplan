@@ -19,7 +19,7 @@ module Users
         sign_in_via_password
       elsif @user.nil? && cookies[:target_unit_id].present?
         redirect_to welcome_path
-      elsif params.dig(:user, :email).present?
+      elsif @user.present?
         send_session_email
       else
         redirect_to new
