@@ -1,6 +1,6 @@
 .dropdown.inline-block
   = link_to "#",
-    class: "block px-4 py-3 dropdown-button dropdown-button-chevron font-bold text-sm xl:text-base",
+    class: "block px-4 py-3 dropdown-button dropdown-button-chevron font-semibold text-sm xl:text-base",
     data: { user_id: current_user.id, member_id: current_member.id } do
       = current_member.short_display_name
       i.fa-chevron-down.fas.ml-2

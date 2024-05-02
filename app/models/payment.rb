@@ -3,7 +3,7 @@ class Payment < ApplicationRecord
   STRIPE_BASE_FEE = 30
   STRIPE_RATE = 0.029
 
-  belongs_to :event
+  belongs_to :event, touch: true
   belongs_to :unit_membership
   belongs_to :received_by, class_name: "UnitMembership", optional: true
   validates_presence_of :event, :unit_membership, :amount, :method, :status

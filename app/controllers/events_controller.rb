@@ -46,7 +46,7 @@ class EventsController < UnitContextController
   end
 
   def spreadsheet
-    find_list_events
+    find_spreadsheet_events
   end
 
   def history
@@ -423,7 +423,9 @@ class EventsController < UnitContextController
   end
 
   def current_layout
-    user_signed_in? ? "application" : "public"
+    return "public" unless user_signed_in?
+
+    "application"
   end
 
   def prepare_turbo_stream
@@ -483,13 +485,13 @@ class EventsController < UnitContextController
     scope.order(starts_at: :asc)
   end
 
-  # def find_list_events
-  #   scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
-  #   scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
-  #   scope = params[:before].present? ? scope.where("id < ?", params[:before]) : scope.future
-  #   scope.order(starts_at: :asc)
-  #   @events = scope.all
-  # end
+  def find_spreadsheet_events
+    scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
+    scope = params[:before].present? ? scope.where("id < ?", params[:before]) : scope.future
+    scope.order(starts_at: :asc)
+    @events = scope.all
+  end
 
   def find_list_events
     scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)

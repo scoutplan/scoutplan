@@ -1,5 +1,5 @@
 class EventOrganizer < ApplicationRecord
-  belongs_to :event
+  belongs_to :event, touch: true
   belongs_to :unit_membership
   belongs_to :assigned_by, class_name: "UnitMembership"
   has_one :user, through: :unit_membership

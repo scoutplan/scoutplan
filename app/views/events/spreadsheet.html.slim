@@ -2,16 +2,19 @@
 - Date::DATE_FORMATS[:month_and_date] = "%b %d"
 - @row_number = 0
 
-.table.text-sm.max-w-full.mx-auto.relative(data-controller="spreadsheet")
-  .table-row.header(data-spreadsheet-target="header")
-    .table-cell.border.border-stone-500.bg-stone-100
-    .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Day"
-    .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Date"
-    .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Title"
-    .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100.min-w-48 = "Description"
-    .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100.min-w-48 = "Location"
-    .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Organizers"
-  = render partial: "events/partials/spreadsheet/event", collection: @events
+.mx-6
+  .table.text-sm.w-full.mx-auto.relative(data-controller="spreadsheet")
+    .table-row.header(data-spreadsheet-target="header")
+      .table-cell.border.border-stone-500.bg-stone-100
+      .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Day"
+      .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Date"
+      .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Category"
+      .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Title"
+      .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100.min-w-48 = "Description"
+      .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100.min-w-48 = "Location"
+      .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Organizers"
+    
+    = render partial: "events/partials/spreadsheet/event", collection: @events
 
 style
   = render partial: "events/partials/spreadsheet/event_category", collection: current_unit.event_categories

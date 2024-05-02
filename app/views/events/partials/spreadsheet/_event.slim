@@ -1,22 +1,28 @@
-- @row_number += 1
 - actions = ""
 
-/ - actions += " dragover->spreadsheet#dragover"
-/ - actions += " dragleave->spreadsheet#dragleave"
-/ - actions += " dragstart->spreadsheet#dragstart"
-/ - actions += " dragend->spreadsheet#dragend drag->spreadsheet#drag"
+- actions += " dragover->spreadsheet#dragover"
+- actions += " dragleave->spreadsheet#dragleave"
+- actions += " dragstart->spreadsheet#dragstart"
+- actions += " dragend->spreadsheet#dragend drag->spreadsheet#drag"
 
 - actions += " mousedown->spreadsheet#mousedown"
 - actions += " mouseup->spreadsheet#mouseup"
 - actions += " mousemove->spreadsheet#mousemove"
 - actions += " click->spreadsheet#selectRow"
 
-.table-row.w-full.event.event-row(class="event-category-#{event.event_category.id}" id="#{dom_id(event)}")
-  .table-cell.cell-row-number.p-1.border-l.border-b.border-r.border-stone-500.border-px.bg-stone-100.text-center.row-number.cursor-crosshair.w-8(data-action="#{actions}") = @row_number
+.table-row.relative.event.event-row(class="event-category-#{event.event_category.id}" id="#{dom_id(event)}")
+  .table-cell.cell-row-number.p-1.border-l.border-b.border-r.border-stone-500.border-px.bg-stone-100.text-center.row-number.cursor-crosshair.w-8(data-action="#{actions}")
+    = event_counter + 1
   .table-cell.day-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-12(data-action="click->spreadsheet#selectCell") = event.starts_at.strftime("%a")
   .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-16(data-action="click->spreadsheet#selectCell") = event.starts_at.strftime("%b %d")
+  .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair(data-action="click->spreadsheet#selectCell") = event.category.name
   .table-cell.p-0.border-b.border-r.border-stone-500.border-px.cursor-crosshair(data-action="click->spreadsheet#selectCell")
     input(type="text" name="event[#{event.id}][title]" value=event.title class="text-sm")
   .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair(data-action="click->spreadsheet#selectCell") = event.description
   .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-48(data-action="click->spreadsheet#selectCell") = event.location
   .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-48(data-action="click->spreadsheet#selectCell") = event.event_organizers.join(", ")
+
+  .absolute.-left-5.right-0.h-2.group(style="top: -9px;")
+    .hidden.group-hover:block.cursor-pointer
+      .absolute.left-3.right-0.top-2.border-t.border-sky-600.border-2
+      i.fa-solid.fa-plus-circle.text-sky-600

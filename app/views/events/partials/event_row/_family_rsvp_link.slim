@@ -1,5 +1,7 @@
 - return unless event.requires_rsvp && user_signed_in?
 
+- family_rsvp = FamilyRsvp.new(current_member, event)
+
 / TODO: roll all this the FamilyRsvp object
 - family_has_rsvps = false
 - family_fully_responded = true
