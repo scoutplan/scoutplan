@@ -3,7 +3,7 @@ class EventRsvp < ApplicationRecord
 
   include Notifiable
 
-  belongs_to :event
+  belongs_to :event, touch: true
   belongs_to :unit_membership
   belongs_to :member, class_name: "UnitMembership", foreign_key: "unit_membership_id"
   belongs_to :respondent, class_name: "UnitMembership"
