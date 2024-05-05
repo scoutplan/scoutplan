@@ -41,7 +41,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors  = true
   config.action_mailer.delivery_method        = :smtp
   config.action_mailer.perform_caching        = false
-  config.action_mailer.default_url_options    = { host: "local.scoutplan.org", protocol: :https }
+  config.action_mailer.default_url_options    = { host: "go.scoutplan-local.org", protocol: :https }
   config.action_mailer.smtp_settings          = { address: "mailcatcher", port: 1025 }
 
   config.active_job.queue_adapter = :sidekiq

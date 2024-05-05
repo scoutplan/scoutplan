@@ -21,7 +21,7 @@ module Users
         redirect_to welcome_path
       elsif @user.present?
         send_session_email
-      else
+      elsif params.dig(:user, :email).empty?
         redirect_to new
       end
     end
