@@ -1,9 +1,11 @@
 // Stimulus controller for autocomplete
 
 import { Controller } from "@hotwired/stimulus"
+import { post } from "@rails/request.js"
 
 export default class extends Controller {
   static targets = ["header"];
+  static values = { unitId: Number };
 
   offsetLeft = 0;
   draggingElem = null;
@@ -11,6 +13,11 @@ export default class extends Controller {
 
   connect() {
     console.log("Spreadsheet controller connected")
+  }
+
+  async insertRow(event) {
+    console.log(event.params);
+    await post(`/u/${this.unitIdValue}/schedule/spreadsheet/rows?before=${event.params.before}`, { responseKind: "turbo-stream" });
   }
   
   selectCell(event) {

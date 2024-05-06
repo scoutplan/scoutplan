@@ -10,7 +10,7 @@
 - actions += " mousemove->spreadsheet#mousemove"
 - actions += " click->spreadsheet#selectRow"
 
-.table-row.relative.event.event-row(class="event-category-#{event.event_category.id}" id="#{dom_id(event)}")
+.table-row.relative.event.event-row(class="event event-category-#{event.event_category.id}" id="#{dom_id(event)}")
   .table-cell.cell-row-number.p-1.border-l.border-b.border-r.border-stone-500.border-px.bg-stone-100.text-center.row-number.cursor-crosshair.w-8(data-action="#{actions}")
     = event_counter + 1
   .table-cell.day-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-12(data-action="click->spreadsheet#selectCell") = event.starts_at.strftime("%a")
@@ -21,8 +21,8 @@
   .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair(data-action="click->spreadsheet#selectCell") = event.description
   .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-48(data-action="click->spreadsheet#selectCell") = event.location
   .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-48(data-action="click->spreadsheet#selectCell") = event.event_organizers.join(", ")
-
-  .absolute.-left-5.right-0.h-2.group(style="top: -9px;")
+  
+  .absolute.-left-5.right-0.h-2.group(style="top: -9px;" data-action="click->spreadsheet#insertRow" data-spreadsheet-before-param="#{event.id}")
     .hidden.group-hover:block.cursor-pointer
       .absolute.left-3.right-0.top-2.border-t.border-sky-600.border-2
       i.fa-solid.fa-plus-circle.text-sky-600

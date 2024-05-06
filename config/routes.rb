@@ -153,6 +153,7 @@ Rails.application.routes.draw do
         get "calendar", to: "events#calendar", as: "calendar_redirect"
         get "calendar/:year/:month", to: "events#calendar", as: "calendar"
         get "spreadsheet", to: "events#spreadsheet"
+        post "spreadsheet/rows", to: "spreadsheet_rows#create"
         post "bulk_publish"
       end
       # get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"
