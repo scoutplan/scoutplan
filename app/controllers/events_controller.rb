@@ -208,8 +208,15 @@ class EventsController < UnitContextController
 
   def destroy
     authorize @event
+
+    # prevent deleting from spreadsheet if there are accepted RSVPs
+    return if params[:context] == "spreadsheet" && @event.rsvps.accepted_intent.any?
+
     @event.destroy!
-    redirect_to unit_events_path(current_unit), notice: "#{@event.title} has been permanently removed from the schedule."
+    respond_to do |format|
+      format.html { redirect_to unit_events_path(current_unit), notice: "Event has been permanently removed from the schedule." }
+      format.turbo_stream
+    end
   end
 
   def destroy_series

@@ -13,6 +13,7 @@
       .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100.min-w-48 = "Description"
       .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100.min-w-48 = "Location"
       .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Organizers"
+      .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Published"
     
     = render partial: "events/partials/spreadsheet/event", collection: @events
 
@@ -27,10 +28,24 @@ css:
     -webkit-line-clamp: 3;
   }
 
-  .event-row.selected {
-    outline: 3px solid green;
-    outline-offset: 0;
-    box-shadow: inset 0px 0px 0px 1px white;
+  .table-row .table-cell {
+    user-select: none;
+  }
+
+  :nth-child(1 of .selected) .table-cell {
+    border-top: 3px solid #0a0;
+  }
+
+  :nth-last-child(1 of .selected) .table-cell {
+    border-bottom: 3px solid #0a0;
+  }
+
+  .selected .table-cell:first-child {
+    border-left: 3px solid #0a0;
+  }
+
+  .selected :nth-last-child(1 of .table-cell) {
+    border-right: 3px solid #0a0;
   }
 
   .row-number {

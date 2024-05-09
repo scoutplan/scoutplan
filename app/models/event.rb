@@ -1,6 +1,6 @@
 # rubocop:disable Metrics/ClassLength
 class Event < ApplicationRecord
-  include Notifiable, Remindable, Onlineable, Icalendarable, Replyable, DatePresentable, StaticMappable
+  include Notifiable, Remindable, Onlineable, Icalendarable, Replyable, DatePresentable, StaticMappable, Insertable
   extend DateTimeAttributes
 
   date_time_attrs_for :starts_at, :ends_at
@@ -299,11 +299,11 @@ class Event < ApplicationRecord
   end
 
   def next
-    unit.events.published.where("starts_at > ?", starts_at).order("starts_at ASC").first
+    @next ||= unit.events.published.where("starts_at > ?", starts_at).order("starts_at ASC").first
   end
 
   def previous
-    unit.events.published.where("starts_at < ?", starts_at).order("starts_at ASC").last
+    @previous ||= unit.events.published.where("starts_at < ?", starts_at).order("starts_at ASC").last
   end
 
   def packing_lists

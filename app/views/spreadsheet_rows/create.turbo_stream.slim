@@ -1,1 +1,1 @@
-= turbo_stream.before("event_#{@before}", partial: "events/partials/spreadsheet/empty_row")
+= turbo_stream.before(dom_id(@before_event), partial: "events/partials/spreadsheet/event", locals: { event: @new_event, new_row: true })
