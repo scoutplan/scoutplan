@@ -1,3 +1,4 @@
+- selected ||= false
 - event_counter ||= nil
 - new_row ||= false
 
@@ -15,7 +16,11 @@
 - actions += " dblclick->spreadsheet-row#navigateToEvent"
 / - actions += " keydown.backspace->spreadsheet-row#deleteRow"
 
-.table-row.relative.event.event-row.items-center(class="#{new_row ? 'new-event' : ''} event event-category-#{event.event_category.id}" id="#{dom_id(event)}" data-event-id="#{event.id}" data-controller="spreadsheet-row" data-spreadsheet-row-unit-id-value="#{event.unit.id}" data-spreadsheet-row-new-row-value="#{new_row}")
+- classes = ""
+- classes += " selected" if selected
+- classes += " new-event" if new_row
+
+.table-row.relative.event.event-row.items-center(class="#{classes} event event-category-#{event.event_category.id}" id="#{dom_id(event)}" data-event-id="#{event.id}" data-controller="spreadsheet-row" data-spreadsheet-row-unit-id-value="#{event.unit.id}" data-spreadsheet-row-new-row-value="#{new_row}")
   .table-cell.box-border.cell-row-number.p-1.border-l.border-b.border-r.border-stone-500.border-px.bg-stone-100.text-center.row-number.cursor-crosshair.w-8(data-action="#{actions}")
     = event_counter.nil? ? "#" : event_counter + 1
 
@@ -37,8 +42,9 @@
     .absolute.top-1/2.-translate-y-1/2.left-1/2.-translate-x-1/2
       = switch("event[#{event.id}]", :published,
               { label: "",
-                class: "text-2xs",
-                checked: event.published? },
+                class: "text-2xs event-status-checkbox",
+                checked: event.published?,
+                data: { action: "change->spreadsheet-row#changeEventStatus" } },
               "true", "false")
       
   .absolute.-left-5.right-0.h-3.-top-1.block.insertion-cursor-wrapper.cursor-pointer(data-action="click->spreadsheet-row#insertRow" data-spreadsheet-row-before-param="#{event.id}" data-spreadsheet-row-unit-param="#{event.unit.id}")

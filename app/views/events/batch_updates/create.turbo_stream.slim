@@ -1,0 +1,2 @@
+- @events.each do |event|
+  = turbo_stream.replace(dom_id(event), partial: "events/partials/spreadsheet/event", locals: { event: event, selected: true })

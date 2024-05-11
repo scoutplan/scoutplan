@@ -1,5 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import { post } from "@rails/request.js"
+import { patch } from "@rails/request.js"
+import { get } from "@rails/request.js"
 
 export default class extends Controller {
   static targets = ["insertionCursor"];
@@ -28,5 +30,26 @@ export default class extends Controller {
     const eventId = row.dataset.eventId;
     const url = `/u/${this.unitIdValue}/schedule/${eventId}`;
     window.location = url;
+  }
+
+  changeEventStatus(event) {
+    var selectedRows = this.element.closest(".table").querySelectorAll(".selected");
+    const checkbox = event.target;
+    const checked = checkbox.checked;
+    
+    if (selectedRows.length == 0) { selectedRows = [checkbox.closest(".table-row")]; }
+
+    selectedRows.forEach(row => {
+      const selectedCheckbox = row.querySelector(".event-status-checkbox input[type='checkbox']");
+      selectedCheckbox.checked = checked;
+    });
+
+    const eventIds = Array.from(selectedRows).map(row => row.dataset.eventId);
+    const body = new FormData();
+    body.append(`event[status]`, checkbox.checked ? "published" : "draft");
+    body.append(`event_ids`, eventIds.join(","));
+
+    const url = `/u/${this.unitIdValue}/schedule/batch_updates`;
+    post(url, { body: body, responseKind: "turbo-stream" });
   }
 }

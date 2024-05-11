@@ -186,7 +186,21 @@ class EventsController < UnitContextController
     case params[:event_action]
     when "delete" then destroy
     when "delete_series" then destroy_series
-    else update_event
+    else
+      update_event
+
+      respond_to do |format|
+        format.html { redirect_after_update }
+        format.turbo_stream
+      end
+    end
+  end
+
+  def redirect_after_update
+    if cookies[:event_index_variation] == "calendar"
+      redirect_to unit_events_path(current_unit), notice: t("events.update_confirmation", title: @event.title)
+    else
+      redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
     end
   end
 
@@ -198,12 +212,6 @@ class EventsController < UnitContextController
     EventService.new(@event, params).process_event_shifts
     EventService.new(@event, params).process_library_attachments
     EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
-
-    if cookies[:event_index_variation] == "calendar"
-      redirect_to unit_events_path(current_unit), notice: t("events.update_confirmation", title: @event.title)
-    else
-      redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
-    end
   end
 
   def destroy
