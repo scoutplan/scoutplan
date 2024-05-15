@@ -30,6 +30,7 @@ class Unit < ApplicationRecord
 
   alias_method :memberships, :unit_memberships
   alias_method :members, :unit_memberships
+  alias_method :categories, :event_categories
 
   after_create :populate_categories
   before_validation :generate_slug

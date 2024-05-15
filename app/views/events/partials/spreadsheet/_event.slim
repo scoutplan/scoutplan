@@ -1,28 +1,65 @@
+- selected ||= false
+- event_counter ||= nil
+- new_row ||= false
+
 - actions = ""
+/ - actions += " dragover->spreadsheet#dragover"
+/ - actions += " dragleave->spreadsheet#dragleave"
+- actions += " dragstart->spreadsheet-row#dragstart"
+/ - actions += " dragend->spreadsheet#dragend drag->spreadsheet#drag"
 
-- actions += " dragover->spreadsheet#dragover"
-- actions += " dragleave->spreadsheet#dragleave"
-- actions += " dragstart->spreadsheet#dragstart"
-- actions += " dragend->spreadsheet#dragend drag->spreadsheet#drag"
-
-- actions += " mousedown->spreadsheet#mousedown"
-- actions += " mouseup->spreadsheet#mouseup"
-- actions += " mousemove->spreadsheet#mousemove"
+/ - actions += " mousedown->spreadsheet#mousedown"
+/ - actions += " mouseup->spreadsheet#mouseup"
+/ - actions += " mousemove->spreadsheet#mousemove"
 - actions += " click->spreadsheet#selectRow"
+- actions += " dblclick->spreadsheet-row#navigateToEvent"
+/ - actions += " keydown.backspace->spreadsheet-row#deleteRow"
 
-.table-row.relative.event.event-row(class="event-category-#{event.event_category.id}" id="#{dom_id(event)}")
-  .table-cell.cell-row-number.p-1.border-l.border-b.border-r.border-stone-500.border-px.bg-stone-100.text-center.row-number.cursor-crosshair.w-8(data-action="#{actions}")
-    = event_counter + 1
-  .table-cell.day-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-12(data-action="click->spreadsheet#selectCell") = event.starts_at.strftime("%a")
-  .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-16(data-action="click->spreadsheet#selectCell") = event.starts_at.strftime("%b %d")
-  .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair(data-action="click->spreadsheet#selectCell") = event.category.name
-  .table-cell.p-0.border-b.border-r.border-stone-500.border-px.cursor-crosshair(data-action="click->spreadsheet#selectCell")
+- classes = ""
+- classes += " selected" if selected
+- classes += " new-event" if new_row
+
+- cursor_actions = ""
+- cursor_actions += " click->spreadsheet-row#insertRow"
+- cursor_actions += " dragenter->spreadsheet-row#dragenter"
+- cursor_actions += " dragover->spreadsheet-row#dragover"
+- cursor_actions += " dragleave->spreadsheet-row#dragleave"
+- cursor_actions += " drop->spreadsheet-row#drop"
+
+.table-row.relative.event.event-row.items-center(draggable="true" class="#{classes} event event-category-#{event.event_category.id}" id="#{dom_id(event)}" \
+  data-event-id="#{event.id}" data-controller="spreadsheet-row" data-spreadsheet-row-unit-id-value="#{event.unit.id}" data-spreadsheet-row-new-row-value="#{new_row}" data-action="dragstart->spreadsheet-row#dragstart")
+  
+  .table-cell.box-border.cell-row-number.p-1.border-l.border-b.border-r.border-stone-500.border-px.bg-stone-100.text-center.row-number.cursor-crosshair.w-8(data-action="#{actions}")
+    = event_counter.nil? ? "#" : event_counter + 1
+
+  .table-cell.box-border.whitespace-nowrap.day-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-12(data-action="click->spreadsheet#selectCell")
+    = event.days_to_s
+
+  .table-cell.box-border.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-16(data-action="click->spreadsheet#selectCell") = event.starts_at.strftime("%b %d")
+  .table-cell.box-border.p-0.border-b.border-r.border-stone-500.border-px.cursor-crosshair(data-action="click->spreadsheet#selectCell")
+    = select_tag "event[#{event.id}][event_category_id]",
+                 options_from_collection_for_select(current_unit.event_categories, :id, :name, event.event_category_id),
+                 class: "text-sm p-1 border-0 bg-transparent w-full"
+                 
+  .table-cell.box-border.p-0.border-b.border-r.border-stone-500.border-px.cursor-crosshair(data-action="click->spreadsheet#selectCell")
     input(type="text" name="event[#{event.id}][title]" value=event.title class="text-sm")
-  .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair(data-action="click->spreadsheet#selectCell") = event.description
-  .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-48(data-action="click->spreadsheet#selectCell") = event.location
-  .table-cell.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-48(data-action="click->spreadsheet#selectCell") = event.event_organizers.join(", ")
+  .table-cell.box-border.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair(data-action="click->spreadsheet#selectCell") = event.description
+  .table-cell.box-border.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-48(data-action="click->spreadsheet#selectCell") = event.location
+  .table-cell.box-border.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-48(data-action="click->spreadsheet#selectCell") = event.event_organizers.join(", ")
+  .table-cell.box-border.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-16.relative
+    .absolute.top-1/2.-translate-y-1/2.left-1/2.-translate-x-1/2
+      = switch("event[#{event.id}]", :published,
+              { label: "",
+                class: "text-2xs event-status-checkbox",
+                checked: event.published?,
+                data: { action: "change->spreadsheet-row#changeEventStatus" } },
+              "true", "false")
+      
+  .absolute.-left-5.right-0.h-3.-top-1.block.insertion-cursor-wrapper.cursor-pointer (data-action="#{cursor_actions}" data-spreadsheet-row-before-param="#{event.id}" data-spreadsheet-row-unit-param="#{event.unit.id}")
 
-  .absolute.-left-5.right-0.h-2.group(style="top: -9px;")
-    .hidden.group-hover:block.cursor-pointer
-      .absolute.left-3.right-0.top-2.border-t.border-sky-600.border-2
-      i.fa-solid.fa-plus-circle.text-sky-600
+    .z-20.absolute.inset-0(data-action="mouseenter->spreadsheet-row#showInsertionCursor mouseout->spreadsheet-row#hideInsertionCursor")
+
+    .z-0.w-full.h-1.absolute.insertion-cursor.hidden(data-spreadsheet-row-target="insertionCursor")
+      .absolute.left-3.right-0.height-1.border-t.border-black.border-2.top-1/2.-translate-y-1/2
+      .insertion-glyph.z-10.i.fa-solid.fa-plus-circle.text-lg.text-black.absolute.top-1/2.-translate-y-1/2
+      .move-glyph.z-10.i.fa-solid.fa-chevron-right.text-lg.text-black.absolute.top-1/2.-translate-y-1/2

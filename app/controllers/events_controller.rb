@@ -54,6 +54,8 @@ class EventsController < UnitContextController
   end
 
   def list
+    request.variant = :mobile if mobile_device?
+
     respond_to do |format|
       format.html do
         @current_month = params[:current_month]&.split("-")&.map(&:to_i)
@@ -186,7 +188,21 @@ class EventsController < UnitContextController
     case params[:event_action]
     when "delete" then destroy
     when "delete_series" then destroy_series
-    else update_event
+    else
+      update_event
+
+      respond_to do |format|
+        format.html { redirect_after_update }
+        format.turbo_stream
+      end
+    end
+  end
+
+  def redirect_after_update
+    if cookies[:event_index_variation] == "calendar"
+      redirect_to unit_events_path(current_unit), notice: t("events.update_confirmation", title: @event.title)
+    else
+      redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
     end
   end
 
@@ -198,18 +214,19 @@ class EventsController < UnitContextController
     EventService.new(@event, params).process_event_shifts
     EventService.new(@event, params).process_library_attachments
     EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
-
-    if cookies[:event_index_variation] == "calendar"
-      redirect_to unit_events_path(current_unit), notice: t("events.update_confirmation", title: @event.title)
-    else
-      redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
-    end
   end
 
   def destroy
     authorize @event
+
+    # prevent deleting from spreadsheet if there are accepted RSVPs
+    return if params[:context] == "spreadsheet" && @event.rsvps.accepted_intent.any?
+
     @event.destroy!
-    redirect_to unit_events_path(current_unit), notice: "#{@event.title} has been permanently removed from the schedule."
+    respond_to do |format|
+      format.html { redirect_to unit_events_path(current_unit), notice: "Event has been permanently removed from the schedule." }
+      format.turbo_stream
+    end
   end
 
   def destroy_series
@@ -424,6 +441,7 @@ class EventsController < UnitContextController
 
   def current_layout
     return "public" unless user_signed_in?
+    return "mobile" if mobile_device?
 
     "application"
   end

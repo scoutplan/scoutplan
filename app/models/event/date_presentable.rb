@@ -47,6 +47,12 @@ module Event::DatePresentable
     "#{starts_at.strftime('%-d')}#{dash(options)}#{ends_at.strftime('%-d')}".html_safe
   end
 
+  def days_to_s(**options)
+    return starts_at.strftime("%a") if single_day?
+
+    "#{starts_at.strftime('%a')}#{dash(options)}#{ends_at.strftime('%a')}".html_safe
+  end
+
   def dash(options)
     options[:plain_text] ? "—" : "&hairsp;&ndash;&hairsp;"
   end

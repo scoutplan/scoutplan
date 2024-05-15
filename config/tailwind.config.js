@@ -31,6 +31,7 @@ module.exports = {
         serif: [...defaultTheme.fontFamily.serif],
       },
       fontSize: {
+        '2xs': ['0.5rem', '1'],
         huge: ['5rem', '1'],
       },
       colors: {

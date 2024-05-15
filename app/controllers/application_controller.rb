@@ -57,6 +57,12 @@ class ApplicationController < ActionController::Base
     redirect_to(root_path)
   end
 
+  def mobile_device?
+    return false unless request&.headers.present?
+
+    request.headers["User-Agent"]&.match?(/iPhone/)
+  end
+
   protected
 
   def track_action
