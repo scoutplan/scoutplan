@@ -58,7 +58,9 @@ class ApplicationController < ActionController::Base
   end
 
   def mobile_device?
-    request.headers["User-Agent"].match?(/iPhone/)
+    return false unless request&.headers.present?
+
+    request.headers["User-Agent"]&.match?(/iPhone/)
   end
 
   protected
