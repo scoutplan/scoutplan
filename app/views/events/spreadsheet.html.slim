@@ -3,8 +3,8 @@
 - @row_number = 0
 
 .mx-6
-  .table.text-sm.w-full.mx-auto.relative(data-controller="spreadsheet" data-spreadsheet-unit-id-value="#{current_unit.id}")
-    .table-row.header(data-spreadsheet-target="header")
+  .z-10.table.text-sm.w-full.mx-auto.relative(data-controller="spreadsheet" data-spreadsheet-unit-id-value="#{current_unit.id}")
+    .table-row.bg-white.header.(data-spreadsheet-target="header")
       .table-cell.border.border-stone-500.bg-stone-100
       .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Day"
       .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Date"
@@ -21,6 +21,28 @@ style
   = render partial: "events/partials/spreadsheet/event_category", collection: current_unit.event_categories
 
 css:
+  .move-glyph {
+    display: none;
+  }
+
+  .dragover .insertion-cursor {
+    display: block;
+  }
+
+  .dragover .insertion-glyph {
+    display: none;
+  }
+
+  .dragover .move-glyph {
+    display: block;
+  }
+
+  .header {
+    position: sticky;
+    top: 49px;
+    z-index: 100;
+  }
+
   .trix-content {
     overflow: hidden !important;
     display: -webkit-box;

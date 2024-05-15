@@ -52,4 +52,35 @@ export default class extends Controller {
     const url = `/u/${this.unitIdValue}/schedule/batch_updates`;
     post(url, { body: body, responseKind: "turbo-stream" });
   }
+
+  dragstart(event) {
+    event.dataTransfer.dropEffect = "move";
+    event.dataTransfer.setData("text/plain", event.currentTarget.dataset.eventId);
+  }
+
+  dragover(event) {
+  }
+
+  dragenter(event) {
+    event.currentTarget.classList.toggle("dragover", true);
+  }
+
+  dragleave(event) {
+    event.currentTarget.classList.toggle("dragover", false);
+  }
+
+  dragover(event) {
+    event.preventDefault();
+  }
+
+  drop(event) {
+    event.currentTarget.classList.toggle("dragover", false);
+
+    const row = event.currentTarget.closest(".table-row");
+    const beforeEventId = row.dataset.eventId;
+    const movingEventId = event.dataTransfer.getData("text/plain");
+
+    console.log();
+    console.log("Going to move event id " + movingEventId + " to before event id " +  beforeEventId);
+  }
 }

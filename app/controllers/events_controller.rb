@@ -54,6 +54,8 @@ class EventsController < UnitContextController
   end
 
   def list
+    request.variant = :mobile if mobile_device?
+
     respond_to do |format|
       format.html do
         @current_month = params[:current_month]&.split("-")&.map(&:to_i)
@@ -439,6 +441,7 @@ class EventsController < UnitContextController
 
   def current_layout
     return "public" unless user_signed_in?
+    return "mobile" if mobile_device?
 
     "application"
   end

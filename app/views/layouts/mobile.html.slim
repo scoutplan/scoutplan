@@ -1,0 +1,86 @@
+doctype html
+html.scroll-smooth
+  head
+    title#page_title = yield :title
+    meta name="viewport" content="width=device-width,initial-scale=1"
+    = csrf_meta_tags
+    = csp_meta_tag
+    = favicon_link_tag "favicon.ico"
+    = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
+    = stylesheet_link_tag "application", "data-turbo-track": "reload"
+    = stylesheet_link_tag "https://rsms.me/inter/inter.css"
+
+    = javascript_importmap_tags
+    = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: "anonymous"
+    = javascript_include_tag "main"
+
+    = yield :head
+
+  body(class="dark:bg-stone-900 dark:text-stone-200 text-stone-900 #{controller_name} #{action_name} #{yield :body_classes}")
+    main.px-2.py-2.md:py-6
+      = turbo_frame_tag "main"
+        = yield
+
+    footer
+      /!  CI #{ENV["GITHUB_RUN_NUMBER"]}
+
+    = render partial: "search/overlay"
+  
+  - content_for :title do
+    = (@page_title || []).reverse.join(" · ")
+    
+  javascript:
+    function setElemDisplay(elem, show) {
+      var elem = document.querySelector(elem);
+      elem.style.display = show ? 'block' : 'none';
+    }
+
+    document.documentElement.addEventListener("turbo:load", function(event) {
+      document.body.classList.remove("showing-mobile-menu");
+    });
+
+  scss:
+    .submit-conjunction {
+      display: inline;
+      padding: 0 1rem;
+    }
+
+    nav.navbar {
+      margin-bottom: 30px;
+    }
+
+    .navbar-dark .navbar-nav .nav-link {
+      color: #fff;
+    }
+
+    @mixin active-nav-link {
+      font-weight: 800;
+      cursor: default;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+
+    h1 .subtitle {
+      text-transform: uppercase;
+      font-size: 50%;
+      font-weight: 400;
+      letter-spacing: 2px;
+    }
+
+    nav.unit-id {
+      color: #888;
+      text-transform: uppercase;
+      font-size: 90%;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-weight: 400;
+    }
+
+  /! Current member id: #{current_member&.id}
+  /! Current unit id: #{current_unit&.id}
+  /! Current user id: #{current_user.id}

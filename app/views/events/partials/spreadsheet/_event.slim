@@ -3,11 +3,10 @@
 - new_row ||= false
 
 - actions = ""
-
-- actions += " dragover->spreadsheet#dragover"
-- actions += " dragleave->spreadsheet#dragleave"
-- actions += " dragstart->spreadsheet#dragstart"
-- actions += " dragend->spreadsheet#dragend drag->spreadsheet#drag"
+/ - actions += " dragover->spreadsheet#dragover"
+/ - actions += " dragleave->spreadsheet#dragleave"
+- actions += " dragstart->spreadsheet-row#dragstart"
+/ - actions += " dragend->spreadsheet#dragend drag->spreadsheet#drag"
 
 / - actions += " mousedown->spreadsheet#mousedown"
 / - actions += " mouseup->spreadsheet#mouseup"
@@ -20,7 +19,16 @@
 - classes += " selected" if selected
 - classes += " new-event" if new_row
 
-.table-row.relative.event.event-row.items-center(class="#{classes} event event-category-#{event.event_category.id}" id="#{dom_id(event)}" data-event-id="#{event.id}" data-controller="spreadsheet-row" data-spreadsheet-row-unit-id-value="#{event.unit.id}" data-spreadsheet-row-new-row-value="#{new_row}")
+- cursor_actions = ""
+- cursor_actions += " click->spreadsheet-row#insertRow"
+- cursor_actions += " dragenter->spreadsheet-row#dragenter"
+- cursor_actions += " dragover->spreadsheet-row#dragover"
+- cursor_actions += " dragleave->spreadsheet-row#dragleave"
+- cursor_actions += " drop->spreadsheet-row#drop"
+
+.table-row.relative.event.event-row.items-center(draggable="true" class="#{classes} event event-category-#{event.event_category.id}" id="#{dom_id(event)}" \
+  data-event-id="#{event.id}" data-controller="spreadsheet-row" data-spreadsheet-row-unit-id-value="#{event.unit.id}" data-spreadsheet-row-new-row-value="#{new_row}" data-action="dragstart->spreadsheet-row#dragstart")
+  
   .table-cell.box-border.cell-row-number.p-1.border-l.border-b.border-r.border-stone-500.border-px.bg-stone-100.text-center.row-number.cursor-crosshair.w-8(data-action="#{actions}")
     = event_counter.nil? ? "#" : event_counter + 1
 
@@ -47,9 +55,11 @@
                 data: { action: "change->spreadsheet-row#changeEventStatus" } },
               "true", "false")
       
-  .absolute.-left-5.right-0.h-3.-top-1.block.insertion-cursor-wrapper.cursor-pointer(data-action="click->spreadsheet-row#insertRow" data-spreadsheet-row-before-param="#{event.id}" data-spreadsheet-row-unit-param="#{event.unit.id}")
+  .absolute.-left-5.right-0.h-3.-top-1.block.insertion-cursor-wrapper.cursor-pointer (data-action="#{cursor_actions}" data-spreadsheet-row-before-param="#{event.id}" data-spreadsheet-row-unit-param="#{event.unit.id}")
+
     .z-20.absolute.inset-0(data-action="mouseenter->spreadsheet-row#showInsertionCursor mouseout->spreadsheet-row#hideInsertionCursor")
 
     .z-0.w-full.h-1.absolute.insertion-cursor.hidden(data-spreadsheet-row-target="insertionCursor")
       .absolute.left-3.right-0.height-1.border-t.border-black.border-2.top-1/2.-translate-y-1/2
-      .z-10.i.fa-solid.fa-plus-circle.text-lg.text-black.absolute.top-1/2.-translate-y-1/2
+      .insertion-glyph.z-10.i.fa-solid.fa-plus-circle.text-lg.text-black.absolute.top-1/2.-translate-y-1/2
+      .move-glyph.z-10.i.fa-solid.fa-chevron-right.text-lg.text-black.absolute.top-1/2.-translate-y-1/2

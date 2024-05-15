@@ -21,6 +21,20 @@ export default class extends Controller {
   async insertRow(event) {
     await post(`/u/${this.unitIdValue}/schedule/spreadsheet/rows?before=${event.params.before}`, { responseKind: "turbo-stream" });
   }
+
+  dragstart(event) {
+    console.log("dragstart");
+  }
+
+  dragend(event) {
+  }
+
+  dragover(event) {
+    event.preventDefault();
+  }
+
+  drop(event) {
+  }
   
   selectCell(event) {
     // this.clearSelected();
@@ -53,12 +67,8 @@ export default class extends Controller {
       const boundingRow1 = selectedRows[0];
       const boundingRow2 = event.target.closest(".table-row");
 
-      console.log(boundingRow2);
-
       var boundingRow1Index = rows.indexOf(boundingRow1);
       var boundingRow2Index = rows.indexOf(boundingRow2);
-
-      console.log(boundingRow1Index, boundingRow2Index);
 
       if (boundingRow1Index > boundingRow2Index) {
         const temp = boundingRow1Index;
