@@ -8,7 +8,7 @@ class RsvpLastCallJob < ApplicationJob
     @timestamp = timestamp
     return unless should_run? && latest_version?
 
-    RsvpLastCallNotifier.with(event: event).deliver_later(recipients)
+    RsvpLastCallNotifier.with(record: event, event: event).deliver_later(recipients)
   end
 
   private

@@ -2,7 +2,7 @@ class RsvpLastCallNotifier < ScoutplanNotifier
   deliver_by :email do |config|
     config.mailer = "RsvpLastCallMailer"
     config.method = :rsvp_last_call_notification
-    config.if = :email?
+    config.if = :should_send?
   end
 
   deliver_by :twilio_messaging do |config|
@@ -25,5 +25,9 @@ class RsvpLastCallNotifier < ScoutplanNotifier
 
   def feature_enabled?
     true
+  end
+
+  def should_send?(notification)
+    email?(notification)
   end
 end

@@ -34,6 +34,6 @@ module Event::Remindable
   def remind!
     return unless published? && !ended?
 
-    EventReminderNotifier.with(event: self).deliver(notification_recipients)
+    EventReminderNotifier.with(record: self, event: self).deliver(notification_recipients)
   end
 end
