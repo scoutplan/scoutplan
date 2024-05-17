@@ -13,7 +13,7 @@ Rails.application.configure do
   config.hosts << "kit.fontawesome.com"
   config.hosts << ENV["RAILS_PRODUCTION_HOSTS"]
   config.hosts << /10\.\d+\.\d+\.\d+/ # internal IP addresses...leave this here
-  config.hosts << /.*\.sites\.#{ENV.fetch('RAILS_PRODUCTION_HOSTS')}/
+  config.hosts << /.*\.sites\.scoutplan\.org/
 
   config.cache_classes = true
 
