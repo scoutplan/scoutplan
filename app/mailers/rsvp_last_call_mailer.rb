@@ -8,7 +8,6 @@ class RsvpLastCallMailer < ApplicationMailer
   before_action :setup
 
   def rsvp_last_call_notification
-    ap "sdfsdf"
     mail(to: to_address, from: from_address, subject: subject)
   end
 

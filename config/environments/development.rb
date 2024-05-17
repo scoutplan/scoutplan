@@ -9,11 +9,12 @@ Rails.application.configure do
     IPAddr.new("::/0"),             # All IPv6 addresses.
     "localhost",                    # The localhost reserved domain.
     "scoutplan.ngrok.io",
+    "*.sites.#{ENV["RAILS_DEVELOPMENT_HOSTS"]}",
     ENV["RAILS_DEVELOPMENT_HOSTS"]
   ]
 
   config.hosts.clear
-  config.force_ssl = true
+  # config.force_ssl = true
   config.cache_classes = false
   config.eager_load = false
   config.consider_all_requests_local = true
