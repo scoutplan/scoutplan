@@ -18,10 +18,14 @@ RSpec.describe RsvpLastCallNotifier do
   end
 
   it "delivers an email" do
+    expect(@event.notifications.where(type: "RsvpLastCallNotifier::Notification").count).to eq(0)
     Flipper.enable(:deliver_email)
-    # expect { RsvpLastCallNotifier.with(event: @event).deliver([@member]) }.to change { ActionMailer::Base.deliveries.count }.by(1)
-    # expect { RsvpLastCallNotifier.with(event: @event).deliver([@member]) }.to have_enqueued_job(ActionMailer::MailDeliveryJob)
-    expect { RsvpLastCallNotifier.with(event: @event).deliver([@member]) }.to have_enqueued_job(Noticed::EventJob)
+    clear_enqueued_jobs
+    expect { RsvpLastCallNotifier.with(record: @event, event: @event).deliver([@member]) }.to have_enqueued_job(Noticed::EventJob)
+    perform_enqueued_jobs
+    expect(ActiveJob::Base.queue_adapter.enqueued_jobs.count).to be > 0
+    perform_enqueued_jobs
+    expect(ActionMailer::Base.deliveries.count).to eq(1)
   end
 
   it "renders SMS text" do

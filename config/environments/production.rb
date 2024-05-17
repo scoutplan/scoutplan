@@ -5,6 +5,7 @@ Rails.application.default_url_options = {
   protocol: ENV["SCOUTPLAN_PROTOCOL"]
 }
 
+# rubocop:disable Metrics/BlockLength
 Rails.application.configure do
   config.logger = RemoteSyslogLogger.new(ENV["LOGGER_HOST"], ENV["LOGGER_PORT"])
 
@@ -12,7 +13,7 @@ Rails.application.configure do
   config.hosts << "kit.fontawesome.com"
   config.hosts << ENV["RAILS_PRODUCTION_HOSTS"]
   config.hosts << /10\.\d+\.\d+\.\d+/ # internal IP addresses...leave this here
-
+  config.hosts << /.*\.sites\.#{ENV.fetch('RAILS_PRODUCTION_HOSTS')}/
 
   config.cache_classes = true
 
@@ -81,3 +82,4 @@ Rails.application.configure do
 
   config.active_record.dump_schema_after_migration = false
 end
+# rubocop:enable Metrics/BlockLength

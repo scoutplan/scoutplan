@@ -5,10 +5,12 @@ class RsvpLastCallJob < ApplicationJob
 
   def perform(event_id, timestamp)
     @event = Event.find(event_id)
+    return if @event.notifications.where(type: "RsvpLastCallNotifier::Notification").count.positive?
+
     @timestamp = timestamp
     return unless should_run? && latest_version?
 
-    RsvpLastCallNotifier.with(event: event).deliver_later(recipients)
+    RsvpLastCallNotifier.with(record: event, event: event).deliver_later(recipients)
   end
 
   private
