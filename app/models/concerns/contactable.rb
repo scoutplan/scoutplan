@@ -7,9 +7,17 @@ module Contactable
     contactable_object.email.match?(REGEXP_ANONYMOUS)
   end
 
-  def contactable?(via: :email)
+  def contactable?(via: :any)
     return contactable_object.emailable? if via == :email
     return contactable_object.smsable? if via == :sms
+    return contactable_object.emailable? && contactable_object.smsable? if via == :any
+
+    false
+  end
+
+  def contact_preference?(via: :email)
+    return settings(:communication).via_email == "true" || settings(:communication).via_email if via == :email
+    return settings(:communication).via_sms == "true" || settings(:communication).via_sms if via == :sms
 
     false
   end
