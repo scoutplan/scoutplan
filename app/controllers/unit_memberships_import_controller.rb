@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class UnitMembershipsImportController < ApplicationController
+class UnitMembershipsImportController < UnitContextController
   def new
     @unit = Unit.find(params[:unit_id])
-    authorize :member_import, :create?
+    authorize :unit_membership_import, :new?
     page_title @current_unit.name, "Import Members"
   end
 
