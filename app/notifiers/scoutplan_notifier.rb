@@ -37,11 +37,13 @@ class ScoutplanNotifier < Noticed::Event
   end
 
   def email?(notification = nil)
-    notification.recipient.contactable?(via: :email) && feature_enabled?
+    recipient = notification&.recipient
+    recipient.contactable?(via: :email) && recipient.contact_preference?(via: :email) && feature_enabled?
   end
 
   def sms?(notification = nil)
-    notification.recipient.contactable?(via: :sms) && feature_enabled?
+    recipient = notification&.recipient
+    recipient.contactable?(via: :sms) && recipient.contact_preference?(via: :sms) && feature_enabled?
   end
 
   # override in subclasses

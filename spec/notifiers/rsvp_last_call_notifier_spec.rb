@@ -11,6 +11,7 @@ RSpec.describe RsvpLastCallNotifier do
     @unit = @event.unit
     @member = FactoryBot.create(:unit_membership, :adult, unit: @unit)
     @member.user.update(phone: "+13395788645")
+    @member.settings(:communication).update!(via_email: true)
   end
 
   it "creates a notifier" do
