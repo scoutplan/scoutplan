@@ -441,7 +441,6 @@ class EventsController < UnitContextController
 
   def current_layout
     return "public" unless user_signed_in?
-    return "mobile" if mobile_device?
 
     "application"
   end
