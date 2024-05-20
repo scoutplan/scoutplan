@@ -19,7 +19,7 @@ html.scroll-smooth
   body(class="dark:bg-stone-900 dark:text-stone-200 text-stone-900 #{controller_name} #{action_name} #{yield :body_classes}")
     = render partial: "layouts/nav"
     = render partial: "layouts/nav_mobile"
-    = render partial: "layouts/flash"
+    / = render partial: "layouts/flash"
     = render partial: "layouts/password_prompt"
 
     main.px-2.py-2.md:py-6
