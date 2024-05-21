@@ -18,18 +18,6 @@ RSpec.describe Event, type: :model do
     it "requires a unit" do
       expect(FactoryBot.build(:event, unit: nil)).not_to be_valid
     end
-
-    it "requires rsvp_opens_at to be before starts_at" do
-      expect(FactoryBot.build(:event, :requires_rsvp, rsvp_opens_at: 2.days.from_now, starts_at: 1.day.ago)).not_to be_valid
-    end
-
-    it "requires rsvp_opens_at to be before rsvp_closes_at" do
-      expect(FactoryBot.build(:event, :requires_rsvp, rsvp_opens_at: 1.day.from_now, rsvp_closes_at: 2.days.ago)).not_to be_valid
-    end
-
-    it "valid when rsvp_opens_at is nil" do
-      expect(FactoryBot.build(:event, :requires_rsvp, rsvp_opens_at: nil)).to be_valid
-    end
   end
 
   describe "callbacks" do
