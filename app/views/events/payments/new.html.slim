@@ -1,7 +1,7 @@
 = turbo_frame_tag "modal"
   .fixed.z-50.inset-0.bg-black/10.backdrop-blur(data-action="keydown->modal#keydown")
     .absolute.inset-1
-      .relative.max-w-xl.top-1/2.left-1/2.bg-white.-translate-x-1/2.-translate-y-1/2.rounded-lg.drop-shadow-overhead.p-6.modal-dialog
+      .relative.max-w-xl.top-1/2.left-1/2.bg-white.dark:bg-stone-800.-translate-x-1/2.-translate-y-1/2.rounded-lg.drop-shadow-overhead.p-6.modal-dialog
         header.mb-4
           .flex.flex-row.justify-between.items-baseline
             h1.font-semibold.text-4xl.mb-4 = t("payments.receive.record_payment")
