@@ -1,9 +1,10 @@
 div.pt-4
   = f.label :tags, "Tags", class: "block font-bold mb-1"
   = f.text_field :tag_list,
-    class: "w-full border border-stone-400 rounded bg-white p-2 placeholder-stone-300 font-bold",
+    class: "w-full border border-stone-400 rounded bg-white p-2 placeholder-stone-300 font-bold dark:bg-stone-800 dark:border-stone-600",
     autocomplete: "off",
-    placeholder: "Order of the Arrow, NYLT, Second Year Webelos"
+    placeholder: "Order of the Arrow, NYLT, Second Year Webelos",
+    value: f.object.tag_list&.join(", ")
 
   div.text-sm.text-stone-500.mt-1
     | Tags let you group members for event visibility. Separate with commas.
