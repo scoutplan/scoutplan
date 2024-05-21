@@ -113,18 +113,9 @@ class Event < ApplicationRecord
     unit.this_season_starts_at
   end
 
-  # rubocop:disable Metrics/AbcSize
   def dates_are_subsequent
     errors.add(:ends_at, "must be after start_date") if starts_at > ends_at
-    return unless requires_rsvp?
-
-    errors.add(:rsvp_closes_at, "must be before start_date") if rsvp_closes_at > starts_at
-    return unless rsvp_opens_at.present?
-
-    errors.add(:rsvp_opens_at, "must be before start_date") if rsvp_opens_at > starts_at
-    errors.add(:rsvp_opens_at, "must be before rsvp_closes_at") if rsvp_opens_at > rsvp_closes_at
   end
-  # rubocop:enable Metrics/AbcSize
 
   def full_title
     "#{unit.name} #{title}"
