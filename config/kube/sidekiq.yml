@@ -42,6 +42,11 @@ spec:
                 secretKeyRef:
                   name: scoutplan-production
                   key: DATABASE_PASSWORD
+            - name: POSTMARK_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: scoutplan-production
+                  key: POSTMARK_API_TOKEN                  
             - name: RAILS_MASTER_KEY
               valueFrom:
                 secretKeyRef:
