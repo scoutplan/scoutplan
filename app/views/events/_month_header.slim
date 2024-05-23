@@ -7,7 +7,7 @@
 
 - class_name = "month-header-#{event.starts_at.strftime('%Y')}-#{event.starts_at.strftime('%m')}"
 
-li.pt-12.event-month-boundary.sticky.z-10.top-0(class="#{class_name}")
+li.pt-12.event-month-boundary.sticky.top-0(class="#{class_name}")
   .relative.py-2.bg-white.dark:bg-stone-800
     .absolute.left-0.right-0.top-1/2.border-t.border-brand-500
 
@@ -15,7 +15,6 @@ li.pt-12.event-month-boundary.sticky.z-10.top-0(class="#{class_name}")
       = event.starts_at.strftime("%B")
       - if event.starts_at.month == 1
         = event.starts_at.strftime(" %Y")
-
 
 css:
   .month-header-#{event.starts_at.strftime('%Y')}-#{event.starts_at.strftime('%m')} {
@@ -25,4 +24,5 @@ css:
   :nth-child(1 of .month-header-#{event.starts_at.strftime('%Y')}-#{event.starts_at.strftime('%m')}) {
     display: block;
   }
+  
   

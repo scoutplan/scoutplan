@@ -1,12 +1,13 @@
 - return unless EventPolicy.new(current_member, event).show?
 - presenter = @presenter || EventPresenter.new
 - presenter.event = event
+- href = user_signed_in? ? unit_event_path(current_unit, event) : "#"
 
 = render partial: "events/month_header", locals: { event: event }
 
 li.relative.z-0.event.md:px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#{row_classes(event)}" id="#{dom_id(event)}")
   .flex.flex-row.items-center
-    = link_to unit_event_path(current_unit, event),
+    = link_to href,
               class: "event py-2 block w-full",
               name:  event.id,
               data:  { turbo_action: "advance",

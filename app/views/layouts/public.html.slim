@@ -13,6 +13,6 @@ html
     = javascript_importmap_tags
     = yield :head
 
-  body(class="text-gray-600 #{controller_name} #{action_name} #{yield :body_classes}")
+  body(class="dark:bg-stone-900 dark:text-stone-200 text-stone-900 #{controller_name} #{action_name} #{yield :body_classes}")
     .py-4
       = yield

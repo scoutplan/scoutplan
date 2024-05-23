@@ -10,11 +10,18 @@ require "humanize"
 class EventsController < UnitContextController
   layout :current_layout
 
-  skip_before_action :authenticate_user!, only: [:public]
+  before_action :authenticate_user!, if: :needs_authentication?
   before_action :find_event, except: %i[index list calendar threeup paged_list spreadsheet create new bulk_publish public my_rsvps signups repeat_options]
   before_action :collate_rsvps, only: [:show, :rsvps]
   before_action :set_calendar_dates, only: [:calendar, :list, :paged_list]
   before_action :remember_unit_events_path, only: [:list, :calendar]
+
+  def needs_authentication?
+    return false if params[:action] == "public"
+    return false if current_unit.public_calendar?
+
+    true
+  end
 
   def index
     variant = cookies[:event_index_variation] || "list"
