@@ -34,7 +34,7 @@ Rails.application.configure do
   config.active_storage.service = :digitalocean
 
   config.force_ssl = true
-  
+
   config.ssl_options = { redirect: false } # disable redirect since the LB handles it
 
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL") { "info" }
@@ -48,20 +48,10 @@ Rails.application.configure do
   config.action_mailbox.ingress = :mailgun 
 
   config.action_mailer.raise_delivery_errors  = true
-  config.action_mailer.delivery_method        = :smtp
-  config.action_mailer.perform_caching        = false
-  config.action_mailer.default_url_options    = {
-    host: ENV["SCOUTPLAN_HOST"],
-    protocol: ENV["SCOUTPLAN_PROTOCOL"]
-  }
-  config.action_mailer.smtp_settings = {
-    user_name: ENV["SMTP_USERNAME"],
-    password: ENV["SMTP_PASSWORD"],
-    domain: ENV["SMTP_DOMAIN"],
-    address: ENV["SMTP_ADDRESS"],
-    port: ENV["SMTP_PORT"],
-    authentication: :plain,
-    enable_starttls_auto: true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :postmark
+  config.action_mailer.postmark_settings = {
+    api_token: Rails.application.credentials.postmark_api_token
   }
 
   config.i18n.fallbacks = true
