@@ -5,7 +5,6 @@ class WebController < ActionController::Base
 
   # rubocop:disable Metrics/AbcSize
   def index
-    puts "here"
     @unit = Unit.find(params[:unit_id]) if params[:unit_id].present?
     @slug = request.subdomain.split(".").first
     @unit = Unit.find_by(slug: @slug) if @slug.present?
@@ -13,7 +12,6 @@ class WebController < ActionController::Base
 
     @slug = @unit.slug
     @partial_name = "#{@slug}_#{params[:path]}"
-    ap lookup_context.find_all("web/_#{@partial_name}")
     head 404 and return unless lookup_context.find_all("web/_#{@partial_name}").any?
   end
   # rubocop:enable Metrics/AbcSize

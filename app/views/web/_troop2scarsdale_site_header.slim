@@ -6,7 +6,7 @@ header
     a href="history" History
     a href="eagles" Eagle Scouts
     a href="contact" Contact
-    = link_to "Member Login", unit_events_url(@unit)
+    = link_to "Member Login", unit_events_url(@unit, host: ENV.fetch("APP_HOST", ""))
 
   nav.cta
     a href="https://my.scouting.org/more-info/8309f208-e265-428c-a846-8417d4a1b72b&beascout=true" Become a scout

@@ -823,9 +823,11 @@ en:
     policies:
       buttons:
         allow_youth_rsvps: "Allow youth members to tentatively RSVP for events"
+        public_calendar: "Allow public calendar access"
 
       titles:
         allow_youth_rsvps: "Allow Youth RSVPs"
+        public_calendar: "Public Calendar Access"
 
     titles:
       unit_profile:   "Edit your unit information"

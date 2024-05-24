@@ -28,6 +28,23 @@ describe "events", type: :feature do
     end
   end
 
+  describe "public access" do
+    it "isn't accessible when policy unset" do
+      logout(:user)
+      path = unit_events_path(@unit)
+      visit(path)
+      expect(page).not_to have_current_path(path)
+    end
+
+    it "is accessible when policy set" do
+      logout(:user)
+      @unit.update!(public_calendar: true)
+      path = list_unit_events_path(@unit)
+      visit(path)
+      expect(page).to have_current_path(path)
+    end
+  end
+
   describe "events index" do
     before do
       login_as(@admin_user, scope: :user)

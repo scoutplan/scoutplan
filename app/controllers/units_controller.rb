@@ -3,6 +3,7 @@ class UnitsController < UnitContextController
     redirect_to unit_events_path(current_unit)
   end
 
+  # rubocop:disable Metrics/AbcSize
   def update
     authorize current_unit
     current_unit.update(unit_params) if params[:unit].present?
@@ -11,6 +12,7 @@ class UnitsController < UnitContextController
     # UnitTaskService.new(current_unit).setup_tasks_from_settings
     redirect_to unit_settings_path(current_unit), notice: I18n.t("settings.notices.update_success")
   end
+  # rubocop:enable Metrics/AbcSize
 
   def start; end
 
@@ -21,7 +23,7 @@ class UnitsController < UnitContextController
   def unit_params
     return unless params[:unit].present?
 
-    params.require(:unit).permit(:name, :location, :logo, :email, :slug, :allow_youth_rsvps)
+    params.require(:unit).permit(:name, :location, :logo, :email, :slug, :allow_youth_rsvps, :public_calendar)
   end
 
   def schedule_jobs
