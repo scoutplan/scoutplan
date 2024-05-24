@@ -5,7 +5,7 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
-  get 'welcome/index'
+  get "welcome/index"
   get "", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
   get "*path", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
   mount BetterMailerPreviews::Engine, at: "/better_mailer_previews" if Rails.env.development?

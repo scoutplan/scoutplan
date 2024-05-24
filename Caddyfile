@@ -1,14 +1,9 @@
 go.scoutplan-local.org {
       reverse_proxy app:3000
-      tls /root/certs/_wildcard.scoutplan-local.org.pem /root/certs/_wildcard.scoutplan-local.org-key.pem
+      tls /root/certs/go.scoutplan-local.org+1.pem /root/certs/go.scoutplan-local.org+1-key.pem
 }
 
-troop2scarsdale.sites.scoutplan-local.org {
+troop123.sites.scoutplan-local.org {
       reverse_proxy app:3000
-      tls /root/certs/_wildcard.scoutplan-local.org.pem /root/certs/_wildcard.scoutplan-local.org-key.pem
-}
-
-t2.sites.scoutplan-local.org {
-      reverse_proxy app:3000
-      tls /root/certs/_wildcard.scoutplan-local.org.pem /root/certs/_wildcard.scoutplan-local.org-key.pem
+      tls /root/certs/go.scoutplan-local.org+1.pem /root/certs/go.scoutplan-local.org+1-key.pem
 }
