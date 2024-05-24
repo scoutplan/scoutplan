@@ -126,12 +126,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: scoutplan-production
-                  key: POSTMARK_API_TOKEN              
+                  key: POSTMARK_API_TOKEN
             - name: STRIPE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: scoutplan-production
-                  key: STRIPE_SECRET_KEY  
+                  key: STRIPE_SECRET_KEY
             - name: SCOUT_KEY
               valueFrom:
                 secretKeyRef:
