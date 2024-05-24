@@ -39,7 +39,7 @@ describe "events", type: :feature do
     it "is accessible when policy set" do
       logout(:user)
       @unit.update!(public_calendar: true)
-      path = unit_events_path(@unit)
+      path = list_unit_events_path(@unit)
       visit(path)
       expect(page).to have_current_path(path)
     end
