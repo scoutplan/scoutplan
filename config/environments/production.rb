@@ -51,7 +51,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :postmark
   config.action_mailer.postmark_settings = {
-    api_token: ENV.fetch("POSTMARK_API_TOKEN")
+    api_token: ENV.fetch("POSTMARK_API_TOKEN", nil)
   }
 
   config.i18n.fallbacks = true
