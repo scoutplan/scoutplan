@@ -122,11 +122,6 @@ spec:
                 secretKeyRef:
                   name: scoutplan-production
                   key: OPENWEATHER_API_KEY
-            - name: POSTMARK_API_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: scoutplan-production
-                  key: POSTMARK_API_TOKEN
             - name: STRIPE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
