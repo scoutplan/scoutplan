@@ -53,8 +53,8 @@ class ScoutplanNotifier < Noticed::Event
 
   def renderer
     ApplicationController.renderer.new(
-      http_host: Rails.application.config.action_mailer.default_url_options[:host],
-      https:     Rails.application.config.action_mailer.default_url_options[:protocol].to_s == "https"
+      http_host: Rails.application.default_url_options[:host],
+      https:     Rails.application.default_url_options[:protocol].to_s == "https"
     )
   end
 end
