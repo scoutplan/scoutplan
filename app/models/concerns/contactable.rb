@@ -10,7 +10,7 @@ module Contactable
   def contactable?(via: :any)
     return contactable_object.emailable? if via == :email
     return contactable_object.smsable? if via == :sms
-    return contactable_object.emailable? && contactable_object.smsable? if via == :any
+    return contactable_object.emailable? || contactable_object.smsable? if via == :any
 
     false
   end
@@ -25,11 +25,12 @@ module Contactable
   def emailable?
     contactable_object.email.present? &&
       !contactable_object.anonymous_email? &&
-      active
+      contact_preference?(via: :email)
   end
 
   def smsable?
-    contactable_object.phone.present?
+    contactable_object.phone.present? &&
+      contact_preference?(via: :sms)
   end
 
   private
