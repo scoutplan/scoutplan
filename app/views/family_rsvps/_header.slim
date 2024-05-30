@@ -4,9 +4,7 @@ header.rounded-t-lg.mb-4
     = raw(event.title + " on " + event.date_to_s_xs)
   h4
     div
+      = "RSVPs close in "
       = distance_of_time_in_words_to_now(event.rsvp_closes_at).downcase
-
       - if event.limits_headcount?
-        = ", " + event.headcount_remaining.to_s + " spots"
-
-      = " until RSVPs close"
+        = " (" + event.headcount_remaining.to_s + " remaining spots)"

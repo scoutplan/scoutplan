@@ -1,5 +1,4 @@
-- return unless unit_membership.phone.present?
-- return unless current_member.admin? || unit_membership.roster_display_phone?
+- return unless unit_membership.roster_display_phone?
 
 .mb-2.font-bold
   = unit_membership.phone.phony_formatted(country_code: "US")
