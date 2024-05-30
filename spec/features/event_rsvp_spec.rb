@@ -64,4 +64,17 @@ describe "event_rsvp", type: :feature do
     visit path
     expect(page).to have_current_path(list_unit_events_path(@unit))
   end
+
+  it "works with time shifts", js: true do
+    skip "works standalone but not in suite, need to debug"
+    @event.event_shifts.create(name: "10-12")
+    @event.event_shifts.create(name: "12-2")
+    @event.event_shifts.create(name: "2-4")
+    visit(unit_event_path(@unit, @event))
+    page.find(".response-needed").click
+    expect(page).to have_content("10-12")
+    toggle_id = "#event_members_#{@member.id}_shifts_#{@event.event_shifts.first.id}_response_label"
+    page.find(toggle_id).click
+    expect { page.find("#rsvp_submit").click }.to change { EventRsvp.count }.by(2)
+  end
 end

@@ -18,6 +18,8 @@ RSpec.describe EventReminderJob, type: :job do
       @event.rsvps.create!(unit_membership: @member, response: "accepted", respondent: @member)
     end
 
+    @member = @unit.members.first
+
     expect(@unit.members.count).to eq(8)
     Sidekiq::Testing.inline!
   end

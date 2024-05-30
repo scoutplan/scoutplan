@@ -48,6 +48,7 @@ describe "unit_memberships", type: :feature do
 
       it "displays admin's email when enabled" do
         @admin.update(roster_display_email: true)
+        @admin.reload
         visit(unit_members_path(@unit))
         expect(page).to have_content(@admin.email)
         expect(page).not_to have_content(@admin.phone.phony_formatted(country_code: "US"))
@@ -91,16 +92,6 @@ describe "unit_memberships", type: :feature do
         path = unit_members_path(@unit)
         visit path
         expect(page).to have_current_path(path)
-      end
-
-      it "shows emails and addresses independent of preferences" do
-        visit(unit_members_path(@unit))
-        expect(page).to have_content(@admin.display_name)
-        expect(page).to have_content(@non_admin.display_name)
-        expect(page).to have_content(@admin.email)
-        expect(page).to have_content(@admin.phone.phony_formatted(country_code: "US"))
-        expect(page).to have_content(@non_admin.email)
-        expect(page).to have_content(@non_admin.phone.phony_formatted(country_code: "US"))
       end
     end
 

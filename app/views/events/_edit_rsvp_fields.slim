@@ -24,7 +24,7 @@ ul
         .relative.block.whitespace-nowrap.pr-0.md:pr-1.pl-0.bg-stone-100.dark:bg-stone-700
           = presenter.family_context_name(family_member)
 
-        div
+        div.bg-stone-100.dark:bg-stone-700.z-10
           // switch
           - if @event.shifts?
             - @event.shifts.each do |shift|

@@ -69,7 +69,7 @@ class UnitMembership < ApplicationRecord
     s.key :security, defaults: { enable_magic_links: true }
     s.key :communication, defaults: {
       via_email:                  true,
-      via_sms:                    false,
+      via_sms:                    true,
       event_organizer_digest:     true,
       receives_event_invitations: false,
       receives_all_rsvps:         false
@@ -115,7 +115,7 @@ class UnitMembership < ApplicationRecord
   end
 
   def contactable_object
-    user
+    self
   end
 
   def receives_event_rsvps?
