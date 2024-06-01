@@ -7,6 +7,7 @@ require "rails_helper"
 VCR.configure do |config|
   config.cassette_library_dir = "fixtures/vcr_cassettes"
   config.hook_into :webmock
+  config.allow_http_connections_when_no_cassette = true
 end
 
 RSpec.describe WeatherService, type: :model do
@@ -32,7 +33,6 @@ RSpec.describe WeatherService, type: :model do
       end
     end
 
-
     it "Cross River, NY" do
       VCR.use_cassette("openweather_cross_river") do
         location = FactoryBot.create(:location, address: "Route 35 & 121 South, Cross River, NY")
@@ -49,9 +49,4 @@ RSpec.describe WeatherService, type: :model do
       end
     end
   end
-end
-
-VCR.configure do |config|
-  config.cassette_library_dir = "fixtures/vcr_cassettes"
-  config.hook_into nil
 end
