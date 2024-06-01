@@ -109,6 +109,8 @@ group :test do
   gem "launchy"
   gem "rack_session_access"
   gem "simplecov", require: false
+  gem "vcr"
+  gem "webmock"
 end
 
 gem "rack", "~> 2.2"
