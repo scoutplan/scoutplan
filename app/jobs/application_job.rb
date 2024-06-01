@@ -2,6 +2,7 @@
 
 class ApplicationJob < ActiveJob::Base
   discard_on Noticed::ResponseUnsuccessful
+  discard_on Postmark::InactiveRecipientError
 
   # Automatically retry jobs that encountered a deadlock
   # retry_on ActiveRecord::Deadlocked
