@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# business logic for Events
 class EventCreationService < ApplicationService
   attr_reader :unit
 
