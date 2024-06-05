@@ -4,7 +4,7 @@ header.mt-8
 
 section#modal.px-6.py-6.bg-stone-200/30.rounded
   p.text-xl
-    | We've sent an email to <strong>#{params[:user][:email]}</strong> with your Scoutplan sign-in link.
+    | We've sent an email to <strong>#{params.dig(:user, :email)}</strong> with your Scoutplan sign-in link.
 
   p.mt-8.text-stone-500
     | If you don't see the email, check your spam folder or <strong>#{link_to "try again", new_user_session_path, class: "text-blue-500"}</strong>.
