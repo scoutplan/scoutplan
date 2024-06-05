@@ -6,9 +6,9 @@
 - done = false
 - context = { first_day_of_month: Date.new(@current_year, @current_month, 1) }
 
-/! Current member id: #{current_member.id}
-/! Current unit id: #{current_unit.id}
-/! Current user id: #{current_user.id}
+/! Current member id: #{current_member&.id}
+/! Current unit id: #{current_unit&.id}
+/! Current user id: #{current_user&.id}
 .max-w-7xl.mx-auto
   header.flex.flex-row.items-center.justify-between.py-2.md:mt-8.relative.mb-2
     // month & year
