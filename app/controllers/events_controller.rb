@@ -117,11 +117,12 @@ class EventsController < UnitContextController
     @ends_at = current_unit.season_ends_at(@starts_at)
   end
 
+  # rubocop:disable Metrics/PerceivedComplexity
   def show
     authorize @event
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).rsvps?
-    @current_family = current_member.family
+    @current_family = current_member&.family
     if @event.requires_payment? && Flipper.enabled?(:payments, current_unit)
       @payments = @event.payments.paid.where(unit_membership_id: @current_family.map(&:id))
       @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
@@ -138,6 +139,7 @@ class EventsController < UnitContextController
       format.ics { send_ical }
     end
   end
+  # rubocop:enable Metrics/PerceivedComplexity
 
   # GET /:unit_id/events/:event_id/edit
   def edit
