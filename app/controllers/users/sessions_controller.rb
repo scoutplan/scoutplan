@@ -10,25 +10,20 @@ module Users
       stored_location_for(resource) || root_path
     end
 
-    # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/MethodLength
     def create
-      if params[:token].present?
-        sign_in_via_magic_link
-      elsif params.dig(:user, :password).present?
-        sign_in_via_password
-      elsif @user.nil? && cookies[:target_unit_id].present?
-        redirect_to welcome_path
-      elsif @user.present?
-        send_session_email
-      elsif params.dig(:user, :email).nil?
-        redirect_to new
-      end
+      sign_in_via_magic_link if params[:token].present?
+      sign_in_user if params[:user].present?
+      redirect_to welcome_path and return if @user.nil? && cookies[:target_unit_id].present?
     end
-    # rubocop:enable Metrics/AbcSize
-    # rubocop:enable Metrics/MethodLength
 
     private
+
+    def sign_in_user
+      redirect_to new and return if params.dig(:user, :email).nil?
+
+      sign_in_via_password if params.dig(:user, :password).present?
+      send_session_email if @user.present?
+    end
 
     def find_unit
       return unless (unit_id = cookies[:current_unit_id])
