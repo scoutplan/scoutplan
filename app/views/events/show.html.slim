@@ -1,8 +1,8 @@
 = turbo_frame_tag "main"
-  /! Current member id: #{current_member.id}
-  /! Current unit id: #{current_unit.id}
-  /! Current user id: #{current_user.id}
-  /! #{@event.email}
+  /! Current member id: #{current_member&.id}
+  /! Current unit id: #{current_unit&.id}
+  /! Current user id: #{current_user&.id}
+  /! #{@event&.email}
 
   article.event.mx-auto.max-w-3xl
     header.mb-6

@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   get "welcome/index"
   get "", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
   get "*path", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
+  get "/service-worker.js", to: "service_worker#service_worker"
+  get "/manifest.json", to: "service_worker#manifest"
   mount BetterMailerPreviews::Engine, at: "/better_mailer_previews" if Rails.env.development?
   root to: "home#index"
   get "up" => "rails/health#show", as: :rails_health_check
