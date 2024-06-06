@@ -1,0 +1,38 @@
+.max-w-md.mx-auto
+  header.mb-8
+    = link_to profile_unit_member_path(@unit, @member),
+              class: "font-bold text-brand-500",
+              data: { turbo: "false" } do
+
+        i.fa-solid.fa-chevron-left.mr-1
+        = t("back")
+
+  .bg-white.dark:bg-stone-800.drop-shadow-overhead.rounded-lg.p-12
+    header.mb-4
+      h1.font-bold.text-2xl.md:text-4xl.mb-2
+        = "Display"
+        .text-sm.font-bold.uppercase.tracking-wider
+          = @member.display_name
+
+    = form_with model: @profile.member,
+                url: profile_path(@member.id),
+                data: { turbo: false },
+                builder: ApplicationFormBuilder do |f|
+
+      .flex.flex-col.gap-3
+        = f.fields_for :user, @member.user do |uf|
+          div
+            = uf.label :first_day_of_week, class: "block font-bold mb-1"
+            = uf.select :first_day_of_week, options_for_select([["Sunday", 0], ["Monday", 1]], @member.user.first_day_of_week), {},
+              { class: "rounded border p-2 w-full placeholder-stone-400 border-stone-200 dark:bg-stone-800 dark:border-stone-600" }
+
+        footer.py-2
+          - if @member.errors.any?
+            ul.mb-6
+              - @member.errors.each do |error|
+                li
+                  i.fa-solid.fa-times-circle.mr-2.text-red-500
+                  / = error.details
+                  = error.full_message
+
+          = f.button("Save settings", type: "submit", class: "block bg-green-600 text-white font-semibold px-4 py-2 rounded")
