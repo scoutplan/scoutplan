@@ -3,6 +3,7 @@ class Pdf::EventOrganizerPackage
 
   def initialize(event)
     @event = event
+    @unit = @event.unit
   end
 
   def filename

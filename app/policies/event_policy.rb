@@ -84,6 +84,7 @@ class EventPolicy < UnitContextPolicy
   # if the event is tagged, does the member possess those tags?
   def tags_match?
     return true if @event.tag_list.empty?
+    return true if @membership.nil?
 
     @membership.tag_list.any? { |tag| @event.tag_list.include?(tag) }
   end
