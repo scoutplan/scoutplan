@@ -14,6 +14,8 @@ html.scroll-smooth
     = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: "anonymous"
     = javascript_include_tag "main"
 
+    link(rel="manifest" crossorigin="use-credentials" href="/manifest.json")
+
     = yield :head
 
   body(class="dark:bg-stone-900 dark:text-stone-200 text-stone-900 #{controller_name} #{action_name} #{yield :body_classes}")
