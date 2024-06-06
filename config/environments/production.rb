@@ -28,7 +28,6 @@ Rails.application.configure do
   config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
   config.assets.css_compressor = nil
-
   config.assets.compile = true
 
   config.active_storage.service = :digitalocean
@@ -37,7 +36,7 @@ Rails.application.configure do
 
   config.ssl_options = { redirect: false } # disable redirect since the LB handles it
 
-  config.log_level = ENV.fetch("RAILS_LOG_LEVEL") { "info" }
+  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
   config.log_tags = [:request_id]
 
@@ -45,19 +44,16 @@ Rails.application.configure do
 
   config.active_job.queue_adapter = :sidekiq
 
-  config.action_mailbox.ingress = :mailgun 
+  config.action_mailbox.ingress = :mailgun
 
-  config.action_mailer.raise_delivery_errors  = true
-  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.raise_delivery_errors = false
   config.action_mailer.delivery_method = :postmark
   config.action_mailer.postmark_settings = { api_token: ENV.fetch("POSTMARK_API_TOKEN", nil) }
 
   config.i18n.fallbacks = true
 
   config.active_support.deprecation = :notify
-
   config.active_support.disallowed_deprecation = :log
-
   config.active_support.disallowed_deprecation_warnings = []
 
   config.log_formatter = ::Logger::Formatter.new
