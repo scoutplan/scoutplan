@@ -774,6 +774,7 @@ en:
     index:
       info:     "Personal information"
       alerts:   "Alerts"
+      display:  "Display"
       security: "Security"
 
   settings:

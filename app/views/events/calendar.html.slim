@@ -2,7 +2,7 @@
 - first_day_of_last_month = first_day_of_month.last_month
 - days_in_month = first_day_of_month.end_of_month.day
 - days_in_last_month = first_day_of_last_month.end_of_month.day
-- display_day = - first_day_of_month.wday + 1
+- display_day = - first_day_of_month.wday + 1 + current_user.first_day_of_week
 - done = false
 - context = { first_day_of_month: Date.new(@current_year, @current_month, 1) }
 
@@ -29,7 +29,8 @@
 
   .table.px-0.w-full.table-fixed.border-t
     .table-row.font-bold
-      - 7.times do |dow|
+      - 7.times do |col|
+        - dow = (col + current_user.first_day_of_week) % 7
         .table-cell.p-2
           .hidden.md:inline = Date::DAYNAMES[dow]
           .inline.md:hidden = Date::DAYNAMES[dow][0, 3]
@@ -38,8 +39,9 @@
     - until display_day > days_in_month do
       .table-row
         - 7.times do |col|
-          - cell_class = "cal-cell-dow-#{col}"
-          - cell_class << " cal-weekend-cell" if Date::WEEKEND_DAYS.include? col
+          - dow = (col + current_user.first_day_of_week) % 7
+          - cell_class = "cal-cell-dow-#{dow}"
+          - cell_class << " cal-weekend-cell" if Date::WEEKEND_DAYS.include?(dow)
           - display_date = context[:first_day_of_month] + display_day.days - 1
 
           - if display_day > days_in_month

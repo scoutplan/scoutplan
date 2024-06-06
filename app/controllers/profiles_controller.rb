@@ -21,6 +21,10 @@ class ProfilesController < ApplicationController
     authorize @profile
   end
 
+  def display
+    authorize @profile
+  end
+
   def update
     authorize @profile
     if @member.update!(member_params)
@@ -64,7 +68,7 @@ class ProfilesController < ApplicationController
       :allow_youth_rsvps,
       :ical_suppress_declined,
       :roster_display_email, :roster_display_phone,
-      user_attributes: [:id, :first_name, :last_name, :email, :phone, :password, :password_confirmation]
+      user_attributes: [:id, :first_name, :last_name, :email, :phone, :password, :password_confirmation, :first_day_of_week]
     )
   end
 

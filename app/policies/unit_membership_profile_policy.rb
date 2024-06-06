@@ -25,6 +25,10 @@ class UnitMembershipProfilePolicy < ApplicationPolicy
     edit?
   end
 
+  def display?
+    edit?
+  end
+
   def security?
     edit?
   end

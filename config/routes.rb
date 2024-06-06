@@ -195,6 +195,7 @@ Rails.application.routes.draw do
         get "profile", to: "profiles#index"
         get "profile/info", to: "profiles#edit", as: "info"
         get "profile/alerts", to: "profiles#alerts", as: "alerts"
+        get "profile/display", to: "profiles#display", as: "display"
         get "profile/security", to: "profiles#security", as: "security"
       end
 
