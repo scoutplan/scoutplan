@@ -1,4 +1,10 @@
 class EventRsvpOrganizerNotifier < ScoutplanNotifier
+  notification_methods do
+    def title
+      "You have new RSVPs for #{record&.title}"
+    end
+  end
+
   deliver_by :email do |config|
     config.mailer = "EventRsvpOrganizerMailer"
     config.method = :event_rsvp_organizer_notification
@@ -11,8 +17,6 @@ class EventRsvpOrganizerNotifier < ScoutplanNotifier
     config.ignore_failure = true
     config.if = :sms?
   end
-
-  required_param :event
 
   def feature_enabled?
     true

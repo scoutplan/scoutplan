@@ -8,7 +8,7 @@ class EventRsvpOrganizerNotificationJob < ApplicationJob
 
     @event = event
     @unit = event.unit
-    EventRsvpOrganizerNotifier.with(event: event).deliver_later(organizer_recipients)
+    EventRsvpOrganizerNotifier.with(record: event).deliver_later(organizer_recipients)
   end
 
   discard_on ActiveJob::DeserializationError
