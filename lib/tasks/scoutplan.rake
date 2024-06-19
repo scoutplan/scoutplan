@@ -59,6 +59,16 @@ namespace :sp do
     end
   end
 
+  desc "Upgrade EventRsvpOrganizerNotification objects"
+  task upgrade_event_rsvp_organizer_notifications: :environment do
+    UnitMembership.all.each do |member|
+      member.notifications.where(type: "EventRsvpOrganizerNotification").each do |notification|
+        notification.record = notification.params[:event]
+        notification.save!
+      end
+    end
+  end
+
   # desc "Advance events by one month"
   # task advance_events: :environment do
   #   unit_id = ENV["SP_ADVANCE_UNIT_ID"]
