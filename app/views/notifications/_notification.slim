@@ -1,0 +1,9 @@
+li.py-1(id="#{dom_id(notification)}")
+
+  .flex.flex-row.justify-between
+    = link_to "#" do
+      = notification.title
+
+    .right
+      = distance_of_time_in_words_to_now(notification.created_at) + " ago"
+      = button_to "Mark as read", mark_as_read_unit_notification_path(current_unit, notification), remote: true, form: { "data-type" => "turbo_stream" }

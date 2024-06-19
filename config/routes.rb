@@ -89,6 +89,17 @@ Rails.application.routes.draw do
     end
 
     resources :message_attachments
+    resources :notifications, only: [:index] do
+      collection do
+        post "mark_all_as_read"
+        post "mark_all_as_unread"
+      end
+
+      member do
+        post "mark_as_read"
+        post "mark_as_unread"
+      end
+    end
     resources :locations
     resources :packing_lists do
       resources :packing_list_items

@@ -23,7 +23,7 @@ class RsvpNagJob < ApplicationJob
     return unless event.present?
     return unless EventPolicy.new(member, event).rsvp?
 
-    RsvpNagNotifier.with(event: event).deliver_later(member)
+    RsvpNagNotifier.with(record: event).deliver_later(member)
   end
 
   def next_needing_rsvp(member)

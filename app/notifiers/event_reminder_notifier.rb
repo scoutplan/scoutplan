@@ -1,6 +1,12 @@
 class EventReminderNotifier < ScoutplanNotifier
   LEAD_TIME = 12.hours.freeze
 
+  notification_methods do
+    def title
+      "Reminder: #{record&.title}"
+    end
+  end
+
   deliver_by :email do |config|
     config.mailer = "EventReminderMailer"
     config.method = :event_reminder_notification

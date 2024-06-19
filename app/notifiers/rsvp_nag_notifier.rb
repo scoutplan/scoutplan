@@ -1,4 +1,10 @@
 class RsvpNagNotifier < ScoutplanNotifier
+  notification_methods do
+    def title
+      "Your RSVP is requested for an upcoming event"
+    end
+  end
+
   deliver_by :email do |config|
     config.mailer = "RsvpNagMailer"
     config.method = :rsvp_nag_notification
@@ -11,8 +17,6 @@ class RsvpNagNotifier < ScoutplanNotifier
     config.ignore_failure = true
     config.if = :sms?
   end
-
-  required_param :event
 
   def feature_enabled?
     unit.settings(:communication).rsvp_nag == "true"

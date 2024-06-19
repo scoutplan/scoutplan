@@ -1,0 +1,12 @@
+.max-w-3xl.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead
+  header.mb-4
+    .flex.flex-row.justify-between.items-center
+      .left
+        h1.text-4xl
+          = t(".title")
+
+      .right
+        = button_to t(".mark_all_as_read"), mark_all_as_read_unit_notifications_path, remote: true, form: { "data-type" => "turbo_stream" } 
+        = button_to t(".mark_all_as_unread"), mark_all_as_unread_unit_notifications_path, remote: true, form: { "data-type" => "turbo_stream" } 
+
+  = render "notifications"

@@ -1,4 +1,10 @@
 class WeeklyDigestNotifier < ScoutplanNotifier
+  notification_methods do
+    def title
+      "Weekly Digest"
+    end
+  end
+
   deliver_by :email do |config|
     config.mailer = "WeeklyDigestMailer"
     config.method = :weekly_digest_notification

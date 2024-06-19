@@ -35,6 +35,7 @@ module.exports = {
         huge: ['5rem', '1'],
       },
       colors: {
+        // https://uicolors.app/create
         brand: {
           100: '#F6F1E7',
           200: '#F4E1CC',

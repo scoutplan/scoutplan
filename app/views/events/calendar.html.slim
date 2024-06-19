@@ -79,7 +79,7 @@
               - if display_date.beginning_of_day >= event.starts_at.beginning_of_day && display_date.beginning_of_day <= event.ends_at.end_of_day
                 .cal-event.text-xs.overflow-hidden(class="block p-1 rounded dark:hover:bg-stone-800 hover:bg-stone-100 #{css_classes}")
                   = link_to [ event.unit, event ],
-                            class: "inline font-bold",
+                            class: "inline font-medium",
                             data: { turbo_action: "advance" },
                             style: "color: #{event.category.color}" do
 

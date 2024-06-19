@@ -21,7 +21,7 @@ module EventRsvp::Notifiable
   end
 
   def enqueue_confirmation
-    EventRsvpConfirmation.with(event_rsvp: self).deliver_later(confirmation_recipients)
+    EventRsvpConfirmation.with(record: self, event_rsvp: self).deliver_later(confirmation_recipients)
   end
 
   def send_organizer_notification_at

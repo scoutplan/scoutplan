@@ -1,4 +1,12 @@
 class EventRsvpConfirmation < ScoutplanNotifier
+  notification_methods do
+    def title
+      return "Your RSVP for #{record.event.title} has been received!" if record.present?
+
+      "Your RSVP has been received!"
+    end
+  end
+
   deliver_by :email do |config|
     config.mailer = "EventRsvpConfirmationMailer"
     config.method = :event_rsvp_confirmation

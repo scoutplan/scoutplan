@@ -1,4 +1,10 @@
 class MessageNotifier < ScoutplanNotifier
+  notification_methods do
+    def title
+      "Title"
+    end
+  end
+
   deliver_by :email do |config|
     config.mailer = "MessageMailer"
     config.method = :message_notification
