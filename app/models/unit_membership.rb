@@ -39,7 +39,7 @@ class UnitMembership < ApplicationRecord
   has_many :visits, class_name: "Ahoy::Visit"
   has_many :event_organizers
   has_many :organized_events, through: :event_organizers, source: :event
-  has_many :notifications, as: :recipient, dependent: :destroy
+  has_many :notifications, as: :recipient, dependent: :destroy, class_name: "Noticed::Notification"
   has_many :payments, dependent: :destroy
   has_secure_token
 

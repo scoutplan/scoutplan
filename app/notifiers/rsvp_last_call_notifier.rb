@@ -1,4 +1,10 @@
 class RsvpLastCallNotifier < ScoutplanNotifier
+  notification_methods do
+    def title
+      "RSVP Last Call: #{params[:event]&.title}"
+    end
+  end
+
   deliver_by :email do |config|
     config.mailer = "RsvpLastCallMailer"
     config.method = :rsvp_last_call_notification
