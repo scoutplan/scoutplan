@@ -40,6 +40,8 @@ li.relative.z-0.event.md:px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="
 
   // second row
   .flex.flex-col.gap-2.md:flex-row.md:items-center.py-2.empty:py-0
-    = render partial: "events/partials/event_row/organize", locals: { event: event }
-    = render partial: "events/partials/event_row/family_rsvp_link", locals: { event: event }
+    - if current_user
+      = render partial: "events/partials/event_row/organize", locals: { event: event }
+      = render partial: "events/partials/event_row/family_rsvp_link", locals: { event: event }
+
     = render partial: "events/partials/event_row/online", locals: { event: event }

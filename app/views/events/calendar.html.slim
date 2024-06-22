@@ -2,7 +2,8 @@
 - first_day_of_last_month = first_day_of_month.last_month
 - days_in_month = first_day_of_month.end_of_month.day
 - days_in_last_month = first_day_of_last_month.end_of_month.day
-- display_day = - first_day_of_month.wday + 1 + current_user.first_day_of_week
+- first_day_of_week = current_user&.first_day_of_week || 0
+- display_day = - first_day_of_month.wday + 1 + first_day_of_week
 - done = false
 - context = { first_day_of_month: Date.new(@current_year, @current_month, 1) }
 
@@ -30,7 +31,7 @@
   .table.px-0.w-full.table-fixed.border-t
     .table-row.font-bold
       - 7.times do |col|
-        - dow = (col + current_user.first_day_of_week) % 7
+        - dow = (col + first_day_of_week) % 7
         .table-cell.p-2
           .hidden.md:inline = Date::DAYNAMES[dow]
           .inline.md:hidden = Date::DAYNAMES[dow][0, 3]
@@ -39,7 +40,7 @@
     - until display_day > days_in_month do
       .table-row
         - 7.times do |col|
-          - dow = (col + current_user.first_day_of_week) % 7
+          - dow = (col + first_day_of_week) % 7
           - cell_class = "cal-cell-dow-#{dow}"
           - cell_class << " cal-weekend-cell" if Date::WEEKEND_DAYS.include?(dow)
           - display_date = context[:first_day_of_month] + display_day.days - 1
@@ -78,7 +79,8 @@
 
               - if display_date.beginning_of_day >= event.starts_at.beginning_of_day && display_date.beginning_of_day <= event.ends_at.end_of_day
                 .cal-event.text-xs.overflow-hidden(class="block p-1 rounded dark:hover:bg-stone-800 hover:bg-stone-100 #{css_classes}")
-                  = link_to [ event.unit, event ],
+                  - path = current_user ? unit_event_path(event.unit, event) : "#"
+                  = link_to path,
                             class: "inline font-medium",
                             data: { turbo_action: "advance" },
                             style: "color: #{event.category.color}" do

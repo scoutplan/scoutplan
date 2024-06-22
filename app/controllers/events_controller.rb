@@ -38,19 +38,19 @@ class EventsController < UnitContextController
     end
   end
 
+  # rubocop:disable Layout/LineLength
   def calendar
     month = params[:month] || cookies[:calendar_month] || Date.today.year
     year = params[:year] || cookies[:calendar_year] || Date.today.month
 
-    unless params[:year] && params[:month]
-      redirect_to calendar_unit_events_path(current_unit, year: year, month: month) and return
-    end
+    redirect_to calendar_unit_events_path(current_unit, year: year, month: month) and return unless params[:year] && params[:month]
 
     cookies[:event_index_variation] = "calendar"
     cookies[:calendar_year] = year
     cookies[:calendar_month] = month
     @events = scope_for_calendar.all
   end
+  # rubocop:enable Layout/LineLength
 
   def spreadsheet
     find_spreadsheet_events
