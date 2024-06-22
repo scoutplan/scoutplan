@@ -23,11 +23,13 @@ module Users
 
       if params.dig(:user, :password).present?
         sign_in_via_password
+        return
       elsif @user.present?
         send_session_email
-      else
-        redirect_to new
+        return
       end
+
+      redirect_to new
     end
 
     def find_unit
