@@ -8,7 +8,7 @@ RSpec.describe EventRsvpOrganizerMailer, type: :mailer do
     @organizer = FactoryBot.create(:member, :adult, unit: @unit)
     @event.event_organizers.create!(unit_membership: @organizer, assigned_by: @organizer)
 
-    @mail = EventRsvpOrganizerMailer.with(event: @event, recipient: @organizer).event_rsvp_organizer_notification
+    @mail = EventRsvpOrganizerMailer.with(record: @event, recipient: @organizer).event_rsvp_organizer_notification
   end
 
   describe "event_rsvp_organizer_notification" do

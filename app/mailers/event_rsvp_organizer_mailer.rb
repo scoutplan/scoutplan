@@ -17,7 +17,7 @@ class EventRsvpOrganizerMailer < ApplicationMailer
   private
 
   def setup
-    @event = params[:event]
+    @event = params[:record]
     @recipient = params[:recipient]
     @unit = @event.unit
     @dashboard = EventDashboard.new(@event)

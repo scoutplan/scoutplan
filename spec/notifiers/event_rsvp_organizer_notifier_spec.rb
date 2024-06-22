@@ -36,7 +36,7 @@ RSpec.describe EventRsvpOrganizerNotifier do
     clear_enqueued_jobs
     Sidekiq::Testing.fake!
     organizer_recipients = [@parent]
-    expect { EventRsvpOrganizerNotifier.with(event: @event).deliver(organizer_recipients) }.to have_enqueued_job(Noticed::EventJob)
+    expect { EventRsvpOrganizerNotifier.with(record: @event).deliver(organizer_recipients) }.to have_enqueued_job(Noticed::EventJob)
     perform_enqueued_jobs
     expect(ActiveJob::Base.queue_adapter.enqueued_jobs.count).to be > 0
     perform_enqueued_jobs

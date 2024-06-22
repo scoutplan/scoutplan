@@ -27,7 +27,7 @@ class EventRsvpOrganizerNotifier < ScoutplanNotifier
     {
       "From" => ENV.fetch("TWILIO_NUMBER"),
       "To"   => recipient.phone,
-      "Body" => sms_body(recipient: recipient, event: params[:event])
+      "Body" => sms_body(recipient: recipient, event: record)
     }
   end
 end
