@@ -19,8 +19,6 @@ describe "notifications", type: :feature do
       visit path
       expect(page).to have_content("Notifications")
       expect(page).to have_content("You have new RSVPs for #{@event.title}")
-
-      save_and_open_page
     end
   end
 end
