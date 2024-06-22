@@ -31,11 +31,3 @@ div.pt-4
             disabled: !member.contactable? },
           "true", "false" )
 
-  .py-1
-    = render partial: "components/switch",
-             locals: { object_name: object_name,
-                       label: "Receive event invitations via email 14 days before event",
-                       checked: member.settings(:communication).receives_event_invitations,
-                       method: "receives_event_invitations",
-                       checked_value: "true",
-                       unchecked_value: "false" }
