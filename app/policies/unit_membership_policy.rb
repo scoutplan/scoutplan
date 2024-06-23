@@ -10,6 +10,10 @@ class UnitMembershipPolicy < UnitContextPolicy
     true
   end
 
+  def bulk_edit?
+    admin?
+  end
+
   def show?
     admin?
   end

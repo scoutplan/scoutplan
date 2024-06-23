@@ -213,6 +213,7 @@ Rails.application.routes.draw do
       end
 
       collection do
+        get "bulk_edit", to: "unit_memberships#bulk_edit"
         post "bulk_update", to: "unit_memberships#bulk_update"
         get  "import",      to: "unit_memberships_import#new"
         post "import",      to: "unit_memberships_import#create"

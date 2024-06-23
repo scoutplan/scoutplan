@@ -1,0 +1,9 @@
+- row_classes = "member-#{ unit_membership.status }"
+- row_classes += " member-#{ unit_membership.member_type }"
+- row_classes += " member-admin" if unit_membership.admin?
+- row_classes += " member-inactive" if unit_membership.status_inactive?
+- bulk_edit ||= false
+
+article.member.flex.flex-row.items-center.gap-4(class="#{row_classes}")
+  = check_box_tag "members[]", unit_membership.id, false, class: 'form-check-input bulk-edit-checkbox'
+  = render partial: "unit_memberships/index/name", locals: { unit_membership: unit_membership }

@@ -1,6 +1,4 @@
-body:not(.bulk-edit) .bulk-edit {
-  display: none;
-}
+
 
 body.bulk-edit .bulk-edit {
   display: inherit;

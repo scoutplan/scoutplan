@@ -1,6 +1,11 @@
+- bulk_edit ||= false
+
 section.member-index
   h2.font-bold.text-brand-500.border-t.border-stone-500.dark:border-stone-400.py-3
     = letter
 
   .divide-y.divide-stone-300.dark:divide-stone-700
-    = render unit_memberships
+    - if bulk_edit
+      = render partial: "bulk_edit_unit_membership", collection: unit_memberships, as: :unit_membership
+    - else
+      = render partial: "unit_membership", collection: unit_memberships

@@ -2,9 +2,21 @@
 
 class UnitMembershipsController < UnitContextController
   # before_action :find_unit, only: %i[index new create bulk_update invite]
-  before_action :find_membership, except: %i[index new create bulk_update]
+  before_action :find_membership, except: %i[index new create bulk_edit bulk_update]
 
   def index
+    authorize UnitMembership
+    @current_unit_memberships = current_unit.memberships.includes(
+      :user, :tags,
+      { parent_relationships: { parent_unit_membership: :user } },
+      { child_relationships: { child_unit_membership: :user } }
+    ).order("users.first_name, users.last_name ASC")
+    @page_title = current_unit.name, t("members.titles.index", unit_name: "")
+    @membership = current_unit.memberships.build
+    @membership.build_user
+  end
+
+  def bulk_edit
     authorize UnitMembership
     @current_unit_memberships = current_unit.memberships.includes(
       :user, :tags,

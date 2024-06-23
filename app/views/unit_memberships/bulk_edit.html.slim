@@ -1,0 +1,12 @@
+= turbo_frame_tag("main")
+  .max-w-xl.mx-auto
+    = render partial: "layouts/flash"
+    = render partial: "unit_memberships/index/header"
+    
+    = form_tag bulk_update_unit_members_path(current_unit), id: "bulk_edit_form"
+      = render "member_bulk_edit_panel"
+      
+      - ("A".."Z").each do |letter|
+        - letter_memberships = @current_unit_memberships.select{ |m| m.first_name.first.downcase == letter.downcase }
+        = render partial: "member_index", locals: { letter: letter, unit_memberships: letter_memberships, bulk_edit: true } if letter_memberships.present?
+

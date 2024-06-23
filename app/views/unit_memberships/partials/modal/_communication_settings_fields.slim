@@ -10,7 +10,7 @@ div.pt-4
             checked: member.contactable?(via: :email) && member.settings(:communication).via_email == "true",
             data: {  },
             disabled: !member.contactable?(via: :email) },
-          "true", "false" )                        
+            "true", "false" )                        
 
   .py-1
     = switch( "settings[communication]", "via_sms",
@@ -18,7 +18,7 @@ div.pt-4
             checked: member.contactable?(via: :sms) && member.settings(:communication).via_sms == "true",
             data: {  },
             disabled: !member.contactable?(via: :sms) },
-          "true", "false" ) 
+            "true", "false" ) 
 
 div.pt-4
   h4.font-bold.mb-2 = t(".notifications")
@@ -29,5 +29,5 @@ div.pt-4
             checked: member.settings(:communication).receives_all_rsvps == "true",
             data: {  },
             disabled: !member.contactable? },
-          "true", "false" )
+            "true", "false" )
 
