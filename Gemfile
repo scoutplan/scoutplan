@@ -16,7 +16,6 @@ gem "aws-sdk-s3", require: false
 gem "blazer"
 gem "bootsnap", require: false
 gem "chroma"
-gem "client_side_validations"
 gem "colorize"
 gem "combine_pdf"
 gem "convert_api"

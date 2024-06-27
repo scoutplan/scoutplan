@@ -37,7 +37,7 @@ section.py-4.grid.grid-cols-1.md:grid-cols-3.gap-8.border-t
 
 
     // ends at
-    .py-2
+    .py-2(class="#{@event.errors.include?(:ends_at) ? 'input_group_with_error' : 'valid'}")
       = f.label :ends_at, class: "font-bold block mb-1"
 
       .flex.flex-grow.gap-x-4.items-center
@@ -54,6 +54,10 @@ section.py-4.grid.grid-cols-1.md:grid-cols-3.gap-8.border-t
             step: "900",
             tabindex: -1,
             value: @event.ends_at.strftime("#{ @format_time }")
+
+      - if @event.errors.include?(:ends_at)
+        p.pt-2.text-sm
+          .text-red-500.text-sm = @event.errors[:ends_at].first
 
     // repeat
     .py-4
