@@ -15,9 +15,9 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   get "welcome", to: "unit_membership_requests#new", as: "welcome"
 
-  %w[404 500].each do |code|
-    get code, to: "errors#show", code: code
-  end
+  # %w[404 500].each do |code|
+  #   get code, to: "errors#show", code: code
+  # end
 
   devise_for :users, path: "", controllers: {
     omniauth_callbacks: "users/omniauth_callbacks",

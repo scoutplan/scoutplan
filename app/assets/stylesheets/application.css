@@ -342,3 +342,11 @@ details > summary::-webkit-details-marker /* Safari */ {
     height: auto;
   }
 }
+
+.input_group_with_error input {
+  border-color: red;
+}
+
+.input_group_with_error label {
+  color: red;
+}

@@ -26,7 +26,7 @@ class EventCreationService < ApplicationService
     # for some reason this isn't being assigned through assign_attributes,
     # so we'll brute-force it
     @event.repeats_until = params[:repeats_until]
-    return unless @event.save!
+    return @event unless @event.save
 
     create_series if params[:repeats] == "yes"
     @event

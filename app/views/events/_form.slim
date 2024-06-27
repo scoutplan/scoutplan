@@ -17,6 +17,15 @@
         - else
           = t("events.titles.edit")
 
+    - if @event.errors.any?
+      .bg-red-100.border-l-4.border-red-500.p-4.mb-4
+        h2.text-red-800.font-bold.mt-0.mb-2
+          = t("events.errors.title")
+        ul
+          - @event.errors.full_messages.each do |message|
+            li.text-red-800
+              = message
+
     = form_with model: @event, scope: "event",
                 url: @event.new_record? ? unit_events_path(current_unit) : unit_event_path(current_unit, @event),
                 method: @event.new_record? ? "post" : "patch",
