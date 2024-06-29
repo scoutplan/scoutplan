@@ -39,4 +39,7 @@
           - if UnitDocumentPolicy.new(current_member, Document).create?
             = render partial: "upload_form"
 
-    = render partial: "units/documents/#{variant}"
+    = form_with url: bulk_update_unit_documents_path(current_unit), method: :post do |form|
+      = render "multi_edit_pane"
+
+      = render partial: "units/documents/#{variant}"
