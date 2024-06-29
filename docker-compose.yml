@@ -13,9 +13,6 @@ services:
       - db
 
   sidekiq:
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile
     image: scoutplan/app
     command: sh -c "bundle exec sidekiq"
     depends_on:
