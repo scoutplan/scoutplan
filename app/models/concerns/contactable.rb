@@ -16,8 +16,8 @@ module Contactable
   end
 
   def contact_preference?(via: :email)
-    return settings(:communication).via_email == "true" || settings(:communication).via_email if via == :email
-    return settings(:communication).via_sms == "true" || settings(:communication).via_sms if via == :sms
+    return settings(:communication).via_email == "true" || settings(:communication).via_email == true if via == :email
+    return settings(:communication).via_sms == "true" || settings(:communication).via_sms == true if via == :sms
 
     false
   end

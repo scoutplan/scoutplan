@@ -1,7 +1,11 @@
+<% if @unit.events.published.this_week.empty? %>
+Hi, <%= @recipient.first_name %>. There's nothing on the docket this week at <%= @unit.name %>. Visit <%= magic_url_for(@recipient, unit_events_url(@unit)) %> for the full schedule.
+<% else %>
 Hi, <%= @recipient.first_name %>. This week at <%= @unit.name %>:
 
 <% @unit.events.published.this_week.each do |event| %>
 * <%= event.title %> on <%= event.starts_at.in_time_zone.strftime('%A') %>
-<% end %>
 
 Visit <%= magic_url_for(@recipient, unit_events_url(@unit)) %> for the full schedule.
+<% end %>
+<% end %>
