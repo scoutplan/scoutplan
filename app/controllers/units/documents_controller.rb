@@ -38,6 +38,7 @@ class Units::DocumentsController < UnitContextController
     scope = scope.tagged_with(params[:tag]) if @tag.present? && @tag != "all"
     @title = @tag.downcase == "all" ? "All documents" : @tag.titleize
     @documents = scope.all
+    @can_delete = UnitDocumentPolicy.new(current_member, Document).destroy?
   end
   # rubocop:enable Metrics/AbcSize
 

@@ -6,8 +6,8 @@
 
   - variant = params[:variant] || request.cookies[:variant] || "grid"
 
-  .max-w-7xl.relative.mt-4.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead(data-controller="document-index")
-    header.mb-8.sticky.top-0
+  .max-w-7xl.relative.mt-4.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead(data-controller="document-index list-selection")
+    header.mb-4.sticky.top-0
       .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = current_unit.name
 
       .flex.flex-row.justify-between.items-center
@@ -38,5 +38,34 @@
 
           - if UnitDocumentPolicy.new(current_member, Document).create?
             = render partial: "upload_form"
+
+      #selection_toolbar.h-16.flex.flex-row.items-center.justify-between
+        .px-2.flex.flex-row.items-center.gap-2
+          = link_to "#", title: "Unselect files", data: { list_selection_target: "deselectSomeButton" } do
+            i.fa-solid.fa-square-minus.text-blue-600.text-2xl
+
+          = link_to "#", title: "Unselect files", data: { list_selection_target: "deselectAllButton" } do
+            i.fa-solid.fa-square-check.text-blue-600.text-2xl
+
+          = link_to "#", title: "Select all files", data: { list_selection_target: "selectAllButton" } do
+            i.fa-light.fa-square.text-2xl
+
+          = "3 files selected"
+
+        #selection_toolbar_items.hiddenz
+          .flex.flex-row.gap-2.items-center
+            - if @can_delete
+              .text-xs.bg-blue-100.rounded.px-2.py-1
+                = button_to "#", form_class: "inline", title: "Remove \"legend_ledger\" tag from selected file(s)" do
+                  i.fa-regular.fa-times.mr-2
+                = "legend_ledger"
+
+              = text_field_tag :tags, "", class: "rounded border border-stone-300 placeholder-stone-400 text-sm w-36", placeholder: "Add a tag"
+
+            - if @can_delete
+              = link_to "#",
+                        class: "bg-stone-200 rounded px-3 py-2 font-semibold" do
+                i.fa-fw.fa-solid.fa-trash-alt.mr-1
+                = "Delete"              
 
     = render partial: "units/documents/#{variant}"
