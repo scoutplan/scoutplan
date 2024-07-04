@@ -1,62 +1,45 @@
 # frozen_string_literal: true
 
 module Users
-  # override devise to allow for custom redirect after sign in
   class SessionsController < Devise::SessionsController
-    before_action :find_unit
-    before_action :resolve_user
-
     def after_sign_in_path_for(resource)
-      stored_location_for(resource) || root_path
+      if @user.present?
+        stored_location_for(resource) || root_path
+      else
+        ap "nope"
+        new_user_session_path
+      end
     end
 
+    # rubocop:disable Metrics/MethodLength
     def create
-      sign_in_via_magic_link if params[:token].present?
-      sign_in_user if params[:user].present?
-      redirect_to welcome_path and return if @user.nil? && cookies[:target_unit_id].present?
-    end
+      setup
 
-    private
-
-    def sign_in_user
-      redirect_to new and return if params.dig(:user, :email).nil?
-
-      if params.dig(:user, :password).present?
+      if params[:token].present?
+        sign_in_via_magic_link
+      elsif @user.present? && @password.present?
         sign_in_via_password
-        return
       elsif @user.present?
         send_session_email
-        return
-      end
-
-      redirect_to new
-    end
-
-    def find_unit
-      return unless (unit_id = cookies[:current_unit_id])
-
-      begin
-        @unit = Unit.find(unit_id)
-      rescue ActiveRecord::RecordNotFound
-        cookies[:current_unit_id] = nil
+      else
+        super
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
-    def resolve_user
-      return unless (email = params.dig(:user, :email))
-
-      cookies[:email] = email
-      @user = User.find_by(email: email)
-      @unit ||= @user&.units&.first
-      @user
+    def setup
+      @email = params.dig(:user, :email)
+      @password = params.dig(:user, :password)
+      @user = User.find_by(email: @email)
+      unit_id = cookies[:current_unit_id]
+      @unit = unit_id.present? ? Unit.find(unit_id) : @user&.units&.first
     end
 
     def send_session_email
-      return unless @unit
-
       member = @unit.membership_for(@user) || @user.unit_memberships.first
       redirect_to hello and return unless member
 
+      target_path = params[:user_return_to] || root_path
       magic_link = MagicLink.generate_link(member, target_path, 1.hour)
       UserMailer.with(magic_link: magic_link).session_email.deliver_later
     end
@@ -69,6 +52,7 @@ module Users
       redirect_to magic_link.path
     end
 
+    # rubocop:disable Metrics/AbcSize
     def sign_in_via_password
       self.resource = warden.authenticate!(auth_options)
       set_flash_message!(:notice, :signed_in)
@@ -77,9 +61,6 @@ module Users
       session[:via_magic_link] = false
       redirect_to params[:user_return_to] || root_path and return
     end
-
-    def target_path
-      params[:user_return_to] || root_path
-    end
+    # rubocop:enable Metrics/AbcSize
   end
 end
