@@ -17,11 +17,7 @@ export default class extends Controller {
   }
 
   deleteSelected(event) {
-    console.log(this.selectedItemIds());
-
-    // const eventIds = Array.from(selectedRows).map(row => row.dataset.eventId);
     const body = new FormData();
-    // body.append(`event[status]`, checkbox.checked ? "published" : "draft");
     body.append(`document_ids`, this.selectedItemIds());
     const url = `/u/${this.unitIdValue}/library/batch_delete`;
     post(url, { body: body, responseKind: "turbo-stream" });    
