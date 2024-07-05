@@ -68,7 +68,8 @@ Rails.application.routes.draw do
         collection do
           get "tag/:tag", to: "documents#tag", as: "tag"
           get "tag/:tag/:variant", to: "documents#tag", as: "tag_variant"
-          post "bulk_update"
+          post "batch_update"
+          post "batch_delete"
         end
       end
     end

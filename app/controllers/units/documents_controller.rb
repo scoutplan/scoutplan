@@ -44,7 +44,7 @@ class Units::DocumentsController < UnitContextController
 
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
-  def bulk_update
+  def batch_update
     authorize Document, policy_class: UnitDocumentPolicy
 
     tags = params[:multi_select_action][:tags]
@@ -58,6 +58,12 @@ class Units::DocumentsController < UnitContextController
       document.update(document_date: document_date) if document_date.present?
       document.save
     end
+  end
+
+  def batch_delete
+    authorize Document, policy_class: UnitDocumentPolicy
+    @document_ids = params[:document_ids].split(",")
+    current_unit.documents.where(id: @document_ids).destroy_all
   end
   # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/MethodLength
