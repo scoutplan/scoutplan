@@ -23,7 +23,19 @@ class UnitDocumentPolicy < UnitContextPolicy
     index?
   end
 
-  def bulk_update?
+  def batch_update?
     update?
+  end
+
+  def batch_delete?
+    destroy?
+  end
+
+  def batch_tag?
+    edit?
+  end
+
+  def batch_untag?
+    edit?
   end
 end

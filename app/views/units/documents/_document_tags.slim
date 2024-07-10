@@ -1,0 +1,7 @@
+.flex.flex-row.items-center.gap-1(id="#{dom_id(document)}_tags")
+  - document.document_tags.each do |tag|
+    - hue = Digest::MD5.hexdigest(tag.name).to_i(16) % 360
+    - bgcolor = "hsl(#{hue}, 100%, 95%)"
+    - color = "hsl(#{hue}, 100%, 20%)"
+    .inline-block.text-xs.rounded.px-2.py-1(style="background-color: #{bgcolor}; color: #{color};")
+      = "#" + tag.name

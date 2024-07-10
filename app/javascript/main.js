@@ -32,11 +32,13 @@ document.addEventListener("turbo:load", function() {
     if (linkElem.classList.contains("dropdown-ready")) { return; }
     linkElem.addEventListener("click", function(event) {
       const dropdownContainer = event.target.closest(".dropdown");
-      const autofocusElem = dropdownContainer.querySelector("[autofocus]");
-      dropdownContainer.classList.toggle("menu-open");
-      if (dropdownContainer.classList.contains("menu-open")) { autofocusElem?.focus(); }
-      event.preventDefault();
-      return false;
+      if (dropdownContainer) {
+        const autofocusElem = dropdownContainer.querySelector("[autofocus]");
+        dropdownContainer.classList.toggle("menu-open");
+        if (dropdownContainer.classList.contains("menu-open")) { autofocusElem?.focus(); }
+        event.preventDefault();
+        return false;
+      }
     });
     linkElem.classList.add("dropdown-ready");
   });

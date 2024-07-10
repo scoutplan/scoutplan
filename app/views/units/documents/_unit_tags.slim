@@ -1,0 +1,40 @@
+.flex.flex-row.gap-1.items-center.text-xs
+  // list of active tags
+  - ActsAsTaggableOn::Tag.for_tenant(unit).each do |tag|
+    - if can_delete
+      - hue = Digest::MD5.hexdigest(tag.name).to_i(16) % 360
+      - bgcolor = "hsl(#{hue}, 100%, 95%)"
+      - color = "hsl(#{hue}, 100%, 20%)"
+      .tag-button.inline-block.text-xs.rounded.px-2.py-1(id="document_tag_#{tag}" style="background-color: #{bgcolor}; color: #{color};" data-tag-name="#{tag}")
+        = button_tag "#", form_class: "inline", title: "Remove \"#{tag}\" tag from selected file(s)", data: { action: "document-index#batchUntagSelected" } do
+          i.fa-regular.fa-times.mr-2
+        = tag
+
+  .relative
+    // search field
+    = search_field_tag :tags, "",
+                     class: "py-1 pl-4 rounded border border-stone-300 text-xs placeholder-stone-400 w-36",
+                     placeholder: "add a tag",
+                     id: "tag_search_field",
+                     data: { document_index_target: "tagSearchField", action: "keyup->document-index#performTagSearch" }
+    .left-0.top-1/2.-translate-y-1/2.absolute.py-1.px-1.text-stone-400 = "#"
+
+    // dropdown
+    nav.hidden.absolute.top-full.left-0.right-0.bg-white.border-stone-400.drop-shadow.z-10.rounded.mt-1(data-document-index-target="tagList")
+      - ActsAsTaggableOn::Tag.for_tenant(unit).each do |tag|
+        = button_tag "#", class: "tag-list-item block w-full p-2 hover:bg-brand-100 text-left hidden", data: { action: "document-index#batchTagSelected", tag_name: tag.name } do
+          = "#" + tag.name
+
+      hr
+
+      = button_tag "#", class: "block w-full p-2 hover:bg-brand-100 text-left",
+                   data: { action: "document-index#batchNewTagSelected", tag_name: "new" } do
+        = "Create tag: "
+        .inline-block.font-semibold
+          = "#"
+          #new_tag.inline-block(data-document-index-target="newTagName")
+
+css:
+  .currently-assigned {
+    display: none;
+  }

@@ -1,7 +1,9 @@
+- can_delete = UnitDocumentPolicy.new(current_member, Document).destroy?
+
 table#documents_list.w-full
   tr
     th.text-left.px-2.py-2.font-semibold
     th.text-left.px-2.py-2.font-semibold = "Name"
     th.text-left.px-2.py-2.font-semibold = "Tags"
 
-  = render partial: "document_list_item", collection: @documents
+  = render partial: "document_list_item", collection: @documents, as: :document, locals: { can_delete: can_delete }

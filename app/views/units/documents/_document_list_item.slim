@@ -1,26 +1,33 @@
-tr.hover:bg-stone-100.multi-selector-wrapper
-  - file = document_list_item.file
+- checked ||= false
+
+tr.hover:bg-stone-100.multi-selector-wrapper.tagged-item.group(id="#{dom_id(document)}" data-tags="#{document.document_tags.map(&:name).join(",")}")
+  - file = document.file
   - color_key = "file_color_#{file.filename.extension}"
   - color = t(color_key, default: "#b91c1c")
 
   td.border-t.px-2.py-2
     .w-4.shrink-0
-    - if UnitDocumentPolicy.new(current_member, document_list_item).edit?
-      = check_box_tag "document_ids[]", value: document_list_item.id, class: "multi-selector", data: { action: "change->document-index#openMultiSelect" }
+      - if UnitDocumentPolicy.new(current_member, document).edit?
+        = check_box_tag "document_ids[]", value: document.id, checked: checked, class: "selection-item document-item", data: { action: "change->list-selection#selectItem" }
 
   td.border-t.px-2.py-2
     .overflow-hidden.w-full.text-ellipsis.line-clamp-1
-      = link_to rails_blob_path(document_list_item.file, disposition: "attachment") do
+      = link_to rails_blob_path(document.file, disposition: "attachment") do
           i(class="fa-fw fa-regular fa-file-#{file.filename.extension}" style="color: #{color}")
           | &nbsp;
           = file.filename.base
 
   td.border-t.px-2.py-2
-    .flex.flex-row.gap-1
-      - document_list_item.document_tags.each do |tag|
-        - hue = Digest::MD5.hexdigest(tag.name).to_i(16) % 360
-        - bgcolor = "hsl(#{hue}, 100%, 95%)"
-        - color = "hsl(#{hue}, 100%, 20%)"
-        .inline-block.text-xs.rounded.px-2.py-1(style="background-color: #{bgcolor}; color: #{color};")
-          = tag.name
-
+    = render partial: "document_tags", locals: { document: document }
+  
+  td.border-t.px-2.py-2.w-12
+    .hidden.group-hover:block
+      - if can_delete
+        = button_to [current_unit, document],
+                    method: :delete,
+                    type: "button",
+                    class: "px-2 text-sm hover:text-red-500",
+                    form_class: "inline-block",
+                    title: "Delete document",
+                    data: { turbo_stream: "true", confirm: t(".confirm") } do
+          i.fa-solid.fa-trash-alt

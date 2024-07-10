@@ -329,12 +329,16 @@ details > summary::-webkit-details-marker /* Safari */ {
   display: block;
 }
 
-#multi-select-actions {
-  height: 0;
-}
-
 .multi-select-enabled {
   .multi-selector {
+    display: block;
+  }
+
+  .not-multi-selector {
+    display: none;
+  }
+
+  #selection_toolbar_items {
     display: block;
   }
 

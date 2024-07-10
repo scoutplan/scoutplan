@@ -6,8 +6,8 @@
 
   - variant = params[:variant] || request.cookies[:variant] || "grid"
 
-  .max-w-7xl.relative.mt-4.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead(data-controller="document-index")
-    header.mb-8.sticky.top-0
+  .max-w-7xl.relative.mt-4.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead(data-controller="document-index list-selection tagging" data-document-index-unit-id-value="#{current_unit.id}")
+    header.mb-4.top-0.bg-white
       .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = current_unit.name
 
       .flex.flex-row.justify-between.items-center
@@ -29,17 +29,57 @@
                       data: { turbo_action: "advance" } do
               i.fa-fw.fa-solid.fa-list
 
-          - elsif variant == "list"
-            = link_to tag_variant_unit_documents_path(current_unit, @tag, :grid),
-                      class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded px-3 py-2",
-                      title: "View as grid",
-                      data: { turbo_action: "advance" } do
-              i.fa-fw.fa-solid.fa-grid
-
           - if UnitDocumentPolicy.new(current_member, Document).create?
             = render partial: "upload_form"
 
-    = form_with url: bulk_update_unit_documents_path(current_unit), method: :post do |form|
-      = render "multi_edit_pane"
+      #normal_toolbar.flex.flex-row.items-center.justify-between.rounded-full.bg-stone-100.py-1.px-2.mt-4.not-multi-selector
+        .flex.flex-row.gap-1.items-center.text-xs.p-2
+          .inline-block.text-xs.rounded.px-2.py-1.bg-stone-500.text-stone-50
+            = label_tag "filter_by_tag_all"
+                  = radio_button_tag :filter_by_tag, "all", checked: true, class: "hidden peer", data: { action: "document-index#clearFilter" }
+                  i.fa-fw.fa-regular.fa-circle.text-stone-50.dark:text-stone-300.peer-checked:hidden.inline-block.mr-1
+                  i.fa-fw.fa-solid.fa-circle-dot.text-stone-50.dark:text-stone-300.hidden.peer-checked:inline-block.mr-1
+                  = "All files"
 
-      = render partial: "units/documents/#{variant}"
+          // list of active tags
+          - ActsAsTaggableOn::Tag.for_tenant(current_unit).each do |tag|
+            - hue = Digest::MD5.hexdigest(tag.name).to_i(16) % 360
+            - bgcolor = "hsl(#{hue}, 100%, 95%)"
+            - selected_bgcolor = "hsl(#{hue}, 100%, 75%)"
+            - color = "hsl(#{hue}, 100%, 20%)"
+            .inline-block.text-xs.rounded.px-2.py-1(id="document_tag_#{tag}" style="background-color: #{bgcolor}; color: #{color};" data-tag-name="#{tag}")
+              = label_tag "filter_by_tag_#{tag.name}"
+                = radio_button_tag :filter_by_tag, tag.name, class: "hidden peer", data: { action: "document-index#filterByTag", tag_name: tag.name }
+                i.fa-fw.fa-regular.fa-circle.text-stone-500.dark:text-stone-300.peer-checked:hidden.inline-block.mr-1
+                i.fa-fw.fa-solid.fa-circle-dot.text-stone-500.dark:text-stone-300.hidden.peer-checked:inline-block.mr-1
+                = tag.name
+
+      #selection_toolbar.flex.flex-row.items-center.justify-between.rounded-full.bg-stone-100.py-1.px-2.mt-4.hidden
+        #selection_toolbar_left.flex.flex-row.items-center.gap-4
+          = button_tag "#", class: "w-8 relative rounded-full hover:bg-stone-200 px-2 aspect-square", title: "Unselect files", data: { action: "list-selection#deselectAll" } do
+            i.fa-solid.fa-times.left-1/2.-translate-x-1/2.top-1/2.-translate-y-1/2.absolute
+
+          #selection_prompt(data-list-selection-target="selectionPrompt")
+            = "no files selected"
+
+          - if @can_delete
+            = button_tag "#", class: "px-3 py-2 font-semibold", data: { action: "document-index#deleteSelected" } do
+              i.fa-fw.fa-solid.fa-trash-alt.mr-1      
+
+        #selection_toolbar_items.mr-4
+          = render partial: "unit_tags", locals: { unit: current_unit, can_delete: @can_delete }
+
+    = render partial: "units/documents/#{variant}"
+
+css:
+  #selection_toolbar {
+    display: none;
+  }
+
+  .selections-present #selection_toolbar {
+    display: flex;
+  }
+
+  .selections-present #normal_toolbar {
+    display: none;
+  }

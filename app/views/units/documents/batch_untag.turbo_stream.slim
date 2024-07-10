@@ -1,0 +1,2 @@
+- @documents.each do |document|
+  = turbo_stream.replace "#{dom_id(document)}", partial: "units/documents/document_list_item", locals: { document: document, can_delete: @can_delete, checked: true }
