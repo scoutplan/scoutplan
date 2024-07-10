@@ -4,7 +4,7 @@
 api_key: 'hbp_afiJuqUHfBDVMCvM3Kg3nO8T1vxvEV0KLTzi'
 
 insights:
-  enabled: true
+  enabled: false
 
 # The environment your app is running in.
 env: "<%= Rails.env %>"

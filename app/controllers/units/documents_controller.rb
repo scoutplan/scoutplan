@@ -59,12 +59,36 @@ class Units::DocumentsController < UnitContextController
       document.save
     end
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 
   def batch_delete
     authorize Document, policy_class: UnitDocumentPolicy
     @document_ids = params[:document_ids].split(",")
     current_unit.documents.where(id: @document_ids).destroy_all
   end
+
+  def batch_tag
+    authorize Document, policy_class: UnitDocumentPolicy
+    batch_apply_tag(:add)
+  end
+
+  def batch_untag
+    authorize Document, policy_class: UnitDocumentPolicy
+    batch_apply_tag(:remove)
+  end
+
+  # rubocop:disable Metrics/AbcSize
+  def batch_apply_tag(operation)
+    @document_ids = params[:document_ids].split(",")
+    @documents = current_unit.documents.where(id: @document_ids)
+    @tag_name = params[:tag_name]
+    @can_delete = UnitDocumentPolicy.new(current_member, Document).destroy?
+    @documents.each do |document|
+      document.document_tag_list.add(@tag_name) if operation == :add
+      document.document_tag_list.remove(@tag_name) if operation == :remove
+      document.save
+    end
+  end
   # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
 end

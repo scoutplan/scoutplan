@@ -30,4 +30,12 @@ class UnitDocumentPolicy < UnitContextPolicy
   def batch_delete?
     destroy?
   end
+
+  def batch_tag?
+    edit?
+  end
+
+  def batch_untag?
+    edit?
+  end
 end

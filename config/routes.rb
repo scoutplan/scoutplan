@@ -70,6 +70,8 @@ Rails.application.routes.draw do
           get "tag/:tag/:variant", to: "documents#tag", as: "tag_variant"
           post "batch_update"
           post "batch_delete"
+          post "batch_tag"
+          post "batch_untag"
         end
       end
     end
