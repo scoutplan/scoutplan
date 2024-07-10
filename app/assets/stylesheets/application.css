@@ -334,6 +334,10 @@ details > summary::-webkit-details-marker /* Safari */ {
     display: block;
   }
 
+  .not-multi-selector {
+    display: none;
+  }
+
   #selection_toolbar_items {
     display: block;
   }

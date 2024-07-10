@@ -39,9 +39,27 @@
           - if UnitDocumentPolicy.new(current_member, Document).create?
             = render partial: "upload_form"
 
-      #normal_toolbar.flex.flex-row.items-center.justify-between.rounded-full.bg-stone-100.py-1.px-2.mt-4
-        #selection_toolbar_items.mr-4
-          = render partial: "unit_tags", locals: { unit: current_unit, can_delete: @can_delete }      
+      #normal_toolbar.flex.flex-row.items-center.justify-between.rounded-full.bg-stone-100.py-1.px-2.mt-4.not-multi-selector
+        .flex.flex-row.gap-1.items-center.text-xs.p-2
+          .inline-block.text-xs.rounded.px-2.py-1.bg-stone-500.text-stone-50
+            = label_tag "filter_by_tag_all"
+                  = radio_button_tag :filter_by_tag, "all", checked: true, class: "hidden peer", data: { action: "document-index#clearFilter" }
+                  i.fa-fw.fa-regular.fa-circle.text-stone-50.dark:text-stone-300.peer-checked:hidden.inline-block.mr-1
+                  i.fa-fw.fa-solid.fa-circle-dot.text-stone-50.dark:text-stone-300.hidden.peer-checked:inline-block.mr-1
+                  = "All files"
+
+          // list of active tags
+          - ActsAsTaggableOn::Tag.for_tenant(current_unit).each do |tag|
+            - hue = Digest::MD5.hexdigest(tag.name).to_i(16) % 360
+            - bgcolor = "hsl(#{hue}, 100%, 95%)"
+            - selected_bgcolor = "hsl(#{hue}, 100%, 75%)"
+            - color = "hsl(#{hue}, 100%, 20%)"
+            .inline-block.text-xs.rounded.px-2.py-1(id="document_tag_#{tag}" style="background-color: #{bgcolor}; color: #{color};" data-tag-name="#{tag}")
+              = label_tag "filter_by_tag_#{tag.name}"
+                = radio_button_tag :filter_by_tag, tag.name, class: "hidden peer", data: { action: "document-index#filterByTag", tag_name: tag.name }
+                i.fa-fw.fa-regular.fa-circle.text-stone-500.dark:text-stone-300.peer-checked:hidden.inline-block.mr-1
+                i.fa-fw.fa-solid.fa-circle-dot.text-stone-500.dark:text-stone-300.hidden.peer-checked:inline-block.mr-1
+                = tag.name
 
       #selection_toolbar.flex.flex-row.items-center.justify-between.rounded-full.bg-stone-100.py-1.px-2.mt-4.hidden
         #selection_toolbar_left.flex.flex-row.items-center.gap-4
@@ -67,4 +85,8 @@ css:
 
   .selections-present #selection_toolbar {
     display: flex;
+  }
+
+  .selections-present #normal_toolbar {
+    display: none;
   }

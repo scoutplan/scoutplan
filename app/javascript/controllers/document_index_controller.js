@@ -83,4 +83,20 @@ export default class extends Controller {
     });
     this.newTagNameTarget.innerText = search;
   }
+
+  filterByTag(event) {
+    const tagName = event.currentTarget.dataset.tagName;
+    const items = Array.from(this.element.querySelectorAll(".tagged-item"));
+    items.forEach(item => {
+      const tags = item.dataset.tags.split(",");
+      item.classList.toggle("hidden", tags.indexOf(tagName) === -1);
+    });
+  }
+
+  clearFilter(event) {
+    const items = Array.from(this.element.querySelectorAll(".tagged-item"));
+    items.forEach(item => {
+      item.classList.toggle("hidden", false);
+    });
+  }
 }
