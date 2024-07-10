@@ -18,12 +18,6 @@
                       data: { turbo_action: "advance" } do
               i.fa-fw.fa-solid.fa-list
 
-            = link_to tag_variant_unit_documents_path(current_unit, :all, :grid),
-                      class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded-r border-l-0 px-3 py-2",
-                      title: "View as grid",
-                      data: { turbo_action: "advance" } do
-              i.fa-fw.fa-solid.fa-grid
-
           - if UnitDocumentPolicy.new(current_member, Document).create?
             = render partial: "upload_form"
 

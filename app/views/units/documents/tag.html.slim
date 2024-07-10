@@ -7,7 +7,7 @@
   - variant = params[:variant] || request.cookies[:variant] || "grid"
 
   .max-w-7xl.relative.mt-4.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead(data-controller="document-index list-selection tagging" data-document-index-unit-id-value="#{current_unit.id}")
-    header.mb-4.sticky.top-0
+    header.mb-4.top-0.bg-white
       .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = current_unit.name
 
       .flex.flex-row.justify-between.items-center
@@ -28,13 +28,6 @@
                       title: "View as list",
                       data: { turbo_action: "advance" } do
               i.fa-fw.fa-solid.fa-list
-
-          - elsif variant == "list"
-            = link_to tag_variant_unit_documents_path(current_unit, @tag, :grid),
-                      class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded px-3 py-2",
-                      title: "View as grid",
-                      data: { turbo_action: "advance" } do
-              i.fa-fw.fa-solid.fa-grid
 
           - if UnitDocumentPolicy.new(current_member, Document).create?
             = render partial: "upload_form"
