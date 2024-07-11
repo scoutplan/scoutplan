@@ -33,6 +33,11 @@
             = render partial: "upload_form"
 
       #normal_toolbar.flex.flex-row.items-center.justify-between.rounded-full.bg-stone-100.py-1.px-2.mt-4.not-multi-selector
+        .left
+          = button_tag "#", class: "px-3 py-2", data: { action: "list-selection#selectAllVisible" } do
+            i.fa-fw.fa-regular.fa-square.mr-1.text-xl
+            = "Select all visible"
+
         .flex.flex-row.gap-1.items-center.text-xs.p-2
           .inline-block.text-xs.rounded.px-2.py-1.bg-stone-500.text-stone-50
             = label_tag "filter_by_tag_all"

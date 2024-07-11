@@ -7,13 +7,23 @@ export default class extends Controller {
     console.log("list-selection controller connected");
   }
 
+  selectAllVisible(event) {
+    const items = Array.from(this.element.querySelectorAll(".document-item"));
+    items.forEach(item => {
+      if (item.checkVisibility()) {
+        item.checked = true;
+      }
+    });
+    const selectedItems = Array.from(this.element.querySelectorAll(".document-item:checked"));
+    this.element.classList.toggle("selections-present", selectedItems.length > 0);
+    this.selectionPromptTarget.textContent = `${selectedItems.length} selected`;
+  }
+
   selectItem(event) {
     const selectedItems = Array.from(this.element.querySelectorAll(".document-item:checked"));
     this.element.classList.toggle("selections-present", selectedItems.length > 0);
 
-    if (selectedItems.length === 0) {
-      return;
-    }
+    if (selectedItems.length === 0) return;
 
     // update prompt
     this.selectionPromptTarget.textContent = `${selectedItems.length} selected`;
