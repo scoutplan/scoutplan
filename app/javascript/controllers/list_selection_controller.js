@@ -20,6 +20,17 @@ export default class extends Controller {
   }
 
   selectItem(event) {
+    // multi-select
+    if (event.shiftKey) {
+      const items = Array.from(this.element.querySelectorAll(".document-item"));
+      const lastSelected = items.findIndex(item => item.checked);
+      const currentSelected = items.findIndex(item => item === event.target);
+      const range = [lastSelected, currentSelected].sort();
+      items.forEach((item, index) => {
+        item.checked = index >= range[0] && index <= range[1];
+      });
+    }
+
     const selectedItems = Array.from(this.element.querySelectorAll(".document-item:checked"));
     this.element.classList.toggle("selections-present", selectedItems.length > 0);
 
@@ -47,7 +58,6 @@ export default class extends Controller {
     const tagListItems = Array.from(this.element.querySelectorAll(".tag-list-item"));
     tagListItems.forEach(function(item) {
       const tagName = item.dataset.tagName;
-      console.log(tagName);
       item.classList.toggle("currently-assigned", commonTags.indexOf(tagName) !== -1);
     });    
   }
