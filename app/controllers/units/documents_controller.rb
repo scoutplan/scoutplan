@@ -29,7 +29,6 @@ class Units::DocumentsController < UnitContextController
   # rubocop:disable Metrics/AbcSize
   def tag
     authorize Document, policy_class: UnitDocumentPolicy
-    redirect_to tag_variant_unit_documents_path(current_unit, tag: params[:tag], variant: cookies[:documents_variant] || "list") unless params[:variant].present?
 
     cookies[:documents_variant] = params[:variant]
 

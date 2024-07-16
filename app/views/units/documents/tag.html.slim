@@ -4,7 +4,7 @@
 
   = render partial: "layouts/flash"
 
-  - variant = params[:variant] || request.cookies[:variant] || "grid"
+  - variant = params[:variant] || request.cookies[:variant] || "list"
 
   .max-w-7xl.relative.mt-4.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead(data-controller="document-index list-selection tagging" data-document-index-unit-id-value="#{current_unit.id}")
     header.mb-4.top-0.bg-white
@@ -23,7 +23,7 @@
             = "Library"
 
           - if variant == "grid"
-            = link_to tag_variant_unit_documents_path(current_unit, @tag, :list),
+            = link_to tag_unit_documents_path(current_unit, @tag, view: :list),
                       class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded px-3 py-2",
                       title: "View as list",
                       data: { turbo_action: "advance" } do
@@ -34,17 +34,17 @@
 
       #normal_toolbar.flex.flex-row.items-center.justify-between.rounded-full.bg-stone-100.py-1.px-2.mt-4.not-multi-selector
         .left
-          = button_tag "#", class: "px-3 py-2", data: { action: "list-selection#selectAllVisible" } do
+          = button_tag "#", class: "whitespace-nowrap px-3 py-2", data: { action: "list-selection#selectAllVisible" } do
             i.fa-fw.fa-regular.fa-square.mr-1.text-xl
             = "Select all visible"
 
-        .flex.flex-row.gap-1.items-center.text-xs.p-2
+        .flex.flex-row.gap-1.items-center.text-xs.p-2.overflow-x-scroll
           .inline-block.text-xs.rounded.px-2.py-1.bg-stone-500.text-stone-50
-            = label_tag "filter_by_tag_all"
-                  = radio_button_tag :filter_by_tag, "all", checked: true, class: "hidden peer", data: { action: "document-index#clearFilter" }
-                  i.fa-fw.fa-regular.fa-circle.text-stone-50.dark:text-stone-300.peer-checked:hidden.inline-block.mr-1
-                  i.fa-fw.fa-solid.fa-circle-dot.text-stone-50.dark:text-stone-300.hidden.peer-checked:inline-block.mr-1
-                  = "All files"
+            = label_tag "filter_by_tag_all", class: "whitespace-nowrap" do
+                = radio_button_tag :filter_by_tag, "all", checked: true, class: "hidden peer", data: { action: "document-index#clearFilter" }
+                i.fa-fw.fa-regular.fa-circle.text-stone-50.dark:text-stone-300.peer-checked:hidden.inline-block.mr-1
+                i.fa-fw.fa-solid.fa-circle-dot.text-stone-50.dark:text-stone-300.hidden.peer-checked:inline-block.mr-1
+                = "All files"
 
           // list of active tags
           - ActsAsTaggableOn::Tag.for_tenant(current_unit).each do |tag|
@@ -53,7 +53,7 @@
             - selected_bgcolor = "hsl(#{hue}, 100%, 75%)"
             - color = "hsl(#{hue}, 100%, 20%)"
             .inline-block.text-xs.rounded.px-2.py-1(id="document_tag_#{tag}" style="background-color: #{bgcolor}; color: #{color};" data-tag-name="#{tag}")
-              = label_tag "filter_by_tag_#{tag.name}"
+              = label_tag "filter_by_tag_#{tag.name}", class: "whitespace-nowrap" do
                 = radio_button_tag :filter_by_tag, tag.name, class: "hidden peer", data: { action: "document-index#filterByTag", tag_name: tag.name }
                 i.fa-fw.fa-regular.fa-circle.text-stone-500.dark:text-stone-300.peer-checked:hidden.inline-block.mr-1
                 i.fa-fw.fa-solid.fa-circle-dot.text-stone-500.dark:text-stone-300.hidden.peer-checked:inline-block.mr-1
