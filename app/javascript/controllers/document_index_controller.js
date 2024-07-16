@@ -85,11 +85,11 @@ export default class extends Controller {
   }
 
   filterByTag(event) {
-    const tagName = event.currentTarget.dataset.tagName;
+    const tagName = event.currentTarget.value;
     const items = Array.from(this.element.querySelectorAll(".tagged-item"));
     items.forEach(item => {
       const tags = item.dataset.tags.split(",");
-      item.classList.toggle("hidden", tags.indexOf(tagName) === -1);
+      item.classList.toggle("hidden", tagName != "_all" && tags.indexOf(tagName) === -1);
     });
   }
 
