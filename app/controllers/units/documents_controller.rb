@@ -10,7 +10,7 @@ class Units::DocumentsController < UnitContextController
     @documents = []
     files = params[:documents].reject(&:blank?)
     files.each { |file| @documents << current_unit.documents.create!(file: file) }
-    redirect_to tag_unit_documents_path(current_unit, :all)
+    redirect_to files_unit_documents_path(current_unit)
   end
 
   def update
@@ -26,20 +26,15 @@ class Units::DocumentsController < UnitContextController
     end
   end
 
-  # rubocop:disable Metrics/AbcSize
   def tag
     authorize Document, policy_class: UnitDocumentPolicy
 
     cookies[:documents_variant] = params[:variant]
 
-    @tag = params[:tag]
     scope = current_unit.documents.includes(file_attachment: :blob).order("active_storage_blobs.filename ASC")
-    scope = scope.tagged_with(params[:tag]) if @tag.present? && @tag != "all"
-    @title = @tag.downcase == "all" ? "All documents" : @tag.titleize
     @documents = scope.all
     @can_delete = UnitDocumentPolicy.new(current_member, Document).destroy?
   end
-  # rubocop:enable Metrics/AbcSize
 
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
