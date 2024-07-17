@@ -12,9 +12,9 @@
 
         .right.flex.flex-row.gap-2
           .flex.flex-row
-            = link_to tag_unit_documents_path(current_unit, :all),
+            = link_to files_unit_documents_path(current_unit),
                       class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded-l px-3 py-2",
-                      title: "View as list",
+                      title: "View file list",
                       data: { turbo_action: "advance" } do
               i.fa-fw.fa-solid.fa-list
 

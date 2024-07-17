@@ -10,7 +10,7 @@ section.py-4
       - color = tile["color"] || "#444444"
 
       li
-        = link_to tag_unit_documents_path(current_unit, tag),
+        = link_to files_unit_documents_path(current_unit, tag: tag),
                   class: "block rounded p-4 font-medium bg-stone-100 hover:bg-stone-200 lg:aspect-square",
                   style: "color: #{color};",
                   data: { turbo_action: "advance" } do

@@ -2,11 +2,17 @@ import { Controller } from "@hotwired/stimulus"
 import { post } from "@rails/request.js"
 
 export default class extends Controller {
-  static targets = [ "tagSearchField", "tagList", "newTagName" ];
+  static targets = [ "tagSearchField", "tagList", "newTagName", "tagFilterSelect" ];
   static values = { unitId: Number };
 
   connect() {
-    console.log("document-index controller connected");
+    let queryParams = new URLSearchParams(window.location.search);
+    let tagName = queryParams.get("tag");
+    if (tagName) {
+      this.performFilter(tagName);
+      this.tagFilterSelectTarget.value = tagName;
+    }
+    window.history.replaceState({}, "", window.location.pathname);
   }
 
   openMultiSelect(event) {
@@ -86,12 +92,16 @@ export default class extends Controller {
 
   filterByTag(event) {
     const tagName = event.currentTarget.value;
+    this.performFilter(tagName);
+  }
+
+  performFilter(tagName) {
     const items = Array.from(this.element.querySelectorAll(".tagged-item"));
     items.forEach(item => {
       const tags = item.dataset.tags.split(",");
       item.classList.toggle("hidden", tagName != "_all" && tags.indexOf(tagName) === -1);
-    });
-  }
+    });    
+  }  
 
   clearFilter(event) {
     const items = Array.from(this.element.querySelectorAll(".tagged-item"));
