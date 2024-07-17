@@ -61,16 +61,3 @@
           = render partial: "unit_tags", locals: { unit: current_unit, can_delete: @can_delete }
 
     = render partial: "units/documents/#{variant}"
-
-css:
-  #selection_toolbar {
-    display: none;
-  }
-
-  .selections-present #selection_toolbar {
-    display: flex;
-  }
-
-  .selections-present #normal_toolbar {
-    display: none;
-  }
