@@ -354,3 +354,15 @@ details > summary::-webkit-details-marker /* Safari */ {
 .input_group_with_error label {
   color: red;
 }
+
+#selection_toolbar {
+  display: none;
+}
+
+.selections-present #selection_toolbar {
+  display: flex;
+}
+
+.selections-present #normal_toolbar {
+  display: none;
+}
