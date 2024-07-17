@@ -32,7 +32,7 @@
           - if UnitDocumentPolicy.new(current_member, Document).create?
             = render partial: "upload_form"
 
-      #normal_toolbar.flex.flex-row.items-center.justify-between.rounded-full.bg-stone-100.py-1.px-2.mt-4.not-multi-selector
+      #normal_toolbar.flex.flex-row.items-center.justify-between.rounded-xl.bg-stone-100.py-1.px-2.mt-4.not-multi-selector.h-16
         .left
           = button_tag "#", class: "whitespace-nowrap px-3 py-2", data: { action: "list-selection#selectAllVisible" } do
             i.fa-fw.fa-regular.fa-square.mr-1.text-xl
@@ -45,7 +45,7 @@
               class: "block rounded py-0",
               data: { action: "document-index#filterByTag", document_index_target: "tagFilterSelect" }
 
-      #selection_toolbar.flex.flex-row.items-center.justify-between.rounded-full.bg-stone-100.py-1.px-2.mt-4.hidden
+      #selection_toolbar.flex.flex-row.items-center.justify-between.rounded-xl.bg-stone-100.py-1.px-2.mt-4.h-16
         #selection_toolbar_left.flex.flex-row.items-center.gap-4
           = button_tag "#", class: "w-8 relative rounded-full hover:bg-stone-200 px-2 aspect-square", title: "Unselect files", data: { action: "list-selection#deselectAll" } do
             i.fa-solid.fa-times.left-1/2.-translate-x-1/2.top-1/2.-translate-y-1/2.absolute
