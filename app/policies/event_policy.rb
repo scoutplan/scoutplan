@@ -18,6 +18,10 @@ class EventPolicy < UnitContextPolicy
     @event.published? && tags_match?
   end
 
+  def index?
+    true
+  end
+
   def edit_rsvps?
     rsvp? && @event.rsvp_open?
   end

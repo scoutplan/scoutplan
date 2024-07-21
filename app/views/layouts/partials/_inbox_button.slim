@@ -1,8 +1,0 @@
-- return unless Flipper.enabled?(:inbox, current_member)
-
-= link_to unit_notifications_path(current_unit), id: "inbox_button", class: "block px-4 py-3 dropdown-button dropdown-button-chevron font-semibold text-sm xl:text-base" do
-  .fa-layers.fa-fw
-    i.fa-solid.fa-bell.fa-fw.mr-1.text-lg
-    - if (count = current_member.notifications.unread.count).positive?
-      .text.font-medium.fa-layers-text.fa-layers-top-right.bg-brand-400.text-brand-100.min-w-8.py-1.px-2.rounded-full(data-fa-transform="shrink-5 up-10 right-15")
-        = count

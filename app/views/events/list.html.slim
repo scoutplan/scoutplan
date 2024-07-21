@@ -1,64 +1,55 @@
 - current_month = []
 
-= turbo_frame_tag "main"
-  = render partial: "layouts/flash"
-  
-  .max-w-3xl.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead
-    header.pl-2
-      .flex.flex-row.justify-between.items-center
-        .left
-          h1.text-4xl
-            = t("events.index.title")
+.max-w-5xl.mx-auto
+  header.pl-2
+    .flex.flex-row.justify-between.items-center
+      .left
+        h1.text-2xl.font-semibold
+          = t("events.index.title")
 
-        .right
-          - if user_signed_in?
-            .dropdown.relative
-              = link_to "#", class: "dropdown-button inline-block text-stone-500 hover:text-stone-900 dark:hover:text-stone-300" do
-                i.fa-circle-ellipsis.far.fa-2xl
-              = render partial: "events/partials/index/dropdown"
+      .right
+        - if user_signed_in?
+          .dropdown.relative
+            = link_to "#", class: "dropdown-button inline-block text-stone-500 hover:text-stone-900 dark:hover:text-stone-300" do
+              i.fa-circle-ellipsis.far.fa-2xl
+            = render partial: "events/partials/index/dropdown"
 
-      .font-semibold.text-stone-500.dark:text-stone-300 = current_unit.name
+  = render "blank_slate"
 
-    = render "blank_slate"
+  ol#events_list
+    - @page.records.each do |event|
+      - current_month = [event.starts_at.year, event.starts_at.month]
+      - cache event do
+        = render partial: "events/event", locals: { event: event }
 
-    ol#events_list
-      = turbo_frame_tag "events-#{@page.number}"
-        - @page.records.each do |event|
-          - current_month = [event.starts_at.year, event.starts_at.month]
-          - cache event do
-            = render partial: "events/event", locals: { event: event }
+    - unless @page.last?
+      = link_to "Next page",
+                list_unit_events_path(current_unit, page: @page.next_param, current_month: current_month.join("-")),
+                class: "text-transparentz",
+                data: { pagination_target: "nextPageLink" }
 
-        = turbo_frame_tag "events-#{@page.next_param}"
-          - unless @page.last?
-            = link_to "Next page",
-                      list_unit_events_path(current_unit, page: @page.next_param, current_month: current_month.join("-")),
-                      class: "text-transparentz",
-                      data: { pagination_target: "nextPageLink" }
+= turbo_stream.update "page_title" do
+  = t("events.index.page_title", unit_name: current_unit.name)
 
-  = turbo_frame_tag "modal", data: { controller: "modal" }
+css:
+  #events_list .more-past-events-item {
+    display: none;
+  }
 
-  = turbo_stream.update "page_title" do
-    = t("events.index.page_title", unit_name: current_unit.name)
+  #events_list .more-past-events-item:first-of-type {
+    display: block;
+  }
 
-  css:
-    #events_list .more-past-events-item {
-      display: none;
-    }
+  .event + .event {
+    border-top: 1px solid #e2e8f0;
+  }
 
-    #events_list .more-past-events-item:first-of-type {
-      display: block;
-    }
-
+  @media (prefers-color-scheme: dark) {
     .event + .event {
-      border-top: 1px solid #e2e8f0;
+      border-top-color: #4a5568;
     }
+  }
 
-    @media (prefers-color-scheme: dark) {
-      .event + .event {
-        border-top-color: #4a5568;
-      }
-    }
-
-    .event-tag-in-progress .event-tag-next, .event-tag-today .event-tag-next {
-      display: none;
-    }
+  .event-tag-in-progress .event-tag-next, .event-tag-today .event-tag-next {
+    display: none;
+  }
