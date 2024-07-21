@@ -1,25 +1,78 @@
-header#main_header.sticky.top-0.z-30.bg-white/90.backdrop-blur-sm.dark:bg-stone-900/90
-  nav#top_nav.hidden.lg:block.mb-1.relative.mx-auto.max-w-7xl
-    .absolute.block.left-0.top-0
-      = link_to root_path, class: "block py-4" do
-        .dark:hidden
-          = image_tag "scoutplan_logo", style: "width:128px;top:20px;left:16px;"
+nav.w-80.p-4.h-full
+  header.flex.flex-row.justify-between
+    .dropdown.inline-block
+      = link_to "#",
+        class: "block -mx-4 px-4 py-3 dropdown-button dropdown-button-chevron font-semibold text-sm",
+        data: { user_id: current_user.id, member_id: current_member.id } do
+          = current_member.short_display_name
+          i.fa-chevron-down.fas.ml-2
 
-        .hidden.dark:block
-          = image_tag "scoutplan_logo_light", style: "width:128px;top:20px;left:16px;"
+      .dropdown-menu.rounded.bg-stone-700.block.absolute.right-0.mr-2.color-stone-100.w-64.drop-shadow-lg
+        = render partial: "layouts/partials/user_menu_items"
 
-    #nav_center.text-center.col-span-3.left-0
-      = render partial: "layouts/partials/main_menu" if current_member
+    - if Flipper.enabled?(:inbox, current_member)
 
-      // RIGHT SIDE NAME / UNIT
-    .absolute.right-0.top-0
-      .flex
-        li#main_nav_item_search.md:inline-block
-          div(data-controller="search")
-            = button_tag class: "font-semibold mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
-                      data: { action: "search#show" } do
+      = link_to unit_notifications_path(current_unit), id: "inbox_button", class: "block -mx-4 px-4 py-3 dropdown-button dropdown-button-chevron font-semibold text-sm xl:text-base" do
+        .fa-layers.fa-fw
+          i.fa-light.fa-bell.fa-fw.mr-1.text-lg
+          - if (count = current_member.notifications.unread.count).positive?
+            i.fa-solid.fa-circle.text-brand-500(data-fa-transform="shrink-6 up-10 right-10")
+            / .text.font-medium.fa-layers-text.fa-layers-top-right.bg-brand-400.text-brand-100.min-w-8.py-1.px-2.rounded-full(data-fa-transform="shrink-5 up-10 right-15")  
 
-              i.fa-solid.fa-magnifying-glass.fa-fw.mr-1
-              = "Find"      
-        = render partial: "layouts/partials/user_menu"
-        = render partial: "layouts/partials/inbox_button"
+  .-mx-4.text-stone-700
+    - if policy(:event).index?
+      #main_nav_item_events
+        = link_to unit_events_path(current_unit),
+          class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 xl:px-4 py-3 block" do
+            i.fa-light.fa-calendar-alt.fa-fw.mr-2
+            = t("main_nav.events")
+
+    - if policy(:unit_membership).index?
+      #main_nav_item_members
+        = link_to unit_members_path(current_unit),
+          class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 xl:px-4 py-3 block" do
+            i.fa-light.fa-users.fa-fw.mr-2
+            = t("main_nav.members")
+
+    - if policy(:event).plan? && Flipper.enabled?(:planner, current_member)
+      #main_nav_item_planner
+        = link_to unit_plans_path(current_unit),
+          class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 xl:px-4 py-3 block" do
+
+          = t("main_nav.planner")
+
+    - if policy(:message).new? && Flipper.enabled?(:messages, current_member)
+      #main_nav_item_messages
+        = link_to unit_messages_path(current_unit),
+          class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 xl:px-4 py-3 block" do
+            i.fa-light.fa-envelope.fa-fw.mr-2
+            = t("main_nav.communication")
+
+    - if (policy(:unit_document).index? && current_unit.documents.any?) || policy(:unit_document).create?
+      #main_nav_item_messages
+        = link_to unit_documents_path(current_unit),
+          class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 xl:px-4 py-3 block" do
+
+          i.fa-light.fa-books.fa-fw.mr-2
+          = t("main_nav.document_library")
+
+    - if Flipper.enabled? :wiki_pages, current_member
+      - if policy(:wiki_page).index?
+        #main_nav_item_wiki
+          = link_to unit_wiki_pages_path(current_unit),
+            class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 xl:px-4 py-3 block" do
+
+          svg.inline-block.mr-1(style="vertical-align: -.125em;" width="20" height="16" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="calendar" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="")
+            path(fill="currentColor" d="M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0H21.3C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3H405.3zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352H378.7C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7z")
+
+            = t("main_nav.wiki")
+
+  li#main_nav_item_search.md:inline-block
+
+section#find
+  .-mx-4(data-controller="search")
+    = button_tag class: "no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
+              data: { action: "search#show" } do
+
+      i.fa-solid.fa-magnifying-glass.fa-fw.mr-2
+      = "Find"

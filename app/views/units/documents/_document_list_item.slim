@@ -17,7 +17,7 @@ tr.hover:bg-stone-100.multi-selector-wrapper.tagged-item.group(id="#{dom_id(docu
           | &nbsp;
           = file.filename.base
 
-  td.border-t.px-2.py-2
+  td.border-t.px-2.py-2.hidden.md:table-cell
     = render partial: "document_tags", locals: { document: document }
   
   td.border-t.px-2.py-2.w-12

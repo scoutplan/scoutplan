@@ -19,19 +19,20 @@ html.scroll-smooth
     = yield :head
 
   body(class="dark:bg-stone-900 dark:text-stone-200 text-stone-900 #{controller_name} #{action_name} #{yield :body_classes}")
-    = render partial: "layouts/nav"
-    = render partial: "layouts/nav_mobile"
-    / = render partial: "layouts/flash"
-    = render partial: "layouts/password_prompt"
-
-    main.px-2.py-2.md:py-6
-      = turbo_frame_tag "main"
+    .flex
+      aside.bg-stone-50
+        = render partial: "layouts/nav"
+        / = render partial: "layouts/nav_mobile"
+      main.w-full.p-12
+        = render partial: "layouts/flash"
+        = render partial: "layouts/password_prompt"
         = yield
 
     footer
       /!  CI #{ENV["GITHUB_RUN_NUMBER"]}
 
     = render partial: "search/overlay"
+    = turbo_frame_tag "modal", data: { controller: "modal" }
   
   - content_for :title do
     = (@page_title || []).reverse.join(" · ")

@@ -14,7 +14,7 @@
     .clear-both
     
     h3.font-medium.text-lg
-      = link_to unit_event_path(current_unit, event, from: "planner"), data: { turbo_action: "advance" } do
+      = link_to unit_event_path(current_unit, event, from: "planner") do
         = event.title
 
       - if event.draft?

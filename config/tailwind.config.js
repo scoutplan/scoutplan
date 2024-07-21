@@ -37,6 +37,7 @@ module.exports = {
       colors: {
         // https://uicolors.app/create
         brand: {
+          50:  '#F9F7F6',
           100: '#F6F1E7',
           200: '#F4E1CC',
           300: '#EDAD81',
@@ -64,6 +65,7 @@ module.exports = {
       },
       maxWidth: {
         '1/2': '50%',
+        '8xl': '96rem',
       },
       minWidth: {
         '96': '24rem',

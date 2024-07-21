@@ -10,9 +10,7 @@ li.relative.z-0.event.md:px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="
     = link_to href,
               class: "event py-2 block w-full",
               name:  event.id,
-              data:  { turbo_action: "advance",
-                       turbo_frame: "main",
-                       month: event.starts_at.month,
+              data:  { month: event.starts_at.month,
                        year: event.starts_at.year } do
 
       .flex.flex-col.md:flex-row
