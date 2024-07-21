@@ -18,12 +18,12 @@ html.scroll-smooth
 
     = yield :head
 
-  body(class="dark:bg-stone-900 dark:text-stone-200 text-stone-900 #{controller_name} #{action_name} #{yield :body_classes}")
-    .flex
+  body(class="dark:bg-stone-900 dark:text-stone-200 text-stone-900 group/controller #{controller_name} #{action_name} #{yield :body_classes} h-full")
+    .flex.h-full
       aside.bg-stone-50
         = render partial: "layouts/nav"
         / = render partial: "layouts/nav_mobile"
-      main.w-full.p-12
+      main.w-full.p-12.h-full
         = render partial: "layouts/flash"
         = render partial: "layouts/password_prompt"
         = yield

@@ -6,19 +6,11 @@
                                           only_path: false,
                                           protocol: "webcal")
 
-aside.block.w-80.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-20.rounded.dropdown-menu.animate-pop-open.drop-shadow
+aside.block.w-80.mt-2.mr-2.absolute.bg-white.text-stone-700.right-0.z-20.rounded.dropdown-menu.animate-pop-open.drop-shadow.border
   nav
-    - if current_member.admin?
-      = link_to new_unit_event_path(current_unit),
-                class: "block px-4 py-2 rounded hover:bg-brand-600",
-                data: { turbo_action: "advance" } do
-
-        i.fa-fw.fa-solid.fa-calendar-plus.mr-2
-        = t("events.captions.new_short")
-
     - if action_name != "calendar"
       = link_to calendar_unit_events_path(current_unit, year: Date.today.year, month: Date.today.month),
-                class: "block px-4 py-2 rounded hover:bg-brand-600",
+                class: "block px-4 py-2 rounded hover:bg-stone-100",
                 data: { turbo_action: "advance" } do
 
         i.fa-fw.fa-solid.fa-calendar.mr-2
@@ -26,7 +18,7 @@ aside.block.w-80.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-20.rounded
 
     - if action_name != "list"
       = link_to list_unit_events_path(current_unit),
-                class: "block px-4 py-2 rounded hover:bg-brand-600",
+                class: "block px-4 py-2 rounded hover:bg-stone-100",
                 data: { turbo_action: "advance" } do
 
         i.fa-fw.fa-solid.fa-list.mr-2
@@ -34,7 +26,7 @@ aside.block.w-80.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-20.rounded
 
     - if action_name != "threeup"
       = link_to threeup_unit_events_path(current_unit),
-                class: "block px-4 py-2 rounded hover:bg-brand-600",
+                class: "block px-4 py-2 rounded hover:bg-stone-100",
                 data: { turbo_action: "advance" } do
 
         i.fa-fw.fa-solid.fa-columns-3.mr-2
@@ -43,14 +35,14 @@ aside.block.w-80.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-20.rounded
     / past events
     - if action_name == "list"
       = link_to list_unit_events_path(current_unit, before: @events&.first&.id, current_month: @display_month, display_year: @display_year),
-                class: "block px-4 py-2 rounded hover:bg-brand-600",
+                class: "block px-4 py-2 rounded hover:bg-stone-100",
                 data: { turbo_stream: "true" } do
 
         i.fa-fw.fa-solid.fa-calendar-clock.mr-2
         = t("events.index.view.past")
 
     = link_to list_unit_events_path(current_unit, format: :pdf),
-              class: "block px-4 py-2 rounded hover:bg-brand-600",
+              class: "block px-4 py-2 rounded hover:bg-stone-100",
               data: { turbo_action: "advance" } do
 
       i.fa-fw.fa-solid.fa-print.mr-2
@@ -58,14 +50,14 @@ aside.block.w-80.mt-2.mr-2.absolute.bg-brand-500.text-white.right-0.z-20.rounded
 
     - if current_member.admin?
         = link_to list_unit_events_path(current_unit, format: :pdf, season: "next"),
-                  class: "block px-4 py-2 rounded hover:bg-brand-600",
+                  class: "block px-4 py-2 rounded hover:bg-stone-100",
                   data: { turbo_action: "advance" } do
           
           i.fa-fw.fa-solid.fa-rotate-right.mr-2
           = t("events.index.buttons.next_season")
 
     = link_to ics_url,
-              class: "block px-4 py-2 rounded hover:bg-brand-600",
+              class: "block px-4 py-2 rounded hover:bg-stone-100",
               data: { turbo_action: "advance" } do
 
       i.fa-fw.fa-regular.fa-mobile.mr-2

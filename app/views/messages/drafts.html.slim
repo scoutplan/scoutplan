@@ -1,21 +1,18 @@
-= turbo_frame_tag "main"
-  = render partial: "layouts/flash"
-  
-  .max-w-3xl.mx-auto
-    = render partial: "header", locals: { title: "Draft messages" }
+.max-w-3xl.mx-auto
+  = render partial: "header", locals: { title: "Draft messages" }
 
-    section(data-controller="pagination")
-      = render partial: "message", collection: @page.records
-      = render partial: "empty", locals: { message_type: "draft" }
+  section(data-controller="pagination")
+    = render partial: "message", collection: @page.records
+    = render partial: "empty", locals: { message_type: "draft" }
 
-      - unless @page.last?
-        = link_to "Next page",
-                  sent_unit_messages_path(current_unit, page: @page.next_param),
-                  class: "block mt-4 text-center text-transparent",
-                  data: { pagination_target: "nextPageLink" }
+    - unless @page.last?
+      = link_to "Next page",
+                sent_unit_messages_path(current_unit, page: @page.next_param),
+                class: "block mt-4 text-center text-transparent",
+                data: { pagination_target: "nextPageLink" }
 
-  javascript:
-    document.title = `#{["Draft Messages", current_unit.name].join(" · ")}`;
+javascript:
+  document.title = `#{["Draft Messages", current_unit.name].join(" · ")}`;
 
-  css:
-    .draft-messages-link { display: none; }
+css:
+  .draft-messages-link { display: none; }

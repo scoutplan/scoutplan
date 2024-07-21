@@ -1,12 +1,10 @@
 = render partial: "layouts/flash"
 
-.max-w-4xl.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead
-  header.pb-8.border-b
-    .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = current_unit.name
-
+.max-w-4xl.mx-auto
+  header.pb-8
     .flex.flex-row.justify-between.items-center
       .left
-        h1.text-4xl.mb-2
+        h1.text-2xl.mb-2
           = t(".title")
 
       .right.flex.flex-row.gap-2
@@ -16,8 +14,8 @@
                     title: "View file list" do
             i.fa-fw.fa-solid.fa-list
 
-        - if UnitDocumentPolicy.new(current_member, Document).create?
-          = render partial: "upload_form"
+    - if UnitDocumentPolicy.new(current_member, Document).create?
+      = render partial: "upload_form"
 
   - @home_layout.each do |element|
     = render partial: "units/documents/home_layout/#{element['type']}", locals: { element_definition: element }

@@ -19,10 +19,10 @@ li.relative.z-0.event.md:px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="
           .date.font-medium.text-2xl.md:text-3xl.leading-0.dark:text-stone-100
             = raw(event.dates_to_s)
             
-          .day.font-bold.text-sm.uppercase.tracking-wider.text-stone-500.leading-0
+          .day.font-medium.text-sm.uppercase.tracking-wider.text-stone-500.leading-0
             = raw(presenter.days_to_s)
           
-          = render partial: "events/partials/event_row/today", locals: { event: event }
+          / = render partial: "events/partials/event_row/today", locals: { event: event }
 
         // 2 icon
         .second.hidden.md:block.w-8.text-center.shrink-0
