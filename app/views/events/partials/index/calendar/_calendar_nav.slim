@@ -1,8 +1,16 @@
-nav.calendar-nav.left.text-sm.font-semibold
+nav.calendar-nav.left.text-sm
+  // prev button
+  = link_to calendar_unit_events_path(current_unit, month: @current_month > 1 ? @current_month - 1 : 12, year: @current_month > 1 ? @current_year : @current_year - 1),
+            title: t("events.index.buttons.hints.previous"),
+            class: "inline-block py-1 px-2 md:px-4 rounded-l border bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
+            data: { turbo_action: "advance" } do
+
+      i.fa-solid.fa-chevron-left
+
   // month picker
   .month-picker.inline-block.dropdown.relative
     = link_to "#",
-              class: "dropdown-button inline-block w-40 py-1 px-2 mr-2 border rounded bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600" do
+              class: "dropdown-button inline-block w-40 py-1 px-2 border bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600" do
       
       .flex.flex-row.justify-between.items-center
         .hidden.md:inline = context[:first_day_of_month].strftime("%B %Y")
@@ -13,14 +21,7 @@ nav.calendar-nav.left.text-sm.font-semibold
     .dropdown-menu.absolute.bg-stone-800.text-stone-50.p-2.rounded.border.dark:border-stone-700
       = render partial: "events/partials/index/month_picker", locals: { display_date: context[:first_day_of_month] }
 
-  // prev button
-  = link_to calendar_unit_events_path(current_unit, month: @current_month > 1 ? @current_month - 1 : 12, year: @current_month > 1 ? @current_year : @current_year - 1),
-            title: t("events.index.buttons.hints.previous"),
-            class: "inline-block py-1 px-2 md:px-4 rounded-l border bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
-            data: { turbo_action: "advance" } do
 
-      i.fa-solid.fa-chevron-left.mr-1
-      .hidden.md:inline = t("events.index.buttons.previous")
 
   // next button
   = link_to calendar_unit_events_path(current_unit, month: @current_month == 12 ? 1 : @current_month + 1, year: @current_month == 12 ? @current_year + 1 : @current_year),
@@ -28,8 +29,7 @@ nav.calendar-nav.left.text-sm.font-semibold
             class: "inline-block py-1 px-2 md:px-4 rounded-r border bg-stone-100 hover:bg-stone-200 border-l-0 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
             data: { turbo_action: "advance" } do
 
-      .hidden.md:inline = t("events.index.buttons.next")
-      i.fa-solid.fa-chevron-right.ml-1
+      i.fa-solid.fa-chevron-right
 
   // today button
   = link_to calendar_unit_events_path(current_unit, month: Time.now.month, year: Time.now.year),

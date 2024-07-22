@@ -3,7 +3,7 @@
 module EventsHelper
   require "cgi"
   RSVP_GLYPH_CLASSES = { nil => "ghost", "accepted" => "hiking", "declined" => "couch" }.freeze
-  RSVP_GLYPH_COLORS = { nil => "text-gray-100", "accepted" => "text-green-500", "declined" => "text-red-500"}.freeze
+  RSVP_GLYPH_COLORS = { nil => "text-gray-100", "accepted" => "text-green-500", "declined" => "text-red-500" }.freeze
   MAP_BASE_URL = "https://www.google.com/maps/"
   CLASS_GLYPH_WRAPPER = "event-category-glyph"
 

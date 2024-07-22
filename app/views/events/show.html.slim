@@ -3,35 +3,32 @@
 /! Current user id: #{current_user&.id}
 /! #{@event&.email}
 
-article.event.mx-auto.max-w-3xl
-  header.mb-6
-    - if params[:from] == "planner"
-      = link_to unit_plans_path(current_unit, anchor: "event-#{current_unit.id}"),
-                class: "font-semibold text-sky-500 hover:text-sky-600",
-                data: { turbo_action: "advance" } do
-        i.fa-solid.fa-chevron-left
-        span.ml-2 = "Back to Planner"
-    - else
-      = link_to unit_events_path(current_unit, anchor: "#{@event.id}"),
-                class: "font-semibold text-sky-500 hover:text-sky-600",
-                data: { turbo_action: "advance" } do
-        i.fa-solid.fa-chevron-left
-        span.ml-2 = "Back to event schedule"
+= turbo_frame_tag :main, src: unit_events_path(current_unit), loading: :lazy
 
-  .p-0.md:p-12.rounded-lg.bg-white.dark:bg-stone-900.md:shadow-overhead
-    = render partial: "events/partials/show/header"
+= turbo_frame_tag :modal do
+  = content_tag :div, class: "fixed backdrop-blur-md inset-0 bg-black/50", data: { controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
+    article.event.mx-auto.max-w-3xl.bg-white.rounded-lg.mt-16.relative
+      .absolute.right-0.top-0.p-4
+        = button_tag type: "button", class: "text-stone-900 dark:text-stone-100", data: { action: "modal#close" } do
+          i.fa-solid.fa-times
 
-    section.grid.grid-col-1.divide-y.divide-stone-300.dark:divide-stone-700
-      = render partial: "events/partials/show/date"
-      = render partial: "events/partials/show/rsvp_row"
-      = render partial: "events/partials/show/location"
-      = render partial: "events/partials/show/chat"
-      = render partial: "events/partials/show/payment"
-      = render partial: "events/partials/show/weather"
-      = render partial: "events/partials/show/description"
-      = render partial: "events/partials/show/contact"
-      = render partial: "events/partials/show/attachments"
+      .p-0.md:p-12.rounded-lg.bg-white.dark:bg-stone-900.md:shadow-overhead
 
-    = render partial: "events/partials/show/packing_lists"
-= render partial: "events/partials/show/watermarks"
+
+        = render partial: "events/partials/show/header"
+
+        section.grid.grid-col-1.divide-y.divide-stone-300.dark:divide-stone-700
+          = render partial: "events/partials/show/date"
+          = render partial: "events/partials/show/rsvp_row"
+          = render partial: "events/partials/show/location"
+          = render partial: "events/partials/show/chat"
+          = render partial: "events/partials/show/payment"
+          = render partial: "events/partials/show/weather"
+          = render partial: "events/partials/show/description"
+          = render partial: "events/partials/show/contact"
+          = render partial: "events/partials/show/attachments"
+
+        = render partial: "events/partials/show/packing_lists"
+    = render partial: "events/partials/show/watermarks"
+
 

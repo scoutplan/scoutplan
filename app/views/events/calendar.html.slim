@@ -10,23 +10,15 @@
 /! Current member id: #{current_member&.id}
 /! Current unit id: #{current_unit&.id}
 /! Current user id: #{current_user&.id}
-.max-w-7xl.mx-auto
+= turbo_frame_tag :main
+  = render partial: "events/header"
+  
   header.flex.flex-row.items-center.justify-between.py-2.md:mt-8.relative.mb-2
-    // month & year
-    .absolute.inset-0.text-center.z-0
-      h1.hidden.md:inline-block.text-4xl.text-center
-        = context[:first_day_of_month].strftime("%B %Y")
+    h1.hidden.md:inline-block.text-2xl.font-semibold.text-center
+      = context[:first_day_of_month].strftime("%B %Y")
 
-    // month picker, prev, next, today
-    .left.z-10
+    div
       = render partial: "events/partials/index/calendar/calendar_nav", locals: { context: context }
-    
-    // dropdown menu
-    .right.z-10
-      .dropdown.relative
-        = link_to "#", class: "dropdown-button inline-block" do
-          i.fa-circle-ellipsis.far.fa-2xl.text-stone-500.dark:text-stone-300
-        = render partial: "events/partials/index/dropdown"
 
   .table.px-0.w-full.table-fixed.border-t
     .table-row.font-bold
