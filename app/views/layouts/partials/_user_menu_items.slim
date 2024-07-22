@@ -3,41 +3,41 @@ ul
     ul#unit_list
       - current_user.units.active.each do |unit|
         li.unit-membership-link
-          = link_to unit, class: "block px-4 py-3 md:py-2 font-bold md:font-normal text-brand-500 md:text-stone-100 md:hover:bg-stone-600" do
+          = link_to unit, class: "block px-4 py-3 md:py-2 hover:bg-stone-100" do
             span(class="#{unit == current_unit ? '' : 'text-transparent'}")
-              i.fa-fw.fa-solid.fa-check.mr-2
+              i.fa-fw.fa-light.fa-check.mr-2
             = unit.name
 
   - if Flipper.enabled?(:payments, @current_user)
     li
       = link_to profile_payments_path(current_user),
-                class: "block px-4 py-3 md:py-2 font-bold md:font-normal text-brand-500 md:text-stone-100 md:hover:bg-stone-600" do
-        i.fa-fw.fa-solid.fa-credit-card.mr-2
+                class: "block px-4 py-3 md:py-2 hover:bg-stone-100" do
+        i.fa-fw.fa-light.fa-credit-card.mr-2
         = t("profile.payments")
 
   li
     = link_to profile_unit_member_path(current_unit, current_member),
-              class: "block px-4 py-3 md:py-2 font-bold md:font-normal text-brand-500 md:text-stone-100 md:hover:bg-stone-600" do
-      i.fa-fw.fa-solid.fa-user-gear.mr-2
+              class: "block px-4 py-3 md:py-2 hover:bg-stone-100" do
+      i.fa-fw.fa-light.fa-user-gear.mr-2
       = t("profile.settings")
 
   - if policy(:unit_settings).edit?
     li
       = link_to unit_settings_path(current_unit),
-                class: "block px-4 py-3 md:py-2 font-bold md:font-normal text-brand-500 md:text-stone-100 md:hover:bg-stone-600",
+                class: "block px-4 py-3 md:py-2 hover:bg-stone-100",
                 data: { turbo_frame: "main", turbo_action: "advance" } do
 
-        i.fa-fw.fa-solid.fa-cog.mr-2
+        i.fa-fw.fa-light.fa-cog.mr-2
         = "#{current_unit.name} Settings"
 
   li
-    hr.border-stone-400
+    hr.border-stone-300
 
   = button_to destroy_user_session_path,
     method: :delete,
     data: { turbo: "false" },
-    class: "w-full text-brand-500 md:text-stone-100 font-bold md:font-normal px-4 py-3 md:py-2 block md:hover:bg-stone-600 text-left" do
-      i.fa-fw.fa-solid.fa-sign-out.mr-2
+    class: "w-full px-4 py-3 md:py-2 block hover:bg-stone-100 text-left" do
+      i.fa-fw.fa-light.fa-sign-out.mr-2
       = t("global.sign_out")
 
 

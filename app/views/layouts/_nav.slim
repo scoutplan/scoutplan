@@ -1,5 +1,5 @@
-nav.w-80.fixed.bg-stone-50.p-4.h-full
-  header.flex.flex-row.justify-between
+nav.bg-stone-50.h-full.w-60.w-full
+  header.flex.flex-row.justify-between.mb-3
     .dropdown.inline-block
       = link_to "#",
                 class: "block -mx-4 px-4 py-3 dropdown-button dropdown-button-chevron font-semibold text-sm",
@@ -7,7 +7,7 @@ nav.w-80.fixed.bg-stone-50.p-4.h-full
           = current_member.short_display_name
           i.fa-chevron-down.fas.ml-2
 
-      .dropdown-menu.rounded.bg-stone-700.block.absolute.right-0.mr-2.color-stone-100.w-64.drop-shadow-lg
+      .dropdown-menu.rounded.bg-white.block.absolute.left-0.ml-2.w-64.drop-shadow-lg.border
         = render partial: "layouts/partials/user_menu_items"
 
     - if Flipper.enabled?(:inbox, current_member)
@@ -18,16 +18,18 @@ nav.w-80.fixed.bg-stone-50.p-4.h-full
           - if (count = current_member.notifications.unread.count).positive?
             i.fa-solid.fa-circle.text-brand-500(data-fa-transform="shrink-6 up-10 right-10")
 
-  .-mx-4.text-stone-700
+  .text-stone-700
     - if policy(:event).index?
       = link_to unit_events_path(current_unit),
-                class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 mx-2 rounded py-3 block hover:bg-stone-200 group-[.events]/controller:text-brand-600 group-[.events]/controller:bg-brand-100" do
+                class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-stone-200 group-[.events]/controller:text-brand-700 group-[.events]/controller:bg-brand-200",
+                data: { turbo_frame: "main", turbo_action: "advance" } do
           i.fa-light.fa-calendar-alt.fa-fw.mr-2
           = t("main_nav.events")
 
     - if policy(:unit_membership).index?
       = link_to unit_members_path(current_unit),
-                class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 mx-2 rounded py-3 block hover:bg-stone-200 group-[.unit_memberships]/controller:text-brand-600 group-[.unit_memberships]/controller:bg-brand-100" do
+                class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-stone-200 group-[.unit-memberships]/controller:text-brand-700 group-[.unit-memberships]/controller:bg-brand-200",
+                data: { turbo_frame: "main", turbo_action: "advance" } do
           i.fa-light.fa-users.fa-fw.mr-2
           = t("main_nav.members")
 
@@ -39,12 +41,14 @@ nav.w-80.fixed.bg-stone-50.p-4.h-full
 
     - if policy(:message).new? && Flipper.enabled?(:messages, current_member)
       = link_to unit_messages_path(current_unit),
-                class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 mx-2 rounded py-3 block hover:bg-stone-200 group-[.messages]/controller:text-brand-600 group-[.messages]/controller:bg-brand-100" do
+                class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-stone-200 group-[.messages]/controller:text-brand-700 group-[.messages]/controller:bg-brand-200",
+                data: { turbo_frame: "main", turbo_action: "advance" } do
         i.fa-light.fa-envelope.fa-fw.mr-2
         = t("main_nav.communication")
 
     - if (policy(:unit_document).index? && current_unit.documents.any?) || policy(:unit_document).create?
       = link_to unit_documents_path(current_unit),
-                class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 mx-2 rounded py-3 block hover:bg-stone-200 group-[.documents]/controller:text-brand-600 group-[.documents]/controller:bg-brand-100" do
+                class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-stone-200 group-[.documents]/controller:text-brand-700 group-[.documents]/controller:bg-brand-200",
+                data: { turbo_frame: "main", turbo_action: "advance" } do
         i.fa-light.fa-books.fa-fw.mr-2
         = t("main_nav.document_library")

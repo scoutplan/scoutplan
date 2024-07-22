@@ -1,5 +1,8 @@
-- event.tags.each do |tag|
-  .font-bold.inline-block.whitespace-nowrap.rounded.px-2.py-1.text-rose-700.border.border-rose-700.dark:border-rose-300.mr-1.text-rose-700.dark:text-rose-300.text-xs.hidden.md:inline-block
-    i.fa-solid.fa-tag.mr-2
-    = tag
-    
+- return if event.tags.empty?
+
+.event-tag-wrapper.flex.flex-row.gap-1.my-2
+  - event.tags.each do |tag|
+    .font-semibold.inline-block.whitespace-nowrap.rounded.px-2.py-1.text-rose-700.bg-rose-50.dark:border-rose-300.text-rose-700.dark:text-rose-300.text-sm.hidden.md:inline-block
+      i.fa-regular.fa-tag.mr-2
+      = tag
+      

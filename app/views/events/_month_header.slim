@@ -7,9 +7,9 @@
 
 - class_name = "month-header-#{event.starts_at.strftime('%Y')}-#{event.starts_at.strftime('%m')}"
 
-li.pt-12.bg-white.top-0.event-month-boundary.sticky.z-10.pt-1(class="#{class_name}")
+li.pt-12.bg-white.top-0.event-month-boundary.sticky.pt-1(class="#{class_name}")
   .relative.py-2.bg-white.dark:bg-stone-800
-    .absolute.left-0.right-0.top-1/2.border-t.border-brand-500
+    .absolute.left-0.right-0.top-1/2.border-t.border-brand-300
 
     h3.relative.pl-2.pr-1.bg-white.dark:bg-stone-800.inline-block.text-brand-500.font-semibold.uppercase.tracking-widest(role="heading" aria-level="3")
       = event.starts_at.strftime("%B")

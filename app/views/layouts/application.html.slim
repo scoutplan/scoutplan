@@ -18,21 +18,22 @@ html.scroll-smooth
 
     = yield :head
 
-  body(class="dark:bg-stone-900 dark:text-stone-200 text-stone-900 group/controller #{controller_name} #{action_name} #{yield :body_classes} h-full")
-    .flex.h-full
-      aside.bg-stone-50
+  body(class="dark:bg-stone-900 dark:text-stone-200 text-stone-900 group/controller #{controller_name.gsub('_', '-')} #{action_name} #{yield :body_classes} h-full")
+    
+    .flex.flex-row
+      aside.w-80.bg-stone-50.fixed.h-full.p-4
         = render partial: "layouts/nav"
-        / = render partial: "layouts/nav_mobile"
-      main.w-full.p-12.h-full
+      main.w-full.h-full.p-12.ml-80
         = render partial: "layouts/flash"
         = render partial: "layouts/password_prompt"
-        = yield
+        = turbo_frame_tag :main
+          = yield
 
     footer
       /!  CI #{ENV["GITHUB_RUN_NUMBER"]}
 
     = render partial: "search/overlay"
-    = turbo_frame_tag "modal", data: { controller: "modal" }
+    = turbo_frame_tag :modal
   
   - content_for :title do
     = (@page_title || []).reverse.join(" · ")

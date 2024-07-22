@@ -1,10 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
+  static values = { returnUrl: String }
+
   connect() {
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") { this.close(event); }
     });
+    console.log("Modal controller connected");
   }
 
   disconnect() {
@@ -14,7 +17,9 @@ export default class extends Controller {
   }
 
   close(event) {
-    this.element.innerHTML = "";
+    this.element.closest("turbo-frame").innerHTML = "";
+    // window.location = this.returnUrlValue;
+    window.history.replaceState( {} , "", this.returnUrlValue );
   }
 
   click(event) {
