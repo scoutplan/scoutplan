@@ -6,7 +6,7 @@
 - variant = params[:variant] || request.cookies[:variant] || "list"
 
 = turbo_frame_tag :main
-  .max-w-8xl.mx-auto
+  .max-w-8xl.mx-auto(data-controller="document-index list-selection")
     header.bg-white.sticky.top-12.mb-4.pt-2
       .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = current_unit.name
 

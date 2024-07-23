@@ -2,6 +2,13 @@
 
 # application-wide helpers
 module ApplicationHelper
+  def colors_from_string(string)
+    hue = Digest::MD5.hexdigest(string).to_i(16) % 360
+    bgcolor = "hsl(#{hue}, 100%, 95%)"
+    color = "hsl(#{hue}, 100%, 20%)"
+    [bgcolor, color]
+  end
+
   def content_tag_if(tag, conditional, content = nil, options = nil)
     return unless conditional.present?
 
@@ -99,7 +106,7 @@ module ApplicationHelper
 
   # rubocop:disable Metrics/AbcSize
   # Amount should be a decimal between 0 and 1. Lower means darker
-  def darken_color(hex_color, amount=0.4)
+  def darken_color(hex_color, amount = 0.4)
     hex_color = hex_color.gsub("#", "")
     rgb = hex_color.scan(/../).map(&:hex)
     rgb[0] = (rgb[0].to_i * amount).round
@@ -115,9 +122,9 @@ module ApplicationHelper
 
     hex_color = hex_color.gsub("#", "")
     rgb = hex_color.scan(/../).map(&:hex)
-    rgb[0] = [(rgb[0].to_i + 255 * amount).round, 255].min
-    rgb[1] = [(rgb[1].to_i + 255 * amount).round, 255].min
-    rgb[2] = [(rgb[2].to_i + 255 * amount).round, 255].min
+    rgb[0] = [(rgb[0].to_i + (255 * amount)).round, 255].min
+    rgb[1] = [(rgb[1].to_i + (255 * amount)).round, 255].min
+    rgb[2] = [(rgb[2].to_i + (255 * amount)).round, 255].min
     "#%02x%02x%02x" % rgb
   end
   # rubocop:enable Metrics/AbcSize
