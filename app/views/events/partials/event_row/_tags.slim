@@ -2,7 +2,8 @@
 
 .event-tag-wrapper.flex.flex-row.gap-1.my-2
   - event.tags.each do |tag|
-    .font-semibold.inline-block.whitespace-nowrap.rounded.px-2.py-1.text-rose-700.bg-rose-50.dark:border-rose-300.text-rose-700.dark:text-rose-300.text-sm.hidden.md:inline-block
+    - colors = colors_from_string(tag.name)
+    .font-semibold.inline-block.whitespace-nowrap.rounded.px-2.py-1.text-rose-700.bg-rose-50.dark:border-rose-300.text-rose-700.dark:text-rose-300.text-sm.hidden.md:inline-block(style="background-color: #{colors.first}; color:#{colors.second};")
       i.fa-regular.fa-tag.mr-2
       = tag
       

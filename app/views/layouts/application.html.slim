@@ -9,7 +9,6 @@ html.scroll-smooth
     = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
     = stylesheet_link_tag "application", "data-turbo-track": "reload"
     = stylesheet_link_tag "https://rsms.me/inter/inter.css"
-
     = javascript_importmap_tags
     = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: "anonymous"
     = javascript_include_tag "main"
@@ -19,11 +18,11 @@ html.scroll-smooth
     = yield :head
 
   body(class="dark:bg-stone-900 dark:text-stone-200 text-stone-900 group/controller #{controller_name.gsub('_', '-')} #{action_name} #{yield :body_classes} h-full")
-    
     .flex.flex-row
-      aside.w-80.bg-stone-50.fixed.h-full.p-4
+      aside.-ml-80.lg:ml-0.lg:w-80.bg-stone-50.fixed.h-full.p-3(data-controller="sidebar")
         = render partial: "layouts/nav"
-      main.w-full.h-full.p-12.ml-80
+
+      main.w-full.h-full.p-12.lg:ml-80
         = render partial: "layouts/flash"
         = render partial: "layouts/password_prompt"
         = turbo_frame_tag :main

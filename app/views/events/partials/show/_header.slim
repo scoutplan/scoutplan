@@ -23,12 +23,7 @@ header.mb-4.md:mb-8
             hr
             = render partial: "events/partials/show/sidecar/adjacent_events"
 
-  - if @event.tag_list.present?
-    ul.tag-list.py-2
-      - @event.tag_list.each do |tag|
-        li.inline-block.align-bottom.mx-1.whitespace-nowrap.font-bold.border-rose-700.text-rose-700.border.rounded-md.py-1.px-2.text-sm.dark:text-rose-400.dark:border-rose-400
-          i.fa-solid.fa-tag.mr-1
-          = tag
+  = render partial: "events/partials/event_row/tags", locals: { event: @event }
   
   - if @event.short_description.present?
     h2.text-stone-500.text-xl.-mt-1 = @event.short_description  

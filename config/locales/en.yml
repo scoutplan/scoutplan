@@ -107,6 +107,7 @@ en:
     planner:       "Planner"
     communication: "Messages"
     wiki:          "Wiki"
+    settings:      "Unit Settings"
 
   profile:
     edit: "Settings"
