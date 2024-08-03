@@ -1,31 +1,36 @@
-- return unless @event.online || @event.locations.present?
+- return unless event.online || event.locations.present?
 - location_count = 0
 - ["departure", "arrival", "activity"].each do |location_type|
-  - location_count += 1 if @event.event_locations.exists?(location_type: location_type)
+  - location_count += 1 if event.event_locations.exists?(location_type: location_type)
 
-article.py-4
-  - if @event.online
+section.pt-2
+  h3.text-sm.font-semibold.text-stone-500.mb-3 Location
+
+  - if event.online
     = t("events.show.captions.online")
     .inline-block.ml-2
-      = render partial: "events/partials/event_row/online", locals: { event: @event }
+      = render partial: "events/partials/event_row/online", locals: { event: event }
 
   - elsif location_count.positive?
-    = link_to event_map_url(@event),
-              target: "_new",
-              class: "text-sm inline-block font-bold no-underline text-rose-600 hover:text-rose-700 py-2",
-              aria: { role: "link" } do
-      i.fa-solid.fa-map.text-rose-600.mr-2
-      = t("events.show.map")
-
     - if params[:map] == "static"
       = render partial: "events/partials/show/static_map"
     - else
       = render partial: "events/partials/show/map"
 
+    - if event.mappable?
+      p.text-right
+        = link_to event_map_url(event),
+                  target: "_new",
+                  class: "text-xs text-stone-500 hover:text-stone-700 inline-block py-1",
+                  aria: { role: "link" } do
+          i.fa-regular.fa-map.text-stone-400
+          | &nbsp;&nbsp;
+          = t("events.show.map")      
+
     - count = 0
     .table
       - ["departure", "arrival", "activity"].each do |location_type|
-        - event_location = @event.event_locations.includes(:location).find_by(location_type: location_type)
+        - event_location = event.event_locations.includes(:location).find_by(location_type: location_type)
         - next unless location = event_location&.location
 
         - count += 1

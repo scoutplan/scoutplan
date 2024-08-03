@@ -1,7 +1,10 @@
 li.py-1(id="#{dom_id(notification)}")
 
   .flex.flex-row.justify-between
-    = link_to "#" do
+    = link_to "#", class: "#{notification.read? ? '' : 'font-bold'}" do
+      - if notification.unread?
+        i.fa-solid.fa-circle.text-brand-500.fa-2xs
+        | &nbsp;&nbsp;
       = notification.title
 
     .right

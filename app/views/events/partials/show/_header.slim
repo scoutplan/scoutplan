@@ -1,29 +1,9 @@
-header.mb-4.md:mb-8
+header.mb-4
   .flex.flex-row.gap-1.items-center
-    h1.text-3xl.md:text-4xl.truncate.pb-1
+    h1.text-xl.font-semibold
       = @event.title
-
-    .hidden.md:block.pb-1
-      i.fa-stack(title="#{@event.category.name}")
-        i.fa-solid.fa-circle.fa-stack-2x(style="color: #{@event&.category&.color}")
-        i.fa-solid.fa-stack-1x.text-white(class="fa-#{@event&.category&.glyph}")
-
-    .ml-auto.flex.flex-row.gap-3.items-center.pb-1
-      .dropdown.relative(data-controller="dropdown")
-        = link_to "#", class: "text-stone-500 hover:text-stone-900 dark:hover:text-stone-400", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
-          i.fa-regular.fa-circle-ellipsis.fa-2xl
-
-        .dropdown-menu.absolute.right-0.bg-brand-600.z-20.rounded.text-brand-100.top-full.animate-pop-open.w-80.mt-4
-          ul
-            = render partial: "events/partials/show/sidecar/edit"
-            = render partial: "events/partials/show/sidecar/duplicate"
-            = render partial: "events/partials/show/sidecar/history"
-            = render partial: "events/partials/show/sidecar/download_brief"
-            = render partial: "events/partials/show/sidecar/add_to_calendar"
-            hr
-            = render partial: "events/partials/show/sidecar/adjacent_events"
 
   = render partial: "events/partials/event_row/tags", locals: { event: @event }
   
   - if @event.short_description.present?
-    h2.text-stone-500.text-xl.-mt-1 = @event.short_description  
+    h2.text-stone-500.text-xl.-mt-1 = @event.short_description

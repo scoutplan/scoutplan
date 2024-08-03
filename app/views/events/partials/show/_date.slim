@@ -2,8 +2,8 @@
 - multiday = duration_in_days.positive?
 - max_intermediate_days = 3
 
-section.py-4
-    h2.font-semibold.text-xl.mb-3.leading-none
+section
+    h2.font-medium.mb-1
       // month name(s)
       = @presenter.month_name
 
@@ -34,7 +34,7 @@ section.py-4
 
         // moon and blurb if event is multi-day and 4 or more days long
         - elsif multiday
-          .interim-day.bg-white.dark:bg-stone-900.px-1.text-center.relative.font-semibold.text-lg
+          .interim-day.bg-white.dark:bg-stone-900.px-1.text-center.relative.font-semibold
             i.fa-solid.fa-fw.fa-moon.text-purple-500.mr-1
             = "#{duration_in_days} Nights"
 
@@ -44,7 +44,7 @@ section.py-4
             .inline-block.bg-white.dark:bg-stone-900.pl-1.text-6xl = @event.ends_at.day
 
       // day name(s)
-      .flex.flex-row.justify-between.items-center.font-bold.text-lg.text-stone-500
+      .flex.flex-row.justify-between.items-center.font-bold.text-stone-500
         .uppercase.tracking-wider = @event.starts_at.in_time_zone.strftime('%a')
         - if multiday
           .uppercase.tracking-wider = @event.ends_at.in_time_zone.strftime('%a')  

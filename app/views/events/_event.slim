@@ -32,7 +32,7 @@ li.event.md:px-2.py-2.hover:bg-stone-50.dark:hover:bg-stone-800(class="#{row_cla
 
         // 3 title, tags, description, location
         .third
-          h4.text-xl.font-medium.event-title.mr-2.inline-block = event.title
+          h4.text-xl.font-semibold.event-title.mr-2.inline-block = event.title
           = render partial: "events/partials/event_row/title_badge", locals: { event: event }
           = render partial: "events/partials/index/short_description", locals: { event: event }
           = render partial: "events/event_location", locals: { event: event }
