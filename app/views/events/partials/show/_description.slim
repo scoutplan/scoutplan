@@ -1,7 +1,6 @@
 - return unless @event.description.present?
 
-section#narrative.py-4.relative.overflow-y-scroll.border-t.border-stone-800
-  h2.font-bold.text-xl.mb-2
-    = t("events.show.description")
+section#narrative.py-4
+  h3.text-sm.font-semibold.text-stone-500.mb-3 Description
 
   == @event.description

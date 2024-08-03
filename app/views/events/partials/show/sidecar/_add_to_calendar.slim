@@ -1,7 +1,8 @@
 li
   = link_to unit_event_add_to_calendar_path(current_unit, @event),
-            class: "block px-4 py-2 hover:bg-brand-600",
+            class: "block px-2 py-2 hover:bg-stone-100 rounded",
             data: { turbo_action: "advance" } do
 
-    i.fa-solid.fa-calendar.fa-fw.mr-2
+    i.fa-regular.fa-calendar.fa-fw.text-stone-500
+    | &nbsp;&nbsp;
     = t("events.titles.add_to_calendar")

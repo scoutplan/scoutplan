@@ -1,4 +1,4 @@
-nav.calendar-nav.left.text-sm
+nav.calendar-nav.text-sm
   // prev button
   = link_to calendar_unit_events_path(current_unit, month: @current_month > 1 ? @current_month - 1 : 12, year: @current_month > 1 ? @current_year : @current_year - 1),
             title: t("events.index.buttons.hints.previous"),

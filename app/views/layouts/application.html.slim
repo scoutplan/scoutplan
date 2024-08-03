@@ -17,12 +17,12 @@ html.scroll-smooth
 
     = yield :head
 
-  body(class="dark:bg-stone-900 dark:text-stone-200 text-stone-900 group/controller #{controller_name.gsub('_', '-')} #{action_name} #{yield :body_classes} h-full")
+  body(class="has-[section[role='dialog']]:background-green-500 dark:bg-stone-900 dark:text-stone-200 text-stone-900 group/controller #{controller_name.gsub('_', '-')} #{action_name} #{yield :body_classes} h-full")
     .flex.flex-row
       aside.-ml-80.lg:ml-0.lg:w-80.bg-stone-50.fixed.h-full.p-3(data-controller="sidebar")
         = render partial: "layouts/nav"
 
-      main.w-full.h-full.p-12.lg:ml-80
+      main.w-full.h-full.p-12.lg:ml-80.overflow-hidden
         = render partial: "layouts/flash"
         = render partial: "layouts/password_prompt"
         = turbo_frame_tag :main
@@ -88,6 +88,10 @@ html.scroll-smooth
     h1 {
       font-weight: 400;
     }
+
+    html:has(section[role="dialog"][data-open="true"]) {
+      overflow: hidden;
+    }    
 
   /! Current member id: #{current_member&.id}
   /! Current unit id: #{current_unit&.id}

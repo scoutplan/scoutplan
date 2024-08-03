@@ -29,6 +29,6 @@ class NotificationsController < UnitContextController
   end
 
   def find_notifications
-    @notifications = current_member.notifications.unread.order(created_at: :desc)
+    @notifications = current_member.notifications.order(created_at: :desc)
   end
 end

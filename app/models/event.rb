@@ -271,6 +271,10 @@ class Event < ApplicationRecord
     primary_location&.map_address
   end
 
+  def mappable?
+    primary_location&.mappable?
+  end
+
   def find_location(location_type)
     event_locations.find_by(location_type: location_type)&.location
   end

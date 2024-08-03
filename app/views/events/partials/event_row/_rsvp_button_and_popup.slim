@@ -32,11 +32,10 @@
       = turbo_frame_tag "rsvp_popup", src: popup_unit_event_rsvps_path(current_unit, event), role: "dialog", data: { controller: "popup" }
 
 - elsif event.rsvp_opens_at&.future?
-  .font-semibold.text-sm
+  .font-semibold
     i.fa-solid.fa-ban.mr-2
     = t("events.index.rsvp.not_open")
 
 - else
-  .font-semibold.text-sm
-    i.fa-solid.fa-ban.mr-2
+  .text-stone-500
     = t("events.index.rsvp.closed")

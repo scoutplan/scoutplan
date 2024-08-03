@@ -2,17 +2,12 @@
 
 - acceptance_count = @event.rsvps.accepted_intent.count
 
-article.py-4.px-2.flex.flex-col.gap-2.items-center.justify-between
-  .max-w-96
-    i.fa-stack.mr-1(title="#{t('events.show.titles.organize')}")
-      i.fa-solid.fa-circle.fa-stack-2x.text-violet-700
-      i.fa-solid.fa-clipboard-check.fa-stack-1x.text-violet-50
+article.pt-4
+  h3.font-semibold.mb-3 Group RSVPs
 
-  .max-w-96
-    = acceptance_count.zero? ? t("events.show.captions.attendees_zero") : "#{pluralize(acceptance_count, 'person')} #{acceptance_count == 1 ? "is" : "are"} going"
+  p.mb-3 = acceptance_count.zero? ? t("events.show.captions.attendees_zero") : "#{pluralize(acceptance_count, 'person')} #{acceptance_count == 1 ? "is" : "are"} going"
 
-  .max-w-96.w-full
-    = link_to dashboard_unit_event_path(@event.unit, @event),
-              class: "w-full block py-2 px-3 rounded text-center bg-violet-700 hover:bg-violet-800 text-violet-50 font-semibold",
-              data: { turbo_action: "advance" } do
-      = t("events.show.buttons.organize")
+  = link_to dashboard_unit_event_path(@event.unit, @event),
+            class: "w-full block py-2 px-3 rounded border border-violet-500 text-violet-500 hover:bg-violet-100 text-center font-medium",
+            data: { turbo_action: "advance" } do
+    = t("events.show.buttons.organize")
