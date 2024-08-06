@@ -1,12 +1,78 @@
-= turbo_frame_tag "main"
-  header.mx-auto.max-w-3xl.mb-8
-    = link_to unit_events_path(current_unit),
-              class: "block text-sky-800 dark:text-sky-300 hover:text-sky-900 mb-4 font-bold",
-              data: { turbo_frame: "main", turbo_action: "advance" } do
-      i.fa-solid.fa-chevron-left
-      = " Back to event schedule"
+= turbo_frame_tag :main, src: unit_events_path(current_unit), loading: :lazy
 
-  = render partial: "form"
+= turbo_frame_tag :modal do
+  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 py-16 bg-black/50", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
+    = form_with model: @event, scope: "event",
+                url: @event.new_record? ? unit_events_path(current_unit) : unit_event_path(current_unit, @event),
+                method: @event.new_record? ? "post" : "patch",
+                class: "h-full",
+                data: { turbo: false, controller: "event-edit" } do |f|
+
+      article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden
+        header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
+          .left
+            h1 = "Add a Calendar Event"
+
+          .right.flex.flex-row.gap-2.text-stone-500.text-lg
+
+            = button_tag type: "button", class: "x-close-button flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
+              i.fa-regular.fa-times.fa-fw
+
+        section.flex.flex-col.md:flex-row.w-full.overflow-y-hidden(style="height: calc(100% - 0rem)")
+          aside.w-full.md:w-1/4.bg-stone-50.px-6.py-3.overflow-y-auto.text-stone-600
+            .flex.flex-col.divide-y.divide-stone-200.text-sm
+              .py-2
+                header.mb-2
+                  h3.font-semibold = "Category"
+
+                = f.select :event_category_id,
+                            @event.unit.event_categories.order(:name).collect { |c| [ c.name, c.id ] },
+                            { prompt: t("events.placeholders.category"), selected: @event.event_category_id },
+                            { class: "border-0 px-0 px-2 -mx-2 py-1 bg-transparent hover:bg-brand-100 text-sm focus:ring-0",
+                              style: "width: calc(100% + 1.2rem)",
+                              required: "A category is required" }
+
+              .py-2
+                header.mb-2
+                  h3.font-semibold = "Visibility"
+
+                = render partial: "components/switch",
+                        locals: { checked: @event.published?,
+                                  label: t("events.edit.published"),
+                                  object_name: "event",
+                                  method: "status",
+                                  checked_value: "published",
+                                  class: "text-xs",
+                                  unchecked_value: "draft" }  
+
+
+                / = switch(:event_category, :send_reminders,
+                /         { label: "Send reminders for events in this category",
+                /           checked: @event_category.send_reminders },
+                /         "true", "false")                                  
+
+              .py-2
+                = button_tag type: "button", class: "block py-1 px-2 -mx-2 hover:bg-brand-100", style: "width: calc(100% + 1rem)" do
+                  .flex.flex-row.justify-between.items-center
+                    .font-semibold
+                      = "Tags"
+
+                    i.fa-light.fa-plus.fa-fw
+
+          section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.gap-4.text-sm.text-stone-600.rounded-r-lg.overflow-y-auto.h-full
+            .divide-y.divide-stone-300
+              - %w[basics dates rsvp locations description organizers attachments cancel_delete].each do |section|
+                = render partial: "events/partials/form/#{section}", locals: { f: f, section: section }
+
+        footer.sticky.bottom-0.px-6.py-3.bg-white.border-t.border-stone-200.flex.flex-row.justify-end.gap-2.text-sm
+          = f.button t("global.cancel"),
+                    type: "button",
+                    class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded font-medium",
+                    data: { action: "click->modal#close" }
+
+          = f.submit @event.new_record? ? t("events.new.add_this_event") : t("global.save_changes"),
+                      class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-brand-500 disabled:bg-brand-300 disabled:text-brand-50 text-white rounded",
+                      disabled: true
 
 javascript:
   document.title = "Add an Event · #{current_unit.name}"  

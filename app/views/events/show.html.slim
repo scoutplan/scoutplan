@@ -7,31 +7,31 @@
 
 = turbo_frame_tag :modal do
   = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 py-16 bg-black/50", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
-    article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.overflow-hidden
-      header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
+    article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden
+      header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-600
         .left
-          i.fa-regular.text-white(style="color: #{@event&.category&.color}" class="fa-#{@event&.category&.glyph}")
+          i.fa-light.text-white(style="color: #{@event&.category&.color}" class="fa-#{@event&.category&.glyph}")
           | &nbsp;
           = @event.category_name
 
         .right.flex.flex-row.gap-2.text-stone-500.text-lg
           - if @event.previous.present?
             = link_to unit_event_path(@event.previous.unit, @event.previous),
-                      class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-800",
+                      class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900",
                       title: "#{@event.previous.title} on #{@event.previous.starts_at.strftime('%B %-d')}",
                       data: { turbo_action: "advance" } do
-              i.fa-regular.fa-chevron-up.fa-fw
+              i.fa-light.fa-chevron-up.fa-fw
 
           - if @event.next.present?
             = link_to unit_event_path(current_unit, @event.next),
-                      class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-800",
+                      class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900",
                       title: "#{@event.next.title} on #{@event.next.starts_at.strftime('%B %-d')}",
                       data: { turbo_action: "advance" } do
-              i.fa-regular.fa-chevron-down.fa-fw
+              i.fa-light.fa-chevron-down.fa-fw
 
           .dropdown.relative(data-controller="dropdown")
-            = link_to "#", class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
-              i.fa-regular.fa-ellipsis.fa-fw
+            = link_to "#", class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
+              i.fa-light.fa-ellipsis-stroke.fa-fw
 
             .dropdown-menu.absolute.right-0.bg-white.z-20.rounded-lg.border.top-full.animate-pop-open.w-72.text-sm.mt-1.drop-shadow-overhead.p-2.text-stone-700
               ul
@@ -41,12 +41,22 @@
                 = render partial: "events/partials/show/sidecar/download_brief"
                 = render partial: "events/partials/show/sidecar/add_to_calendar"
 
-          = button_tag type: "button", class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Close this screen" do
-            i.fa-regular.fa-times.fa-fw
+          = button_tag type: "button", class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900", data: { action: "modal#close" }, title: "Close this screen" do
+            i.fa-light.fa-times.fa-fw
 
-      section.flex.flex-col.md:flex-row.w-full.h-full
-        section.w-full.md:w-2/3.px-6.py-3.overflow-y-scroll
+      - if @event.cover_photo.attached?
+        header.relative
+          = image_tag @event.cover_photo.representation(resize_to_fit: [800, 800]), class: "w-full h-48 object-cover object-center", alt: @event.title
+
+          .absolute.left-0.right-0.bottom-0.h-1/2.bg-gradient-to-t.from-stone-900.opacity-80
+
+          .absolute.left-6.bottom-3.text-white.text-xl.font-semibold
+            = @event.title
+      
+      section.flex.flex-col.md:flex-row.w-full.overflow-y-hidden(style="height: calc(100% - 0rem)")
+        section.w-full.md:w-2/3.px-6.py-3.overflow-y-auto
           = render partial: "events/partials/show/header"
+
           .flex.flex-col.gap-4.divide-y.divide-stone-200
             = render partial: "events/partials/show/date"
             = render partial: "events/partials/show/description"
@@ -60,5 +70,6 @@
           = render partial: "events/partials/show/weather"
           = render partial: "events/partials/show/contact"
           = render partial: "events/partials/show/attachments"
+          = render partial: "events/partials/show/tags", locals: { event: @event }          
 
     = render partial: "events/partials/show/watermarks"

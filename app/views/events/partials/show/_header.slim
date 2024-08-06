@@ -1,9 +1,10 @@
-header.mb-4
-  .flex.flex-row.gap-1.items-center
-    h1.text-xl.font-semibold
-      = @event.title
+- return unless !@event.cover_photo.attached? && @event.short_description.present?
 
-  = render partial: "events/partials/event_row/tags", locals: { event: @event }
+header.mb-4
+  - unless @event.cover_photo.attached?
+    .flex.flex-row.gap-1.items-center
+      h1.text-xl.font-semibold
+        = @event.title
   
   - if @event.short_description.present?
     h2.text-stone-500.text-xl.-mt-1 = @event.short_description

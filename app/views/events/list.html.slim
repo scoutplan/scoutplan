@@ -9,7 +9,9 @@
         = t("events.index.title")
 
       - if policy(Event).create?
-        = link_to new_unit_event_path(current_unit), class: "p-4 inline-block -mx-4 text-stone-500 hover:text-brand-500 group" do
+        = link_to new_unit_event_path(current_unit),
+                  class: "p-4 inline-block -mx-4 text-stone-500 hover:text-brand-500 group",
+                  data: { turbo_action: "advance", turbo_frame: "modal" } do
           .group-hover:hidden.inline
             i.fa-solid.fa-plus.fa-fw.text-brand-500
           .hidden.group-hover:inline

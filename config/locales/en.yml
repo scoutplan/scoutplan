@@ -291,7 +291,7 @@ en:
       location:     "Location"
       address:      "Address or place name"
       departs_from: "Departure address"
-      category:     "Select an event category"
+      category:     "Choose a category"
       cancellation_message: "Type your cancellation message here (optional)"
       venue_phone:  "Phone number where you're staying"
     

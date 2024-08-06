@@ -21,13 +21,15 @@
 - if event.rsvp_open?
   - if policy(event).rsvp?
     = content_tag(:details, details_tag_attributes) do
-      summary.rounded.cursor-pointer.px-4.py-2.text-center.font-semibold.bg-amber-200.hover:bg-amber-300.text-amber-800(title="#{rsvp_service.family_responses_in_words}")
-        - case when family_fully_responded
+      - case when family_fully_responded
+        summary.rounded.border.border-amber-600.cursor-pointer.px-4.py-2.text-sm.text-center.font-medium.hover:bg-amber-100.text-amber-600(title="#{rsvp_service.family_responses_in_words}")
           = "Change your RSVP"
-        - when family_has_rsvps
+      - when family_has_rsvps
+        summary.rounded.cursor-pointer.px-4.py-2.text-center.font-semibold.bg-amber-200.hover:bg-amber-300.text-amber-800(title="#{rsvp_service.family_responses_in_words}")
           = "Complete your RSVP"
-        - else
-          = family_fully_responded ? "Change RSVPs" : "Please RSVP"
+      - else
+        summary.rounded.cursor-pointer.px-4.py-2.text-center.font-semibold.bg-amber-200.hover:bg-amber-300.text-amber-800(title="#{rsvp_service.family_responses_in_words}")
+          = "Please RSVP"
 
       = turbo_frame_tag "rsvp_popup", src: popup_unit_event_rsvps_path(current_unit, event), role: "dialog", data: { controller: "popup" }
 

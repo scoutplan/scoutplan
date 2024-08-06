@@ -1,68 +1,65 @@
-section.py-4.grid.grid-cols-1.md:grid-cols-3.gap-8.border-t
-  .col-span-1
-    h2.text-lg Gather responses
-    p.text-sm.text-sky-700.dark:text-sky-400 Do you want to collect RSVPs for this event?
+section.py-4#rsvp_fields
+  header.mb-5.flex.flex-row.justify-between.items-center.text-stone-950
+    h3.font-semibold
+      i.fa-light.fa-clipboard-check
+      | &nbsp;&nbsp;
+      = "RSVPs"
 
-  .col-span-2
-    = render partial: "components/switch",
-            locals: { checked: @event.requires_rsvp,
-                      label: t("helpers.label.event.requires_rsvp"),
-                      object_name: "event",
-                      method: "requires_rsvp",
-                      checked_value: "true",
-                      unchecked_value: "false",
-                      data: { body_class: "event-requires-rsvp" } }                      
+  = render partial: "components/switch",
+          locals: { checked: @event.requires_rsvp,
+                    label: t("helpers.label.event.requires_rsvp"),
+                    object_name: "event",
+                    method: "requires_rsvp",
+                    checked_value: "true",
+                    unchecked_value: "false",
+                    data: { body_class: "event-requires-rsvp" } }                      
 
-    #rsvp_fields.mt-4
-      - if Flipper.enabled?(:headcount_limit, current_unit)
-        = render partial: "events/partials/form/headcount_limit", locals: { f: f, event: @event } 
+  #rsvp_enabled_fields.mt-4
+    - if Flipper.enabled?(:headcount_limit, current_unit)
+      = render partial: "events/partials/form/headcount_limit", locals: { f: f, event: @event } 
 
-      .py-2.field-wrapper
-        = f.label :rsvp_closes_at, t("events.form.rsvp_opens_at"), class: "block mb-2"
+    #rsvp_open_dates.py-2.text-sm
+      = label_tag :open_rsvp, "Open RSVP from", class: "block mb-2"
+
+      .flex.flex-row.items-center
         = f.date_field :rsvp_opens_at,
-          class: "bg-white dark:bg-black border border-stone-400 dark:border-stone-700 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300" 
+          class: "text-sm bg-white dark:bg-black border border-stone-400 dark:border-stone-700 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300" 
 
-      .py-2.field-wrapper
-        = f.label :rsvp_closes_at, t("events.form.rsvp_closes_at"), class: "block mb-2"
+        .inline-block.mx-4
+          = "to"
+
         = f.date_field :rsvp_closes_at,
-          class: "bg-white dark:bg-black border border-stone-400 dark:border-stone-700 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300",
+          class: "text-sm bg-white dark:bg-black border border-stone-400 dark:border-stone-700 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300",
           data: { target: "event-edit.rsvpClosesAt", action: "change->event-edit#updateRsvpClosesAt" }
-        p.error-message.text-red-500.my-2.text-sm.font-bold
-          i.fa-solid.fa-exclamation-circle.fas.mr-2
-          = "RSVP must close before the event starts"        
 
-      .table
-        .table-row
-          .table-cell
-            = f.label :cost_youth, t("events.captions.cost_youth"), class: "font-bold mr-2"
-          .table-cell.py-1
-            = f.number_field :cost_youth,
-                              class: "w-24 border border-stone-400 dark:border-stone-700 rounded bg-white dark:bg-black p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
-                              min: 0
+      p.error-message.text-red-500.my-2.text-sm.font-bold
+        i.fa-solid.fa-exclamation-circle.fas.mr-2
+        = "RSVP must close before the event starts"        
 
-        .table-row
-          .table-cell
-            = f.label :cost_adult, t("events.captions.cost_adult"), class: "font-bold mr-2"
-          .table-cell.py-1
-            = f.number_field :cost_adult,
-                              class: "w-24 border border-stone-400 dark:border-stone-700 rounded bg-white dark:bg-black p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
-                              min: 0
+    .table
+      .table-row
+        .table-cell
+          = f.label :cost_youth, t("events.captions.cost_youth"), class: "font-bold mr-2"
+        .table-cell.py-1
+          = f.number_field :cost_youth,
+                            class: "w-24 border border-stone-400 dark:border-stone-700 rounded bg-white dark:bg-black p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
+                            min: 0
 
-      = render partial: "events/partials/form/event_shifts", locals: { member: current_member, f: f }
+      .table-row
+        .table-cell
+          = f.label :cost_adult, t("events.captions.cost_adult"), class: "font-bold mr-2"
+        .table-cell.py-1
+          = f.number_field :cost_adult,
+                            class: "w-24 border border-stone-400 dark:border-stone-700 rounded bg-white dark:bg-black p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
+                            min: 0
+
+    = render partial: "events/partials/form/event_shifts", locals: { member: current_member, f: f }
 
 css:
-  #rsvp_fields {
+  #rsvp_enabled_fields {
     display: none;
   }
 
-  .event-requires-rsvp #rsvp_fields {
-    display: block;
-  }
-
-  #event_shift_fields {
-    display: none;
-  }
-
-  .event-time-shifts #event_shift_fields {
+  #rsvp_fields:has(#event_requires_rsvp:checked) #rsvp_enabled_fields {
     display: block;
   }

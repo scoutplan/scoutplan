@@ -9,7 +9,8 @@ module ApplicationHelper
     hue = Digest::MD5.hexdigest(string).to_i(16) % 360
     bgcolor = "hsl(#{hue}, 100%, 95%)"
     color = "hsl(#{hue}, 100%, 20%)"
-    [bgcolor, color]
+    mid_color = "hsl(#{hue}, 100%, 50%)"
+    [bgcolor, color, mid_color]
   end
 
   def content_tag_if(tag, conditional, content = nil, options = nil)

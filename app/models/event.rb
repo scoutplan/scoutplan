@@ -37,6 +37,7 @@ class Event < ApplicationRecord
   has_rich_text :description
 
   has_one_attached :static_map
+  has_one_attached :cover_photo
   has_many_attached :attachments
   has_many_attached :private_attachments
 
