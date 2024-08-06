@@ -5,12 +5,10 @@
 - return unless conditions
 
 article.py-4
-  .flex.flex-row.gap-2.items-justify
-    h2.font-bold.text-lg
-      = service.city_state
-      = " "
-      = raw(service.fa_icon_tag(conditions.main))
-
+  header.mb-3
+    h3.font-semibold.text-stone-950
+      i.fa-light.mr-2(class="#{service.icon_class(conditions.main)}")
+      = "#{service.city_state} Weather"
 
   .flex.flex-row.justify-between.items-end
     #current-conditions.font-bold

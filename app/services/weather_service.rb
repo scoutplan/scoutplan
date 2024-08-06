@@ -50,25 +50,29 @@ class WeatherService
     result
   end
 
+  def icon_class(description)
+    case description
+    when "Clear"
+      "fa-sun"
+    when "Clouds"
+      "fa-cloud"
+    when "Rain"
+      "fa-cloud-rain"
+    when "Snow"
+      "fa-snowflake"
+    when "Thunderstorm"
+      "fa-bolt"
+    when "Mist"
+      "fa-smog"
+    when "Windy"
+      "fa-wind"
+    else
+      "fa-dash"
+    end
+  end
+
   def fa_icon_tag(description)
-    classes = case description
-              when "Clear"
-                "fa-solid fa-sun text-yellow-500"
-              when "Clouds"
-                "fa-solid fa-cloud text-stone-300"
-              when "Rain"
-                "fa-solid fa-cloud-rain text-blue-500"
-              when "Snow"
-                "fa-solid fa-snowflake text-blue-500"
-              when "Thunderstorm"
-                "fa-solid fa-bolt text-blue-500"
-              when "Mist"
-                "fa-solid fa-smog text-stone-300"
-              when "Windy"
-                "fa-solid fa-wind text-stone-300"
-              else
-                "fa-solid fa-dash text-stone-300"
-              end
+    classes = icon_class(description)
 
     "<i class=\"#{classes}\"></i>"
   end
