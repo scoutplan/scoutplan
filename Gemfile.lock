@@ -295,6 +295,7 @@ GEM
       net-imap
       net-pop
       net-smtp
+    mapbox-rails (2.3.0)
     marcel (1.0.4)
     matrix (0.4.2)
     memory_profiler (1.0.1)
@@ -681,6 +682,7 @@ DEPENDENCIES
   listen (~> 3.7)
   lograge
   loofah (>= 2.19.1)
+  mapbox-rails
   memory_profiler
   nokogiri (>= 1.14.3)
   noticed

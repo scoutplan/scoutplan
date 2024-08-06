@@ -2,17 +2,32 @@
 - family_rsvp = FamilyRsvp.new(current_member, event)
 
 article#rsvp_section
-  h3.font-semibold.mb-2 Your Family RSVPs
+  header.flex.flex-row.justify-between.items-center.mb-3
+    h3.font-semibold.text-brand-500
+      i.fa-light.fa-clipboard-check.mr-2
+      = "Your Family RSVPs"
 
-  ol.mb-4
+    .right.block
+      - if event.rsvp_open? && policy(event).rsvp? && true
+        details
+          summary.cursor-pointer.text-stone-500.hover:text-stone-700
+            = "Change"
+
+          = turbo_frame_tag "rsvp_popup", src: popup_unit_event_rsvps_path(current_unit, event), role: "dialog", data: { controller: "popup" }
+
+  table.w-full
     - family_rsvp.active_family_members.each do |family_member|
       - response_glyph = ApplicationHelper::RESPONSE_GLYPHS[family_member.response.to_sym]
       - response_color = ApplicationHelper::RESPONSE_COLORS[family_member.response.to_sym]
 
-      li.py-1
-        i.fa-solid.fa-fw(class="#{response_glyph} text-#{response_color}")
-        | &nbsp;&nbsp;
-        = family_member.first_name
+      tr
+        td
+          = family_member.first_name
+
+        td
+          i.fa-solid.fa-fw(class="#{response_glyph} text-#{response_color}")
+          | &nbsp;
+          = t("rsvp_#{family_member.response.to_s}").downcase
       
         - if event.shifts?
           - rsvp.event_shift_ids.each do |shift_id|
@@ -21,5 +36,15 @@ article#rsvp_section
               i.fa-solid.fa-circle-check.text-amber-500.mr-1
               = shift.name
 
-  = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: event, show_rsvp: params[:variation] == "rsvp" }            
+  p.text-stone-500.text-xs.mt-3
+    = t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at))
+    
+    - if event.limits_headcount?
+      = " with "
+      = t("events.partials.event_row.rsvp_closes_at.headcount_remaining", count: event.headcount_remaining)
+
+    = "."
+
+  
+  / = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: event, show_rsvp: params[:variation] == "rsvp" }            
         

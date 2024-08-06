@@ -1,8 +1,10 @@
 - return unless @event.organizers.present?
 
-section#organizer.py-4.border-t.border-stone-800
-  h2.font-bold.text-lg.mb-2
-    = t("events.show.organizer")
+section.pt-3
+  header.flex.flex-row.justify-between.items-center.mb-3
+    h3.font-semibold.text-brand-500
+      i.fa-light.fa-person-circle-check.mr-2
+      = "Event Organizer"
 
   dl
     - @event.organizers.each do |organizer|

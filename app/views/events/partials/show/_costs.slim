@@ -1,10 +1,11 @@
 - return unless @event.requires_payment?
 - family_rsvp = FamilyRsvp.new(current_member, @event)
 
-article.px-2.py-4.flex.flex-col.gap-2.items-center.justify-between
-  .fa-stack
-    i.fa-solid.fa-circle.fa-stack-2x.text-lime-600
-    i.fa-solid.fa-dollar.fa-stack-1x.fa-inverse
+article.pt-2
+  header.flex.flex-row.justify-between.items-center.mb-3
+    h3.font-semibold.text-brand-500
+      i.fa-light.fa-money-bill.mr-2
+      = "Cost"
 
   - if @event.cost_adult == @event.cost_youth
     .font-normal
@@ -20,12 +21,3 @@ article.px-2.py-4.flex.flex-col.gap-2.items-center.justify-between
       .inline = number_to_currency(@event.cost_adult, precision: 0)
       = " per adult "
 
-  - if family_rsvp.any_accepted?
-    .text-lime-600.text-center
-      - if family_rsvp.paid? == :in_full
-        i.fa-solid.fa-check.text-lime-600.mr-2
-        = t(".paid")  
-      - else
-        .font-normal.py-2
-          i.fa-solid.fa-exclamation-triangle.text-lime-600.mr-1
-          = t(".unpaid")

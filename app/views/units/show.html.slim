@@ -48,7 +48,7 @@
                     - elsif rsvp&.declined?
                       i.fa-couch.fas.text-red-500(title="Not going")
                     - else
-                      i.fa-ghost.fas.text-stone-300(title="No response")
+                      i.fa-light.fa-ghost.text-stone-300(title="No response")
 
                   = member.display_first_name
                   = " (you)" if member == current_member

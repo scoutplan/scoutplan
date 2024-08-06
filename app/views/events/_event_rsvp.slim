@@ -34,7 +34,7 @@ article.px-2.py-3
         p
           - if !rsvp.present?
             .inline-block.w-8.text-center
-              i.fa-solid.fa-ghost.text-stone-400
+              i.fa-light.fa-ghost.text-stone-400
             = member.display_first_name
             = " (no response)"
           - elsif rsvp.accepted?

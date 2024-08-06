@@ -2,16 +2,25 @@ doctype html
 html.scroll-smooth
   head
     title#page_title = yield :title
+    
     meta name="viewport" content="width=device-width,initial-scale=1"
+    
     = csrf_meta_tags
+    
     = csp_meta_tag
+    
     = favicon_link_tag "favicon.ico"
+
     = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
     = stylesheet_link_tag "application", "data-turbo-track": "reload"
     = stylesheet_link_tag "https://rsms.me/inter/inter.css"
+    = stylesheet_link_tag "https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css"
+
     = javascript_importmap_tags
+    
     = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: "anonymous"
     = javascript_include_tag "main"
+    = javascript_include_tag "https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"
 
     link(rel="manifest" crossorigin="use-credentials" href="/manifest.json")
 

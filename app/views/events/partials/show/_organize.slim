@@ -4,7 +4,9 @@
 
 article.pt-4
   header.flex.flex-row.justify-between.items-center.mb-3
-    h3.font-semibold Group RSVPs
+    h3.font-semibold.text-brand-500
+      i.fa-light.fa-gauge.mr-2
+      = "Event Dashboard"
 
     i.fa-light.fa-shield.text-brand-500(title="This section is visible to you because you're a Unit Administrator or an Event Organizer." aria-hidden="true")
 
@@ -12,5 +14,5 @@ article.pt-4
 
   = link_to dashboard_unit_event_path(@event.unit, @event),
             class: "w-full block py-2 px-3 rounded border border-violet-500 text-violet-500 hover:bg-violet-100 text-center font-medium",
-            data: { turbo_action: "advance" } do
+            data: { turbo_action: "advance", turbo_frame: "main" } do
     = t("events.show.buttons.organize")

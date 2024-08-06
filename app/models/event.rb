@@ -296,12 +296,20 @@ class Event < ApplicationRecord
     location&.map_name || location&.address
   end
 
-  def next
-    @next ||= unit.events.published.where("starts_at > ?", starts_at).order("starts_at ASC").first
+  def series_scope(unit_membership = nil)
+    if unit_membership && EventPolicy.new(unit_membership).view_drafts?
+      unit.events.all
+    else
+      unit.events.published
+    end
   end
 
-  def previous
-    @previous ||= unit.events.published.where("starts_at < ?", starts_at).order("starts_at ASC").last
+  def next(unit_membership = nil)
+    @next = series_scope(unit_membership).where("starts_at > ?", starts_at).order("starts_at ASC").first
+  end
+
+  def previous(unit_membership = nil)
+    @previous = series_scope(unit_membership).where("starts_at < ?", starts_at).order("starts_at ASC").last
   end
 
   def packing_lists
