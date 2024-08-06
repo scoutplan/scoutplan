@@ -22,7 +22,7 @@ html.scroll-smooth
       aside.-ml-80.lg:ml-0.lg:w-80.bg-stone-50.fixed.h-full.p-3(data-controller="sidebar")
         = render partial: "layouts/nav"
 
-      main.w-full.h-full.p-12.lg:ml-80.overflow-hidden
+      main.w-full.h-full.p-1.md:p-12.lg:ml-80.overflow-hidden
         = render partial: "layouts/flash"
         = render partial: "layouts/password_prompt"
         = turbo_frame_tag :main

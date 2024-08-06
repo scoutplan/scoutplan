@@ -3,13 +3,11 @@
                 Flipper.enabled?(:payments, @current_unit) && \
                 @current_unit.payments_enabled?
 
-section.py-4.font-bold.border-t.border-stone-800.dark:border-stone-700
-  .flex.flex-col.md:flex-row.justify-between.md:items-center.gap-2
-    div
-      .fa-stack.mr-1
-        i.fa-solid.fa-circle.fa-stack-2x.text-lime-600
-        i.fa-solid.fa-dollar.fa-stack-1x.fa-inverse
+section
+  header.mb-3
+    h3.font-semibold Payment
 
+    p
       - if @event.cost_adult == @event.cost_youth
         = t("events.show.payment_amount_prompt", amount: number_to_currency(@event.cost_adult, precision: 0))
       - else
@@ -19,7 +17,7 @@ section.py-4.font-bold.border-t.border-stone-800.dark:border-stone-700
       - if @family_rsvps.any?
         - if @amount_due > 0
 
-          .flex.flex-row.items-center
+          .flex.flex-row
             = link_to "#", title: "View payment breakout",
                       class: "grow-0 px-2",
                       onclick: "document.querySelector('#payment_breakout').classList.toggle('hidden'); return false;" do

@@ -7,6 +7,7 @@ export default class extends Controller {
 
   connect() {
     this.populateRepeatUntilSelectOptions();
+    console.log("event edit controller connected");
   }
 
   // addAttachmentToPendingList(filename) {
@@ -73,8 +74,8 @@ export default class extends Controller {
   async populateRepeatUntilSelectOptions() {
     const startsAt = this.startsAtDateTarget.value;
     const unitId = this.unitIdValue;
-    const query = new URLSearchParams({ "a": "b", "starts_at": startsAt });
-    await get(`/u/${unitId}/schedule/repeat_options/${startsAt}`, { query: query, responseKind: "turbo-stream" });     
+    // const query = new URLSearchParams({ "a": "b", "starts_at": startsAt });
+    await get(`/u/${unitId}/schedule/repeat_options/${startsAt}`, { responseKind: "turbo-stream" });     
   }
 
   hideDocumentLibrary(event) {

@@ -3,11 +3,11 @@
 }
 
 input.dp-switch + label .switch-container {
-  background: #666;
+  background: #999;
   display: inline-block;
   border-radius: 9999px;
-  width: 3.5em;
-  height: 2em;
+  width: 2.8em;
+  height: 1.5em;
   position: relative;
   padding: 0.25em;
   flex-shrink: 0;
@@ -17,19 +17,19 @@ input.dp-switch + label .switch-button {
   background: #fff;
   display: block;
   position: absolute;
-  width: 1.5em;
-  height: 1.5em;
+  width: 1.0em;
+  height: 1.0em;
   border-radius: 9999px;
   transform: translateX(0);
   transition: transform 0.25s;
 }
 
 input.dp-switch:checked + label .switch-container {
-  background: #16a34a;
+  background: #E66425;
 }
 
 input.dp-switch:checked + label .switch-button {
-  transform: translateX(1.5em);
+  transform: translateX(1.3em);
   transition: transform 0.25s;
 }
 

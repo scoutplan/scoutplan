@@ -3,7 +3,10 @@
 - acceptance_count = @event.rsvps.accepted_intent.count
 
 article.pt-4
-  h3.font-semibold.mb-3 Group RSVPs
+  header.flex.flex-row.justify-between.items-center.mb-3
+    h3.font-semibold Group RSVPs
+
+    i.fa-light.fa-shield.text-brand-500(title="This section is visible to you because you're a Unit Administrator or an Event Organizer." aria-hidden="true")
 
   p.mb-3 = acceptance_count.zero? ? t("events.show.captions.attendees_zero") : "#{pluralize(acceptance_count, 'person')} #{acceptance_count == 1 ? "is" : "are"} going"
 

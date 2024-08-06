@@ -4,7 +4,7 @@
   = switch("", :limit_headcount, switch_options, "true", "false")
 
   = f.text_field :max_total_attendees,
-                class: "w-24 border border-stone-400 dark:border-stone-700 rounded bg-white dark:bg-black p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
+                class: "text-sm w-24 border border-stone-400 dark:border-stone-700 rounded bg-white dark:bg-black p-1 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
                 disabled: !event.limits_headcount?,
                 inputmode: :numeric,
                 min: 0,

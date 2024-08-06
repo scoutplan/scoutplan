@@ -1,10 +1,10 @@
 module TagsHelper
   def switch(object_name, method, options = {}, checked_value = "1", unchecked_value = "0")
-    content_tag(:span, class: "switch-wrapper #{options[:class]}") do
+    content_tag(:span, class: "switch-wrapper #{options[:class]}", style: options[:style]) do
       check_box(
         object_name, method,
         { checked: options[:checked], disabled: options[:disabled],
-          data: options[:data], role: "switch", class: "dp-switch" },
+          data: options[:data], role: "switch", class: "dp-switch #{options[:check_box_class]}" },
         checked_value, unchecked_value
       ) +
         label(object_name, method, class: "flex items-center") do

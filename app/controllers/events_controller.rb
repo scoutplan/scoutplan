@@ -11,7 +11,9 @@ class EventsController < UnitContextController
   layout :current_layout
 
   before_action :authenticate_user!, if: :needs_authentication?
-  before_action :find_event, except: %i[index list calendar threeup paged_list spreadsheet create new bulk_publish public my_rsvps signups repeat_options]
+  before_action :find_event,
+                except: %i[index list calendar threeup paged_list spreadsheet create new bulk_publish public my_rsvps signups
+                           repeat_options]
   before_action :collate_rsvps, only: [:show, :rsvps]
   before_action :set_calendar_dates, only: [:calendar, :list, :paged_list]
   before_action :remember_unit_events_path, only: [:list, :calendar]
@@ -162,7 +164,8 @@ class EventsController < UnitContextController
   def new
     if params[:parent_event_id]
       @parent_event = current_unit.events.find(params[:parent_event_id])
-      redirect_to unit_events_path(current_unit), status: :user_not_authorized unless EventPolicy.new(current_member, @parent_event).edit?
+      redirect_to unit_events_path(current_unit), status: :user_not_authorized unless EventPolicy.new(current_member,
+                                                                                                      @parent_event).edit?
     end
 
     if (source_event_id = params[:source_event_id])
@@ -235,7 +238,9 @@ class EventsController < UnitContextController
 
     @event.destroy!
     respond_to do |format|
-      format.html { redirect_to unit_events_path(current_unit), notice: "Event has been permanently removed from the schedule." }
+      format.html do
+        redirect_to unit_events_path(current_unit), notice: "Event has been permanently removed from the schedule."
+      end
       format.turbo_stream
     end
   end
@@ -395,6 +400,7 @@ class EventsController < UnitContextController
                                       :max_total_attendees, :rsvp_closes_at, :rsvp_opens_at,
                                       :note, :cost_youth, :cost_adult, :online, :website, :tag_list,
                                       :notify_members, :notify_recipients, :notify_message, :document_library_ids,
+                                      :cover_photo,
                                       packing_list_ids: [], attachments: [], private_attachments: [],
                                       event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy],
                                       event_organizers_attributes: [:unit_membership_id])
@@ -488,7 +494,8 @@ class EventsController < UnitContextController
   def scope_for_list
     scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = if params[:season] == "next"
-              scope.where("starts_at BETWEEN ? AND ?", current_unit.next_season_starts_at, current_unit.next_season_ends_at)
+              scope.where("starts_at BETWEEN ? AND ?", current_unit.next_season_starts_at,
+                          current_unit.next_season_ends_at)
             else
               scope.where("starts_at BETWEEN ? AND ?", @start_date.in_time_zone, @end_date.in_time_zone)
             end
@@ -499,7 +506,8 @@ class EventsController < UnitContextController
   def scope_for_pdf
     scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = if params[:season] == "next"
-              scope.where("starts_at BETWEEN ? AND ?", current_unit.next_season_starts_at, current_unit.next_season_ends_at)
+              scope.where("starts_at BETWEEN ? AND ?", current_unit.next_season_starts_at,
+                          current_unit.next_season_ends_at)
             else
               scope.where("starts_at BETWEEN ? AND ?", Date.current.beginning_of_month, current_unit.season_ends_at)
             end
