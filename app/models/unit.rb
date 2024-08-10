@@ -8,6 +8,7 @@ class Unit < ApplicationRecord
   has_many :documents, as: :documentable
   has_many :events
   has_many :event_categories
+  has_many :external_integrations, dependent: :destroy
   has_many :unit_memberships
   has_many :users, through: :unit_memberships
   has_many :locations, through: :events

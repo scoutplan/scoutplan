@@ -34,7 +34,6 @@ class UnitMembership < ApplicationRecord
 
   has_many :rsvp_tokens, dependent: :destroy
   has_many :event_rsvps, dependent: :destroy
-  has_many :external_integrations, dependent: :destroy
   has_many :magic_links, dependent: :destroy
   has_many :messages, foreign_key: :author_id
   has_many :visits, class_name: "Ahoy::Visit"

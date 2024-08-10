@@ -1,8 +1,14 @@
 header.flex.flex-row.justify-between.pt-2.mx-2.w-full
   .left.flex.flex-row
     nav.persistent-nav.flex.flex-row.items-center.gap-0
-      = button_tag "Menu", class: "menu-toggle" do
-        i.fa-regular.fa-bars
+      details
+        summary.menu-toggle
+          i.fa-regular.fa-bars
+        nav.side-nav
+          a href="/history" History
+          a href="/eagles" Eagles
+          a href="/contact" Contact
+          a href="https://www.scoutbook.com/mobile/dashboard/calendar/event.asp?EventID=0&UnitID=8309" Member Login
 
       = link_to "/", class: "unit-id block font-bold" do
         = "#{@unit.name} #{@unit.location}"

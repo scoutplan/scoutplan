@@ -1,26 +1,53 @@
-section.relative.hero(style="background-image: url('https://images.squarespace-cdn.com/content/v1/5f31b0c91e47a83c6b3559d1/705a6ecf-5466-4df9-b662-cc46bbca0ee6/P6300222.jpg');")
-  .top-gradient
-  .bottom-gradient
+main
+  section.relative.hero(style="background-image: url('https://images.squarespace-cdn.com/content/v1/5f31b0c91e47a83c6b3559d1/705a6ecf-5466-4df9-b662-cc46bbca0ee6/P6300222.jpg');")
+    .top-gradient
+    .bottom-gradient
 
-  .max-w-7xl.mx-auto
-    = render "#{@slug}_site_header"
+    .max-w-7xl.mx-auto
+      = render "#{@slug}_site_header"
 
-    .flex.flex-row.mt-80.lg:mt-72
-      .left.w-full
-        h1
-          | A tradition of leadership, skill, <br>and community service <br>since 1938.
-          = image_tag "/t2-logo.png", alt: "Troop 2 logo", class: "unit-logo"
+      .flex.flex-row.mt-80.lg:mt-72
+        .left.w-full
+          h1
+            | A Scouting tradition of leadership, skill, <br>and community service <br>since 1938.
+            = image_tag "/t2-logo.png", alt: "Troop 2 logo", class: "unit-logo"
 
-  .absolute.left-0.bottom-0.p-4.text-white.opacity-50.photo-caption
-    | Photo: Troop 2 at BSA Sea Base in the Florida Keys
+    .absolute.left-0.bottom-0.p-4.text-white.opacity-50.photo-caption
+      | Photo: Troop 2 at BSA Sea Base in the Florida Keys
 
-= render partial: "upcoming_events"
+  = render partial: "upcoming_events"
 
-section.max-w-3xl.mx-auto.py-12.text-lg.px-4.flex.flex-row.gap-6
-  p We are a <a href="https://www.scouting.org">Scouting America</a> Troop serving boys age 11-17 in lower Westchester County, NY. We meet at the Church of the Immaculate Heart of Mary in Scarsdale on Thursday evenings. Our program includes camping, hiking, community service, and leadership development.
+  section.content.max-w-6xl.mx-auto.py-12.text-lg.px-4.grid.grid-cols-1.lg:grid-cols-3.gap-12
+    article
+      h3 Who we are
+      p We're a Scouting America<sup>*</sup> Troop serving boys ages 11&thinsp;&ndash;&thinsp;18 in lower Westchester County, NY.
+        We meet at the Church of the Immaculate Heart of Mary in Scarsdale on Thursday evenings during the school year.
+        We typically have 20 to 25 active Scouts and we think that's the perfect size for a Troop&thinsp;&mdash;&thinsp;big enough to be structured, small enough to be personal.
 
-  div
-    h3 Join us
-    p Lorem ipsum odor amet, consectetuer adipiscing elit. Mauris fames duis scelerisque nisl volutpat mollis sapien donec. Porta orci mauris curae dictum neque, rutrum et maximus amet. Semper tristique nullam habitasse mi luctus malesuada. Proin iaculis maximus sodales blandit senectus phasellus dictumst. Elementum aliquam laoreet justo a duis aliquam donec mollis. Semper ligula ornare torquent conubia, neque odio. Parturient tortor velit et eu nunc vehicula ex. Montes cursus ullamcorper habitasse in; et dis libero? Eu eget ornare taciti in sociosqu donec.
+      p We've been around for over 80 years and continuously chartered by the same organization during that time.
+        NN of our Scouts have earned the rank of <a href="/eagles">Eagle Scout</a>, the highest rank in Scouting.
+        We're proud of our history and we're excited about our future.      
 
-= render partial: "instagram"
+      p.footnote <sup>*</sup> Formerly, Boy Scouts of America
+
+    article
+      h3 Our program
+      p Scouting America and Troop 2 Scarsdale emphasizes leadership, outdoor skills, and community service.
+      p Our season runs concurrent with the school year. During that time we meet on Thursdays, camp at least once a month, and hold a day event once a month.
+        During the summer we have a week-long summer camp in the Adirondacks.
+      p Most summers our older Scouts visit a <a href="https://www.scouting.org/national-high-adventure-bases/">High Adventure base</a> that takes us to places like the Florida Keys, the Boundary Waters in Minnesota, and Philmont Scout Ranch in New Mexico.
+
+
+    article
+      h3 All are welcome
+      p Our membership represents a diverse cross-section of Scouts seeking adventure, self-reliance, and community engagement.
+        Our families join us from Yonkers to Harrison to Chappaqua, and everywhere in between.
+      p We're proudly and continuously chartered by the Church of the Immaculate Heart of Mary since 1938 and we welcome members of all faiths.
+      p Although co-ed Troops are now a part of Scouting America, ours is an all-boy Troop (you can find a girl or co-ed Troop <a href="https://beascout.scouting.org/list/?zip=10583&program%5B0%5D=scoutsBSA&scoutsBSAFilter=GirlsOnly&miles=10">here</a>).
+      
+
+  section.bg-stone-800
+    .max-w-6xl.mx-auto
+      = "What we do"
+
+  = render partial: "instagram"

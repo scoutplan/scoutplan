@@ -74,7 +74,7 @@ nav.bg-stone-50.text-stone-700.h-full.w-60.w-full
           = t("main_nav.settings")
 
     .bottom.mb-4
-      - if current_member.units.count > 0
+      - if current_member.units.count > 1
         = label_tag :show_unit_browser, class: "block relative w-full p-2 text-sm text-stone-500 hover:bg-stone-200 rounded font-medium" do
           = check_box_tag :show_unit_browser, class: "hidden peer"
           i.fa-regular.fa-chevron-down.discloure-glyph.peer-checked:rotate-180.transition-all
@@ -83,4 +83,7 @@ nav.bg-stone-50.text-stone-700.h-full.w-60.w-full
 
           nav#unit_list.w-full.absolute.left-0.right-0.p-2.bottom-full.bg-white.border.border-stone-200.rounded-lg.drop-shadow-overhead.hidden.peer-checked:block
             - current_member.units.each do |unit|
-              = link_to unit.name, unit, class: "block p-2 hover:bg-stone-200"
+              = link_to unit, class: "block p-2 hover:bg-stone-200" do
+                - if unit == current_unit
+                  i.fa-solid.fa-circle.text-brand-500.mr-2.fa-xs
+                = unit.name

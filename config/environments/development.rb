@@ -9,7 +9,7 @@ Rails.application.configure do
     IPAddr.new("::/0"),             # All IPv6 addresses.
     "localhost",                    # The localhost reserved domain.
     "scoutplan.ngrok.io",
-    "*.sites.#{ENV["RAILS_DEVELOPMENT_HOSTS"]}",
+    "*.sites.#{ENV['RAILS_DEVELOPMENT_HOSTS']}",
     ENV["RAILS_DEVELOPMENT_HOSTS"]
   ]
 
@@ -33,6 +33,8 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  # config.action_controller.default_url_options = { host: "go.scoutplan-local.org", protocol: :https }
+
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :digitalocean
 
@@ -42,8 +44,8 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors  = true
   # config.action_mailer.delivery_method        = :smtp
   # config.action_mailer.perform_caching        = false
-  config.action_mailer.default_url_options      = { host: "go.scoutplan-local.org", protocol: :https }
-  config.action_mailer.smtp_settings          = { address: "mailcatcher", port: 1025 }
+  config.action_mailer.default_url_options = { host: "go.scoutplan-local.org", protocol: :https }
+  config.action_mailer.smtp_settings = { address: "mailcatcher", port: 1025 }
 
   # config.action_mailer.delivery_method = :postmark
   config.action_mailer.postmark_settings = {
@@ -112,6 +114,6 @@ Rails.application.configure do
     # Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
     # Bullet.stacktrace_excludes = [ 'their_gem', 'their_middleware', ['my_file.rb', 'my_method'], ['my_file.rb', 16..20] ]
     # Bullet.slack = { webhook_url: 'http://some.slack.url', channel: '#default', username: 'notifier' }
-  end  
+  end
 end
 # rubocop:enable Metrics/BlockLength

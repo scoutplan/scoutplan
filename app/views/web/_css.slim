@@ -6,11 +6,6 @@
       font-family: 'Inter', sans-serif;
     }
 
-    main {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
     .hero {
       background-size: cover;
       background-position: center;
@@ -111,7 +106,7 @@
           letter-spacing: 0.1rem;
         }
 
-        button.menu-toggle {
+        .menu-toggle {
           padding: 1rem;
           background: none;
           border: none;
@@ -229,3 +224,36 @@
         display: block;
       } 
     }
+
+    .content {
+      h3 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        margin-bottom: 1rem;
+      }
+
+      p.footnote {
+        font-size: 14px;
+      }
+
+      a {
+        color: blue;
+        text-decoration: underline;
+      }
+    }
+
+    .side-nav {
+      background: rgba(0, 0, 0, 0.9);
+      position: fixed;
+      top: 6rem;
+      bottom: 0;
+      left: 1px;
+      right: 1px;
+      z-index: 10;
+      border-radius: 1rem 1rem 0 0;
+    }
+

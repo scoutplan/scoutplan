@@ -5,7 +5,7 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
-  get 'integrations/index'
+  get "integrations/index"
   get "welcome/index"
   get "", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
   get "*path", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
@@ -46,6 +46,8 @@ Rails.application.routes.draw do
   get "new_unit/communication_preferences", to: "new_unit#communication_preferences"
   post "new_unit/save_communication_preferences", to: "new_unit#save_communication_preferences"
   get "new_unit/done", to: "new_unit#done"
+
+  get "callbacks/instagram", to: "instagram_external_integrations#callback"
 
   resources :event_activities, as: "activities"
   resources :users, only: [:show, :become, :update]
