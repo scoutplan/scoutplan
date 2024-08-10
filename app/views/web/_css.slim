@@ -15,7 +15,7 @@
       background-size: cover;
       background-position: center;
       position: relative;
-      height: 60rem;
+      height: 30rem;
       color: #fff;
       text-align: center;
 
@@ -23,7 +23,7 @@
         position: absolute;
         font-family: serif;
         font-weight: 300;
-        font-size: 72px;
+        font-size: 24px;
         left: 0;
         right: 0;
         bottom: 5%;
@@ -36,6 +36,27 @@
           font-size: 12px;
           display: block;
           margin: 0 auto;
+        }
+      }
+
+      @media (min-width: 768px) {
+        h1 {
+          font-size: 36px;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        h1 {
+          font-size: 48px;
+        }
+        .hero {
+          height: 40rem;
+        }        
+      }
+
+      @media (min-width: 1280px) {
+        h1 {
+          font-size: 72px;
         }
       }
 
@@ -90,33 +111,41 @@
           letter-spacing: 0.1rem;
         }
 
-        nav.main-nav {
-          display: flex;
-          justify-content: center;
-          align-content: center;
-          margin: 0 auto;
+        button.menu-toggle {
+          padding: 1rem;
+          background: none;
+          border: none;
+          color: #fff;
+          font-size: 1.5rem;
+          cursor: pointer;
+        }
 
+        a.unit-id {
+          font-weight: 700;
+        }
+
+        nav.persistent-nav {
+
+        }
+
+        nav.main-nav, nav.persistent-nav {
           a {
             display: inline-block;
-            padding: 2rem 0.5rem;
+            padding: 2rem 1rem;
           }
         }
 
-        nav.cta {
-          position: absolute;
-          top: 1rem;
-          right: 0;
-          bottom: 0;
 
-          a {
-            display: inline-block;
-            padding: 1rem 2rem;
-            border: 3px solid white;
-            border-radius: 9999px;
 
-            &:hover {
-              background: rgba(255, 255, 255, 0.1);
-            }
+        a.cta {
+          display: inline-block;
+          padding: 1rem 2rem;
+          border: 3px solid white;
+          border-radius: 9999px;
+          margin-left: 1rem;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.1);
           }
         }
 
@@ -132,4 +161,71 @@
           }
         }
       }
+    }
+
+    .unit-logo {
+      width: 200px;
+    }
+
+    .button.menu-toggle {
+      display: block;
+    } 
+
+    .photo-caption {
+      font-size: 11px;
+    }
+
+    .upcoming-events {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .upcoming-event {
+      display: none;
+    }
+
+    .upcoming-event:nth-child(-n+4) {
+      display: block;
+    }
+
+    @media (min-width: 768px) {
+      .hero {
+        height: 40rem;
+      }
+      .unit-logo {
+        width: 300px;
+      }
+      .upcoming-events {
+        grid-template-columns: repeat(6, 1fr);
+      }
+      .upcoming-event:nth-child(-n+6) {
+        display: block;
+      }     
+    }
+
+    @media (min-width: 1024px) {
+      .hero {
+        height: 50rem;
+      }
+      .unit-logo {
+        width: 400px;
+      }
+      .upcoming-events {
+        grid-template-columns: repeat(8, 1fr);
+      }      
+      .upcoming-event:nth-child(-n+8) {
+        display: block;
+      }     
+    }
+
+    @media (min-width: 1280px) {
+      button.menu-toggle {
+        display: none;
+      }
+      .upcoming-events {
+        grid-template-columns: repeat(10, 1fr);
+      }      
+      .upcoming-event:nth-child(-n+10) {
+        display: block;
+      } 
     }

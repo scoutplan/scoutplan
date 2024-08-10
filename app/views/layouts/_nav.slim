@@ -27,13 +27,8 @@ nav.bg-stone-50.text-stone-700.h-full.w-60.w-full
           = button_tag class: "aspect-square h-8 rounded hover:bg-stone-100" do
             i.fa-regular.fa-sidebar.fa-fw
 
-
-      
       h3.font-semibold.p-2.flex.flex-row.items-center
-        / = image_tag current_unit.logo, class: "inline h-5 w-5 rounded-full mr-2"
-
         .inline-block.rounded-full.h-5.w-5.mr-2.border(style="background: url(#{url_for(current_unit.logo)}) no-repeat center center; background-size: auto 100%;")
-
         = current_unit.name
 
       - if policy(:event).index?

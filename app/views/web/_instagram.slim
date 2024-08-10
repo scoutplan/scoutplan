@@ -1,0 +1,20 @@
+
+- response = RestClient.get("https://graph.instagram.com/v11.0/7951492691616688/media?access_token=IGQWRPLUFDaktxMktkZAVU1SDQ5Uk1ENG5BWVBTNklvUVBTRk1yQ0VpVnM1LXZASOUZApZA1kxcHVmdFB3ejBIMkQ3ZAWF0ZA2NJY3NEVWJ1dWxuS044eU9GdW9yaWVKSmZA3X3BXaXAza3gzcEU5ZAwZDZD&fields=permalink,media_url,media_type")
+- json = JSON.parse(response.body)
+
+section.bg-stone-300.text-stone-900.py-4
+  .max-w-3xl.mx-auto
+    h3.font-bold.py-4 = "From our Instagram"
+
+    .instagram-strip(style="display:grid; grid-template-columns: repeat(3, minmax(0, 1fr));")
+      - json.dig("data").each_with_index do |post, index|
+        = link_to post["permalink"], style: "aspect-ratio: 1 / 1" do
+          = image_tag post["media_url"], style: "height:100%; aspect-ratio: 1 / 1; object-fit: cover; object-position: center;"
+
+        - if index == 8
+          - break
+
+    p.text-right
+      = link_to "https://www.instagram.com/troop2scarsdale/", class: "block py-4" do
+        i.fa-brands.fa-instagram.mr-2
+        | Follow us on Instagram

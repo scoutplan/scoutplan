@@ -1,0 +1,8 @@
+section.p-4.text-sm.border-b
+  h2.mb-4.text-lg.font-bold.text-center Coming up
+
+  .upcoming-events
+    - @unit.events.published.future.limit(10).each_with_index do |event, index|
+      = link_to unit_event_path(@unit, event), class: "upcoming-event" do
+        date.font-bold = event.starts_at.strftime("%b %e")
+        h4 = event.title

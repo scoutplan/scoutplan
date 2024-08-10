@@ -3,24 +3,22 @@
 
 = content_tag(:div, data: { controller: "message-form",
                             message_form_unit_id_value: current_unit.id,
-                            action: actions.join(" ") }) do
+                            action: actions.join(" ") },
+                    class: "") do
 
-  = hidden_field_tag :test_mode, "false", id: "test_mode", data: { message_form_target: "testMode" }
+  = form_with model: [current_unit, @message], data: { turbo_action: "advance", message_form_target: "form" } do |f|
+    .hidden
+      = hidden_field_tag :test_mode, "false", id: "test_mode", data: { message_form_target: "testMode" }
+      = render partial: "messages/form/attachments_form"
+    
+    section.flex.flex-col.divide-y.text-sm.md:text-base.p-6
+      = render partial: "messages/form/from", locals: { f: f }
+      = render partial: "messages/form/to", locals: { f: f }
+      = render partial: "messages/form/subject", locals: { f: f }
+      = render partial: "messages/form/attachments"
+      = render partial: "messages/form/body", locals: { f: f }
 
-  .md:rounded-xl.md:p-12.md:pb-7.mt-6.md:drop-shadow-overhead.bg-white.dark:bg-stone-800
-    = render partial: "messages/form/header"
-    = render partial: "messages/form/attachments_form"
-
-    = form_with model: [current_unit, @message],
-                data: { turbo_action: "advance", message_form_target: "form" } do |f|   
-
-      section.flex.flex-col.divide-y.dark:divide-stone-600.text-sm.md:text-base
-        = render partial: "messages/form/from", locals: { f: f }
-        = render partial: "messages/form/to", locals: { f: f }
-        = render partial: "messages/form/subject", locals: { f: f }
-        = render partial: "messages/form/attachments"
-        = render partial: "messages/form/body", locals: { f: f }
-        = render partial: "messages/form/footer", locals: { f: f }
+    = render partial: "messages/form/footer", locals: { f: f }
 
 css:
   trix-toolbar {
@@ -84,15 +82,11 @@ css:
   }
 
   .search-result.not-contactable .name {
-    color: #84cc16;
+    color: #aaa;
   }
 
   .search-result.not-contactable .contact-methods {
-    color: #84cc16;
-  }  
-
-  .search-result.selected {
-    background: #365314;
+    color: #aaa;
   }
 
   @media (prefers-color-scheme: dark) {

@@ -5,6 +5,7 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
+  get 'integrations/index'
   get "welcome/index"
   get "", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
   get "*path", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
@@ -186,6 +187,8 @@ Rails.application.routes.draw do
         end
       end
     end
+
+    resources :integrations
 
     resources :photos
 

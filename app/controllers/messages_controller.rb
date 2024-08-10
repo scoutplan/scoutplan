@@ -92,9 +92,11 @@ class MessagesController < UnitContextController
                     current_unit.events.find(id).rsvps.accepted.map { |r| CandidateMessageRecipient.new(r.member) }
                   when "dl"
                     case id
-                    when "all" then current_unit.members.status_active_and_registered.includes(:user, parents: [:user], children: [:user])
+                    when "all" then current_unit.members.status_active_and_registered.includes(:user, parents:  [:user],
+                                                                                                      children: [:user])
                     when "active" then current_unit.members.active.includes(:user, parents: [:user], children: [:user])
-                    when "adults" then current_unit.members.active.adult.includes(:user, parents: [:user], children: [:user])
+                    when "adults" then current_unit.members.active.adult.includes(:user, parents:  [:user],
+                                                                                         children: [:user])
                     end
                   end
 
@@ -135,8 +137,8 @@ class MessagesController < UnitContextController
   def set_addressables
     lists = current_unit.distribution_lists
     events = current_unit.events.includes(event_rsvps: [unit_membership: :user]).published.rsvp_required.recent_and_future
-    members = current_unit.members.includes(:setting_objects, :event_rsvps, user: :setting_objects)
-                   .order("users.last_name, users.first_name")
+    members = current_unit.members.includes(:setting_objects, :event_rsvps,
+                                            user: :setting_objects).order("users.last_name, users.first_name")
 
     @addressables = MessagingSearchResult.to_a(lists + events + members)
   end
@@ -219,7 +221,7 @@ class MessagesController < UnitContextController
 
   def set_senders
     @eligible_senders = current_unit.members.adult.status_active_and_registered
-                             .includes(:user).order("users.first_name, users.last_name")
+                                    .includes(:user).order("users.first_name, users.last_name")
   end
 end
 

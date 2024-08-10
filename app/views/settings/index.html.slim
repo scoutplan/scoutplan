@@ -51,5 +51,12 @@
           i.fa-regular.fa-fw.fa-rotate-right.fa-spin.mr-2.active
           = "Payments"
 
+      - if Flipper.enabled?(:integrations, current_unit)
+        = link_to unit_integrations_path(current_unit),
+                  class: "block px-2 py-3 font-medium hover:bg-stone-100 dark:hover:bg-black",
+                  data: { turbo_action: "advance" } do
+          i.fa-regular.fa-fw.fa-puzzle-piece.mr-2
+          = "Integrations"
+
   javascript:
     document.title = "Settings · #{current_unit.name}"

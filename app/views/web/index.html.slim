@@ -1,6 +1,8 @@
 head
   = stylesheet_link_tag "https://rsms.me/inter/inter.css"
   = stylesheet_link_tag "https://use.typekit.net/yrz7cru.css"
+  = javascript_include_tag "https://cdn.tailwindcss.com"
+  = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: "anonymous"
   = render "css"
   title = @unit.name
 
