@@ -312,9 +312,10 @@ details > summary {
   list-style: none;
 }
 
-details > summary::marker, /* Latest Chrome, Edge, Firefox */ 
-details > summary::-webkit-details-marker /* Safari */ {
+summary::marker, /* Latest Chrome, Edge, Firefox */ 
+summary::-webkit-details-marker /* Safari */ {
   display: none;
+  content: "";
 }
 
 .date-badge-now ~ .date-badge-next {

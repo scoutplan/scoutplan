@@ -5,7 +5,7 @@
 
 = render partial: "events/month_header", locals: { event: event }
 
-li.event.md:px-2.py-2.hover:bg-stone-50.dark:hover:bg-stone-800(class="#{row_classes(event)}" id="#{dom_id(event)}")
+li.event.-mx-2.px-2.py-2.hover:bg-stone-50.dark:hover:bg-stone-800(class="#{row_classes(event)}" id="#{dom_id(event)}")
   .flex.flex-row.items-center
     = link_to href,
               class: "event py-2 block w-full",
@@ -15,10 +15,6 @@ li.event.md:px-2.py-2.hover:bg-stone-50.dark:hover:bg-stone-800(class="#{row_cla
                        turbo_frame: "modal", turbo_action: "advance" } do
 
       .flex.flex-col.md:flex-row.gap-2
-        // 2 icon
-        .second.hidden.md:block.w-8.text-center.shrink-0.pt-2
-          = glyph_tag(event)
-
         // 1 date & time
         .first.time.shrink-0.md:w-32.flex.flex-row.md:flex-col.gap-1.md:gap-0.items-baseline.md:items-start
           .date.font-medium.text-2xl.md:text-3xl.leading-0.dark:text-stone-100
@@ -32,7 +28,9 @@ li.event.md:px-2.py-2.hover:bg-stone-50.dark:hover:bg-stone-800(class="#{row_cla
 
         // 3 title, tags, description, location
         .third
-          h4.text-xl.font-semibold.event-title.mr-2.inline-block = event.title
+          h4.text-xl.font-semibold.event-title.mr-2.inline-block
+            i.fa-solid.fa-xs.fa-fw.mr-1(class="fa-#{event&.category&.glyph}" style="color: #{event&.category&.color}")
+            = event.title
           = render partial: "events/partials/event_row/title_badge", locals: { event: event }
           = render partial: "events/partials/index/short_description", locals: { event: event }
           = render partial: "events/event_location", locals: { event: event }

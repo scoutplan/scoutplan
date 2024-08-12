@@ -1,7 +1,7 @@
-nav.bg-stone-50.text-stone-700.h-full.w-60.w-full
+nav.bg-stone-50.text-stone-700.h-full.w-60.w-full.z-10
   .flex.flex-col.justify-between.h-full
     .top
-      header.mb-3.relative
+      header.mb-3.relative.flex.flex-row.justify-between.z-10
         .dropdown.inline-block
           = link_to "#",
                     class: "block -mx-2 px-4 py-2 dropdown-button dropdown-button-chevron font-semibold text-sm",
@@ -13,19 +13,18 @@ nav.bg-stone-50.text-stone-700.h-full.w-60.w-full
             = render partial: "layouts/partials/user_menu_items"
 
         - if Flipper.enabled?(:inbox, current_member)
-          .absolute.right-8.top-0
-            = link_to unit_notifications_path(current_unit),
-                      id: "inbox_button",
-                      class: "block aspect-square h-8 relative rounded hover:bg-stone-100 group-[.notifications]/controller:text-brand-700 group-[.notifications]/controller:bg-brand-200",
-                      data: { sidebar_class: "notifications" } do
-                .fa-layers.fa-fw.absolute.left-1/2.top-1/2.-translate-x-1/2.-translate-y-1/2
-                  i.fa-regular.fa-bell
-                  - if (count = current_member.notifications.unread.count).positive?
-                    i.fa-solid.fa-circle.text-xs.text-brand-500(data-fa-transform="shrink-6 up-10 right-10")
+          = link_to unit_notifications_path(current_unit),
+                    id: "inbox_button",
+                    class: "absolute right-8 block aspect-square h-8 relative rounded hover:bg-stone-100 group-[.notifications]/controller:text-brand-700 group-[.notifications]/controller:bg-brand-200",
+                    data: { sidebar_class: "notifications" } do
+              .fa-layers.fa-fw.absolute.left-1/2.top-1/2.-translate-x-1/2.-translate-y-1/2
+                i.fa-light.fa-bell
+                - if (count = current_member.notifications.unread.count).positive?
+                  i.fa-solid.fa-circle.text-xs.text-brand-500(data-fa-transform="shrink-6 up-10 right-10")
 
-        .absolute.right-0.top-0
-          = button_tag class: "aspect-square h-8 rounded hover:bg-stone-100" do
-            i.fa-regular.fa-sidebar.fa-fw
+        = button_tag class: "aspect-square h-8 rounded hover:bg-stone-100 cursor-pointer absolute -right-12 lg:right-0 z-10",
+                      data: { action: "sidebar#toggle" } do
+          i.fa-light.fa-bars.fa-fw
 
       h3.font-semibold.p-2.flex.flex-row.items-center
         .inline-block.rounded-full.h-5.w-5.mr-2.border(style="background: url(#{url_for(current_unit.logo)}) no-repeat center center; background-size: auto 100%;")

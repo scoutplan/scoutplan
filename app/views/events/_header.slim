@@ -1,7 +1,8 @@
-header.flex.flex-row.justify-end.-mx-12.-mt-12.p-2.mb-2
-  - if user_signed_in?
-    .dropdown.relative
-      = link_to "#", class: "dropdown-button inline-block hover:bg-stone-100 p-2 rounded dark:hover:text-stone-300" do
-        i.fa-light.fa-sliders.mr-2.fa-fw
-        = "View"
-      = render partial: "events/partials/index/dropdown"
+header.p-2.mb-2.top-0.left-0.right-0.sticky.bg-white
+  .flex.flex-row.justify-end
+    - if user_signed_in?
+      .dropdown.relative
+        = link_to "#", class: "dropdown-button inline-block hover:bg-stone-100 p-2 rounded dark:hover:text-stone-300" do
+          i.fa-light.fa-sliders.mr-2.fa-fw
+          = "View"
+        = render partial: "events/partials/index/dropdown"

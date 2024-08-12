@@ -214,7 +214,7 @@
     }
 
     @media (min-width: 1280px) {
-      button.menu-toggle {
+      .menu-toggle {
         display: none;
       }
       .upcoming-events {
@@ -257,3 +257,8 @@
       border-radius: 1rem 1rem 0 0;
     }
 
+    details > summary::marker, /* Latest Chrome, Edge, Firefox */ 
+    details > summary::-webkit-details-marker /* Safari */ {
+      display: none;
+      content: "";      
+    }

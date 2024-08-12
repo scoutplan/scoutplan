@@ -14,4 +14,8 @@ export default class extends Controller {
       body.classList.toggle(linkClass === className);
     });
   }
+
+  toggle(event) {
+    document.body.classList.toggle("sidebar-open");
+  }
 }

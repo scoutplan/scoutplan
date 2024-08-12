@@ -26,12 +26,12 @@ html.scroll-smooth
 
     = yield :head
 
-  body(class="has-[section[role='dialog']]:background-green-500 dark:bg-stone-900 dark:text-stone-200 text-stone-900 group/controller #{controller_name.gsub('_', '-')} #{action_name} #{yield :body_classes} h-full")
+  body(class="has-[section[role='dialog']]:background-green-500 dark:bg-stone-900 dark:text-stone-200 text-stone-900 group/sidebar sidebar-open group/controller #{controller_name.gsub('_', '-')} #{action_name} #{yield :body_classes} h-full")
     .flex.flex-row
-      aside.-ml-80.lg:ml-0.lg:w-80.bg-stone-50.fixed.h-full.p-3(data-controller="sidebar")
-        = render partial: "layouts/nav"
+      aside.-ml-80.lg:ml-0.w-80.bg-stone-50.fixed.h-full.p-3.z-10(data-controller="sidebar")
+        = render partial: "layouts/nav"     
 
-      main.w-full.h-full.p-1.md:p-12.lg:ml-80.overflow-hidden
+      main.w-full.h-full.lg:ml-80
         = render partial: "layouts/flash"
         = render partial: "layouts/password_prompt"
         = turbo_frame_tag :main

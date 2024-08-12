@@ -6,7 +6,7 @@
                 url: @event.new_record? ? unit_events_path(current_unit) : unit_event_path(current_unit, @event),
                 method: @event.new_record? ? "post" : "patch",
                 class: "h-full",
-                data: { turbo: false, controller: "event-edit" } do |f|
+                data: { turbo: false, controller: "event-edit", event_edit_unit_id_value: current_unit.id } do |f|
 
       article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden
         header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
