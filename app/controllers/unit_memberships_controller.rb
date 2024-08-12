@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class UnitMembershipsController < UnitContextController
   # before_action :find_unit, only: %i[index new create bulk_update invite]
   before_action :find_membership, except: %i[index new create bulk_update]
@@ -44,7 +45,8 @@ class UnitMembershipsController < UnitContextController
 
     MemberRelationshipService.new(@member).update(params[:member_relationships])
 
-    flash[:notice] = t("members.confirmations.create", member_name: @member.full_display_name, unit_name: current_unit.name)
+    flash[:notice] =
+      t("members.confirmations.create", member_name: @member.full_display_name, unit_name: current_unit.name)
     redirect_to unit_members_path(current_unit)
   end
   # rubocop:enable Metrics/AbcSize
@@ -112,7 +114,7 @@ class UnitMembershipsController < UnitContextController
     @target_user = @target_membership.user
     @current_unit = @unit = @target_membership.unit
     @current_member = @unit.membership_for(current_user)
-  end  
+  end
 
   def member_params
     params.require(:unit_membership).permit(
@@ -130,8 +132,12 @@ class UnitMembershipsController < UnitContextController
   end
 
   def settings_params
+    return unless params[:settings]
+
     params.require(:settings).permit(
       communication: [:via_email, :via_sms, :receives_event_invitations, :receives_all_rsvps]
     )
   end
 end
+
+# rubocop:enable Metrics/ClassLength
