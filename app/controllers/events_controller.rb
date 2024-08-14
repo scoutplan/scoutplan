@@ -164,8 +164,9 @@ class EventsController < UnitContextController
   def new
     if params[:parent_event_id]
       @parent_event = current_unit.events.find(params[:parent_event_id])
-      redirect_to unit_events_path(current_unit), status: :user_not_authorized unless EventPolicy.new(current_member,
-                                                                                                      @parent_event).edit?
+      unless EventPolicy.new(current_member, @parent_event).edit?
+        redirect_to unit_events_path(current_unit), status: :user_not_authorized
+      end
     end
 
     if (source_event_id = params[:source_event_id])
@@ -347,7 +348,8 @@ class EventsController < UnitContextController
       starts_at:      28.days.from_now.next_occurring(:saturday).change({ hour: 10 }),
       ends_at:        28.days.from_now.next_occurring(:saturday).change({ hour: 16 }),
       rsvp_closes_at: 21.days.from_now.next_occurring(:saturday).change({ hour: 10 }),
-      rsvp_opens_at:  Date.today
+      rsvp_opens_at:  Date.today,
+      event_category: current_unit.event_categories.first
     )
     if (date_s = params[:date]).present?
       @event.starts_at = date_s.to_date

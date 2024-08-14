@@ -267,7 +267,7 @@ en:
 
         locations:
           label: "Online web address"
-          placeholder_online: "Type or paste a web address"
+          placeholder_online: "e.g. https://zoom.us/123456"
           switch_label: "This is an online event"
           title: "Event location"
 
@@ -487,7 +487,7 @@ en:
       published: "Published"
 
     new:
-      add_this_event: "Add This Event"
+      add_this_event: "Schedule This Event"
 
     organize:
       title:        "%{event_title}"

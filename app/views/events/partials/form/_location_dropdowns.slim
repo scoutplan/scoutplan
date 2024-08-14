@@ -13,6 +13,6 @@
     = select_tag "event[event_locations_attributes][#{index}][location_id]",
                  options,
                  include_blank: "None",
-                 class: "location-selector rounded border-stone-400 dark:border-stone-700 w-full dark:bg-black",
+                 class: "location-selector rounded border-stone-400 dark:border-stone-700 w-full dark:bg-black text-sm",
                  data: { action: "change->event-edit#updateLocation" }
     = hidden_field_tag "event[event_locations_attributes][#{index}][location_type]", location_type

@@ -11,84 +11,98 @@
 /! Current unit id: #{current_unit&.id}
 /! Current user id: #{current_user&.id}
 = turbo_frame_tag :main
-  = render partial: "events/header"
-  
-  header.flex.flex-row.items-center.justify-between.py-2.md:mt-8.relative.mb-2
-    h1.hidden.md:inline-block.text-2xl.font-semibold.text-center
-      = context[:first_day_of_month].strftime("%B %Y")
+  .px-2
+    = render partial: "events/header"
+    
+    header.flex.flex-row.items-center.justify-between.py-2.md:mt-8.relative.mb-2
+      h1
+        .text-2xl.font-semibold.inline
+          = context[:first_day_of_month].strftime("%B %Y")
 
-    div
-      = render partial: "events/partials/index/calendar/calendar_nav", locals: { context: context }
+        - if policy(Event).create?
+          = link_to new_unit_event_path(current_unit),
+                    class: "p-4 inline-block ml-2 text-stone-500 hover:text-brand-500 group",
+                    data: { turbo_action: "advance", turbo_frame: "modal" } do
+            .group-hover:hidden.inline
+              i.fa-solid.fa-plus.fa-fw.text-brand-500
+            .hidden.group-hover:inline
+              i.fa-solid.fa-plus-circle.fa-fw.text-brand-500
+            .inline
+              | &nbsp;
+              = "Add an event"        
 
-  .table.px-0.w-full.table-fixed.border-t
-    .table-row.font-bold
-      - 7.times do |col|
-        - dow = (col + first_day_of_week) % 7
-        .table-cell.p-2
-          .hidden.md:inline = Date::DAYNAMES[dow]
-          .inline.md:hidden = Date::DAYNAMES[dow][0, 3]
+      div
+        = render partial: "events/partials/index/calendar/calendar_nav", locals: { context: context }
 
-    // start of loop
-    - until display_day > days_in_month do
-      .table-row
+    .table.px-0.w-full.table-fixed.border-t
+      .table-row.font-bold
         - 7.times do |col|
           - dow = (col + first_day_of_week) % 7
-          - cell_class = "cal-cell-dow-#{dow}"
-          - cell_class << " cal-weekend-cell" if Date::WEEKEND_DAYS.include?(dow)
-          - display_date = context[:first_day_of_month] + display_day.days - 1
+          .table-cell.p-2
+            .hidden.md:inline = Date::DAYNAMES[dow]
+            .inline.md:hidden = Date::DAYNAMES[dow][0, 3]
 
-          - if display_day > days_in_month
-            - day_number = display_day - days_in_month
-          - elsif display_day < 1
-            - day_number = days_in_last_month + display_day
-          - else
-            - day_number = display_day
-            - month_number = @current_month
+      // start of loop
+      - until display_day > days_in_month do
+        .table-row
+          - 7.times do |col|
+            - dow = (col + first_day_of_week) % 7
+            - cell_class = "cal-cell-dow-#{dow}"
+            - cell_class << " cal-weekend-cell" if Date::WEEKEND_DAYS.include?(dow)
+            - display_date = context[:first_day_of_month] + display_day.days - 1
 
-          // now render the cell
-          .table-cell.border-t.p-1.h-32.md:h-40.select-none.cal-cell.(class="#{cell_class}" data-cal-date="#{display_date}")
-            - if display_date.today?
-              - if day_number == 1
-                .text-brand-500.font-bold
-                  = display_date.strftime("%b")
-
-              .cal-day-number.text-white.font-bold
-                .inline-block.w-7.h-7.justify-center.items-center.flex.rounded-full.bg-brand-500
-                  = display_date.strftime("%-d")
-
+            - if display_day > days_in_month
+              - day_number = display_day - days_in_month
+            - elsif display_day < 1
+              - day_number = days_in_last_month + display_day
             - else
-              .cal-day-number
+              - day_number = display_day
+              - month_number = @current_month
+
+            // now render the cell
+            .table-cell.border-t.p-1.h-32.md:h-40.select-none.cal-cell.(class="#{cell_class}" data-cal-date="#{display_date}")
+              - if display_date.today?
                 - if day_number == 1
-                  span.text-brand-500.font-bold
+                  .text-brand-500.font-bold
                     = display_date.strftime("%b")
 
-                .inline-block.w-7.h-7.justify-center.items-center.whitespace-nowrap.ml-1
-                  = display_date.strftime("%-d")
+                .cal-day-number.text-white.font-bold
+                  .inline-block.w-7.h-7.justify-center.items-center.flex.rounded-full.bg-brand-500
+                    = display_date.strftime("%-d")
 
-            - @events.each do |event|
-              - css_classes = "event-cancelled" if event.cancelled?
-              - css_classes = "event-draft" if event.draft?
+              - else
+                .cal-day-number
+                  - if day_number == 1
+                    span.text-brand-500.font-bold
+                      = display_date.strftime("%b")
 
-              - if display_date.beginning_of_day >= event.starts_at.beginning_of_day && display_date.beginning_of_day <= event.ends_at.end_of_day
-                .cal-event.text-xs.overflow-hidden(class="block p-1 rounded dark:hover:bg-stone-800 hover:bg-stone-100 #{css_classes}")
-                  - path = current_user ? unit_event_path(event.unit, event) : "#"
-                  = link_to path,
-                            class: "inline font-medium",
-                            data: { turbo_action: "advance" },
-                            style: "color: #{event.category.color}" do
+                  .inline-block.w-7.h-7.justify-center.items-center.whitespace-nowrap.ml-1
+                    = display_date.strftime("%-d")
 
-                    = event.title
-                    - if event.online
-                      i.fa-solid.fa-laptop.ml-1(title="Online")
+              - @events.each do |event|
+                - css_classes = "event-cancelled" if event.cancelled?
+                - css_classes = "event-draft" if event.draft?
 
-                  - if EventPolicy.new(current_member, event).edit?
-                    = link_to edit_unit_event_path(current_unit, event),
-                              class: "event-edit-link ml-1 inline-block text-stone-500 hover:text-black",
-                              data: { turbo_action: "advance" } do
+                - if display_date.beginning_of_day >= event.starts_at.beginning_of_day && display_date.beginning_of_day <= event.ends_at.end_of_day
+                  .cal-event.text-xs.overflow-hidden(class="block p-1 rounded dark:hover:bg-stone-800 hover:bg-stone-100 #{css_classes}")
+                    - path = current_user ? unit_event_path(event.unit, event) : "#"
+                    = link_to path,
+                              class: "inline font-medium",
+                              data: { turbo_action: "advance" },
+                              style: "color: #{event.category.color}" do
 
-                      i.fa-solid.fa-pen-circle.mr-1
+                      = event.title
+                      - if event.online
+                        i.fa-solid.fa-laptop.ml-1(title="Online")
 
-          - display_day += 1
+                    - if EventPolicy.new(current_member, event).edit?
+                      = link_to edit_unit_event_path(current_unit, event),
+                                class: "event-edit-link ml-1 inline-block text-stone-500 hover:text-black",
+                                data: { turbo_action: "advance" } do
+
+                        i.fa-solid.fa-pen-circle.mr-1
+
+            - display_day += 1
 
   = turbo_stream.update "page_title" do
     = t("events.index.page_title", unit_name: current_unit.name)  

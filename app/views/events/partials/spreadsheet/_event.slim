@@ -50,7 +50,7 @@
     .absolute.top-1/2.-translate-y-1/2.left-1/2.-translate-x-1/2
       = switch("event[#{event.id}]", :published,
               { label: "",
-                class: "text-2xs event-status-checkbox",
+                class: "text-xs event-status-checkbox",
                 checked: event.published?,
                 data: { action: "change->spreadsheet-row#changeEventStatus" } },
               "true", "false")

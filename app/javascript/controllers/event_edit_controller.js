@@ -2,7 +2,9 @@ import { Controller } from "@hotwired/stimulus"
 import { get } from "@rails/request.js"
 
 export default class extends Controller {
-  static targets = [ "deleteform", "fileinput", "privatefileinput", "documentLibraryIds", "startsAtDate", "endsAtDate", "rsvpClosesAt", "repeatsUntilSelect" ];
+  static targets = [ "deleteform", "fileinput", "privatefileinput", "documentLibraryIds", "startsAtDate", "endsAtDate", "rsvpClosesAt", "repeatsUntilSelect",
+      "submit", "categorySelect", "title"
+   ];
   static values = { seasonEndDate: String, unitId: String };
 
   connect() {
@@ -14,6 +16,13 @@ export default class extends Controller {
   //   var attachment_list = document.querySelector("#existing_attachments");
   //   attachment_list.insertAdjacentHTML("beforeend", `<li class="pending-attachment py-1 font-bold text-green-600">${filename} (pending)</li>`);
   // }
+
+  validate(event) {
+    var valid = true;
+    valid = valid && this.categorySelectTarget.value != "";
+    valid = valid && this.titleTarget.value != "";
+    this.submitTarget.disabled = !valid;
+  }
 
   attachFromLibrary(event) {
     console.log("attach from library");

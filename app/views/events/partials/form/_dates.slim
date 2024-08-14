@@ -15,32 +15,34 @@ section.py-4#date_fields
   .pt-0
     = switch(:event, :all_day, { label: "All day", class: "block mb-2" }, "true", "false")
 
-    .flex.flex-grow.gap-x-1.items-center
-      = f.date_field :starts_at_date,
-                     class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
-                     tabindex: -1,
-                     data: { event_edit_target: "startsAtDate", action: "change->event-edit#updateStartsAt" }
-      
-      .not-all-day.peer-checked:hidden.inline-block.flex.flex-grow.items-center.gap-x-4
-        = f.time_field :starts_at_time,
-                       class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
-                       list: "suggested_times",
-                       tabindex: -1,
-                       value: f.object.starts_at.strftime("#{ @format_time }")
+    .flex.flex-col.md:flex-row.gap-x-1.md:items-center
+      .flex.flex-row.flex-grow.gap-x-1
+        = f.date_field :starts_at_date,
+                      class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
+                      tabindex: -1,
+                      data: { event_edit_target: "startsAtDate", action: "change->event-edit#updateStartsAt" }
+        
+        .not-all-day.peer-checked:hidden.inline-block.flex.flex-grow.items-center.gap-x-4
+          = f.time_field :starts_at_time,
+                        class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
+                        list: "suggested_times",
+                        tabindex: -1,
+                        value: f.object.starts_at.strftime("#{ @format_time }")
 
-      .inline-block.mx-3.font-medium = "to"
+      .text-center.block.md:mx-3.font-medium.py-4 = "to"
 
-      = f.date_field :ends_at_date,
-                    class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
-                    tabindex: -1,
-                    data: { event_edit_target: "endsAtDate" }
-      
-      .not-all-day.inline-block.flex.flex-grow.items-center.gap-x-4
-        = f.time_field :ends_at_time,
-          class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
-          step: "900",
-          tabindex: -1,
-          value: @event.ends_at.strftime("#{ @format_time }")
+      .flex.flex-row.flex-grow.gap-x-1
+        = f.date_field :ends_at_date,
+                      class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
+                      tabindex: -1,
+                      data: { event_edit_target: "endsAtDate" }
+        
+        .not-all-day.inline-block.flex.flex-grow.items-center.gap-x-4
+          = f.time_field :ends_at_time,
+            class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
+            step: "900",
+            tabindex: -1,
+            value: @event.ends_at.strftime("#{ @format_time }")
 
     - if @event.errors.include?(:ends_at)
       p.pt-2.text-sm

@@ -1,5 +1,8 @@
 section.py-4
-  header.mb-3
-    h3 Long Description
+  header.mb-5.flex.flex-row.justify-between.items-center.text-stone-950
+    h3.font-semibold
+      i.fa-light.fa-scroll
+      | &nbsp;&nbsp;
+      = "Long Description"
 
   = f.rich_text_area :description, class: "bg-white dark:bg-black block border border-stone-400 dark:border-stone-700 overflow-auto h-48"

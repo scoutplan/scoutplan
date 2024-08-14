@@ -52,6 +52,10 @@
 
           .absolute.left-6.bottom-3.text-white.text-xl.font-semibold
             = @event.title
+
+      - else
+        header.px-6.mt-6
+          h3.font-semibold.text-3xl = @event.title
       
       section.flex.flex-col.md:flex-row.w-full.overflow-y-hidden(style="height: calc(100% - 0rem)")
         section.w-full.md:w-2/3.px-6.py-3.overflow-y-auto
