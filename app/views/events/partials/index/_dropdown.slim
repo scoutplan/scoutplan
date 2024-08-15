@@ -6,7 +6,7 @@
                                           only_path: false,
                                           protocol: "webcal")
 
-aside.block.w-80.mt-1.absolute.bg-white.text-stone-700.right-0.z-20.rounded-lg.dropdown-menu.animate-pop-open.drop-shadow.border
+aside.block.w-80.mt-1.absolute.bg-white.text-stone-700.right-0.rounded-lg.dropdown-menu.animate-pop-open.drop-shadow.border
   nav
     - if action_name != "calendar"
       = link_to calendar_unit_events_path(current_unit, year: Date.today.year, month: Date.today.month),

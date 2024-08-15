@@ -1,7 +1,7 @@
 = turbo_frame_tag :main, src: unit_events_path(current_unit), loading: :lazy
 
 = turbo_frame_tag :modal do
-  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 py-16 bg-black/50", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
+  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 py-16 bg-black/50 z-20", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
     = form_with model: @event, scope: "event",
         url: @event.new_record? ? unit_events_path(current_unit) : unit_event_path(current_unit, @event),
         method: @event.new_record? ? "post" : "patch",

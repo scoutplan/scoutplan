@@ -22,7 +22,7 @@ nav.bg-stone-50.text-stone-700.relative.h-full.w-full
                 - if (count = current_member.notifications.unread.count).positive?
                   i.fa-solid.fa-circle.text-xs.text-brand-500(data-fa-transform="shrink-6 up-10 right-10")
 
-        = button_tag class: "aspect-square h-8 rounded hover:bg-stone-100 cursor-pointer absolute -right-12 group-[.sidebar-open]/sidebar:-right-0",
+        = button_tag class: "z-10 aspect-square h-8 rounded hover:bg-stone-100 cursor-pointer absolute -right-12 group-[.sidebar-open]/sidebar:-right-0",
                       data: { action: "sidebar#toggle" } do
           i.fa-light.fa-bars.fa-fw
 
