@@ -28,10 +28,10 @@ html.scroll-smooth
 
   body(class="has-[section[role='dialog']]:background-green-500 dark:bg-stone-900 dark:text-stone-200 text-stone-900 group/controller #{controller_name.gsub('_', '-')} #{action_name} #{yield :body_classes} h-full group/sidebar sidebar-open")
     .flex.flex-row.h-full
-      aside.flex.shrink-0.w-80.bg-stone-50.h-lvh.transition-all.p-3.z-10.-ml-80(data-controller="sidebar" class="group-[.sidebar-open]/sidebar:ml-0")
-        = render partial: "layouts/nav"     
+      aside.z-20.flex.shrink-0.w-80.bg-stone-50.h-lvh.transition-all.p-3.z-10.-ml-80(data-controller="sidebar" class="group-[.sidebar-open]/sidebar:ml-0")
+        = render partial: "layouts/nav"
 
-      main.w-full.h-full.flex-grow
+      main.z-10.w-full.h-lvh.flex-grow.overflow-y-auto
         = render partial: "layouts/flash"
         = render partial: "layouts/password_prompt"
         = turbo_frame_tag :main

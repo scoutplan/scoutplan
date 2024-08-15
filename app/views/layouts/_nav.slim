@@ -1,7 +1,7 @@
 nav.bg-stone-50.text-stone-700.relative.h-full.w-full
   .flex.flex-col.justify-between.h-full
     .top
-      header.mb-3.relative.flex.flex-row.justify-between.z-10
+      header.mb-3.relative.flex.flex-row.justify-between
         .dropdown.inline-block
           = link_to "#",
                     class: "block -mx-2 px-4 py-2 dropdown-button dropdown-button-chevron font-semibold text-sm",
@@ -22,7 +22,7 @@ nav.bg-stone-50.text-stone-700.relative.h-full.w-full
                 - if (count = current_member.notifications.unread.count).positive?
                   i.fa-solid.fa-circle.text-xs.text-brand-500(data-fa-transform="shrink-6 up-10 right-10")
 
-        = button_tag class: "aspect-square h-8 rounded hover:bg-stone-100 cursor-pointer absolute -right-12  z-20 group-[.sidebar-open]/sidebar:right-0",
+        = button_tag class: "aspect-square h-8 rounded hover:bg-stone-100 cursor-pointer absolute -right-12 group-[.sidebar-open]/sidebar:-right-0",
                       data: { action: "sidebar#toggle" } do
           i.fa-light.fa-bars.fa-fw
 

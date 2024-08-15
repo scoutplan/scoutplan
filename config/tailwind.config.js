@@ -33,6 +33,8 @@ module.exports = {
       fontSize: {
         '2xs': ['0.5rem', '1'],
         huge: ['5rem', '1'],
+
+     
       },
       colors: {
         // https://uicolors.app/create

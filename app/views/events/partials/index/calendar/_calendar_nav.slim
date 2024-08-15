@@ -1,4 +1,4 @@
-nav.calendar-nav.text-sm
+nav.calendar-nav.text-sm.z-0
   // prev button
   = link_to calendar_unit_events_path(current_unit, month: @current_month > 1 ? @current_month - 1 : 12, year: @current_month > 1 ? @current_year : @current_year - 1),
             title: t("events.index.buttons.hints.previous"),
@@ -17,7 +17,7 @@ nav.calendar-nav.text-sm
         .inline.md:hidden = context[:first_day_of_month].strftime("%b %Y") 
         i.fa-chevron-down.fas.ml-2
     
-    .dropdown-menu.absolute.bg-stone-800.text-stone-50.p-2.rounded.border.dark:border-stone-700
+    .dropdown-menu.absolute.bg-white.drop-shadow-overhead.p-2.right-0.rounded.border
       = render partial: "events/partials/index/month_picker", locals: { display_date: context[:first_day_of_month] }
 
   // next button

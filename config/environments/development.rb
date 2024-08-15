@@ -116,4 +116,7 @@ Rails.application.configure do
     # Bullet.slack = { webhook_url: 'http://some.slack.url', channel: '#default', username: 'notifier' }
   end
 end
+
+Rack::MiniProfiler.config.position = "bottom-right"
+
 # rubocop:enable Metrics/BlockLength
