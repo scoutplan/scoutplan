@@ -6,43 +6,41 @@
                                           only_path: false,
                                           protocol: "webcal")
 
-aside.block.w-80.mt-1.absolute.bg-white.text-stone-700.right-0.rounded-lg.dropdown-menu.animate-pop-open.drop-shadow.border
+aside.block.w-80.mt-1.p-2.absolute.bg-white.text-stone-700.right-0.rounded-lg.dropdown-menu.animate-pop-open.drop-shadow-overhead.border
   nav
-    - if action_name != "calendar"
-      = link_to calendar_unit_events_path(current_unit, year: Date.today.year, month: Date.today.month),
-                class: "block px-4 py-2 rounded hover:bg-stone-100",
-                data: { turbo_action: "advance" } do
-
-        i.fa-fw.fa-regular.fa-calendar.mr-2
-        = t("events.index.buttons.calendar")
-
-    - if action_name != "list"
+    .grid.grid-cols-3.gap-0.rounded-lg.bg-stone-100.text-center.mb-2.p-2
       = link_to list_unit_events_path(current_unit),
-                class: "block px-4 py-2 rounded hover:bg-stone-100",
+                class: "px-4 py-2 rounded-lg hover:bg-stone-200 text-center text-center text-sm #{action_name == "list" ? "bg-white hover:bg-white cursor-default" : ""}",
                 data: { turbo_action: "advance" } do
 
-        i.fa-fw.fa-regular.fa-list.mr-2
-        = t("events.index.buttons.list")
+        i.fa-light.fa-list.block.mb-2.mx-auto.text-lg
+        = "List"
 
-    - if action_name != "threeup"
+      = link_to calendar_unit_events_path(current_unit, year: Date.today.year, month: Date.today.month),
+                class: "block px-4 py-2 rounded-lg hover:bg-stone-200 text-center text-sm #{action_name == "calendar" ? "bg-white hover:bg-white cursor-default" : ""}",
+                data: { turbo_action: "advance" } do
+
+        i.fa-light.fa-calendar.block.mb-2.mx-auto.text-lg
+        = "Calendar"
+
       = link_to threeup_unit_events_path(current_unit),
-                class: "block px-4 py-2 rounded hover:bg-stone-100",
+                class: "px-4 py-2 rounded-lg hover:bg-stone-200 text-center text-center text-sm #{action_name == "threeup" ? "bg-white hover:bg-white cursor-default" : ""}",
                 data: { turbo_action: "advance" } do
 
-        i.fa-fw.fa-regular.fa-columns-3.mr-2
-        = t("events.index.buttons.threeup")
+        i.fa-light.fa-columns-3.block.mb-2.mx-auto.text-lg
+        = "Three Up"
 
     / past events
     - if action_name == "list"
       = link_to list_unit_events_path(current_unit, before: @events&.first&.id, current_month: @display_month, display_year: @display_year),
-                class: "block px-4 py-2 rounded hover:bg-stone-100",
+                class: "block px-4 py-2 rounded hover:bg-stone-100 rounded",
                 data: { turbo_stream: "true" } do
 
         i.fa-fw.fa-regular.fa-calendar-arrow-up.mr-2
         = t("events.index.view.past")
 
     = link_to list_unit_events_path(current_unit, format: :pdf),
-              class: "block px-4 py-2 rounded hover:bg-stone-100",
+              class: "block px-4 py-2 rounded hover:bg-stone-100 rounded",
               data: { turbo_action: "advance" } do
 
       i.fa-fw.fa-regular.fa-print.mr-2
@@ -50,14 +48,14 @@ aside.block.w-80.mt-1.absolute.bg-white.text-stone-700.right-0.rounded-lg.dropdo
 
     - if current_member.admin?
         = link_to list_unit_events_path(current_unit, format: :pdf, season: "next"),
-                  class: "block px-4 py-2 rounded hover:bg-stone-100",
+                  class: "block px-4 py-2 rounded hover:bg-stone-100 rounded",
                   data: { turbo_action: "advance" } do
           
           i.fa-fw.fa-regular.fa-calendar-arrow-down.mr-2
           = t("events.index.buttons.next_season")
 
     = link_to ics_url,
-              class: "block px-4 py-2 rounded hover:bg-stone-100",
+              class: "block px-4 py-2 rounded hover:bg-stone-100 rounded",
               data: { turbo_action: "advance" } do
 
       i.fa-fw.fa-regular.fa-mobile.mr-2

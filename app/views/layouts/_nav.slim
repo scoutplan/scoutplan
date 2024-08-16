@@ -15,8 +15,8 @@ nav.bg-stone-50.text-stone-700.relative.h-full.w-full
         - if Flipper.enabled?(:inbox, current_member)
           = link_to unit_notifications_path(current_unit),
                     id: "inbox_button",
-                    class: "absolute right-8 block aspect-square h-8 relative rounded hover:bg-stone-100 group-[.notifications]/controller:text-brand-700 group-[.notifications]/controller:bg-brand-200",
-                    data: { sidebar_class: "notifications" } do
+                    class: "absolute right-8 block aspect-square h-8 relative rounded hover:bg-stone-100 group-[.notifications]/controller:text-brand-500 group-[.notifications]/controller:bg-brand-100",
+                    data: { sidebar_class: "notifications", action: "sidebar#activate" } do
               .fa-layers.fa-fw.absolute.left-1/2.top-1/2.-translate-x-1/2.-translate-y-1/2
                 i.fa-light.fa-bell
                 - if (count = current_member.notifications.unread.count).positive?
@@ -32,43 +32,44 @@ nav.bg-stone-50.text-stone-700.relative.h-full.w-full
 
       - if policy(:event).index?
         = link_to unit_events_path(current_unit),
-                  class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.events]/controller:text-brand-700 group-[.events]/controller:bg-brand-200",
-                  data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "events" } do
+                  class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.events]/controller:text-brand-500 group-[.events]/controller:bg-brand-100",
+                  data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "events", action: "sidebar#activate" } do
             i.fa-regular.fa-calendar-alt.fa-fw.mr-2
             = t("main_nav.events")
 
       - if policy(:unit_membership).index?
         = link_to unit_members_path(current_unit),
-                  class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.unit-memberships]/controller:text-brand-700 group-[.unit-memberships]/controller:bg-brand-200",
-                  data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "unit-memberships" } do
+                  class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.unit-memberships]/controller:text-brand-500 group-[.unit-memberships]/controller:bg-brand-100",
+                  data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "unit-memberships", action: "sidebar#activate" } do
             i.fa-regular.fa-users.fa-fw.mr-2
             = t("main_nav.members")
 
       - if policy(:event).plan? && Flipper.enabled?(:planner, current_member)
         = link_to unit_plans_path(current_unit),
-                  class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.plans]/controller:text-brand-700 group-[.plans]/controller:bg-brand-200",
-                  data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "plans" } do
+                  class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.plans]/controller:text-brand-500 group-[.plans]/controller:bg-brand-100",
+                  data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "plans", action: "sidebar#activate" } do
             i.fa-regular.fa-pen-ruler.fa-fw.mr-2
             = t("main_nav.planner")
 
       - if policy(:message).new? && Flipper.enabled?(:messages, current_member)
         = link_to unit_messages_path(current_unit),
-                  class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.messages]/controller:text-brand-700 group-[.messages]/controller:bg-brand-200",
-                  data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "messages" } do
+                  class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.messages]/controller:text-brand-500 group-[.messages]/controller:bg-brand-100",
+                  data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "messages", action: "sidebar#activate" } do
           i.fa-regular.fa-envelope.fa-fw.mr-2
           = t("main_nav.communication")
 
       - if (policy(:unit_document).index? && current_unit.documents.any?) || policy(:unit_document).create?
         = link_to unit_documents_path(current_unit),
-                  class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.documents]/controller:text-brand-700 group-[.documents]/controller:bg-brand-200",
-                  data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "documents" } do
+                  class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.documents]/controller:text-brand-500 group-[.documents]/controller:bg-brand-100",
+                  data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "documents", action: "sidebar#activate" } do
           i.fa-regular.fa-books.fa-fw.mr-2
           = t("main_nav.document_library")
 
       - if policy(:unit).edit?
         = link_to unit_settings_path(current_unit),
-                  class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.settings]/controller:text-brand-700 group-[.settings]/controller:bg-brand-200",
-                  data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "settings" } do
+                  class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.settings]/controller:text-brand-500 group-[.settings]/controller:bg-brand-100",
+                  onclick: "document.body.classList.toggle('settings', true)",
+                  data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "settings", action: "sidebar#activate" } do
           i.fa-regular.fa-cog.fa-fw.mr-2
           = t("main_nav.settings")
 

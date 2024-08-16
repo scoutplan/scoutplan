@@ -25,4 +25,16 @@ export default class extends Controller {
   toggle(event) {
     document.body.classList.toggle("sidebar-open");
   }
+
+  activate(event) {
+    const links = this.element.querySelectorAll("[data-sidebar-class]");
+    links.forEach((link) => {
+      const className = link.getAttribute("data-sidebar-class");
+      document.body.classList.remove(className);
+    });
+    
+    const className = event.target.dataset.sidebarClass;
+    document.body.classList.add(className);
+    // console.log(event.target);
+  }
 }

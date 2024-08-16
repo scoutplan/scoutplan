@@ -31,11 +31,11 @@
               | &nbsp;
               = "Add an event"        
 
-      div.-z-10
+      div
         = render partial: "events/partials/index/calendar/calendar_nav", locals: { context: context }
 
     .table.px-0.w-full.table-fixed.border-t
-      .table-row.font-bold
+      .table-row.font-semibold
         - 7.times do |col|
           - dow = (col + first_day_of_week) % 7
           .table-cell.p-2
@@ -73,7 +73,7 @@
               - else
                 .cal-day-number
                   - if day_number == 1
-                    span.text-brand-500.font-bold
+                    span.text-brand-500.font-bold.ml-1
                       = display_date.strftime("%b")
 
                   .inline-block.w-7.h-7.justify-center.items-center.whitespace-nowrap.ml-1

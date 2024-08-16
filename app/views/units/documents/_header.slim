@@ -1,0 +1,15 @@
+header.p-2.mb-2.top-0.left-0.right-0.sticky.bg-white
+  .flex.flex-row.justify-end
+    nav.relative.flex.flex-row.items-center.gap-0
+      details
+        summary.menu-toggle.p-2.cursor-pointer
+          i.fa-light.fa-sliders.mr-2.fa-fw
+          = "View"
+
+        nav.side-nav.absolute.top-full.right-0.w-36.bg-white.drop-shadow-overhead.border.rounded-lg.p-2
+          = link_to files_unit_documents_path(current_unit),
+                    class: "block text-stone-500.dark:text-stone-300 hover:bg-stone-100 rounded-l px-3 py-2",
+                    title: "View file list",
+                    data: { turbo_action: "advance" } do
+            i.fa-light.fa-list.fa-fw.mr-2
+            = "File List"

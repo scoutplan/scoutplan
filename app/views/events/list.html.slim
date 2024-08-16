@@ -37,15 +37,6 @@
 = turbo_stream.update "page_title" do
   = t("events.index.page_title", unit_name: current_unit.name)
 
-javascript:
-  document.addEventListener("turbo:load", () => {
-    document.body.classList.toggle("unit-memberships", false);
-    document.body.classList.toggle("messages", false);
-    document.body.classList.toggle("documents", false);
-    document.body.classList.toggle("settings", false);
-    document.body.classList.toggle("events", true);
-  });
-
 css:
   #events_list .more-past-events-item {
     display: none;

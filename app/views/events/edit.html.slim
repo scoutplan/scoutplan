@@ -10,6 +10,8 @@
                 event_edit_season_end_date_value: current_unit.this_season_ends_at.to_datetime.iso8601,
                 event_edit_unit_id_value: current_unit.id } do |f|
 
+      = render "tags_popup"
+
       article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden
         header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
           .left
@@ -45,21 +47,21 @@
                                   method: "status",
                                   checked_value: "published",
                                   class: "text-xs",
-                                  unchecked_value: "draft" }  
+                                  unchecked_value: "draft" }                              
 
-
-                / = switch(:event_category, :send_reminders,
-                /         { label: "Send reminders for events in this category",
-                /           checked: @event_category.send_reminders },
-                /         "true", "false")                                  
-
-              .py-2
-                = button_tag type: "button", class: "block py-1 px-2 -mx-2 hover:bg-brand-100", style: "width: calc(100% + 1rem)" do
-                  .flex.flex-row.justify-between.items-center
-                    .font-semibold
-                      = "Tags"
-
+              // TAGS
+              .py-2.relative
+                details#tags
+                  summary.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.hover:bg-brand-100.rounded.cursor-pointer(class="active:-mx-[0.4rem] ")
+                    .font-semibold = "Tags"
                     i.fa-light.fa-plus.fa-fw
+
+                .flex.flex-wrap.gap-1.mt-1
+                  - @event.tags.each do |tag|
+                    div.pl-2.pr-1.py-1.bg-green-200.rounded.flex.flex-row.gap-2.hover:bg-green-300
+                      = tag.name
+                      = button_tag class: "hover:bg-green-400 hover:text-green-900 rounded px-px" do
+                        i.fa-light.fa-times.fa-fw.fa-sm
 
               .py-2
                 = button_tag type: "button",

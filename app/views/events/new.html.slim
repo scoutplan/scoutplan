@@ -8,81 +8,83 @@
                 class: "h-full",
                 data: { turbo: false, controller: "event-edit", event_edit_unit_id_value: current_unit.id } do |f|
 
+      = render "tags_popup"
+
       article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden
-        header.flex.flex-row.justify-between.border-b.px-6.py-3
-          .left
-            h1.font-medium = "Schedule an Event"
+          header.flex.flex-row.justify-between.border-b.px-6.py-3
+            .left
+              h1.font-medium = "Schedule an Event"
 
-          .right.flex.flex-row.gap-2.text-stone-500.text-lg
+            .right.flex.flex-row.gap-2.text-stone-500.text-lg
 
-            = button_tag type: "button", class: "x-close-button -mr-4 flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
-              i.fa-regular.fa-times.fa-fw.fa-lg
+              = button_tag type: "button", class: "x-close-button -mr-1 flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
+                i.fa-regular.fa-times.fa-fw.fa-lg
 
-        section.flex.flex-col.md:flex-row.w-full.overflow-y-hidden(style="height: calc(100% - 0rem)")
-          aside.w-full.md:w-1/4.bg-stone-50.px-6.py-3.overflow-y-auto.text-stone-600
-            .flex.flex-col.divide-y.divide-stone-200.text-sm
-              .py-2
-                header.mb-2
-                  h3.font-semibold = "Category"
+          section.flex.flex-col.md:flex-row.w-full.overflow-x-visible.overflow-y-hidden(style="height: calc(100% - 0rem)")
+            // LEFT PANE
+            aside.w-full.md:w-1/4.bg-stone-50.px-6.py-3.overflow-y-auto.text-stone-600.overflow-x-visible.relative
+              .flex.flex-col.divide-y.divide-stone-200.text-sm
+                .py-2
+                  header.mb-2
+                    h3.font-semibold = "Category"
 
-                = f.select :event_category_id,
-                            @event.unit.event_categories.order(:name).collect { |c| [ c.name, c.id ] }.concat([["---", ""], ["Add a Category...", "new"]]),
-                            { prompt: t("events.placeholders.category"), selected: @event.event_category_id },
-                            { class: "border-0 px-0 px-2 -mx-2 py-1 bg-transparent hover:bg-brand-100 text-sm focus:ring-0",
-                              style: "width: calc(100% + 1.2rem)",
-                              required: "A category is required",
-                              data: { event_edit_target: "categorySelect", action: "event-edit#validate" } }
+                  = f.select :event_category_id,
+                              @event.unit.event_categories.order(:name).collect { |c| [ c.name, c.id ] }.concat([["---", ""], ["Add a Category...", "new"]]),
+                              { prompt: t("events.placeholders.category"), selected: @event.event_category_id },
+                              { class: "border-0 px-0 px-2 -mx-2 py-1 bg-transparent hover:bg-brand-100 text-sm focus:ring-0",
+                                style: "width: calc(100% + 1.2rem)",
+                                required: "A category is required",
+                                data: { event_edit_target: "categorySelect", action: "event-edit#validate" } }
 
-              .py-2
-                header.mb-2
-                  h3.font-semibold = "Visibility"
+                .py-2
+                  header.mb-2
+                    h3.font-semibold = "Visibility"
 
-                = render partial: "components/switch",
-                        locals: { checked: @event.published?,
-                                  label: t("events.edit.published"),
-                                  object_name: "event",
-                                  method: "status",
-                                  checked_value: "published",
-                                  class: "text-xs",
-                                  unchecked_value: "draft" }  
+                  = render partial: "components/switch",
+                          locals: { checked: @event.published?,
+                                    label: t("events.edit.published"),
+                                    object_name: "event",
+                                    method: "status",
+                                    checked_value: "published",
+                                    class: "text-xs",
+                                    unchecked_value: "draft" }                                 
 
+                // TAGS
+                .py-2.relative
+                  details#tags
+                    summary.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.hover:bg-brand-100.rounded.cursor-pointer(class="active:-mx-[0.4rem] ")
+                      .font-semibold = "Tags"
+                      i.fa-light.fa-plus.fa-fw
 
-                / = switch(:event_category, :send_reminders,
-                /         { label: "Send reminders for events in this category",
-                /           checked: @event_category.send_reminders },
-                /         "true", "false")                                  
+                  ul
+                    - @event.tags.each do |tag|
+                      li = tag.name
 
-              .py-2
-                = button_tag type: "button", class: "block py-1 px-2 -mx-2 hover:bg-brand-100", style: "width: calc(100% + 1rem)" do
-                  .flex.flex-row.justify-between.items-center
-                    .font-semibold
-                      = "Tags"
+                // ORGANIZERS
+                .py-2
+                  = button_tag type: "button", class: "block py-1 px-2 -mx-2 hover:bg-brand-100", style: "width: calc(100% + 1rem)" do
+                    .flex.flex-row.justify-between.items-center
+                      .font-semibold
+                        = "Organizers"
 
-                    i.fa-light.fa-plus.fa-fw
+                      i.fa-light.fa-plus.fa-fw              
 
-              .py-2
-                = button_tag type: "button", class: "block py-1 px-2 -mx-2 hover:bg-brand-100", style: "width: calc(100% + 1rem)" do
-                  .flex.flex-row.justify-between.items-center
-                    .font-semibold
-                      = "Organizers"
+            // RIGHT PANE
+            section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.gap-4.text-sm.text-stone-600.rounded-r-lg.overflow-y-auto.h-full
+              .divide-y.divide-stone-300
+                - %w[basics dates rsvp locations description attachments cancel_delete].each do |section|
+                  = render partial: "events/partials/form/#{section}", locals: { f: f, section: section }
 
-                    i.fa-light.fa-plus.fa-fw              
+          footer.sticky.bottom-0.px-6.py-3.bg-white.border-t.border-stone-200.flex.flex-row.justify-end.gap-2.text-sm
+            = f.button t("global.cancel"),
+                      type: "button",
+                      class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded font-medium",
+                      data: { action: "click->modal#close" }
 
-          section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.gap-4.text-sm.text-stone-600.rounded-r-lg.overflow-y-auto.h-full
-            .divide-y.divide-stone-300
-              - %w[basics dates rsvp locations description attachments cancel_delete].each do |section|
-                = render partial: "events/partials/form/#{section}", locals: { f: f, section: section }
-
-        footer.sticky.bottom-0.px-6.py-3.bg-white.border-t.border-stone-200.flex.flex-row.justify-end.gap-2.text-sm
-          = f.button t("global.cancel"),
-                    type: "button",
-                    class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded font-medium",
-                    data: { action: "click->modal#close" }
-
-          = f.submit @event.new_record? ? t("events.new.add_this_event") : t("global.save_changes"),
-                      class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-brand-500 disabled:bg-brand-300 disabled:text-brand-50 text-white rounded",
-                      data: { event_edit_target: "submit" },
-                      disabled: true
+            = f.submit @event.new_record? ? t("events.new.add_this_event") : t("global.save_changes"),
+                        class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-brand-500 disabled:bg-brand-300 disabled:text-brand-50 text-white rounded",
+                        data: { event_edit_target: "submit" },
+                        disabled: true
 
 javascript:
   document.title = "Add an Event · #{current_unit.name}"  

@@ -1,0 +1,19 @@
+css:
+  #tags_popup { display: none; }
+  body:has(details#tags[open]) #tags_popup { display: block; }
+
+// TAGS POPUP
+#tags_popup.absolute.bg-white.w-72.-ml-16.border.rounded-lg.drop-shadow-overhead.py-2.z-10(data-popper-placement="bottom-start")
+  .px-2
+    = text_field :tag_search, nil, class: "block w-full rounded px-2 py-2 mb-2 text-sm border border-stone-200 placeholder-stone-400",
+                  placeholder: "Search tags",
+                  data: { action: "input->event-edit#searchTags" }
+
+  ul.max-h-72.overflow-y-auto
+    - ActsAsTaggableOn::Tag.for_tenant(current_unit).each do |tag|
+      li
+        = label_tag "tag_#{tag.id}", class: "flex flex-row items-center px-2 py-1 hover:bg-stone-100 rounded", for: "tag_#{tag.id}" do
+          i.fa-light.fa-tag.fa-fw.text-stone-500.mr-1
+          = tag.name
+
+          = check_box_tag "tag_ids[]", tag.id, @event.tag_list.include?(tag.name), id: "tag_#{tag.id}", class: "ml-auto"

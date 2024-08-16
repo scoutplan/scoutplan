@@ -1,5 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import { get } from "@rails/request.js"
+// import { createPopper } from "@popperjs/core"
+import { computePosition } from "https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10/+esm"
 
 export default class extends Controller {
   static targets = [ "deleteform", "fileinput", "privatefileinput", "documentLibraryIds", "startsAtDate", "endsAtDate", "rsvpClosesAt", "repeatsUntilSelect",
@@ -10,6 +12,14 @@ export default class extends Controller {
   connect() {
     this.populateRepeatUntilSelectOptions();
     console.log("event edit controller connected");
+
+    var reference = document.querySelector("details#tags");
+    var popperTarget = document.querySelector("#tags_popup");
+
+    computePosition(reference, popperTarget, { placement: "bottom-start" }).then(({x, y}) => {
+      popperTarget.style.left = `${x}px`;
+      popperTarget.style.top = `${y}px`;
+    });
   }
 
   // addAttachmentToPendingList(filename) {

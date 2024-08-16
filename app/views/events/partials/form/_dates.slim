@@ -8,9 +8,8 @@ section.py-4#date_fields
       | &nbsp;&nbsp;
       = "Dates & Times"
 
-    div.text-stone-500
+    div.text-stone-400
       = @current_unit.settings(:locale).time_zone
-
 
   .pt-0
     = switch(:event, :all_day, { label: "All day", class: "block mb-2" }, "true", "false")

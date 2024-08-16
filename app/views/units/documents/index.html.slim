@@ -1,25 +1,17 @@
 = turbo_frame_tag :main
-  .max-w-4xl.mx-auto
-    header.pb-8
-      .flex.flex-row.justify-between.items-center
-        .left
-          h1.text-2xl.mb-2
-            = t(".title")
+  .px-2
+    = render partial: "header"
 
-        .right.flex.flex-row.gap-2
-          = link_to files_unit_documents_path(current_unit),
-                    class: "text-stone-500.dark:text-stone-300 hover:bg-stone-100 rounded-l px-3 py-2",
-                    title: "View file list",
-                    data: { turbo_action: "advance" } do
-            i.fa-fw.fa-solid.fa-list
-            | &nbsp;
-            = "View file list"
+    .max-w-4xl.mx-auto.p-12
+      header.pb-8
+        h1.text-2xl.font-semibold
+          = t(".title")
 
-      - if UnitDocumentPolicy.new(current_member, Document).create?
-        = render partial: "upload_form"
+        - if UnitDocumentPolicy.new(current_member, Document).create?
+          = render partial: "upload_form"
 
-    - @home_layout.each do |element|
-      = render partial: "units/documents/home_layout/#{element['type']}", locals: { element_definition: element }
+      - @home_layout.each do |element|
+        = render partial: "units/documents/home_layout/#{element['type']}", locals: { element_definition: element }
 
 = turbo_stream.update "page_title" do
   = t(".page_title", unit_name: current_unit.name)
