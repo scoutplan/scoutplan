@@ -5,6 +5,7 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
+  get 'tags/create'
   get "integrations/index"
   get "welcome/index"
   get "", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
@@ -130,6 +131,8 @@ Rails.application.routes.draw do
         get "return_from_onboarding"
       end
     end
+
+    resources :tags, only: [:create]
 
     resources :events, path: "schedule" do
       resources :chat_messages, as: "discussion", path: "discussion"

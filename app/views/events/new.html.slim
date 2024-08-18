@@ -8,7 +8,7 @@
                 class: "h-full",
                 data: { turbo: false, controller: "event-edit", event_edit_unit_id_value: current_unit.id } do |f|
 
-      = render "tags_popup"
+      = render partial: "tags_popup", locals: { event: @event }
 
       article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden
           header.flex.flex-row.justify-between.border-b.px-6.py-3

@@ -74,7 +74,7 @@ module.exports = {
       },
       animation: {
         'pop-open': 'pop-open 0.1s',
-        'fade-out-after-load': 'fade-out-after-load 5s linear',
+        'fade-out-after-load': 'fade-out-after-load 10s linear',
       },
       keyframes: {
         'pop-open': {

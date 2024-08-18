@@ -7,10 +7,13 @@ module ApplicationHelper
 
   def colors_from_string(string)
     hue = Digest::MD5.hexdigest(string).to_i(16) % 360
-    bgcolor = "hsl(#{hue}, 100%, 95%)"
-    color = "hsl(#{hue}, 100%, 20%)"
-    mid_color = "hsl(#{hue}, 100%, 50%)"
-    [bgcolor, color, mid_color]
+    result = {}
+
+    (1..9).each do |i|
+      result[i * 100] = "hsl(#{hue}, 100%, #{107 - (i * 10)}%)"
+    end
+
+    result
   end
 
   def content_tag_if(tag, conditional, content = nil, options = nil)

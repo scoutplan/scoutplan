@@ -1,7 +1,7 @@
 = turbo_frame_tag :main, src: unit_events_path(current_unit), loading: :lazy
 
 = turbo_frame_tag :modal do
-  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 py-16 bg-black/50 z-20", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
+  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 md:pb-16 bg-black/50 z-20", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
     = form_with model: @event, scope: "event",
         url: @event.new_record? ? unit_events_path(current_unit) : unit_event_path(current_unit, @event),
         method: @event.new_record? ? "post" : "patch",
@@ -10,7 +10,7 @@
                 event_edit_season_end_date_value: current_unit.this_season_ends_at.to_datetime.iso8601,
                 event_edit_unit_id_value: current_unit.id } do |f|
 
-      = render "tags_popup"
+      = render partial: "tags_popup", locals: { event: @event }
 
       article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden
         header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
@@ -19,7 +19,7 @@
 
           .right.flex.flex-row.gap-2.text-stone-500.text-lg
 
-            = button_tag type: "button", class: "x-close-button flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
+            = button_tag type: "button", class: "x-close-button flex flex-row items-center block w-6 h-6 -mr-2 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
               i.fa-regular.fa-times.fa-fw
 
         section.flex.flex-col.md:flex-row.w-full.overflow-y-hidden(style="height: calc(100% - 0rem)")
@@ -51,18 +51,16 @@
 
               // TAGS
               .py-2.relative
-                details#tags
-                  summary.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.hover:bg-brand-100.rounded.cursor-pointer(class="active:-mx-[0.4rem] ")
+                details#tags(data-event-edit-target="tagListWrapper")
+                  summary.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.hover:bg-brand-100.rounded.cursor-pointer(class="active:-mx-[0.4rem]" data-action="click->event-edit#toggleTags")
                     .font-semibold = "Tags"
                     i.fa-light.fa-plus.fa-fw
 
-                .flex.flex-wrap.gap-1.mt-1
-                  - @event.tags.each do |tag|
-                    div.pl-2.pr-1.py-1.bg-green-200.rounded.flex.flex-row.gap-2.hover:bg-green-300
-                      = tag.name
-                      = button_tag class: "hover:bg-green-400 hover:text-green-900 rounded px-px" do
-                        i.fa-light.fa-times.fa-fw.fa-sm
+                .flex.flex-wrap.gap-1.mt-1.text-xs#tag_label_list
+                  - ActsAsTaggableOn::Tag.for_tenant(@event.unit.id).each do |tag|
+                    = render partial: "tag_label", locals: { tag_name: tag.name, visible: @event.tags.include?(tag) }
 
+              // COVER PHOTO
               .py-2
                 = button_tag type: "button",
                              class: "block py-1 px-2 -mx-2 hover:bg-brand-100",
@@ -76,35 +74,41 @@
                     i.fa-light.fa-plus.fa-fw
 
                 - if @event.cover_photo.attached?
-                  = image_tag @event.cover_photo.variant(resize: "1200x400"), class: "w-full h-48 object-cover object-center", alt: @event.title
+                  .relative
+                    = image_tag @event.cover_photo.representation(resize_to_fit: [200, 100]), class: "mt-2 w-full h-24 object-cover object-center", alt: @event.title
+                    .absolute.right-0.bottom-0
+                      = button_tag type: "button",
+                                   class: "block p-1 m-2 text-white border rounded text-xs hover:bg-white/30",
+                                   title: "Remove cover photo",
+                                   data: { action: "event-edit#removeCoverPhoto" } do
+                        i.fa-light.fa-trash.fa-fw
 
                 = f.file_field :cover_photo, class: "hidden block w-full px-2 py-1 bg-stone-100 hover:bg-stone-200 text-sm focus:ring-0",
                                accept: "image/png, image/jpeg, image/jpg",
                                required: false,
                                id: "cover_photo_file_field"
 
-
           section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.text-sm.text-stone-600.rounded-r-lg.overflow-y-auto.h-full
             - %w[basics dates rsvp locations description organizers attachments].each do |section|
               = render partial: "events/partials/form/#{section}", locals: { f: f, section: section }
 
-        footer.sticky.bottom-0.px-6.py-3.bg-white.border-t.border-stone-200.flex.flex-row.justify-between.items-center.text-sm
-          .left
+        footer.sticky.bottom-0.px-6.py-3.bg-white.border-t.border-stone-200.flex.flex-col.md:flex-row.gap-2.justify-between.items-center.text-sm
+          .left.w-full.md:w-auto
             = link_to unit_event_cancel_path(current_unit, @event),
-                      class: "text-center inline-block px-2 py-2 -mx-2 text-brand-500 whitespace-nowrap",
+                      class: "text-center inline-block px-2 py-2 -mx-2 text-brand-500 hover:text-brand-600 whitespace-nowrap text-center w-full",
                       id: "cancel_event_button",
                       data: { turbo_action: "advance" } do
-
+              i.fa-light.fa-trash.fa-fw.mr-1
               = I18n.t("events.show.cancel_title")
 
-          .right.flex.flex-row.gap-2
+          .right.flex.flex-col.md:flex-row.gap-2.w-full.md:w-auto
             = f.button t("global.cancel"),
                       type: "button",
                       class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded font-medium",
                       data: { action: "click->modal#close" }
 
             = f.submit @event.new_record? ? t("events.new.add_this_event") : t("global.save_changes"),
-                        class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-brand-500 disabled:bg-brand-300 disabled:text-brand-50 text-white rounded",
+                        class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-brand-500 hover:bg-brand-600 disabled:bg-brand-300 disabled:text-brand-50 text-white rounded cursor-pointer",
                         disabled: false
 
 javascript:

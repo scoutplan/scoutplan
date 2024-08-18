@@ -1,17 +1,16 @@
 import { Controller } from "@hotwired/stimulus"
-import { get } from "@rails/request.js"
+import { get, post } from "@rails/request.js"
 // import { createPopper } from "@popperjs/core"
 import { computePosition } from "https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10/+esm"
 
 export default class extends Controller {
   static targets = [ "deleteform", "fileinput", "privatefileinput", "documentLibraryIds", "startsAtDate", "endsAtDate", "rsvpClosesAt", "repeatsUntilSelect",
-      "submit", "categorySelect", "title"
+      "submit", "categorySelect", "title", "tagSearch", "newTagPrompt", "newTagName", "tagNotFoundPrompt", "tagListWrapper"
    ];
   static values = { seasonEndDate: String, unitId: String };
 
   connect() {
     this.populateRepeatUntilSelectOptions();
-    console.log("event edit controller connected");
 
     var reference = document.querySelector("details#tags");
     var popperTarget = document.querySelector("#tags_popup");
@@ -20,6 +19,47 @@ export default class extends Controller {
       popperTarget.style.left = `${x}px`;
       popperTarget.style.top = `${y}px`;
     });
+
+    this.tagSearchObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          this.tagSearchTarget.focus();
+        } else {
+          this.resetTagList();
+        }
+      });
+    });
+    this.tagSearchObserver.observe(this.tagSearchTarget);
+  }
+
+  resetTagList() {
+    this.tagSearchTarget.value = "";
+    this.newTagPromptTarget.classList.add("hidden");   
+    var tagList = document.querySelector("#tag_list");
+    var tags = tagList.querySelectorAll("li");     
+    tags.forEach(function(tag) {
+      tag.classList.remove("hidden");
+    });
+  }
+
+  hideTagList() {
+    this.tagListWrapperTarget.removeAttribute("open");
+  }
+
+  syncTagList(event) {
+    var tagList = document.querySelector("#tag_list");
+    var checkboxes = tagList.querySelectorAll("input[type=checkbox]");
+
+    checkboxes.forEach(function(checkbox) {
+      var tagName = checkbox.dataset.tagId;
+      var labelId = `#tag_label_${tagName}`;
+      var labelElem = document.querySelector(labelId);
+      labelElem?.classList?.toggle("hidden", !checkbox.checked);
+    });
+  }
+
+  disconnect() {
+    this.tagSearchObserver.disconnect();
   }
 
   // addAttachmentToPendingList(filename) {
@@ -27,11 +67,61 @@ export default class extends Controller {
   //   attachment_list.insertAdjacentHTML("beforeend", `<li class="pending-attachment py-1 font-bold text-green-600">${filename} (pending)</li>`);
   // }
 
+  toggleTags(event) {
+    this.tagSearchTarget.focus();
+  }
+
+  searchTags(event) {
+    var query = this.tagSearchTarget.value;
+    var tagList = document.querySelector("#tag_list");
+    var tags = tagList.querySelectorAll("li");
+    var hits = 0;
+
+    tags.forEach(function(tag) {
+      if(query == "") {
+        tag.classList.remove("hidden");
+      } else if (tag.textContent.toLowerCase().indexOf(query.toLowerCase()) > -1) {
+        tag.classList.remove("hidden");
+        hits++;
+      } else {
+        tag.classList.add("hidden");
+      }
+    });
+
+    this.newTagPromptTarget.classList.toggle("hidden", query == "");
+    this.tagNotFoundPromptTarget.classList.toggle("hidden", hits > 0);
+    this.newTagNameTarget.innerText = query;
+  }
+
+  async addTag(event) {
+    var newTagName = this.newTagNameTarget.innerText;
+    const unitId = this.unitIdValue;
+    const url = `/u/${unitId}/tags`;
+    const formData = new FormData();
+    formData.append("tag[name]", newTagName);
+    await post(url, { responseKind: "turbo-stream", body: formData });
+    this.hideTagList();
+    this.resetTagList();
+  }
+
+  deselectTag(event) {
+    let tagName = event.currentTarget.dataset.tagName;
+    console.log(tagName);
+    let tagLabel = document.querySelector(`#tag_label_${tagName}`);
+    let checkbox = document.querySelector(`#event_tag_${tagName}`);
+    tagLabel.classList.add("hidden");
+    checkbox.checked = false;
+  }
+
   validate(event) {
     var valid = true;
     valid = valid && this.categorySelectTarget.value != "";
     valid = valid && this.titleTarget.value != "";
     this.submitTarget.disabled = !valid;
+  }
+
+  removeCoverPhoto() {
+    
   }
 
   attachFromLibrary(event) {
@@ -94,7 +184,7 @@ export default class extends Controller {
     const startsAt = this.startsAtDateTarget.value;
     const unitId = this.unitIdValue;
     // const query = new URLSearchParams({ "a": "b", "starts_at": startsAt });
-    await get(`/u/${unitId}/schedule/repeat_options/${startsAt}`, { responseKind: "turbo-stream" });     
+    await get(`/u/${unitId}/schedule/repeat_options/${startsAt}`, { responseKind: "turbo-stream" });
   }
 
   hideDocumentLibrary(event) {

@@ -409,7 +409,7 @@ en:
       confirm_publish:          "Publishing will make this event visible to all members. Are you sure you want to publish it?"
       published:                "This event is published"
       edit_description_title:   "Edit Event Description"
-      cancel_title:             "Cancel this event"
+      cancel_title:             "Delete Event"
       cancel_button:            "Yes, Cancel This Event"
       cancel_cancel:            "No, Don't Cancel"
       organize_button_caption:  "View RSVPs"

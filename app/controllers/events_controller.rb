@@ -400,13 +400,14 @@ class EventsController < UnitContextController
                                       :all_day, :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
                                       :max_total_attendees, :rsvp_closes_at, :rsvp_opens_at,
-                                      :note, :cost_youth, :cost_adult, :online, :website, :tag_list,
+                                      :note, :cost_youth, :cost_adult, :online, :website,
                                       :notify_members, :notify_recipients, :notify_message, :document_library_ids,
-                                      :cover_photo,
-                                      packing_list_ids: [], attachments: [], private_attachments: [],
+                                      :cover_photo, packing_list_ids: [], attachments: [], private_attachments: [], tag_list: [],
                                       event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy],
                                       event_organizers_attributes: [:unit_membership_id])
+    p[:tag_list] ||= []
     p[:packing_list_ids] = p[:packing_list_ids].reject(&:blank?) if p[:packing_list_ids].present?
+
     process_event_locations_attributes(p)
     process_packlist_ids(p)
   end

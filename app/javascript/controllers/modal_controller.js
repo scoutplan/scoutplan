@@ -7,7 +7,6 @@ export default class extends Controller {
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") { this.close(event); }
     });
-    console.log("Modal controller connected");
   }
 
   disconnect() {
