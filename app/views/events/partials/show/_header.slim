@@ -3,8 +3,8 @@
 header.mb-4
   - unless @event.cover_photo.attached?
     .flex.flex-row.gap-1.items-center
-      h1.text-xl.font-semibold
+      h1.text-2xl.font-semibold
         = @event.title
   
   - if @event.short_description.present?
-    h2.text-stone-500.text-xl.-mt-1 = @event.short_description
+    h2.text-stone-500.text = @event.short_description

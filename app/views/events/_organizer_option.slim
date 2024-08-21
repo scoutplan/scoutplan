@@ -1,0 +1,6 @@
+li
+  = label_tag "organizer_#{tag.id}", class: "search-item flex flex-row items-center px-2 py-2 hover:bg-stone-100 rounded", for: "organizer_#{organizer.id}" do
+    i.fa-light.fa-tag.fa-fw.text-stone-500.mr-1
+    = organizer.display_name
+
+    = check_box_tag "event[organizer_id][]", organizer.id, checked, class: "ml-auto", data: { action: "change->checkable-list#change", value: organizer.id }

@@ -1,5 +1,5 @@
 class TagsController < ApplicationController
   def create
-    @tag_name = params[:tag][:name]
+    @tag_name = params[:value]
   end
 end

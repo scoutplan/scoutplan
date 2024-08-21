@@ -1,9 +1,9 @@
 - short_link ||= false
 
 address.not-italic.pb-8
-  = content_tag_if :div, content_tag(:h4, location.name, class: "font-bold")
-  = content_tag_if :div, content_tag(:p, location.address, class: "font-bold")
-  = content_tag_if :div, content_tag(:p, location.phone, class: "font-bold")
+  = content_tag_if :div, content_tag(:h4, location.name, class: "font-semibold")
+  = content_tag_if :div, content_tag(:p, location.address, class: "")
+  = content_tag_if :div, content_tag(:p, location.phone, class: "")
   = content_tag_if :div,
                    location.website,
-                   link_to(short_link ? t("locations.labels.link") : location.website, location.website, class: "external-link text-blue-600 font-bold")
+                   link_to(short_link ? t("locations.labels.link") : location.website, location.website, class: "external-link text-blue-600 ")

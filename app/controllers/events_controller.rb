@@ -27,7 +27,7 @@ class EventsController < UnitContextController
 
   def index
     variant = cookies[:event_index_variation] || "list"
-    # variant ||= "list"
+
     case variant
     when "calendar"
       redirect_to calendar_redirect_unit_events_path(current_unit)
@@ -63,8 +63,6 @@ class EventsController < UnitContextController
   end
 
   def list
-    request.variant = :mobile if mobile_device?
-
     respond_to do |format|
       format.html do
         @current_month = params[:current_month]&.split("-")&.map(&:to_i)
@@ -81,6 +79,7 @@ class EventsController < UnitContextController
     find_fast_list_events
   end
 
+  # TODO: clean this up
   def threeup
     @query_year = params[:year]&.to_i || Date.current.year
     @query_month = params[:month]&.to_i || Date.current.month
@@ -215,9 +214,9 @@ class EventsController < UnitContextController
 
   def redirect_after_update
     if cookies[:event_index_variation] == "calendar"
-      redirect_to unit_events_path(current_unit), notice: t("events.update_confirmation", title: @event.title)
+      redirect_to unit_events_path(current_unit)
     else
-      redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
+      redirect_to unit_event_path(@event.unit, @event)
     end
   end
 
@@ -229,6 +228,8 @@ class EventsController < UnitContextController
     EventService.new(@event, params).process_event_shifts
     EventService.new(@event, params).process_library_attachments
     EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
+
+    @event.cover_photo.purge if params[:remove_cover_photo] == "1"
   end
 
   def destroy

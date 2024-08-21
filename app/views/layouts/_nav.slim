@@ -7,7 +7,7 @@ nav.bg-stone-50.text-stone-700.relative.h-full.w-full
                     class: "block -mx-2 px-4 py-2 dropdown-button dropdown-button-chevron font-semibold text-sm",
                     data: { user_id: current_user.id, member_id: current_member.id } do
               = current_member.short_display_name
-              i.fa-regular.fa-chevron-down.ml-2
+              i.fa-light.fa-chevron-down.ml-2
 
           .dropdown-menu.rounded.bg-white.block.absolute.left-0.ml-2.w-64.drop-shadow-lg.border
             = render partial: "layouts/partials/user_menu_items"
@@ -34,35 +34,35 @@ nav.bg-stone-50.text-stone-700.relative.h-full.w-full
         = link_to unit_events_path(current_unit),
                   class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.events]/controller:text-brand-500 group-[.events]/controller:bg-brand-100",
                   data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "events", action: "sidebar#activate" } do
-            i.fa-regular.fa-calendar-alt.fa-fw.mr-2
+            i.fa-light.fa-calendar-alt.fa-fw.mr-2
             = t("main_nav.events")
 
       - if policy(:unit_membership).index?
         = link_to unit_members_path(current_unit),
                   class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.unit-memberships]/controller:text-brand-500 group-[.unit-memberships]/controller:bg-brand-100",
                   data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "unit-memberships", action: "sidebar#activate" } do
-            i.fa-regular.fa-users.fa-fw.mr-2
+            i.fa-light.fa-users.fa-fw.mr-2
             = t("main_nav.members")
 
       - if policy(:event).plan? && Flipper.enabled?(:planner, current_member)
         = link_to unit_plans_path(current_unit),
                   class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.plans]/controller:text-brand-500 group-[.plans]/controller:bg-brand-100",
                   data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "plans", action: "sidebar#activate" } do
-            i.fa-regular.fa-pen-ruler.fa-fw.mr-2
+            i.fa-light.fa-pen-ruler.fa-fw.mr-2
             = t("main_nav.planner")
 
       - if policy(:message).new? && Flipper.enabled?(:messages, current_member)
         = link_to unit_messages_path(current_unit),
                   class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.messages]/controller:text-brand-500 group-[.messages]/controller:bg-brand-100",
                   data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "messages", action: "sidebar#activate" } do
-          i.fa-regular.fa-envelope.fa-fw.mr-2
+          i.fa-light.fa-envelope.fa-fw.mr-2
           = t("main_nav.communication")
 
       - if (policy(:unit_document).index? && current_unit.documents.any?) || policy(:unit_document).create?
         = link_to unit_documents_path(current_unit),
                   class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.documents]/controller:text-brand-500 group-[.documents]/controller:bg-brand-100",
                   data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "documents", action: "sidebar#activate" } do
-          i.fa-regular.fa-books.fa-fw.mr-2
+          i.fa-light.fa-books.fa-fw.mr-2
           = t("main_nav.document_library")
 
       - if policy(:unit).edit?
@@ -70,14 +70,14 @@ nav.bg-stone-50.text-stone-700.relative.h-full.w-full
                   class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.settings]/controller:text-brand-500 group-[.settings]/controller:bg-brand-100",
                   onclick: "document.body.classList.toggle('settings', true)",
                   data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "settings", action: "sidebar#activate" } do
-          i.fa-regular.fa-cog.fa-fw.mr-2
+          i.fa-light.fa-cog.fa-fw.mr-2
           = t("main_nav.settings")
 
     .bottom.mb-4
       - if current_member.units.count > 1
         = label_tag :show_unit_browser, class: "block relative w-full p-2 text-sm text-stone-500 hover:bg-stone-200 rounded font-medium" do
           = check_box_tag :show_unit_browser, class: "hidden peer"
-          i.fa-regular.fa-chevron-down.discloure-glyph.peer-checked:rotate-180.transition-all
+          i.fa-light.fa-chevron-down.discloure-glyph.peer-checked:rotate-180.transition-all
           | &nbsp;
           = "Switch units"
 

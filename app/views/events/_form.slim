@@ -1,0 +1,132 @@
+= form_with model: event, scope: "event",
+    url: event.new_record? ? unit_events_path(current_unit) : unit_event_path(current_unit, event),
+    method: event.new_record? ? "post" : "patch",
+    class: "h-full",
+    data: { turbo: false, controller: "event-edit",
+            event_edit_season_end_date_value: current_unit.this_season_ends_at.to_datetime.iso8601,
+            event_edit_unit_id_value: current_unit.id } do |f|
+
+  = render partial: "tags_popup", locals: { event: event }
+  = render partial: "organizers_popup", locals: { event: event }
+
+  article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden
+    header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
+      .left
+        h1 = "Edit a Calendar Event"
+
+      .right.flex.flex-row.gap-2.text-stone-500.text-lg
+
+        = button_tag type: "button", class: "x-close-button flex flex-row items-center block w-6 h-6 -mr-2 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
+          i.fa-regular.fa-times.fa-fw
+
+    section.flex.flex-col.md:flex-row.w-full.overflow-y-hidden(style="height: calc(100% - 0rem)")
+      aside.w-full.md:w-1/4.bg-stone-50.px-6.py-3.overflow-y-auto.text-stone-600
+        .flex.flex-col.divide-y.divide-stone-200.text-sm
+          // CATEGORY
+          .py-2
+            header.mb-2
+              h3.font-semibold = "Category"
+
+            = f.select :event_category_id,
+                        event.unit.event_categories.order(:name).collect { |c| [ c.name, c.id ] },
+                        { prompt: t("events.placeholders.category"), selected: event.event_category_id },
+                        { class: "border-0 px-0 px-2 -mx-2 py-1 bg-transparent hover:bg-brand-100 text-sm focus:ring-0",
+                          style: "width: calc(100% + 1.2rem)",
+                          data: { event_edit_target: "categorySelect" },
+                          required: "A category is required" }
+
+          // PUBLISHED
+          .py-2
+            header.mb-2
+              h3.font-semibold = "Visibility"
+
+            = render partial: "components/switch",
+                    locals: { checked: event.published?,
+                              label: t("events.edit.published"),
+                              object_name: "event",
+                              method: "status",
+                              checked_value: "published",
+                              class: "text-xs",
+                              unchecked_value: "draft" }                              
+
+          // TAGS
+          .py-2.relative
+            details#tags(data-event-edit-target="tagListWrapper")
+              summary.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.hover:bg-brand-100.rounded.cursor-pointer(class="active:-mx-[0.4rem]")
+                .font-semibold = "Tags"
+                i.fa-light.fa-plus.fa-fw
+
+            .flex.flex-wrap.gap-1.text-xs#tag_tag_field(data-controller="tag-field" data-tag-field-checkable-list-outlet="#tags_popup")
+              - ActsAsTaggableOn::Tag.for_tenant(event.unit.id).each do |tag|
+                = render partial: "tag_label", locals: { tag_name: tag.name, visible: event.tags.include?(tag) }
+
+          // COVER PHOTO
+          .py-2
+            = button_tag type: "button",
+                          class: "block py-1 px-2 -mx-2 hover:bg-brand-100",
+                          style: "width: calc(100% + 1rem)",
+                          onclick: "document.querySelector('#cover_photo_file_field').click();" do
+
+              .flex.flex-row.justify-between.items-center
+                .font-semibold
+                  = "Cover photo"
+
+                i.fa-light.fa-plus.fa-fw
+
+            .relative(data-event-edit-target="coverPhotoThumbnail")
+              - if event.cover_photo.attached?
+                = image_tag event.cover_photo.representation(resize_to_fit: [200, 100]),
+                            class: "mt-2 w-full h-24 object-cover object-center",
+                            alt: event.title,
+                            data: { event_edit_target: "coverPhotoThumbnailImage" }
+                            
+                .absolute.right-0.bottom-0
+                  = button_tag type: "button",
+                                class: "block p-1 m-2 text-white border rounded text-xs hover:bg-white/30",
+                                title: "Remove cover photo",
+                                data: { action: "event-edit#removeCoverPhoto" } do
+                    i.fa-light.fa-trash.fa-fw
+
+              = f.file_field :cover_photo, class: "hidden block w-full px-2 py-1 bg-stone-100 hover:bg-stone-200 text-sm focus:ring-0",
+                            accept: "image/png, image/jpeg, image/jpg",
+                            required: false,
+                            id: "cover_photo_file_field",
+                            data: { event_edit_target: "coverPhotoFile", action: "change->event-edit#coverPhotoSelected" }
+
+              = hidden_field_tag :remove_cover_photo, "0", id: "remove_cover_photo_field", data: { event_edit_target: "removeCoverPhotoField" }
+
+          // ORGANIZERS
+          .py-2.relative
+            details#organizers(data-event-edit-target="organizerListWrapper")
+              summary.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.hover:bg-brand-100.rounded.cursor-pointer(class="active:-mx-[0.4rem]")
+                .font-semibold = "Organizers"
+                i.fa-light.fa-plus.fa-fw
+
+            .flex.flex-wrap.gap-1.text-xs#organizers_label_list(data-controller="tag-field" data-tag-field-checkable-list-outlet="#organizers_popup")
+              - event.unit.members.active.each do |member|
+                = render partial: "organizer_tag", locals: { organizer: member, visible: event.organizers.include?(member) }
+
+      section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.text-sm.text-stone-600.rounded-r-lg.overflow-y-auto.h-full
+        - %w[basics dates rsvp locations description attachments].each do |section|
+          = render partial: "events/partials/form/#{section}", locals: { f: f, section: section }
+
+    footer.sticky.bottom-0.px-6.py-3.bg-white.border-t.border-stone-200.flex.flex-col.md:flex-row.gap-2.justify-between.items-center.text-sm
+      .left.w-full.md:w-auto
+        - unless event.new_record?
+          = link_to unit_event_cancel_path(current_unit, event),
+                    class: "text-center inline-block px-2 py-2 -mx-2 text-brand-500 hover:text-brand-600 whitespace-nowrap text-center w-full",
+                    id: "cancel_event_button",
+                    data: { turbo_action: "advance" } do
+            i.fa-light.fa-trash.fa-fw.mr-1
+            = I18n.t("events.show.cancel_title")
+
+      .right.flex.flex-col.md:flex-row.gap-2.w-full.md:w-auto
+        = f.button t("global.cancel"),
+                  type: "button",
+                  class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded font-medium",
+                  data: { action: "click->modal#close" }
+
+        = f.submit event.new_record? ? t("events.new.add_this_event") : t("global.save_changes"),
+                    class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-brand-500 hover:bg-brand-600 disabled:bg-brand-300 disabled:text-brand-50 text-white rounded cursor-pointer",
+                    data: { event_edit_target: "submit" },
+                    disabled: event.new_record?

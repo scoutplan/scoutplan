@@ -41,9 +41,13 @@ section.pt-2
             - if count < location_count
               .absolute.w-1.left-1/2.top-0.bottom-0.border-l.border-stone-400.dark:border-stone-600
 
-            .fa-stack
-              i.fa-solid.fa-circle.fa-stack-2x(class=t("events.show.colors.#{location_type}"))
-              i.fa-solid.fa-stack-1x.fa-inverse.(class=t("events.show.icons.#{location_type}"))
+            .fa-layers.fa-fw
+              i.fa-solid.fa-circle(class=t("events.show.colors.#{location_type}") data-fa-transform="grow-12")
+              i.fa-solid.fa-inverse.text-white/90(class=t("events.show.icons.#{location_type}"))
+  
 
-          .table-cell.pl-2
+            / .fa-stack
+            /   i.fa-solid.fa-circle.fa-stack-2x(class=t("events.show.colors.#{location_type}"))
+
+          .table-cell.pl-4
             = render partial: "events/partials/show/show_location", locals: { location: location, location_type: location_type, short_link: true }

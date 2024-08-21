@@ -6,7 +6,7 @@
 = turbo_frame_tag :main, src: unit_events_path(current_unit), loading: :lazy
 
 = turbo_frame_tag :modal do
-  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 px-1 md:pb-16 bg-black/50 z-30", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
+  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 md:pb-16 bg-black/50 z-30", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
     article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden
       header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-600
         .left
@@ -14,7 +14,7 @@
           | &nbsp;
           = @event.category_name
 
-        .right.flex.flex-row.gap-2.text-stone-500.text-lg
+        .right.flex.flex-row.gap-2.text-stone-500.text-lg.-mr-2
           - if @event.previous.present?
             = link_to unit_event_path(current_unit, @event.previous(current_member)),
                       class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900",
@@ -50,12 +50,8 @@
 
           .absolute.left-0.right-0.bottom-0.h-1/2.bg-gradient-to-t.from-stone-900.opacity-80
 
-          .absolute.left-6.bottom-3.text-white.text-xl.font-semibold
+          .absolute.left-6.bottom-3.text-white.text-2xl.font-medium
             = @event.title
-
-      - else
-        header.px-6.mt-6
-          h3.font-semibold.text-3xl = @event.title
       
       section.flex.flex-col.md:flex-row.w-full.overflow-y-hidden(style="height: calc(100% - 0rem)")
         section.w-full.md:w-2/3.px-6.py-3.overflow-y-auto
@@ -77,3 +73,8 @@
           = render partial: "events/partials/show/tags", locals: { event: @event }          
 
     = render partial: "events/partials/show/watermarks"
+
+  javascript:
+    window.addEventListener("turbo:load", () => {
+      document.title = "#{@event.title} - #{current_unit.name}";
+    });

@@ -5,31 +5,29 @@ import { computePosition } from "https://cdn.jsdelivr.net/npm/@floating-ui/dom@1
 
 export default class extends Controller {
   static targets = [ "deleteform", "fileinput", "privatefileinput", "documentLibraryIds", "startsAtDate", "endsAtDate", "rsvpClosesAt", "repeatsUntilSelect",
-      "submit", "categorySelect", "title", "tagSearch", "newTagPrompt", "newTagName", "tagNotFoundPrompt", "tagListWrapper"
+      "submit", "categorySelect", "title", "newTagPrompt", "newTagName", "tagNotFoundPrompt", "tagListWrapper", "removeCoverPhotoField", "coverPhotoThumbnail",
+      "coverPhotoFile", "coverPhotoThumbnailImage"
    ];
   static values = { seasonEndDate: String, unitId: String };
 
   connect() {
     this.populateRepeatUntilSelectOptions();
 
-    var reference = document.querySelector("details#tags");
-    var popperTarget = document.querySelector("#tags_popup");
+    const tagsButton = document.querySelector("details#tags");
+    const tagsPopup = document.querySelector("#tags_popup");
 
-    computePosition(reference, popperTarget, { placement: "bottom-start" }).then(({x, y}) => {
-      popperTarget.style.left = `${x}px`;
-      popperTarget.style.top = `${y}px`;
+    computePosition(tagsButton, tagsPopup, { placement: "bottom-start" }).then(({x, y}) => {
+      tagsPopup.style.left = `${x}px`;
+      tagsPopup.style.top = `${y}px`;
     });
 
-    this.tagSearchObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          this.tagSearchTarget.focus();
-        } else {
-          this.resetTagList();
-        }
-      });
+    const organizersButton = document.querySelector("details#organizers");
+    const organizersPopup = document.querySelector("#organizers_popup");
+
+    computePosition(organizersButton, organizersPopup, { placement: "bottom-start" }).then(({x, y}) => {
+      organizersPopup.style.left = `${x}px`;
+      organizersPopup.style.top = `${y}px`;
     });
-    this.tagSearchObserver.observe(this.tagSearchTarget);
   }
 
   resetTagList() {
@@ -46,73 +44,6 @@ export default class extends Controller {
     this.tagListWrapperTarget.removeAttribute("open");
   }
 
-  syncTagList(event) {
-    var tagList = document.querySelector("#tag_list");
-    var checkboxes = tagList.querySelectorAll("input[type=checkbox]");
-
-    checkboxes.forEach(function(checkbox) {
-      var tagName = checkbox.dataset.tagId;
-      var labelId = `#tag_label_${tagName}`;
-      var labelElem = document.querySelector(labelId);
-      labelElem?.classList?.toggle("hidden", !checkbox.checked);
-    });
-  }
-
-  disconnect() {
-    this.tagSearchObserver.disconnect();
-  }
-
-  // addAttachmentToPendingList(filename) {
-  //   var attachment_list = document.querySelector("#existing_attachments");
-  //   attachment_list.insertAdjacentHTML("beforeend", `<li class="pending-attachment py-1 font-bold text-green-600">${filename} (pending)</li>`);
-  // }
-
-  toggleTags(event) {
-    this.tagSearchTarget.focus();
-  }
-
-  searchTags(event) {
-    var query = this.tagSearchTarget.value;
-    var tagList = document.querySelector("#tag_list");
-    var tags = tagList.querySelectorAll("li");
-    var hits = 0;
-
-    tags.forEach(function(tag) {
-      if(query == "") {
-        tag.classList.remove("hidden");
-      } else if (tag.textContent.toLowerCase().indexOf(query.toLowerCase()) > -1) {
-        tag.classList.remove("hidden");
-        hits++;
-      } else {
-        tag.classList.add("hidden");
-      }
-    });
-
-    this.newTagPromptTarget.classList.toggle("hidden", query == "");
-    this.tagNotFoundPromptTarget.classList.toggle("hidden", hits > 0);
-    this.newTagNameTarget.innerText = query;
-  }
-
-  async addTag(event) {
-    var newTagName = this.newTagNameTarget.innerText;
-    const unitId = this.unitIdValue;
-    const url = `/u/${unitId}/tags`;
-    const formData = new FormData();
-    formData.append("tag[name]", newTagName);
-    await post(url, { responseKind: "turbo-stream", body: formData });
-    this.hideTagList();
-    this.resetTagList();
-  }
-
-  deselectTag(event) {
-    let tagName = event.currentTarget.dataset.tagName;
-    console.log(tagName);
-    let tagLabel = document.querySelector(`#tag_label_${tagName}`);
-    let checkbox = document.querySelector(`#event_tag_${tagName}`);
-    tagLabel.classList.add("hidden");
-    checkbox.checked = false;
-  }
-
   validate(event) {
     var valid = true;
     valid = valid && this.categorySelectTarget.value != "";
@@ -121,7 +52,19 @@ export default class extends Controller {
   }
 
   removeCoverPhoto() {
-    
+    this.removeCoverPhotoFieldTarget.value = "1";
+    this.coverPhotoThumbnailTarget.classList.add("hidden");
+  }
+
+  coverPhotoSelected(event) {
+    const fileInput = this.coverPhotoFileTarget;
+    const file = fileInput.files[0];
+    const wrapper = this.coverPhotoThumbnailTarget;
+    const image = document.createElement("img");
+
+    image.src = URL.createObjectURL(file);
+
+    wrapper.appendChild(image);
   }
 
   attachFromLibrary(event) {

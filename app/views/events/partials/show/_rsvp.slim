@@ -8,33 +8,35 @@ article#rsvp_section
       = "Your Family RSVPs"
 
     .right.block
-      - if event.rsvp_open? && policy(event).rsvp? && true
-        details
-          summary.cursor-pointer.text-stone-500.hover:text-stone-700
-            = "Change"
 
-          = turbo_frame_tag "rsvp_popup", src: popup_unit_event_rsvps_path(current_unit, event), role: "dialog", data: { controller: "popup" }
+  .bg-stone-200.rounded.p-2
+    table.w-full
+      - family_rsvp.active_family_members.each_with_index do |family_member, index|
+        - response_glyph = ApplicationHelper::RESPONSE_GLYPHS[family_member.response.to_sym]
+        - response_color = ApplicationHelper::RESPONSE_COLORS[family_member.response.to_sym]
 
-  table.w-full
-    - family_rsvp.active_family_members.each do |family_member|
-      - response_glyph = ApplicationHelper::RESPONSE_GLYPHS[family_member.response.to_sym]
-      - response_color = ApplicationHelper::RESPONSE_COLORS[family_member.response.to_sym]
+        tr
+          td.py-1(class="#{index > 0 ? 'border-t border-stone-300' : ''}")
+            = family_member.first_name
 
-      tr
-        td
-          = family_member.first_name
+          td.py-1.text-right(class="#{index > 0 ? 'border-t border-stone-300' : ''}")
+            i.fa-solid.fa-fw(class="#{response_glyph} text-#{response_color}")
+            | &nbsp;
+            = t("rsvp_#{family_member.response.to_s}").downcase
+        
+          - if event.shifts?
+            - rsvp.event_shift_ids.each do |shift_id|
+              - shift = event.shifts.find_by(id: shift_id)
+              .inline-block.px-2.py-1.mr-1.border.border-sky-300.rounded
+                i.fa-solid.fa-circle-check.text-amber-500.mr-1
+                = shift.name
 
-        td
-          i.fa-solid.fa-fw(class="#{response_glyph} text-#{response_color}")
-          | &nbsp;
-          = t("rsvp_#{family_member.response.to_s}").downcase
-      
-        - if event.shifts?
-          - rsvp.event_shift_ids.each do |shift_id|
-            - shift = event.shifts.find_by(id: shift_id)
-            .inline-block.px-2.py-1.mr-1.border.border-sky-300.rounded
-              i.fa-solid.fa-circle-check.text-amber-500.mr-1
-              = shift.name
+  - if event.rsvp_open? && policy(event).rsvp? && true
+    details.mt-2
+      summary.cursor-pointer.border.rounded.p-2.text-center.text-brand-500.border-brand-500.hover:bg-brand-100
+        = "Change Your RSVP"
+
+      = turbo_frame_tag "rsvp_popup", src: popup_unit_event_rsvps_path(current_unit, event), role: "dialog", data: { controller: "popup" }                
 
   p.text-stone-500.text-xs.mt-3
     = t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at))

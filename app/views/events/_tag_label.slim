@@ -4,5 +4,5 @@ div.pl-2.pr-1.py-1.rounded.flex.flex-row.gap-2(style="background-color: #{colors
   = tag_name
   = button_tag type: "button",
                class: "hover:bg-black/10 hover:text-black/50 rounded px-px",
-               data: { action: "event-edit#deselectTag", tag_name: tag_name.parameterize.underscore } do
+               data: { action: "tag-field#remove", tag_name: tag_name.parameterize.underscore } do
     i.fa-light.fa-times.fa-fw.fa-sm

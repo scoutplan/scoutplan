@@ -3,26 +3,27 @@ css:
   body:has(details#tags[open]) #tags_popup { display: block; }
 
 // TAGS POPUP
-#tags_popup.absolute.bg-white.text-sm.w-72.-ml-16.border.rounded-lg.drop-shadow-overhead.pt-2.z-10(data-popper-placement="bottom-start")
+#tags_popup.absolute.bg-white.text-sm.w-72.-ml-16.border.rounded-lg.drop-shadow-overhead.pt-2.mt-1.z-10(data-popper-placement="bottom-start" data-controller="searchable-list checkable-list" data-checkable-list-tag-field-outlet="#tag_tag_field" data-searchable-list-new-value-url-value="#{unit_tags_path(current_unit)}")
   .px-2
-    = text_field :tag_search, nil, class: "block w-full rounded px-2 py-2 mb-2 text-sm border border-stone-200 placeholder-stone-400",
+    = search_field :tag_search, nil, class: "block w-full rounded px-2 py-2 mb-2 text-sm border border-stone-200 placeholder-stone-400",
                   placeholder: "Search tags",
                   autofocus: true,
                   autocomplete: "off",
-                  data: { action: "input->event-edit#searchTags", event_edit_target: "tagSearch" }
+                  data: { action: "input->searchable-list#search", searchable_list_target: "searchField" }
 
   ul.max-h-72.overflow-y-auto#tag_list
     - ActsAsTaggableOn::Tag.for_tenant(event.unit.id).each do |tag|
       = render partial: "tag_option", locals: { tag_name: tag.name, checked: event.tag_list.include?(tag.name) }
 
-  div.hidden(data-event-edit-target="newTagPrompt")
-    p.p-2.text-stone-500.hidden(data-event-edit-target="tagNotFoundPrompt")
-      | Tag not found
+  p.p-2.text-stone-500.hidden(data-searchable-list-target="valueNotFoundPrompt")
+    | Tag not found
+
+  div.hidden(data-searchable-list-target="newValuePrompt")
     
     = button_tag type: "button",
                  class: "p-2 font-semibold hover:bg-stone-100 block w-full text-left",
-                 data: { action: "event-edit#addTag" } do
+                 data: { action: "searchable-list#addValue" } do
       i.fa-light.fa-plus.fa-fw.text-stone-500.mr-2
       | Create "
-      span(data-event-edit-target="newTagName")
+      span(data-searchable-list-target="newValueName")
       | "

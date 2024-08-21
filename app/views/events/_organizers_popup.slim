@@ -1,0 +1,21 @@
+css:
+  #organizers_popup { display: none; }
+  body:has(details#organizers[open]) #organizers_popup { display: block; }
+
+// organizerS POPUP
+#organizers_popup.absolute.bg-white.text-sm.w-72.-ml-16.border.rounded-lg.drop-shadow-overhead.mt-1.pt-2.z-10(data-popper-placement="bottom-start" data-controller="searchable-list checkable-list")
+  .px-2
+    = text_field :organizer_search, nil, class: "block w-full rounded px-2 py-2 mb-2 text-sm border border-stone-200 placeholder-stone-400",
+                  placeholder: "Search organizers",
+                  autofocus: true,
+                  autocomplete: "off",
+                  data: { action: "input->searchable-list#search", searchable_list_target: "searchField" }
+
+  ul.max-h-72.overflow-y-auto#organizer_list
+    - event.unit.members.each do |member|
+      = render partial: "organizer_option", locals: { organizer: member, checked: false }
+
+  div.hidden(data-event-edit-target="newOrganizerPrompt")
+    p.p-2.text-stone-500.hidden(data-event-edit-target="organizerNotFoundPrompt")
+      | Member not found
+    

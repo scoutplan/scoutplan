@@ -1,0 +1,6 @@
+div.pl-2.pr-1.py-1.rounded.flex.flex-row.gap-2(class="#{visible ? '' : 'hidden'}" id="organizer_tag_#{organizer.id}")
+  = organizer.display_name
+  = button_tag type: "button",
+               class: "hover:bg-black/10 hover:text-black/50 rounded px-px",
+               data: { action: "tag-field#remove" } do
+    i.fa-light.fa-times.fa-fw.fa-sm
