@@ -1,6 +1,8 @@
 li
-  = label_tag "organizer_#{tag.id}", class: "search-item flex flex-row items-center px-2 py-2 hover:bg-stone-100 rounded", for: "organizer_#{organizer.id}" do
+  = label_tag "event_event_organizer_member_#{member.id}", class: "search-item flex flex-row items-center px-2 py-2 hover:bg-stone-100 rounded", for: "member_#{member.id}" do
     i.fa-light.fa-tag.fa-fw.text-stone-500.mr-1
-    = organizer.display_name
+    = member.display_name
 
-    = check_box_tag "event[organizer_id][]", organizer.id, checked, class: "ml-auto", data: { action: "change->checkable-list#change", value: organizer.id }
+    = check_box_tag "event[event_organizer_unit_membership_ids][]", member.id, checked, class: "ml-auto",
+                    id: "event_event_organizer_unit_membership_id_#{member.id}",
+                    data: { action: "change->checkable-list#change", value: member.id }

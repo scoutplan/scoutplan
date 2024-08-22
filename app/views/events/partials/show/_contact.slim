@@ -2,13 +2,13 @@
 
 section.pt-3
   header.flex.flex-row.justify-between.items-center.mb-3
-    h3.font-semibold
-      i.fa-light.fa-clipboard-user.mr-2
+    h3.font-bold
+      i.fa-light.fa-clipboard-user.fa-fw.mr-1
       = "Event Organizer"
 
   dl
     - @event.organizers.each do |organizer|
-      dt.font-semibold.mt-2
+      dt.font-medium.mt-3
         = organizer.full_display_name
 
       - if organizer.phone.present?

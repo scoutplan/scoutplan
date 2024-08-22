@@ -184,7 +184,7 @@ class EventsController < UnitContextController
     @event = service.create(event_params)
     render "new" and return unless @event.valid?
 
-    EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
+    # EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
     EventService.new(@event, params).process_event_shifts
     return unless @event.present?
 
@@ -203,6 +203,7 @@ class EventsController < UnitContextController
     when "delete" then destroy
     when "delete_series" then destroy_series
     else
+      @event.current_member = current_member
       update_event
 
       respond_to do |format|
@@ -227,7 +228,7 @@ class EventsController < UnitContextController
 
     EventService.new(@event, params).process_event_shifts
     EventService.new(@event, params).process_library_attachments
-    EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
+    # EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
 
     @event.cover_photo.purge if params[:remove_cover_photo] == "1"
   end
@@ -404,6 +405,7 @@ class EventsController < UnitContextController
                                       :note, :cost_youth, :cost_adult, :online, :website,
                                       :notify_members, :notify_recipients, :notify_message, :document_library_ids,
                                       :cover_photo, packing_list_ids: [], attachments: [], private_attachments: [], tag_list: [],
+                                      event_organizer_unit_membership_ids: [],
                                       event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy],
                                       event_organizers_attributes: [:unit_membership_id])
     p[:tag_list] ||= []

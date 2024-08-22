@@ -4,18 +4,19 @@ export default class extends Controller {
   static outlets = [ "checkable-list" ];
 
   change({ detail: content, target }) {
-    var labelId = `#tag_label_${content.value}`;
-    var labelElem = document.querySelector(labelId);
+    // var labelId = `#tag_label_${content.value}`;
+    var labelElem = this.element.querySelector(`[data-value="${content.value}"]`);
     labelElem?.classList?.toggle("hidden", !content.checked);
   }
 
   remove(event) {
-    let tagName = event.currentTarget.dataset.tagName;
-    let tagLabel = document.querySelector(`#tag_label_${tagName}`);
+    const tagLabel = event.currentTarget.closest("[data-value]");
+    const value = tagLabel.dataset.value;
+
     tagLabel.classList.toggle("hidden", true);
-    // this.dispatch("remove", { detail: { value: tagName }});
-    if (hasCheckableListOutlet) {
-      this.checkableListOutlet.uncheck({ detail: { value: tagName }});
+    
+    if (this.hasCheckableListOutlet) {
+      this.checkableListOutlet.uncheck({ detail: { value: value }});
     }
   }
 }

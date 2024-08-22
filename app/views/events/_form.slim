@@ -102,9 +102,9 @@
                 .font-semibold = "Organizers"
                 i.fa-light.fa-plus.fa-fw
 
-            .flex.flex-wrap.gap-1.text-xs#organizers_label_list(data-controller="tag-field" data-tag-field-checkable-list-outlet="#organizers_popup")
+            .flex.flex-wrap.gap-1.text-xs#organizers_tag_field(data-controller="tag-field" data-tag-field-checkable-list-outlet="#organizers_popup")
               - event.unit.members.active.each do |member|
-                = render partial: "organizer_tag", locals: { organizer: member, visible: event.organizers.include?(member) }
+                = render partial: "organizer_tag", locals: { member: member, visible: event.organizer_members.include?(member) }
 
       section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.text-sm.text-stone-600.rounded-r-lg.overflow-y-auto.h-full
         - %w[basics dates rsvp locations description attachments].each do |section|

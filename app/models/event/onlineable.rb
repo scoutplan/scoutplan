@@ -18,7 +18,7 @@ module Event::Onlineable
   end
 
   def valid_website_url?
-    return if website.blank?
+    return false if website.blank?
 
     uri = URI.parse(website)
     uri.host.present?

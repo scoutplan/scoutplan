@@ -1,11 +1,13 @@
 # rubocop:disable Metrics/ClassLength
 class Event < ApplicationRecord
-  include Notifiable, Remindable, Onlineable, Icalendarable, Replyable, DatePresentable, StaticMappable, Insertable
+  include Notifiable, Remindable, Onlineable, Icalendarable, Replyable, DatePresentable, StaticMappable, Insertable,
+          ThroughAssociations
   extend DateTimeAttributes
 
   date_time_attrs_for :starts_at, :ends_at
 
-  attr_accessor :repeats, :notify_members, :notify_recipients, :notify_message, :document_library_ids
+  attr_accessor :repeats, :notify_members, :notify_recipients, :notify_message, :document_library_ids, :current_member,
+                :event_organizer_unit_membership_ids
 
   default_scope { where(parent_event_id: nil).order(starts_at: :asc) }
 
@@ -31,6 +33,7 @@ class Event < ApplicationRecord
   has_many :rsvp_tokens, dependent: :destroy
   has_many :sub_events, class_name: "Event", foreign_key: "parent_event_id"
   has_many :unit_memberships, through: :event_rsvps
+  has_many :organizer_members, through: :event_organizers, source: :unit_membership
 
   has_one :chat, as: :chattable, dependent: :destroy
 
@@ -46,7 +49,9 @@ class Event < ApplicationRecord
   has_secure_token
 
   accepts_nested_attributes_for :event_locations, allow_destroy: true
-  accepts_nested_attributes_for :event_organizers, allow_destroy: true
+  # accepts_nested_attributes_for :event_organizers, allow_destroy: true
+
+  accepts_through_attributes_for :event_organizers, joining: :unit_membership, key: :id
 
   alias_method :rsvps, :event_rsvps
   alias_method :category, :event_category
@@ -105,6 +110,17 @@ class Event < ApplicationRecord
   delegate :next_season_starts_at, :next_season_ends_at, to: :unit
 
   auto_strip_attributes :website
+
+  after_save_commit :save_event_organizers
+
+  def save_event_organizers
+    return unless event_organizer_unit_membership_ids.present?
+
+    event_organizers.where("unit_membership_id NOT IN (?)", event_organizer_unit_membership_ids).destroy_all
+    event_organizer_unit_membership_ids.map do |value|
+      event_organizers.create_with(assigned_by: current_member).find_or_create_by(unit_membership_id: value)
+    end
+  end
 
   def category_name
     event_category.name
