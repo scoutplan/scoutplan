@@ -15,25 +15,45 @@
 
 - if event.rsvp_open?
   - if policy(event).rsvp?
+
+    - if family_has_rsvps
+      ol.text-xs
+        - family_rsvp.active_family_members.each_with_index do |family_member, index|
+          - response_glyph = ApplicationHelper::RESPONSE_GLYPHS[family_member.response.to_sym]
+          - response_color = ApplicationHelper::RESPONSE_COLORS[family_member.response.to_sym]
+
+          li.inline-block.mr-3
+              i.fa-solid.fa-fw.mr-px(class="#{response_glyph} text-#{response_color}")
+              = family_member.first_name
+
     - if family_fully_responded
       = link_to new_unit_event_family_rsvp_path(current_unit, event),
-                class: "whitespace-nowrap block px-4 py-2 text-center rounded font-semibold bg-amber-200 hover:bg-amber-300 text-amber-800 dark:text-amber-500 dark:hover:bg-amber-950",
+                class: "text-sm whitespace-nowrap block px-4 py-2 text-center rounded border border-brand-500 hover:border-brand-700 text-brand-500 hover:text-brand-700 bg-white hover:bg-brand-100",
                 title: "#{rsvp_service.family_responses_in_words}",
                 data: { turbo_frame: "modal" } do
         = t(".update")
-      
+
+    - elsif family_has_rsvps
+      = link_to new_unit_event_family_rsvp_path(current_unit, event),
+                class: "whitespace-nowrap block px-4 py-2 text-center rounded font-medium bg-brand-500 hover:bg-brand-600 text-white",
+                title: "#{rsvp_service.family_responses_in_words}",
+                data: { turbo_frame: "modal" } do
+        = "Complete Your RSVP"
+
     - else
       = link_to new_unit_event_family_rsvp_path(current_unit, event),
-                class: "whitespace-nowrap block px-4 py-2 text-center rounded font-semibold bg-amber-300 hover:bg-amber-500 text-amber-950",
+                class: "whitespace-nowrap block px-4 py-2 text-center rounded font-medium bg-brand-500 hover:bg-brand-600 text-white",
                 title: "#{rsvp_service.family_responses_in_words}",
                 data: { turbo_frame: "modal" } do
         = t(".new")
-  .inline-block.font-medium.text-center.text-sm.text-amber-600
-    = "RSVPs close in "
+
+  .inline-block.text-xs.text-stone-500
     = distance_of_time_in_words_to_now(event.rsvp_closes_at).downcase
 
     - if event.limits_headcount?
-      = ", " + event.headcount_remaining.to_s + " spots open"
+      = ", " + event.headcount_remaining.to_s + " spots"
+      
+    = " remaining"
 
 - elsif event.rsvp_opens_at&.future?
   .font-semibold.text-sm.text-amber-600.text-center.md:text-left

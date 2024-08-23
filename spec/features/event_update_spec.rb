@@ -21,13 +21,17 @@ describe "events", type: :feature do
 
   describe "update" do
     it "updates the event" do
+      new_title = "Updated Event Title"
+
       visit edit_unit_event_path(@unit, @event)
-      fill_in "event_title", with: "Updated Event Title"
+      fill_in "event_title", with: new_title
       click_button "Save"
-      @event.reload
-      expect(@event.title).to eq("Updated Event Title")
+
       expect(page).to have_current_path(unit_event_path(@unit, @event))
-      expect(page).to have_content("Updated Event Title")
+
+      @event.reload
+      expect(@event.title).to eq(new_title)
+      expect(page).to have_content(@event.title)
     end
   end
 end

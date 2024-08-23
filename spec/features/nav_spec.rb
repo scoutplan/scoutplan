@@ -42,7 +42,7 @@ describe "events", type: :feature do
     end
 
     it "shows settings" do
-      expect(page).to have_content("#{@unit.name} Settings")
+      expect(page).to have_content("Unit Settings")
     end
   end
 

@@ -27,7 +27,8 @@ nav.bg-stone-50.text-stone-700.relative.h-full.w-full
           i.fa-light.fa-bars.fa-fw
 
       h3.font-semibold.p-2.flex.flex-row.items-center
-        .inline-block.rounded-full.h-5.w-5.mr-2.border(style="background: url(#{url_for(current_unit.logo)}) no-repeat center center; background-size: auto 100%;")
+        - if current_unit.logo.attached?
+          .inline-block.rounded-full.h-5.w-5.mr-2.border(style="background: url(#{url_for(current_unit.logo)}) no-repeat center center; background-size: auto 100%;")
         = current_unit.name
 
       - if policy(:event).index?
