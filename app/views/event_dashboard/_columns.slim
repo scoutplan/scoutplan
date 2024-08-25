@@ -1,11 +1,11 @@
-section.w-full.grid.grid-cols-1.lg:grid-cols-9.gap-px.md:gap-1(
+section.w-full.grid.grid-cols-1.lg:grid-cols-9.gap-px.overflow-y-hidden.h-full(
   data-controller="dashboard-drop"
   data-action="dragover->dashboard-drop#dragover dragleave->dashboard-drop#dragleave dragenter->dashboard-drop#dragenter drop->dashboard-drop#drop"
   data-dashboard-drop-unit-id-value="#{current_unit.id}"
   data-dashboard-drop-event-id-value="#{@event.id}")
 
   // column 1
-  #rsvps_accepted_column.md:col-span-3.text-xl.member-column.bg-stone-100.dark:bg-stone-800.md:rounded-tl-lg.group(class="[&.droptarget]:bg-green-100")
+  #rsvps_accepted_column.md:col-span-3.text-xl.member-column.bg-stone-100.group.overflow-y-scroll(class="[&.droptarget]:bg-green-100")
     = render partial: "event_dashboard/header_accepted", locals: { event_dashboard: @event_dashboard }
 
     ol#rsvps_accepted.p-4.divide-y.dark:divide-stone-700(data-controller="sorted-list")
@@ -17,21 +17,21 @@ section.w-full.grid.grid-cols-1.lg:grid-cols-9.gap-px.md:gap-1(
         = render partial: "rsvp", collection: @event_dashboard.acceptances
   
   // column 2
-  #rsvps_declined_column.md:col-span-2.member-column.bg-stone-100.dark:bg-stone-800.group(class="[&.droptarget]:bg-red-100")
+  #rsvps_declined_column.md:col-span-2.member-column.bg-stone-100.group.h-full(class="[&.droptarget]:bg-red-100")
     = render partial: "event_dashboard/header_declined", locals: { event_dashboard: @event_dashboard }
 
-    ol#rsvps_declined.p-4.divide-y.dark:divide-stone-700(data-controller="sorted-list")
+    ol#rsvps_declined.p-4.divide-y.dark:divide-stone-700.overflow-y-auto(data-controller="sorted-list" style="height: calc(100% - 12rem)")
       = render partial: "rsvp", collection: @event_dashboard.declines
 
   // column 3
-  #members_active_column.md:col-span-2.member-column.bg-stone-100.dark:bg-stone-800.group(class="[&.droptarget]:bg-yellow-50" data-drop-group="non-respondents")
+  #members_active_column.md:col-span-2.member-column.bg-stone-100.group.h-full.overflow-y-hidden(class="[&.droptarget]:bg-yellow-50" data-drop-group="non-respondents")
     = render partial: "event_dashboard/header_active", locals: { event_dashboard: @event_dashboard }
 
-    ol#members_active.p-4.divide-y.dark:divide-stone-700(data-controller="sorted-list")
+    ol#members_active.p-4.divide-y.dark:divide-stone-700.h-full.overflow-y-auto(data-controller="sorted-list"  style="height: calc(100% - 120px)")
       = render partial: "unit_membership", collection: @event.non_respondents
 
   // column 4
-  #members_registered_column.md:col-span-2.member-column.bg-stone-100.dark:bg-stone-800.rounded-tr-lg.group(class="[&.droptarget]:bg-sky-100" data-drop-group="non-respondents")
+  #members_registered_column.md:col-span-2.member-column.bg-stone-100.group(class="[&.droptarget]:bg-sky-100" data-drop-group="non-respondents")
     = render partial: "event_dashboard/header_registered", locals: { event_dashboard: @event_dashboard }
 
     ol#members_registered.divide-y.dark:divide-stone-700.p-4(data-controller="sorted-list")

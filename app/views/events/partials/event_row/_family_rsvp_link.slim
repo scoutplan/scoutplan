@@ -23,8 +23,8 @@
           - response_color = ApplicationHelper::RESPONSE_COLORS[family_member.response.to_sym]
 
           li.inline-block.mr-3
-              i.fa-solid.fa-fw.mr-px(class="#{response_glyph} text-#{response_color}")
-              = family_member.first_name
+            i.fa-solid.mr-px(class="#{response_glyph}" data-fa-transform="shrink-0")
+            = family_member.first_name
 
     - if family_fully_responded
       = link_to new_unit_event_family_rsvp_path(current_unit, event),

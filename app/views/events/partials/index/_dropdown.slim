@@ -8,7 +8,7 @@
 
 aside.block.w-80.mt-1.p-2.absolute.bg-white.text-stone-700.right-0.rounded-lg.dropdown-menu.animate-pop-open.drop-shadow-overhead.border
   nav
-    .grid.grid-cols-3.gap-0.rounded-lg.bg-stone-100.text-center.mb-2.p-2
+    .grid.grid-cols-2.gap-1.rounded-lg.bg-stone-100.text-center.mb-2.p-2
       = link_to list_unit_events_path(current_unit),
                 class: "px-4 py-2 rounded-lg hover:bg-stone-200 text-center text-center text-sm #{action_name == "list" ? "bg-white hover:bg-white cursor-default" : ""}",
                 data: { turbo_action: "advance" } do
@@ -23,12 +23,13 @@ aside.block.w-80.mt-1.p-2.absolute.bg-white.text-stone-700.right-0.rounded-lg.dr
         i.fa-light.fa-calendar.block.mb-2.mx-auto.text-lg
         = "Calendar"
 
-      = link_to threeup_unit_events_path(current_unit),
-                class: "px-4 py-2 rounded-lg hover:bg-stone-200 text-center text-center text-sm #{action_name == "threeup" ? "bg-white hover:bg-white cursor-default" : ""}",
-                data: { turbo_action: "advance" } do
+      - if false
+        = link_to threeup_unit_events_path(current_unit),
+                  class: "px-4 py-2 rounded-lg hover:bg-stone-200 text-center text-center text-sm #{action_name == "threeup" ? "bg-white hover:bg-white cursor-default" : ""}",
+                  data: { turbo_action: "advance" } do
 
-        i.fa-light.fa-columns-3.block.mb-2.mx-auto.text-lg
-        = "Three Up"
+          i.fa-light.fa-columns-3.block.mb-2.mx-auto.text-lg
+          = "Three Up"
 
     / past events
     - if action_name == "list"

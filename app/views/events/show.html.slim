@@ -62,14 +62,14 @@
             = render partial: "events/partials/show/description"
             = render partial: "events/partials/show/location", locals: { event: @event }
             = render partial: "events/partials/show/weather"
+            = render partial: "events/partials/show/attachments", locals: { event: @event }
 
         aside.w-full.md:w-1/3.p-6.bg-stone-50.flex.flex-col.divide-y.divide-stone-300.gap-4.text-sm.text-stone-600.rounded-r-lg.overflow-y-auto.h-full
           = render partial: "events/partials/show/rsvp", locals: { event: @event }
           = render partial: "events/partials/show/costs"
-          = render partial: "events/partials/show/organize"
+          = render partial: "events/partials/show/organize", locals: { event: @event }
           = render partial: "events/partials/show/payment"
           = render partial: "events/partials/show/contact"
-          = render partial: "events/partials/show/attachments"
           = render partial: "events/partials/show/tags", locals: { event: @event }          
 
     = render partial: "events/partials/show/watermarks"

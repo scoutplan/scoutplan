@@ -30,7 +30,7 @@ html.scroll-smooth
     .flex.flex-row.h-full
       .z-10.fixed.inset-0.bg-black/50.hidden(class="group-[.sidebar-open]/sidebar:block group-[.sidebar-open]/sidebar:md:hidden")
 
-      aside.z-20.flex.fixed.md:relative.drop-shadow-overhead.md:drop-shadow-none.shrink-0.w-80.bg-stone-50.h-lvh.transition-all.md:fixedz.p-3.-ml-80(data-controller="sidebar" class="group-[.sidebar-open]/sidebar:ml-0")
+      aside.z-20.flex.fixed.md:relative.shrink-0.w-80.bg-stone-50.h-lvh.transition-all.md:fixedz.p-3.-ml-80(data-controller="sidebar" class="group-[.sidebar-open]/sidebar:ml-0")
         = render partial: "layouts/nav"
 
       main.w-full.h-lvh.flex-grow.overflow-y-auto
@@ -43,20 +43,11 @@ html.scroll-smooth
       /!  CI #{ENV["GITHUB_RUN_NUMBER"]}
 
     = render partial: "search/overlay"
-    = turbo_frame_tag :modal
+    // = turbo_frame_tag :modal
   
   - content_for :title do
     = (@page_title || []).reverse.join(" · ")
     
-  javascript:
-    function setElemDisplay(elem, show) {
-      var elem = document.querySelector(elem);
-      elem.style.display = show ? 'block' : 'none';
-    }
-
-    document.documentElement.addEventListener("turbo:load", function(event) {
-      document.body.classList.remove("showing-mobile-menu");
-    });
 
   scss:
     .submit-conjunction {

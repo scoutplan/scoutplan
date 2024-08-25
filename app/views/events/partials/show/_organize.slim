@@ -1,6 +1,5 @@
-- return unless @event.organizable? && EventPolicy.new(current_member, @event).rsvps?
-
-- acceptance_count = @event.rsvps.accepted_intent.count
+- return unless event.requires_rsvp
+- acceptance_count = event.rsvps.accepted_intent.count
 
 article.pt-4
   header.flex.flex-row.justify-between.items-center.mb-3
@@ -10,9 +9,4 @@ article.pt-4
 
     i.fa-light.fa-shield.text-brand-500(title="This section is visible to you because you're a Unit Administrator or an Event Organizer." aria-hidden="true")
 
-  p.mb-3 = acceptance_count.zero? ? t("events.show.captions.attendees_zero") : "#{pluralize(acceptance_count, 'person')} #{acceptance_count == 1 ? "is" : "are"} going"
-
-  = link_to dashboard_unit_event_path(@event.unit, @event),
-            class: "w-full block py-2 px-3 rounded border border-violet-500 text-violet-500 hover:bg-violet-100 text-center font-medium",
-            data: { turbo_action: "advance", turbo_frame: "main" } do
-    = t("events.show.buttons.organize")
+  = render partial: "events/partials/event_row/organize", locals: { event: event }

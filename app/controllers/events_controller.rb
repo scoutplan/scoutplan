@@ -464,6 +464,7 @@ class EventsController < UnitContextController
 
   def current_layout
     return "public" unless user_signed_in?
+    return "modal_overlay" if action_name == "cancel"
 
     "application"
   end

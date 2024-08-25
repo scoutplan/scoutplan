@@ -6,8 +6,10 @@ li.filterable-item.flex.flex-row.justify-between.items-center(draggable="false" 
             title: t(".tooltip", duration: distance_of_time_in_words_to_now(rsvp.created_at)),
             data: { turbo_frame: "modal", action: "dragstart->dashboard-drop#dragstart dragend->dashboard-drop#dragend drag->dashboard-drop#drag" } do
     - cache rsvp.unit_membership do
-      i.fa-solid.fa-user.text-stone-400.mr-2
+      span(style="cursor: move;")
+        i.fa-light.fa-grip.text-stone-400.mr-2
       span.filterable-name = rsvp.display_name
+
     - if rsvp.pending_approval?
       = content_tag :span, title: t(".pending_approval") do
         i.fa-regular.fa-info-circle.text-green-800.ml-2

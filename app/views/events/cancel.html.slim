@@ -1,113 +1,109 @@
-= turbo_frame_tag "main"
-  .mx-auto.max-w-xl.py-8
-    = form_with model: @event, url: unit_event_cancel_path(current_unit, @event), method: :post, data: { turbo: false } do |f|
+  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 md:pb-16 bg-black/50 z-20", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
+    article.mx-auto.max-w-xl.bg-white.rounded.px-6
+      = form_with model: @event, url: unit_event_cancel_path(current_unit, @event), method: :post, data: { turbo: false } do |f|
+        header.sticky.top-0.pb-4
 
-      header.sticky.top-0.pb-4
-        .mb-4
-          = render partial: "components/back_link",
-                  locals: { path: :back,
-                            text_color: "text-sky-800",
-                            hover_text_color: "text-sky-900",
-                            text: "Back to #{@event.title}" }
+          h1.font-bold.text-2xl Cancel Event
 
-        h1.font-bold.text-2xl Cancel Event
+          - if @event.ended?
+            p.bg-yellow-300.text-yellow-800.p-4.mt-2.rounded
+              i.fa-exclamation-triangle.fas.mr-2
+              = t("events.cancel.past_warning")
 
-        - if @event.ended?
-          p.bg-yellow-300.text-yellow-800.p-4.mt-2.rounded
-            i.fa-exclamation-triangle.fas.mr-2
-            = t("events.cancel.past_warning")
+        section
+          p.mb-4
+            = raw("You are cancelling <strong>#{@event.title}</strong> on ")
+            span.whitespace-nowrap.font-bold
+              = @event.starts_at.strftime("%B %-d")
+            |.&nbsp
 
-      section
+            - if @event.draft?
+              = "The event is an unpublished draft."
+            - elsif !@event.requires_rsvp
+              = "No RSVP was required."
+            - elsif @event.rsvps.accepted.count.positive?
+              = "There are #{@event.rsvps.accepted.count} members planning to attend"
 
-        // BLURB AT TOP ("You are cancelling...")
-        p.mb-4
-          = raw("You are cancelling <strong>#{@event.title}</strong> on ")
-          span.whitespace-nowrap.font-bold
-            = @event.starts_at.strftime("%B %-d")
-          |.&nbsp
+              - if @event.rsvps.declined.count.positive?
+                = " and #{@event.rsvps.declined.count} who declined"
 
-          - if @event.draft?
-            = "The event is an unpublished draft."
-          - elsif !@event.requires_rsvp
-            = "No RSVP was required."
-          - elsif @event.rsvps.accepted.count.positive?
-            = "There are #{@event.rsvps.accepted.count} members planning to attend"
+              |&nbsp;
+              = link_to "(View RSVPs)",
+                        unit_event_rsvps_path(current_unit, @event),
+                        class: "underline text-blue-600",
+                        data: { turbo_action: "advance" }
 
-            - if @event.rsvps.declined.count.positive?
-              = " and #{@event.rsvps.declined.count} who declined"
+              = "."
+            - else
+              = "No one is planning to attend."
 
-            |&nbsp;
-            = link_to "(View RSVPs)",
-                      unit_event_rsvps_path(current_unit, @event),
-                      class: "underline text-blue-600",
-                      data: { turbo_action: "advance" }
-
-            = "."
-          - else
-            = "No one is planning to attend."
-
-        p.mb-4
-          = t("events.cancel.message_prompt")
-        
-        // NONE RADIO
-        .mb-1
-          = f.radio_button :message_audience,
-                           :none,
-                           class: "mr-2",
-                           checked: @event.draft?
-          = f.label :message_audience_none, "No, don't send a message"
-
-        // ACCEPTORS RADIO
-        - if @event.rsvps?
+          p.mb-4
+            = t("events.cancel.message_prompt")
+          
+          // NONE RADIO
           .mb-1
             = f.radio_button :message_audience,
-                             :acceptors,
-                             class: "mr-2"
-            = f.label :message_audience_acceptors, "Yes, to the #{@event.rsvps.accepted.count} who plan on attending"
+                            :none,
+                            class: "mr-2",
+                            checked: @event.draft?
+            = f.label :message_audience_none, "No, don't send a message"
 
-        // ACTIVE MEMBERS RADIO
-        .mb-1
-          = f.radio_button :message_audience,
-                           :active_members,
-                           class: "mr-2",
-                           checked: @event.published?
-          = f.label :message_audience_active_members, "Yes, to all #{current_unit.members.contactable.status_active.count} active, contactable members"
+          // ACCEPTORS RADIO
+          - if @event.rsvps?
+            .mb-1
+              = f.radio_button :message_audience,
+                              :acceptors,
+                              class: "mr-2"
+              = f.label :message_audience_acceptors, "Yes, to the #{@event.rsvps.accepted.count} who plan on attending"
 
-        // ALL MEMBERS RADIO
-        .mb-3
-          = f.radio_button :message_audience, :all_members, class: "mr-2"
-          = f.label :message_audience_all_members, "Yes, to all #{current_unit.members.contactable.count} registered, contactable members"
+          // ACTIVE MEMBERS RADIO
+          .mb-1
+            = f.radio_button :message_audience,
+                            :active_members,
+                            class: "mr-2",
+                            checked: @event.published?
+            = f.label :message_audience_active_members, "Yes, to all #{current_unit.members.contactable.status_active.count} active, contactable members"
 
-        = f.text_area :note,
-          class: "border rounded w-full h-24 p-2 placholder-stone-400 border-stone-500",
-          autofocus: true,
-          placeholder: t("events.placeholders.cancellation_message")
+          // ALL MEMBERS RADIO
+          .mb-3
+            = f.radio_button :message_audience, :all_members, class: "mr-2"
+            = f.label :message_audience_all_members, "Yes, to all #{current_unit.members.contactable.count} registered, contactable members"
 
-      // footer, containing right-justified buttons
-      footer.py-4.flex.gap-2.flex-col.md:flex-row
+          = f.text_area :note,
+            class: "border rounded w-full h-24 p-2 placholder-stone-400 border-stone-500",
+            autofocus: true,
+            placeholder: t("events.placeholders.cancellation_message")
+
+        // footer, containing right-justified buttons
+        footer.py-4.flex.flex-col.md:flex-row.gap-2.justify-end.text-sm
+          = f.button "Close",
+                  type: "button",
+                  class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded",
+                  data: { action: "click->modal#close" }
+
           = f.submit t("events.cancel.proceed"),
-            class: "font-bold inline-block bg-red-600 hover:bg-red-700 text-white px-4 py-3 md:py-2 w-full md:w-fit rounded cursor-pointer",
+            class: "font-medium inline-block bg-brand-500 hover:bg-brand-700 text-white px-4 py-3 md:py-2 w-full md:w-fit rounded cursor-pointer",
             data: { confirm: t("events.cancel.confirm") },
             onclick: "return confirm('Are you sure you want to cancel this event?');"
 
-css:
-  textarea::placeholder {
-    color: #a8a29e;
-    opacity: 1;
-  }
+  css:
+    textarea::placeholder {
+      color: #a8a29e;
+      opacity: 1;
+    }
 
-javascript:
-  function setupNoteField() {
-    var messageAudience = document.querySelector("input[name='event[message_audience]']:checked").value;
-    var noteField = document.querySelector("#event_note");
-    noteField.style.display = (messageAudience == "none") ? "none" : "block";
-  }
+  javascript:
+    function setupNoteField() {
+      var messageAudience = document.querySelector("input[name='event[message_audience]']:checked").value;
+      var noteField = document.querySelector("#event_note");
+      noteField.style.display = (messageAudience == "none") ? "none" : "block";
+    }
 
-  document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll("input[type='radio']").forEach(function(elem) {
-      elem.addEventListener("click", function(elem) {
-        console.log("CLICK!");
-        setupNoteField();
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll("input[type='radio']").forEach(function(elem) {
+        elem.addEventListener("click", function(elem) {
+          console.log("CLICK!");
+          setupNoteField();
+        });
       });
     });
-  });

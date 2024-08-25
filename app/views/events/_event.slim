@@ -7,9 +7,9 @@
 
 li.event(class="#{row_classes(event)}" id="#{dom_id(event)}")
   .px-2.-mx-2.py-3.hover:bg-stone-50
-    .flex.flex-col.md:flex-row.items-center
+    .flex.flex-col.md:flex-row.md:items-start.gap-3
       = link_to href,
-                class: "event py-2 block w-full",
+                class: "event py-2 block grow",
                 name:  event.id,
                 data:  { month: event.starts_at.month,
                         year: event.starts_at.year,
@@ -28,18 +28,22 @@ li.event(class="#{row_classes(event)}" id="#{dom_id(event)}")
 
 
           // 3 title, tags, description, location
-          .third
+          .third.grow
             h4.text-xl.font-semibold.event-title.mr-2.inline-block
               i.fa-solid.fa-xs.fa-fw.mr-1(class="fa-#{event&.category&.glyph}" style="color: #{event&.category&.color}")
               = event.title
             = render partial: "events/partials/event_row/title_badge", locals: { event: event }
             = render partial: "events/partials/index/short_description", locals: { event: event }
             = render partial: "events/event_location", locals: { event: event }
+            = render partial: "events/event_cost", locals: { event: event }
 
       - if current_user
-        .flex.flex-col.gap-2.w-full.md:w-1/3
-          / = render partial: "events/partials/event_row/organize", locals: { event: event }
-          = render partial: "events/partials/event_row/family_rsvp_link", locals: { event: event }
+        .flex.flex-col.w-full.md:w-fit.ml-auto
+          - if event.organizable? && EventPolicy.new(current_member, event).rsvps?          
+            = render partial: "events/partials/event_row/organize", locals: { event: event }
+          - else
+            = render partial: "events/partials/event_row/family_rsvp_link", locals: { event: event }
+
           = render partial: "events/partials/event_row/online", locals: { event: event }
 
     = render partial: "events/partials/event_row/tags", locals: { event: event }

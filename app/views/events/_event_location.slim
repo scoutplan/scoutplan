@@ -2,6 +2,5 @@ p.event-location.text-sm.text-stone-500
   - if event.online
     .link-placeholder.h-5
   - elsif location = event.location
-    i.fa-regular.fa-map-marker-alt
-    | &nbsp;
+    i.fa-regular.fa-map-marker-alt.fa-fw.mr-2
     span = event.location

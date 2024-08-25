@@ -1,30 +1,66 @@
-= turbo_frame_tag "main"
-  .max-w-7xl.mx-auto.px-4.sm:mt-6(data-controller="name-filter")
-    = render partial: "header"
-    = render partial: "columns"
+= turbo_frame_tag :main, src: unit_events_path(current_unit), loading: :lazy
 
-  = turbo_frame_tag "modal", data: { controller: "modal" }
+= turbo_frame_tag :modal do
+  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 md:pb-16 bg-black/50 z-30", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
+    article.mx-auto.max-w-8xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden
+      header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-600
+        .left
+          i.fa-light.text-white(style="color: #{@event&.category&.color}" class="fa-#{@event&.category&.glyph}")
+          | &nbsp;
+          = @event.title + " Dashboard"
 
-  = turbo_stream.update "page_title" do
-    = t(".page_title", event_title: @event.title)
+        .right.flex.flex-row.gap-2.text-stone-500.text-lg.-mr-2
+          - if @event.previous.present?
+            = link_to unit_event_path(current_unit, @event.previous(current_member)),
+                      class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900",
+                      title: "#{@event.previous.title} on #{@event.previous.starts_at.strftime('%B %-d')}",
+                      data: { turbo_action: "advance" } do
+              i.fa-light.fa-chevron-up.fa-fw
 
-  css:
-    .filtering-names .filtered-out {
-      display: none;
-    }
+          - if @event.next.present?
+            = link_to unit_event_path(current_unit, @event.next(current_member)),
+                      class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900",
+                      title: "#{@event.next.title} on #{@event.next.starts_at.strftime('%B %-d')}",
+                      data: { turbo_action: "advance" } do
+              i.fa-light.fa-chevron-down.fa-fw
 
-    .dragging-from-accepted #rsvps_accepted_column {
-      opacity: 0.3;
-    }
+          .dropdown.relative(data-controller="dropdown")
+            = link_to "#", class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
+              i.fa-light.fa-ellipsis-stroke.fa-fw
 
-    .dragging-from-declined #rsvps_declined_column {
-      opacity: 0.3;
-    }
+            .dropdown-menu.absolute.right-0.bg-white.z-20.rounded-lg.border.top-full.animate-pop-open.w-72.text-sm.mt-1.drop-shadow-overhead.p-2.text-stone-700
+              ul
+                = render partial: "events/partials/show/sidecar/edit"
+                = render partial: "events/partials/show/sidecar/duplicate"
+                = render partial: "events/partials/show/sidecar/history"
+                = render partial: "events/partials/show/sidecar/download_brief"
+                = render partial: "events/partials/show/sidecar/add_to_calendar"
 
-    .dragging-from-members #members_active_column {
-      opacity: 0.3;
-    }
+          = button_tag type: "button", class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900", data: { action: "modal#close" }, title: "Close this screen" do
+            i.fa-light.fa-times.fa-fw
 
-    .dragging-from-members #members_registered_column {
-      opacity: 0.3;
-    }
+      = render partial: "columns"
+
+      = turbo_stream.update "page_title" do
+        = t(".page_title", event_title: @event.title)
+
+      css:
+        .filtering-names .filtered-out {
+          display: none;
+        }
+
+        .dragging-from-accepted #rsvps_accepted_column {
+          opacity: 0.3;
+        }
+
+        .dragging-from-declined #rsvps_declined_column {
+          opacity: 0.3;
+        }
+
+        .dragging-from-members #members_active_column {
+          opacity: 0.3;
+        }
+
+        .dragging-from-members #members_registered_column {
+          opacity: 0.3;
+        }

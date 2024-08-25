@@ -433,7 +433,7 @@ en:
         duplicate:      "Duplicate"
         add_sub_event:  "Add an Activity"
         history:        "View edit history of this event"
-        organize:       "Full Dashboard"
+        organize:       "Event Dashboard"
         back:           "Event schedule"
 
       captions:

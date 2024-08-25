@@ -9,7 +9,7 @@ nav.bg-stone-50.text-stone-700.relative.h-full.w-full
               = current_member.short_display_name
               i.fa-light.fa-chevron-down.ml-2
 
-          .dropdown-menu.rounded.bg-white.block.absolute.left-0.ml-2.w-64.drop-shadow-lg.border
+          .dropdown-menu.rounded.bg-white.block.absolute.left-0.ml-2.w-64.border
             = render partial: "layouts/partials/user_menu_items"
 
         - if Flipper.enabled?(:inbox, current_member)
@@ -27,9 +27,10 @@ nav.bg-stone-50.text-stone-700.relative.h-full.w-full
           i.fa-light.fa-bars.fa-fw
 
       h3.font-semibold.p-2.flex.flex-row.items-center
-        - if current_unit.logo.attached?
-          .inline-block.rounded-full.h-5.w-5.mr-2.border(style="background: url(#{url_for(current_unit.logo)}) no-repeat center center; background-size: auto 100%;")
-        = current_unit.name
+        - cache current_unit do
+          - if current_unit.logo.attached?
+            .inline-block.rounded-full.h-5.w-5.mr-2.border(style="background: url(#{url_for(current_unit.logo)}) no-repeat center center; background-size: auto 100%;")
+          = current_unit.name
 
       - if policy(:event).index?
         = link_to unit_events_path(current_unit),
