@@ -115,11 +115,9 @@
         - unless event.new_record?
           = link_to unit_event_cancel_path(current_unit, event),
                     class: "text-center inline-block px-2 py-2 -mx-2 text-brand-500 hover:text-brand-600 whitespace-nowrap text-center w-full",
-                    data: { turbo_frame: "modal" } do
+                    data: { turbo_frame: "modal_overlay", turbo_stream: true } do
             i.fa-light.fa-trash-can.fa-fw.mr-1
             = "Cancel this event"
-
-          = turbo_frame_tag :modal_overlay
 
       .right.flex.flex-col.md:flex-row.gap-2.w-full.md:w-auto
         = f.button t("global.cancel"),

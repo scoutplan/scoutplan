@@ -1,7 +1,7 @@
 doctype html
 html.scroll-smooth
   head
-    title = ((@page_title || []).reverse + [t("app_name")]).join(" · ")
+    title = "Overlay"
     meta name="viewport" content="width=device-width,initial-scale=1"
     = csrf_meta_tags
     = csp_meta_tag
@@ -15,7 +15,6 @@ html.scroll-smooth
     = yield :head
 
   body(class="text-gray-600 #{controller_name} #{action_name} #{yield :body_classes}")
-    = turbo_frame_tag :modal_overlay do
-      = yield
+    = yield
 
 

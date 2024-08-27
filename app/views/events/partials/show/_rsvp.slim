@@ -9,7 +9,7 @@ article#rsvp_section
 
     .right.block
 
-  .bg-stone-200.rounded.p-2
+  .bg-stone-100.rounded.p-2
     table.w-full
       - family_rsvp.active_family_members.each_with_index do |family_member, index|
         - response_glyph = ApplicationHelper::RESPONSE_GLYPHS[family_member.response.to_sym]

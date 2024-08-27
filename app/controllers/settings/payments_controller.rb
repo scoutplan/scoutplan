@@ -21,21 +21,18 @@ module Settings
       redirect_to stripe_onboard_link, allow_other_host: true
     end
 
-    def return_from_onboarding
-    end
+    def return_from_onboarding; end
 
     private
 
     def create_stripe_account
       Stripe.api_key = ENV.fetch("STRIPE_SECRET_KEY")
       account = Stripe::Account.create(
-        type: "express",
-        country: "US",
-        email: current_user.email,
+        type:          "express",
+        country:       "US",
+        email:         current_user.email,
         business_type: "non_profit",
-        company: {
-          name: current_unit.name
-        }
+        company:       { name: current_unit.name }
       )
 
       PaymentAccount.create_with(account_id: account.id).find_or_create_by(unit: current_unit)
@@ -45,10 +42,10 @@ module Settings
 
     def stripe_onboard_link
       Stripe::AccountLink.create({
-        account: current_unit.payment_account.account_id,
+        account:     current_unit.payment_account.account_id,
         refresh_url: refresh_unit_payments_url,
-        return_url: unit_settings_url(current_unit),
-        type: "account_onboarding"
+        return_url:  unit_settings_url(current_unit),
+        type:        "account_onboarding"
       })["url"]
     end
 
