@@ -83,12 +83,12 @@
               = "Delete Event"
 
             div.py-1
-              = radio_button :delete, :true, true, class: "mr-2"
-              = label :delete, "Delete this event completely"
+              = radio_button_tag :delete, :true, true, class: "mr-2"
+              = label_tag :delete_true, "Delete this event completely"
 
             div.py-1
-              = radio_button :delete, :false, true, class: "mr-2", checked: true
-              = label :delete, "Leave on calendar as cancelled"
+              = radio_button_tag :delete, :false, true, class: "mr-2", checked: true
+              = label_tag :delete_false, "Leave on calendar as cancelled"
 
         // footer, containing right-justified buttons
         footer.px-6.py-3.flex.flex-col.md:flex-row.gap-2.justify-end.text-sm.border-t

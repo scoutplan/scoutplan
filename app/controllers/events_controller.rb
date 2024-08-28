@@ -320,7 +320,7 @@ class EventsController < UnitContextController
   def perform_cancellation
     service = EventCancellationService.new(@event, event_params)
 
-    result = service.cancel
+    service.cancel(params[:delete])
 
     redirect_to unit_events_path(current_unit), notice: "Event has been cancelled."
   end
