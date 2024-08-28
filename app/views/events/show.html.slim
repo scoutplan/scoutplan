@@ -7,7 +7,7 @@
 
 = turbo_frame_tag :modal do
   = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 md:pb-16 bg-black/50 z-30", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
-    article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden
+    article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden.dark:text-stone-800
       header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-600
         .left
           i.fa-light.text-white(style="color: #{@event&.category&.color}" class="fa-#{@event&.category&.glyph}")

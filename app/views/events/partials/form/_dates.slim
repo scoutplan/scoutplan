@@ -17,13 +17,13 @@ section.py-4#date_fields
     .flex.flex-col.md:flex-row.gap-x-1.md:items-center
       .flex.flex-row.flex-grow.gap-x-1
         = f.date_field :starts_at_date,
-                      class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
+                      class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2",
                       tabindex: -1,
                       data: { event_edit_target: "startsAtDate", action: "change->event-edit#updateStartsAt" }
         
         .not-all-day.peer-checked:hidden.inline-block.flex.flex-grow.items-center.gap-x-4
           = f.time_field :starts_at_time,
-                        class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
+                        class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2",
                         list: "suggested_times",
                         tabindex: -1,
                         value: f.object.starts_at.strftime("#{ @format_time }")
@@ -32,13 +32,13 @@ section.py-4#date_fields
 
       .flex.flex-row.flex-grow.gap-x-1
         = f.date_field :ends_at_date,
-                      class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
+                      class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2",
                       tabindex: -1,
                       data: { event_edit_target: "endsAtDate" }
         
         .not-all-day.inline-block.flex.flex-grow.items-center.gap-x-4
           = f.time_field :ends_at_time,
-            class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2 dark:bg-black",
+            class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2",
             step: "900",
             tabindex: -1,
             value: @event.ends_at.strftime("#{ @format_time }")

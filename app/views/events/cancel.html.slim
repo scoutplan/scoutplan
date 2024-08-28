@@ -86,6 +86,11 @@
               = radio_button_tag :delete, :true, true, class: "mr-2"
               = label_tag :delete_true, "Delete this event completely"
 
+            - if @event.published?
+              div.py-1
+                = radio_button_tag :delete, :unpublish, true, class: "mr-2"
+                = label_tag :delete_unpublish, "Unpublish this event"
+
             div.py-1
               = radio_button_tag :delete, :false, true, class: "mr-2", checked: true
               = label_tag :delete_false, "Leave on calendar as cancelled"

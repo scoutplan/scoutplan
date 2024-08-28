@@ -17,7 +17,9 @@ export default class extends Controller {
 
   close(event) {
     this.element.closest("turbo-frame").innerHTML = "";
-    window.history.replaceState( {} , "", this.returnUrlValue );
+    if (this.hasReturnUrlValue) {
+      window.history.replaceState( {} , "", this.returnUrlValue );
+    }
   }
 
   click(event) {

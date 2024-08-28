@@ -1,6 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { get, post } from "@rails/request.js"
-// import { createPopper } from "@popperjs/core"
+import { get } from "@rails/request.js"
 import { computePosition } from "https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10/+esm"
 
 export default class extends Controller {
@@ -203,5 +202,17 @@ export default class extends Controller {
       event.preventDefault();
       return false;
     }
+  }
+
+  async updateCategory(event) {
+    let category = event.target.value;
+    if (category != "_new") { return; }
+
+    let url = `/u/${this.unitIdValue}/event_categories/new`;
+    await get(url, { responseKind: "turbo-stream" });
+
+    let nameField = document.querySelector("#event_category_name");
+    console.log(nameField);
+    nameField.focus();
   }
 }

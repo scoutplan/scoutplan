@@ -1,0 +1,55 @@
+= turbo_frame_tag :modal_overlay do
+  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 md:pb-16 bg-black/50 z-20", data: { open: "true", controller: "modal" }
+    .max-w-lg.mx-auto.bg-white.rounded-lg.drop-shadow-overhead
+      header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
+        .left
+          h1 = "New Event Category"
+
+        .right.flex.flex-row.gap-2.text-stone-500.text-lg
+
+          = button_tag type: "button", class: "x-close-button flex flex-row items-center block w-6 h-6 -mr-2 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
+            i.fa-regular.fa-times.fa-fw
+
+      = form_for [current_unit, @event_category] do |f|
+        fieldset.px-6.text-sm
+          article.py-4
+            = f.label :name, "Category Name", class: "block font-semibold mb-1"
+            = f.text_field :name,
+              class: "bg-white border border-stone-400 rounded p-2 w-full placeholder-stone-300",
+              autocomplete: "off",
+              autofocus: true,
+              placeholder: "Name your event category (e.g. \"Training\")"
+
+          article.py-4
+            = f.label :glyph, "Icon", class: "block font-semibold mb-1"
+            p.mb-3 #{ENV["APP_NAME"]} uses <a href="https://fontawesome.com/icons" target="_blank" class="underline">Font Awesome</a> to provide thousands of icon choices. Type the identifier of the icon you'd like to use.
+
+            div
+              span = "fa-"
+
+              = f.text_field :glyph,
+                class: "bg-white border border-stone-400 rounded p-2 placeholder-stone-400 mr-2",
+                autocomplete: "off",
+                placeholder: "(e.g. \"tent\")",
+                value: "icons"
+
+          article.py-4
+            .flex.flex-row.items-center
+              = f.label :name, "Color", class: "font-bold mb-1 mr-2"
+              = f.color_field :color,
+                class: "bg-white border border-stone-400 rounded h-12 p-2 placeholder-stone-300",
+                autocomplete: "off",
+                placeholder: "Named color (e.g. \"Periwinkle\") or hex value (e.g. \"#44AA22\")"
+
+          article.py-4
+            = switch(:event_category, :send_reminders,
+                    { label: "Send reminders for events in this category",
+                      checked: @event_category.send_reminders },
+                    "true", "false")
+
+        footer.border-t.px-6.py-4.flex.flex-col.md:flex-row.justify-end.gap-2
+          = f.button "Close",
+                  type: "button",
+                  class: "block w-full md:w-fit md:inline-block px-6 py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded",
+                  data: { action: "click->modal#close" }          
+          = f.submit "Add", class: "rounded bg-brand-500 text-white px-4 py-2 font-medium cursor-pointer"

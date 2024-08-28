@@ -9,7 +9,7 @@
   = render partial: "tags_popup", locals: { event: event }
   = render partial: "organizers_popup", locals: { event: event }
 
-  article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden
+  article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden.dark:text-stone-800
     header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
       .left
         h1 = "Edit a Calendar Event"
@@ -27,12 +27,16 @@
             header.mb-1
               h3.font-semibold = "Category"
 
+            - category_options = options_for_select(event.unit.event_categories.order(:name).collect { |c| [ c.name, c.id ] })
+            - category_options += "<hr>".html_safe
+            - category_options += options_for_select([["Add an event category...", "_new"]])
+
             = f.select :event_category_id,
-                        event.unit.event_categories.order(:name).collect { |c| [ c.name, c.id ] },
+                        category_options,
                         { prompt: t("events.placeholders.category"), selected: event.event_category_id },
                         { class: "border-0 px-0 px-2 -mx-2 py-1 bg-transparent hover:bg-brand-100 text-sm focus:ring-0",
                           style: "width: calc(100% + 1.2rem)",
-                          data: { event_edit_target: "categorySelect" },
+                          data: { event_edit_target: "categorySelect", action: "change->event-edit#updateCategory" },
                           required: "A category is required" }
 
           // PUBLISHED
@@ -113,11 +117,12 @@
     footer.sticky.bottom-0.px-6.py-3.bg-white.border-t.border-stone-200.flex.flex-col.md:flex-row.gap-2.justify-between.items-center.text-sm
       .left.w-full.md:w-auto
         - unless event.new_record?
-          = link_to unit_event_cancel_path(current_unit, event),
-                    class: "text-center inline-block px-2 py-2 -mx-2 text-brand-500 hover:text-brand-600 whitespace-nowrap text-center w-full",
-                    data: { turbo_frame: "modal_overlay", turbo_stream: true } do
-            i.fa-light.fa-trash-can.fa-fw.mr-1
-            = "Cancel this event"
+          .-ml-2
+            = link_to unit_event_cancel_path(current_unit, event),
+                      class: "text-center inline-block px-2 py-2 text-brand-500 hover:text-brand-600 whitespace-nowrap text-center w-full hover:bg-stone-100 rounded",
+                      data: { turbo_frame: "modal_overlay", turbo_stream: true } do
+              i.fa-light.fa-trash-can.fa-fw.mr-1
+              = "Cancel this event"
 
       .right.flex.flex-col.md:flex-row.gap-2.w-full.md:w-auto
         = f.button t("global.cancel"),

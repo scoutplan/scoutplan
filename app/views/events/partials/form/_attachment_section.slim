@@ -1,29 +1,26 @@
-section.py-4.grid.grid-cols-1.md:grid-cols-3.gap-8.border-t(data-controller="event-attachments")
-  .col-span-1
-    h2.text-lg = title
-    p.text-sm.text-sky-700.dark:text-sky-400 = description
+section.py-4.border-t(data-controller="event-attachments")
+  - collection.each do |attachment|
+    = f.hidden_field field_name, multiple: true, value: attachment.signed_id
 
-  .col-span-2
+  h3.font-semibold.mb-4 = title
+
+  ul.existing_attachments(data-event-attachments-target="attachmentList")
     - collection.each do |attachment|
-      = f.hidden_field field_name, multiple: true, value: attachment.signed_id
+      li.py-1
+        span.mr-2.text-blue-500 = fontawesome_file_icon(attachment.filename.extension_without_delimiter)
+        = attachment.filename
 
-    ul.existing_attachments(data-event-attachments-target="attachmentList")
-      - collection.each do |attachment|
-        li.py-1
-          span.mr-2.text-blue-500 = fontawesome_file_icon(attachment.filename.extension_without_delimiter)
-          = attachment.filename
+  #new_attachments.pt-4
+    .hidden
+      = f.file_field field_name,
+                      multiple: true,
+                      data: { action: "change->event-attachments#showAttachments", event_attachments_target: "fileInput" }
 
-    #new_attachments.pt-4
-      .hidden
-        = f.file_field field_name,
-                       multiple: true,
-                       data: { action: "change->event-attachments#showAttachments", event_attachments_target: "fileInput" }
-  
 
-      .flex.flex-col.md:flex-row.gap-2
-        = button_tag type: :button,
-                     class: "inline-block font-bold border rounded px-4 py-2 whitespace-nowrap border-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800",
-                     data: { action: "click->event-attachments#uploadFiles" },
-                     bogus: "false" do
-          i.fa-solid.fa-upload.mr-2
-          = "Upload files"
+    .flex.flex-col.md:flex-row.gap-2
+      = button_tag type: :button,
+                    class: "inline-block font-bold border rounded px-4 py-2 whitespace-nowrap border-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800",
+                    data: { action: "click->event-attachments#uploadFiles" },
+                    bogus: "false" do
+        i.fa-solid.fa-upload.mr-2
+        = "Upload files"
