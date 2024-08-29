@@ -82,6 +82,7 @@ en:
   global:
     back_to_top: "Back to top"
     cancel: "Cancel"
+    close: "Close"
     discard_changes: "Discard Changes"
     save_changes:    "Save Changes"
     link:   "Link"

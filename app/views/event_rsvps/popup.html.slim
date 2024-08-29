@@ -7,7 +7,9 @@
              class: "text-stone-500 hover:text-stone-950 text-xl absolute top-0 right-0 p-4",
              data: { action: "click->popup#close" } do
         i.fa-solid.fa-times 
+
       = render partial: "family_rsvps/header", locals: { unit_membership: current_member, event: @event }
+      
       = form_with url: unit_event_family_rsvps_path(@event.unit, @event), method: :post, format: :turbo_stream do |f|
         section.p-4.rounded-lg.bg-stone-100
           = render partial: "events/edit_rsvp_fields", locals: { event: @event, unit: current_unit, presenter: presenter, f: f }

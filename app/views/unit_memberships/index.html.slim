@@ -1,200 +1,91 @@
 = turbo_frame_tag("main")
-  .max-w-xl.mx-auto
+  .w-full.px-12.py-6
     = render partial: "layouts/flash"
-    = render partial: "unit_memberships/index/header"
     
-    = form_tag bulk_update_unit_members_path(current_unit), id: "bulk_edit_form"
-      = render "member_bulk_edit_panel"
+    header.mb-4
+      .flex.flex-row.justify-between.items-center
+        .left
+          h1.text-2xl.font-semibold.mb-2
+            = t("members.index.page_title")
+      
+          = link_to new_unit_unit_membership_path(@current_unit), class: "group text-stone-500 text-sm" do
+            i.fa-layers.fa-fw.mr-1
+              i.fa-solid.fa-circle.text-white.group-hover:text-brand-500(data-fa-transform="grow-3")
+              i.fa-regular.fa-plus.text-brand-500.group-hover:text-white
 
+            = "Add member"
+
+        .right
+          .relative.text-sm
+            i.fa-magnifying-glass.fas.absolute.left-3.text-stone-400(style="top:50%;transform:translateY(-50%);")
+
+            = search_field_tag(:search, 
+              "",
+              class: "text-sm block w-full rounded px-3 py-2 pl-10 placeholder-stone-400 border border-stone-400",
+              autofocus: true,
+              autocomplete: 'off',
+              spell_check: false,
+              placeholder: raw(t('members.search_by_name')),
+              onkeyup: 'performNameSearch();')
+
+
+
+    .grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-3.xl:grid-cols-4.2xl:grid-cols-5.gap-4
       - ("A".."Z").each do |letter|
-        - letter_memberships = @current_unit_memberships.select{ |m| m.first_name.first.downcase == letter.downcase }
-        = render partial: "member_index", locals: { letter: letter, unit_memberships: letter_memberships } if letter_memberships.present?
+        - members = @current_unit_memberships.select{ |m| m.first_name.first.downcase == letter.downcase }
+        section.member-index
+          h2.font-semibold.text-brand-500.border-t.border-stone-500.dark:border-stone-400.py-3
+            = letter
 
-  javascript:
-    document.title = "Member Roster · #{current_unit.name}"
-
-  scss:
-    th.selection, td.selection {
-      display: none;
-    }    
-
-    #bulk_edit_options {
-      display: none;
-    }
-
-    .bulk-editing {
-      display: none;
-    }
-
-    body.bulk-edit {
-      th.selection, td.selection {
-        display: table-cell;
-      }
-
-      #regular_options {
-        display: none;
-      }
-
-      #bulk_edit_options {
-        display: inline-block;
-      }
-
-      .extended-member-info {
-        display: none;
-      }
-
-      .not-bulk-editing {
-        display: none;
-      }
-
-      .bulk-editing {
-        display: inline-block;
-      }
-    }
-
-    td.fit-width {
-      width: 1%;
-      white-space: nowrap;
-    }
-
-    .member-inactive {
-      display: none;
-    }
-
-    th.status, td.status {
-      display: none;
-    }
-
-    body.showing-inactive-members .member-hide-for-inactive {
-      display: none;
-    }
-
-    body.showing-inactive-members .member-inactive {
-      display: table-row;
-    }
-
-scss:
- .collapse-anim-off {
-    -webkit-transition: none;
-    transition: none;
-  }  
+          ol.divide-y.divide-stone-300.dark:divide-stone-700
+            = render members
 
 javascript:
-  // BULK EDIT FACILITY
+  function performNameSearch() {
+    var input = document.querySelector('#search');
+    var filter = input.value.toUpperCase();
+    var rows = document.querySelectorAll('article.member');
 
-  // 'Select All' checkbox
-  document.querySelector('#select_all_members_checkbox')?.addEventListener('click', function(event) {
-    const checked = this.checked;
-    document.querySelectorAll('.bulk-publish-checkbox').forEach(function (elem) {
-        elem.checked = checked && elem.offsetParent !== null;
-    });
-    validateBulkEditState();
-  });
+    rows.forEach(function(row) {
+      var nameCell = row.querySelector('.member-name');
 
-  // enter bulk edit mode by adding a body class
-  document.querySelector('#bulk_edit_link')?.addEventListener('click', function(event) {
-    document.body.classList.toggle('bulk-edit');
-    event.preventDefault();
-  });
-
-  // exit bulk edit mode by removing the same body class
-  document.querySelector('#cancel_bulk_edit')?.addEventListener('click', function(event) {
-    document.body.classList.remove('bulk-edit');
-    resetBulkEdit();
-    event.preventDefault();
-  });
-
-  // wire up each checkbox to validate the screen and update the checked count
-  document.querySelectorAll('.bulk-edit-checkbox').forEach(function(elem) {
-    elem.addEventListener('click', function(event) {
-      validateBulkEditState();
-      event.stopPropagation();
-    })
-  });
-
-  document.querySelectorAll('.bulk-edit-value').forEach(function(elem) {
-    elem.addEventListener('click', function(event) {
-      validateBulkEditState();
-      event.stopPropagation();
-    })
-  });  
-
-  // wire up the bulk edit Apply button
-  document.querySelector('#execute_bulk_edit_button')?.addEventListener('click', function(event) {
-    document.querySelector('#bulk_edit_form').submit();
-    event.preventDefault();
-  });
-
-  // toggle inactive members
-  document.querySelector('#show_inactive_members_link')?.addEventListener('click', function(event) {
-    document.body.classList.toggle('showing-inactive-members');
-    event.preventDefault();
-  });
-
-  var bulkEditExecuteButton;
-  var originalBulkEditExecuteButtonCaption;
-
-  // capture the button state at the outset so we can restore it if need be
-  document.addEventListener("DOMContentLoaded", function() {
-    bulkEditExecuteButton = document.querySelector('#execute_bulk_edit_button');
-    originalBulkEditExecuteButtonCaption = bulkEditExecuteButton.innerText;
-  });
-
-  // called each time a checkbox is changed
-  function validateBulkEditState() {
-    // tally up checked count
-    const checkedCount = document.querySelectorAll('input.bulk-edit-checkbox:checked').length;
-    const valueCount = document.querySelectorAll('input.bulk-edit-value:checked').length;
-    console.log('checkedCount: ' + checkedCount);
-    console.log('valueCount: ' + valueCount);
-
-    // enable execute button
-    bulkEditExecuteButton.disabled = (checkedCount == 0) || (valueCount == 0);
-
-    // update execute button caption
-    bulkEditExecuteButton.innerText = originalBulkEditExecuteButtonCaption + (checkedCount == 0 ? '' : ' (' + checkedCount + ')');
-  }
-
-  function resetBulkEdit() {
-    // uncheck all checkboxes
-    document.querySelectorAll('.bulk-edit-checkbox').forEach(function(elem) {
-      elem.checked = false;
-    });
-
-    // uncheck all radio buttons
-    document.querySelectorAll('.bulk-edit-value').forEach(function(elem) {
-      elem.checked = false;
-    });
-
-    // reset execute button
-    bulkEditExecuteButton.disabled = true;
-    bulkEditExecuteButton.innerText = originalBulkEditExecuteButtonCaption;
-  }
-
-  function hideEmptyLetterIndices() {
-    // first, iterate over all month rows and hide them...
-    document.querySelectorAll('.letter-index').forEach(function(elem) {
-      elem.style.display = 'none';
-    });
-
-    // ...then, iterate over all visible event rows, traverse backward until we
-    // hit a month header, and reveal it. There's an inefficiency here in that
-    // we're iterating on every visible event row, meaning we'll repeatedly
-    // unhide the same month headers. TODO: traverse forward to next month header,
-    // then traverse from there to the next visible event row
-    document.querySelectorAll('.member-row').forEach(function(elem) {
-      var compStyles = window.getComputedStyle(elem);
-      var compDisplay = compStyles.getPropertyValue('display');
-      if(compDisplay == 'none') {
-        return; // nothing to see here...move on
+      // the normalize and replace voodoo converts diacriticals to undecorated letters, e.g. ñ -> n
+      var name = nameCell.innerText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      if (filter.length == 0 || name.toUpperCase().indexOf(filter) > -1) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
       }
+    });
 
-      const selector = '.letter-index';
-      var indexRow = queryPreviousSiblingSelector(elem, selector);
-      indexRow.style.display = 'table-row';
-    });    
+    toggleIndices(".member-index", ".member")
   }
 
-  document.addEventListener("turbo:load", function() {
-    hideEmptyLetterIndices();
-  })  
+  function toggleIndices(parentClass, childClass) {
+    var visibleParents = 0;
+
+    document.querySelectorAll(parentClass).forEach(function(elem) {
+      elem.style.display = "none";
+
+      // ...then, iterate over all visible event rows, traverse backward until we
+      // hit a month header, and reveal it. There's an inefficiency here in that
+      // we're iterating on every visible event row, meaning we'll repeatedly
+      // unhide the same month headers.
+      // TODO: traverse forward to next month header, then traverse from there to the next visible event row
+      var visibleCount = 0;
+
+      elem.querySelectorAll(childClass).forEach(function(elem) {
+        var compStyles = window.getComputedStyle(elem);
+        var compDisplay = compStyles.getPropertyValue('display');
+        if(compDisplay == "none") {
+          return; // nothing to see here...move on
+        }
+        visibleCount++;
+      });
+
+      if (visibleCount > 0) {
+        elem.style.display = "block";
+        visibleParents++;
+      }
+    });
+  } // function toggleIndices

@@ -25,6 +25,7 @@ li.event(class="#{row_classes(event)}" id="#{dom_id(event)}")
               = raw(presenter.days_to_s)
             
             / = render partial: "events/partials/event_row/today", locals: { event: event }
+            = render partial: "events/partials/event_row/tags", locals: { event: event }
 
 
           // 3 title, tags, description, location
@@ -46,4 +47,4 @@ li.event(class="#{row_classes(event)}" id="#{dom_id(event)}")
 
           = render partial: "events/partials/event_row/online", locals: { event: event }
 
-    = render partial: "events/partials/event_row/tags", locals: { event: event }
+  

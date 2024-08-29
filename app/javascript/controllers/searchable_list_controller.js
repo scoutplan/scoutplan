@@ -73,5 +73,7 @@ export default class extends Controller {
     const formData = new FormData();
     formData.append("value", newValue);
     await post(this.newValueUrlValue, { responseKind: "turbo-stream", body: formData });
+    this.searchFieldTarget.value = "";
+    this.newValuePromptTarget.classList.toggle("hidden", true);
   }
 }

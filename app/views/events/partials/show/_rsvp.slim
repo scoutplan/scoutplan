@@ -1,5 +1,6 @@
 - return unless event.requires_rsvp?
 - family_rsvp = FamilyRsvp.new(current_member, event)
+- details_tag_attributes = {class: "mt-2"}
 
 article#rsvp_section
   header.flex.flex-row.justify-between.items-center.mb-3
@@ -32,11 +33,12 @@ article#rsvp_section
                 = shift.name
 
   - if event.rsvp_open? && policy(event).rsvp? && true
-    details.mt-2
+    - details_tag_attributes[:open] = "" if params[:variation] == "rsvp"
+    = content_tag(:details, details_tag_attributes) do
       summary.cursor-pointer.border.rounded.p-2.text-center.text-brand-500.border-brand-500.hover:bg-brand-100
         = "Change Your RSVP"
 
-      = turbo_frame_tag "rsvp_popup", src: popup_unit_event_rsvps_path(current_unit, event), role: "dialog", data: { controller: "popup" }                
+      = turbo_frame_tag "rsvp_popup", src: popup_unit_event_rsvps_path(current_unit, event), role: "dialog", data: { controller: "popup" }
 
   p.text-stone-500.text-xs.mt-3
     = t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at))

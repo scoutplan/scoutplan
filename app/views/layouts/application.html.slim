@@ -43,8 +43,8 @@ html.scroll-smooth
       /!  CI #{ENV["GITHUB_RUN_NUMBER"]}
 
     = render partial: "search/overlay"
-    // = turbo_frame_tag :modal
-  
+    = turbo_frame_tag :modal
+
   - content_for :title do
     = (@page_title || []).reverse.join(" · ")
     
