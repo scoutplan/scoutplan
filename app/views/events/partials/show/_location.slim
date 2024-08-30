@@ -49,5 +49,5 @@ section.pt-2
             / .fa-stack
             /   i.fa-solid.fa-circle.fa-stack-2x(class=t("events.show.colors.#{location_type}"))
 
-          .table-cell.pl-4
+          .table-cell.pl-4.text-sm
             = render partial: "events/partials/show/show_location", locals: { location: location, location_type: location_type, short_link: true }

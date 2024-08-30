@@ -248,6 +248,10 @@ class Event < ApplicationRecord
     Event.where(series_parent_id: series_parent_id)
   end
 
+  def series
+    Event.where(series_parent_id: id).or(Event.where(id: series_parent_id)).or(Event.where(series_parent_id: series_parent_id))
+  end
+
   def title_and_date
     "#{title} on #{starts_at.strftime('%b %d')}"
   end

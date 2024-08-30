@@ -3,5 +3,6 @@
   .max-w-xl.mx-auto.mt-4
     = back_link_to "Back to member list",
                     unit_members_path(current_unit),
-                    class: "text-sky-500"
+                    class: "text-sky-500",
+                    data: { turbo_action: "advance" }
     = render partial: "form"

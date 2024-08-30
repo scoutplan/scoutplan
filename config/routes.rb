@@ -5,7 +5,9 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
-  get 'tags/create'
+  get "event_cancellations/new"
+  get "event_cancellations/create"
+  get "tags/create"
   get "integrations/index"
   get "welcome/index"
   get "", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
@@ -179,10 +181,10 @@ Rails.application.routes.draw do
         post "bulk_publish", module: "events"
       end
       # get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"
-      get   "cancel"
       get   "history"
       get   "add_to_calendar"
-      post  "cancel", to: "events#perform_cancellation"
+      get   "cancel", to: "event_cancellations#new"
+      post  "cancel", to: "event_cancellations#create", as: "cancellations"
       patch "rsvp", as: "send_rsvps", to: "events#create_or_update_rsvps"
 
       constraints CanAccessFlipperUI do

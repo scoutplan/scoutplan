@@ -1,0 +1,2 @@
+module EventCancellationsHelper
+end

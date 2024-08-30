@@ -50,6 +50,7 @@ class UnitMembership < ApplicationRecord
   enum member_type: { unknown: 0, youth: 1, adult: 2 }
 
   scope :active, -> { where(status: %i[active]) }
+  scope :registered, -> { where(status: %i[registered]) }
   scope :status_active_and_registered, -> { where(status: %i[active registered]) } # everyone except inactives
   scope :contactable, -> { joins(:user).where("email NOT LIKE 'anonymous-member-%@scoutplan.org'") }
   scope :emailable, -> { joins(:user).where("email NOT LIKE 'anonymous-member-%@scoutplan.org'") }
