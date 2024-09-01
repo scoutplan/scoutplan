@@ -108,7 +108,10 @@ Rails.application.routes.draw do
         post "mark_as_unread"
       end
     end
+
     resources :locations
+    resources :location_candidates, only: [:create]
+
     resources :packing_lists do
       resources :packing_list_items
     end

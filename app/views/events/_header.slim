@@ -4,8 +4,8 @@ header.p-2.mb-2.top-0.left-0.right-0.sticky.bg-white.dark:bg-stone-900.z-10
 
     .right
       - if user_signed_in?
-        .dropdown.relative
-          = link_to "#", class: "dropdown-button inline-block hover:bg-stone-100 p-2 rounded dark:hover:text-stone-300 text-sm text-stone-500" do
+        details
+          summary(class="dropdown-button inline-block hover:bg-stone-100 p-2 rounded dark:hover:text-stone-300 text-sm text-stone-500 cursor-pointer")
             i.fa-light.fa-sliders.mr-2.fa-fw
             = "View"
             

@@ -11,18 +11,22 @@
 // Other controllers can listen for this event and respond to it.
 
 import { Controller } from "@hotwired/stimulus"
-import { post } from "@rails/request.js"
+import { FetchRequest } from "@rails/request.js"
 
 export default class extends Controller {
   static targets = [ "searchField", "valueNotFoundPrompt", "newValuePrompt", "newValueName" ];
   static values = {
     searchItemClass: String,
     newValueUrl: String,
+    newValueParam: String,
+    newValueMethod: String,
   };
 
   connect() {
     this.searchItemCssValue = this.searchItemClassValue || ".search-item";
     this.searchItems = this.element.querySelectorAll(this.searchItemCssValue);
+    this.newValueParam = this.newValueParamValue || "value";
+    this.newValueMethod = this.newValueMethodValue || "post";
     this.establishSearchFieldObserver();
   }
 
@@ -68,12 +72,25 @@ export default class extends Controller {
   }
 
   async addValue(event) {
-    console.log(this.newValueUrlValue);
     var newValue = this.newValueNameTarget.innerText;
+
     const formData = new FormData();
-    formData.append("value", newValue);
-    await post(this.newValueUrlValue, { responseKind: "turbo-stream", body: formData });
-    this.searchFieldTarget.value = "";
-    this.newValuePromptTarget.classList.toggle("hidden", true);
+    formData.append(this.newValueParam, newValue);
+
+    let params = { responseKind: "turbo-stream" };
+
+    if (this.newValueMethod == "post") {
+      params["body"] = formData;
+    } else {
+      params["query"] = formData;
+    }
+
+    const request = new FetchRequest(this.newValueMethod, this.newValueUrlValue, params);
+    const response = await request.perform()
+    if (response.ok) {
+      const body = await response.text
+      this.searchFieldTarget.value = "";
+      this.newValuePromptTarget.classList.toggle("hidden", true);
+    }
   }
 }

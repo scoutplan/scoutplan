@@ -227,7 +227,7 @@ class Event < ApplicationRecord
   end
 
   def series?
-    !new_record? && (series_children.count.positive? || series_siblings.count.positive?)
+    !new_record? && series_parent_id.present?
   end
 
   def rsvp_for(member)
@@ -238,18 +238,8 @@ class Event < ApplicationRecord
     rsvp_tokens.find_by(unit_membership: member)
   end
 
-  def series_children
-    Event.where(series_parent_id: id)
-  end
-
-  def series_siblings
-    return [] unless series_parent_id.present?
-
-    Event.where(series_parent_id: series_parent_id)
-  end
-
   def series
-    Event.where(series_parent_id: id).or(Event.where(id: series_parent_id)).or(Event.where(series_parent_id: series_parent_id))
+    unit.events.where(series_parent_id: series_parent_id)
   end
 
   def title_and_date
@@ -380,6 +370,8 @@ class Event < ApplicationRecord
   # handle things like updates, etc etc
   def create_series
     raise "Series duration cannot exceed one year" if repeats_until > starts_at.advance(years: 1)
+
+    # update(series_parent: self) unless series_parent_id.present?
 
     new_event = dup
     new_event.series_parent = self

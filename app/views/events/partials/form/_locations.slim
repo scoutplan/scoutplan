@@ -5,25 +5,90 @@ section.py-4#location_fields
       | &nbsp;&nbsp;
       = "Location"
 
-  = render partial: "components/switch",
-          locals: { checked: @event.online,
-          label: t(".switch_label"),
-          object_name: "event",
-          method: "online",
-          checked_value: "true",
-          unchecked_value: "false",
-          data: { body_class: "event-online" } }
+  details
+    summary(class="group cursor-pointer")
+      i.fa-layers.fa-fw.mr-1
+        i.fa-solid.fa-circle.text-white.group-hover:text-brand-500(data-fa-transform="grow-3")
+        i.fa-regular.fa-plus.text-brand-500.group-hover:text-white
 
-  #fields_online.mt-2
-    = f.label :online_url, t(".label"), class: "block mb-2"
-    = f.url_field :website,
-                  placeholder: t(".placeholder_online"),
-                  autocomplete: "off",
-                  class: "rounded placeholder:text-stone-400 border-stone-400 dark:border-stone-700 w-full dark:bg-black text-sm"
+      = "Add location"
 
-  #fields_offline
-    #location_dropdowns
-      = render partial: "events/partials/form/location_dropdowns", locals: { unit: current_unit, event: @event }
+    .fixed.inset-0.backdrop-blur-md.bg-black/50.z-10.py-16
+      .max-w-md.mx-auto.bg-white.rounded-lg.drop-shadow-overhead.h-full.flex.flex-col
+        header
+          .flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
+            .left
+              h1.text-base = "Add an Event Location"
+
+            .right.flex.flex-row.gap-2.text-stone-500.text-lg
+
+              = button_tag type: "button", class: "x-close-button flex flex-row items-center block w-6 h-6 -mr-2 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
+                i.fa-regular.fa-times.fa-fw
+        
+        section.px-6.py-4.grow.flex.flex-col.gap-2.overflow-y-hidden
+            fieldset.grow-0.shrink-0
+              .grid.grid-cols-4.gap-1.rounded-lg.bg-stone-200.p-2                
+                = label_tag :location_location_type_arrival
+                  = radio_button :location, :location_type, :arrival, class: "hidden peer", checked: true
+                  .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
+                    i.fa-regular.fa-location-dot.fa-2xl.block.mx-auto.mb-2
+                    = "Arrival"
+
+                = label_tag :location_location_type_departure
+                  = radio_button :location, :location_type, :departure, class: "hidden peer"
+                  .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
+                    i.fa-regular.fa-car.fa-2xl.block.mx-auto.mb-2
+                    = "Departure"
+
+                = label_tag :location_location_type_activity
+                  = radio_button :location, :location_type, :activity, class: "hidden peer"
+                  .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
+                    i.fa-regular.fa-flag-pennant.fa-2xl.block.mx-auto.mb-2
+                    = "Activity"
+
+                = label_tag :location_location_type_online
+                  = radio_button :location, :location_type, :online, class: "hidden peer"
+                  .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
+                    i.fa-regular.fa-computer.fa-2xl.block.mx-auto.mb-2
+                    = "Online"                    
+
+            section.p-2.rounded-lg.bg-stone-100.shrink.overflow-y-hidden
+              section.p-2.h-full.bg-white.overflow-y-auto(data-controller="searchable-list" data-searchable-list-new-value-url-value="#{unit_location_candidates_path(current_unit)}" data-searchable-list-new-value-method-value="post" data-searchable-list-new-value-param-value="location[name]")
+                = search_field :location, :name,
+                               class: "block w-full rounded px-2 py-2 mb-px text-sm border border-stone-200 placeholder-stone-400",
+                               placeholder: "Search address book",
+                               data: { action: "input->searchable-list#search", searchable_list_target: "searchField" }
+
+                ul.divide-y.px-2#location_list
+                  - current_unit.locations.order(:name).each do |location|
+                    li.-mx-2.p-2.search-item.hover:bg-stone-100
+                      = label_tag nil, "location_id_#{location.id}" do
+                        = radio_button :location, :id, location.id, class: "peer hidden"
+                        
+                        .inline-block.peer-checked:hidden
+                          i.fa-regular.fa-check.fa-fw.text-transparent.mr-2
+
+                        .hidden.peer-checked:inline-block
+                          i.fa-regular.fa-check.fa-fw.text-brand-500.mr-2
+                          
+                        = location.name
+
+                p.p-2.text-stone-500.hidden(data-searchable-list-target="valueNotFoundPrompt")
+                  = "Location not found"
+
+                div.hidden(data-searchable-list-target="newValuePrompt")
+                    = button_tag type: "button",
+                                class: "p-2 font-semibold hover:bg-stone-100 block w-full text-left",
+                                data: { action: "searchable-list#addValue" } do
+                      .flex.flex-row.items-center
+                        i.fa-light.fa-plus.fa-fw.text-stone-500.mr-2
+                        | Add "
+                        .block.max-w-36.truncate(data-searchable-list-target="newValueName")
+                        | " to address book
+
+        footer.border-t.px-6.py-3.flex.flex-col.md:flex-row.gap-2.md:justify-end.sticky.bottom-0
+          = button_tag "Close", type: "button", class: "block w-full md:w-fit md:inline-block px-6 py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded", data: { action: "click->modal#close" }
+          = button_tag "Add Location", type: "button", class: "rounded bg-brand-500 text-white px-4 py-2 font-medium cursor-pointer"
 
 css:
   #location_fields #fields_offline {
@@ -52,9 +117,3 @@ css:
     background-color: #000000;
   }
 
-javascript:
-  document.querySelector("#event_online").addEventListener("change", function(event) {
-    if (event.target.checked) {
-      document.querySelector("#event_website").select();
-    }
-  });

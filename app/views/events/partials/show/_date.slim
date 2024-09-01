@@ -72,7 +72,7 @@ section
     - if @event.series?
       .text-sm.text-gray-500.mt-4
         i.fas.fa-repeat.mr-2
-        = t("events.show.series_count", count: @event.series_children.count + @event.series_siblings.count + 1)
+        = t("events.show.series_count", count: @event.series.count)
 
     - if @event.shifts?
       .text-sm.font-bold.mt-4
