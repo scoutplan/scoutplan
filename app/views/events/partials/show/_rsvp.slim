@@ -21,9 +21,9 @@ article#rsvp_section
             = family_member.first_name
 
           td.py-1.text-right(class="#{index > 0 ? 'border-t border-stone-300' : ''}")
-            i.fa-solid.fa-fw(class="#{response_glyph} text-#{response_color}")
-            | &nbsp;
             = t("rsvp_#{family_member.response.to_s}").downcase
+            | &nbsp;
+            i.fa-solid.fa-fw(class="#{response_glyph} text-#{response_color}")
         
           - if event.shifts?
             - rsvp.event_shift_ids.each do |shift_id|

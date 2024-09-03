@@ -142,12 +142,8 @@ class EventsController < UnitContextController
   end
   # rubocop:enable Metrics/PerceivedComplexity
 
-  # GET /:unit_id/events/:event_id/edit
   def edit
     authorize @event
-    %w[departure arrival activity].each do |location_type|
-      @event.event_locations.find_or_initialize_by(location_type: location_type)
-    end
   end
 
   # GET /units/:unit_id/events/:id/rsvp
@@ -199,17 +195,12 @@ class EventsController < UnitContextController
 
   # PATCH /:unit_id/events/:event_id
   def update
-    case params[:event_action]
-    when "delete" then destroy
-    when "delete_series" then destroy_series
-    else
-      @event.current_member = current_member
-      update_event
+    @event.current_member = current_member
+    update_event
 
-      respond_to do |format|
-        format.html { redirect_after_update }
-        format.turbo_stream
-      end
+    respond_to do |format|
+      format.html { redirect_after_update }
+      format.turbo_stream
     end
   end
 
@@ -357,9 +348,9 @@ class EventsController < UnitContextController
       @event.starts_at = date_s.to_date
       @event.ends_at = date_s.to_date
     end
-    %w[departure arrival activity].each do |location_type|
-      @event.event_locations.find_or_initialize_by(location_type: location_type)
-    end
+    # %w[departure arrival activity].each do |location_type|
+    #   @event.event_locations.find_or_initialize_by(location_type: location_type)
+    # end
     set_default_times
     @member_rsvps = current_member.event_rsvps
   end
@@ -411,7 +402,7 @@ class EventsController < UnitContextController
     p[:tag_list] ||= []
     p[:packing_list_ids] = p[:packing_list_ids].reject(&:blank?) if p[:packing_list_ids].present?
 
-    process_event_locations_attributes(p)
+    # process_event_locations_attributes(p)
     process_packlist_ids(p)
   end
 

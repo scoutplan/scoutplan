@@ -198,6 +198,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :event_locations, only: [:create]
+
     resources :integrations
 
     resources :photos

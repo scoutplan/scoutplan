@@ -4,5 +4,4 @@
   = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 md:pb-16 bg-black/50 z-20 px-1", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
     = render "form", event: @event
 
-javascript:
-  document.title = "Add an Event · #{current_unit.name}"  
+  = turbo_frame_tag :modal_overlay

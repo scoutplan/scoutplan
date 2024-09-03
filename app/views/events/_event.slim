@@ -6,7 +6,7 @@
 = render partial: "events/month_header", locals: { event: event }
 
 li.event(class="#{row_classes(event)}" id="#{dom_id(event)}")
-  .px-2.-mx-2.py-3.hover:bg-stone-50.hover:dark:bg-stone-800
+  .px-2.-mx-2.py-3.hover:bg-stone-50.hover:dark:bg-stone-800.group
     .flex.flex-col.md:flex-row.md:items-start.gap-3
       = link_to href,
                 class: "event py-2 block grow",

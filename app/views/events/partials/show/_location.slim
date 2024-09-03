@@ -30,24 +30,19 @@ section.pt-2
           = t("events.show.map")      
 
     - count = 0
-    .table
+    ol.flex.flex-col.gap-5.relative
+      // vertical line
+      .absolute.w-px.left-2.top-3.bottom-4.bg-stone-400
+
       - ["departure", "arrival", "activity"].each do |location_type|
         - event_location = event.event_locations.includes(:location).find_by(location_type: location_type)
         - next unless location = event_location&.location
 
-        - count += 1
-        .table-row(class="location-card location-#{location_type}")
-          .table-cell.relative
-            - if count < location_count
-              .absolute.w-1.left-1/2.top-0.bottom-0.border-l.border-stone-400.dark:border-stone-600
-
-            .fa-layers.fa-fw
+        li.flex.flex-row.items-center(class="location-card location-#{location_type}")
+          .block.w-8
+            .fa-layers
               i.fa-solid.fa-circle(class=t("events.show.colors.#{location_type}") data-fa-transform="grow-12")
               i.fa-solid.fa-inverse.text-white/90(class=t("events.show.icons.#{location_type}"))
-  
-
-            / .fa-stack
-            /   i.fa-solid.fa-circle.fa-stack-2x(class=t("events.show.colors.#{location_type}"))
-
-          .table-cell.pl-4.text-sm
+    
+          div.text-sm
             = render partial: "events/partials/show/show_location", locals: { location: location, location_type: location_type, short_link: true }

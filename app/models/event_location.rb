@@ -7,6 +7,12 @@ class EventLocation < ApplicationRecord
 
   after_save :enqueue_static_map_job
 
+  # delegate :name, :address, :city, :state, :zip, :country, to: :location
+
+  def location_name
+    location&.name
+  end
+
   def enqueue_static_map_job
     GenerateEventStaticMapJob.perform_later(event.id)
   end

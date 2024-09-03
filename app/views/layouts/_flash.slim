@@ -1,19 +1,18 @@
-= turbo_frame_tag :flash do
-  #flash_content.z-50.fixed.bottom-0.left-0
-    .w-96.mx-auto.flex.flex-col
-      - flash.each do |flash_type, message|
-        = content_tag :div,
-                      class: "block alert animate-fade-out-after-load alert-#{flash_type} rounded-lg m-2 px-4 py-4 bg-stone-800 text-stone-100 w-96 z-50 drop-shadow-overhead" do
-          i.fa-solid.fa-check-circle.mr-2
-          = message
+#flash_content.z-50.fixed.bottom-0.left-0
+  .w-96.mx-auto.flex.flex-col
+    - flash.each do |flash_type, message|
+      = content_tag :div,
+                    class: "block alert animate-fade-out-after-load alert-#{flash_type} rounded-lg m-2 px-4 py-4 bg-stone-800 text-stone-100 w-96 z-50 drop-shadow-overhead" do
+        i.fa-solid.fa-check-circle.mr-2
+        = message
 
-      - if false
-        = content_tag :div,
-                      class: "opacity-0 animate-fade-out-after-load block alert alert-notice rounded px-4 py-4 bg-stone-900 text-stone-100 w-96 z-50" do
-          i.fa-solid.fa-check-circle.mr-2
-          = "Hello!"
+    - if false
+      = content_tag :div,
+                    class: "opacity-0 animate-fade-out-after-load block alert alert-notice rounded px-4 py-4 bg-stone-900 text-stone-100 w-96 z-50" do
+        i.fa-solid.fa-check-circle.mr-2
+        = "Hello!"
 
-        = content_tag :div,
-                      class: "opacity-0 animate-fade-out-after-load block alert alert-notice rounded px-4 py-4 bg-stone-900 text-stone-100 w-96 z-50" do
-          i.fa-solid.fa-check-circle.mr-2
-          = "Ponch!"
+      = content_tag :div,
+                    class: "opacity-0 animate-fade-out-after-load block alert alert-notice rounded px-4 py-4 bg-stone-900 text-stone-100 w-96 z-50" do
+        i.fa-solid.fa-check-circle.mr-2
+        = "Ponch!"

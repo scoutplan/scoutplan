@@ -1,11 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
-import { get } from "@rails/request.js"
+import { get, post } from "@rails/request.js"
 import { computePosition } from "https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10/+esm"
 
 export default class extends Controller {
   static targets = [ "deleteform", "fileinput", "privatefileinput", "documentLibraryIds", "startsAtDate", "endsAtDate", "rsvpClosesAt", "repeatsUntilSelect",
       "submit", "categorySelect", "title", "newTagPrompt", "newTagName", "tagNotFoundPrompt", "tagListWrapper", "removeCoverPhotoField", "coverPhotoThumbnail",
-      "coverPhotoFile", "coverPhotoThumbnailImage"
+      "coverPhotoFile", "coverPhotoThumbnailImage",
+      "addressBook", "locationType", "eventLocationDetails"
    ];
   static values = { seasonEndDate: String, unitId: String };
 
@@ -27,6 +28,8 @@ export default class extends Controller {
       organizersPopup.style.left = `${x}px`;
       organizersPopup.style.top = `${y}px`;
     });
+
+    this.titleTarget.focus();
   }
 
   resetTagList() {
@@ -214,5 +217,25 @@ export default class extends Controller {
     let nameField = document.querySelector("#event_category_name");
     console.log(nameField);
     nameField.focus();
+  }
+
+  async setLocation(event) {
+    const locationId = this.element.querySelector("input[name='location[id]']:checked").value;
+    const locationType = this.element.querySelector("input[name='location[location_type]']:checked").value;
+
+    this.eventLocationDetailsTarget.removeAttribute("open");
+
+    const formData = new FormData();
+    formData.append("event_location[location_id]", locationId);
+    formData.append("event_location[location_type]", locationType);
+    const url = `/u/${this.unitIdValue}/event_locations`;
+
+    await post(url, { body: formData });
+  }
+
+  deleteLocation(event) {
+    console.log("delete location");
+    const locationElem = event.target.closest("event-location");
+    locationElem.remove();
   }
 }

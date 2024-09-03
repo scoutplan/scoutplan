@@ -4,7 +4,7 @@ class LocationCandidatesController < UnitContextController
   def create
     @location = Location.new(location_params)
     render turbo_stream: [
-      turbo_stream.append(:modal,
+      turbo_stream.update(:modal_overlay,
                           partial: "location_candidates/form",
                           locals:  { unit: current_unit, location: @location })
     ]

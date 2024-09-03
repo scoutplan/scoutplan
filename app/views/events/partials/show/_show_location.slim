@@ -1,6 +1,6 @@
 - short_link ||= false
 
-address.not-italic.pb-8
+address.not-italic
   = content_tag_if :div, content_tag(:h4, location.name, class: "font-semibold")
   = content_tag_if :div, content_tag(:p, location.address, class: "")
   = content_tag_if :div, content_tag(:p, location.phone, class: "")

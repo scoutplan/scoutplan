@@ -12,7 +12,7 @@
   article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden.dark:text-stone-800
     header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
       .left
-        h1 = "Edit a Calendar Event"
+        h1 = (event.new_record? ? "Add" : "Edit") + " a Calendar Event"
 
       .right.flex.flex-row.gap-2.text-stone-500.text-lg
 
@@ -27,7 +27,8 @@
             header.mb-1
               h3.font-semibold = "Category"
 
-            - category_options = options_for_select(event.unit.event_categories.order(:name).collect { |c| [ c.name, c.id ] })
+            / - category_options = options_for_select(event.unit.event_categories.order(:name).collect { |c| [ c.name, c.id ] })
+            - category_options = options_from_collection_for_select(event.unit.event_categories.order(:name), :id, :name, event.event_category_id)
             - category_options += "<hr>".html_safe
             - category_options += options_for_select([["Add an event category...", "_new"]])
 
@@ -122,7 +123,7 @@
 
       section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.text-sm.text-stone-600.rounded-r-lg.overflow-y-auto.h-full
         - %w[basics dates rsvp locations description attachments].each do |section|
-          = render partial: "events/partials/form/#{section}", locals: { f: f, section: section }
+          = render partial: "events/partials/form/#{section}", locals: { f: f, event: event, section: section }
 
     footer.sticky.bottom-0.px-6.py-3.bg-white.border-t.border-stone-200.flex.flex-col.md:flex-row.gap-2.justify-between.items-center.text-sm
       .left.w-full.md:w-auto

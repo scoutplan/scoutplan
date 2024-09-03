@@ -1,11 +1,19 @@
 section.py-4#location_fields
-  header.mb-5.flex.flex-row.justify-between.items-center.text-stone-950
+  header.mb-3.flex.flex-row.justify-between.items-center.text-stone-950
     h3.font-semibold
       i.fa-light.fa-location-dot
       | &nbsp;&nbsp;
       = "Location"
 
-  details
+  // EVENT LOCATION LIST
+  #event_locations_list.table.relative(class="has-[.table-row]:mb-4")
+    // vertical line
+    .w-px.absolute.top-3.bottom-3.left-2.bg-stone-400
+
+    = render partial: "events/partials/form/event_location", collection: event.event_locations
+
+
+  details(data-event-edit-target="eventLocationDetails")
     summary(class="group cursor-pointer")
       i.fa-layers.fa-fw.mr-1
         i.fa-solid.fa-circle.text-white.group-hover:text-brand-500(data-fa-transform="grow-3")
@@ -26,94 +34,85 @@ section.py-4#location_fields
                 i.fa-regular.fa-times.fa-fw
         
         section.px-6.py-4.grow.flex.flex-col.gap-2.overflow-y-hidden
-            fieldset.grow-0.shrink-0
-              .grid.grid-cols-4.gap-1.rounded-lg.bg-stone-200.p-2                
-                = label_tag :location_location_type_arrival
-                  = radio_button :location, :location_type, :arrival, class: "hidden peer", checked: true
-                  .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
-                    i.fa-regular.fa-location-dot.fa-2xl.block.mx-auto.mb-2
-                    = "Arrival"
+          fieldset.grow-0.shrink-0
+            .grid.grid-cols-4.gap-1.rounded-lg.bg-stone-200.p-2                
+              = label_tag :location_location_type_arrival
+                = radio_button :location, :location_type, :arrival, class: "hidden peer", checked: true
+                .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
+                  i.fa-regular.fa-location-dot.fa-2xl.block.mx-auto.mb-2
+                  = "Arrival"
 
-                = label_tag :location_location_type_departure
-                  = radio_button :location, :location_type, :departure, class: "hidden peer"
-                  .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
-                    i.fa-regular.fa-car.fa-2xl.block.mx-auto.mb-2
-                    = "Departure"
+              = label_tag :location_location_type_departure
+                = radio_button :location, :location_type, :departure, class: "hidden peer"
+                .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
+                  i.fa-regular.fa-car.fa-2xl.block.mx-auto.mb-2
+                  = "Departure"
 
-                = label_tag :location_location_type_activity
-                  = radio_button :location, :location_type, :activity, class: "hidden peer"
-                  .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
-                    i.fa-regular.fa-flag-pennant.fa-2xl.block.mx-auto.mb-2
-                    = "Activity"
+              = label_tag :location_location_type_activity
+                = radio_button :location, :location_type, :activity, class: "hidden peer"
+                .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
+                  i.fa-regular.fa-flag-pennant.fa-2xl.block.mx-auto.mb-2
+                  = "Activity"
 
-                = label_tag :location_location_type_online
-                  = radio_button :location, :location_type, :online, class: "hidden peer"
-                  .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
-                    i.fa-regular.fa-computer.fa-2xl.block.mx-auto.mb-2
-                    = "Online"                    
+              = label_tag :location_location_type_online
+                = radio_button :location, :location_type, :online, class: "hidden peer"
+                .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
+                  i.fa-regular.fa-computer.fa-2xl.block.mx-auto.mb-2
+                  = "Online"                    
 
-            section.p-2.rounded-lg.bg-stone-100.shrink.overflow-y-hidden
-              section.p-2.h-full.bg-white.overflow-y-auto(data-controller="searchable-list" data-searchable-list-new-value-url-value="#{unit_location_candidates_path(current_unit)}" data-searchable-list-new-value-method-value="post" data-searchable-list-new-value-param-value="location[name]")
-                = search_field :location, :name,
-                               class: "block w-full rounded px-2 py-2 mb-px text-sm border border-stone-200 placeholder-stone-400",
-                               placeholder: "Search address book",
-                               data: { action: "input->searchable-list#search", searchable_list_target: "searchField" }
+          section.p-2.rounded-lg.bg-stone-100.shrink.hidden#fields_online
+            = f.text_field :website, class: "block w-full rounded px-2 py-2 mb-px text-sm border border-stone-200 placeholder-stone-400", 
+                            placeholder: "Online event address (e.g. https://zoom.us/...)"
 
-                ul.divide-y.px-2#location_list
-                  - current_unit.locations.order(:name).each do |location|
-                    li.-mx-2.p-2.search-item.hover:bg-stone-100
-                      = label_tag nil, "location_id_#{location.id}" do
-                        = radio_button :location, :id, location.id, class: "peer hidden"
-                        
-                        .inline-block.peer-checked:hidden
-                          i.fa-regular.fa-check.fa-fw.text-transparent.mr-2
+          section.p-2.rounded-lg.bg-stone-100.shrink.overflow-y-hidden#fields_offline
+            section.p-2.h-full.bg-white.overflow-y-auto(data-controller="searchable-list" data-searchable-list-new-value-url-value="#{unit_location_candidates_path(current_unit)}" data-searchable-list-new-value-method-value="post" data-searchable-list-new-value-param-value="location[name]")
+              // SEARCH FIELD
+              = search_field :location, :name,
+                              class: "block w-full rounded px-2 py-2 mb-px text-sm border border-stone-200 placeholder-stone-400",
+                              placeholder: "Search address book",
+                              data: { action: "input->searchable-list#search", searchable_list_target: "searchField" }
 
-                        .hidden.peer-checked:inline-block
-                          i.fa-regular.fa-check.fa-fw.text-brand-500.mr-2
-                          
-                        = location.name
+              // ADDRESS BOOK
+              ul.divide-y.px-2#location_list(data-event-edit-target="addressBook")
+                = render partial: "events/partials/form/location", collection: current_unit.locations.order(:name)
 
-                p.p-2.text-stone-500.hidden(data-searchable-list-target="valueNotFoundPrompt")
-                  = "Location not found"
+              // VALUE NOT FOUND PROMPT
+              p.p-2.text-stone-500.hidden(data-searchable-list-target="valueNotFoundPrompt")
+                = "Location not found"
 
-                div.hidden(data-searchable-list-target="newValuePrompt")
-                    = button_tag type: "button",
-                                class: "p-2 font-semibold hover:bg-stone-100 block w-full text-left",
-                                data: { action: "searchable-list#addValue" } do
-                      .flex.flex-row.items-center
-                        i.fa-light.fa-plus.fa-fw.text-stone-500.mr-2
-                        | Add "
-                        .block.max-w-36.truncate(data-searchable-list-target="newValueName")
-                        | " to address book
+              // ADD NEW VALUE BUTTON
+              div.hidden(data-searchable-list-target="newValuePrompt" data-action="modal:close@window->searchable-list#reset")
+                = button_tag type: "button",
+                            class: "p-2 font-semibold hover:bg-stone-100 block w-full text-left",
+                            data: { action: "searchable-list#addValue" } do
+                  .flex.flex-row.items-center
+                    i.fa-light.fa-plus.fa-fw.text-stone-500.mr-2
+                    | Add "
+                    .block.max-w-36.truncate(data-searchable-list-target="newValueName")
+                    | " to address book
 
         footer.border-t.px-6.py-3.flex.flex-col.md:flex-row.gap-2.md:justify-end.sticky.bottom-0
-          = button_tag "Close", type: "button", class: "block w-full md:w-fit md:inline-block px-6 py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded", data: { action: "click->modal#close" }
-          = button_tag "Add Location", type: "button", class: "rounded bg-brand-500 text-white px-4 py-2 font-medium cursor-pointer"
+          = button_tag "Close", type: "button",
+                       class: "block w-full md:w-fit md:inline-block px-6 py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded",
+                       data: { action: "click->modal#close" }
+          
+          = button_tag "Set Event Location", type: "button",
+                       class: "rounded bg-brand-500 disabled:bg-brand-200 text-white px-4 py-2 font-medium cursor-pointer",
+                       disabled: true, id: "accept_button", data: { action: "event-edit#setLocation" }
 
 css:
-  #location_fields #fields_offline {
+  #fields_offline {
     display: block;
   }
 
-  #location_fields #fields_online {
+  #fields_online {
     display: none;
   }
 
-  #location_fields:has(#event_online:checked) #fields_online {
+  #location_fields:has(#location_location_type_online:checked) #fields_online {
     display: block;
   }
 
-  #location_fields:has(#event_online:checked) #fields_offline {
+  #location_fields:has(#location_location_type_online:checked) #fields_offline {
     display: none;
   }  
-
-
-
-  option[value="_separator"] {
-    font-size: 1px;
-    min-height: 1px;
-    max-height: 1px;
-    padding: 0;
-    background-color: #000000;
-  }
-

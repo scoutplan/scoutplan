@@ -1,0 +1,5 @@
+= turbo_stream.update "location_list" do
+  = render partial: "events/partials/form/location", collection: current_unit.locations.order(:name)
+
+= turbo_stream.update "modal_overlay" do
+  = ""

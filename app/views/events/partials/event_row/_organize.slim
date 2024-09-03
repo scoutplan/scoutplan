@@ -1,6 +1,6 @@
 - dashboard = EventDashboard.new(event)
 
-.rounded.bg-stone-100.dark:bg-stone-800.p-2.mb-1
+.rounded.bg-stone-100.group-hover:bg-stone-200.dark:bg-stone-800.p-2.mb-1
   .grid.grid-cols-3.divide-x.dark:divide-stone-700
     div.text-center.px-2
       div.text-xs.text-stone-600 = number_to_percentage((dashboard.accept_rate) * 100, precision: 0)
@@ -18,7 +18,7 @@
       div.text-xs.whitespace-nowrap = "no response"
 
 = link_to dashboard_unit_event_path(current_unit, event),
-          class: "whitespace-nowrap block px-4 py-2 rounded text-center border border-brand-500 hover:bg-brand-100 hover:dark:bg-stone-800 hover:border-brand-600 hover:dark:border-brand-400 hover:text-brand-600 hover:dark:text-brand-400 text-brand-500",
+          class: "whitespace-nowrap block px-4 py-2 rounded text-center border border-brand-500 bg-white hover:bg-brand-100 hover:dark:bg-stone-800 hover:border-brand-600 hover:dark:border-brand-400 hover:text-brand-600 hover:dark:text-brand-400 text-brand-500",
           title: "View & organize RSVPs",
           id: "organize_#{dom_id(event)}_link",
           data: { turbo_frame: "modal", turbo_action: "advance" }

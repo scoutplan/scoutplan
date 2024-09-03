@@ -47,9 +47,10 @@
                       checked: @event_category.send_reminders },
                     "true", "false")
 
-        footer.border-t.px-6.py-4.flex.flex-col.md:flex-row.justify-end.gap-2
-          = f.button "Close",
+        footer.border-t.px-6.py-3.flex.flex-col.md:flex-row.justify-end.gap-2.text-sm
+          = f.button "Cancel",
                   type: "button",
                   class: "block w-full md:w-fit md:inline-block px-6 py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded",
-                  data: { action: "click->modal#close" }          
-          = f.submit "Add", class: "rounded bg-brand-500 text-white px-4 py-2 font-medium cursor-pointer"
+                  data: { action: "click->modal#close" }
+
+          = f.submit "Add Event Category", class: "rounded bg-brand-500 text-white px-4 py-2 font-medium cursor-pointer"

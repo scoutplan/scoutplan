@@ -67,7 +67,7 @@ section
             .font-semibold.whitespace-nowrap.text-xl
               = @event.ends_at.in_time_zone.strftime("%-I:%M")
               | &thinsp;
-              .inline.text-stone-600.text-sm = @event.starts_at.in_time_zone.strftime("%p")              
+              .inline.text-stone-600.text-sm = @event.ends_at.in_time_zone.strftime("%p")              
 
     - if @event.series?
       .text-sm.text-gray-500.mt-4

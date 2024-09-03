@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = { returnUrl: String }
+  static values = { returnUrl: String, elementIdValue: String };
 
   connect() {
     document.addEventListener("keydown", (event) => {
@@ -16,7 +16,14 @@ export default class extends Controller {
   }
 
   close(event) {
-    this.element.closest("turbo-frame").innerHTML = "";
+    this.dispatch("close", { detail: { content: event } });
+    
+    if (this.hasElementIdValue) {
+      elem = document.getElementById(this.elementIdValue);
+      elem.remove();
+    } else {
+      this.element.closest("turbo-frame").innerHTML = "";
+    }
     if (this.hasReturnUrlValue) {
       window.history.replaceState( {} , "", this.returnUrlValue );
     }

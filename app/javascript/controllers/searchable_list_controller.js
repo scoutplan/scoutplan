@@ -93,4 +93,10 @@ export default class extends Controller {
       this.newValuePromptTarget.classList.toggle("hidden", true);
     }
   }
+
+  reset(event) {
+    this.searchFieldTarget.value = "";
+    this.search();
+    this.searchFieldTarget.focus();
+  }
 }

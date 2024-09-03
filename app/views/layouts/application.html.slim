@@ -34,7 +34,9 @@ html.scroll-smooth
         = render partial: "layouts/nav"
 
       main.w-full.h-lvh.flex-grow.overflow-y-auto
-        = render partial: "layouts/flash"
+        = turbo_frame_tag :flash do
+          = render partial: "layouts/flash"
+          
         = render partial: "layouts/password_prompt"
         = turbo_frame_tag :main
           = yield
