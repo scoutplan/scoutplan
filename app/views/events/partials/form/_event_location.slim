@@ -2,6 +2,7 @@
   .table-cell.py-3.pr-2
     = hidden_field :event, "event_locations_attributes[][location_type]", value: event_location.location_type
     = hidden_field :event, "event_locations_attributes[][location_id]", value: event_location.location_id
+    = hidden_field :event, "event_locations_attributes[][url]", value: event_location.url
     
     i.fa-layers.fa-fw
       - case event_location.location_type

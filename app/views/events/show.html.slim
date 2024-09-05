@@ -60,7 +60,7 @@
           .flex.flex-col.gap-4.divide-y.divide-stone-200
             = render partial: "events/partials/show/date"
             = render partial: "events/partials/show/description"
-            = render partial: "events/partials/show/location", locals: { event: @event }
+            = render partial: "events/partials/show/locations", locals: { event: @event }
             = render partial: "events/partials/show/weather"
             = render partial: "events/partials/show/attachments", locals: { event: @event }
 

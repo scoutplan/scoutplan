@@ -1,0 +1,27 @@
+- return unless event.event_locations.present?
+
+section.pt-2
+  h3.text-sm.font-semibold.text-stone-950.mb-3
+    i.fa-light.fa-location-dot.mr-2
+    = "Location"
+
+  - if params[:map] == "static"
+    = render partial: "events/partials/show/static_map"
+  - else
+    = render partial: "events/partials/show/map"
+
+  - if event.mappable?
+    p.text-right
+      = link_to event_map_url(event),
+                target: "_new",
+                class: "text-xs text-stone-500 hover:text-stone-700 inline-block py-1",
+                aria: { role: "link" } do
+        i.fa-regular.fa-map.text-stone-400
+        | &nbsp;&nbsp;
+        = t("events.show.map")      
+
+  ol.flex.flex-col.gap-5.relative
+    // vertical line
+    .absolute.w-px.top-3.bottom-4.bg-stone-400(style="left: 9.5px;")
+
+    = render partial: "events/partials/show/event_location", collection: event.event_locations

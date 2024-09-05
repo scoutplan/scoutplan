@@ -465,11 +465,13 @@ en:
         departure:    "text-emerald-500"
         arrival:      "text-red-500"
         activity:     "text-amber-500"
+        online:       "text-sky-500"
 
       icons:
         departure:    "fa-car"
         arrival:      "fa-location-dot"
         activity:     "fa-location-exclamation"
+        online:       "fa-laptop"
 
       titles:
         youth:    "Youth"

@@ -13,8 +13,8 @@ section.py-4#location_fields
     = render partial: "events/partials/form/event_location", collection: event.event_locations
 
 
-  details(data-event-edit-target="eventLocationDetails")
-    summary(class="group cursor-pointer")
+  details(data-event-edit-target="eventLocationDetails" data-controller="modal")
+    summary(class="group cursor-pointer" id="add_event_location")
       i.fa-layers.fa-fw.mr-1
         i.fa-solid.fa-circle.text-white.group-hover:text-brand-500(data-fa-transform="grow-3")
         i.fa-regular.fa-plus.text-brand-500.group-hover:text-white
@@ -61,8 +61,10 @@ section.py-4#location_fields
                   = "Online"                    
 
           section.p-2.rounded-lg.bg-stone-100.shrink.hidden#fields_online
-            = f.text_field :website, class: "block w-full rounded px-2 py-2 mb-px text-sm border border-stone-200 placeholder-stone-400", 
-                            placeholder: "Online event address (e.g. https://zoom.us/...)"
+            = text_field :location, :url, class: "block w-full rounded px-2 py-2 mb-px text-sm border border-stone-200 placeholder-stone-400",
+                         autofill: false,
+                         placeholder: "Online event address (e.g. https://zoom.us/...)",
+                         oninput: "document.querySelector('#accept_button').disabled = this.value.length == 0;"
 
           section.p-2.rounded-lg.bg-stone-100.shrink.overflow-y-hidden#fields_offline
             section.p-2.h-full.bg-white.overflow-y-auto(data-controller="searchable-list" data-searchable-list-new-value-url-value="#{unit_location_candidates_path(current_unit)}" data-searchable-list-new-value-method-value="post" data-searchable-list-new-value-param-value="location[name]")

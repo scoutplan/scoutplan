@@ -1,5 +1,5 @@
 li.-mx-2.p-2.search-item.hover:bg-stone-100
-  = label_tag nil, "location_id_#{location.id}", class: "block" do
+  = label_tag nil, for: "location_id_#{location.id}", class: "block" do
     = radio_button :location, :id, location.id, class: "peer hidden",
                     onclick: "document.querySelector('#accept_button').disabled = false"
     
@@ -9,4 +9,4 @@ li.-mx-2.p-2.search-item.hover:bg-stone-100
     .hidden.peer-checked:inline-block
       i.fa-regular.fa-check.fa-fw.text-brand-500.mr-2
       
-    = location.name
+    = location.display_name

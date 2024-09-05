@@ -100,16 +100,6 @@
               - event.unit.members.active.each do |member|
                 = render partial: "organizer_tag", locals: { member: member, visible: event.organizer_members.include?(member) }
 
-
-          // LOCATION
-          / .py-2.relative
-          /   details#locations(data-event-edit-target="locationsListWrapper")
-          /     summary.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.hover:bg-brand-100.rounded.cursor-pointer(class="active:-mx-[0.4rem]")
-          /       .font-semibold = "Location"
-          /       i.fa-light.fa-plus.fa-fw
-
-          /   .flex.flex-wrap.gap-1.text-xs#tag_tag_field(data-controller="tag-field" data-tag-field-checkable-list-outlet="#tags_popup")
-
           // TAGS
           .py-2.relative
             details#tags(data-event-edit-target="tagListWrapper")
@@ -119,7 +109,7 @@
 
             .flex.flex-wrap.gap-1.text-xs#tag_tag_field(data-controller="tag-field" data-tag-field-checkable-list-outlet="#tags_popup")
               - ActsAsTaggableOn::Tag.for_tenant(event.unit.id).each do |tag|
-                = render partial: "tag_label", locals: { tag_name: tag.name, visible: event.tags.include?(tag) }                
+                = render partial: "tag_label", locals: { tag_name: tag.name, visible: event.tags.include?(tag) }
 
       section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.text-sm.text-stone-600.rounded-r-lg.overflow-y-auto.h-full
         - %w[basics dates rsvp locations description attachments].each do |section|
@@ -142,6 +132,7 @@
                   data: { action: "click->modal#close" }
 
         = f.submit event.new_record? ? t("events.new.add_this_event") : t("global.save_changes"),
-                    class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-brand-500 hover:bg-brand-600 disabled:bg-brand-300 disabled:text-brand-50 text-white rounded cursor-pointer",
-                    data: { event_edit_target: "submit" },
-                    disabled: event.new_record?
+                   id: "accept",
+                   class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-brand-500 hover:bg-brand-600 disabled:bg-brand-300 disabled:text-brand-50 text-white rounded cursor-pointer",
+                   data: { event_edit_target: "submit" },
+                   disabled: event.new_record?

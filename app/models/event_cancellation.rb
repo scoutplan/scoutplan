@@ -15,9 +15,9 @@ class EventCancellation
     events.each do |event|
       case disposition
       when "cancel"
-        event.status = "cancelled"
+        event.update(status: "cancelled")
       when "unpublish"
-        event.status = "draft"
+        event.update(status: "draft")
       when "delete"
         event.destroy
       end

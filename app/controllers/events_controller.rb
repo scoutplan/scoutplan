@@ -175,22 +175,30 @@ class EventsController < UnitContextController
 
   # POST /:unit_id/events
   def create
-    authorize :event, :create?
-    service = EventCreationService.new(current_unit)
-    @event = service.create(event_params)
-    render "new" and return unless @event.valid?
+    @event = current_unit.events.new(event_params)
+    authorize @event
 
-    # EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
-    EventService.new(@event, params).process_event_shifts
-    return unless @event.present?
+    if @event.save
+      # puts params.inspect
+      # authorize :event, :create?
+      # service = EventCreationService.new(current_unit)
+      # @event = service.create(event_params)
+      # render "new" and return unless @event.valid?
 
-    if params[:event][:attachments].present?
-      params[:event][:attachments].each do |attachment|
-        @event.attachments.attach(attachment)
+      # # EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
+      # EventService.new(@event, params).process_event_shifts
+      # return unless @event.present?
+
+      if params[:event][:attachments].present?
+        params[:event][:attachments].each do |attachment|
+          @event.attachments.attach(attachment)
+        end
       end
-    end
 
-    redirect_to [current_unit, @event], notice: t("helpers.label.event.create_confirmation", event_name: @event.title)
+      redirect_to [current_unit, @event], notice: t("helpers.label.event.create_confirmation", event_name: @event.title)
+    else
+      redirect_to "new", alert: "Event could not be created."
+    end
   end
 
   # PATCH /:unit_id/events/:event_id
@@ -397,7 +405,7 @@ class EventsController < UnitContextController
                                       :notify_members, :notify_recipients, :notify_message, :document_library_ids,
                                       :cover_photo, packing_list_ids: [], attachments: [], private_attachments: [], tag_list: [],
                                       event_organizer_unit_membership_ids: [],
-                                      event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy],
+                                      event_locations_attributes: [:id, :location_type, :location_id, :event_id, :url, :_destroy],
                                       event_organizers_attributes: [:unit_membership_id])
     p[:tag_list] ||= []
     p[:packing_list_ids] = p[:packing_list_ids].reject(&:blank?) if p[:packing_list_ids].present?
@@ -528,6 +536,8 @@ class EventsController < UnitContextController
   end
 
   def find_list_events
+    # GearedPagination::Ratios.send(:remove_const, :DEFAULTS) if defined?(GearedPagination::Ratios::DEFAULT)
+    # GearedPagination::Ratios.const_set("DEFAULTS", [15, 30, 50, 100])
     scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
     scope = params[:before].present? ? scope.where("id < ?", params[:before]) : scope.future

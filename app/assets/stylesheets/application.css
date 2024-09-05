@@ -89,6 +89,7 @@ input.dt-switch.left-value:checked ~ .dt-switch-container {
 
 input.dt-switch.left-value:disabled:checked ~ .dt-switch-container {
   background: #ddd;
+  cursor: not-allowed;
 }
 
 input.dt-switch.right-value:checked ~ .dt-switch-container {
@@ -97,10 +98,12 @@ input.dt-switch.right-value:checked ~ .dt-switch-container {
 
 input.dt-switch.right-value:disabled:checked ~ .dt-switch-container {
   background: #ddd;
+  cursor: not-allowed;
 }
 
 input.dt-switch:disabled ~ .dt-switch-container {
   background: #ddd;
+  cursor: not-allowed;
 }
 
 input.dt-switch.left-value:checked ~ .dt-switch-container .switch-button {
@@ -127,7 +130,9 @@ span.dt-switch .switch-container {
 }
 
 span.dt-switch .switch-container.disabled {
-  background: #bbb;
+  background: #eee;
+  color: #ccc;
+  cursor: not-allowed;
 }  
 
 span.dt-switch .switch-container label {
@@ -139,6 +144,10 @@ span.dt-switch .switch-container label {
   position: relative;
   padding: 0.25rem 0;
   cursor: pointer;
+}
+
+span.dt-switch.disabled .switch-container label {
+  cursor: not-allowed;
 }
 
 span.dt-switch .switch-container label.center-label {
@@ -156,6 +165,10 @@ span.dt-switch .switch-container .switch-button {
   border-radius: 9999px;
   transform: translateX(0);
   transition: all 0.25s;
+}
+
+span.dt-switch.disabled .switch-container label.center-label {
+  cursor: not-allowed;
 }
 
 span.dt-switch input.center-value:checked ~ .switch-container .switch-button {
@@ -224,14 +237,17 @@ span.dt-switch input.center-value:checked ~ .switch-container {
 @media (prefers-color-scheme: dark) {
   input.dt-switch.right-value:disabled:checked ~ .dt-switch-container, .switch-disabled .dt-switch-container {
     background: #444 !important;
+    cursor: not-allowed;
   }
 
   input.dt-switch.right-value:disabled:checked ~ .dt-switch-container .switch-button {
     background: #222;
+    cursor: not-allowed;
   }
 
   input.dt-switch.right-value:disabled ~ label {
     color: #666;
+    cursor: not-allowed;
   }
 
 }

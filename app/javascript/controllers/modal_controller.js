@@ -17,10 +17,16 @@ export default class extends Controller {
 
   close(event) {
     this.dispatch("close", { detail: { content: event } });
+    const wrapper = this.element.closest(".modal-wrapper");
+    const details = this.element.closest("details");
     
     if (this.hasElementIdValue) {
       elem = document.getElementById(this.elementIdValue);
       elem.remove();
+    } else if (details) {
+      details.removeAttribute("open");
+    } else if (wrapper) {
+      wrapper.remove();
     } else {
       this.element.closest("turbo-frame").innerHTML = "";
     }

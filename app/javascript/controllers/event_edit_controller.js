@@ -220,14 +220,16 @@ export default class extends Controller {
   }
 
   async setLocation(event) {
-    const locationId = this.element.querySelector("input[name='location[id]']:checked").value;
     const locationType = this.element.querySelector("input[name='location[location_type]']:checked").value;
+    const locationId = this.element.querySelector("input[name='location[id]']:checked")?.value;
+    const locationUrl = this.element.querySelector("input[name='location[url]']").value;
 
     this.eventLocationDetailsTarget.removeAttribute("open");
 
     const formData = new FormData();
     formData.append("event_location[location_id]", locationId);
     formData.append("event_location[location_type]", locationType);
+    formData.append("event_location[url]", locationUrl);
     const url = `/u/${this.unitIdValue}/event_locations`;
 
     await post(url, { body: formData });

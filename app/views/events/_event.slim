@@ -43,7 +43,8 @@ li.event(class="#{row_classes(event)}" id="#{dom_id(event)}")
           - if event.organizable? && EventPolicy.new(current_member, event).rsvps?          
             = render partial: "events/partials/event_row/organize", locals: { event: event }
           - else
-            = render partial: "events/partials/event_row/family_rsvp_link", locals: { event: event }
+            .w-48
+              = render partial: "events/partials/event_row/family_rsvp_link", locals: { event: event }
 
           = render partial: "events/partials/event_row/online", locals: { event: event }
 
