@@ -17,7 +17,7 @@ ul.list-none
   // Members
   - if policy(:unit_membership).index?
     li#main_nav_item_members.md:inline-block
-      = link_to unit_members_path(current_unit),
+      = link_to unit_unit_memberships_path(current_unit),
         class: "text-brand-500 dark:text-brand-400 hover:text-brand-800 font-medium mb-px no-underline whitespace-nowrap px-2 xl:px-4 py-3 block",
         data: { turbo_frame: "main", turbo_action: "advance" } do
 

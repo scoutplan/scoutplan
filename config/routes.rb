@@ -140,6 +140,7 @@ Rails.application.routes.draw do
       end
       resources :event_rsvps
       resources :payments, module: :events
+      resources :online_payments, module: :events, only: [:new]
       resources :photos
       resources :event_attachments, path: "attachments", as: "attachments"
       resources :event_activities
@@ -194,6 +195,7 @@ Rails.application.routes.draw do
     get "settings", to: "settings#index", as: "settings"
     get "settings/automated_messages", to: "settings#automated_messages", as: "automated_messages"
     get "settings/documents"
+    # get "settings/payments", to: "settings#payments"
     get "settings/test_communications", to: "settings#test_communications", as: "test_communications"
     get "settings/:category", to: "settings#edit", as: "setting"
 

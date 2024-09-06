@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class StripePaymentService
-  STRIPE_BASE_FEE = 0.30.freeze
-  STRIPE_PERCENTAGE = 0.029.freeze
+  STRIPE_BASE_FEE = 0.30
+  STRIPE_PERCENTAGE = 0.029
 
   attr_accessor :unit
 
@@ -20,6 +20,6 @@ class StripePaymentService
     fee = ((subtotal * STRIPE_PERCENTAGE) + STRIPE_BASE_FEE).round(2)
     multiplier = 0.5 if @payment_account.transaction_fees_covered_by == "split_50_50"
 
-    fee * multiplier
+    (fee * multiplier).to_i
   end
 end

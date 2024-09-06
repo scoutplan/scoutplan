@@ -18,16 +18,4 @@ class Payment < ApplicationRecord
   def amount_in_dollars
     (amount || 0) / 100.0
   end
-
-  def transaction_fee
-    return 0 if payment_account.transaction_fees_covered_by == "unit"
-
-    result = stripe_fee if method == "stripe"
-    result /= 2.0 if payment_account.transaction_fees_covered_by == "split_50_50"
-    result.to_i
-  end
-
-  def stripe_fee
-    STRIPE_BASE_FEE + (amount * STRIPE_RATE)
-  end
 end
