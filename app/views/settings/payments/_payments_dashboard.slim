@@ -13,8 +13,8 @@ header.mb-6
                 target: "_new",
                 data: { turbo: false } do
 
-                = t(".stripe_dashboard")
-                i.fa-solid.fa-arrow-up-right-from-square.ml-2
+        = t(".stripe_dashboard")
+        i.fa-solid.fa-arrow-up-right-from-square.ml-2
 
 - unless current_unit.payment_account.active?
   - link = Stripe::AccountLink.create({account: current_unit.payment_account.account_id, refresh_url: refresh_unit_payments_url, return_url: unit_settings_url(current_unit), type: "account_onboarding"})["url"]

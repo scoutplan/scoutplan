@@ -44,7 +44,7 @@ module Settings
       Stripe::AccountLink.create({
         account:     current_unit.payment_account.account_id,
         refresh_url: refresh_unit_payments_url,
-        return_url:  unit_settings_url(current_unit),
+        return_url:  return_from_onboarding_unit_payments_url(current_unit),
         type:        "account_onboarding"
       })["url"]
     end
