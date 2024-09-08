@@ -23,9 +23,12 @@ article.px-2.py-4.flex.flex-col.gap-2.items-center.justify-between
   - if family_rsvp.any_accepted?
     .text-lime-600.text-center
       - if family_rsvp.paid? == :in_full
-        i.fa-solid.fa-check.text-lime-600.mr-2
-        = t(".paid")  
+        .py-2
+          i.fa-solid.fa-check.text-lime-600.mr-2
+          = t(".paid")  
+          
       - else
-        .font-normal.py-2
-          i.fa-solid.fa-exclamation-triangle.text-lime-600.mr-1
-          = t(".unpaid")
+        = link_to "Pay Online",
+                  new_unit_event_online_payment_path(current_unit, @event),
+                  class: "block bg-lime-600 text-white px-4 py-2 rounded font-bold",
+                  data: { turbo: false }

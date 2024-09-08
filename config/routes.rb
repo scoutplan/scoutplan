@@ -55,7 +55,8 @@ Rails.application.routes.draw do
   get "units/*after", to: redirect("/u/%{after}")
   get "u/:unit_id/schedule/repeat_options/:starts_at", to: "events#repeat_options", as: "repeat_options"
 
-  resources :payments, only: [:create]
+  # resources :payments, only: [:create]
+  post "stripe", to: "stripe#create"
 
   namespace :base, path: "/" do
     resources :events, only: [:show]

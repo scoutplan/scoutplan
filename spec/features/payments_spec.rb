@@ -31,7 +31,7 @@ describe "payments", type: :feature do
 
     it "shows full amount when members pay fees" do
       visit unit_event_path(@unit, @event)
-      expect(page).to have_content("Pay $1,338.00 now")
+      expect(page).to have_content("Pay $1,339.13 now")
     end
 
     it "shows no transaction fees when unit pays fees" do
@@ -43,13 +43,14 @@ describe "payments", type: :feature do
     it "shows half fees when fees are split 50/50" do
       @unit.payment_account.update(transaction_fees_covered_by: "split_50_50")
       visit unit_event_path(@unit, @event)
-      expect(page).to have_content("Pay $1,319.00 now")
+      expect(page).to have_content("Pay $1,319.57 now")
     end
 
     it "reflects prior payments" do
-      Payment.create!(event: @event, unit_membership: @member, amount: 5000, received_by: @member, method: "check", status: "paid")
+      Payment.create!(event: @event, unit_membership: @member, amount: 5000, received_by: @member, method: "check",
+                      status: "paid")
       visit unit_event_path(@unit, @event)
-      expect(page).to have_content("Pay $1,288.00 now")
+      expect(page).to have_content("Pay $1,289.13 now")
     end
   end
 
@@ -62,7 +63,7 @@ describe "payments", type: :feature do
       fill_in("payment_amount", with: 1300)
       expect { click_button I18n.t("payments.receive.record_payment") }.to change { Payment.count }.by(1)
       expect(page).to have_current_path(unit_event_payments_path(@unit, @event))
-      expect(Payment.last.amount).to eq(130000)
+      expect(Payment.last.amount).to eq(130_000)
     end
 
     it "rejects bad input" do

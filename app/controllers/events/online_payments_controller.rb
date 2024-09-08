@@ -12,15 +12,16 @@ module Events
       @payments = @event.payments.where(unit_membership_id: @current_family.map(&:id))
       @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
       @subtotal = @family_rsvps.accepted.youth.count * @event.cost_youth * 100
-      @subtotal = @family_rsvps.accepted.adult.count * @event.cost_adult * 100
+      @subtotal += @family_rsvps.accepted.adult.count * @event.cost_adult * 100
       @transaction_fee = StripePaymentService.new(current_unit).member_transaction_fee(@subtotal)
-      @total_cost = (@subtotal + @transaction_fee)
+      @total_cost = @subtotal + @transaction_fee
       @total_paid = @payments&.sum(:amount) || 0
       @amount_due = @total_cost - @total_paid
-      @payment = Payment.new(event: @event,
-                             unit_membership: current_member,
-                             amount: @amount_due, received_by: nil,
-                             method: "stripe")
+      @payment = Payment.create(event:           @event,
+                                unit_membership: current_member,
+                                amount:          @amount_due,
+                                received_by:     nil,
+                                method:          "stripe")
 
       create_checkout_session
       redirect_to @session.url, allow_other_host: true

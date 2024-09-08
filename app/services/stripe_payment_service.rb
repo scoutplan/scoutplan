@@ -17,9 +17,11 @@ class StripePaymentService
     return 0 if @payment_account.transaction_fees_covered_by == "unit"
 
     multiplier = 1.0
-    fee = ((subtotal * STRIPE_PERCENTAGE) + STRIPE_BASE_FEE).round(2)
+    gross_up = (subtotal + STRIPE_BASE_FEE) / (1 - STRIPE_PERCENTAGE)
+    fee = gross_up - subtotal
+    # fee = ((subtotal * STRIPE_PERCENTAGE) + STRIPE_BASE_FEE).round(2)
     multiplier = 0.5 if @payment_account.transaction_fees_covered_by == "split_50_50"
 
-    (fee * multiplier).to_i
+    (fee * multiplier).round(2)
   end
 end

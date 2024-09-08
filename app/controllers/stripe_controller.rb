@@ -1,40 +1,45 @@
 # frozen_string_literal: true
 
 # controller for handling Stripe payment callbacks
-class PaymentsController < ApplicationController
+class StripeController < ApplicationController
   skip_before_action :authenticate_user!
   skip_before_action :verify_authenticity_token
   layout false
 
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def create
     Stripe.api_key = ENV.fetch("STRIPE_SECRET_KEY")
-    @event = nil
+    @stripe_event = nil
 
     begin
       sig_header = request.env["HTTP_STRIPE_SIGNATURE"]
       payload = request.body.read
-      @event = Stripe::Webhook.construct_event(payload, sig_header, ENV.fetch("STRIPE_WEBHOOK_SIGNING_SECRET"))
-    rescue JSON::ParserError => e
+      @stripe_event = Stripe::Webhook.construct_event(payload, sig_header, ENV.fetch("STRIPE_WEBHOOK_SIGNING_SECRET"))
+    rescue JSON::ParserError
       # Invalid payload
       status 400
       return
-    rescue Stripe::SignatureVerificationError => e
+    rescue Stripe::SignatureVerificationError
       # Invalid signature
       puts "⚠️  Signature verification failed."
       status 400
       return
     end
 
-    fulfill_order if @event["type"] == "checkout.session.completed"
+    ap @stripe_event
+    fulfill_order if @stripe_event["type"] == "checkout.session.completed"
 
     render status: 200, json: { message: "success" }
   end
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 
   private
 
   # fulfill the purchase...
   def fulfill_order
-    object_data = @event["data"]["object"]
+    object_data = @stripe_event["data"]["object"]
 
     amount        = object_data["amount_total"]
     payment_id    = object_data["client_reference_id"]
