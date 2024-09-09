@@ -75,6 +75,12 @@ nav.bg-stone-50.text-stone-700.relative.h-full.w-full
           i.fa-light.fa-cog.fa-fw.mr-2
           = t("main_nav.settings")
 
+      = link_to new_unit_search_path(current_unit),
+                class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.search]/controller:text-brand-500 group-[.search]/controller:bg-brand-100",
+                data: { turbo_frame: "modal" } do
+        i.fa-light.fa-magnifying-glass.fa-fw.mr-2
+        = "Search"
+
     .bottom.mb-4
       - if current_member.units.count > 1
         = label_tag :show_unit_browser, class: "block relative w-full p-2 text-sm text-stone-500 hover:bg-stone-200 rounded font-medium" do

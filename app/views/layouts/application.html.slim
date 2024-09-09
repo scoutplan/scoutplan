@@ -44,7 +44,6 @@ html.scroll-smooth
     footer
       /!  CI #{ENV["GITHUB_RUN_NUMBER"]}
 
-    = render partial: "search/overlay"
     = turbo_frame_tag :modal
 
   - content_for :title do

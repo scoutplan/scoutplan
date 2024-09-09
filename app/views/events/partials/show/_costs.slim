@@ -22,14 +22,13 @@ article.pt-2
       = " per adult "
 
   - if family_rsvp.any_accepted?
-    .text-lime-600.text-center
-      - if family_rsvp.paid? == :in_full
-        .py-2
-          i.fa-solid.fa-check.text-lime-600.mr-2
-          = t(".paid")  
-          
-      - else
-        = link_to "Pay Online",
-                  new_unit_event_online_payment_path(current_unit, @event),
-                  class: "block bg-lime-600 text-white px-4 py-2 rounded font-bold",
-                  data: { turbo: false }
+    - if family_rsvp.paid? == :in_full
+      p.mt-3.text-sm.font-semibold
+        i.fa-solid.fa-check.text-lime-600.mr-2
+        = t(".paid")
+        
+    - else
+      = link_to "Pay Online",
+                new_unit_event_online_payment_path(current_unit, @event),
+                class: "block text-center bg-lime-600 text-white px-4 py-2 rounded font-bold",
+                data: { turbo: false }

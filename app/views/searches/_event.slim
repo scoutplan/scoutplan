@@ -1,0 +1,11 @@
+= link_to unit_event_path(current_unit, event),
+  class: "block py-3 px-4 hover:bg-stone-100 flex flex-row items-center justify-between gap-2",
+  data: { turbo_action: "advance", turbo_frame: "_top" } do
+  
+  .left.font-semibold
+    i.fa-light.fa-calendar.fa-fw.mr-1.text-stone-400
+    = event.title
+
+  .right.font-stone-400
+    = distance_of_time_in_words_to_now(event.starts_at)
+    = event.starts_at.past? ? " ago" : " from now"

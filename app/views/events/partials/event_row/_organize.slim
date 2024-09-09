@@ -1,7 +1,6 @@
 - dashboard = EventDashboard.new(event)
 
-.rounded.bg-stone-100.group-hover:bg-stone-200.dark:bg-stone-800.p-2.mb-1
-  .grid.grid-cols-3.divide-x.dark:divide-stone-700
+.rounded.bg-stone-100.group-hover:bg-stone-200.group-hover:divide-stone-300.dark:bg-stone-800.p-2.mb-1.grid.grid-cols-3.divide-x
     div.text-center.px-2
       div.text-xs.text-stone-600 = number_to_percentage((dashboard.accept_rate) * 100, precision: 0)
       div.text-2xl.text-green-600 = dashboard.acceptance_count

@@ -3,8 +3,8 @@
 = turbo_frame_tag :main
   = render partial: "events/header"
 
-  .max-w-4xl.mx-auto.p-2.md:pb-4.sticky.top-10
-    header.flex.flex-row.gap-6.items-baseline.bg-white
+  .max-w-4xl.mx-auto.px-2.md:pb-4.sticky.top-10
+    header.flex.flex-row.gap-6.items-baseline.bg-white.pb-2
       h1.text-2xl.font-semibold
         = t("events.index.title")
 
@@ -13,7 +13,6 @@
           i.fa-layers.fa-fw.mr-1
             i.fa-solid.fa-circle.text-white.group-hover:text-brand-500(data-fa-transform="grow-3")
             i.fa-regular.fa-plus.text-brand-500.group-hover:text-white
-
           = "Add event"
 
   .max-w-4xl.mx-auto.p-2.md:pb-12

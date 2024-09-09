@@ -70,6 +70,11 @@ Rails.application.routes.draw do
 
   # begin units
   resources :units, path: "u", only: %i[show index update] do
+    # post "search", to: "search#index", as: "search"
+    # get "search", to: "search#new", as: "new_search"
+    #
+    resources :searches
+
     scope module: :units do
       resources :documents, path: "library" do
         collection do
@@ -201,13 +206,9 @@ Rails.application.routes.draw do
     end
 
     resources :event_locations, only: [:create]
-
     resources :integrations
-
     resources :photos
 
-    post "search", to: "search#results", as: "search"
-    get "search", to: "search#results"
     get "settings", to: "settings#index", as: "settings"
     get "settings/automated_messages", to: "settings#automated_messages", as: "automated_messages"
     get "settings/documents"

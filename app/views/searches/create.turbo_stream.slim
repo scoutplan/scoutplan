@@ -1,0 +1,5 @@
+= turbo_stream.update "results" do
+  .flex.flex-col.divide-y.divide-stone-200.overflow-auto
+    = render partial: "searches/event", collection: @events, locals: { current_member: current_member }
+    = render partial: "searches/member", collection: @members, locals: { current_member: current_member }
+    = render partial: "searches/location", collection: @locations, locals: { current_member: current_member }
