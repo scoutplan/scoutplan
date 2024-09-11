@@ -76,10 +76,15 @@ nav.bg-stone-50.text-stone-700.relative.h-full.w-full
           = t("main_nav.settings")
 
       = link_to new_unit_search_path(current_unit),
-                class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.search]/controller:text-brand-500 group-[.search]/controller:bg-brand-100",
+                class: "flex flex-row justify-between items-center hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-2 block hover:bg-stone-100 group-[.search]/controller:text-brand-500 group-[.search]/controller:bg-brand-100",
+                id: "search_button",
                 data: { turbo_frame: "modal" } do
-        i.fa-light.fa-magnifying-glass.fa-fw.mr-2
-        = "Search"
+        .left
+          i.fa-light.fa-magnifying-glass.fa-fw.mr-2
+          = "Search"
+
+        .right.rounded.text-2xs.border.p-1.hidden.md:block
+          = "CTRL + F"
 
     .bottom.mb-4
       - if current_member.units.count > 1
@@ -95,3 +100,9 @@ nav.bg-stone-50.text-stone-700.relative.h-full.w-full
                 - if unit == current_unit
                   i.fa-solid.fa-circle.text-brand-500.mr-2.fa-xs
                 = unit.name
+javascript:
+  document.onkeydown = function(e) {
+    if ((e.metaKey || e.ctrlKey) && (e.key === "f" || e.keyCode === "F")) {
+      document.querySelector("#search_button").click();
+    }
+  } 

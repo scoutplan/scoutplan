@@ -1,26 +1,45 @@
-header.py-4
-  h3.text-4xl.font-bold
-    = t("members.titles.#{@target_membership.new_record? ? "new" : "edit"}")
-
 = form_with model: [current_unit, @target_membership],
             id: "member_info_form",
             data: { turbo: false, controller: "form-validation", action: "submit->form-validation#validate" } do |f|
-  section.flex.flex-col.gap-4.divide-y.divide-stone-800
-    = render partial: "unit_memberships/partials/modal/user_fields", locals: { f: f }
-    = render partial: "unit_memberships/partials/modal/member_type_fields", locals: { f: f }
-    = render partial: "unit_memberships/partials/modal/member_role_fields", locals: { f: f }
-    = render partial: "unit_memberships/partials/modal/member_tag_fields", locals: { f: f }      
-    = render partial: "unit_memberships/partials/modal/member_status_fields", locals: { f: f }
-    = render partial: "unit_memberships/partials/modal/communication_settings_fields", locals: { f: f, member: @target_membership }
-    = render partial: "unit_memberships/partials/modal/relationships_new", locals: { f: f }
 
-  = render partial: "unit_memberships/partials/modal/footer", locals: { f: f }
+  = render partial: "relationships_popup", locals: { member: @target_membership }
 
-scss:
-  input.destroy_relationship_input:checked {
-    display: none;
-  }
+  article.mx-auto.max-w-3xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden.dark:text-stone-800
+    header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
+      .left
+        h1 = (f.object.new_record? ? "Add" : "Edit") + " Member"
 
-  input.destroy_relationship_input:checked + label.destroy_relationship_label {
-    display: none;
-  }
+      .right.flex.flex-row.gap-2.text-stone-500.text-lg
+
+        = button_tag type: "button", class: "x-close-button flex flex-row items-center block w-6 h-6 -mr-2 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
+          i.fa-regular.fa-times.fa-fw
+
+    section.flex.flex-col.md:flex-row.w-full.overflow-y-hidden(style="height: calc(100% - 0rem)")
+      aside.w-full.md:w-60.bg-stone-50.px-6.py-3.overflow-y-auto.text-stone-600
+        .flex.flex-col.divide-y.divide-stone-200.text-sm
+          = render partial: "unit_memberships/partials/modal/member_type_fields", locals: { f: f }
+          = render partial: "unit_memberships/partials/modal/member_role_fields", locals: { f: f }
+          = render partial: "unit_memberships/partials/modal/member_status_fields", locals: { f: f }
+          = render partial: "unit_memberships/partials/modal/relationships", locals: { f: f, member: @target_membership }
+          = render partial: "unit_memberships/partials/modal/member_tag_fields", locals: { f: f }      
+
+      section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.text-sm.text-stone-600.rounded-r-lg.overflow-y-auto.h-full
+        = render partial: "unit_memberships/partials/modal/user_fields", locals: { f: f }
+        = render partial: "unit_memberships/partials/modal/communication_settings_fields", locals: { f: f, member: @target_membership }
+
+    footer.sticky.bottom-0.px-6.py-3.bg-white.border-t.border-stone-200.flex.flex-col.md:flex-row.gap-2.justify-between.items-center.text-sm
+
+      .left.w-full.md:w-auto
+
+
+      .right.flex.flex-col.md:flex-row.gap-2.w-full.md:w-auto
+        = f.button t("global.close"),
+                  type: "button",
+                  class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded",
+                  data: { action: "click->modal#close" }
+
+        = f.submit f.object.new_record? ? "Add Member" : "Update Member",
+                   id: "accept",
+                   class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-brand-500 hover:bg-brand-600 disabled:bg-brand-300 disabled:text-brand-50 text-white rounded cursor-pointer",
+                   data: { event_edit_target: "submit" },
+                   disabled: f.object.new_record?

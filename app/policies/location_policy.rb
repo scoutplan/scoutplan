@@ -8,6 +8,10 @@ class LocationPolicy < UnitContextPolicy
     @location = location
   end
 
+  def index?
+    admin?
+  end
+
   def create?
     edit?
   end

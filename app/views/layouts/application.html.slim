@@ -4,7 +4,8 @@ html.scroll-smooth
     title#page_title = yield :title
     
     meta name="viewport" content="width=device-width,initial-scale=1"
-    
+    meta name="turbo-refresh-method" content="morph"
+
     = csrf_meta_tags
     
     = csp_meta_tag
@@ -94,7 +95,7 @@ html.scroll-smooth
 
     html:has(section[role="dialog"][data-open="true"]) {
       overflow: hidden;
-    }    
+    }     
 
   /! Current member id: #{current_member&.id}
   /! Current unit id: #{current_unit&.id}
