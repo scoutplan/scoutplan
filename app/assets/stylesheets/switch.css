@@ -13,6 +13,10 @@ input.dp-switch + label .switch-container {
   flex-shrink: 0;
 }
 
+input.dp-switch:disabled + label .switch-container {
+  background: #ccc;
+}
+
 input.dp-switch + label .switch-button {
   background: #fff;
   display: block;

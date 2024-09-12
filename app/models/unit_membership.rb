@@ -6,8 +6,12 @@
 # basic user demographic information (e.g. DOB) that's unlikely to change
 # from one Unit to another
 #
+#
+# rubocop:disable Metrics/ClassLength
 class UnitMembership < ApplicationRecord
   ROLES = %w[member admin event_organizer].freeze
+
+  after_initialize :set_defaults, unless: :persisted?
 
   include Flipper::Identifier
   include Contactable
@@ -123,6 +127,12 @@ class UnitMembership < ApplicationRecord
     settings(:communication).receives_all_rsvps || event_organizers.any?
   end
 
+  def set_defaults
+    self.role = "member"
+    self.status = "active"
+    self.member_type = "youth"
+  end
+
   def smsable?
     user.smsable? && settings(:communication).via_sms
   end
@@ -143,3 +153,4 @@ class UnitMembership < ApplicationRecord
     "#{user.display_name} at #{unit.name} <#{unit.from_address}>"
   end
 end
+# rubocop:enable Metrics/ClassLength

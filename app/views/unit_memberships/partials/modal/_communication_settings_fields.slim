@@ -8,17 +8,23 @@ div.pt-4
     = switch( "settings[communication]", "via_email",
           { label: "Via email",
             checked: member.contactable?(via: :email) && member.settings(:communication).via_email == "true",
-            data: {  },
-            disabled: !member.contactable?(via: :email) },
+            data: { controller: "input-validation", 
+                    input_validation_source_value: "#unit_membership_user_attributes_email", 
+                    input_validation_action_value: "enable check",
+                    input_validation_condition_value: "not_empty" },
+          },
           "true", "false" )                        
 
   .py-1
     = switch( "settings[communication]", "via_sms",
           { label: "Via SMS",
             checked: member.contactable?(via: :sms) && member.settings(:communication).via_sms == "true",
-            data: {  },
-            disabled: !member.contactable?(via: :sms) },
-          "true", "false" ) 
+            data: { controller: "input-validation", 
+                    input_validation_source_value: "#unit_membership_user_attributes_phone",
+                    input_validation_action_value: "enable check",
+                    input_validation_condition_value: "not_empty" },
+          },
+          "true", "false" )
 
 div.pt-4
   h4.font-bold.mb-2 = t(".notifications")

@@ -16,11 +16,77 @@
 
     section.flex.flex-col.md:flex-row.w-full.overflow-y-hidden(style="height: calc(100% - 0rem)")
       aside.w-full.md:w-60.bg-stone-50.px-6.py-3.overflow-y-auto.text-stone-600
-        .flex.flex-col.divide-y.divide-stone-200.text-sm
-          = render partial: "unit_memberships/partials/modal/member_type_fields", locals: { f: f }
-          = render partial: "unit_memberships/partials/modal/member_role_fields", locals: { f: f }
-          = render partial: "unit_memberships/partials/modal/member_status_fields", locals: { f: f }
+        .flex.flex-col.text-sm
+
+
+          // TYPE
+          .pt-2.pb-4
+            = label_tag :role, nil, class: "block mb-1 font-bold"
+
+            .p-2.bg-stone-200.rounded
+              = f.label :member_type, value: :youth do
+                = f.radio_button :member_type, :youth, required: true, class: "peer hidden"
+                block(class="block p-2 peer-checked:bg-white rounded")
+                  i.fa-regular.fa-child.fa-fw.mr-2
+                  = "Youth"
+
+              = f.label :member_type, value: :adult do
+                = f.radio_button :member_type, :adult, required: true, class: "peer hidden"
+                block(class="block p-2 peer-checked:bg-white rounded")
+                  i.fa-regular.fa-user.fa-fw.mr-2
+                  = "Adult"
+
+          // ROLE
+          .pt-2.pb-4
+            = label_tag :role, nil, class: "block mb-1 font-bold"
+
+            .p-2.bg-stone-200.rounded
+
+              = f.label :role, value: :member do
+                = f.radio_button :role, :member, required: true, class: "peer hidden"
+                block(class="block p-2 peer-checked:bg-white rounded")
+                  i.fa-regular.fa-user.fa-fw.mr-2
+                  = "Member"
+
+              = f.label :role, value: :event_organizer do
+                = f.radio_button :role, "event_organizer", required: true, class: "peer hidden"
+                block(class="block p-2 peer-checked:bg-white rounded")
+                  i.fa-regular.fa-person-sign.fa-fw.mr-2
+                  = "Event Organizer"
+
+              = f.label :role, value: :admin do
+                = f.radio_button :role, :admin, required: true, class: "peer hidden"
+                block(class="block p-2 peer-checked:bg-white rounded")
+                  i.fa-regular.fa-user-crown.fa-fw.mr-2
+                  = "Administrator"
+
+
+          // STATUS
+          .py-2
+            = label_tag :status, nil, class: "block mb-1 font-bold"
+
+            .p-2.bg-stone-200.rounded
+
+              = f.label :status, value: "active" do
+                = f.radio_button :status, :active, required: true, class: "peer hidden"
+                block(class="block p-2 peer-checked:bg-white rounded")
+                  i.fa-regular.fa-flag.fa-fw.mr-2
+                  = t("members.statuses.active")
+
+              = f.label :status, value: "registered" do
+                = f.radio_button :status, :registered, required: true, class: "peer hidden"
+                block(class="block p-2 peer-checked:bg-white rounded")
+                  i.fa-regular.fa-hand-wave.fa-fw.mr-2
+                  = t("members.statuses.registered")
+
+              = f.label :status, required: true, value: "inactive" do
+                = f.radio_button :status, :inactive, required: true, class: "peer hidden"
+                block(class="block p-2 peer-checked:bg-white rounded")
+                  i.fa-regular.fa-snooze.fa-fw.mr-2
+                  = t("members.statuses.inactive")
+
           = render partial: "unit_memberships/partials/modal/relationships", locals: { f: f, member: @target_membership }
+
           = render partial: "unit_memberships/partials/modal/member_tag_fields", locals: { f: f }      
 
       section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.text-sm.text-stone-600.rounded-r-lg.overflow-y-auto.h-full

@@ -23,8 +23,9 @@ class UnitMembershipsController < UnitContextController
 
   def new
     authorize(UnitMembership)
-    @target_membership = current_unit.memberships.build(role: "member")
+    @target_membership = UnitMembership.new
     @target_membership.build_user
+    ap @target_membership
   end
 
   def show
