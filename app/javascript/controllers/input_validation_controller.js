@@ -7,47 +7,72 @@ export default class extends Controller {
     condition: String
   }
 
-  sourceTarget = null;
+  sourceTargets = [];
+  destinationTarget = null;
   actions = null;
 
   connect() {
-    this.sourceTarget = document.querySelector(this.sourceValue);
+    this.sourceValue.split(" ").forEach((sel) => {
+      const thing = document.querySelector(sel);
+      this.sourceTargets.push(thing);
+    });
+
     this.actions = this.actionValue.split(" ");
-    this.setUpDisableAction();
-    this.setUpEnableAction();
-    this.setUpCheckAction();
+    this.setUpAction("enable", this.enableAction);
+    this.setUpAction("check", this.checkAction);
+    // this.setUpDisableAction();
+    // this.setUpCheckAction();
   }
 
-  setUpEnableAction() {
-    if (!this.actions.includes("enable")) { return; }
-    // if (this.actions. "enable") { return };
+  setUpAction(action, f) {
+    if (!this.actions.includes(action)) { return; }
     
-    this.sourceTarget.addEventListener("input", this.enableAction.bind(this));
-    this.sourceTarget.addEventListener("change", this.enableAction.bind(this));
-    this.sourceTarget.addEventListener("focusout", this.enableAction.bind(this));
-    this.sourceTarget.addEventListener("focusin", this.enableAction.bind(this));
+    this.sourceTargets.forEach((element) => {
+      element.addEventListener("input", f.bind(this));
+      element.addEventListener("change", f.bind(this));
+      element.addEventListener("focusout", f.bind(this));
+      element.addEventListener("focusin", f.bind(this));
+    });
     this.enableAction();
   }
 
-  setUpDisableAction() {
-    if (!this.actions.includes("disable")) { return; }
+  // setUpEnableAction() {
+  //   if (!this.actions.includes("enable")) { return; }
+  //   // if (this.actions. "enable") { return };
     
-    this.sourceTarget.addEventListener("input", this.disableAction.bind(this));
-    this.sourceTarget.addEventListener("change", this.disableAction.bind(this));
-    this.sourceTarget.addEventListener("focusout", this.disableAction.bind(this));
-    this.sourceTarget.addEventListener("focusin", this.disableAction.bind(this));
-    this.disableAction();
-  }
+  //   this.sourceTargets.forEach((element) => {
+  //     element.addEventListener("input", this.enableAction.bind(this));
+  //     element.addEventListener("change", this.enableAction.bind(this));
+  //     element.addEventListener("focusout", this.enableAction.bind(this));
+  //     element.addEventListener("focusin", this.enableAction.bind(this));
+  //   });
+  //   this.enableAction();
+  // }
+
+  // setUpDisableAction() {
+  //   if (!this.actions.includes("disable")) { return; }
+    
+  //   this.sourceTarget.addEventListener("input", this.disableAction.bind(this));
+  //   this.sourceTarget.addEventListener("change", this.disableAction.bind(this));
+  //   this.sourceTarget.addEventListener("focusout", this.disableAction.bind(this));
+  //   this.sourceTarget.addEventListener("focusin", this.disableAction.bind(this));
+  //   this.disableAction();
+  // }
 
 
-  setUpCheckAction() {
-    if (!this.actions.includes("check")) { return; }
+  // setUpCheckAction() {
+  //   if (!this.actions.includes("check")) { return; }
     
-    this.sourceTarget.addEventListener("input", this.checkAction.bind(this));
-    this.sourceTarget.addEventListener("change", this.checkAction.bind(this));
-    this.sourceTarget.addEventListener("focusout", this.checkAction.bind(this));
-    this.sourceTarget.addEventListener("focusin", this.checkAction.bind(this));
-    this.checkAction();
+  //   this.sourceTarget.addEventListener("input", this.checkAction.bind(this));
+  //   this.sourceTarget.addEventListener("change", this.checkAction.bind(this));
+  //   this.sourceTarget.addEventListener("focusout", this.checkAction.bind(this));
+  //   this.sourceTarget.addEventListener("focusin", this.checkAction.bind(this));
+  //   this.element.addEventListener("change", this.markDirty.bind(this));
+  //   this.checkAction();
+  // }
+
+  markDirty(event) {
+    this.element.classList.add("dirty");
   }
 
   disableAction(event) {
@@ -81,6 +106,8 @@ export default class extends Controller {
   }  
 
   checkAction(event) {
+    if (this.element.classList.contains("dirty")) { return; }
+
     switch (this.conditionValue) {
       case "not_empty":
         this.checkActionNotEmpty();
@@ -89,7 +116,13 @@ export default class extends Controller {
   }  
 
   enableActionNotEmpty() {
-    this.element.disabled = this.sourceTarget.value == "";
+    this.element.disabled = false;
+    this.sourceTargets.forEach((element) => {
+      if (element.value == "") {
+        this.element.disabled = true;
+        return;
+      }
+    });
   }
 
   enableActionEmpty() {
@@ -105,6 +138,12 @@ export default class extends Controller {
   }
 
   checkActionNotEmpty() {
-    this.element.checked = this.sourceTarget.value != "";
+    this.element.checked = true;
+    this.sourceTargets.forEach((element) => {
+      if (element.value == "") {
+        this.element.checked = false;
+        return;
+      }
+    });
   }
 }

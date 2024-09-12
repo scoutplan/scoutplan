@@ -15,9 +15,8 @@
           i.fa-regular.fa-times.fa-fw
 
     section.flex.flex-col.md:flex-row.w-full.overflow-y-hidden(style="height: calc(100% - 0rem)")
-      aside.w-full.md:w-60.bg-stone-50.px-6.py-3.overflow-y-auto.text-stone-600
+      aside.w-full.md:w-72.bg-stone-50.px-6.py-3.overflow-y-auto.text-stone-600
         .flex.flex-col.text-sm
-
 
           // TYPE
           .pt-2.pb-4
@@ -26,15 +25,21 @@
             .p-2.bg-stone-200.rounded
               = f.label :member_type, value: :youth do
                 = f.radio_button :member_type, :youth, required: true, class: "peer hidden"
-                block(class="block p-2 peer-checked:bg-white rounded")
-                  i.fa-regular.fa-child.fa-fw.mr-2
-                  = "Youth"
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-child.fa-fw.mr-2
+                    = "Youth"
+
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
 
               = f.label :member_type, value: :adult do
                 = f.radio_button :member_type, :adult, required: true, class: "peer hidden"
-                block(class="block p-2 peer-checked:bg-white rounded")
-                  i.fa-regular.fa-user.fa-fw.mr-2
-                  = "Adult"
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-user.fa-fw.mr-2
+                    = "Adult"
+
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
 
           // ROLE
           .pt-2.pb-4
@@ -43,23 +48,31 @@
             .p-2.bg-stone-200.rounded
 
               = f.label :role, value: :member do
-                = f.radio_button :role, :member, required: true, class: "peer hidden"
-                block(class="block p-2 peer-checked:bg-white rounded")
-                  i.fa-regular.fa-user.fa-fw.mr-2
-                  = "Member"
+                = f.radio_button :role, :member, required: true, class: "peer group hidden"
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-user.fa-fw.mr-2
+                    = "Member"
+                  
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
 
               = f.label :role, value: :event_organizer do
                 = f.radio_button :role, "event_organizer", required: true, class: "peer hidden"
-                block(class="block p-2 peer-checked:bg-white rounded")
-                  i.fa-regular.fa-person-sign.fa-fw.mr-2
-                  = "Event Organizer"
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-person-sign.fa-fw.mr-2
+                    = "Event Organizer"
+
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
 
               = f.label :role, value: :admin do
                 = f.radio_button :role, :admin, required: true, class: "peer hidden"
-                block(class="block p-2 peer-checked:bg-white rounded")
-                  i.fa-regular.fa-user-crown.fa-fw.mr-2
-                  = "Administrator"
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-user-crown.fa-fw.mr-2
+                    = "Administrator"
 
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
 
           // STATUS
           .py-2
@@ -69,21 +82,30 @@
 
               = f.label :status, value: "active" do
                 = f.radio_button :status, :active, required: true, class: "peer hidden"
-                block(class="block p-2 peer-checked:bg-white rounded")
-                  i.fa-regular.fa-flag.fa-fw.mr-2
-                  = t("members.statuses.active")
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-flag.fa-fw.mr-2
+                    = t("members.statuses.active")
+
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
 
               = f.label :status, value: "registered" do
                 = f.radio_button :status, :registered, required: true, class: "peer hidden"
-                block(class="block p-2 peer-checked:bg-white rounded")
-                  i.fa-regular.fa-hand-wave.fa-fw.mr-2
-                  = t("members.statuses.registered")
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-hand-wave.fa-fw.mr-2
+                    = t("members.statuses.registered")
+
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
 
               = f.label :status, required: true, value: "inactive" do
                 = f.radio_button :status, :inactive, required: true, class: "peer hidden"
-                block(class="block p-2 peer-checked:bg-white rounded")
-                  i.fa-regular.fa-snooze.fa-fw.mr-2
-                  = t("members.statuses.inactive")
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-snooze.fa-fw.mr-2
+                    = t("members.statuses.inactive")
+
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
 
           = render partial: "unit_memberships/partials/modal/relationships", locals: { f: f, member: @target_membership }
 
@@ -107,5 +129,17 @@
         = f.submit f.object.new_record? ? "Add Member" : "Update Member",
                    id: "accept",
                    class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-brand-500 hover:bg-brand-600 disabled:bg-brand-300 disabled:text-brand-50 text-white rounded cursor-pointer",
-                   data: { event_edit_target: "submit" },
+                   data: { controller: "input-validation",
+                           input_validation_source_value: "#unit_membership_user_attributes_first_name #unit_membership_user_attributes_last_name",
+                           input_validation_action_value: "enable",
+                           input_validation_condition_value: "not_empty" },
                    disabled: f.object.new_record?
+
+css:
+  .checked-indicator {
+    display: none;
+  }
+
+  label:has(input:checked) .checked-indicator {
+    display: block;
+  }
