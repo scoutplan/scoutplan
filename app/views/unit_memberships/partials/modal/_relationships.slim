@@ -6,4 +6,4 @@
 
   .flex.flex-wrap.gap-1.text-xs#organizers_tag_field(data-controller="tag-field" data-tag-field-checkable-list-outlet="#organizers_popup")
     - member.child_relationships.each do |relationship|
-      = render partial: "relationship_tag", locals: { member: relationship.unit_membership }
+      = render partial: "relationship_tag", locals: { member: relationship.child_unit_membership }

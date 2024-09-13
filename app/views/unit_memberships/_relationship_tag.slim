@@ -1,8 +1,8 @@
 - colors = colors_from_string(member.display_name)
 
-div.pl-2.pr-1.py-1.rounded.flex.flex-row.gap-2(style="background-color: #{colors[100]}; color: #{colors[800]}" class="#{visible ? '' : 'hidden'}" id="organizer_tag_#{member.id}" data-value="#{member.id}")
+div.pl-2.pr-1.py-1.rounded.flex.flex-row.gap-2(style="background-color: #{colors[300]}; color: #{colors[900]}" id="organizer_tag_#{member.id}" data-value="#{member.id}")
   = member.display_name
   = button_tag type: "button",
                class: "hover:bg-black/10 hover:text-black/50 rounded px-px",
                data: { action: "tag-field#remove", value: member.id } do
-    i.fa-light.fa-times.fa-fw.fa-sm
+    i.fa-regular.fa-times.fa-fw.fa-sm

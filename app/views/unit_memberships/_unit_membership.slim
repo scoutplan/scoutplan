@@ -3,10 +3,12 @@
 - row_classes += " member-admin" if unit_membership.admin?
 - row_classes += " member-inactive" if unit_membership.status_inactive?
 
-li.text-sm.member(class="#{row_classes}")
-  = link_to unit_member_path(current_unit, unit_membership), class: "block hover:bg-stone-100 py-3 md:py-2 px-2 -mx-2", data: { turbo_action: "advance" } do
+li.text-sm.member.search-wrapper(class="#{row_classes}")
+  = link_to edit_unit_member_path(current_unit, unit_membership),
+                             class: "block rounded p-2 bg-white border border-stone-200 hover:bg-stone-50",
+                             data: { turbo_action: "advance", turbo_frame: "modal" } do
     .flex.flex-col.gap-1
-      h3.font-medium
+      h3.font-medium.search-value
         = unit_membership.full_display_name
 
       - if unit_membership.roster_display_email?

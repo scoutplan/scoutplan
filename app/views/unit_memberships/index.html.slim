@@ -1,8 +1,11 @@
 = turbo_frame_tag("main")
-  .w-full.px-2.md:px-12.pb-4
+
+  .w-full.px-2.md:px-12.pb-4(data-controller="local-search")
     = render partial: "layouts/flash"
     
     header.mb-4.md:mt-0.sticky.top-0.pt-12.md:pt-4.bg-white.pb-4
+      #local_search_overlay.fixed.inset-0.z-50
+
       .flex.flex-col.md:flex-row.justify-between.md:items-center
         .left.flex.flex-row.items-baseline.gap-6
           h1.text-2xl.font-semibold
@@ -15,11 +18,11 @@
               i.fa-solid.fa-circle.text-white.group-hover:text-brand-500(data-fa-transform="grow-3")
               i.fa-regular.fa-plus.text-brand-500.group-hover:text-white
 
-            = "Add member"
+            = "Add a Member"
 
         .right
-          .relative.text-sm
-            i.fa-magnifying-glass.fas.absolute.left-3.text-stone-400(style="top:50%;transform:translateY(-50%);")
+          .relative.text-sm.z-50
+            i.fa-regular.fa-magnifying-glass.absolute.left-3.text-stone-400(style="top:50%;transform:translateY(-50%);")
 
             = search_field_tag(:search, 
               "",
@@ -28,65 +31,36 @@
               autocomplete: 'off',
               spell_check: false,
               placeholder: raw(t('members.search_by_name')),
-              onkeyup: 'performNameSearch();')
+              data: { local_search_target: "query", action: "input->local-search#perform" })
 
     .grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-3.xl:grid-cols-4.2xl:grid-cols-5.gap-4
       - ("A".."Z").each do |letter|
         - members = @current_unit_memberships.select{ |m| m.last_name.first.downcase == letter.downcase }
         - next if members.empty?
         section.member-index
-          h2.font-semibold.text-brand-500.border-t.border-stone-500.dark:border-stone-400.py-3
+          h2.font-semibold.text-brand-500.border-t.border-stone-300.dark:border-stone-400.py-3
             = letter
 
-          ol.divide-y.divide-stone-300.dark:divide-stone-700
+          ol.flex.flex-col.gap-2
             = render members
 
-javascript:
-  function performNameSearch() {
-    var input = document.querySelector('#search');
-    var filter = input.value.toUpperCase();
-    var rows = document.querySelectorAll('article.member');
+  css:
+    #local_search_overlay {
+      display: none;
+    }
 
-    rows.forEach(function(row) {
-      var nameCell = row.querySelector('.member-name');
+    .searching #local_search_overlay {
+      display: block;
+    }
 
-      // the normalize and replace voodoo converts diacriticals to undecorated letters, e.g. ñ -> n
-      var name = nameCell.innerText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      if (filter.length == 0 || name.toUpperCase().indexOf(filter) > -1) {
-        row.style.display = '';
-      } else {
-        row.style.display = 'none';
-      }
-    });
+    #local_search_overlay {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
 
-    toggleIndices(".member-index", ".member")
-  }
+    .search-match {
+      z-index: 1000;
+    }
 
-  function toggleIndices(parentClass, childClass) {
-    var visibleParents = 0;
-
-    document.querySelectorAll(parentClass).forEach(function(elem) {
-      elem.style.display = "none";
-
-      // ...then, iterate over all visible event rows, traverse backward until we
-      // hit a month header, and reveal it. There's an inefficiency here in that
-      // we're iterating on every visible event row, meaning we'll repeatedly
-      // unhide the same month headers.
-      // TODO: traverse forward to next month header, then traverse from there to the next visible event row
-      var visibleCount = 0;
-
-      elem.querySelectorAll(childClass).forEach(function(elem) {
-        var compStyles = window.getComputedStyle(elem);
-        var compDisplay = compStyles.getPropertyValue('display');
-        if(compDisplay == "none") {
-          return; // nothing to see here...move on
-        }
-        visibleCount++;
-      });
-
-      if (visibleCount > 0) {
-        elem.style.display = "block";
-        visibleParents++;
-      }
-    });
-  } // function toggleIndices
+    .searching .member a {
+      border: 1px solid transparent;
+    }

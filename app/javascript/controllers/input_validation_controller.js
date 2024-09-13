@@ -71,8 +71,8 @@ export default class extends Controller {
   //   this.checkAction();
   // }
 
-  markDirty(event) {
-    this.element.classList.add("dirty");
+  markAsDirty(event) {
+    this.element.classList.toggle("dirty", true);
   }
 
   disableAction(event) {
