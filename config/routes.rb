@@ -5,6 +5,7 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
+  get 'relationship_candidates/create'
   get "event_cancellations/new"
   get "event_cancellations/create"
   get "tags/create"
@@ -67,6 +68,8 @@ Rails.application.routes.draw do
   namespace :base, path: "/" do
     resources :events, only: [:show]
   end
+
+  resources :relationship_candidates, only: [:create]
 
   # begin units
   resources :units, path: "u", only: %i[show index update] do

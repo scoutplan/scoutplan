@@ -19,7 +19,7 @@ export default class extends Controller {
     this.dispatch("close", { detail: { content: event } });
     const wrapper = this.element.closest(".modal-wrapper");
     const details = this.element.closest("details");
-    
+
     if (this.hasElementIdValue) {
       elem = document.getElementById(this.elementIdValue);
       elem.remove();

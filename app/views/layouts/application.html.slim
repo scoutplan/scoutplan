@@ -27,7 +27,7 @@ html.scroll-smooth
 
     = yield :head
 
-  body(class="has-[section[role='dialog']]:background-green-500 dark:bg-stone-900 dark:text-stone-200 text-stone-900 group/controller #{controller_name.gsub('_', '-')} #{action_name} #{yield :body_classes} h-full group/sidebar sidebar-open")
+  body(data-controller="label-update" class="has-[section[role='dialog']]:background-green-500 dark:bg-stone-900 dark:text-stone-200 text-stone-900 group/controller #{controller_name.gsub('_', '-')} #{action_name} #{yield :body_classes} h-full group/sidebar sidebar-open")
     .flex.flex-row.h-full
       .z-10.fixed.inset-0.bg-black/50.hidden(class="group-[.sidebar-open]/sidebar:block group-[.sidebar-open]/sidebar:md:hidden")
 

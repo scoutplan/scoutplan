@@ -26,11 +26,12 @@ class UnitMembership < ApplicationRecord
   has_many  :parent_relationships,
             foreign_key: "child_unit_membership_id",
             class_name:  "MemberRelationship",
-            dependent:   :destroy
+            inverse_of:  :child_unit_membership
 
   has_many  :child_relationships,
             foreign_key: "parent_unit_membership_id",
             class_name:  "MemberRelationship",
+            inverse_of:  :parent_unit_membership,
             dependent:   :destroy
 
   has_many :parents, through: :parent_relationships, source: :parent_unit_membership
@@ -65,9 +66,7 @@ class UnitMembership < ApplicationRecord
   delegate_missing_to :user
 
   accepts_nested_attributes_for :user
-  accepts_nested_attributes_for :child_relationships,
-                                allow_destroy: true,
-                                reject_if:     ->(attributes) { attributes["child_unit_membership_id"].blank? }
+  accepts_nested_attributes_for :child_relationships, allow_destroy: true
   accepts_nested_attributes_for :parent_relationships, allow_destroy: true
 
   has_settings do |s|

@@ -32,7 +32,7 @@ article#rsvp_section
                 i.fa-solid.fa-circle-check.text-amber-500.mr-1
                 = shift.name
 
-  - if event.rsvp_open? && policy(event).rsvp? && true
+  - if event.rsvp_open? && policy(event).rsvp?
     - details_tag_attributes[:open] = "" if params[:variation] == "rsvp"
     = content_tag(:details, details_tag_attributes) do
       summary.cursor-pointer.border.rounded.p-2.text-center.text-brand-500.border-brand-500.hover:bg-brand-100
@@ -40,15 +40,18 @@ article#rsvp_section
 
       = turbo_frame_tag "rsvp_popup", src: popup_unit_event_rsvps_path(current_unit, event), role: "dialog", data: { controller: "popup" }
 
-  p.text-stone-500.text-xs.mt-3
-    = t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at))
-    
-    - if event.limits_headcount?
-      = " with "
-      = t("events.partials.event_row.rsvp_closes_at.headcount_remaining", count: event.headcount_remaining)
+    p.text-stone-500.text-xs.mt-3
+      = t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at))
+      
+      - if event.limits_headcount?
+        = " with "
+        = t("events.partials.event_row.rsvp_closes_at.headcount_remaining", count: event.headcount_remaining)
 
-    = "."
+      = "."
 
+  - else
+    p.text-stone-500.text-xs.mt-3
+      = "RSVPs are closed."
   
   / = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: event, show_rsvp: params[:variation] == "rsvp" }            
         

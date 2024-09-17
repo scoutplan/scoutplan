@@ -13,7 +13,8 @@ export default class extends Controller {
     const tagLabel = event.currentTarget.closest("[data-value]");
     const value = tagLabel.dataset.value;
 
-    tagLabel.classList.toggle("hidden", true);
+    // tagLabel.classList.toggle("hidden", true);
+    // tagLabel.remove();
     
     if (this.hasCheckableListOutlet) {
       this.checkableListOutlet.uncheck({ detail: { value: value }});

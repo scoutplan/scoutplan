@@ -1,6 +1,9 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
+  static values = {
+    url: String
+  };
   static outlets = [ "tag-field" ];
 
   // called when a list item is checked or unchecked. Emits an event that other controllers can listen for.

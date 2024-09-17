@@ -1,11 +1,10 @@
 = turbo_frame_tag("main")
 
   .w-full.px-2.md:px-12.pb-4(data-controller="local-search")
+    #local_search_overlay.fixed.inset-0
     = render partial: "layouts/flash"
     
-    header.mb-4.md:mt-0.sticky.top-0.pt-12.md:pt-4.bg-white.pb-4
-      #local_search_overlay.fixed.inset-0.z-50
-
+    header.mb-4.md:mt-0.top-0.pt-12.md:pt-4.bg-white.pb-4
       .flex.flex-col.md:flex-row.justify-between.md:items-center
         .left.flex.flex-row.items-baseline.gap-6
           h1.text-2xl.font-semibold
@@ -21,7 +20,7 @@
             = "Add a Member"
 
         .right
-          .relative.text-sm.z-50
+          .relative.text-sm(style="z-index: 1000;")
             i.fa-regular.fa-magnifying-glass.absolute.left-3.text-stone-400(style="top:50%;transform:translateY(-50%);")
 
             = search_field_tag(:search, 
@@ -31,15 +30,19 @@
               autocomplete: 'off',
               spell_check: false,
               placeholder: raw(t('members.search_by_name')),
-              data: { local_search_target: "query", action: "input->local-search#perform" })
+              data: { local_search_target: "query", action: "input->local-search#perform change->local-search#perform" })
 
     .grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-3.xl:grid-cols-4.2xl:grid-cols-5.gap-4
       - ("A".."Z").each do |letter|
         - members = @current_unit_memberships.select{ |m| m.last_name.first.downcase == letter.downcase }
         - next if members.empty?
-        section.member-index
-          h2.font-semibold.text-brand-500.border-t.border-stone-300.dark:border-stone-400.py-3
-            = letter
+        section.member-index.mb-4
+          .relative.block.h-12
+            .absolute.border-t.border-brand-500.top-1/2.left-0.right-0.z-0
+
+            h2.block.font-medium.text-brand-500.text-2xl.bg-white.pr-2.z-10.absolute.top-1/2.-translate-y-1/2.left-0
+              = letter
+
 
           ol.flex.flex-col.gap-2
             = render members
@@ -47,6 +50,7 @@
   css:
     #local_search_overlay {
       display: none;
+      z-index: 100;
     }
 
     .searching #local_search_overlay {
@@ -54,7 +58,11 @@
     }
 
     #local_search_overlay {
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .member {
+      z-index: 0;
     }
 
     .search-match {

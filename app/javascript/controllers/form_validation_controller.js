@@ -32,8 +32,6 @@ export default class extends Controller {
       }
     });
 
-    console.log("invalidCount: " + invalidCount);
-
     if (invalidCount > 0) {
       event.preventDefault();
       event.stopPropagation();

@@ -1,8 +1,23 @@
 section.py-4
-  header.mb-5.flex.flex-row.justify-between.items-center.text-stone-950
+  header.mb-3.flex.flex-row.justify-between.items-center.text-stone-950
     h3.font-semibold
       i.fa-light.fa-scroll
       | &nbsp;&nbsp;
       = "Long Description"
 
+    = label_tag :show_formatting,
+                class: "rounded hover:bg-stone-100 p-2 text-sm -mr-2",
+                title: "Toggle formatting toolbar" do
+      = check_box_tag :show_formatting, "1", false, class: "hidden"
+      i.fa-light.fa-text-size
+
   = f.rich_text_area :description, class: "bg-white block border border-stone-400 overflow-auto h-24"
+
+  css:
+    trix-toolbar {
+      display: none;
+    }
+
+    body:has(input#show_formatting:checked) trix-toolbar {
+      display: block;
+    }
