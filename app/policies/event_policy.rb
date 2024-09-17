@@ -31,11 +31,11 @@ class EventPolicy < UnitContextPolicy
   end
 
   def edit?
-    admin?
+    admin? || @membership&.event_organizer? || @event.organizer?(@membership)
   end
 
   def update?
-    admin?
+    edit?
   end
 
   def rsvps?
