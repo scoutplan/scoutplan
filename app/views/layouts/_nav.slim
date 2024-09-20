@@ -24,7 +24,10 @@ nav.bg-stone-50.text-stone-700.relative.h-full.w-full.text-sm
 
         = button_tag class: "z-10 aspect-square h-8 rounded hover:bg-stone-100 cursor-pointer absolute -right-12 group-[.sidebar-open]/sidebar:-right-0",
                       data: { action: "sidebar#toggle" } do
-          i.fa-light.fa-bars.fa-fw
+          .fa-layers.fa-fw.absolute.left-1/2.top-1/2.-translate-x-1/2.-translate-y-1/2
+            i.fa-light.fa-bars.fa-fw
+            - if Flipper.enabled?(:inbox, current_member) && (count = current_member.notifications.unread.count).positive?
+              i.fa-solid.fa-circle.text-xs.text-brand-500(data-fa-transform="shrink-6 up-10 right-10" class="group-[.sidebar-open]/sidebar:hidden")
 
       h3.font-semibold.p-2.flex.flex-row.items-center
         - cache current_unit do
