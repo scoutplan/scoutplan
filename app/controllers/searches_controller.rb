@@ -20,7 +20,8 @@ class SearchesController < UnitContextController
 
   def find_events
     event_policy = EventPolicy.new(current_member)
-    @events = current_unit.events.where("title ILIKE ?", "%#{@term}%").limit(SEARCH_LIMIT)
+    @events = current_unit.events.where("title ILIKE ? OR short_description ILIKE ?", "%#{@term}%",
+                                        "%#{@term}%").limit(SEARCH_LIMIT)
     @events = @events.select { |event| event_policy.show?(event) }
   end
 

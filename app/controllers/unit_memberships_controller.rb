@@ -62,7 +62,6 @@ class UnitMembershipsController < UnitContextController
   end
 
   def update
-    ap params
     authorize(@target_membership)
     @target_membership.assign_attributes(member_params)
     update_settings_params
@@ -119,6 +118,8 @@ class UnitMembershipsController < UnitContextController
   end
 
   def member_params
+    ap params
+
     params.require(:unit_membership).permit(
       :status, :role, :member_type, :tag_list, :ical_suppress_declined, :roster_display_phone, :roster_display_email,
       child_relationships_attributes:  [:id, :child_unit_membership_id, :_destroy],

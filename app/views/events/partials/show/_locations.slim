@@ -24,4 +24,5 @@ section.pt-2
     // vertical line
     .absolute.w-px.top-3.bottom-4.bg-stone-400(style="left: 9.5px;")
 
-    = render partial: "events/partials/show/event_location", collection: event.event_locations
+    = render partial: "events/partials/show/event_location",
+             collection: event.event_locations.in_order_of(:location_type, %W[departure arrival activity])

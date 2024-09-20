@@ -1,8 +1,9 @@
 = form_with model: [current_unit, @target_membership],
             id: "member_info_form",
+            class: "h-full",
             data: { turbo: false, controller: "form-validation member-edit", action: "submit->form-validation#validate" } do |f|
 
-  article.mx-auto.max-w-3xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden.dark:text-stone-800
+  article.mx-auto.max-w-3xl.bg-white.rounded-lg.max-h-full.flex.flex-col.overflow-y-hidden
     header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
       .left
         h1 = (f.object.new_record? ? "Add" : "Edit") + " Member"
@@ -12,8 +13,8 @@
         = button_tag type: "button", class: "x-close-button flex flex-row items-center block w-6 h-6 -mr-2 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
           i.fa-regular.fa-times.fa-fw
 
-    section.flex.flex-col.md:flex-row.w-full.overflow-y-hidden(style="height: calc(100% - 0rem)")
-      aside.w-full.md:w-72.bg-stone-50.px-6.py-3.overflow-y-auto.text-stone-600
+    section.flex.flex-col.md:flex-row.w-full.overflow-y-auto(style="height: calc(100% - 0rem)")
+      aside.w-full.md:w-72.bg-stone-50.px-6.py-3.text-stone-600
         .flex.flex-col.text-sm
 
           // TYPE
@@ -114,7 +115,7 @@
 
               // popup
               .fixed.inset-0.bg-black/50.z-10.pt-20.pb-24.backdrop-blur-md
-                .max-w-lg.mx-auto.h-full.bg-white.rounded-lg.flex.flex-col
+                .max-w-lg.mx-auto.max-h-full.bg-white.rounded-lg.flex.flex-col
                   header.border-b.px-4.py-2.flex.flex-row.justify-between.items-center
                     h2
                       span(data-label-update-source="#unit_membership_user_attributes_first_name") = @target_membership.first_name || "New Member"
@@ -141,10 +142,10 @@
 
 
                   - if @target_membership.persisted?
-                    - members = current_unit.unit_memberships.joins(:user).where("users.last_name = ?", @target_membership.last_name).order(:first_name)
-                    - members += current_unit.unit_memberships.joins(:user).where.not("users.last_name = ?", @target_membership.last_name).order(:last_name, :first_name)
+                    - members = current_unit.unit_memberships.excluding_inactive.joins(:user).where("users.last_name = ?", @target_membership.last_name).order(:first_name)
+                    - members += current_unit.unit_memberships.excluding_inactive.joins(:user).where.not("users.last_name = ?", @target_membership.last_name).order(:last_name, :first_name)
                   - else
-                    - members = current_unit.unit_memberships.joins(:user).order(:last_name, :first_name)
+                    - members = current_unit.unit_memberships.excluding_inactive.joins(:user).order(:last_name, :first_name)
 
                   ul#relationship_options_children.overflow-y-scroll(data-member-edit-target="parentRelationships")
                     - members.each do |member|
@@ -192,11 +193,11 @@
 
                   footer.flex.flex-row.gap-2.justify-end.border-t.px-4.py-3.mt-auto
                     = button_tag type: "button",
-                                 class: "text-sm block w-full md:w-fit md:inline-block px-4 py-1 font-medium bg-brand-500 hover:bg-brand-600 text-white font-medium rounded",
-                                 data: { action: "click->modal#close" } do
+                                class: "text-sm block w-full md:w-fit md:inline-block px-4 py-1 font-medium bg-brand-500 hover:bg-brand-600 text-white font-medium rounded",
+                                data: { action: "click->modal#close" } do
                       = "Done"
 
-            // render tags
+            // render relationship tags
             .flex.flex-wrap.gap-1.text-xs#relationships_tag_field(data-controller="tag-field" data-tag-field-checkable-list-outlet="#relationships_popup")
               - @target_membership.parent_relationships.each do |relationship|
                 = render partial: "relationship_tag", locals: { relationship: relationship, relationship_type: "child" }
@@ -212,7 +213,7 @@
                 .font-semibold = "Tags"
                 i.fa-light.fa-plus.fa-fw
 
-      section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.text-sm.text-stone-600.rounded-r-lg.overflow-y-auto.h-full
+      section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.text-sm.text-stone-600.rounded-r-lg.h-full
         = f.fields_for :user do |u|
 
           .flex.flex-col.gap-4.pb-4
