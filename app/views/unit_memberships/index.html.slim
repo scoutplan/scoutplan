@@ -1,6 +1,25 @@
 = turbo_frame_tag("main")
 
-  .w-full.px-2.md:px-12.pb-4(data-controller="local-search")
+  header.px-2.pt-2.top-0.left-0.right-0.sticky.bg-white.dark:bg-stone-900.z-10
+    .flex.flex-row.justify-between
+      .left
+
+      .right
+        - if user_signed_in?
+          details.group
+            summary(class="dropdown-button inline-block hover:bg-stone-100 p-2 rounded dark:hover:text-stone-300 text-sm text-stone-500 cursor-pointer group-open:bg-stone-100")
+              i.fa-light.fa-sliders.mr-2.fa-fw
+              = "View"
+              
+            aside.block.w-60.mt-1.p-2.absolute.bg-white.text-stone-700.right-2.rounded-lg.dropdown-menu.animate-pop-open.drop-shadow-overhead.border.text-sm(data-controller="mouse-capture")
+              nav
+                = label_tag :display_inactive_members, class: "block px-2 py-2 rounded hover:bg-stone-100 rounded flex flex-row gap-1 items-center" do
+                  = check_box_tag :display_inactive_members, "1", params[:display_inactive_members], class: "mr-2 peer hidden", data: { turbo_stream: "true" }
+                  i.fa-regular.fa-fw.fa-check.text-green-500.hidden.peer-checked:inline-block
+                  i.fa-regular.fa-fw.fa-check.text-transparent.peer-checked:hidden
+                  = "Show inactive members"
+
+  .max-w-6xl.mx-auto.px-2.pb-4(data-controller="local-search")
     #local_search_overlay.fixed.inset-0
     = render partial: "layouts/flash"
     
@@ -20,7 +39,7 @@
             = "Add a Member"
 
         .right
-          .relative.text-sm(style="z-index: 1000;")
+          .relative.text-sm
             i.fa-regular.fa-magnifying-glass.absolute.left-3.text-stone-400(style="top:50%;transform:translateY(-50%);")
 
             = search_field_tag(:search, 
@@ -72,3 +91,27 @@
     .searching .member a {
       border: 1px solid transparent;
     }
+
+    .member-inactive {
+      display: none;
+    }
+
+    body:has(#display_inactive_members:checked) {
+      .member-inactive {
+        display: block;
+      }
+
+      section.member-index {
+        display: block;
+      }
+    }
+
+    section.member-index {
+      display: none;
+    }
+
+    section.member-index:has(.member-active) {
+      display: block;
+    }
+
+  

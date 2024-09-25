@@ -35,8 +35,16 @@ article#rsvp_section
   - if event.rsvp_open? && policy(event).rsvp?
     - details_tag_attributes[:open] = "" if params[:variation] == "rsvp"
     = content_tag(:details, details_tag_attributes) do
-      summary.cursor-pointer.border.rounded.p-2.text-center.text-brand-500.border-brand-500.hover:bg-brand-100
-        = "Change Your RSVP"
+      - if family_rsvp.none? || family_rsvp.partial?
+        summary.cursor-pointer.rounded.p-2.text-center.bg-brand-500.hover:bg-brand-600.text-white.font-medium
+          - if family_rsvp.none?
+            = "Respond Now"
+          - elsif family_rsvp.partial?
+            = "Complete Your RSVP"            
+
+      - else
+        summary.cursor-pointer.border.rounded.p-2.text-center.text-brand-500.border-brand-500.hover:bg-brand-100.font-medium
+          = "Change Your RSVP"
 
       = turbo_frame_tag "rsvp_popup", src: popup_unit_event_rsvps_path(current_unit, event), role: "dialog", data: { controller: "popup" }
 
