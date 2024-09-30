@@ -63,17 +63,17 @@
             .table-cell.border-t.p-1.h-32.md:h-40.select-none.cal-cell.(class="#{cell_class}" data-cal-date="#{display_date}")
               - if display_date.today?
                 - if day_number == 1
-                  .text-brand-500.font-bold
+                  .text-brand-500.font-medium
                     = display_date.strftime("%b")
 
-                .cal-day-number.text-white.font-bold
+                .cal-day-number.text-white.font-medium
                   .inline-block.w-7.h-7.justify-center.items-center.flex.rounded-full.bg-brand-500
                     = display_date.strftime("%-d")
 
               - else
                 .cal-day-number
                   - if day_number == 1
-                    span.text-brand-500.font-bold.ml-1
+                    span.text-brand-500.font-medium.ml-1
                       = display_date.strftime("%b")
 
                   .inline-block.w-7.h-7.justify-center.items-center.whitespace-nowrap.ml-1

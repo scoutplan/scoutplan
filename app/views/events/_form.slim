@@ -120,6 +120,7 @@
         - unless event.new_record?
           .-ml-2
             = link_to unit_event_cancel_path(current_unit, event),
+                      id: "cancel_event_button",
                       class: "text-center inline-block px-2 py-2 text-brand-500 hover:text-brand-600 whitespace-nowrap text-center w-full hover:bg-stone-100 rounded",
                       data: { turbo_frame: "modal_overlay", turbo_stream: true } do
               i.fa-light.fa-trash-can.fa-fw.mr-1

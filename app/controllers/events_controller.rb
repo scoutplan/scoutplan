@@ -178,7 +178,7 @@ class EventsController < UnitContextController
     @event = current_unit.events.new(event_params)
     authorize @event
 
-    if @event.save
+    if @event.save!
       # puts params.inspect
       # authorize :event, :create?
       # service = EventCreationService.new(current_unit)

@@ -7,19 +7,23 @@ article.pt-2
       i.fa-light.fa-money-bill.mr-2
       = "Cost"
 
-  - if @event.cost_adult == @event.cost_youth
-    .font-normal
-      .inline = number_to_currency(@event.cost_adult, precision: 0)
-      = " per person"
+  p
+    - if @event.cost_adult == @event.cost_youth
+      .inline.font-normal
+        .inline = number_to_currency(@event.cost_adult, precision: 0)
+        = " per person"
 
-  - else
-    .font-normal
-      .inline = number_to_currency(@event.cost_youth, precision: 0)
-      = " per youth "
+    - else
+      .inline.font-normal
+        .inline = number_to_currency(@event.cost_youth, precision: 0)
+        = " per youth "
 
-    .font-normal
-      .inline = number_to_currency(@event.cost_adult, precision: 0)
-      = " per adult "
+      .inline.font-normal
+        .inline = number_to_currency(@event.cost_adult, precision: 0)
+        = " per adult "
+
+    - if current_unit.transaction_fees_covered_by != "unit"
+      .inline = " + transaction fees"
 
   - if family_rsvp.any_accepted?
     - if family_rsvp.paid? == :in_full
@@ -28,7 +32,7 @@ article.pt-2
         = t(".paid")
         
     - else
-      = link_to "Pay Online",
+      = link_to "Pay #{number_to_currency(family_rsvp.balance_due)} Online",
                 new_unit_event_online_payment_path(current_unit, @event),
-                class: "block text-center bg-lime-600 text-white px-4 py-2 rounded font-bold",
+                class: "block text-center bg-lime-600 text-white px-4 py-2 rounded font-bold mt-3",
                 data: { turbo: false }

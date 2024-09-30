@@ -31,26 +31,26 @@ describe "payments", type: :feature do
 
     it "shows full amount when members pay fees" do
       visit unit_event_path(@unit, @event)
-      expect(page).to have_content("Pay $1,339.13 now")
+      expect(page).to have_content("Pay $1,339.13 Online")
     end
 
     it "shows no transaction fees when unit pays fees" do
       @unit.payment_account.update(transaction_fees_covered_by: "unit")
       visit unit_event_path(@unit, @event)
-      expect(page).to have_content("Pay $1,300.00 now")
+      expect(page).to have_content("Pay $1,300.00 Online")
     end
 
     it "shows half fees when fees are split 50/50" do
       @unit.payment_account.update(transaction_fees_covered_by: "split_50_50")
       visit unit_event_path(@unit, @event)
-      expect(page).to have_content("Pay $1,319.57 now")
+      expect(page).to have_content("Pay $1,319.57 Online")
     end
 
     it "reflects prior payments" do
       Payment.create!(event: @event, unit_membership: @member, amount: 5000, received_by: @member, method: "check",
                       status: "paid")
       visit unit_event_path(@unit, @event)
-      expect(page).to have_content("Pay $1,289.13 now")
+      expect(page).to have_content("Pay $1,289.13 Online")
     end
   end
 

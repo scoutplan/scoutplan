@@ -6,17 +6,13 @@ require "icalendar"
 # rubocop:disable Metrics/BlockLength
 describe "events", type: :feature do
   before do
-    User.where(email: "test_admin@scoutplan.org").destroy_all
-    User.where(email: "test_normal@scoutplan.org").destroy_all
+    @admin_member = FactoryBot.create(:unit_membership, :admin)
+    @unit = @admin_member.unit
+    @normal_member = FactoryBot.create(:unit_membership, unit: @unit, member_type: "adult",
+ical_suppress_declined: true)
 
-    @admin_user  = FactoryBot.create(:user, email: "test_admin@scoutplan.org")
-    @normal_user = FactoryBot.create(:user, email: "test_normal@scoutplan.org")
-
-    @unit = FactoryBot.create(:unit)
-    @event = FactoryBot.create(:event, :draft, unit: @unit, title: "Draft Event")
-
-    @admin_member = @unit.memberships.create(user: @admin_user, role: "admin", status: :active)
-    @normal_member = @unit.memberships.create(user: @normal_user, role: "member", status: :active, member_type: :adult, ical_suppress_declined: true)
+    @published_event = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit, title: "Published Event")
+    @draft_event = FactoryBot.create(:event, :draft, unit: @unit, title: "Draft Event")
   end
 
   describe "ical" do
@@ -50,18 +46,20 @@ describe "events", type: :feature do
       expect(page.status_code).to eq(404)
     end
 
-    it "excludes events where the entire family has declined" do
-      new_event = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit)
+    it "includes events where the family hasn't responded" do
       visit(calendar_feed_unit_events_path(@unit, @normal_member.token))
       cals = Icalendar::Calendar.parse(page.body)
       cal = cals.first
-      cal_event = cal.events.first
       expect(cal.events.count).to eq(1)
-      new_event.rsvps.create!(unit_membership: @normal_member, response: :declined, respondent: @normal_member)
+    end
+
+    it "excludes events where the entire family has declined" do
+      @published_event.rsvps.create!(unit_membership: @normal_member, response: :declined, respondent: @normal_member)
+
       visit(calendar_feed_unit_events_path(@unit, @normal_member.token))
       cals = Icalendar::Calendar.parse(page.body)
       cal = cals.first
-      cal_event = cal.events.first
+
       expect(cal.events.count).to eq(0)
     end
 

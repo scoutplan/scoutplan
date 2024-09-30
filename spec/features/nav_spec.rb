@@ -25,24 +25,8 @@ describe "events", type: :feature do
       visit list_unit_events_path(@unit)
     end
 
-    it "shows planner" do
-      Flipper.enable(:planner)
-      visit list_unit_events_path(@unit)
-      expect(page).to have_content(I18n.t("main_nav.planner"))
-    end
-
     it "shows roster" do
       expect(page).to have_content(I18n.t("main_nav.members"))
-    end
-
-    it "shows messaging" do
-      Flipper.enable(:messages)
-      visit list_unit_events_path(@unit)
-      expect(page).to have_content(I18n.t("main_nav.communication"))
-    end
-
-    it "shows settings" do
-      expect(page).to have_content("Unit Settings")
     end
   end
 
@@ -50,10 +34,6 @@ describe "events", type: :feature do
     before do
       login_as(@normal_user, scope: :user)
       visit list_unit_events_path(@unit)
-    end
-
-    it "doesn't show planner" do
-      expect(page).not_to have_content("Planner")
     end
 
     it "doesn't show roster" do

@@ -38,6 +38,8 @@ class Unit < ApplicationRecord
 
   enum status: { active: "active", inactive: "inactive" }
 
+  delegate :transaction_fees_covered_by, to: :payment_account
+
   has_settings class_name: "UnitSettings" do |s|
     s.key :appearance, defaults: { main_color: "#003F87" }
     s.key :communication, defaults: { config_timestamp: nil, digest: true, rsvp_nag: "true", event_reminders: true,
