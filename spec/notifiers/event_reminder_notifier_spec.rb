@@ -30,7 +30,15 @@ RSpec.describe EventReminderNotifier do
     Time.zone = "UTC" # server time
     notification = EventReminderNotifier.with(event: @event)
     sms = notification.sms_body(recipient: @member, event: @event, params: {})
-    expect(sms).to(include @event.starts_at.in_time_zone(@unit.time_zone).strftime("%A"))
+    expect(sms).to(include "today")
+    puts sms
+
+    @event.starts_at = 1.day.from_now
+    notification = EventReminderNotifier.with(event: @event)
+    sms = notification.sms_body(recipient: @member, event: @event, params: {})
+    expect(sms).to(include "tomorrow")
+    puts sms
+
     perform_enqueued_jobs
     perform_enqueued_jobs
   end

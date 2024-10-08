@@ -1,1 +1,1 @@
-Hi, <%= @recipient.first_name %>. <%= @event.title %> is coming up on <%= @event.starts_at.in_time_zone.strftime('%A') %>. Visit <%= unit_event_url(@event.unit, @event) %> for details.
+Hi, <%= @recipient.first_name %>. <%= @event.title %> is coming up <%= temporal_deictic_expression(@event.starts_at.in_time_zone) %> at<%= @event.starts_at.in_time_zone.strftime("%l:%M %p") %>. Visit <%= unit_event_url(@event.unit, @event) %> for details.
