@@ -1,5 +1,4 @@
 = turbo_frame_tag("main")
-
   header.px-2.pt-2.top-0.left-0.right-0.sticky.bg-white.dark:bg-stone-900.z-10
     .flex.flex-row.justify-between
       .left
@@ -19,7 +18,7 @@
                   i.fa-regular.fa-fw.fa-check.text-transparent.peer-checked:hidden
                   = "Show inactive members"
 
-  .max-w-6xl.mx-auto.px-2.pb-4(data-controller="local-search")
+  .max-w-7xl.mx-auto.px-2.pb-4(data-controller="local-search")
     #local_search_overlay.fixed.inset-0
     = render partial: "layouts/flash"
     
@@ -62,9 +61,11 @@
             h2.block.font-medium.text-brand-500.text-2xl.bg-white.pr-2.z-10.absolute.top-1/2.-translate-y-1/2.left-0
               = letter
 
-
           ol.flex.flex-col.gap-2
             = render members
+
+= turbo_stream.update "page_title" do
+  = t(".page_title", unit_name: current_unit.name)
 
   css:
     #local_search_overlay {

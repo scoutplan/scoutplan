@@ -9,6 +9,11 @@ li.text-sm.member.search-wrapper(class="#{row_classes}")
                              data: { turbo_action: "advance", turbo_frame: "modal" } do
     .flex.flex-col.gap-1
       h3.font-medium.search-value
+        - if unit_membership.status_inactive?
+          i.fa-light.fa-snooze.fa-fw.text-stone-500.mr-1(title="Inactive")
+        - elsif unit_membership.admin?
+          i.fa-solid.fa-crown.fa-fw.text-purple-500.mr-1(title="Unit Administrator")
+
         = unit_membership.full_display_name
 
       - if unit_membership.roster_display_email?

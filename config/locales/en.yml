@@ -868,6 +868,15 @@ en:
         new_document: "Upload files"
 
   unit_memberships:
+    edit:
+      page_title: "Edit %{name} - %{unit_name}"
+
+    index:
+      page_title: "%{unit_name} Member Roster"
+
+    new:
+      page_title: "Add a Member - %{unit_name}"
+
     partials:
       modal:
         communication_settings_fields:

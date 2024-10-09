@@ -3,3 +3,6 @@
     = render "form"
 
   = turbo_frame_tag :modal_overlay
+
+= turbo_stream.update "page_title" do
+  = t(".page_title", unit_name: current_unit.name)
