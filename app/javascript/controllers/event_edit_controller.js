@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { get } from "@rails/request.js"
+import { get, destroy } from "@rails/request.js"
 
 export default class extends Controller {
   static targets = [ "deleteform", "fileinput", "privatefileinput", "documentLibraryIds", "startsAtDate", "endsAtDate", "rsvpClosesAt", "repeatsUntilSelect" ];
@@ -125,6 +125,12 @@ export default class extends Controller {
     pending_attachments.forEach(function(attachment) {
       attachment_list.removeChild(attachment);
     });
+  }
+
+  deleteAttachment(event) {
+    const button = event.target.closest("button");
+    const url = button.dataset.deleteUrl;
+    destroy(url, { responseKind: "turbo-stream" });
   }
 
   uploadFiles(event) {
