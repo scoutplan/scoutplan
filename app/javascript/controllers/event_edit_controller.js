@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
-import { get, post } from "@rails/request.js"
+
+import { get, post, destroy } from "@rails/request.js"
 import { computePosition } from "https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10/+esm"
 
 export default class extends Controller {
@@ -180,6 +181,12 @@ export default class extends Controller {
     pending_attachments.forEach(function(attachment) {
       attachment_list.removeChild(attachment);
     });
+  }
+
+  deleteAttachment(event) {
+    const button = event.target.closest("button");
+    const url = button.dataset.deleteUrl;
+    destroy(url, { responseKind: "turbo-stream" });
   }
 
   uploadFiles(event) {

@@ -2,7 +2,7 @@
 - family_rsvp = FamilyRsvp.new(current_member, event)
 - details_tag_attributes = {class: "mt-2"}
 
-article#rsvp_section
+article#rsvp_section.pb-3
   header.flex.flex-row.justify-between.items-center.mb-3
     h3.font-bold
       i.fa-light.fa-clipboard-check.mr-2
@@ -10,7 +10,7 @@ article#rsvp_section
 
     .right.block
 
-  .bg-stone-100.rounded.p-2
+  .bg-transparent.rounded.p-0
     table.w-full
       - family_rsvp.active_family_members.each_with_index do |family_member, index|
         - response_glyph = ApplicationHelper::RESPONSE_GLYPHS[family_member.response.to_sym]
@@ -21,9 +21,9 @@ article#rsvp_section
             = family_member.first_name
 
           td.py-1.text-right(class="#{index > 0 ? 'border-t border-stone-300' : ''}")
-            = t("rsvp_#{family_member.response.to_s}").downcase
-            | &nbsp;
             i.fa-solid.fa-fw(class="#{response_glyph} text-#{response_color}")
+            | &nbsp;
+            = t("rsvp_#{family_member.response.to_s}").downcase
         
           - if event.shifts?
             - rsvp.event_shift_ids.each do |shift_id|

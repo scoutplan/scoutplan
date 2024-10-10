@@ -1,7 +1,7 @@
 - return unless @event.requires_payment?
 - family_rsvp = FamilyRsvp.new(current_member, @event)
 
-article.pt-2
+article.py-3
   header.flex.flex-row.justify-between.items-center.mb-3
     h3.font-semibold
       i.fa-light.fa-money-bill.mr-2
@@ -34,5 +34,5 @@ article.pt-2
     - else
       = link_to "Pay #{number_to_currency(family_rsvp.balance_due)} Online",
                 new_unit_event_online_payment_path(current_unit, @event),
-                class: "block text-center bg-lime-600 text-white px-4 py-2 rounded font-bold mt-3",
+                class: "block text-center bg-lime-600 hover:bg-lime-700 text-white px-4 py-2 rounded font-medium mt-3",
                 data: { turbo: false }
