@@ -1,12 +1,18 @@
-.max-w-4xl.mx-auto
-  header.mb-4
+.max-w-xl.mx-auto.pt-16
+  header.mb-4.sticky.top-0.bg-white
     .flex.flex-row.justify-between.items-center
       .left
         h1.text-2xl.font-semibold
           = t(".title")
 
       .right
-        = button_to t(".mark_all_as_read"), mark_all_as_read_unit_notifications_path, remote: true, form: { "data-type" => "turbo_stream" } 
-        = button_to t(".mark_all_as_unread"), mark_all_as_unread_unit_notifications_path, remote: true, form: { "data-type" => "turbo_stream" } 
+        = button_to  mark_all_as_read_unit_notifications_path, remote: true, form: { "data-type" => "turbo_stream" }, class: "hover:bg-stone-100 rounded p-2 -mr-2" do
+          i.fa-regular.fa-check-double.mr-2
+          = t(".mark_all_as_read")
+
+        - if false
+          = button_to mark_all_as_unread_unit_notifications_path, remote: true, form: { "data-type" => "turbo_stream" }, class: "hover:bg-stone-100 rounded p-2" do
+            i.fa-regular.fa-check-double.mr-2
+            = t(".mark_all_as_unread")
 
   = render "notifications"

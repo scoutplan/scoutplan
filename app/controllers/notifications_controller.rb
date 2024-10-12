@@ -5,6 +5,7 @@ class NotificationsController < UnitContextController
 
   def mark_all_as_read
     current_member.notifications.mark_as_read
+    find_notifications
   end
 
   def mark_all_as_unread
