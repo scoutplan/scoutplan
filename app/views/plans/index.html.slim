@@ -1,6 +1,6 @@
 = turbo_frame_tag "main"
-  header.w-full.px-16.py-8
-    h1.text-4xl.font-medium.mx-2.text-center
+  header.w-full.mb-8.border-b
+    h1.text-2xl.font-semibold.mx-2
       = t("planner.title", unit: current_unit.name)
 
     .category-filter.ml-auto.hidden
@@ -8,15 +8,13 @@
       = check_box_tag :show_activities
 
   .w-full
-    .relative.flex(data-controller="paged-scroll")
-      .scrollable.flex.overflow-x-scroll.pb-6(data-paged-scroll-target="scrollable")
-        .flex.flex-nowrap.px-12.md:px-16
-          = render partial: "event_month", collection: @events.group_by{ |e| [e.starts_at.year, e.starts_at.month] }
-          / = render partial: "event", collection: @events
+    .relative(data-controller="paged-scroll")
+      .scrollable.flex.flex-row.overflow-x-scroll.overflow-y-auto(data-paged-scroll-target="scrollable")
+        = render partial: "event_month", collection: @events.group_by{ |e| [e.starts_at.year, e.starts_at.month] }
 
       // left scroll button
       = link_to "#",
-        class: "text-stone-100 bg-brand-500 bg-opacity-75 block absolute left-0 flex items-center justify-center \
+        class: "text-stone-100 bg-brand-500 bg-opacity-75 block absolute left-0 top-16 flex items-center justify-center rounded-r \
                 hover:bg-opacity-100 \
                 text-2xl h-24 px-4 \
                 md:text-5xl md:h-36 md:px-4",
@@ -25,7 +23,7 @@
 
       // right scroll button
       = link_to "#",
-        class: "text-stone-100 bg-brand-500 bg-opacity-75 block absolute right-0 flex items-center justify-center \
+        class: "text-stone-100 bg-brand-500 bg-opacity-75 block absolute right-0 top-16 flex items-center justify-center rounded-l \
                 hover:bg-opacity-100 \
                 text-2xl h-24 px-4 \
                 md:text-5xl md:h-36 md:px-4",

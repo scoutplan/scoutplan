@@ -1,0 +1,31 @@
+header.flex.flex-row.justify-between.pt-2.mx-2.w-full
+  .left.flex.flex-row
+    nav.persistent-nav.flex.flex-row.items-center.gap-0
+      details
+        summary.menu-toggle
+          i.fa-regular.fa-bars
+        nav.side-nav
+          a href="/history" History
+          a href="/eagles" Eagles
+          a href="/contact" Contact
+          a href="https://www.scoutbook.com/mobile/dashboard/calendar/event.asp?EventID=0&UnitID=8309" Member Login
+
+      = link_to "/", class: "unit-id block font-bold" do
+        = "#{@unit.name} #{@unit.location}"
+
+    nav.main-nav.hidden.xl:block
+      = link_to "History", "/history"
+      = link_to "Eagles", "/eagles" 
+      = link_to "Contact", "/contact"
+      = link_to "Member Login", unit_events_url(@unit, host: ENV.fetch("APP_HOST", "")), class: "hidden xl:block"
+
+  nav.right.flex.flex-row.items-center.gap-2.hidden.xl:flex
+    a href="https://www.instagram.com/troop2scarsdale/" style="font-size: 25px;"
+      i.fa-brands.fa-instagram
+
+    a href="https://www.facebook.com/troop2scarsdale" style="font-size: 25px;"
+      i.fa-brands.fa-facebook
+
+    a href="get_started" class="cta hidden xl:block hover:bg-white/10 font-bold whitespace-nowrap" Become a scout
+
+    / a href="https://my.scouting.org/more-info/8309f208-e265-428c-a846-8417d4a1b72b&beascout=true" Become a scout

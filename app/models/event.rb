@@ -1,11 +1,13 @@
 # rubocop:disable Metrics/ClassLength
 class Event < ApplicationRecord
-  include Notifiable, Remindable, Onlineable, Icalendarable, Replyable, DatePresentable, StaticMappable, Insertable
+  include Notifiable, Remindable, Onlineable, Icalendarable, Replyable, DatePresentable, StaticMappable, Insertable,
+          ThroughAssociations
   extend DateTimeAttributes
 
   date_time_attrs_for :starts_at, :ends_at
 
-  attr_accessor :repeats, :notify_members, :notify_recipients, :notify_message, :document_library_ids
+  attr_accessor :repeats, :notify_members, :notify_recipients, :notify_message, :document_library_ids, :current_member,
+                :event_organizer_unit_membership_ids
 
   default_scope { where(parent_event_id: nil).order(starts_at: :asc) }
 
@@ -31,12 +33,14 @@ class Event < ApplicationRecord
   has_many :rsvp_tokens, dependent: :destroy
   has_many :sub_events, class_name: "Event", foreign_key: "parent_event_id"
   has_many :unit_memberships, through: :event_rsvps
+  has_many :organizer_members, through: :event_organizers, source: :unit_membership
 
   has_one :chat, as: :chattable, dependent: :destroy
 
   has_rich_text :description
 
   has_one_attached :static_map
+  has_one_attached :cover_photo
   has_many_attached :attachments
   has_many_attached :private_attachments
 
@@ -45,7 +49,9 @@ class Event < ApplicationRecord
   has_secure_token
 
   accepts_nested_attributes_for :event_locations, allow_destroy: true
-  accepts_nested_attributes_for :event_organizers, allow_destroy: true
+  # accepts_nested_attributes_for :event_organizers, allow_destroy: true
+
+  accepts_through_attributes_for :event_organizers, joining: :unit_membership, key: :id
 
   alias_method :rsvps, :event_rsvps
   alias_method :category, :event_category
@@ -66,7 +72,7 @@ class Event < ApplicationRecord
               "application/vnd.openxmlformats-officedocument.presentationml.presentation"
             ],
             size:         {
-              less_than: 10.megabytes, message: "must be less than 5 MB"
+              less_than: 10.megabytes, message: "must be less than 10 MB"
             }
 
   enum status: { draft: 0, published: 1, cancelled: 2, archived: 3 }
@@ -104,6 +110,17 @@ class Event < ApplicationRecord
   delegate :next_season_starts_at, :next_season_ends_at, to: :unit
 
   auto_strip_attributes :website
+
+  after_save_commit :save_event_organizers
+
+  def save_event_organizers
+    return unless event_organizer_unit_membership_ids.present?
+
+    event_organizers.where("unit_membership_id NOT IN (?)", event_organizer_unit_membership_ids).destroy_all
+    event_organizer_unit_membership_ids.map do |value|
+      event_organizers.create_with(assigned_by: current_member).find_or_create_by(unit_membership_id: value)
+    end
+  end
 
   def category_name
     event_category.name
@@ -210,7 +227,7 @@ class Event < ApplicationRecord
   end
 
   def series?
-    !new_record? && (series_children.count.positive? || series_siblings.count.positive?)
+    !new_record? && series_parent_id.present?
   end
 
   def rsvp_for(member)
@@ -221,14 +238,8 @@ class Event < ApplicationRecord
     rsvp_tokens.find_by(unit_membership: member)
   end
 
-  def series_children
-    Event.where(series_parent_id: id)
-  end
-
-  def series_siblings
-    return [] unless series_parent_id.present?
-
-    Event.where(series_parent_id: series_parent_id)
+  def series
+    unit.events.where(series_parent_id: series_parent_id)
   end
 
   def title_and_date
@@ -271,6 +282,10 @@ class Event < ApplicationRecord
     primary_location&.map_address
   end
 
+  def mappable?
+    primary_location&.mappable?
+  end
+
   def find_location(location_type)
     event_locations.find_by(location_type: location_type)&.location
   end
@@ -291,12 +306,20 @@ class Event < ApplicationRecord
     location&.map_name || location&.address
   end
 
-  def next
-    @next ||= unit.events.published.where("starts_at > ?", starts_at).order("starts_at ASC").first
+  def series_scope(unit_membership = nil)
+    if unit_membership && EventPolicy.new(unit_membership).view_drafts?
+      unit.events.all
+    else
+      unit.events.published
+    end
   end
 
-  def previous
-    @previous ||= unit.events.published.where("starts_at < ?", starts_at).order("starts_at ASC").last
+  def next(unit_membership = nil)
+    @next = series_scope(unit_membership).where("starts_at > ?", starts_at).order("starts_at ASC").first
+  end
+
+  def previous(unit_membership = nil)
+    @previous = series_scope(unit_membership).where("starts_at < ?", starts_at).order("starts_at ASC").last
   end
 
   def packing_lists
@@ -347,6 +370,8 @@ class Event < ApplicationRecord
   # handle things like updates, etc etc
   def create_series
     raise "Series duration cannot exceed one year" if repeats_until > starts_at.advance(years: 1)
+
+    # update(series_parent: self) unless series_parent_id.present?
 
     new_event = dup
     new_event.series_parent = self

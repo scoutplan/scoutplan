@@ -36,7 +36,7 @@ RSpec.describe WeeklyDigestMailer, type: :mailer do
     end
 
     it "doesn't prompt for paid events" do
-      @event.payments.create!(unit_membership: @member, amount: 2000)
+      @event.payments.create!(unit_membership: @member, amount: 2000, status: "paid")
       mail = WeeklyDigestMailer.with(recipient: @member, unit: @unit).weekly_digest_notification
       expect(mail.body.encoded).to have_content(I18n.t("events.partials.event_row.fully_paid"))
     end

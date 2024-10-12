@@ -1,0 +1,9 @@
+- return unless event.requires_payment?
+
+p.text-sm.text-stone-500
+  i.fa-regular.fa-money-bill-wave.fa-fw.mr-2
+
+  - if event.cost_adult == event.cost_youth?
+    = "#{number_to_currency(event.cost_adult)} per person"
+  - else
+    = "#{number_to_currency(event.cost_adult)} per adult, #{number_to_currency(event.cost_youth)} per youth"

@@ -1,0 +1,43 @@
+.table-row.group.event-location.items-center
+  .table-cell.py-3.pr-2
+    = hidden_field :event, "event_locations_attributes[][location_type]", value: event_location.location_type
+    = hidden_field :event, "event_locations_attributes[][location_id]", value: event_location.location_id
+    = hidden_field :event, "event_locations_attributes[][url]", value: event_location.url
+    
+    i.fa-layers.fa-fw
+      - case event_location.location_type
+      - when "online"
+        i.fa-solid.fa-circle.text-blue-400(data-fa-transform="grow-12")
+        i.fa-regular.fa-computer.text-white.fa-sm
+      - when "arrival"
+        i.fa-solid.fa-circle.text-red-400(data-fa-transform="grow-12")
+        i.fa-regular.fa-location-dot.text-white.fa-sm
+      - when "departure"
+        i.fa-solid.fa-circle.text-green-600(data-fa-transform="grow-12")
+        i.fa-regular.fa-car.text-white.fa-sm
+      - when "activity"
+        i.fa-solid.fa-circle.text-amber-400(data-fa-transform="grow-12")
+        i.fa-regular.fa-flag-pennant.text-white.fa-sm
+
+  .table-cell.pr-6.py-3
+    - case event_location.location_type
+    - when "online"
+      = "Online"
+    - when "arrival"
+      = "Arrival"
+    - when "departure"
+      = "Departure"
+    - when "activity"
+      = "Activity"
+
+  .table-cell.py-3
+    = event_location.location_name
+
+  .table-cell.pl-6
+    .hidden.group-hover:block
+      = button_tag type: "button",
+                   class: "inline-block text-sm text-stone-500 hover:text-stone-700 hover:bg-stone-100 rounded p-1",
+                   title: "Remove event location",
+                   onclick: "this.closest('.table-row').remove();",
+                   data: { action: "click->edit-event#deleteLocation" } do
+        i.fa-regular.fa-trash-alt.fa-fw.text-stone-400

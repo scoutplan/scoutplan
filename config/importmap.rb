@@ -5,6 +5,8 @@ pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
 pin "@hotwired/stimulus", to: "https://ga.jspm.io/npm:@hotwired/stimulus@3.2.1/dist/stimulus.js"
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
 pin "@popperjs/core", to: "https://ga.jspm.io/npm:@popperjs/core@2.11.6/lib/index.js"
+# pin "floating-ui" # @5.2.8
+pin "@floating-ui", to: "https://ga.jspm.io/npm:floating-ui@5.2.8/dist/floating-ui.mjs"
 pin "stimulus-sortable", to: "https://ga.jspm.io/npm:stimulus-sortable@4.1.0/dist/stimulus-sortable.mjs"
 pin "@rails/request.js", to: "https://ga.jspm.io/npm:@rails/request.js@0.0.8/src/index.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
@@ -25,3 +27,4 @@ pin "date-fns", to: "https://ga.jspm.io/npm:date-fns@2.29.3/esm/index.js"
 # pin "logrocket", to: "https://ga.jspm.io/npm:logrocket@4.0.4/dist/build.umd.js"
 pin "@rails/actioncable", to: "actioncable.esm.js"
 pin_all_from "app/javascript/channels", under: "channels"
+pin "@fortawesome/fontawesome", to: "@fortawesome--fontawesome.js" # @1.1.8

@@ -1,67 +1,65 @@
-/ On mobile, this flexbox renders as a column, thus stacking the title, family members,
-/ and button. On desktop it becomes a row with title + family on left, button on right
+- return unless event.requires_rsvp?
+- family_rsvp = FamilyRsvp.new(current_member, event)
+- details_tag_attributes = {class: "mt-2"}
 
-- return unless event.requires_rsvp
+article#rsvp_section.pb-3
+  header.flex.flex-row.justify-between.items-center.mb-3
+    h3.font-bold
+      i.fa-light.fa-clipboard-check.mr-2
+      = "Your Family RSVPs"
 
-- rsvp_service = RsvpService.new(current_member, event)
+    .right.block
 
-article#rsvp_section.py-4.md:px-2
-  .max-w-96.mx-auto
-    - if rsvp_service.any_responses?
-      .flex.flex-col.items-center.justify-between.gap-2
-        - if rsvp_service.family_fully_responded?
-          i.fa-stack(title="#{t('events.show.captions.full_response')}")
-            i.fa-solid.fa-circle.fa-stack-2x.text-amber-300
-            i.fa-solid.fa-clipboard-check.fa-stack-1x.text-amber-800
-        - elsif rsvp_service.family_rsvps.any?
-          i.fa-stack(title="#{t('events.show.captions.partial_response')}")
-            i.fa-solid.fa-circle.fa-stack-2x.text-amber-300
-            i.fa-solid.fa-exclamation-triangle.fa-stack-1x.text-amber-800
-        - else
-          i.fa-stack(title="#{t('events.show.captions.no_response')}")
-            i.fa-solid.fa-circle.fa-stack-2x.text-amber-300          
-            i.fa-solid.fa-exclamation-triangle.fa-stack-1x.text-amber-800
+  .bg-transparent.rounded.p-0
+    table.w-full
+      - family_rsvp.active_family_members.each_with_index do |family_member, index|
+        - response_glyph = ApplicationHelper::RESPONSE_GLYPHS[family_member.response.to_sym]
+        - response_color = ApplicationHelper::RESPONSE_COLORS[family_member.response.to_sym]
 
+        tr
+          td.py-1(class="#{index > 0 ? 'border-t border-stone-300' : ''}")
+            = family_member.first_name
 
-        - if rsvp_service.family_fully_declined?
-          = t("events.show.full_decline")
-        - else
-          = rsvp_service.family_responses_in_words
-
-        = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: event, show_rsvp: params[:variation] == "rsvp" }
+          td.py-1.text-right(class="#{index > 0 ? 'border-t border-stone-300' : ''}")
+            i.fa-solid.fa-fw(class="#{response_glyph} text-#{response_color}")
+            | &nbsp;
+            = t("rsvp_#{family_member.response.to_s}").downcase
         
-        - if event.shifts?
-          .table.border-spacing-2.text-sm
-            - rsvp_service.family_accepted.each do |rsvp|
-              .table-row.gap-2
-                .table-cell
-                  = rsvp.unit_membership.display_first_name
-                .table-cell.pl-2
-                  - rsvp.event_shift_ids.each do |shift_id|
-                    - shift = event.shifts.find_by(id: shift_id)
-                    .inline-block.px-2.py-1.mr-1.border.border-sky-300.rounded
-                      i.fa-solid.fa-circle-check.text-amber-500.mr-1
-                      = shift.name
+          - if event.shifts?
+            - rsvp.event_shift_ids.each do |shift_id|
+              - shift = event.shifts.find_by(id: shift_id)
+              .inline-block.px-2.py-1.mr-1.border.border-sky-300.rounded
+                i.fa-solid.fa-circle-check.text-amber-500.mr-1
+                = shift.name
 
-    // no responses
-    - elsif policy(event).rsvp? && event.rsvp_open?
-      .flex.flex-col.items-center.gap-2
-        i.fa-stack.mr-1
-          i.fa-solid.fa-circle.fa-stack-2x.text-amber-300
-          i.fa-solid.fa-exclamation-triangle.mr-1.text-amber-900.fa-stack-1x
+  - if event.rsvp_open? && policy(event).rsvp?
+    - details_tag_attributes[:open] = "" if params[:variation] == "rsvp"
+    = content_tag(:details, details_tag_attributes) do
+      - if family_rsvp.none? || family_rsvp.partial?
+        summary.cursor-pointer.rounded.p-2.text-center.bg-brand-500.hover:bg-brand-600.text-white.font-medium
+          - if family_rsvp.none?
+            = "Respond Now"
+          - elsif family_rsvp.partial?
+            = "Complete Your RSVP"            
+
+      - else
+        summary.cursor-pointer.border.rounded.p-2.text-center.text-brand-500.border-brand-500.hover:bg-brand-100.font-medium
+          = "Change Your RSVP"
+
+      = turbo_frame_tag "rsvp_popup", src: popup_unit_event_rsvps_path(current_unit, event), role: "dialog", data: { controller: "popup" }
+
+    p.text-stone-500.text-xs.mt-3
+      = t("events.partials.event_row.rsvp_closes_at.rsvp_closes_at", when: distance_of_time_in_words_to_now(event.rsvp_closes_at))
       
+      - if event.limits_headcount?
+        = " with "
+        = t("events.partials.event_row.rsvp_closes_at.headcount_remaining", count: event.headcount_remaining)
 
-        = t("events.index.rsvp.none_cta")
+      = "."
+
+  - else
+    p.text-stone-500.text-xs.mt-3
+      = "RSVPs are closed."
+  
+  / = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: event, show_rsvp: params[:variation] == "rsvp" }            
         
-        - if policy(event).rsvp? && event.rsvp_open?
-          = render partial: "events/partials/event_row/rsvp_button_and_popup", locals: { event: event, show_rsvp: params[:variation] == "rsvp" }
-
-    - elsif event.rsvp_opens_at&.future?
-      .font-semibold.text-sm.text-amber-600
-        i.fa-solid.fa-ban.mr-2
-        = t("events.index.rsvp.not_open")
-
-    - elsif !event.rsvp_open?
-      .flex.flex-row.justify-between.items-center
-        div
-          = t("events.index.rsvp.closed")

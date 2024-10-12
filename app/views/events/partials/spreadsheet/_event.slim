@@ -45,12 +45,11 @@
     input(type="text" name="event[#{event.id}][title]" value=event.title class="text-sm")
   .table-cell.box-border.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair(data-action="click->spreadsheet#selectCell") = event.description
   .table-cell.box-border.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-48(data-action="click->spreadsheet#selectCell") = event.location
-  .table-cell.box-border.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-48(data-action="click->spreadsheet#selectCell") = event.event_organizers.join(", ")
   .table-cell.box-border.p-1.border-b.border-r.border-stone-500.border-px.cursor-crosshair.w-16.relative
     .absolute.top-1/2.-translate-y-1/2.left-1/2.-translate-x-1/2
       = switch("event[#{event.id}]", :published,
               { label: "",
-                class: "text-2xs event-status-checkbox",
+                class: "text-xs event-status-checkbox",
                 checked: event.published?,
                 data: { action: "change->spreadsheet-row#changeEventStatus" } },
               "true", "false")

@@ -1,6 +1,4 @@
-= turbo_frame_tag "main"
-  = render partial: "layouts/flash"
-  
+= turbo_frame_tag :main
   .max-w-3xl.mx-auto
     = render partial: "header", locals: { title: "Draft messages" }
 
@@ -14,8 +12,16 @@
                   class: "block mt-4 text-center text-transparent",
                   data: { pagination_target: "nextPageLink" }
 
-  javascript:
-    document.title = `#{["Draft Messages", current_unit.name].join(" · ")}`;
+javascript:
+  document.title = `#{["Draft Messages", current_unit.name].join(" · ")}`;
 
-  css:
-    .draft-messages-link { display: none; }
+  document.addEventListener("turbo:load", () => {
+    document.body.classList.toggle("events", false);
+    document.body.classList.toggle("unit-memberships", false);
+    document.body.classList.toggle("messages", true);
+    document.body.classList.toggle("documents", false);
+    document.body.classList.toggle("settings", false);
+  });
+
+css:
+  .draft-messages-link { display: none; }

@@ -1,0 +1,9 @@
+= link_to unit_unit_membership_path(current_unit, member),
+  class: "block py-3 px-4 hover:bg-stone-100 flex flex-row items-center justify-between gap-2",
+  data: { turbo_action: "advance", turbo_frame: "_top" } do
+  
+  .left.font-semibold
+    i.fa-light.fa-user.fa-fw.mr-1.text-stone-400
+    = member.full_display_name
+
+  .right

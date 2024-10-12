@@ -6,8 +6,12 @@
 # basic user demographic information (e.g. DOB) that's unlikely to change
 # from one Unit to another
 #
+#
+# rubocop:disable Metrics/ClassLength
 class UnitMembership < ApplicationRecord
   ROLES = %w[member admin event_organizer].freeze
+
+  after_initialize :set_defaults, unless: :persisted?
 
   include Flipper::Identifier
   include Contactable
@@ -22,11 +26,12 @@ class UnitMembership < ApplicationRecord
   has_many  :parent_relationships,
             foreign_key: "child_unit_membership_id",
             class_name:  "MemberRelationship",
-            dependent:   :destroy
+            inverse_of:  :child_unit_membership
 
   has_many  :child_relationships,
             foreign_key: "parent_unit_membership_id",
             class_name:  "MemberRelationship",
+            inverse_of:  :parent_unit_membership,
             dependent:   :destroy
 
   has_many :parents, through: :parent_relationships, source: :parent_unit_membership
@@ -50,6 +55,8 @@ class UnitMembership < ApplicationRecord
   enum member_type: { unknown: 0, youth: 1, adult: 2 }
 
   scope :active, -> { where(status: %i[active]) }
+  scope :registered, -> { where(status: %i[registered]) }
+  scope :excluding_inactive, -> { where(status: %i[active registered]) } # everyone except inactives
   scope :status_active_and_registered, -> { where(status: %i[active registered]) } # everyone except inactives
   scope :contactable, -> { joins(:user).where("email NOT LIKE 'anonymous-member-%@scoutplan.org'") }
   scope :emailable, -> { joins(:user).where("email NOT LIKE 'anonymous-member-%@scoutplan.org'") }
@@ -60,9 +67,7 @@ class UnitMembership < ApplicationRecord
   delegate_missing_to :user
 
   accepts_nested_attributes_for :user
-  accepts_nested_attributes_for :child_relationships,
-                                allow_destroy: true,
-                                reject_if:     ->(attributes) { attributes["child_unit_membership_id"].blank? }
+  accepts_nested_attributes_for :child_relationships, allow_destroy: true
   accepts_nested_attributes_for :parent_relationships, allow_destroy: true
 
   has_settings do |s|
@@ -122,6 +127,12 @@ class UnitMembership < ApplicationRecord
     settings(:communication).receives_all_rsvps || event_organizers.any?
   end
 
+  def set_defaults
+    self.role = "member"
+    self.status = "active"
+    self.member_type = "youth"
+  end
+
   def smsable?
     user.smsable? && settings(:communication).via_sms
   end
@@ -142,3 +153,4 @@ class UnitMembership < ApplicationRecord
     "#{user.display_name} at #{unit.name} <#{unit.from_address}>"
   end
 end
+# rubocop:enable Metrics/ClassLength

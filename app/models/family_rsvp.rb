@@ -12,11 +12,13 @@ class FamilyRsvp
   end
 
   def cost
-    event_rsvps.sum(&:cost)
+    subtotal = event_rsvps.sum(&:cost)
+    fees = StripePaymentService.new(unit_membership.unit).member_transaction_fee(subtotal)
+    subtotal + fees
   end
 
   def amount_paid
-    payments.sum(&:amount_in_dollars)
+    payments.paid.sum(&:amount_in_dollars)
   end
 
   def paid?
@@ -32,7 +34,9 @@ class FamilyRsvp
 
   ### Family member methods
   def family_members
-    @family_members ||= unit_membership.family(include_self: :prepend)
+    @family_members ||= unit_membership.family(include_self: :prepend).map do |member|
+      FamilyMemberRsvp.new(member, event)
+    end
   end
 
   def active_family_members

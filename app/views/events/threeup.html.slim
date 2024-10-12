@@ -4,7 +4,7 @@
   - display_year = @query_year
   - display_month = @query_month
 
-  .max-w-full.mx-4.rounded-xl.py-12.m-4.dark:bg-stone-800.bg-white.md:shadow-overhead.showing-past-events
+  .w-full.mx-auto
     .flex.flex-row.justify-between
       = link_to threeup_unit_events_path(current_unit) + "/#{@back_date.year}/#{@back_date.month}",
                 class: "ml-2 block p-6 text-brand-500 hover:text-brand-700 mt-14 text-2xl grow-0",
@@ -12,12 +12,10 @@
         i.fa-solid.fa-chevron-left
 
       div.grow
-        header.mb-2.pl-2
-          .text-sm.font-semibold.uppercase.text-stone-500.dark:text-stone-300.tracking-widest = current_unit.name
-
+        header.mb-2.mt-8
           .flex.flex-row.justify-between.items-center
             .left
-              h1.text-4xl.mb-2
+              h1.text-2xl.mb-2.font-semibold
                 = t("events.index.title")
 
             .right

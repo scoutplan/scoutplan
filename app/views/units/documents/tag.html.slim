@@ -1,18 +1,17 @@
-= turbo_frame_tag "main"
-  = turbo_stream.update "page_title" do
-    = t(".page_title", unit_name: current_unit.name)
+= turbo_stream.update "page_title" do
+  = t(".page_title", unit_name: current_unit.name)
 
-  = render partial: "layouts/flash"
+= render partial: "layouts/flash"
 
-  - variant = params[:variant] || request.cookies[:variant] || "list"
+- variant = params[:variant] || request.cookies[:variant] || "list"
 
-  .max-w-7xl.relative.mt-4.mx-auto.rounded-xl.md:p-12.dark:bg-stone-800.bg-white.md:shadow-overhead(data-controller="document-index list-selection tagging" data-document-index-unit-id-value="#{current_unit.id}")
-    header.mb-4.top-0.bg-white
-      .text-sm.font-bold.uppercase.text-stone-500.dark:text-stone-300 = current_unit.name
+= turbo_frame_tag :main
+  .max-w-8xl.mx-auto(data-controller="document-index list-selection")
+    header.bg-white.sticky.top-12.mb-4.pt-2
 
       .flex.flex-row.justify-between.items-center
         .left
-          h1.text-4xl.mb-2 = @title
+          h1.text-2xl.font-semibold.mb-2 = "Files"
 
         .right.flex.flex-row.gap-2
           = link_to unit_documents_path(current_unit),
@@ -32,7 +31,7 @@
           - if UnitDocumentPolicy.new(current_member, Document).create?
             = render partial: "upload_form"
 
-      #normal_toolbar.flex.flex-row.items-center.justify-between.rounded-xl.bg-stone-100.py-1.px-2.mt-4.not-multi-selector.h-16
+      #normal_toolbar.flex.flex-row.items-center.justify-between.rounded-xl.bg-stone-100.py-1.px-2.mt-4.not-multi-selector.h-16.mb-1
         .left
           = button_tag "#", class: "whitespace-nowrap px-3 py-2", data: { action: "list-selection#selectAllVisible" } do
             i.fa-fw.fa-regular.fa-square.mr-1.text-xl
@@ -45,7 +44,7 @@
               class: "block rounded py-0",
               data: { action: "document-index#filterByTag", document_index_target: "tagFilterSelect" }
 
-      #selection_toolbar.flex.flex-row.items-center.justify-between.rounded-xl.bg-stone-100.py-1.px-2.mt-4.h-16
+      #selection_toolbar.flex.flex-row.items-center.justify-between.rounded-xl.bg-stone-100.py-1.px-2.mt-4.h-16.mb-1
         #selection_toolbar_left.flex.flex-row.items-center.gap-4
           = button_tag "#", class: "w-8 relative rounded-full hover:bg-stone-200 px-2 aspect-square", title: "Unselect files", data: { action: "list-selection#deselectAll" } do
             i.fa-solid.fa-times.left-1/2.-translate-x-1/2.top-1/2.-translate-y-1/2.absolute

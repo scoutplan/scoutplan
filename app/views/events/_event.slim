@@ -5,43 +5,47 @@
 
 = render partial: "events/month_header", locals: { event: event }
 
-li.relative.z-0.event.md:px-2.hover:bg-stone-100.dark:hover:bg-stone-800(class="#{row_classes(event)}" id="#{dom_id(event)}")
-  .flex.flex-row.items-center
-    = link_to href,
-              class: "event py-2 block w-full",
-              name:  event.id,
-              data:  { turbo_action: "advance",
-                       turbo_frame: "main",
-                       month: event.starts_at.month,
-                       year: event.starts_at.year } do
+li.event(class="#{row_classes(event)}" id="#{dom_id(event)}")
+  .px-2.-mx-2.py-3.hover:bg-stone-50.hover:dark:bg-stone-800.group
+    .flex.flex-col.md:flex-row.md:items-start.gap-3
+      = link_to href,
+                class: "event py-2 block grow",
+                name:  event.id,
+                data:  { month: event.starts_at.month,
+                        year: event.starts_at.year,
+                        turbo_frame: "modal", turbo_action: "advance" } do
 
-      .flex.flex-col.md:flex-row
-        // 1 date & time
-        .first.time.shrink-0.md:w-32.flex.flex-row.md:flex-col.gap-1.md:gap-0.items-baseline.md:items-start
-          .date.font-medium.text-2xl.md:text-3xl.leading-0.dark:text-stone-100
-            = raw(event.dates_to_s)
+        .flex.flex-col.md:flex-row.gap-2
+          // 1 date & time
+          .first.time.shrink-0.md:w-32.flex.flex-row.md:flex-col.gap-1.md:gap-0.items-baseline.md:items-start
+            .date.font-medium.text-2xl.md:text-3xl.leading-0.dark:text-stone-100
+              = raw(event.dates_to_s)
+              
+            .day.font-medium.text-sm.uppercase.tracking-wider.text-stone-500.leading-0
+              = raw(presenter.days_to_s)
             
-          .day.font-bold.text-sm.uppercase.tracking-wider.text-stone-500.leading-0
-            = raw(presenter.days_to_s)
-          
-          = render partial: "events/partials/event_row/today", locals: { event: event }
+            / = render partial: "events/partials/event_row/today", locals: { event: event }
+            = render partial: "events/partials/event_row/tags", locals: { event: event }
 
-        // 2 icon
-        .second.hidden.md:block.w-8.text-center.shrink-0
-          = glyph_tag(event)
 
-        // 3 title, tags, description, location
-        .third
-          = render partial: "events/partials/event_row/title", locals: { event: event }
-          = render partial: "events/partials/event_row/title_badge", locals: { event: event }
-          = render partial: "events/partials/event_row/tags", locals: { event: event }
-          = render partial: "events/partials/index/short_description", locals: { event: event }
-          = render partial: "events/event_location", locals: { event: event }
+          // 3 title, tags, description, location
+          .third.grow
+            h4.text-xl.font-semibold.event-title.mr-2.inline-block
+              i.fa-solid.fa-xs.fa-fw.mr-1(class="fa-#{event&.category&.glyph}" style="color: #{event&.category&.color}")
+              = event.title
+            = render partial: "events/partials/event_row/title_badge", locals: { event: event }
+            = render partial: "events/partials/index/short_description", locals: { event: event }
+            = render partial: "events/event_location", locals: { event: event }
+            = render partial: "events/event_cost", locals: { event: event }
 
-  // second row
-  .flex.flex-col.gap-2.md:flex-row.md:items-center.py-2.empty:py-0
-    - if current_user
-      = render partial: "events/partials/event_row/organize", locals: { event: event }
-      = render partial: "events/partials/event_row/family_rsvp_link", locals: { event: event }
+      - if current_user
+        .flex.flex-col.w-full.md:w-fit.ml-auto
+          - if event.organizable? && EventPolicy.new(current_member, event).rsvps?          
+            = render partial: "events/partials/event_row/organize", locals: { event: event }
+          - else
+            .w-48
+              = render partial: "events/partials/event_row/family_rsvp_link", locals: { event: event }
 
-    = render partial: "events/partials/event_row/online", locals: { event: event }
+          = render partial: "events/partials/event_row/online", locals: { event: event }
+
+  

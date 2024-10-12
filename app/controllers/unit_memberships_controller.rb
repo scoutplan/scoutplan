@@ -11,7 +11,7 @@ class UnitMembershipsController < UnitContextController
       :user, :tags,
       { parent_relationships: { parent_unit_membership: :user } },
       { child_relationships: { child_unit_membership: :user } }
-    ).order("users.first_name, users.last_name ASC")
+    ).order("users.last_name, users.first_name ASC")
     @page_title = current_unit.name, t("members.titles.index", unit_name: "")
     @membership = current_unit.memberships.build
     @membership.build_user
@@ -23,8 +23,9 @@ class UnitMembershipsController < UnitContextController
 
   def new
     authorize(UnitMembership)
-    @target_membership = current_unit.memberships.build(role: "member")
+    @target_membership = UnitMembership.new
     @target_membership.build_user
+    ap @target_membership
   end
 
   def show
@@ -43,7 +44,7 @@ class UnitMembershipsController < UnitContextController
     @member.user_id = @user.id
     return unless @member.save!
 
-    MemberRelationshipService.new(@member).update(params[:member_relationships])
+    # MemberRelationshipService.new(@member).update(params[:member_relationships])
 
     flash[:notice] =
       t("members.confirmations.create", member_name: @member.full_display_name, unit_name: current_unit.name)
@@ -66,7 +67,7 @@ class UnitMembershipsController < UnitContextController
     update_settings_params
     return unless @target_membership.save!
 
-    MemberRelationshipService.new(@target_membership).update(params[:member_relationships])
+    # MemberRelationshipService.new(@target_membership).update(params[:member_relationships])
 
     flash[:notice] = "Member information updated"
     redirect_to unit_members_path(@current_unit)
@@ -117,10 +118,12 @@ class UnitMembershipsController < UnitContextController
   end
 
   def member_params
+    ap params
+
     params.require(:unit_membership).permit(
       :status, :role, :member_type, :tag_list, :ical_suppress_declined, :roster_display_phone, :roster_display_email,
       child_relationships_attributes:  [:id, :child_unit_membership_id, :_destroy],
-      parent_relationships_attributes: [:id, :_destroy],
+      parent_relationships_attributes: [:id, :parent_unit_membership_id, :_destroy],
       user_attributes:                 [:id, :first_name, :last_name, :phone, :email, :nickname]
     )
   end

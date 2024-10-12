@@ -82,6 +82,7 @@ en:
   global:
     back_to_top: "Back to top"
     cancel: "Cancel"
+    close: "Close"
     discard_changes: "Discard Changes"
     save_changes:    "Save Changes"
     link:   "Link"
@@ -107,6 +108,7 @@ en:
     planner:       "Planner"
     communication: "Messages"
     wiki:          "Wiki"
+    settings:      "Unit Settings"
 
   profile:
     edit: "Settings"
@@ -250,7 +252,7 @@ en:
           organize: "Event Dashboard"
 
         rsvp_closes_at:
-          rsvp_closes_at: "(closes in %{when})"
+          rsvp_closes_at: "RSVPs close in %{when}"
           headcount_remaining:
             zero: "no spots remaining"
             one: "one spot remaining"
@@ -266,7 +268,7 @@ en:
 
         locations:
           label: "Online web address"
-          placeholder_online: "Type or paste a web address"
+          placeholder_online: "e.g. https://zoom.us/123456"
           switch_label: "This is an online event"
           title: "Event location"
 
@@ -290,7 +292,7 @@ en:
       location:     "Location"
       address:      "Address or place name"
       departs_from: "Departure address"
-      category:     "Select an event category"
+      category:     "Choose a category"
       cancellation_message: "Type your cancellation message here (optional)"
       venue_phone:  "Phone number where you're staying"
     
@@ -408,7 +410,7 @@ en:
       confirm_publish:          "Publishing will make this event visible to all members. Are you sure you want to publish it?"
       published:                "This event is published"
       edit_description_title:   "Edit Event Description"
-      cancel_title:             "Cancel this event"
+      cancel_title:             "Delete Event"
       cancel_button:            "Yes, Cancel This Event"
       cancel_cancel:            "No, Don't Cancel"
       organize_button_caption:  "View RSVPs"
@@ -432,7 +434,7 @@ en:
         duplicate:      "Duplicate"
         add_sub_event:  "Add an Activity"
         history:        "View edit history of this event"
-        organize:       "See all RSVPs"
+        organize:       "Event Dashboard"
         back:           "Event schedule"
 
       captions:
@@ -463,11 +465,13 @@ en:
         departure:    "text-emerald-500"
         arrival:      "text-red-500"
         activity:     "text-amber-500"
+        online:       "text-sky-500"
 
       icons:
         departure:    "fa-car"
         arrival:      "fa-location-dot"
         activity:     "fa-location-exclamation"
+        online:       "fa-laptop"
 
       titles:
         youth:    "Youth"
@@ -479,14 +483,14 @@ en:
       proceed:        "Cancel this event"
       confirm:        "Are you sure you want to cancel?"
       message_prompt: "Send a cancellation message?"
-      past_warning:   "Cancelling events that occurred in the past is not recommended."
+      past_warning:   "Cancelling past events is not recommended."
     
     edit:
       short_description_placeholder: "Brief description (optional, appears in email & text)"
       published: "Published"
 
     new:
-      add_this_event: "Add This Event"
+      add_this_event: "Schedule This Event"
 
     organize:
       title:        "%{event_title}"
@@ -532,8 +536,8 @@ en:
 
     form:
       captions:
-        accept_create: "Add This Member"
-        accept_update: "Save These Changes"
+        accept_create: "Add Member"
+        accept_update: "Update Member"
 
     statuses:
       active: "Active"
@@ -558,7 +562,7 @@ en:
       phone: "111-222-3333"
 
     index:
-      new_button_caption: "Add a member"
+      new_button_caption: "Add a Member"
       page_title: "Member Roster"
       show_inactive: "Show inactive members"
       hide_inactive: "Hide inactive members"
@@ -864,6 +868,15 @@ en:
         new_document: "Upload files"
 
   unit_memberships:
+    edit:
+      page_title: "Edit %{name} - %{unit_name}"
+
+    index:
+      page_title: "%{unit_name} Member Roster"
+
+    new:
+      page_title: "Add a Member - %{unit_name}"
+
     partials:
       modal:
         communication_settings_fields:

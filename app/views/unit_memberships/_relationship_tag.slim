@@ -1,0 +1,30 @@
+- this_member = relationship_type == "parent" ? relationship.parent_unit_membership : relationship.child_unit_membership
+- other_member = relationship_type == "parent" ? relationship.child_unit_membership : relationship.parent_unit_membership
+- return unless other_member.present?
+- colors = colors_from_string(other_member.display_name)
+
+div.pl-2.pr-1.py-1.rounded.items-center.flex.flex-row.gap-2(style="background-color: #{colors[200]}; color: #{colors[900]}" id="#{relationship_type}_relationship_tag_#{other_member.id}" data-value="#{other_member.id}" data-controller="nested-destructive-attributes")
+
+  - if relationship_type == "child"
+    = hidden_field_tag "unit_membership[parent_relationships_attributes][#{relationship&.id || other_member.id}][parent_unit_membership_id]", other_member.id
+    - if relationship.persisted?
+      = hidden_field_tag "unit_membership[parent_relationships_attributes][#{relationship.id}][id]", relationship.id
+      = hidden_field_tag "unit_membership[parent_relationships_attributes][#{relationship.id || ''}][_destroy]", false, class: "destroy-field"
+
+    span.text-xs(title="#{other_member.first_name} can RSVP on #{this_member.present? ? this_member.first_name : 'this member'}'s behalf")
+      i.fa-solid.fa-arrow-right-to-line.fa-fw
+
+  - elsif relationship_type == "parent"
+    = hidden_field_tag "unit_membership[child_relationships_attributes][#{relationship.id || other_member.id}][child_unit_membership_id]", other_member.id
+    - if relationship.persisted?
+      = hidden_field_tag "unit_membership[child_relationships_attributes][#{relationship.id}][id]", relationship.id
+      = hidden_field_tag "unit_membership[child_relationships_attributes][#{relationship.id || ''}][_destroy]", false, class: "destroy-field"
+
+    span.text-xs(title="#{this_member.present? ? this_member.first_name : 'This member'} can RSVP on #{other_member.first_name}'s behalf")
+      i.fa-solid.fa-arrow-right-from-line.fa-fw
+
+  = other_member.display_name
+  = button_tag type: "button",
+               class: "hover:bg-black/10 hover:text-black/50 rounded px-px",
+               data: { action: "tag-field#remove nested-destructive-attributes#markForDestruction" } do
+    i.fa-regular.fa-times.fa-fw.fa-sm

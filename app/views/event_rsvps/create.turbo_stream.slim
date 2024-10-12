@@ -20,5 +20,5 @@
   = render partial: "event_dashboard/header_registered", locals: { event_dashboard: @event_dashboard }    
 
 // clear modal
-= turbo_stream.update "modal" do
+= turbo_stream.update "rsvp_popup" do
   = ""

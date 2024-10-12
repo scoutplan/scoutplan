@@ -3,11 +3,27 @@
 - row_classes += " member-admin" if unit_membership.admin?
 - row_classes += " member-inactive" if unit_membership.status_inactive?
 
-article.member(class="#{row_classes}")
-  = render partial: "unit_memberships/index/checkbox", locals: { unit_membership: unit_membership }
+li.text-sm.member.search-wrapper(class="#{row_classes}")
+  = link_to edit_unit_member_path(current_unit, unit_membership),
+                             class: "block rounded p-2 bg-white border border-stone-200 hover:bg-stone-50",
+                             data: { turbo_action: "advance", turbo_frame: "modal" } do
+    .flex.flex-col.gap-1
+      h3.font-medium.search-value
+        - if unit_membership.status_inactive?
+          i.fa-light.fa-snooze.fa-fw.text-stone-500.mr-1(title="Inactive")
+        - elsif unit_membership.admin?
+          i.fa-solid.fa-crown.fa-fw.text-purple-500.mr-1(title="Unit Administrator")
 
-  = link_to unit_member_path(current_unit, unit_membership), class: "block py-4 grow -mx-2 px-2 hover:bg-stone-100 dark:hover:bg-stone-800", data: { turbo_action: "advance" } do
-    = render partial: "unit_memberships/index/name", locals: { unit_membership: unit_membership }
-    .extended-member-info
-      = render partial: "unit_memberships/index/email", locals: { unit_membership: unit_membership }
-      = render partial: "unit_memberships/index/phone", locals: { unit_membership: unit_membership }
+        = unit_membership.full_display_name
+
+      - if unit_membership.roster_display_email?
+        p.text-stone-500
+          i.fa-light.fa-envelope.fa-fw.mr-1
+          = unit_membership.email
+
+      - if unit_membership.roster_display_phone?
+        p.text-stone-500
+          i.fa-light.fa-phone.fa-fw.mr-1
+          = unit_membership.phone.phony_formatted(country_code: "US")
+
+

@@ -1,0 +1,1 @@
+ngrok http --host-header=rewrite --domain=social-ocelot-moral.ngrok-free.app https://go.scoutplan-local.org

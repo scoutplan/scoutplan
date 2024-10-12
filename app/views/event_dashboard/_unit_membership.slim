@@ -4,5 +4,7 @@ li.filterable-item(id="#{dom_id(unit_membership)}")
             draggable: true,
             data: { turbo_frame: "modal", action: "dragstart->dashboard-drop#dragstart dragend->dashboard-drop#dragend drag->dashboard-drop#drag" } do
     - cache unit_membership do
-      i.fa-solid.fa-user.text-stone-400.mr-2
+      span(style="cursor: move;")
+        i.fa-light.fa-grip.text-stone-400.mr-2.cursor-move
+        
       span.filterable-name = unit_membership.display_name

@@ -40,7 +40,7 @@ describe "unit settings", type: :feature do
 
     it "has a Unit Settings link" do
       visit unit_events_path(@member.unit)
-      expect(page).to have_link("#{@unit.name} Settings", visible: false)
+      expect(page).to have_link("Unit Settings", visible: false)
     end
 
     it "visits the unit settings page" do

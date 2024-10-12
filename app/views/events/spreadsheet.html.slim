@@ -2,8 +2,12 @@
 - Date::DATE_FORMATS[:month_and_date] = "%b %d"
 - @row_number = 0
 
-.mx-6
-  .z-10.table.text-sm.w-full.mx-auto.relative(data-controller="spreadsheet" data-spreadsheet-unit-id-value="#{current_unit.id}")
+= render partial: "events/header"
+
+.mx-6.mt-4
+  h1.text-2xl.font-semibold.mb-4 = "Event Spreadsheet"
+
+  .table.text-sm.w-full.mx-auto.relative(data-controller="spreadsheet" data-spreadsheet-unit-id-value="#{current_unit.id}")
     .table-row.bg-white.header.(data-spreadsheet-target="header")
       .table-cell.border.border-stone-500.bg-stone-100
       .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Day"
@@ -12,7 +16,6 @@
       .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Title"
       .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100.min-w-48 = "Description"
       .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100.min-w-48 = "Location"
-      .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Organizers"
       .table-cell.p-1.border-t.border-b.border-r.border-stone-500.bg-stone-100 = "Published"
     
     = render partial: "events/partials/spreadsheet/event", collection: @events
@@ -39,8 +42,8 @@ css:
 
   .header {
     position: sticky;
-    top: 49px;
-    z-index: 100;
+    top: 3.5rem;
+    z-index: 1;
   }
 
   .trix-content {

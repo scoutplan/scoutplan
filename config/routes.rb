@@ -5,6 +5,11 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
+  get 'relationship_candidates/create'
+  get "event_cancellations/new"
+  get "event_cancellations/create"
+  get "tags/create"
+  get "integrations/index"
   get "welcome/index"
   get "", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
   get "*path", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
@@ -46,6 +51,8 @@ Rails.application.routes.draw do
   post "new_unit/save_communication_preferences", to: "new_unit#save_communication_preferences"
   get "new_unit/done", to: "new_unit#done"
 
+  get "callbacks/instagram", to: "instagram_external_integrations#callback"
+
   resources :event_activities, as: "activities"
   resources :users, only: [:show, :become, :update]
 
@@ -55,14 +62,22 @@ Rails.application.routes.draw do
   get "units/*after", to: redirect("/u/%{after}")
   get "u/:unit_id/schedule/repeat_options/:starts_at", to: "events#repeat_options", as: "repeat_options"
 
-  resources :payments, only: [:create]
+  # resources :payments, only: [:create]
+  post "stripe", to: "stripe#create"
 
   namespace :base, path: "/" do
     resources :events, only: [:show]
   end
 
+  resources :relationship_candidates, only: [:create]
+
   # begin units
   resources :units, path: "u", only: %i[show index update] do
+    # post "search", to: "search#index", as: "search"
+    # get "search", to: "search#new", as: "new_search"
+    #
+    resources :searches
+
     scope module: :units do
       resources :documents, path: "library" do
         collection do
@@ -102,7 +117,10 @@ Rails.application.routes.draw do
         post "mark_as_unread"
       end
     end
+
     resources :locations
+    resources :location_candidates, only: [:create]
+
     resources :packing_lists do
       resources :packing_list_items
     end
@@ -128,6 +146,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :tags, only: [:create]
+
     resources :events, path: "schedule" do
       resources :chat_messages, as: "discussion", path: "discussion"
       resources :family_rsvps, only: [:new, :create]
@@ -140,6 +160,7 @@ Rails.application.routes.draw do
       end
       resources :event_rsvps
       resources :payments, module: :events
+      resources :online_payments, module: :events, only: [:new]
       resources :photos
       resources :event_attachments, path: "attachments", as: "attachments"
       resources :event_activities
@@ -173,10 +194,10 @@ Rails.application.routes.draw do
         post "bulk_publish", module: "events"
       end
       # get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"
-      get   "cancel"
       get   "history"
       get   "add_to_calendar"
-      post  "cancel", to: "events#perform_cancellation"
+      get   "cancel", to: "event_cancellations#new"
+      post  "cancel", to: "event_cancellations#create", as: "cancellations"
       patch "rsvp", as: "send_rsvps", to: "events#create_or_update_rsvps"
 
       constraints CanAccessFlipperUI do
@@ -187,13 +208,14 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :event_locations, only: [:create]
+    resources :integrations
     resources :photos
 
-    post "search", to: "search#results", as: "search"
-    get "search", to: "search#results"
     get "settings", to: "settings#index", as: "settings"
     get "settings/automated_messages", to: "settings#automated_messages", as: "automated_messages"
     get "settings/documents"
+    # get "settings/payments", to: "settings#payments"
     get "settings/test_communications", to: "settings#test_communications", as: "test_communications"
     get "settings/:category", to: "settings#edit", as: "setting"
 

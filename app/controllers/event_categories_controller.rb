@@ -6,7 +6,10 @@ class EventCategoriesController < UnitContextController
     @category = current_unit.event_categories.new(event_category_params)
     return unless @category.save!
 
-    redirect_to unit_event_categories_path(current_unit), notice: "event_categories.notices.create_success"
+    respond_to do |format|
+      format.html { redirect_to unit_event_categories_path(current_unit), notice: "event_categories.notices.create_success" }
+      format.turbo_stream
+    end
   end
 
   def destroy

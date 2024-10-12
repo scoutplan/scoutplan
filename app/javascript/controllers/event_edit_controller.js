@@ -1,18 +1,74 @@
 import { Controller } from "@hotwired/stimulus"
-import { get, destroy } from "@rails/request.js"
+
+import { get, post, destroy } from "@rails/request.js"
+import { computePosition } from "https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10/+esm"
 
 export default class extends Controller {
-  static targets = [ "deleteform", "fileinput", "privatefileinput", "documentLibraryIds", "startsAtDate", "endsAtDate", "rsvpClosesAt", "repeatsUntilSelect" ];
+  static targets = [ "deleteform", "fileinput", "privatefileinput", "documentLibraryIds", "startsAtDate", "endsAtDate", "rsvpClosesAt", "repeatsUntilSelect",
+      "submit", "categorySelect", "title", "newTagPrompt", "newTagName", "tagNotFoundPrompt", "tagListWrapper", "removeCoverPhotoField", "coverPhotoThumbnail",
+      "coverPhotoFile", "coverPhotoThumbnailImage",
+      "addressBook", "locationType", "eventLocationDetails"
+   ];
   static values = { seasonEndDate: String, unitId: String };
 
   connect() {
     this.populateRepeatUntilSelectOptions();
+
+    const tagsButton = document.querySelector("details#tags");
+    const tagsPopup = document.querySelector("#tags_popup");
+
+    computePosition(tagsButton, tagsPopup, { placement: "bottom-start" }).then(({x, y}) => {
+      tagsPopup.style.left = `${x}px`;
+      tagsPopup.style.top = `${y}px`;
+    });
+
+    const organizersButton = document.querySelector("details#organizers");
+    const organizersPopup = document.querySelector("#organizers_popup");
+
+    computePosition(organizersButton, organizersPopup, { placement: "bottom-start" }).then(({x, y}) => {
+      organizersPopup.style.left = `${x}px`;
+      organizersPopup.style.top = `${y}px`;
+    });
+
+    this.titleTarget.focus();
   }
 
-  // addAttachmentToPendingList(filename) {
-  //   var attachment_list = document.querySelector("#existing_attachments");
-  //   attachment_list.insertAdjacentHTML("beforeend", `<li class="pending-attachment py-1 font-bold text-green-600">${filename} (pending)</li>`);
-  // }
+  resetTagList() {
+    this.tagSearchTarget.value = "";
+    this.newTagPromptTarget.classList.add("hidden");   
+    var tagList = document.querySelector("#tag_list");
+    var tags = tagList.querySelectorAll("li");     
+    tags.forEach(function(tag) {
+      tag.classList.remove("hidden");
+    });
+  }
+
+  hideTagList() {
+    this.tagListWrapperTarget.removeAttribute("open");
+  }
+
+  validate(event) {
+    var valid = true;
+    valid = valid && this.categorySelectTarget.value != "";
+    valid = valid && this.titleTarget.value != "";
+    this.submitTarget.disabled = !valid;
+  }
+
+  removeCoverPhoto() {
+    this.removeCoverPhotoFieldTarget.value = "1";
+    this.coverPhotoThumbnailTarget.classList.add("hidden");
+  }
+
+  coverPhotoSelected(event) {
+    const fileInput = this.coverPhotoFileTarget;
+    const file = fileInput.files[0];
+    const wrapper = this.coverPhotoThumbnailTarget;
+    const image = document.createElement("img");
+
+    image.src = URL.createObjectURL(file);
+
+    wrapper.appendChild(image);
+  }
 
   attachFromLibrary(event) {
     console.log("attach from library");
@@ -73,8 +129,8 @@ export default class extends Controller {
   async populateRepeatUntilSelectOptions() {
     const startsAt = this.startsAtDateTarget.value;
     const unitId = this.unitIdValue;
-    const query = new URLSearchParams({ "a": "b", "starts_at": startsAt });
-    await get(`/u/${unitId}/schedule/repeat_options/${startsAt}`, { query: query, responseKind: "turbo-stream" });     
+    // const query = new URLSearchParams({ "a": "b", "starts_at": startsAt });
+    await get(`/u/${unitId}/schedule/repeat_options/${startsAt}`, { responseKind: "turbo-stream" });
   }
 
   hideDocumentLibrary(event) {
@@ -156,5 +212,39 @@ export default class extends Controller {
       event.preventDefault();
       return false;
     }
+  }
+
+  async updateCategory(event) {
+    let category = event.target.value;
+    if (category != "_new") { return; }
+
+    let url = `/u/${this.unitIdValue}/event_categories/new`;
+    await get(url, { responseKind: "turbo-stream" });
+
+    let nameField = document.querySelector("#event_category_name");
+    console.log(nameField);
+    nameField.focus();
+  }
+
+  async setLocation(event) {
+    const locationType = this.element.querySelector("input[name='location[location_type]']:checked").value;
+    const locationId = this.element.querySelector("input[name='location[id]']:checked")?.value;
+    const locationUrl = this.element.querySelector("input[name='location[url]']").value;
+
+    this.eventLocationDetailsTarget.removeAttribute("open");
+
+    const formData = new FormData();
+    formData.append("event_location[location_id]", locationId);
+    formData.append("event_location[location_type]", locationType);
+    formData.append("event_location[url]", locationUrl);
+    const url = `/u/${this.unitIdValue}/event_locations`;
+
+    await post(url, { body: formData });
+  }
+
+  deleteLocation(event) {
+    console.log("delete location");
+    const locationElem = event.target.closest("event-location");
+    locationElem.remove();
   }
 }

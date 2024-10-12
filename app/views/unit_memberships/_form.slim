@@ -1,26 +1,295 @@
-header.py-4
-  h3.text-4xl.font-bold
-    = t("members.titles.#{@target_membership.new_record? ? "new" : "edit"}")
-
 = form_with model: [current_unit, @target_membership],
             id: "member_info_form",
-            data: { turbo: false, controller: "form-validation", action: "submit->form-validation#validate" } do |f|
-  section.flex.flex-col.gap-4.divide-y.divide-stone-800
-    = render partial: "unit_memberships/partials/modal/user_fields", locals: { f: f }
-    = render partial: "unit_memberships/partials/modal/member_type_fields", locals: { f: f }
-    = render partial: "unit_memberships/partials/modal/member_role_fields", locals: { f: f }
-    = render partial: "unit_memberships/partials/modal/member_tag_fields", locals: { f: f }      
-    = render partial: "unit_memberships/partials/modal/member_status_fields", locals: { f: f }
-    = render partial: "unit_memberships/partials/modal/communication_settings_fields", locals: { f: f, member: @target_membership }
-    = render partial: "unit_memberships/partials/modal/relationships_new", locals: { f: f }
+            class: "h-full",
+            data: { turbo: false, controller: "form-validation member-edit", action: "submit->form-validation#validate" } do |f|
 
-  = render partial: "unit_memberships/partials/modal/footer", locals: { f: f }
+  article.mx-auto.max-w-3xl.bg-white.rounded-lg.max-h-full.flex.flex-col.overflow-y-hidden
+    header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
+      .left
+        h1 = (f.object.new_record? ? "Add a" : "Edit") + " Member"
 
-scss:
-  input.destroy_relationship_input:checked {
+      .right.flex.flex-row.gap-2.text-stone-500.text-lg
+
+        = button_tag type: "button", class: "x-close-button flex flex-row items-center block w-6 h-6 -mr-2 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
+          i.fa-regular.fa-times.fa-fw
+
+    section.flex.flex-col.md:flex-row.w-full.overflow-y-auto(style="height: calc(100% - 0rem)")
+      aside.w-full.md:w-72.bg-stone-50.px-6.py-3.text-stone-600
+        .flex.flex-col.text-sm
+
+          // TYPE
+          .pt-2.pb-4
+            = label_tag :role, nil, class: "block mb-1 font-bold"
+
+            .p-2.bg-stone-200.rounded
+              = f.label :member_type, value: :youth do
+                = f.radio_button :member_type, :youth, required: true, class: "peer hidden"
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-child.fa-fw.mr-2
+                    = "Youth"
+
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
+
+              = f.label :member_type, value: :adult do
+                = f.radio_button :member_type, :adult, required: true, class: "peer hidden"
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-user.fa-fw.mr-2
+                    = "Adult"
+
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
+
+          // ROLE
+          .pt-2.pb-4
+            = label_tag :role, nil, class: "block mb-1 font-bold"
+
+            .p-2.bg-stone-200.rounded
+
+              = f.label :role, value: :member do
+                = f.radio_button :role, :member, required: true, class: "peer group hidden"
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-user.fa-fw.mr-2
+                    = "Member"
+                  
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
+
+              = f.label :role, value: :event_organizer do
+                = f.radio_button :role, "event_organizer", required: true, class: "peer hidden"
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-person-sign.fa-fw.mr-2
+                    = "Event Organizer"
+
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
+
+              = f.label :role, value: :admin do
+                = f.radio_button :role, :admin, required: true, class: "peer hidden"
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-user-crown.fa-fw.mr-2
+                    = "Administrator"
+
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
+
+          // STATUS
+          .py-2
+            = label_tag :status, nil, class: "block mb-1 font-bold"
+
+            .p-2.bg-stone-200.rounded
+
+              = f.label :status, value: "active" do
+                = f.radio_button :status, :active, required: true, class: "peer hidden"
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-wave-pulse.fa-fw.mr-2
+                    = t("members.statuses.active")
+
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
+
+              = f.label :status, value: "registered" do
+                = f.radio_button :status, :registered, required: true, class: "peer hidden"
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-hand-wave.fa-fw.mr-2
+                    = t("members.statuses.registered")
+
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
+
+              = f.label :status, required: true, value: "inactive" do
+                = f.radio_button :status, :inactive, required: true, class: "peer hidden"
+                block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
+                  div
+                    i.fa-regular.fa-snooze.fa-fw.mr-2
+                    = t("members.statuses.inactive")
+
+                  i.fa-regular.fa-check.text-lime-700.checked-indicator
+
+          // RELATIONSHIPS
+          .py-2.relative
+            details(data-controller="modal")
+              summary.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.hover:bg-brand-100.rounded.cursor-pointer(class="active:-mx-[0.4rem]")
+                .font-semibold = "Family Members"
+                i.fa-light.fa-plus.fa-fw
+
+              // popup
+              .fixed.inset-0.bg-black/50.z-10.pt-20.pb-24.backdrop-blur-md
+                .max-w-lg.mx-auto.max-h-full.bg-white.rounded-lg.flex.flex-col
+                  header.border-b.px-4.py-2.flex.flex-row.justify-between.items-center
+                    h2
+                      span(data-label-update-source="#unit_membership_user_attributes_first_name") = @target_membership.first_name || "New Member"
+                      span = "'s Family"
+
+                    = button_tag type: "button", class: "x-close-button flex flex-row items-center block w-6 h-6 -mr-2 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
+                      i.fa-regular.fa-times.mx-auto.block
+
+                  .px-4.py-4.flex.flex-col.gap-2.bg-stone-100
+                    / span(data-label-update-source="#unit_membership_user_attributes_first_name") = @target_membership.first_name || "Member"
+                    / = label_tag :relationship_direction, "can RSVP on behalf of", class: "mr-1"
+                    / = switch(:relationship, :direction, { label: "can be RSVP'ed by" }, "true", "false")
+
+                    = label_tag :relationship_direction_parent, class: "py-1" do
+                      = radio_button_tag :relationship_direction, :parent, checked: true, class: "mr-2"
+                      span(data-label-update-source="#unit_membership_user_attributes_first_name") = @target_membership.first_name || "Member"
+                      = " can RSVP on behalf of the following members:"
+
+                    = label_tag :relationship_direction_child, class: "py-1" do
+                      = radio_button_tag :relationship_direction, :child, checked: false, class: "mr-2"
+                      = "The following members can RSVP on behalf of "
+                      span(data-label-update-source="#unit_membership_user_attributes_first_name") = @target_membership.first_name || "Member"
+                      = ":"
+
+
+                  - if @target_membership.persisted?
+                    - members = current_unit.unit_memberships.excluding_inactive.joins(:user).where("users.last_name = ?", @target_membership.last_name).order(:first_name)
+                    - members += current_unit.unit_memberships.excluding_inactive.joins(:user).where.not("users.last_name = ?", @target_membership.last_name).order(:last_name, :first_name)
+                  - else
+                    - members = current_unit.unit_memberships.excluding_inactive.joins(:user).order(:last_name, :first_name)
+
+                  ul#relationship_options_children.overflow-y-scroll(data-member-edit-target="parentRelationships")
+                    - members.each do |member|
+                      - next if member == @target_membership
+
+                      li
+                        = label_tag "event_event_organizer_member_#{member.id}",
+                                    class: "block search-item px-4 py-2 hover:bg-stone-100 rounded flex flex-row justify-between items-center",
+                                    for: "event_event_organizer_unit_membership_id_#{member.id}" do
+
+                          .left
+                            i.fa-light.fa-user.fa-fw.text-stone-500.mr-2
+                            = member.display_name
+
+                          = check_box_tag "event[event_organizer_unit_membership_ids][]",
+                                          member.id,
+                                          checked: @target_membership.children.include?(member),
+                                          class: "peer",
+                                          id: "event_event_organizer_unit_membership_id_#{member.id}",
+                                          data: { action: "change->member-edit#changeRelationship", value: member.id, relationship_type: "parent", member_id: @target_membership.id }
+
+                  ul#relationship_options_parents.overflow-y-scroll.hidden(data-member-edit-target="childRelationships")
+                    - members.each do |member|
+                      - next if member == @target_membership
+
+                      li
+                        = label_tag "event_event_organizer_member_#{member.id}",
+                                    class: "block search-item px-4 py-2 hover:bg-stone-100 rounded flex flex-row justify-between items-center",
+                                    for: "event_event_organizer_unit_membership_id_#{member.id}" do
+
+                          .left
+                            i.fa-light.fa-user.fa-fw.text-stone-500.mr-2
+                            = member.display_name
+
+                          = check_box_tag "event[event_organizer_unit_membership_ids][]",
+                                          member.id,
+                                          checked: @target_membership.parents.include?(member),
+                                          class: "peer",
+                                          id: "event_event_organizer_unit_membership_id_#{member.id}",
+                                          data: { action: "change->member-edit#changeRelationship", value: member.id, relationship_type: "child", member_id: @target_membership.id }
+
+                  div.hidden(data-event-edit-target="newOrganizerPrompt")
+                    p.p-2.text-stone-500.hidden(data-event-edit-target="organizerNotFoundPrompt")
+                      | Member not found
+
+                  footer.flex.flex-row.gap-2.justify-end.border-t.px-4.py-3.mt-auto
+                    = button_tag type: "button",
+                                class: "text-sm block w-full md:w-fit md:inline-block px-4 py-1 font-medium bg-brand-500 hover:bg-brand-600 text-white font-medium rounded",
+                                data: { action: "click->modal#close" } do
+                      = "Done"
+
+            // render relationship tags
+            .flex.flex-wrap.gap-1.text-xs#relationships_tag_field(data-controller="tag-field" data-tag-field-checkable-list-outlet="#relationships_popup")
+              - @target_membership.parent_relationships.each do |relationship|
+                = render partial: "relationship_tag", locals: { relationship: relationship, relationship_type: "child" }
+
+              - @target_membership.child_relationships.each do |relationship|
+                = render partial: "relationship_tag", locals: { relationship: relationship, relationship_type: "parent" }
+
+
+          // TAGS
+          .py-2.relative.border-t
+            details(data-controller="modal")
+              summary.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.hover:bg-brand-100.rounded.cursor-pointer(class="active:-mx-[0.4rem]")
+                .font-semibold = "Tags"
+                i.fa-light.fa-plus.fa-fw
+
+      section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.text-sm.text-stone-600.rounded-r-lg.h-full
+        = f.fields_for :user do |u|
+
+          .flex.flex-col.gap-4.pb-4
+            div
+              = u.label :first_name, class: "block mb-1 font-bold"
+              = u.text_field :first_name,
+                            class: "rounded border border-stone-400 p-2 w-full placeholder-stone-400 dark:bg-stone-800 dark:border-stone-700",
+                            required: "",
+                            autocomplete: "off",
+                            placeholder: "First",
+                            autofocus: true,
+                            data: { member_edit_target: "firstName", action: "input->edit-member#updateDisplayName" }
+
+            div
+              = u.label :last_name, class: "block mb-1 font-bold"
+              = u.text_field :last_name,
+                            class: "rounded border border-stone-400 p-2 w-full placeholder-stone-400 dark:bg-stone-800 dark:border-stone-700",
+                            required: "",
+                            autocomplete: "off",
+                            placeholder: "Last",
+                            data: { member_edit_target: "lastName", action: "input->edit-member#updateDisplayName" }
+
+            div
+              = u.label :email, class: "block mb-1 font-bold"
+              = u.email_field :email,
+                              class: "block w-full border border-stone-400 rounded p-2 placeholder-stone-400 dark:bg-stone-800 dark:border-stone-700",
+                              value: @target_membership.display_email,
+                              autocomplete: 'off',
+                              placeholder: t("members.placeholders.email")
+
+            div
+              = u.label :phone, class: "block mb-1 font-bold"
+              = u.phone_field :phone,
+                              class: "block w-full border border-stone-400 rounded p-2 placeholder-stone-400 dark:bg-stone-800 dark:border-stone-700",
+                              autocomplete: "off",
+                              placeholder: t("members.placeholders.phone"),
+                              value: @target_membership.user&.phone&.phony_formatted(country_code: "US")        
+        = render partial: "unit_memberships/partials/modal/communication_settings_fields", locals: { f: f, member: @target_membership }
+
+    footer.sticky.bottom-0.px-6.py-3.bg-white.border-t.border-stone-200.flex.flex-col.md:flex-row.gap-2.justify-end.items-center.text-sm
+      .right.flex.flex-col.md:flex-row.gap-2.w-full.md:w-auto
+        = f.button t("global.close"),
+                  type: "button",
+                  class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded",
+                  data: { action: "click->modal#close" }
+
+        = f.submit f.object.new_record? ? "Add Member" : "Update Member",
+                   id: "accept",
+                   class: "block w-full md:w-fit md:inline-block px-6 py-3 md:py-2 font-medium bg-brand-500 hover:bg-brand-600 disabled:bg-brand-300 disabled:text-brand-50 text-white rounded cursor-pointer",
+                   data: { controller: "input-validation",
+                           input_validation_source_value: "#unit_membership_user_attributes_first_name #unit_membership_user_attributes_last_name",
+                           input_validation_action_value: "enable",
+                           input_validation_condition_value: "not_empty" },
+                   disabled: f.object.new_record?
+
+css:
+  .checked-indicator {
     display: none;
   }
 
-  input.destroy_relationship_input:checked + label.destroy_relationship_label {
+  label:has(input:checked) .checked-indicator {
+    display: block;
+  }
+
+  input.dp-switch + label .switch-container {
+    background-color: rgb(230, 100, 37);
+  }
+
+  #relationship_options_parents {
+    display: none;
+  }
+
+  body:has(#relationship_direction_child:checked) #relationship_options_parents {
+    display: block;
+  }
+
+  body:has(#relationship_direction_child:checked) #relationship_options_children {
     display: none;
   }

@@ -1,4 +1,6 @@
 class Units::DocumentsController < UnitContextController
+  # layout :select_layout
+
   def index
     authorize Document, policy_class: UnitDocumentPolicy
     @documents = current_unit.documents
@@ -85,4 +87,10 @@ class Units::DocumentsController < UnitContextController
     end
   end
   # rubocop:enable Metrics/AbcSize
+
+  def select_layout
+    return "full_page" if action_name == "tag"
+
+    "application"
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_06_112843) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_03_185000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "unaccent"
@@ -232,10 +232,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_06_112843) do
 
   create_table "event_locations", force: :cascade do |t|
     t.integer "event_id", null: false
-    t.integer "location_id", null: false
+    t.integer "location_id"
     t.string "location_type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "url"
   end
 
   create_table "event_organizers", force: :cascade do |t|
@@ -300,6 +301,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_06_112843) do
     t.datetime "rsvp_opens_at"
     t.index ["token"], name: "index_events_on_token", unique: true
     t.index ["unit_id"], name: "index_events_on_unit_id"
+  end
+
+  create_table "external_integrations", force: :cascade do |t|
+    t.string "type"
+    t.string "identifier"
+    t.integer "unit_id"
+    t.string "token"
+    t.jsonb "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "flipper_features", force: :cascade do |t|

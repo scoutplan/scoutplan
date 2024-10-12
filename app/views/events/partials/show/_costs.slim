@@ -1,31 +1,38 @@
 - return unless @event.requires_payment?
 - family_rsvp = FamilyRsvp.new(current_member, @event)
 
-article.px-2.py-4.flex.flex-col.gap-2.items-center.justify-between
-  .fa-stack
-    i.fa-solid.fa-circle.fa-stack-2x.text-lime-600
-    i.fa-solid.fa-dollar.fa-stack-1x.fa-inverse
+article.py-3
+  header.flex.flex-row.justify-between.items-center.mb-3
+    h3.font-semibold
+      i.fa-light.fa-money-bill.mr-2
+      = "Cost"
 
-  - if @event.cost_adult == @event.cost_youth
-    .font-normal
-      .inline = number_to_currency(@event.cost_adult, precision: 0)
-      = " per person"
+  p
+    - if @event.cost_adult == @event.cost_youth
+      .inline.font-normal
+        .inline = number_to_currency(@event.cost_adult, precision: 0)
+        = " per person"
 
-  - else
-    .font-normal
-      .inline = number_to_currency(@event.cost_youth, precision: 0)
-      = " per youth "
+    - else
+      .inline.font-normal
+        .inline = number_to_currency(@event.cost_youth, precision: 0)
+        = " per youth "
 
-    .font-normal
-      .inline = number_to_currency(@event.cost_adult, precision: 0)
-      = " per adult "
+      .inline.font-normal
+        .inline = number_to_currency(@event.cost_adult, precision: 0)
+        = " per adult "
+
+    - if current_unit.transaction_fees_covered_by != "unit"
+      .inline = " + transaction fees"
 
   - if family_rsvp.any_accepted?
-    .text-lime-600.text-center
-      - if family_rsvp.paid? == :in_full
+    - if family_rsvp.paid? == :in_full
+      p.mt-3.text-sm.font-semibold
         i.fa-solid.fa-check.text-lime-600.mr-2
-        = t(".paid")  
-      - else
-        .font-normal.py-2
-          i.fa-solid.fa-exclamation-triangle.text-lime-600.mr-1
-          = t(".unpaid")
+        = t(".paid")
+        
+    - else
+      = link_to "Pay #{number_to_currency(family_rsvp.balance_due)} Online",
+                new_unit_event_online_payment_path(current_unit, @event),
+                class: "block text-center bg-lime-600 hover:bg-lime-700 text-white px-4 py-2 rounded font-medium mt-3",
+                data: { turbo: false }

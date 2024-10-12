@@ -64,12 +64,14 @@ RSpec.describe Event, type: :model do
       end
 
       it "RSVP is open if rsvp_closes_at hasn't occurred yet" do
-        event = FactoryBot.build(:event, :requires_rsvp, :published, starts_at: 5.days.from_now, rsvp_closes_at: 4.days.from_now)
+        event = FactoryBot.build(:event, :requires_rsvp, :published, starts_at:      5.days.from_now,
+                                                                     rsvp_closes_at: 4.days.from_now)
         expect(event.rsvp_open?).to be_truthy
       end
 
       it "RSVP is closed if rsvp_closes_at has passed but starts_at hasn't" do
-        event = FactoryBot.build(:event, :requires_rsvp, starts_at: 5.days.from_now, ends_at: 6.days.from_now, rsvp_closes_at: 4.days.ago)
+        event = FactoryBot.build(:event, :requires_rsvp, starts_at: 5.days.from_now, ends_at: 6.days.from_now,
+rsvp_closes_at: 4.days.ago)
         expect(event.rsvp_open?).to be_falsey
       end
 
@@ -135,6 +137,23 @@ RSpec.describe Event, type: :model do
         event = FactoryBot.create(:event, starts_at: DateTime.now.change({ hour: 16, minute: 0 }))
         expect(Event.imminent).not_to include(event)
       end
+    end
+  end
+
+  describe "event organizers" do
+    before do
+      @event = FactoryBot.create(:event)
+      @unit = @event.unit
+      @member1 = FactoryBot.create(:member, unit: @unit)
+      @member2 = FactoryBot.create(:member, unit: @unit)
+    end
+
+    it "works" do
+      @event.event_organizer_unit_membership_ids = [@member1.id, @member2.id]
+      @event.save!
+      @event.reload
+
+      expect(@event.organizers.count).to eq(2)
     end
   end
 end

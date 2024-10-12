@@ -1,8 +1,10 @@
-= turbo_frame_tag "main"
-  .max-w-xl.mx-auto.mt-4
-    header
-      = back_link_to "Back to #{@target_membership.display_name}",
-                     unit_member_path(current_unit, @target_membership),
-                     class: "text-sky-500"
+= turbo_frame_tag :main, src: unit_members_path(current_unit), loading: :lazy
 
-    = render partial: "form"
+= turbo_frame_tag :modal do
+  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 md:pb-16 bg-black/50 z-20", data: { open: "true", controller: "modal", modal_return_url_value: unit_unit_memberships_path(current_unit) }
+    = render "form", unit_membership: @unit_membership
+
+  = turbo_frame_tag :modal_overlay
+
+= turbo_stream.update "page_title" do
+  = t(".page_title", name: @target_membership.display_name, unit_name: current_unit.name)

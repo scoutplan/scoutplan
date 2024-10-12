@@ -1,13 +1,6 @@
 header.mb-6
-  = link_to [current_unit, @event],
-            class: "font-semibold text-violet-800",
-            data: { turbo_action: "advance" } do
-    i.fa-solid.fa-chevron-left
-    span.ml-2 = "Back to event details"
-
-header.mb-6
   .flex.flex-row.justify-between.items-center
     div
-      h1.text-2xl.md:text-4xl = @event.title
-      h2.text-xl.md:text-2xl.text-stone-500 = t(".title")
+      h1.text-2xl.font-semibold = @event.title + " Dashboard"
+
     = render "dropdown"

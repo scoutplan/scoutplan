@@ -1,13 +1,14 @@
-- return unless @event.attachments.attached? || @event.private_attachments.attached?
+- return unless event.attachments.attached? || event.private_attachments.attached?
 
-- policy = EventPolicy.new(current_member, @event)
+- policy = EventPolicy.new(current_member, event)
 
 section.py-4.border-t.border-stone-800
-  h2.mb-4.text-medium.font-lg
-    = policy.view_private_attachments? ? t("events.show.public_attachments") : t("events.show.attachments")
+  h2.mb-4.font-semibold.text-sm
+    i.fa-light.fa-paperclip.mr-2
+    = "Attachments"
 
   .grid.grid-cols-2.gap-2
-    - @event.attachments.each do |attachment|
+    - event.attachments.each do |attachment|
       = link_to url_for(attachment),
                 class: "block p-4 rounded text-center bg-stone-100 hover:bg-stone-200 transition-colors text-stone-600 block font-bold text-blue-600 hover:underline #{attachment.filename.extension_without_delimiter}-file" do
         
@@ -21,19 +22,9 @@ section.py-4.border-t.border-stone-800
         .font-normal
           = attachment.created_at.strftime("%b %d, %Y")
 
-- if policy.view_private_attachments? && @event.private_attachments.attached?
 
-  section.py-4.border-t.border-stone-800
-    header.mb-4
-      h2.font-medium.text-lg
-        = t("events.show.private_attachments")
-
-      p.text-purple-500.text-sm.font-semibold
-        i.fa-regular.fa-info-circle.mr-2
-        = t("events.show.private_attachments_info")
-
-    .grid.grid-cols-2.gap-2
-      - @event.private_attachments.each do |attachment|
+    - if policy.view_private_attachments? && event.private_attachments.attached?
+      - event.private_attachments.each do |attachment|
         = link_to url_for(attachment),
                   class: "block p-4 rounded text-center bg-stone-100 hover:bg-stone-200 transition-colors text-stone-600 block font-bold text-blue-600 hover:underline #{attachment.filename.extension_without_delimiter}-file" do
           
@@ -42,6 +33,7 @@ section.py-4.border-t.border-stone-800
                         class: "mx-auto block border border-stone-200 shadow mb-2"
           
           .truncate.w-full
+            i.fa-solid.fa-lock.text-brand-500.mr-2(title="Only visible to administrators and organizers")
             = attachment.filename
 
           .font-normal

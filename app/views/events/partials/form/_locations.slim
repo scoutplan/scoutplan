@@ -1,28 +1,106 @@
-section.py-4.grid.grid-cols-1.md:grid-cols-3.gap-8.border-t
-  .col-span-1
-    h2.text-lg = t(".title")
-    p.text-sm.text-sky-700.dark:text-sky-400 Where will this event take place? If you have a departure location, you can add that, too. If it's an online event, you can add a web address.
+section.py-4#location_fields
+  header.mb-3.flex.flex-row.justify-between.items-center.text-stone-950
+    h3.font-semibold
+      i.fa-light.fa-location-dot
+      | &nbsp;&nbsp;
+      = "Location"
 
-  .col-span-2
-    = render partial: "components/switch",
-            locals: { checked: @event.online,
-            label: t(".switch_label"),
-            object_name: "event",
-            method: "online",
-            checked_value: "true",
-            unchecked_value: "false",
-            data: { body_class: "event-online" } }
+  // EVENT LOCATION LIST
+  #event_locations_list.table.relative(class="has-[.table-row]:mb-4")
+    // vertical line
+    .w-px.absolute.top-3.bottom-3.left-2.bg-stone-400
 
-    #fields_online.mt-2
-      = f.label :online_url, t(".label"), class: "block mb-2"
-      = f.url_field :website,
-                    placeholder: t(".placeholder_online"),
-                    autocomplete: "off",
-                    class: "rounded placeholder:text-stone-400 border-stone-400 dark:border-stone-700 w-full dark:bg-black"
+    = render partial: "events/partials/form/event_location", collection: event.event_locations
 
-    #fields_offline
-      #location_dropdowns
-        = render partial: "events/partials/form/location_dropdowns", locals: { unit: current_unit, event: @event }
+
+  details(data-event-edit-target="eventLocationDetails" data-controller="modal")
+    summary(class="group cursor-pointer" id="add_event_location")
+      i.fa-layers.fa-fw.mr-1
+        i.fa-solid.fa-circle.text-white.group-hover:text-brand-500(data-fa-transform="grow-3")
+        i.fa-regular.fa-plus.text-brand-500.group-hover:text-white
+
+      = "Add location"
+
+    .fixed.inset-0.backdrop-blur-md.bg-black/50.z-10.py-16
+      .max-w-md.mx-auto.bg-white.rounded-lg.drop-shadow-overhead.h-full.flex.flex-col
+        header
+          .flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
+            .left
+              h1.text-base = "Add an Event Location"
+
+            .right.flex.flex-row.gap-2.text-stone-500.text-lg
+
+              = button_tag type: "button", class: "x-close-button flex flex-row items-center block w-6 h-6 -mr-2 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
+                i.fa-regular.fa-times.fa-fw
+        
+        section.px-6.py-4.grow.flex.flex-col.gap-2.overflow-y-hidden
+          fieldset.grow-0.shrink-0
+            .grid.grid-cols-4.gap-1.rounded-lg.bg-stone-200.p-2                
+              = label_tag :location_location_type_arrival
+                = radio_button :location, :location_type, :arrival, class: "hidden peer", checked: true
+                .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
+                  i.fa-regular.fa-location-dot.fa-2xl.block.mx-auto.mb-2
+                  = "Arrival"
+
+              = label_tag :location_location_type_departure
+                = radio_button :location, :location_type, :departure, class: "hidden peer"
+                .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
+                  i.fa-regular.fa-car.fa-2xl.block.mx-auto.mb-2
+                  = "Departure"
+
+              = label_tag :location_location_type_activity
+                = radio_button :location, :location_type, :activity, class: "hidden peer"
+                .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
+                  i.fa-regular.fa-flag-pennant.fa-2xl.block.mx-auto.mb-2
+                  = "Activity"
+
+              = label_tag :location_location_type_online
+                = radio_button :location, :location_type, :online, class: "hidden peer"
+                .block.text-center.peer-checked:bg-white.hover:bg-stone-300.rounded.p-2
+                  i.fa-regular.fa-computer.fa-2xl.block.mx-auto.mb-2
+                  = "Online"                    
+
+          section.p-2.rounded-lg.bg-stone-100.shrink.hidden#fields_online
+            = text_field :location, :url, class: "block w-full rounded px-2 py-2 mb-px text-sm border border-stone-200 placeholder-stone-400",
+                         autofill: false,
+                         placeholder: "Online event address (e.g. https://zoom.us/...)",
+                         oninput: "document.querySelector('#accept_button').disabled = this.value.length == 0;"
+
+          section.p-2.rounded-lg.bg-stone-100.shrink.overflow-y-hidden#fields_offline
+            section.p-2.h-full.bg-white.overflow-y-auto(data-controller="searchable-list" data-searchable-list-new-value-url-value="#{unit_location_candidates_path(current_unit)}" data-searchable-list-new-value-method-value="post" data-searchable-list-new-value-param-value="location[name]")
+              // SEARCH FIELD
+              = search_field :location, :name,
+                              class: "block w-full rounded px-2 py-2 mb-px text-sm border border-stone-200 placeholder-stone-400",
+                              placeholder: "Search address book",
+                              data: { action: "input->searchable-list#search", searchable_list_target: "searchField" }
+
+              // ADDRESS BOOK
+              ul.divide-y.px-2#location_list(data-event-edit-target="addressBook")
+                = render partial: "events/partials/form/location", collection: current_unit.locations.order(:name)
+
+              // VALUE NOT FOUND PROMPT
+              p.p-2.text-stone-500.hidden(data-searchable-list-target="valueNotFoundPrompt")
+                = "Location not found"
+
+              // ADD NEW VALUE BUTTON
+              div.hidden(data-searchable-list-target="newValuePrompt" data-action="modal:close@window->searchable-list#reset")
+                = button_tag type: "button",
+                            class: "p-2 font-semibold hover:bg-stone-100 block w-full text-left",
+                            data: { action: "searchable-list#addValue" } do
+                  .flex.flex-row.items-center
+                    i.fa-light.fa-plus.fa-fw.text-stone-500.mr-2
+                    | Add "
+                    .block.max-w-36.truncate(data-searchable-list-target="newValueName")
+                    | " to address book
+
+        footer.border-t.px-6.py-3.flex.flex-col.md:flex-row.gap-2.md:justify-end.sticky.bottom-0
+          = button_tag "Close", type: "button",
+                       class: "block w-full md:w-fit md:inline-block px-6 py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded",
+                       data: { action: "click->modal#close" }
+          
+          = button_tag "Set Event Location", type: "button",
+                       class: "rounded bg-brand-500 disabled:bg-brand-200 text-white px-4 py-2 font-medium cursor-pointer",
+                       disabled: true, id: "accept_button", data: { action: "event-edit#setLocation" }
 
 css:
   #fields_offline {
@@ -33,25 +111,10 @@ css:
     display: none;
   }
 
-  .event-online #fields_online {
+  #location_fields:has(#location_location_type_online:checked) #fields_online {
     display: block;
   }
 
-  .event-online #fields_offline {
+  #location_fields:has(#location_location_type_online:checked) #fields_offline {
     display: none;
-  }
-
-  option[value="_separator"] {
-    font-size: 1px;
-    min-height: 1px;
-    max-height: 1px;
-    padding: 0;
-    background-color: #000000;
-  }
-
-javascript:
-  document.querySelector("#event_online").addEventListener("change", function(event) {
-    if (event.target.checked) {
-      document.querySelector("#event_website").select();
-    }
-  });
+  }  

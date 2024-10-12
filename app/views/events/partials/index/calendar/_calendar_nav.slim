@@ -1,39 +1,36 @@
-nav.calendar-nav.left.text-sm.font-semibold
-  // month picker
-  .month-picker.inline-block.dropdown.relative
-    = link_to "#",
-              class: "dropdown-button inline-block w-40 py-1 px-2 mr-2 border rounded bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600" do
-      
-      .flex.flex-row.justify-between.items-center
-        .hidden.md:inline = context[:first_day_of_month].strftime("%B %Y")
-        .inline.md:hidden = context[:first_day_of_month].strftime("%b %Y")
-        
-        i.fa-chevron-down.fas.ml-2
-    
-    .dropdown-menu.absolute.bg-stone-800.text-stone-50.p-2.rounded.border.dark:border-stone-700
-      = render partial: "events/partials/index/month_picker", locals: { display_date: context[:first_day_of_month] }
-
+nav.calendar-nav.text-sm.z-0
   // prev button
   = link_to calendar_unit_events_path(current_unit, month: @current_month > 1 ? @current_month - 1 : 12, year: @current_month > 1 ? @current_year : @current_year - 1),
             title: t("events.index.buttons.hints.previous"),
             class: "inline-block py-1 px-2 md:px-4 rounded-l border bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
-            data: { turbo_action: "advance" } do
+            data: { turbo_action: "advance", turbo_frame: "main" } do
 
-      i.fa-solid.fa-chevron-left.mr-1
-      .hidden.md:inline = t("events.index.buttons.previous")
+      i.fa-solid.fa-chevron-left
+
+  // month picker
+  .month-picker.inline-block.dropdown.relative
+    = link_to "#",
+              class: "dropdown-button inline-block w-40 py-1 px-2 border border-x-0 bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600" do
+      
+      .flex.flex-row.justify-between.items-center.text-xs.md:text-sm
+        .hidden.md:inline = context[:first_day_of_month].strftime("%B %Y")
+        .inline.md:hidden = context[:first_day_of_month].strftime("%b %Y") 
+        i.fa-chevron-down.fas.ml-2
+    
+    .dropdown-menu.absolute.bg-white.drop-shadow-overhead.p-2.right-0.rounded.border
+      = render partial: "events/partials/index/month_picker", locals: { display_date: context[:first_day_of_month] }
 
   // next button
   = link_to calendar_unit_events_path(current_unit, month: @current_month == 12 ? 1 : @current_month + 1, year: @current_month == 12 ? @current_year + 1 : @current_year),
             title: t("events.index.buttons.hints.next"),
             class: "inline-block py-1 px-2 md:px-4 rounded-r border bg-stone-100 hover:bg-stone-200 border-l-0 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
-            data: { turbo_action: "advance" } do
+            data: { turbo_action: "advance", turbo_frame: "main" } do
 
-      .hidden.md:inline = t("events.index.buttons.next")
-      i.fa-solid.fa-chevron-right.ml-1
+      i.fa-solid.fa-chevron-right
 
   // today button
   = link_to calendar_unit_events_path(current_unit, month: Time.now.month, year: Time.now.year),
             title: t("events.index.buttons.hints.today"),
-            class: "inline-block px-3 py-1 ml-2 border rounded bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
-            data: { turbo_action: "advance" }
+            class: "inline-block px-3 py-1 ml-2 border border-l-0 rounded bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
+            data: { turbo_action: "advance", turbo_frame: "main" }
     = t("events.index.buttons.today")

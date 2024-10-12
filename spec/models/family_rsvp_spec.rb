@@ -15,7 +15,8 @@ RSpec.describe FamilyRsvp, type: :model do
       @parent = FactoryBot.create(:unit_membership, :adult, unit: @unit)
       @parent.child_relationships.create(child_unit_membership: @youth_member)
       @event = FactoryBot.create(:event, :published, :requires_rsvp, unit: @unit, cost_adult: 10, cost_youth: 5)
-      @youth_rsvp = @event.rsvps.create!(unit_membership: @youth_member, respondent: @parent, response: "accepted_pending")
+      @youth_rsvp = @event.rsvps.create!(unit_membership: @youth_member, respondent: @parent,
+                                         response: "accepted_pending")
       @adult_rsvp = @event.rsvps.create!(unit_membership: @parent, respondent: @parent, response: "accepted_pending")
     end
 
@@ -29,14 +30,16 @@ RSpec.describe FamilyRsvp, type: :model do
     end
 
     it "calculates the amount paid" do
-      @event.payments.create(unit_membership: @youth_member, amount: 100, method: "cash", received_by: @parent)
+      @event.payments.create(unit_membership: @youth_member, amount: 100, method: "cash", received_by: @parent,
+                             status: "paid")
       rsvp = FamilyRsvp.new(@youth_member, @event)
       expect(rsvp.amount_paid).to eq(1)
       expect(rsvp.balance_due).to eq(14)
       # expect(rsvp.paid_in_full?).to be_falsey
       expect(rsvp.paid?).to eq(:partial)
 
-      @event.payments.create(unit_membership: @youth_member, amount: 1400, method: "cash", received_by: @parent)
+      @event.payments.create(unit_membership: @youth_member, amount: 1400, method: "cash", received_by: @parent,
+                             status: "paid")
       expect(rsvp.amount_paid).to eq(15)
       expect(rsvp.balance_due).to eq(0)
       # expect(rsvp.paid_in_full?).to be_truthy

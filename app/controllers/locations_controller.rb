@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Controller for manipulating Location objects
 class LocationsController < UnitContextController
   before_action :find_location, except: [:index, :new, :create]
 
@@ -12,12 +11,17 @@ class LocationsController < UnitContextController
     @location = current_unit.locations.new(location_params)
     authorize @location
     @location.save!
-    redirect_to unit_locations_path(current_unit), notice: I18n.t("locations.notices.created")
+
+    respond_to do |format|
+      format.html { redirect_to unit_locations_path(current_unit), notice: I18n.t("locations.notices.created") }
+      format.turbo_stream
+    end
   end
 
   def destroy
     @location.destroy
-    redirect_to unit_locations_path(current_unit), notice: I18n.t("locations.notices.destroyed", location_name: @location.display_name)
+    redirect_to unit_locations_path(current_unit),
+                notice: I18n.t("locations.notices.destroyed", location_name: @location.display_name)
   end
 
   def edit

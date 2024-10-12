@@ -1,5 +1,10 @@
-- event.tags.each do |tag|
-  .font-bold.inline-block.whitespace-nowrap.rounded.px-2.py-1.text-rose-700.border.border-rose-700.dark:border-rose-300.mr-1.text-rose-700.dark:text-rose-300.text-xs.hidden.md:inline-block
-    i.fa-solid.fa-tag.mr-2
-    = tag
-    
+- return if event.tags.empty?
+
+.event-tag-wrapper.flex.flex-row.gap-1.mt-2.text-xs
+  - event.tags.each do |tag|
+    - colors = colors_from_string(tag.name)
+    .font-medium.inline-block.whitespace-nowrap.rounded.pr-3.pt-1.hidden.md:inline-block(style="color:#{colors[600]};")
+      i.fa-regular.fa-tag
+      |&nbsp;
+      = tag
+      

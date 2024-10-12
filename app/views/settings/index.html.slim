@@ -1,55 +1,62 @@
 = turbo_frame_tag "main"
   .mx-auto.max-w-md
     header.mt-8.mb-4.px-2
-      h1.text-4xl.font-bold
+      h1.text-2xl.font-bold
         = "Unit Setup"
-        .text-sm.font-bold.uppercase.tracking-wider
+        .text-sm.font-medium.uppercase.tracking-wider
           = current_unit.name        
 
     .flex.flex-col.divide-y.dark:divide-stone-600
       = link_to unit_setting_path(current_unit, category: "unit_profile"),
-                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100 dark:hover:bg-black",
+                class: "block px-2 py-3 font-medium hover:bg-stone-100 dark:hover:bg-black",
                 data: { turbo_action: "advance" } do
-        i.fa-solid.fa-fw.fa-flag.mr-2
+        i.fa-regular.fa-fw.fa-flag.mr-2
         = "Unit Profile"
 
       = link_to unit_setting_path(current_unit, category: "policies"),
-                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100 dark:hover:bg-black",
+                class: "block px-2 py-3 font-medium hover:bg-stone-100 dark:hover:bg-black",
                 data: { turbo_action: "advance" } do
-        i.fa-solid.fa-fw.fa-user-shield.mr-2
+        i.fa-regular.fa-fw.fa-user-shield.mr-2
         = t(".policies")        
 
       = link_to unit_event_categories_path(current_unit),
-                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100 dark:hover:bg-black",
+                class: "block px-2 py-3 font-medium hover:bg-stone-100 dark:hover:bg-black",
                 data: { turbo_action: "advance" } do
-        i.fa-solid.fa-fw.fa-calendar-lines-pen.mr-2
+        i.fa-regular.fa-fw.fa-calendar-lines-pen.mr-2
         = "Event Categories"
 
       = link_to unit_locations_path(current_unit),
-                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100 dark:hover:bg-black",
+                class: "block px-2 py-3 font-medium hover:bg-stone-100 dark:hover:bg-black",
                 data: { turbo_action: "advance" } do
-        i.fa-solid.fa-fw.fa-address-book.mr-2
+        i.fa-regular.fa-fw.fa-address-book.mr-2
         = "Address Book"
 
       = link_to unit_automated_messages_path(current_unit),
-                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100 dark:hover:bg-black",
+                class: "block px-2 py-3 font-medium hover:bg-stone-100 dark:hover:bg-black",
                 data: { turbo_action: "advance" } do
-        i.fa-solid.fa-fw.fa-envelopes-bulk.mr-2
+        i.fa-regular.fa-fw.fa-envelopes-bulk.mr-2
         = "Automated Messages"
 
       = link_to unit_packing_lists_path(current_unit),
-                class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100 dark:hover:bg-black",
+                class: "block px-2 py-3 font-medium hover:bg-stone-100 dark:hover:bg-black",
                 data: { turbo_action: "advance" } do
-        i.fa-solid.fa-fw.fa-backpack.mr-2
+        i.fa-regular.fa-fw.fa-backpack.mr-2
         = "Packing Lists"
 
       - if Flipper.enabled?(:payments, current_member) || Flipper.enabled?(:payments, current_unit)
         = link_to unit_payments_path(current_unit),
-                  class: "block px-2 py-3 text-lg font-bold hover:bg-stone-100 dark:hover:bg-black",
+                  class: "block px-2 py-3 font-medium hover:bg-stone-100 dark:hover:bg-black",
                   data: { turbo_action: "advance" } do
-          i.fa-solid.fa-fw.fa-credit-card.mr-2.active-hidden
-          i.fa-solid.fa-fw.fa-rotate-right.fa-spin.mr-2.active
+          i.fa-regular.fa-fw.fa-credit-card.mr-2.active-hidden
+          i.fa-regular.fa-fw.fa-rotate-right.fa-spin.mr-2.active
           = "Payments"
+
+      - if Flipper.enabled?(:integrations, current_unit)
+        = link_to unit_integrations_path(current_unit),
+                  class: "block px-2 py-3 font-medium hover:bg-stone-100 dark:hover:bg-black",
+                  data: { turbo_action: "advance" } do
+          i.fa-regular.fa-fw.fa-puzzle-piece.mr-2
+          = "Integrations"
 
   javascript:
     document.title = "Settings · #{current_unit.name}"

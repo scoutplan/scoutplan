@@ -8,6 +8,7 @@ class Unit < ApplicationRecord
   has_many :documents, as: :documentable
   has_many :events
   has_many :event_categories
+  has_many :external_integrations, dependent: :destroy
   has_many :unit_memberships
   has_many :users, through: :unit_memberships
   has_many :locations, through: :events
@@ -36,6 +37,8 @@ class Unit < ApplicationRecord
   before_validation :generate_slug
 
   enum status: { active: "active", inactive: "inactive" }
+
+  delegate :transaction_fees_covered_by, to: :payment_account
 
   has_settings class_name: "UnitSettings" do |s|
     s.key :appearance, defaults: { main_color: "#003F87" }

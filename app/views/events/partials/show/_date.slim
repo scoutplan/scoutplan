@@ -2,8 +2,8 @@
 - multiday = duration_in_days.positive?
 - max_intermediate_days = 3
 
-section.py-4
-    h2.font-semibold.text-xl.mb-3.leading-none
+section
+    h2.font-medium.mb-1
       // month name(s)
       = @presenter.month_name
 
@@ -14,37 +14,37 @@ section.py-4
           .absolute.top-1/2.w-full.border-t.border-stone-400.dark:border-stone-500
 
         // start day number
-        .start-dayz.block.dark:bg-stone-900.pr-2.relative
-          .inline-block.bg-white.dark:bg-stone-900.pr-1.text-6xl = @event.starts_at.day
+        .start-dayz.block.pr-2.relative
+          .inline-block.bg-white.pr-1.text-6xl = @event.starts_at.day
 
         // moons, if event is multi-day and less than 4 days long
         - if multiday && duration_in_days < max_intermediate_days
-          .interim-day.bg-white.dark:bg-stone-900.text-purple-500.px-2.relative
+          .interim-day.bg-white.text-purple-500.px-2.relative
             i.fa-solid.fa-moon
 
           - interim_date = @event.starts_at + 1.day
           - while interim_date.beginning_of_day < @event.ends_at.beginning_of_day
-            .interim-day.bg-white.dark:bg-stone-900.text-stone-500.px-2.relative
+            .interim-day.bg-white.text-stone-500.px-2.relative
               .text-2xl = interim_date.day
 
-            .interim-day.bg-white.dark:bg-stone-900.text-purple-500.px-1.relative
+            .interim-day.bg-white.text-purple-500.px-1.relative
               i.fa-solid.fa-moon
 
             - interim_date = interim_date + 1.day
 
         // moon and blurb if event is multi-day and 4 or more days long
         - elsif multiday
-          .interim-day.bg-white.dark:bg-stone-900.px-1.text-center.relative.font-semibold.text-lg
+          .interim-day.bg-white.px-1.text-center.relative.font-semibold
             i.fa-solid.fa-fw.fa-moon.text-purple-500.mr-1
             = "#{duration_in_days} Nights"
 
         // end day number, if multi-day
         - if multiday
-          .end-day.dark:bg-stone-900.pl-2.text-right.relative
-            .inline-block.bg-white.dark:bg-stone-900.pl-1.text-6xl = @event.ends_at.day
+          .end-day.pl-2.text-right.relative
+            .inline-block.bg-white.pl-1.text-6xl = @event.ends_at.day
 
       // day name(s)
-      .flex.flex-row.justify-between.items-center.font-bold.text-lg.text-stone-500
+      .flex.flex-row.justify-between.items-center.font-semibold.text-stone-500
         .uppercase.tracking-wider = @event.starts_at.in_time_zone.strftime('%a')
         - if multiday
           .uppercase.tracking-wider = @event.ends_at.in_time_zone.strftime('%a')  
@@ -67,12 +67,12 @@ section.py-4
             .font-semibold.whitespace-nowrap.text-xl
               = @event.ends_at.in_time_zone.strftime("%-I:%M")
               | &thinsp;
-              .inline.text-stone-600.text-sm = @event.starts_at.in_time_zone.strftime("%p")              
+              .inline.text-stone-600.text-sm = @event.ends_at.in_time_zone.strftime("%p")              
 
     - if @event.series?
       .text-sm.text-gray-500.mt-4
         i.fas.fa-repeat.mr-2
-        = t("events.show.series_count", count: @event.series_children.count + @event.series_siblings.count + 1)
+        = t("events.show.series_count", count: @event.series.count)
 
     - if @event.shifts?
       .text-sm.font-bold.mt-4

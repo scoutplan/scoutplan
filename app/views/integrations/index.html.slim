@@ -1,0 +1,13 @@
+= turbo_frame_tag "main"
+  .max-w-md.mx-auto
+    header.mt-8.mb-4
+      = link_to unit_settings_path(current_unit), class: "text-teal-600 block mb-4" do
+        i.fas.fa-arrow-left.mr-2
+        | Back to Unit Settings
+
+      h1.text-2xl.font-bold
+        = "Integrations"
+
+    = link_to new_unit_integration_path(current_unit) do
+      i.fa-brands.fa-instagram.mr-2
+      = "Connect Your Instagram Account"

@@ -1,40 +1,85 @@
-= turbo_frame_tag "main"
-  /! Current member id: #{current_member&.id}
-  /! Current unit id: #{current_unit&.id}
-  /! Current user id: #{current_user&.id}
-  /! #{@event&.email}
+/! Current member id: #{current_member&.id}
+/! Current unit id: #{current_unit&.id}
+/! Current user id: #{current_user&.id}
+/! #{@event&.email}
 
-  article.event.mx-auto.max-w-3xl
-    header.mb-6
-      - if params[:from] == "planner"
-        = link_to unit_plans_path(current_unit, anchor: "event-#{current_unit.id}"),
-                  class: "font-semibold text-sky-500 hover:text-sky-600",
-                  data: { turbo_action: "advance" } do
-          i.fa-solid.fa-chevron-left
-          span.ml-2 = "Back to Planner"
-      - else
-        = link_to unit_events_path(current_unit, anchor: "#{@event.id}"),
-                  class: "font-semibold text-sky-500 hover:text-sky-600",
-                  data: { turbo_action: "advance" } do
-          i.fa-solid.fa-chevron-left
-          span.ml-2 = "Back to event schedule"
+= turbo_frame_tag :main, src: unit_events_path(current_unit), loading: :lazy
 
-    .p-0.md:p-12.rounded-lg.bg-white.dark:bg-stone-900.md:shadow-overhead
-      = render partial: "events/partials/show/header"
+= turbo_frame_tag :modal do
+  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 md:pb-16 bg-black/50 z-30", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
+    article.event-data.mx-auto.bg-white.rounded-lg.max-h-full.flex.flex-col.overflow-y-hidden.dark:text-stone-800.max-w-2xl
+      header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-600
+        .left
+          i.fa-light.text-white(style="color: #{@event&.category&.color}" class="fa-#{@event&.category&.glyph}")
+          | &nbsp;
+          = @event.category_name
 
-      section.grid.grid-col-1.divide-y.divide-stone-300.dark:divide-stone-700
-        = render partial: "events/partials/show/date"
-        = render partial: "events/partials/show/rsvp_row"
-        = render partial: "events/partials/show/location"
-        = render partial: "events/partials/show/chat"
-        = render partial: "events/partials/show/payment"
-        = render partial: "events/partials/show/weather"
-        = render partial: "events/partials/show/description"
-        = render partial: "events/partials/show/contact"
-        = render partial: "events/partials/show/attachments"
+        .right.flex.flex-row.gap-2.text-stone-500.text-lg.-mr-2
+          - if @event.previous.present?
+            = link_to unit_event_path(current_unit, @event.previous(current_member)),
+                      class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900",
+                      title: "#{@event.previous.title} on #{@event.previous.starts_at.strftime('%B %-d')}",
+                      data: { turbo_action: "advance" } do
+              i.fa-light.fa-chevron-up.fa-fw
 
-      = render partial: "events/partials/show/packing_lists"
-  = render partial: "events/partials/show/watermarks"
+          - if @event.next.present?
+            = link_to unit_event_path(current_unit, @event.next(current_member)),
+                      class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900",
+                      title: "#{@event.next.title} on #{@event.next.starts_at.strftime('%B %-d')}",
+                      data: { turbo_action: "advance" } do
+              i.fa-light.fa-chevron-down.fa-fw
 
-javascript:
-  document.title = "#{@event.title.html_safe} · #{current_unit.name.html_safe}"
+          .dropdown.relative(data-controller="dropdown")
+            = link_to "#", class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
+              i.fa-light.fa-ellipsis-stroke.fa-fw
+
+            .dropdown-menu.absolute.right-0.bg-white.z-20.rounded-lg.border.top-full.animate-pop-open.w-72.text-sm.mt-1.drop-shadow-overhead.p-2.text-stone-700
+              ul
+                = render partial: "events/partials/show/sidecar/edit"
+                = render partial: "events/partials/show/sidecar/duplicate"
+                = render partial: "events/partials/show/sidecar/history"
+                = render partial: "events/partials/show/sidecar/download_brief"
+                = render partial: "events/partials/show/sidecar/add_to_calendar"
+
+          = button_tag type: "button", class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900", data: { action: "modal#close" }, title: "Close this screen" do
+            i.fa-light.fa-times.fa-fw
+
+      - if @event.cover_photo.attached?
+        header.relative
+          = image_tag @event.cover_photo.representation(resize_to_fit: [800, 800]), class: "w-full h-24 sm:h-36 md:h-48 object-cover object-center", alt: @event.title
+
+          .absolute.left-0.right-0.bottom-0.h-1/2.bg-gradient-to-t.from-stone-900.opacity-80
+
+          .absolute.left-6.bottom-3.text-white.text-2xl.font-medium
+            = @event.title
+
+      section.overflow-y-auto
+        section.flex.flex-col.md:flex-row.w-full.overflow-auto.block
+          section.event-maindata.w-full.md:w-2/3.grow.px-6.py-3.overflow-auto.block.min-h-96
+            = render partial: "events/partials/show/header"
+
+            .flex.flex-col.gap-4.divide-y.divide-stone-200
+              = render partial: "events/partials/show/date"
+              = render partial: "events/partials/show/description"
+              = render partial: "events/partials/show/locations", locals: { event: @event }
+              = render partial: "events/partials/show/weather"
+              = render partial: "events/partials/show/attachments", locals: { event: @event }
+
+          aside.event-metadata.w-full.md:w-1/3.p-6.bg-stone-50.flex.flex-col.divide-y.min-h-96.divide-stone-300.gap-4.text-sm.text-stone-600.rounded-r-lg.overflow-auto.hidden(class="has-[*]:block")
+            = render partial: "events/partials/show/rsvp", locals: { event: @event }
+            = render partial: "events/partials/show/costs"
+            = render partial: "events/partials/show/organize", locals: { event: @event }
+            = render partial: "events/partials/show/contact"
+            = render partial: "events/partials/show/tags", locals: { event: @event }          
+
+    = render partial: "events/partials/show/watermarks"
+
+  javascript:
+    window.addEventListener("turbo:load", () => {
+      document.title = "#{@event.title} - #{current_unit.name}";
+    });
+
+  css:
+    .event-data:has(.event-metadata *) {
+      max-width: 56rem;
+    }

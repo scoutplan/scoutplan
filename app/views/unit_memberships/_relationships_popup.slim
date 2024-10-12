@@ -1,0 +1,15 @@
+.px-2
+  = text_field :organizer_search, nil, class: "block w-full rounded px-2 py-2 mb-2 text-sm border border-stone-200 placeholder-stone-400",
+                placeholder: "Search members",
+                autofocus: true,
+                autocomplete: "off",
+                data: { action: "input->searchable-list#search", searchable_list_target: "searchField" }
+
+ul.max-h-72.overflow-y-auto#organizer_list
+  - current_unit.unit_memberships.each do |member|
+    = render partial: "member_option", locals: { member: member, checked: false }
+
+div.hidden(data-event-edit-target="newOrganizerPrompt")
+  p.p-2.text-stone-500.hidden(data-event-edit-target="organizerNotFoundPrompt")
+    | Member not found
+  

@@ -4,7 +4,7 @@ header.flex.flex-row.justify-between.items-center.pb-4.mb-2.border-b.dark:border
               class: "block dropdown-button",
               data: { turbo_frame: "main" } do
       .flex.flex-row.items-center
-        h1.font-bold.text-xl.md:text-4xl = title.titleize
+        h1.font-semibold.text-xl.md:text-2xl = title.titleize
         i.fa-solid.fa-chevron-down.ml-3.text-stone-500.dark:text-stone-400
 
     nav.dropdown-menu.absolute.top-full.right-0.mt-2.w-full.md:w-48.bg-messages-700.text-white.drop-shadow-lg.rounded-b
@@ -24,7 +24,7 @@ header.flex.flex-row.justify-between.items-center.pb-4.mb-2.border-b.dark:border
     - if policy(:message).new? || true
       = link_to new_unit_message_path(current_unit),
                 class: "block px-4 py-2 rounded font-bold text-white bg-messages-700 hover:bg-messages-800 dark:hover:bg-messages-600",
-                data: { turbo_frame: "main", turbo_action: "advance" },
+                data: { turbo_frame: "modal", turbo_action: "advance" },
                 title: t("messages.tooltips.new_message") do
                 
         i.fa-plus.fas.mr-2

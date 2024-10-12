@@ -11,7 +11,9 @@ class EventsController < UnitContextController
   layout :current_layout
 
   before_action :authenticate_user!, if: :needs_authentication?
-  before_action :find_event, except: %i[index list calendar threeup paged_list spreadsheet create new bulk_publish public my_rsvps signups repeat_options]
+  before_action :find_event,
+                except: %i[index list calendar threeup paged_list spreadsheet create new bulk_publish public my_rsvps signups
+                           repeat_options]
   before_action :collate_rsvps, only: [:show, :rsvps]
   before_action :set_calendar_dates, only: [:calendar, :list, :paged_list]
   before_action :remember_unit_events_path, only: [:list, :calendar]
@@ -25,7 +27,7 @@ class EventsController < UnitContextController
 
   def index
     variant = cookies[:event_index_variation] || "list"
-    # variant ||= "list"
+
     case variant
     when "calendar"
       redirect_to calendar_redirect_unit_events_path(current_unit)
@@ -61,8 +63,6 @@ class EventsController < UnitContextController
   end
 
   def list
-    request.variant = :mobile if mobile_device?
-
     respond_to do |format|
       format.html do
         @current_month = params[:current_month]&.split("-")&.map(&:to_i)
@@ -79,6 +79,7 @@ class EventsController < UnitContextController
     find_fast_list_events
   end
 
+  # TODO: clean this up
   def threeup
     @query_year = params[:year]&.to_i || Date.current.year
     @query_month = params[:month]&.to_i || Date.current.month
@@ -141,12 +142,8 @@ class EventsController < UnitContextController
   end
   # rubocop:enable Metrics/PerceivedComplexity
 
-  # GET /:unit_id/events/:event_id/edit
   def edit
     authorize @event
-    %w[departure arrival activity].each do |location_type|
-      @event.event_locations.find_or_initialize_by(location_type: location_type)
-    end
   end
 
   # GET /units/:unit_id/events/:id/rsvp
@@ -162,7 +159,9 @@ class EventsController < UnitContextController
   def new
     if params[:parent_event_id]
       @parent_event = current_unit.events.find(params[:parent_event_id])
-      redirect_to unit_events_path(current_unit), status: :user_not_authorized unless EventPolicy.new(current_member, @parent_event).edit?
+      unless EventPolicy.new(current_member, @parent_event).edit?
+        redirect_to unit_events_path(current_unit), status: :user_not_authorized
+      end
     end
 
     if (source_event_id = params[:source_event_id])
@@ -176,44 +175,48 @@ class EventsController < UnitContextController
 
   # POST /:unit_id/events
   def create
-    authorize :event, :create?
-    service = EventCreationService.new(current_unit)
-    @event = service.create(event_params)
-    render "new" and return unless @event.valid?
+    @event = current_unit.events.new(event_params)
+    authorize @event
 
-    EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
-    EventService.new(@event, params).process_event_shifts
-    return unless @event.present?
+    if @event.save!
+      # puts params.inspect
+      # authorize :event, :create?
+      # service = EventCreationService.new(current_unit)
+      # @event = service.create(event_params)
+      # render "new" and return unless @event.valid?
 
-    if params[:event][:attachments].present?
-      params[:event][:attachments].each do |attachment|
-        @event.attachments.attach(attachment)
+      # # EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
+      # EventService.new(@event, params).process_event_shifts
+      # return unless @event.present?
+
+      if params[:event][:attachments].present?
+        params[:event][:attachments].each do |attachment|
+          @event.attachments.attach(attachment)
+        end
       end
-    end
 
-    redirect_to [current_unit, @event], notice: t("helpers.label.event.create_confirmation", event_name: @event.title)
+      redirect_to [current_unit, @event], notice: t("helpers.label.event.create_confirmation", event_name: @event.title)
+    else
+      redirect_to "new", alert: "Event could not be created."
+    end
   end
 
   # PATCH /:unit_id/events/:event_id
   def update
-    case params[:event_action]
-    when "delete" then destroy
-    when "delete_series" then destroy_series
-    else
-      update_event
+    @event.current_member = current_member
+    update_event
 
-      respond_to do |format|
-        format.html { redirect_after_update }
-        format.turbo_stream
-      end
+    respond_to do |format|
+      format.html { redirect_after_update }
+      format.turbo_stream
     end
   end
 
   def redirect_after_update
     if cookies[:event_index_variation] == "calendar"
-      redirect_to unit_events_path(current_unit), notice: t("events.update_confirmation", title: @event.title)
+      redirect_to unit_events_path(current_unit)
     else
-      redirect_to unit_event_path(@event.unit, @event), notice: t("events.update_confirmation", title: @event.title)
+      redirect_to unit_event_path(@event.unit, @event)
     end
   end
 
@@ -224,7 +227,9 @@ class EventsController < UnitContextController
 
     EventService.new(@event, params).process_event_shifts
     EventService.new(@event, params).process_library_attachments
-    EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
+    # EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
+
+    @event.cover_photo.purge if params[:remove_cover_photo] == "1"
   end
 
   def destroy
@@ -235,7 +240,9 @@ class EventsController < UnitContextController
 
     @event.destroy!
     respond_to do |format|
-      format.html { redirect_to unit_events_path(current_unit), notice: "Event has been permanently removed from the schedule." }
+      format.html do
+        redirect_to unit_events_path(current_unit), notice: "Event has been permanently removed from the schedule."
+      end
       format.turbo_stream
     end
   end
@@ -312,7 +319,7 @@ class EventsController < UnitContextController
   def perform_cancellation
     service = EventCancellationService.new(@event, event_params)
 
-    result = service.cancel
+    service.cancel(params[:delete])
 
     redirect_to unit_events_path(current_unit), notice: "Event has been cancelled."
   end
@@ -342,15 +349,16 @@ class EventsController < UnitContextController
       starts_at:      28.days.from_now.next_occurring(:saturday).change({ hour: 10 }),
       ends_at:        28.days.from_now.next_occurring(:saturday).change({ hour: 16 }),
       rsvp_closes_at: 21.days.from_now.next_occurring(:saturday).change({ hour: 10 }),
-      rsvp_opens_at:  Date.today
+      rsvp_opens_at:  Date.today,
+      event_category: current_unit.event_categories.first
     )
     if (date_s = params[:date]).present?
       @event.starts_at = date_s.to_date
       @event.ends_at = date_s.to_date
     end
-    %w[departure arrival activity].each do |location_type|
-      @event.event_locations.find_or_initialize_by(location_type: location_type)
-    end
+    # %w[departure arrival activity].each do |location_type|
+    #   @event.event_locations.find_or_initialize_by(location_type: location_type)
+    # end
     set_default_times
     @member_rsvps = current_member.event_rsvps
   end
@@ -393,13 +401,16 @@ class EventsController < UnitContextController
                                       :all_day, :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
                                       :max_total_attendees, :rsvp_closes_at, :rsvp_opens_at,
-                                      :note, :cost_youth, :cost_adult, :online, :website, :tag_list,
+                                      :note, :cost_youth, :cost_adult, :online, :website,
                                       :notify_members, :notify_recipients, :notify_message, :document_library_ids,
-                                      packing_list_ids: [], attachments: [], private_attachments: [],
-                                      event_locations_attributes: [:id, :location_type, :location_id, :event_id, :_destroy],
+                                      :cover_photo, packing_list_ids: [], attachments: [], private_attachments: [], tag_list: [],
+                                      event_organizer_unit_membership_ids: [],
+                                      event_locations_attributes: [:id, :location_type, :location_id, :event_id, :url, :_destroy],
                                       event_organizers_attributes: [:unit_membership_id])
+    p[:tag_list] ||= []
     p[:packing_list_ids] = p[:packing_list_ids].reject(&:blank?) if p[:packing_list_ids].present?
-    process_event_locations_attributes(p)
+
+    # process_event_locations_attributes(p)
     process_packlist_ids(p)
   end
 
@@ -452,6 +463,7 @@ class EventsController < UnitContextController
 
   def current_layout
     return "public" unless user_signed_in?
+    return "modal_overlay" if action_name == "cancel"
 
     "application"
   end
@@ -488,7 +500,8 @@ class EventsController < UnitContextController
   def scope_for_list
     scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = if params[:season] == "next"
-              scope.where("starts_at BETWEEN ? AND ?", current_unit.next_season_starts_at, current_unit.next_season_ends_at)
+              scope.where("starts_at BETWEEN ? AND ?", current_unit.next_season_starts_at,
+                          current_unit.next_season_ends_at)
             else
               scope.where("starts_at BETWEEN ? AND ?", @start_date.in_time_zone, @end_date.in_time_zone)
             end
@@ -499,7 +512,8 @@ class EventsController < UnitContextController
   def scope_for_pdf
     scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = if params[:season] == "next"
-              scope.where("starts_at BETWEEN ? AND ?", current_unit.next_season_starts_at, current_unit.next_season_ends_at)
+              scope.where("starts_at BETWEEN ? AND ?", current_unit.next_season_starts_at,
+                          current_unit.next_season_ends_at)
             else
               scope.where("starts_at BETWEEN ? AND ?", Date.current.beginning_of_month, current_unit.season_ends_at)
             end
@@ -522,6 +536,8 @@ class EventsController < UnitContextController
   end
 
   def find_list_events
+    # GearedPagination::Ratios.send(:remove_const, :DEFAULTS) if defined?(GearedPagination::Ratios::DEFAULT)
+    # GearedPagination::Ratios.const_set("DEFAULTS", [15, 30, 50, 100])
     scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
     scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
     scope = params[:before].present? ? scope.where("id < ?", params[:before]) : scope.future

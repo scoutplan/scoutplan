@@ -11,13 +11,13 @@ class Location < ApplicationRecord
   validates_presence_of :name
 
   def full_address
-    return map_name.strip.gsub(/\,$/, "").gsub(" , ", " ") if map_name.present?
+    return map_name.strip.gsub(/,$/, "").gsub(" , ", " ") if map_name.present?
 
     display_address
   end
 
   def map_address
-    [map_name || name, address].compact.join(", ").strip.gsub(/\,$/, "").gsub(" , ", " ")
+    [map_name || name, address].compact.join(", ").strip.gsub(/,$/, "").gsub(" , ", " ")
   end
 
   def display_name
@@ -26,7 +26,7 @@ class Location < ApplicationRecord
 
   # for use in dropdowns
   def display_address
-    [name, address].compact.join(", ").strip.gsub(/\,$/, "").gsub(" , ", " ")
+    [name, address].compact.join(", ").strip.gsub(/,$/, "").gsub(" , ", " ")
   end
 
   def mappable?

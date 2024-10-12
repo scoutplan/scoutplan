@@ -1,13 +1,7 @@
-= turbo_frame_tag "main"
-  .mx-auto.max-w-4xl
-    = link_to unit_event_path(current_unit, @event),
-              class: "block text-sky-800 dark:text-sky-300 hover:text-sky-900 mb-4 font-bold",
-              data: { turbo_action: "advance" } do
-      i.fa-solid.fa-chevron-left.mr-2
-      = "Back to #{@event.title}"
+= turbo_frame_tag :main, src: unit_events_path(current_unit), loading: :lazy
 
-    .md:p-12.rounded-lg.bg-white.dark:bg-stone-900.drop-shadow-overhead
-      = render partial: "form"
+= turbo_frame_tag :modal do
+  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 md:pb-16 bg-black/50 z-20", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
+    = render "form", event: @event
 
-javascript:
-  document.title = "Edit: #{@event.title} · #{current_unit.name}"
+  = turbo_frame_tag :modal_overlay

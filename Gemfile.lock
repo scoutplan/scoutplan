@@ -203,6 +203,7 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.5.1)
     docile (1.4.0)
+    domain_name (0.6.20240107)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -254,6 +255,9 @@ GEM
     hashdiff (1.1.0)
     hashie (5.0.0)
     honeybadger (5.13.0)
+    http-accept (1.7.0)
+    http-cookie (1.0.6)
+      domain_name (~> 0.5)
     humanize (2.5.1)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
@@ -299,6 +303,9 @@ GEM
     matrix (0.4.2)
     memory_profiler (1.0.1)
     method_source (1.0.0)
+    mime-types (3.5.2)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2024.0806)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
     minitest (5.24.0)
@@ -317,6 +324,7 @@ GEM
       timeout
     net-smtp (0.5.0)
       net-protocol
+    netrc (0.11.0)
     nio4r (2.7.3)
     nokogiri (1.16.6-aarch64-linux)
       racc (~> 1.4)
@@ -456,6 +464,11 @@ GEM
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
+    rest-client (2.1.0)
+      http-accept (>= 1.7.0, < 2.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     rexml (3.3.0)
       strscan
     rspec-core (3.13.0)
@@ -664,7 +677,6 @@ DEPENDENCIES
   dotenv-rails (~> 2.7)
   factory_bot_rails (~> 6.2)
   faker
-  faraday
   flamegraph
   flipper
   flipper-active_record
@@ -705,6 +717,7 @@ DEPENDENCIES
   rails-html-sanitizer (>= 1.4.4)
   redis (~> 5.0)
   remote_syslog_logger
+  rest-client
   rexml
   rspec-rails (~> 6.0)
   rubocop

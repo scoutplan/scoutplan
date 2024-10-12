@@ -1,0 +1,15 @@
+- return if event.tags.empty?
+
+section.pt-2
+  header.mb-3
+    h3.font-bold
+      i.fa-light.fa-tag.fa-fw.mr-1
+      | Tags
+
+  - event.tags.each do |tag|
+    - colors = colors_from_string(tag.name)
+
+    .font-medium.inline-block.whitespace-nowrap.rounded.px-2.py-1.mr-1.mb-1.text-xs(style="background-color: #{colors[100]}; color:#{colors[800]};")
+      i.fa-regular.fa-tag
+      | &nbsp;
+      = tag

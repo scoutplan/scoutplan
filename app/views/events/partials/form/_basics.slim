@@ -1,43 +1,13 @@
-section.py-4.grid.grid-cols-1.md:grid-cols-3.gap-8.border-t
-  .col-span-1
-    h2.text-lg Basics
-    p.text-sm.text-sky-700.dark:text-sky-400.hidden.md:block Give your event a name, a category, and an optional short description.
-      Publish your event when you're ready for everyone in your unit to see it, or leave it as a draft to work on later.
+section.flex.flex-col.gap-2.pb-4.-mt-2
+  = f.text_field :title,
+    class: "text-xl w-full placeholder-stone-300 border-0 rounded p-1 -mx-1 font-medium",
+    autocomplete: "off",
+    required: true,
+    autofocus: true,
+    placeholder: t("events.placeholders.title"),
+    data: { event_edit_target: "title", action: "event-edit#validate" }
 
-  .col-span-2
-    div.field.mb-4
-      = f.label :title, class: "block mb-1"
-      = f.text_field :title,
-        class: "border border-stone-400 rounded p-2 w-full dark:bg-black dark:border-stone-600 hover:ring-brand-500 placeholder-stone-300 dark:placeholder-stone-500",
-        autocomplete: "off",
-        required: true,
-        autofocus: true,
-        placeholder: t("events.placeholders.title")
-
-    div.field.mb-4
-      = f.label :category, class: "block mb-1"
-      = f.select :event_category_id,
-                  @event.unit.event_categories.order(:name).collect { |c| [ c.name, c.id ] },
-                  { prompt: t("events.placeholders.category"), selected: @event.event_category_id },
-                  { class: "border border-stone-400 rounded py-2 bg-white dark:bg-black dark:border-stone-600 w-full",
-                    required: "A category is required" }
-
-    div.field.mb-4
-      = f.label :short_description, class: "block mb-1"
-      = f.text_field :short_description,
-        class: "w-full border border-stone-400 dark:border-stone-700 rounded bg-white dark:bg-black p-2 placeholder-stone-300 dark:placeholder-stone-500",
-        autocomplete: "off",
-        placeholder: t("events.edit.short_description_placeholder")
-
-    div.field.mb-4.flex.flex-row.items-center
-      .inline-block.mr-2 = "Draft"
-      = render partial: "components/switch",
-              locals: { checked: @event.published?,
-                        label: t("events.edit.published"),
-                        object_name: "event",
-                        method: "status",
-                        checked_value: "published",
-                        unchecked_value: "draft" }
-
-    div.field.mb-4
-      = render partial: "events/partials/form/tags", locals: { f: f }
+  = f.text_field :short_description,
+    class: "w-full placeholder-stone-400 border-0 rounded focus:ring-brand-500 p-1 -mx-1 text-sm",
+    autocomplete: "off",
+    placeholder: t("events.edit.short_description_placeholder")

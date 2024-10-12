@@ -2,49 +2,54 @@ doctype html
 html.scroll-smooth
   head
     title#page_title = yield :title
+    
     meta name="viewport" content="width=device-width,initial-scale=1"
+    meta name="turbo-refresh-method" content="morph"
+
     = csrf_meta_tags
+    
     = csp_meta_tag
+    
     = favicon_link_tag "favicon.ico"
+
     = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
     = stylesheet_link_tag "application", "data-turbo-track": "reload"
     = stylesheet_link_tag "https://rsms.me/inter/inter.css"
+    = stylesheet_link_tag "https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css"
 
     = javascript_importmap_tags
+    
     = javascript_include_tag "https://kit.fontawesome.com/#{ ENV['FONT_AWESOME_KIT_ID'] }.js", crossorigin: "anonymous"
     = javascript_include_tag "main"
+    = javascript_include_tag "https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"
 
     link(rel="manifest" crossorigin="use-credentials" href="/manifest.json")
 
     = yield :head
 
-  body(class="dark:bg-stone-900 dark:text-stone-200 text-stone-900 #{controller_name} #{action_name} #{yield :body_classes}")
-    = render partial: "layouts/nav"
-    = render partial: "layouts/nav_mobile"
-    / = render partial: "layouts/flash"
-    = render partial: "layouts/password_prompt"
+  body(data-controller="label-update" class="has-[section[role='dialog']]:background-green-500 dark:bg-stone-900 dark:text-stone-200 text-stone-900 group/controller #{controller_name.gsub('_', '-')} #{action_name} #{yield :body_classes} h-full group/sidebar sidebar-open")
+    .flex.flex-row.h-full
+      .z-10.fixed.inset-0.bg-black/50.hidden(class="group-[.sidebar-open]/sidebar:block group-[.sidebar-open]/sidebar:md:hidden")
 
-    main.px-2.py-2.md:py-6
-      = turbo_frame_tag "main"
-        = yield
+      aside.z-20.flex.fixed.md:relative.shrink-0.w-80.bg-stone-50.h-lvh.transition-all.md:fixedz.p-3.-ml-80(data-controller="sidebar" class="group-[.sidebar-open]/sidebar:ml-0")
+        = render partial: "layouts/nav"
+
+      main.w-full.h-lvh.flex-grow.overflow-y-auto
+        = turbo_frame_tag :flash do
+          = render partial: "layouts/flash"
+          
+        = render partial: "layouts/password_prompt"
+        = turbo_frame_tag :main
+          = yield
 
     footer
       /!  CI #{ENV["GITHUB_RUN_NUMBER"]}
 
-    = render partial: "search/overlay"
-  
+    = turbo_frame_tag :modal
+
   - content_for :title do
     = (@page_title || []).reverse.join(" · ")
     
-  javascript:
-    function setElemDisplay(elem, show) {
-      var elem = document.querySelector(elem);
-      elem.style.display = show ? 'block' : 'none';
-    }
-
-    document.documentElement.addEventListener("turbo:load", function(event) {
-      document.body.classList.remove("showing-mobile-menu");
-    });
 
   scss:
     .submit-conjunction {
@@ -87,6 +92,10 @@ html.scroll-smooth
     h1 {
       font-weight: 400;
     }
+
+    html:has(section[role="dialog"][data-open="true"]) {
+      overflow: hidden;
+    }     
 
   /! Current member id: #{current_member&.id}
   /! Current unit id: #{current_unit&.id}

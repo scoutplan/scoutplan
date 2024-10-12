@@ -15,7 +15,7 @@ header.mb-6.mt-4
 
   article.pb-8
     h3.font-bold.mb-1 = t(".titles.public_calendar")
-    p.mb-2 When enabled, parents/guardians can allow their youth to RSVP to events. Youth RSVPs are pending until a parent/guardian approves them.
+    p.mb-2 When enabled, the unit's calendar is visible to the public. Events are displayed on the unit's public page.
     = switch("unit", "public_calendar",
              { label: t(".buttons.public_calendar"), checked: current_unit.public_calendar? },
              "true", "false")  

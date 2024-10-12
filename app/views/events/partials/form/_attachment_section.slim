@@ -1,38 +1,32 @@
-section.py-4.grid.grid-cols-1.md:grid-cols-3.gap-8.border-t(data-controller="event-attachments")
-  .col-span-1
-    h2.text-lg = title
-    p.text-sm.text-sky-700.dark:text-sky-400 = description
+section.py-4.border-t(data-controller="event-attachments")
+  h3.font-semibold.mb-4 = title
 
-  .col-span-2
+  ul.existing_attachments(data-event-attachments-target="attachmentList")
     - collection.each do |attachment|
-      = f.hidden_field field_name, multiple: true, value: attachment.signed_id
+      li.py-1.flex.flex-row.justify-between.items-center(id="attachment_#{attachment.id}")
+        .left
+          = f.hidden_field field_name, multiple: true, value: attachment.signed_id
+          span.mr-1 = fontawesome_file_icon(attachment.filename.extension_without_delimiter)
+          = attachment.filename
 
-    ul.existing_attachments(data-event-attachments-target="attachmentList")
-      - collection.each do |attachment|
-        li.py-1.flex.flex-row.justify-between.items-center(id="attachment_#{attachment.id}")
-          .left
-            span.mr-1 = fontawesome_file_icon(attachment.filename.extension_without_delimiter)
-            = attachment.filename
+        .right
+          = button_tag class: "text-red-500",
+                        type: "button",
+                        data: { confirm: "Are you sure you want to delete this attachment?",
+                                action: "event-edit#deleteAttachment",
+                                delete_url: unit_event_attachment_path(current_unit, @event, attachment, type: field_name) } do
+            i.fa-solid.fa-trash-alt
 
-          .right
-            = button_tag class: "text-red-500",
-                         type: "button",
-                         data: { confirm: "Are you sure you want to delete this attachment?",
-                                 action: "event-edit#deleteAttachment",
-                                 delete_url: unit_event_attachment_path(current_unit, @event, attachment, type: field_name) } do
-              i.fa-solid.fa-trash-alt
+  #new_attachments.pt-4
+    .hidden
+      = f.file_field field_name,
+                      multiple: true,
+                      data: { action: "change->event-attachments#showAttachments", event_attachments_target: "fileInput" }
 
-    #new_attachments.pt-4
-      .hidden
-        = f.file_field field_name,
-                       multiple: true,
-                       data: { action: "change->event-attachments#showAttachments", event_attachments_target: "fileInput" }
-  
-
-      .flex.flex-col.md:flex-row.gap-2
-        = button_tag type: :button,
-                     class: "inline-block font-bold border rounded px-4 py-2 whitespace-nowrap border-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800",
-                     data: { action: "click->event-attachments#uploadFiles" },
-                     bogus: "false" do
-          i.fa-solid.fa-upload.mr-2
-          = "Upload files"
+    .flex.flex-col.md:flex-row.gap-2
+      = button_tag type: :button,
+                    class: "inline-block font-bold border rounded px-4 py-2 whitespace-nowrap border-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800",
+                    data: { action: "click->event-attachments#uploadFiles" },
+                    bogus: "false" do
+        i.fa-solid.fa-upload.mr-2
+        = "Upload files"

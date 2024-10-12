@@ -1,11 +1,26 @@
-- return unless event.requires_rsvp && EventPolicy.new(current_member, event).organize?
+- dashboard = EventDashboard.new(event)
+
+.rounded.bg-stone-100.group-hover:bg-stone-200.group-hover:divide-stone-300.dark:bg-stone-800.p-2.mb-1.grid.grid-cols-3.divide-x
+    div.text-center.px-2
+      div.text-xs.text-stone-600 = number_to_percentage((dashboard.accept_rate) * 100, precision: 0)
+      div.text-2xl.text-green-600 = dashboard.acceptance_count
+      div.text-xs = "going"
+      
+    div.text-center.px-2
+      div.text-xs.text-stone-500 = number_to_percentage((dashboard.decline_rate) * 100, precision: 0)
+      div.text-2xl.text-red-600 = dashboard.declines_count
+      div.text-xs = "declined"
+
+    div.text-center.px-2
+      div.text-xs.text-stone-500 = number_to_percentage((dashboard.non_response_rate) * 100, precision: 0)
+      div.text-2xl = dashboard.non_respondent_count
+      div.text-xs.whitespace-nowrap = "no response"
 
 = link_to dashboard_unit_event_path(current_unit, event),
-          class: "whitespace-nowrap block md:inline-block px-4 py-2 font-semibold rounded text-center bg-violet-100 hover:bg-violet-200 text-violet-800",
+          class: "whitespace-nowrap block px-4 py-2 rounded text-center border border-brand-500 bg-white hover:bg-brand-100 hover:dark:bg-stone-800 hover:border-brand-600 hover:dark:border-brand-400 hover:text-brand-600 hover:dark:text-brand-400 text-brand-500",
           title: "View & organize RSVPs",
           id: "organize_#{dom_id(event)}_link",
-          data: { turbo_action: "advance", turbo_frame: "main" }
+          data: { turbo_frame: "modal", turbo_action: "advance" }
 
-  i.fa-solid.fa-gauge.mr-2
+  i.fa-light.fa-gauge.mr-2
   = t(".organize")
-  .inline-block.text-center.text-xs.rounded.ml-2.min-w-6.px-1.py-1.bg-white.text-violet-600 = event.rsvps.accepted_intent.count
