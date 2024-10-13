@@ -50,9 +50,9 @@ class UnitMembership < ApplicationRecord
 
   alias_method :rsvps, :event_rsvps
 
-  enum status: { inactive: 0, active: 1, registered: 2 }, _prefix: true
-  enum role: ROLES.zip(ROLES).to_h
-  enum member_type: { unknown: 0, youth: 1, adult: 2 }
+  enum :status, { inactive: 0, active: 1, registered: 2 }, prefix: true
+  enum :role, ROLES.zip(ROLES).to_h
+  enum :member_type, { unknown: 0, youth: 1, adult: 2 }
 
   scope :active, -> { where(status: %i[active]) }
   scope :registered, -> { where(status: %i[registered]) }

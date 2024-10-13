@@ -113,23 +113,6 @@ rsvp_closes_at: 4.days.ago)
     end
   end
 
-  describe "rsvps" do
-    before do
-      @member = FactoryBot.create(:member, :non_admin)
-      @event = FactoryBot.create(:event, unit: @member.unit)
-      @rsvp_token = @event.rsvp_tokens.create(member: @member)
-      @rsvp = @event.rsvps.create(member: @member, response: :declined, respondent: @member)
-    end
-
-    it "finds the rsvp for a member" do
-      expect(@event.rsvp_for(@member)).to eq @rsvp
-    end
-
-    it "finds the rsvp token for a member" do
-      expect(@event.rsvp_token_for(@member)).to eq(@rsvp_token)
-    end
-  end
-
   describe "scopes" do
     describe "imminent" do
       it "exludes same-day events in the PM" do

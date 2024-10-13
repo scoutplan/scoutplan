@@ -50,11 +50,6 @@ class EventRsvpsController < EventContextController
     @rsvp = EventRsvp.find(params[:id])
   end
 
-  def find_event_responses
-    @non_respondents = @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)
-    @non_invitees = @event.unit.members - @event.rsvp_tokens.collect(&:member) - @event.rsvps.collect(&:member)
-  end
-
   def send_event_roster
     # pdf = Pdf::EventRoster.new(@event)
     pdf = Pdf::EventOrganizerPackage.new(@event)

@@ -30,7 +30,6 @@ class Event < ApplicationRecord
   has_many :payments, dependent: :destroy
   has_many :photos, dependent: :destroy
   has_many :members, through: :event_rsvps
-  has_many :rsvp_tokens, dependent: :destroy
   has_many :sub_events, class_name: "Event", foreign_key: "parent_event_id"
   has_many :unit_memberships, through: :event_rsvps
   has_many :organizer_members, through: :event_organizers, source: :unit_membership
@@ -76,7 +75,7 @@ class Event < ApplicationRecord
               less_than: 10.megabytes, message: "must be less than 10 MB"
             }
 
-  enum status: { draft: 0, published: 1, cancelled: 2, archived: 3 }
+  enum :status, { draft: 0, published: 1, cancelled: 2, archived: 3 }
 
   # TODO: clean up this mess
   scope :past,          -> { where("starts_at < ?", Date.today.in_time_zone) }

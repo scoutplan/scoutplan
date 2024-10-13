@@ -36,7 +36,7 @@ class Unit < ApplicationRecord
   after_create :populate_categories
   before_validation :generate_slug
 
-  enum status: { active: "active", inactive: "inactive" }
+  enum :status, { active: "active", inactive: "inactive" }
 
   delegate :transaction_fees_covered_by, to: :payment_account
 

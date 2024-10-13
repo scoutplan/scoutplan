@@ -18,7 +18,7 @@ class EventRsvp < ApplicationRecord
   validate :common_unit?
   validate :response_allowed?
 
-  enum response: RESPONSE_OPTIONS
+  enum :response, RESPONSE_OPTIONS
 
   delegate :reply_to, to: :event
   delegate :organizers?, to: :event
