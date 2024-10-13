@@ -2,10 +2,11 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   resizeObserver = null;
+  AUTO_TOGGLE_WIDTH = 1000;
 
   connect() {
     this.resizeObserver = new ResizeObserver(() => {
-      if (window.innerWidth < 768) {
+      if (window.innerWidth < this.AUTO_TOGGLE_WIDTH) {
         document.body.classList.remove("sidebar-open");
       } else {
         document.body.classList.add("sidebar-open");

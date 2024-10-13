@@ -486,7 +486,7 @@ en:
       past_warning:   "Cancelling past events is not recommended."
     
     edit:
-      short_description_placeholder: "Brief description (optional, appears in email & text)"
+      short_description_placeholder: "Brief description (optional, 50 characters max., appears in email & text)"
       published: "Published"
 
     new:

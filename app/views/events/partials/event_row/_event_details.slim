@@ -1,0 +1,10 @@
+- return unless current_user
+
+.third.flex.flex-col.w-full.md:w-fit.ml-auto
+  - if event.organizable? && EventPolicy.new(current_member, event).rsvps?          
+    = render partial: "events/partials/event_row/organize", locals: { event: event }
+  - else
+    .w-48
+      = render partial: "events/partials/event_row/family_rsvp_link", locals: { event: event }
+
+  = render partial: "events/partials/event_row/online", locals: { event: event }
