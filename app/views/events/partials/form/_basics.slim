@@ -7,7 +7,13 @@ section.flex.flex-col.gap-2.pb-4.-mt-2
     placeholder: t("events.placeholders.title"),
     data: { event_edit_target: "title", action: "event-edit#validate" }
 
-  = f.text_field :short_description,
-    class: "w-full placeholder-stone-400 border-0 rounded focus:ring-brand-500 p-1 -mx-1 text-sm",
-    autocomplete: "off",
-    placeholder: t("events.edit.short_description_placeholder")
+  .relative
+    = f.text_field :short_description,
+      class: "w-full placeholder-stone-400 border-0 rounded focus:ring-brand-500 p-1 -mx-1 text-sm peer",
+      autocomplete: "off",
+      maxlength: 50,
+      placeholder: t("events.edit.short_description_placeholder"),
+      data: { controller: "max-length", max_length_max_length_value: 50, max_length_status_element_value: "#short_description_remaining", event_edit_target: "short_description", action: "keyup->max-length#validate focus->max-length#validate" }
+
+    #short_description_remaining.hidden.peer-focus:block.absolute.right-4.top-1/2(class="text-xs text-stone-400 transform -translate-y-1/2")
+      = "50 remaining"

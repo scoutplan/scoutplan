@@ -1,0 +1,9 @@
+// 2 title, tags, description, location
+.second
+  h4.text-xl.font-semibold.event-title.mr-2.truncate.text-ellipsis
+    i.fa-solid.fa-xs.fa-fw.mr-1(class="fa-#{event&.category&.glyph}" style="color: #{event&.category&.color}")
+    = event.title
+  = render partial: "events/partials/event_row/title_badge", locals: { event: event }
+  = render partial: "events/partials/index/short_description", locals: { event: event }
+  = render partial: "events/event_location", locals: { event: event }
+  = render partial: "events/event_cost", locals: { event: event }
