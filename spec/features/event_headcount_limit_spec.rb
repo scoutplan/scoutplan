@@ -18,14 +18,15 @@ describe "events", type: :feature do
 
   describe "index page" do
     before do
-      login_as(@admin_user, scope: :user)
+      login_as(@normal_user, scope: :user)
       path = unit_events_path(@unit)
       visit(path)
     end
 
     describe "headcount-limited events" do
       before do
-        @event = FactoryBot.create(:event, :published, :requires_rsvp, :limit_headcount, unit: @unit, title: "Headcount Event")
+        @event = FactoryBot.create(:event, :published, :requires_rsvp, :limit_headcount, unit:  @unit,
+                                                                                         title: "Headcount Event")
       end
 
       # it "shows the headcount on the index page" do

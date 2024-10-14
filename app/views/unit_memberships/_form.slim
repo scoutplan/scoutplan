@@ -25,7 +25,7 @@
               = f.label :member_type, value: :youth do
                 = f.radio_button :member_type, :youth, required: true, class: "peer hidden"
                 block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
-                  div
+                  div#label_member_type_youth
                     i.fa-regular.fa-child.fa-fw.mr-2
                     = "Youth"
 
@@ -91,7 +91,7 @@
               = f.label :status, value: "registered" do
                 = f.radio_button :status, :registered, required: true, class: "peer hidden"
                 block(class="block p-2 peer-checked:bg-white rounded flex flex-row items-center justify-between")
-                  div
+                  div#label_member_status_registered
                     i.fa-regular.fa-hand-wave.fa-fw.mr-2
                     = t("members.statuses.registered")
 

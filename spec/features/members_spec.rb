@@ -101,9 +101,7 @@ describe "unit_memberships", type: :feature do
       expect(page).to have_current_path unit_member_path(@unit, member)
     end
 
-    it "creates a member" do
-      skip
-
+    it "creates a member", js: true do
       visit unit_members_path(@unit)
       click_link_or_button I18n.t("members.index.new_button_caption")
 
@@ -112,8 +110,10 @@ describe "unit_memberships", type: :feature do
       fill_in "unit_membership_user_attributes_last_name", with: Faker::Name.last_name
       fill_in "unit_membership_user_attributes_email", with: Faker::Internet.email
       fill_in "unit_membership_user_attributes_phone", with: Faker::PhoneNumber.phone_number
-      choose "unit_membership_member_type_youth"
-      choose "unit_membership_status_active"
+
+      find("#label_member_type_youth").click
+      find("#label_member_status_registered").click
+
       # check "settings_communication_via_email"
       # check "settings_communication_via_sms"
 
@@ -123,6 +123,8 @@ describe "unit_memberships", type: :feature do
 
       # fetch the newly-created member
       member = UnitMembership.last
+
+      expect(member.status).to eq("registered")
 
       # flash message
       # expect(page).to have_content(I18n.t("members.confirmations.create", member_name: member.full_display_name, unit_name: @unit.name))
@@ -147,7 +149,7 @@ describe "unit_memberships", type: :feature do
       expect(page).to have_current_path unit_members_path(@unit)
 
       # fetch the newly-created member
-      member = UnitMembership.last
+      UnitMembership.last
       # expect(member.anonymous_email?).to be_truthy
 
       # flash message
