@@ -1,4 +1,5 @@
 - return unless event.requires_rsvp?
+- return unless current_member
 - family_rsvp = FamilyRsvp.new(current_member, event)
 - details_tag_attributes = {class: "mt-2"}
 
