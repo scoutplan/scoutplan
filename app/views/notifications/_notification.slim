@@ -1,6 +1,6 @@
 li.-mx-2.px-2.py-2.hover:bg-stone-100(id="#{dom_id(notification)}")
   header.flex.flex-row.justify-between
-    div(class="#{notification.read? ? 'font-medium' : 'font-bold'}")
+    div(class="#{notification.read? ? '' : 'font-semibold'}")
       - if notification.unread?
         i.fa-solid.fa-circle.text-brand-500.fa-2xs
         | &nbsp;&nbsp;

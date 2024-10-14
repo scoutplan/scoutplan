@@ -5,12 +5,19 @@ class EventRsvpConfirmation < ScoutplanNotifier
 
       "Your RSVP has been received!"
     end
+
+    def message
+      return "" unless record.present?
+
+      path = rsvp_unit_event_path(record.unit, record.event)
+      "Your RSVP for #{record.event.title} has been received. <a href='#{path}'>Click here</a> if you have a change of plans."
+    end
   end
 
   deliver_by :email do |config|
     config.mailer = "EventRsvpConfirmationMailer"
     config.method = :event_rsvp_confirmation
-    config.if = ->{ :email? }
+    config.if = -> { :email? }
   end
 
   deliver_by :twilio_messaging do |config|

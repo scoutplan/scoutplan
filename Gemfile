@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.2"
+ruby "3.3.5"
 
 gem "scout_apm"
 
@@ -51,7 +51,7 @@ gem "puma", "~> 5.0"
 gem "pundit"
 gem "rack-attack"
 gem "rack-cors"
-gem "rails", "~> 7.2"
+gem "rails", "~> 8.0.0.beta1"
 gem "rails-html-sanitizer", ">= 1.4.4"
 gem "redis", "~> 5.0"
 gem "remote_syslog_logger"
