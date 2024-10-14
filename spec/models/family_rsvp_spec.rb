@@ -20,6 +20,18 @@ RSpec.describe FamilyRsvp, type: :model do
       @adult_rsvp = @event.rsvps.create!(unit_membership: @parent, respondent: @parent, response: "accepted_pending")
     end
 
+    describe "family_members" do
+      it "returns an array of FamilyMemberRsvp objects" do
+        rsvp = FamilyRsvp.new(@youth_member, @event)
+        expect(rsvp.family_members)
+      end
+
+      it "returns nil when the unit_membership is nil" do
+        rsvp = FamilyRsvp.new(nil, @event)
+        expect(rsvp.family_members).to be_nil
+      end
+    end
+
     it "calculates the cost" do
       rsvp = FamilyRsvp.new(@youth_member, @event)
       expect(rsvp.balance_due).to eq(15)

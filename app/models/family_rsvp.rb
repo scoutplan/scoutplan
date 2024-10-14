@@ -34,7 +34,7 @@ class FamilyRsvp
 
   ### Family member methods
   def family_members
-    @family_members ||= unit_membership.family(include_self: :prepend).map do |member|
+    @family_members ||= unit_membership&.family(include_self: :prepend)&.map do |member|
       FamilyMemberRsvp.new(member, event)
     end
   end
