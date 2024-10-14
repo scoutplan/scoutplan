@@ -128,9 +128,9 @@ class UnitMembership < ApplicationRecord
   end
 
   def set_defaults
-    self.role = "member"
-    self.status = "active"
-    self.member_type = "youth"
+    self.role ||= "member"
+    self.status ||= "active"
+    self.member_type ||= "youth"
   end
 
   def smsable?

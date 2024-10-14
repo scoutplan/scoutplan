@@ -25,7 +25,6 @@ class UnitMembershipsController < UnitContextController
     authorize(UnitMembership)
     @target_membership = UnitMembership.new
     @target_membership.build_user
-    ap @target_membership
   end
 
   def show
@@ -42,7 +41,14 @@ class UnitMembershipsController < UnitContextController
 
     @member = current_unit.memberships.new(member_params)
     @member.user_id = @user.id
+
+    puts @member.inspect
+
     return unless @member.save!
+
+    puts member_params.inspect
+
+    puts @member.inspect
 
     # MemberRelationshipService.new(@member).update(params[:member_relationships])
 
@@ -118,8 +124,6 @@ class UnitMembershipsController < UnitContextController
   end
 
   def member_params
-    ap params
-
     params.require(:unit_membership).permit(
       :status, :role, :member_type, :tag_list, :ical_suppress_declined, :roster_display_phone, :roster_display_email,
       child_relationships_attributes:  [:id, :child_unit_membership_id, :_destroy],

@@ -2,6 +2,7 @@
 - row_classes += " member-#{ unit_membership.member_type }"
 - row_classes += " member-admin" if unit_membership.admin?
 - row_classes += " member-inactive" if unit_membership.status_inactive?
+- row_classes += " member-not-inactive" unless unit_membership.status_inactive?
 
 li.text-sm.member.search-wrapper(class="#{row_classes}")
   = link_to edit_unit_member_path(current_unit, unit_membership),
