@@ -9,8 +9,8 @@ class Payment < ApplicationRecord
   validates_presence_of :event, :unit_membership, :amount, :method, :status
   validates_numericality_of :amount
 
-  enum status: { pending: "pending", paid: "paid" }
-  enum method: { cash: "cash", check: "check", stripe: "stripe", other: "other", zelle: "zelle", venmo: "venmo" }
+  enum :status, { pending: "pending", paid: "paid" }
+  enum :method, { cash: "cash", check: "check", stripe: "stripe", other: "other", zelle: "zelle", venmo: "venmo" }
 
   delegate :unit, to: :event
   delegate :payment_account, to: :unit

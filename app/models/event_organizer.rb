@@ -6,7 +6,7 @@ class EventOrganizer < ApplicationRecord
 
   after_create_commit :notify_recipient
 
-  enum role: { organizer: "organizer", money: "money" }
+  enum :role, { organizer: "organizer", money: "money" }
 
   delegate_missing_to :user
 

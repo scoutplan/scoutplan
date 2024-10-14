@@ -4,7 +4,7 @@
 class PaymentAccount < ApplicationRecord
   belongs_to :unit
 
-  enum transaction_fees_covered_by: { member: "member", unit: "unit", split_50_50: "split_50_50" }
+  enum :transaction_fees_covered_by, { member: "member", unit: "unit", split_50_50: "split_50_50" }
 
   def active?
     account["charges_enabled"] && account["payouts_enabled"]

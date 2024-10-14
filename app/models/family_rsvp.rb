@@ -115,7 +115,7 @@ class FamilyRsvp
   ### Status methods
 
   def status
-    return :completed if event_rsvps&.map(&:unit_membership_id) & active_family_member_ids == active_family_member_ids
+    return :completed if active_family_member_ids & event_rsvps&.map(&:unit_membership_id) == active_family_member_ids
     return :partial if event_rsvps.any?
 
     :none
