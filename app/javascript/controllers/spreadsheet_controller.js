@@ -23,7 +23,6 @@ export default class extends Controller {
   }
 
   dragstart(event) {
-    console.log("dragstart");
   }
 
   dragend(event) {
@@ -110,7 +109,6 @@ export default class extends Controller {
 
   mouseup(event) {
     this.draggingElem = null;
-    console.log("mouseup");
   }
 
   mousemove(event) {

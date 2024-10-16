@@ -60,7 +60,12 @@ nav.bg-stone-50.text-stone-700.relative.h-full.w-full.text-sm
         = link_to unit_messages_path(current_unit),
                   class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-stone-100 group-[.messages]/controller:text-brand-500 group-[.messages]/controller:bg-brand-100",
                   data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "messages", action: "sidebar#activate" } do
-          i.fa-light.fa-envelope.fa-fw.mr-2
+          span(class="hidden group-[.messages]/controller:inline")
+            i.fa-solid.fa-envelope.fa-fw.mr-2
+
+          span(class="group-[.messages]/controller:hidden")
+            i.fa-light.fa-envelope.fa-fw.mr-2
+
           = t("main_nav.communication")
 
       - if (policy(:unit_document).index? && current_unit.documents.any?) || policy(:unit_document).create?

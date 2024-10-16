@@ -83,7 +83,6 @@ export default class extends Controller {
     const columnElem = event.target.closest(".member-column");
     var response = null;
     if (!columnElem) { return; }
-    console.log("Dropped " + event.dataTransfer.getData("text/plain") + " onto " + columnElem.id);
     switch(columnElem.id) {
       case "rsvps_accepted_column":
         response = "accepted";

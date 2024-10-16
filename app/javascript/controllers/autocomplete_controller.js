@@ -36,9 +36,7 @@ export default class extends Controller {
     var pill = event.currentTarget.closest("span");
     var memberId = button.dataset.autocompleteValue;
     var option = this.selectionsTarget.querySelector(`option[value="${memberId}"]`);
-    console.log(option.selected);
     option.selected = false;
-    console.log(option.selected);
     pill.remove();
   }
 

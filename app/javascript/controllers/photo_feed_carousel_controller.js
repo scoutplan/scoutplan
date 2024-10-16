@@ -8,7 +8,6 @@ export default class extends Controller {
   };
 
   connect() {
-    console.log("PhotoFeedCarouselController#connect");
   }
 
   scrollLeft(event) {
@@ -20,7 +19,6 @@ export default class extends Controller {
   }
 
   scrollRight(event) {
-    console.log("scrollRight");
     this.scrollableTarget.scrollLeft += this.scrollableTarget.offsetWidth;
     this.leftButtonTarget.classList.remove("hidden");
     this.imageIndexValue += 1;

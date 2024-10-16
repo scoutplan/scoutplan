@@ -5,10 +5,10 @@ section.w-full.grid.grid-cols-1.lg:grid-cols-9.gap-px.overflow-y-hidden.h-full(
   data-dashboard-drop-event-id-value="#{@event.id}")
 
   // column 1
-  #rsvps_accepted_column.md:col-span-3.text-xl.member-column.bg-stone-100.group.overflow-y-hidden(class="[&.droptarget]:bg-green-100")
+  #rsvps_accepted_column.md:col-span-3.text-xl.member-column.bg-stone-100.group.h-full.overflow-y-hidden(class="[&.droptarget]:bg-green-100")
     = render partial: "event_dashboard/header_accepted", locals: { event_dashboard: @event_dashboard }
 
-    ol#rsvps_accepted.p-4.divide-y.dark:divide-stone-700.overflow-y-auto(data-controller="sorted-list")
+    ol#rsvps_accepted.p-4.divide-y.dark:divide-stone-700.overflow-y-auto(data-controller="sorted-list" style="height: calc(100% - 6rem)")
       - if @event.shifts.any?
         - @event.shifts.each do |shift|
           li.font-bold.text-2xl.pt-8.px-2.text-green-800 = shift.name

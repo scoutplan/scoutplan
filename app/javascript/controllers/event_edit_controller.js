@@ -71,7 +71,6 @@ export default class extends Controller {
   }
 
   attachFromLibrary(event) {
-    console.log("attach from library");
     var link = event.target.closest("a")
     var attachmentId = link.dataset.attachmentId;
     var filename = link.dataset.filename;
@@ -88,7 +87,6 @@ export default class extends Controller {
 
   delete(event) {
     this.deleteformTarget.submit();
-    console.log("delete this!");
     event.preventDefault();
   }
 
@@ -190,21 +188,18 @@ export default class extends Controller {
   }
 
   uploadFiles(event) {
-    console.log("upload files");
     this.fileinputTarget.click();
     event.stopPropagation();
     event.preventDefault();
   }
 
   uploadPrivateFiles(event) {
-    console.log("upload files");
     this.privatefileinputTarget.click();
     event.stopPropagation();
     event.preventDefault();
   }
 
   somethingElse() {
-    console.log("something else");
   }
 
   keypress(event) {
@@ -222,7 +217,6 @@ export default class extends Controller {
     await get(url, { responseKind: "turbo-stream" });
 
     let nameField = document.querySelector("#event_category_name");
-    console.log(nameField);
     nameField.focus();
   }
 
@@ -243,7 +237,6 @@ export default class extends Controller {
   }
 
   deleteLocation(event) {
-    console.log("delete location");
     const locationElem = event.target.closest("event-location");
     locationElem.remove();
   }

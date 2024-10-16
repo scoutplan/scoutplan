@@ -26,7 +26,6 @@ export default class extends Controller {
   }
 
   uploadFiles(event) {
-    console.log("upload files");
     this.fileInputTarget.click();
     event.stopPropagation();
     event.preventDefault();

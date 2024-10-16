@@ -4,7 +4,6 @@ export default class extends Controller {
   static targets = [ "selectableList", "selectAllButton", "deselectAllButton", "deselectSomeButton", "selectionPrompt" ];
 
   connect() {
-    console.log("list-selection controller connected");
   }
 
   selectAllVisible(event) {
