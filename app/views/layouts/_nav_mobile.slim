@@ -27,7 +27,6 @@ nav#mobile_menu.fixed.inset-0.p-4.bg-white/95.z-30
 javascript:
   document.querySelectorAll(".toggle-mobile-menu").forEach(function(elem) {
     elem.addEventListener("click", function(event) {
-      console.log("Mobile menu!");
       document.body.classList.toggle("showing-mobile-menu");
       event.preventDefault();
     });

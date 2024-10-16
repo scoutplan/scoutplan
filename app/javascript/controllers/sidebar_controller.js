@@ -36,6 +36,5 @@ export default class extends Controller {
     
     const className = event.target.dataset.sidebarClass;
     document.body.classList.add(className);
-    // console.log(event.target);
   }
 }

@@ -4,13 +4,11 @@ export default class extends Controller {
   static targets = [ "termTextField", "container" ];
 
   connect() {
-    console.log(this.element);
   }
 
   filterNames(event) {
     const input = this.termTextFieldTarget;
     const term = input.value.toUpperCase();
-    console.log("filtering names for term: " + term);
     if (term.length == 0) {
       this.element.classList.toggle("filtering-names", false);
       return;
@@ -26,6 +24,5 @@ export default class extends Controller {
     });
 
     this.element.classList.toggle("filtering-names", true);
-    console.log(this.element);
   }
 }

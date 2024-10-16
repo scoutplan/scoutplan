@@ -11,7 +11,6 @@ export default class extends Controller {
           label.textContent = source.value;
         });
         // this.observers.push(new MutationObserver(() => {
-        //   console.log(source.value);
         //   label.textContent = source.value;
         // }).observe(source, { characterData: true, subtree: true }));
       }

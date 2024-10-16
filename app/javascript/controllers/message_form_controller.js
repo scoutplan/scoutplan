@@ -193,7 +193,6 @@ export default class extends Controller {
   }
 
   async commit(event) {
-    console.log(event);
     this.queryInputTarget.placeholder = "";
     const current = this.addressBookTarget.querySelector(".selected");
     const recipientTags = this.recipientListTarget.querySelectorAll(".recipient");

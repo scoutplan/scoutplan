@@ -3,7 +3,6 @@ import { createPopper } from "@popperjs/core"
 
 export default class extends Controller {
   connect() {
-    console.log("Tooltip controller loaded");
     window.process = { env: {} } // hack to make Popper work
 
     // iterate over trigger

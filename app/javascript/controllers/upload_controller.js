@@ -4,11 +4,9 @@ export default class extends Controller {
   static targets = [ "fileinput", "form" ];
 
   connect() {
-    console.log("upload controller connected");
   }
 
   browse(event) {
-    console.log("browse");
     this.fileinputTarget.click();
   }
 

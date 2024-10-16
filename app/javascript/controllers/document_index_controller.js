@@ -84,7 +84,6 @@ export default class extends Controller {
     const tagListItems = tagList.querySelectorAll(".tag-list-item");
     tagListItems.forEach(item => {
       const tagName = item.dataset.tagName;
-      console.log(`tag name: ${tagName}`);
       item.classList.toggle("hidden", !tagName.includes(search));
     });
     this.newTagNameTarget.innerText = search;

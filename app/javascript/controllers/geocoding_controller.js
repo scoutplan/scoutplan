@@ -18,11 +18,10 @@ export default class extends Controller {
   }
 
   disconnect() {
-    console.log("Geocoding disconnect");
+
   }
 
   createQueryResultElement() {
-    console.log("Geocoding connected.");
     this.resultsDiv = document.createElement("div");
     this.resultsDiv.setAttribute("id", "geocode_results")
     this.resultsDiv.classList.add("text-sm", "text-stone-500", "z-10", "w-24", "h-36", "shadow", "bg-white", "border", "border-stone-200", "rounded", "overflow-x-hidden", "overflow-y-auto", "absolute", "hidden");
@@ -117,10 +116,7 @@ export default class extends Controller {
   select(event) {
     var elem = event.target;
     if (elem.nodeName != "A") { elem = elem.parentNode; }
-    if (elem.nodeName != "A") {
-      console.log("Something went wrong.");
-      return;
-    }
+    if (elem.nodeName != "A") { return; }
 
     if (this.activeInput == this.placeNameTarget) {
       this.placeNameTarget.value = elem.dataset.resultPlaceName;
@@ -135,7 +131,6 @@ export default class extends Controller {
   }
 
   positionQueryResultElement(queryElem) {
-    console.log(queryElem);
     this.resultsDiv.style.width = queryElem.clientWidth + 2 + "px";
     this.resultsDiv.style.left = queryElem.offsetLeft + "px";
     this.resultsDiv.style.top = queryElem.offsetTop + queryElem.clientHeight + 1 + "px";

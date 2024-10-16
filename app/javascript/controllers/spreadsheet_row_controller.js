@@ -79,8 +79,5 @@ export default class extends Controller {
     const row = event.currentTarget.closest(".table-row");
     const beforeEventId = row.dataset.eventId;
     const movingEventId = event.dataTransfer.getData("text/plain");
-
-    console.log();
-    console.log("Going to move event id " + movingEventId + " to before event id " +  beforeEventId);
   }
 }
