@@ -50,5 +50,10 @@ FactoryBot.define do
   trait :series do
     repeats_until { 28.days.from_now }
   end
+
+  trait :with_cost do
+    cost_adult { 1000 }
+    cost_youth { 1000 }
+  end
 end
 # rubocop:enable Metrics/BlockLength

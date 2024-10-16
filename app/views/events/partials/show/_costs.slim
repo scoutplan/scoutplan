@@ -22,7 +22,7 @@ article.py-3
         .inline = number_to_currency(@event.cost_adult, precision: 0)
         = " per adult "
 
-    - if current_unit.transaction_fees_covered_by != "unit"
+    - if current_unit&.payment_account&.transaction_fees_covered_by != "unit"
       .inline = " + transaction fees"
 
   - if family_rsvp.any_accepted?
