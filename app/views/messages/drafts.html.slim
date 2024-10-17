@@ -11,17 +11,3 @@
                   sent_unit_messages_path(current_unit, page: @page.next_param),
                   class: "block mt-4 text-center text-transparent",
                   data: { pagination_target: "nextPageLink" }
-
-javascript:
-  document.title = `#{["Draft Messages", current_unit.name].join(" · ")}`;
-
-  document.addEventListener("turbo:load", () => {
-    document.body.classList.toggle("events", false);
-    document.body.classList.toggle("unit-memberships", false);
-    document.body.classList.toggle("messages", true);
-    document.body.classList.toggle("documents", false);
-    document.body.classList.toggle("settings", false);
-  });
-
-css:
-  .draft-messages-link { display: none; }
