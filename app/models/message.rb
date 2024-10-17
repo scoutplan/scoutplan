@@ -62,7 +62,7 @@ class Message < ApplicationRecord
   end
 
   def recipients
-    message_recipients.map(&:member)
+    message_recipients.map(&:unit_membership)
   end
 
   MAX_RECIPIENT_PREVIEW = 3

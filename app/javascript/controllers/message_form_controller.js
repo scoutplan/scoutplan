@@ -264,7 +264,9 @@ export default class extends Controller {
     const valid = recipientCount > 0;
 
     this.sendMessageButtonTarget.disabled = !valid;
-    this.sendLaterButtonTarget.disabled   = !valid;
+    if (this.hasSendLaterButtonTarget) {
+      this.sendLaterButtonTarget.disabled  = !valid;
+    }
   }
 
   changeAudience(event) {
