@@ -1,12 +1,5 @@
 # frozen_string_literal: true
 
-# A join model between Units and Users. In fact, the bulk of the
-# business logic in the app is based on a UnitMembership rather than
-# a User. The User model is really more for authentication and
-# basic user demographic information (e.g. DOB) that's unlikely to change
-# from one Unit to another
-#
-#
 # rubocop:disable Metrics/ClassLength
 class UnitMembership < ApplicationRecord
   ROLES = %w[member admin event_organizer].freeze
@@ -101,13 +94,6 @@ class UnitMembership < ApplicationRecord
     user.display_first_name
   end
 
-  #
-  # returns the member's family, including self if desired
-  # member.family(include_self: true)     => [parent1, parent2, child1, child2, member]
-  # member.family                         => [parent1, parent2, child1, child2, member]  (same as true)
-  # member.family(include_self: :append)  => [parent1, parent2, child1, child2] (same as true)
-  # member.family(include_self: :prepend) => [member, parent1, parent2, child1, child2]
-  #
   def family(include_self: :append)
     res = (children | parents | siblings).uniq
     res.append(self) if [true, :append].include?(include_self)
@@ -130,7 +116,7 @@ class UnitMembership < ApplicationRecord
   def set_defaults
     self.role ||= "member"
     self.status ||= "active"
-    self.member_type ||= "youth"
+    self.member_type = "youth" if member_type == "unknown"
   end
 
   def smsable?

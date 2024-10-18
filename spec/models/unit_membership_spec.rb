@@ -36,7 +36,6 @@ RSpec.describe UnitMembership, type: :model do
     end
   end
 
-  # rubocop:disable Metrics/BlockLength
   describe "family method" do
     before do
       @member = FactoryBot.create(:unit_membership)
@@ -69,5 +68,13 @@ RSpec.describe UnitMembership, type: :model do
       expect(@member.family(include_self: false).count).to eq(2)
     end
   end
-  # rubocop:enable Metrics/BlockLength
+
+  describe "create" do
+    it "when user already exists" do
+      user = FactoryBot.create(:user)
+      unit = FactoryBot.create(:unit)
+      member = unit.unit_memberships.create!(user: user)
+      expect(member).to be_valid
+    end
+  end
 end
