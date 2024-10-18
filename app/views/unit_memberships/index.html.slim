@@ -64,9 +64,6 @@
           ol.flex.flex-col.gap-2
             = render members
 
-= turbo_stream.update "page_title" do
-  = t(".page_title", unit_name: current_unit.name)
-
   css:
     #local_search_overlay {
       display: none;
@@ -79,8 +76,12 @@
 
     #local_search_overlay {
       background-color: rgba(0, 0, 0, 0.4);
-    }
+    }            
 
+= turbo_stream.update "page_title" do
+  = t(".page_title", unit_name: current_unit.name)
+
+  css:
     .member {
       z-index: 0;
     }

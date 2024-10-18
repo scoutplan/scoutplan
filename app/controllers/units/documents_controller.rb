@@ -5,6 +5,7 @@ class Units::DocumentsController < UnitContextController
     authorize Document, policy_class: UnitDocumentPolicy
     @documents = current_unit.documents
     @home_layout = YAML.load(current_unit.settings(:documents).home_layout)
+    redirect_to files_unit_documents_path(current_unit) if @home_layout.empty?
   end
 
   def create
