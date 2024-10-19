@@ -10,7 +10,7 @@ export default class extends Controller {
     let tagName = queryParams.get("tag");
     if (tagName) {
       this.performFilter(tagName);
-      this.tagFilterSelectTarget.value = tagName;
+    //   this.tagFilterSelectTarget.value = tagName;
     }
     window.history.replaceState({}, "", window.location.pathname);
   }

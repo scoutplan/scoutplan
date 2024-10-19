@@ -3,8 +3,6 @@ class EventAttachmentsController < UnitContextController
     find_attachment
     return unless @attachment && EventAttachmentPolicy.new(current_member, @attachment).destroy?
 
-    ap @attachment
-
     @attachment.purge
 
     render turbo_stream: [

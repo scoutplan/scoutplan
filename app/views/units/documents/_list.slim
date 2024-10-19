@@ -1,9 +1,22 @@
 - can_delete = UnitDocumentPolicy.new(current_member, Document).destroy?
 
-table#documents_list.w-full
-  tr
-    th.text-left.px-2.py-2.font-semibold
-    th.text-left.px-2.py-2.font-semibold = "Name"
-    th.text-left.px-2.py-2.font-semibold = "Tags"
+ol#documents_list.w-full
+  = render partial: "document_list_item", collection: @documents, as: :document
 
-  = render partial: "document_list_item", collection: @documents, as: :document, locals: { can_delete: can_delete }
+css:
+  #deselect_all_button {
+    display: none;
+  }
+
+  body:has(.multi-selector-checkbox:checked) {
+    .multi-selector-label {
+      display: block;
+    }
+    #deselect_all_button {
+      display: inline-block;
+    }
+  }
+
+  #documents_list li:has(.multi-selector-checkbox:checked) {
+    .item-details { background-color: #f7fafc; }
+  }

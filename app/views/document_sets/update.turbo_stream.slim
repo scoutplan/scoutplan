@@ -1,0 +1,7 @@
+= turbo_stream.replace :document_set_attributes, partial: "attributes", locals: { document_set: @document_set }
+
+- @document_set.documents.each do |document|
+  = turbo_stream.replace dom_id(document), partial: "units/documents/document_list_item",
+                                         locals:  { document: document, checked: true }
+
+= turbo_stream.update :tag_filters, partial: "units/documents/tag_filter"

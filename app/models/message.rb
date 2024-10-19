@@ -68,7 +68,7 @@ class Message < ApplicationRecord
   MAX_RECIPIENT_PREVIEW = 3
 
   def recipients_preview
-    recipients = message_recipients.limit(MAX_RECIPIENT_PREVIEW).map(&:member).map(&:full_display_name).join(", ")
+    recipients = message_recipients.limit(MAX_RECIPIENT_PREVIEW).map(&:unit_membership).map(&:full_display_name).join(", ")
 
     if message_recipients.count > MAX_RECIPIENT_PREVIEW
       recipients += ", and #{message_recipients.count - MAX_RECIPIENT_PREVIEW} more"

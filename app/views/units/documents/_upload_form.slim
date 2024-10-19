@@ -9,11 +9,11 @@
                       data: { action: "change->upload#perform", upload_target: "fileinput" }
       = f.submit "Upload", class: "rounded bg-lime-600 hover:bg-lime-700 text-lime-100 px-4 py-2 font-bold"
 
-  = button_tag class: "p-4 block -mx-4 text-stone-500 hover:text-brand-500 group", data: { action: "click->upload#browse" } do
+  = button_tag class: "p-4 block -mx-4 text-stone-500 group text-sm", data: { action: "click->upload#browse" } do
     .group-hover:hidden.inline
       i.fa-solid.fa-plus.fa-fw.text-brand-500
     .hidden.group-hover:inline
       i.fa-solid.fa-plus-circle.fa-fw.text-brand-500
-    .inline
+    .hidden.md:inline
       | &nbsp;
       = "Upload files"

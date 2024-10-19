@@ -1,0 +1,92 @@
+// TAGS
+section#document_set_attributes
+  section.text-sm.py-4.relative
+    details#tags
+      summary.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.hover:bg-brand-100.rounded.cursor-pointer(class="active:-mx-[0.4rem]")
+        .font-medium = "Tags"
+        i.fa-light.fa-plus.fa-fw
+
+      .p-2.popup.absolute.z-10.bg-white.rounded.drop-shadow-overhead.border.border-stone-300.w-full.mt-1(data-controller="searchable-list")
+        = form_with url: update_unit_document_sets_path(current_unit), method: :patch do |f|
+          = hidden_field_tag :document_ids, @document_set.document_ids.join(",")
+          
+          .py-2
+            = text_field_tag :tag_search, "",
+                              name: "document_set[document_tag][name]",
+                              class: "block w-full px-2 py-2 text-sm border border-stone-300 rounded placeholder-stone-400",
+                              placeholder: "Search or add a tag",
+                              autocomplete: "off",
+                              autofocus: "yes",
+                              data: { action: "input->searchable-list#search", searchable_list_target: "searchField" }
+      
+          // list of available tags
+          ul
+            - ActsAsTaggableOn::Tag.for_tenant(current_unit.id).for_context(:document_tags).each do |tag|
+              - next if @document_set.common_tags.include? tag.name
+
+              li
+                = button_tag type: :submit,
+                             name: "document_set[document_tag][name]",
+                             value: tag.name,
+                             class: "block rounded p-2 hover:bg-stone-100 block w-full text-left" do
+
+                  i.fa-regular.fa-tag.mr-2
+                  = tag.name
+
+          
+          // tag not found + new tag prompt
+          p.p-2.text-stone-500.hidden(data-searchable-list-target="valueNotFoundPrompt")
+            | Tag not found
+
+          div.hidden(data-searchable-list-target="newValuePrompt")
+            
+            = button_tag type: :submit,
+                         class: "p-2 font-semibold hover:bg-stone-100 block w-full text-left" do
+
+              i.fa-light.fa-plus.fa-fw.text-stone-500.mr-2
+              | Create "
+              span(data-searchable-list-target="newValueName")
+              | "                
+
+    // existing tag list
+    - if @document_set.common_tags.any?
+      .mt-2.flex.flex-wrap.gap-1.text-xs#tag_tag_field(data-controller="tag-field" data-tag-field-checkable-list-outlet="#tags_popup")
+        = form_with url: update_unit_document_sets_path(current_unit), method: :patch do |f|
+          = hidden_field_tag :document_ids, @document_set.document_ids.join(",")
+          = hidden_field_tag "document_set[document_tag][_destroy]", "true"
+
+          .flex.flex-wrap.gap-1
+            - @document_set.common_tags.each do |tag_name|
+              - colors = colors_from_string(tag_name)
+
+              div.pl-2.pr-1.py-1.rounded.flex.flex-row.gap-2(style="background-color: #{colors[100]}; color: #{colors[800]}" id="tag_label_#{tag_name.parameterize.underscore}" data-value="#{tag_name.parameterize.underscore}")
+                = tag_name
+                = button_tag type: :submit,
+                             name: "document_set[document_tag][name]",
+                             value: tag_name,
+                             class: "hover:bg-black/10 hover:text-black/50 rounded px-px",
+                             title: "Remove the '#{tag_name}' tag from selected file(s)",
+                             data: { action: "tag-field#remove", tag_name: tag_name.parameterize.underscore } do
+                  i.fa-light.fa-times.fa-fw.fa-sm
+
+  // DATE
+  section.text-sm.py-3.border-t.relative
+    h4.font-medium.mb-2 = "Posted date"
+
+    .flex.flex-row.justify-between.items-center
+      = @document_set.common_date.present? ? @document_set.common_date.strftime("%B %-d, %Y") : "Various"
+
+      div
+        details
+          summary.text-stone-400.hover:text-stone-800.cursor-pointer
+            = "Change"
+
+          .absolute.left-0.right-0.pt-2(data-controller="documents")
+            = form_with url: update_unit_document_sets_path(current_unit, format: :turbo_stream), method: :patch do |f|
+              = hidden_field_tag :document_ids, @document_set.document_ids.join(",")
+              = date_field :document_set, :document_date,
+                            class: "block w-full px-2 py-2 text-sm border border-stone-300 rounded placeholder-stone-400",
+                            value: @document_set.common_date.present? ? @document_set.common_date.strftime("%Y-%m-%d") : "",
+                            oninput: "document.getElementById('date_field_submit').click()"
+
+              = f.button "Save", type: :submit, class: "hidden", id: "date_field_submit"

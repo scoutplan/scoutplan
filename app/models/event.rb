@@ -234,10 +234,6 @@ class Event < ApplicationRecord
     event_rsvps.find_by(unit_membership_id: member.id)
   end
 
-  def rsvp_token_for(member)
-    rsvp_tokens.find_by(unit_membership: member)
-  end
-
   def series
     unit.events.where(series_parent_id: series_parent_id)
   end
