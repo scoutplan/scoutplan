@@ -1,33 +1,20 @@
 - checked ||= false
 
-tr.hover:bg-stone-100.multi-selector-wrapper.tagged-item.group(id="#{dom_id(document)}" data-tags="#{document.document_tags.map(&:name).join(",")}")
+li.border-t.multi-selector-wrapper.tagged-item.group(id="#{dom_id(document)}" data-tags="#{document.document_tags.map(&:name).join(",")}")
   - file = document.file
   - color_key = "file_color_#{file.filename.extension}"
   - color = t(color_key, default: "#b91c1c")
 
-  td.border-t.px-2.py-2
-    .w-4.shrink-0
-      - if UnitDocumentPolicy.new(current_member, document).edit?
-        = check_box_tag "document_ids[]", value: document.id, checked: checked, class: "selection-item document-item", data: { action: "click->list-selection#selectItem" }
+  / .overflow-hidden.w-full.text-ellipsis.line-clamp-1
+  /   = link_to rails_blob_path(document.file, disposition: "attachment") do
+  /       i(class="fa-fw fa-regular fa-file-#{file.filename.extension}" style="color: #{color}")
+  /       | &nbsp;
+  /       = file.filename.base
 
-  td.border-t.px-2.py-2
-    .overflow-hidden.w-full.text-ellipsis.line-clamp-1
-      = link_to rails_blob_path(document.file, disposition: "attachment") do
-          i(class="fa-fw fa-regular fa-file-#{file.filename.extension}" style="color: #{color}")
-          | &nbsp;
-          = file.filename.base
+  .overflow-hidden.w-full.text-ellipsis.line-clamp-1
+    = link_to unit_document_path(current_unit, document), class: "block px-2 py-2 hover:bg-stone-100 focus:bg-brand-100", data: { turbo_frame: "sidebar" } do
+        i(class="fa-fw fa-regular fa-file-#{file.filename.extension}" style="color: #{color}")
+        | &nbsp;
+        = file.filename.base
+        = render partial: "document_tags", locals: { document: document }
 
-  td.border-t.px-2.py-2.hidden.xl:table-cell
-    = render partial: "document_tags", locals: { document: document }
-  
-  td.border-t.px-2.py-2.w-12
-    .hidden.group-hover:block
-      - if can_delete
-        = button_to [current_unit, document],
-                    method: :delete,
-                    type: "button",
-                    class: "px-2 text-sm hover:text-red-500",
-                    form_class: "inline-block",
-                    title: "Delete document",
-                    data: { turbo_stream: "true", confirm: t(".confirm") } do
-          i.fa-solid.fa-trash-alt

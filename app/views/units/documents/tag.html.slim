@@ -6,57 +6,25 @@
 - variant = params[:variant] || request.cookies[:variant] || "list"
 
 = turbo_frame_tag :main
-  .max-w-8xl.px-4.mx-auto(data-controller="document-index list-selection")
-    header.bg-white.sticky.top-12.mb-4.pt-2
-
-      .flex.flex-row.justify-between.items-center
-        .left
-          h1.text-2xl.font-semibold.mb-2 = "Files"
-
-        .right.flex.flex-row.gap-2
-          = link_to unit_documents_path(current_unit),
-                    class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded px-3 py-2",
-                    title: "Document library home",
+  .max-w-full.mx-auto.flex.flex-row.h-full(data-controller="document-index list-selection")
+    - if ActsAsTaggableOn::Tag.for_tenant(current_unit).any?
+      section.px-6.w-48
+        - ActsAsTaggableOn::Tag.for_tenant(current_unit).each do |tag|
+          = link_to tag_documents_unit_documents_path(current_unit, tag: tag.name),
+                    class: "active:bg-red-500",
+                    title: "Filter by tag: ##{tag.name}",
                     data: { turbo_action: "advance" } do
-            i.fa-fw.fa-solid.fa-books.mr-2
-            = "Library"
+            i.fa-fw.fa-solid.fa-tag.mr-2
+            = tag.name
 
-          - if variant == "grid"
-            = link_to files_unit_documents_path(current_unit, view: "list"),
-                      class: "text-stone-500.dark:text-stone-300 border hover:bg-stone-100 rounded px-3 py-2",
-                      title: "View as list",
-                      data: { turbo_action: "advance" } do
-              i.fa-fw.fa-solid.fa-list
+    section.px-6.grow
+      header.bg-white.sticky.top-12.mb-4.pt-2.flex.flex-row.items-center.gap-4
+        h1.text-2xl.font-semibold.mb-2 = "Files"
+        - if UnitDocumentPolicy.new(current_member, Document).create?
+          = render partial: "upload_form"            
 
-          - if UnitDocumentPolicy.new(current_member, Document).create?
-            = render partial: "upload_form"
+      = render partial: "units/documents/#{variant}"
 
-      #normal_toolbar.flex.flex-row.items-center.justify-between.rounded-xl.bg-stone-100.py-1.px-2.mt-4.not-multi-selector.h-16.mb-1
-        .left
-          = button_tag "#", class: "whitespace-nowrap px-3 py-2", data: { action: "list-selection#selectAllVisible" } do
-            i.fa-fw.fa-regular.fa-square.mr-1.text-xl
-            = "Select all visible"
-
-        .flex.flex-row.gap-1.items-center.text-sm.p-2.overflow-x-scroll
-          = "Filter by tag: "
-          = select_tag :filter_by_tag, options_for_select([["All files", "_all"]] + ActsAsTaggableOn::Tag.for_tenant(current_unit).map { |tag| ['#' + tag.name, tag.name] },
-              params[:filter_by_tag]),
-              class: "block rounded py-0",
-              data: { action: "document-index#filterByTag", document_index_target: "tagFilterSelect" }
-
-      #selection_toolbar.flex.flex-row.items-center.justify-between.rounded-xl.bg-stone-100.py-1.px-2.mt-4.h-16.mb-1
-        #selection_toolbar_left.flex.flex-row.items-center.gap-4
-          = button_tag "#", class: "w-8 relative rounded-full hover:bg-stone-200 px-2 aspect-square", title: "Unselect files", data: { action: "list-selection#deselectAll" } do
-            i.fa-solid.fa-times.left-1/2.-translate-x-1/2.top-1/2.-translate-y-1/2.absolute
-
-          #selection_prompt(data-list-selection-target="selectionPrompt")
-            = "no files selected"
-
-          - if @can_delete
-            = button_tag "#", class: "px-3 py-2 font-semibold", data: { action: "document-index#deleteSelected" } do
-              i.fa-fw.fa-solid.fa-trash-alt.mr-1      
-
-        #selection_toolbar_items.mr-4
-          = render partial: "unit_tags", locals: { unit: current_unit, can_delete: @can_delete }
-
-    = render partial: "units/documents/#{variant}"
+    = turbo_frame_tag :sidebar, class: "h-full"
+      section.w-80.px-4.border-l
+        = "sidebar"

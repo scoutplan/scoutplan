@@ -29,6 +29,10 @@ class Units::DocumentsController < UnitContextController
     end
   end
 
+  def show
+    @document = current_unit.documents.find(params[:id])
+  end
+
   def tag
     authorize Document, policy_class: UnitDocumentPolicy
 
