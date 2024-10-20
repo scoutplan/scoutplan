@@ -17,8 +17,8 @@
             i.fa-fw.fa-solid.fa-tag.mr-2
             = tag.name
 
-    section.px-6.grow
-      header.bg-white.sticky.top-12.mb-4.pt-2.flex.flex-row.items-center.gap-4
+    section.pl-16.pr-4.grow
+      header.bg-white.top-12.mb-4.pt-2.flex.flex-row.items-center.gap-4
         h1.text-2xl.font-semibold.mb-2 = "Files"
         - if UnitDocumentPolicy.new(current_member, Document).create?
           = render partial: "upload_form"            
@@ -26,5 +26,5 @@
       = render partial: "units/documents/#{variant}"
 
     = turbo_frame_tag :sidebar, class: "h-full"
-      section.w-80.px-4.border-l
+      section.w-80.px-4.border-l.h-full
         = "sidebar"
