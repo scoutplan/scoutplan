@@ -1,7 +1,7 @@
 = turbo_frame_tag :main, src: unit_events_path(current_unit), loading: :lazy
 
 = turbo_frame_tag :modal do
-  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 md:pb-16 bg-black/50 z-30", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
+  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-4 md:pt-16 md:pb-16 bg-black/50 z-30", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
     article.mx-auto.max-w-8xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden
       header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-600
         .left
@@ -12,14 +12,14 @@
         .right.flex.flex-row.gap-2.text-stone-500.text-lg.-mr-2
           - if @event.previous.present?
             = link_to unit_event_path(current_unit, @event.previous(current_member)),
-                      class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900",
+                      class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900 hidden md:block",
                       title: "#{@event.previous.title} on #{@event.previous.starts_at.strftime('%B %-d')}",
                       data: { turbo_action: "advance" } do
               i.fa-light.fa-chevron-up.fa-fw
 
           - if @event.next.present?
             = link_to unit_event_path(current_unit, @event.next(current_member)),
-                      class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900",
+                      class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900 hidden md:block",
                       title: "#{@event.next.title} on #{@event.next.starts_at.strftime('%B %-d')}",
                       data: { turbo_action: "advance" } do
               i.fa-light.fa-chevron-down.fa-fw
