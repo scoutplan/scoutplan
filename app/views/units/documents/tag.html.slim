@@ -17,14 +17,14 @@
             i.fa-fw.fa-solid.fa-tag.mr-2
             = tag.name
 
-    section.pl-16.pr-4.grow
-      header.bg-white.top-12.mb-4.pt-2.flex.flex-row.items-center.gap-4
-        h1.text-2xl.font-semibold.mb-2 = "Files"
+    section.mx-auto.w-full.pl-8.pr-16
+      header.bg-white.top-12.pl-7.mb-4.pt-2.flex.flex-row.items-center.gap-4
+        h1.text-2xl.font-semibold.mb-2.px-3 = "Files"
         - if UnitDocumentPolicy.new(current_member, Document).create?
           = render partial: "upload_form"            
 
       = render partial: "units/documents/#{variant}"
 
     = turbo_frame_tag :sidebar, class: "h-full"
-      section.w-80.px-4.border-l.h-full
+      section.w-0.px-0.h-full
         = "sidebar"

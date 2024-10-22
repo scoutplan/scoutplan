@@ -5,7 +5,7 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
-  get 'relationship_candidates/create'
+  get "relationship_candidates/create"
   get "event_cancellations/new"
   get "event_cancellations/create"
   get "tags/create"
@@ -77,6 +77,8 @@ Rails.application.routes.draw do
     # get "search", to: "search#new", as: "new_search"
     #
     resources :searches
+
+    resources :document_sets, only: [:new]
 
     scope module: :units do
       resources :documents, path: "library" do

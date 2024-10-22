@@ -1,4 +1,12 @@
 - can_delete = UnitDocumentPolicy.new(current_member, Document).destroy?
 
-ol#documents_list.w-full
+ol#documents_list.w-full(data-controller="documents" data-documents-unit-id-value="#{current_unit.id}")
   = render partial: "document_list_item", collection: @documents, as: :document
+
+css:
+  #documents_list:has(.multi-selector-checkbox:checked) {
+    .multi-selector-label {
+      display: block;
+    }
+  }
+      
