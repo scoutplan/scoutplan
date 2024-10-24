@@ -78,7 +78,11 @@ Rails.application.routes.draw do
     #
     resources :searches
 
-    resources :document_sets, only: [:new]
+    resources :document_sets, only: [:new] do
+      collection do
+        delete "destroy"
+      end
+    end
 
     scope module: :units do
       resources :documents, path: "library" do

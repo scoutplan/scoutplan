@@ -9,8 +9,14 @@ header#rsvps_accepted_header.sticky.bg-green-800.dark:bg-green-900.p-4.drop-shad
 
     .text-normal.rounded-lg.bg-green-700.table.text-sm.text-green-100.p-1
       .table-row
-        .table-cell.px-1.text-center.text-xl = event_dashboard.accepted_youth_count
+        .table-cell.px-1.text-center.text-xl.border-r = event_dashboard.accepted_youth_count
         .table-cell.px-1.text-center.text-xl = event_dashboard.accepted_adult_count
+      
       .table-row
-        .table-cell.px-1.font-medium = "Youth"
-        .table-cell.px-1.font-mdeium = "Adults"
+        .table-cell.px-1.font-medium.border-r
+          i.fa-solid.fa-user.mr-1
+          = "Youth"
+        
+        .table-cell.px-1.font-mdeium
+          i.fa-regular.fa-user.mr-1
+          = "Adults"

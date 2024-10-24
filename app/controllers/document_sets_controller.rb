@@ -1,4 +1,8 @@
 class DocumentSetsController < UnitContextController
+  def destroy
+    ap params
+  end
+
   def new
     doc_ids = params[:document_ids].split(",")
     @documents = Document.find(doc_ids)

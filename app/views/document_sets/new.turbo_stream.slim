@@ -1,16 +1,22 @@
 = turbo_stream.update :sidebar
-  section.w-96.px-4.pt-16.border-l.h-full.flex.flex-col.gap-6
+  section.w-96.px-4.pt-12.border-l.h-full.flex.flex-col.gap-6
+    h4.font-semibold.py-1 = "#{@documents.count} document".pluralize(@documents.count) + " selected"
+
+    // thumbnails
     section.relative(style="height: 300px;")
       - max_stack_size = 6
       - count = [@documents.count, max_stack_size].min
+      - thumbnail_rendered = false
+
       - @documents.each_with_index do |document, index|
         - break if index > max_stack_size
+
         - if document.file.representable?
+          - thumbnail_rendered = true
           = image_tag document.file.representation(resize_to_limit: [250, 250]), class: "absolute w-fit drop-shadow-lg", style: "left:50%; max-width: 100%; max-height: 100%; margin: auto; transform: translateX(-50%) rotate(#{(index - count + 1) * 5}deg);"
 
 
     section.hidden
-      h4.font-bold.py-1 = "#{@documents.count} documents selected"
 
       ul.text-sm
         - @documents.each do |document|
@@ -31,4 +37,10 @@
     section
       h4.font-semibold = "Document date"
 
-      = date_field_tag :date, nil, class: "block w-full mt-1 rounded border border-stone-300 p-2"            
+      = date_field_tag :date, nil, class: "block w-full mt-1 rounded border border-stone-300 p-2 text-sm"
+
+    section.mt-auto.mb-4
+      = button_to unit_document_sets_path(current_unit), method: :delete, params: { document_ids: @documents.map(&:id) }, class: "py-2 text-brand-500 hover:text-brand-600" do
+        i.fa-solid.fa-trash-alt
+        | &nbsp;
+        = t(".delete_selected")
