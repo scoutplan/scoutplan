@@ -59,7 +59,6 @@ class Event < ApplicationRecord
   alias_method :shifts, :event_shifts
 
   validates_presence_of :title, :starts_at, :ends_at
-  validates :short_description, length: { maximum: 50 }
   validate :dates_are_subsequent
   validates :attachments,
             content_type: [
