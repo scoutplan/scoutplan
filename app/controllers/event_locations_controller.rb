@@ -7,7 +7,8 @@ class EventLocationsController < UnitContextController
     render turbo_stream: [
       turbo_stream.append(:event_locations_list,
                           partial: "events/partials/form/event_location",
-                          locals:  { event_location: event_location })
+                          locals:  { event_location_counter: Digest::MD5.hexdigest(event_location.location_type).to_i(16),
+                                     event_location:         event_location })
     ]
   end
 

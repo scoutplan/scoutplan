@@ -203,8 +203,10 @@ class EventsController < UnitContextController
 
   # PATCH /:unit_id/events/:event_id
   def update
+    authorize @event
     @event.current_member = current_member
-    update_event
+    @event.update!(event_params)
+    @event.cover_photo.purge if params[:remove_cover_photo] == "1"
 
     respond_to do |format|
       format.html { redirect_after_update }
@@ -218,18 +220,6 @@ class EventsController < UnitContextController
     else
       redirect_to unit_event_path(@event.unit, @event)
     end
-  end
-
-  def update_event
-    authorize @event
-    service = EventUpdateService.new(@event, current_member, event_params)
-    service.perform
-
-    EventService.new(@event, params).process_event_shifts
-    EventService.new(@event, params).process_library_attachments
-    # EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
-
-    @event.cover_photo.purge if params[:remove_cover_photo] == "1"
   end
 
   def destroy
@@ -400,15 +390,18 @@ class EventsController < UnitContextController
                                       :short_description, :requires_rsvp, :includes_activity, :activity_name,
                                       :all_day, :starts_at_date, :starts_at_time, :ends_at_date, :ends_at_time, :repeats,
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
-                                      :max_total_attendees, :rsvp_closes_at, :rsvp_opens_at,
+                                      :max_total_attendees, :rsvp_closes_at, :rsvp_opens_at, :shift_name,
                                       :note, :cost_youth, :cost_adult, :online, :website,
                                       :notify_members, :notify_recipients, :notify_message, :document_library_ids,
                                       :cover_photo, packing_list_ids: [], attachments: [], private_attachments: [], tag_list: [],
                                       event_organizer_unit_membership_ids: [],
                                       event_locations_attributes: [:id, :location_type, :location_id, :event_id, :url, :_destroy],
-                                      event_organizers_attributes: [:unit_membership_id])
+                                      event_organizers_attributes: [:unit_membership_id],
+                                      event_shifts_attributes: [:id, :name, :_destroy])
     p[:tag_list] ||= []
     p[:packing_list_ids] = p[:packing_list_ids].reject(&:blank?) if p[:packing_list_ids].present?
+    p[:starts_at] = Date.parse(p[:starts_at_date]).in_time_zone(current_unit.time_zone) if p[:all_day] == "true"
+    p[:ends_at] = Date.parse(p[:ends_at_date]).in_time_zone(current_unit.time_zone) if p[:all_day] == "true"
 
     # process_event_locations_attributes(p)
     process_packlist_ids(p)

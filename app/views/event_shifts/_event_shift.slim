@@ -1,0 +1,14 @@
+li.event-shift-item.inline-block.group.bg-brand-100.hover:bg-brand-200.text-brand-900.rounded.mr-1.cursor-default(data-controller="")
+  .flex.flex-row.items-center.gap-2.pl-3.pr-px.py-1.font-medium
+    .cursor-text.event-shift-display-name(data-action="click->event-shift#renameOption")
+      = event_shift.name
+
+    = button_tag class: "p-px text-brand-600 group-hover:text-brand-950 hover:bg-brand-300 w-7 rounded text-sm",
+                 type: "button",
+                 title: "Remove this option",
+                 data: { action: "event-shift#removeOption" } do
+      i.fa-regular.fa-times
+
+  = hidden_field :event, "event_shifts_attributes[#{event_shift_counter}][id]", value: event_shift.id, class: "event-shift-id"
+  = hidden_field :event, "event_shifts_attributes[#{event_shift_counter}][name]", value: event_shift.name, class: "event-shift-name"
+  = hidden_field :event, "event_shifts_attributes[#{event_shift_counter}][_destroy]", value: false, class: "event-shift-destroy"

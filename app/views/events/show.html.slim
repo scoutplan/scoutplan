@@ -5,6 +5,9 @@
 
 = turbo_frame_tag :main, src: unit_events_path(current_unit), loading: :lazy
 
+= turbo_stream.update "page_title" do
+  = t("events.index.page_title", unit_name: current_unit.name)  
+
 = turbo_frame_tag :modal do
   = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 md:pb-16 bg-black/50 z-30", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
     article.event-data.mx-auto.bg-white.rounded-lg.max-h-full.flex.flex-col.overflow-y-hidden.dark:text-stone-800.max-w-2xl
@@ -73,11 +76,6 @@
             = render partial: "events/partials/show/tags", locals: { event: @event }          
 
     = render partial: "events/partials/show/watermarks"
-
-  javascript:
-    window.addEventListener("turbo:load", () => {
-      document.title = "#{@event.title} - #{current_unit.name}";
-    });
 
   css:
     .event-data:has(.event-metadata *) {

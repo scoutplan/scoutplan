@@ -5,7 +5,8 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
-  get 'relationship_candidates/create'
+  get "event_shifts/create"
+  get "relationship_candidates/create"
   get "event_cancellations/new"
   get "event_cancellations/create"
   get "tags/create"
@@ -54,6 +55,7 @@ Rails.application.routes.draw do
   get "callbacks/instagram", to: "instagram_external_integrations#callback"
 
   resources :event_activities, as: "activities"
+  resources :event_shifts, only: [:create]
   resources :users, only: [:show, :become, :update]
 
   # get "units/:unit_id/settings", as: "edit_unit_settings", to: "unit_settings#edit"
