@@ -43,6 +43,13 @@ describe "events", type: :feature do
       visit(path)
       expect(page).to have_current_path(path)
     end
+
+    it "denies access to an event" do
+      @unit.update!(public_calendar: true)
+      path = unit_event_path(@unit, @published_event)
+      visit(path)
+      expect(page).not_to have_current_path(path)
+    end
   end
 
   describe "events index" do

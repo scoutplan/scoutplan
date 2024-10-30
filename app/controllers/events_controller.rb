@@ -124,7 +124,7 @@ class EventsController < UnitContextController
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).rsvps?
     @current_family = current_member&.family
-    if @event.requires_payment? && Flipper.enabled?(:payments, current_unit)
+    if @event.requires_payment? && Flipper.enabled?(:payments, current_unit) && @current_family.present?
       @payments = @event.payments.paid.where(unit_membership_id: @current_family.map(&:id))
       @family_rsvps = @event.rsvps.where(unit_membership_id: @current_family.map(&:id))
       @subtotal = (@family_rsvps.accepted.youth.count * @event.cost_youth) + (@family_rsvps.accepted.adult.count * @event.cost_adult)

@@ -2,7 +2,7 @@
 
 # Policy class governing Events and what members can do with them
 class EventPolicy < UnitContextPolicy
-  attr_accessor :event
+  attr_accessor :event, :membership
 
   def initialize(membership, event = nil)
     super
@@ -11,6 +11,8 @@ class EventPolicy < UnitContextPolicy
   end
 
   def show?(event = nil)
+    return false unless membership.present?
+
     @event = event if event.present?
     return true if admin?
     return true if @event.organizer?(@membership)
