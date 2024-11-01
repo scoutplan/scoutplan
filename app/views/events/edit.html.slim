@@ -5,3 +5,6 @@
     = render "form", event: @event
 
   = turbo_frame_tag :modal_overlay
+
+  = turbo_stream.update "page_title" do
+    = @event.title

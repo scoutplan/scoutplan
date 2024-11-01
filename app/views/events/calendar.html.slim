@@ -118,6 +118,7 @@ javascript:
     document.querySelectorAll(".cal-cell").forEach(function(elem) {
       elem.addEventListener("dblclick", function(elem) {
         var targetDate = elem.currentTarget.dataset.calDate;
+        console.log(targetDate);
         url = "#{new_unit_event_path(current_unit)}" + "?date=" + targetDate;
         window.location.href = url;
       });

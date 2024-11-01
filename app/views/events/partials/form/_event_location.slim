@@ -1,8 +1,9 @@
 .table-row.group.event-location.items-center
   .table-cell.py-3.pr-2
-    = hidden_field :event, "event_locations_attributes[][location_type]", value: event_location.location_type
-    = hidden_field :event, "event_locations_attributes[][location_id]", value: event_location.location_id
-    = hidden_field :event, "event_locations_attributes[][url]", value: event_location.url
+    = hidden_field :event, "event_locations_attributes[#{event_location_counter}][id]", value: event_location.id
+    = hidden_field :event, "event_locations_attributes[#{event_location_counter}][location_type]", value: event_location.location_type
+    = hidden_field :event, "event_locations_attributes[#{event_location_counter}][location_id]", value: event_location.location_id
+    = hidden_field :event, "event_locations_attributes[#{event_location_counter}][url]", value: event_location.url
     
     i.fa-layers.fa-fw
       - case event_location.location_type

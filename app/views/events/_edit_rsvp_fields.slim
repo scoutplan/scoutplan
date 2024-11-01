@@ -21,14 +21,14 @@ ul
 
       .flex.flex-row.justify-between.items-center.py-2.gap-2.md:gap-20
         // person name
-        .relative.block.whitespace-nowrap.pr-0.md:pr-1.pl-0.bg-white
+        .relative.block.whitespace-nowrap.pr-0.md:pr-1.pl-0.bg-stone-100
           = presenter.family_context_name(family_member)
 
-        div.z-10
+        div.z-10.bg-stone-100.border-l.border-stone-300
           // switch
           - if @event.shifts?
             - @event.shifts.each do |shift|
-              .py-1.ml-1
+              .py-1.ml-1.text-sm
                 = render partial: "components/switch", locals: { checked: existing_rsvp&.event_shift_ids&.include?(shift.id),
                                                                 label: shift.name,
                                                                 object_name: "event[members][#{family_member.id}][shifts][#{shift.id}]",

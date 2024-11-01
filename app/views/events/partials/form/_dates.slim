@@ -12,7 +12,7 @@ section.py-4#date_fields
       = @current_unit.settings(:locale).time_zone
 
   .pt-0
-    = switch(:event, :all_day, { label: "All day", class: "block mb-2" }, "true", "false")
+    = switch(:event, :all_day, { label: "All day", class: "block mb-2", checked: event.all_day }, "true", "false")
 
     .flex.flex-col.md:flex-row.gap-x-1.md:items-center
       .flex.flex-row.flex-grow.gap-x-1

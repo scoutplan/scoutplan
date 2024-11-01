@@ -67,16 +67,11 @@ section
             .font-semibold.whitespace-nowrap.text-xl
               = @event.ends_at.in_time_zone.strftime("%-I:%M")
               | &thinsp;
-              .inline.text-stone-600.text-sm = @event.ends_at.in_time_zone.strftime("%p")              
-
-    - if @event.series?
-      .text-sm.text-gray-500.mt-4
-        i.fas.fa-repeat.mr-2
-        = t("events.show.series_count", count: @event.series.count)
+              .inline.text-stone-600.text-sm = @event.ends_at.in_time_zone.strftime("%p")
 
     - if @event.shifts?
       .text-sm.font-bold.mt-4
-        h4.inline-block = "Time slots:"
         ul.inline-block
           - @event.event_shifts.each do |shift|
-            li.inline-block.mx-1.px-2.py-2.border.rounded.border-sky-300 = shift.name
+            li.inline-block.mr-1.px-2.py-1.rounded-sm.bg-brand-100.text-brand-900.font-medium.text-xs
+              = shift.name

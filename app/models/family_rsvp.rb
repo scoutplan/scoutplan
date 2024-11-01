@@ -56,6 +56,10 @@ class FamilyRsvp
     @event_rsvps ||= event.rsvps.where(unit_membership: family_members)
   end
 
+  def rsvps
+    event_rsvps
+  end
+
   def family_fully_responded?
     event_rsvps.map(&:unit_membership) & active_family_members == active_family_members
   end

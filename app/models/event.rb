@@ -48,6 +48,7 @@ class Event < ApplicationRecord
   has_secure_token
 
   accepts_nested_attributes_for :event_locations, allow_destroy: true
+  accepts_nested_attributes_for :event_shifts, allow_destroy: true
   # accepts_nested_attributes_for :event_organizers, allow_destroy: true
 
   accepts_through_attributes_for :event_organizers, joining: :unit_membership, key: :id
