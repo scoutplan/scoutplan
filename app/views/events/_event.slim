@@ -28,28 +28,29 @@ li.event(class="#{row_classes(event)}" id="#{dom_id(event)}")
 
 
       // 2 title, tags, description, location
-      = link_to href,
-                class: "py-2 block shrink grow",
-                name:  event.id,
-                data:  { month: event.starts_at.month,
-                        year: event.starts_at.year,
-                        turbo_frame: "modal", turbo_action: "advance" } do
+      div
+        = link_to href,
+                  class: "pt-2 block shrink grow",
+                  name:  event.id,
+                  data:  { month: event.starts_at.month,
+                          year: event.starts_at.year,
+                          turbo_frame: "modal", turbo_action: "advance" } do
 
-          h4.text-xl.font-semibold.event-title.text-ellipsis
-            i.fa-solid.fa-xs.fa-fw.mr-1(class="fa-#{event&.category&.glyph}" style="color: #{event&.category&.color}")
-            = event.title
+            h4.text-xl.font-semibold.event-title.text-ellipsis
+              i.fa-solid.fa-xs.fa-fw.mr-1(class="fa-#{event&.category&.glyph}" style="color: #{event&.category&.color}")
+              = event.title
 
-          = render partial: "events/partials/event_row/title_badge", locals: { event: event }
-          = render partial: "events/partials/index/short_description", locals: { event: event }
-          = render partial: "events/event_location", locals: { event: event }
-          = render partial: "events/event_cost", locals: { event: event }
+        = render partial: "events/partials/event_row/title_badge", locals: { event: event }
+        = render partial: "events/partials/index/short_description", locals: { event: event }
+        = render partial: "events/event_location", locals: { event: event }
+        = render partial: "events/event_cost", locals: { event: event }
+        = render partial: "events/partials/event_row/online", locals: { event: event }
 
       - if current_user
-        .third.flex.flex-col
+        .ml-auto.third.flex.flex-col
           - if event.organizable? && EventPolicy.new(current_member, event).rsvps? && params[:list_view] != "member"
             = render partial: "events/partials/event_row/organize", locals: { event: event }
           - elsif event.requires_rsvp
             .w-48
               = render partial: "events/partials/event_row/family_rsvp_link", locals: { event: event }
 
-          = render partial: "events/partials/event_row/online", locals: { event: event }

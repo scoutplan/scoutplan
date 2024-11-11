@@ -1,6 +1,5 @@
+- return if event.online? || event.event_locations.blank?
+
 p.event-location.text-sm.text-stone-500.mt-2
-  - if event.online
-    .link-placeholder.h-5
-  - elsif location = event.location
-    i.fa-regular.fa-map-marker-alt.fa-fw.mr-1
-    span = event.location
+  i.fa-regular.fa-map-marker-alt.fa-fw.mr-1
+  span = event.location
