@@ -41,16 +41,7 @@ class UnitMembershipsController < UnitContextController
 
     @member = current_unit.memberships.new(member_params)
     @member.user_id = @user.id
-
-    puts @member.inspect
-
     return unless @member.save!
-
-    puts member_params.inspect
-
-    puts @member.inspect
-
-    # MemberRelationshipService.new(@member).update(params[:member_relationships])
 
     flash[:notice] =
       t("members.confirmations.create", member_name: @member.full_display_name, unit_name: current_unit.name)

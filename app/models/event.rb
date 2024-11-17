@@ -6,8 +6,8 @@ class Event < ApplicationRecord
 
   date_time_attrs_for :starts_at, :ends_at
 
-  attr_accessor :repeats, :notify_members, :notify_recipients, :notify_message, :document_library_ids, :current_member,
-                :event_organizer_unit_membership_ids
+  attr_accessor :repeats, :repeats_until, :notify_members, :notify_recipients, :notify_message, :document_library_ids,
+                :current_member, :event_organizer_unit_membership_ids
 
   default_scope { where(parent_event_id: nil).order(starts_at: :asc) }
 
@@ -112,6 +112,20 @@ class Event < ApplicationRecord
   auto_strip_attributes :website
 
   after_save_commit :save_event_organizers
+  after_create :create_series
+
+  def create_series
+    return unless repeats == "yes" && repeats_until.present?
+    return if series_parent_id.present? # don't recurse
+
+    EventSeries.create_with(self, repeats_until: repeats_until)
+  end
+
+  def initialize_copy(original)
+    original.event_locations.each do |loc|
+      event_locations << loc.dup
+    end
+  end
 
   def save_event_organizers
     return unless event_organizer_unit_membership_ids.present?
@@ -126,6 +140,7 @@ class Event < ApplicationRecord
     event_category.name
   end
 
+  # validations
   def this_season_starts_at
     unit.this_season_starts_at
   end
@@ -134,6 +149,7 @@ class Event < ApplicationRecord
     errors.add(:ends_at, "must be after start_date") if starts_at > ends_at
   end
 
+  # convenience methods
   def full_title
     "#{unit.name} #{title}"
   end
@@ -357,28 +373,6 @@ class Event < ApplicationRecord
 
   def notification_recipients
     with_guardians(requires_rsvp ? rsvps.accepted.collect(&:member) : unit.members.status_active)
-  end
-
-  private
-
-  # create a weekly series based on @event
-  # TODO: this is super-naive: it"s not idempotent, it doesn"t
-  # handle things like updates, etc etc
-  def create_series
-    raise "Series duration cannot exceed one year" if repeats_until > starts_at.advance(years: 1)
-
-    # update(series_parent: self) unless series_parent_id.present?
-
-    new_event = dup
-    new_event.series_parent = self
-    new_event.repeats_until = nil
-
-    while new_event.starts_at < repeats_until
-      new_event.starts_at += 7.days
-      new_event.ends_at += 7.days
-      new_event.save!
-      new_event = new_event.dup
-    end
   end
 end
 # rubocop:enable Metrics/ClassLength

@@ -30,13 +30,7 @@ ical_suppress_declined: true)
       cals = Icalendar::Calendar.parse(page.body)
       cal = cals.first
       cal_event = cal.events.first
-
       Time.zone = @unit.time_zone
-
-      puts cal_event.dtstart
-      puts event.starts_at
-
-      # expect(cal_event.dtstart.to_datetime).to eq(event.starts_at)
 
       expect(cal_event.summary.to_s).to eq("#{@unit.short_name} - #{event.title}")
       expect(cal_event.location).to eq(event.full_address)

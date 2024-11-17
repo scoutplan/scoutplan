@@ -10,6 +10,12 @@ module DateTimeAttributes
       time_attr_name = "#{attr_name}_time"
 
       class_eval <<-CODE, __FILE__, __LINE__ + 1
+        # # original attribute setter
+        # def #{attr_name}=(val)  # def starts_at=(str)
+        #   return unless val.is_a?(Date) || val.is_a?(DateTime)
+        #   self.send(:#{attr_name}=, val)
+        # end
+
         # date getter
         def #{date_attr_name}     # def starts_at_date
           #{attr_name}&.to_date   #   starts_at&.to_date

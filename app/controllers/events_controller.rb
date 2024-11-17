@@ -179,16 +179,6 @@ class EventsController < UnitContextController
     authorize @event
 
     if @event.save!
-      # puts params.inspect
-      # authorize :event, :create?
-      # service = EventCreationService.new(current_unit)
-      # @event = service.create(event_params)
-      # render "new" and return unless @event.valid?
-
-      # # EventOrganizerService.new(@event, current_member).update(params[:event_organizers])
-      # EventService.new(@event, params).process_event_shifts
-      # return unless @event.present?
-
       if params[:event][:attachments].present?
         params[:event][:attachments].each do |attachment|
           @event.attachments.attach(attachment)
