@@ -45,6 +45,12 @@
         = t(".page_title", event_title: @event.title)
 
       css:
+        .move-grip { display: none; }
+        .member-item:hover {
+          .member-icon { display: none; }
+          .move-grip { display: inline; }
+        }
+
         .filtering-names .filtered-out {
           display: none;
         }

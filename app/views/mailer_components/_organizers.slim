@@ -4,7 +4,6 @@ section(style="border-top:1px solid #ccc; padding-top: 1rem;")
   h2 Contact
   dl
     - event.organizers.each do |organizer|
-      - ap organizer
       dt = organizer.display_name
       dd = mail_to(organizer.email)
       dd = phone_to(organizer.phone, organizer.phone.phony_formatted(country_code: "US")) if organizer.phone.present?

@@ -167,10 +167,6 @@ describe "events", type: :feature do
         @draft_event.event_locations.destroy_all
         @draft_event.event_locations.create!(location: location, location_type: :departure)
 
-        # ap @draft_event.event_locations
-        # ap @draft_event.map_address
-        # ap CGI.escape(@draft_event.map_address.gsub(",", ""))
-
         path = unit_event_path(@unit, @draft_event)
         visit(path)
         expect(page).to have_current_path(path)

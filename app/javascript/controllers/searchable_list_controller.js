@@ -27,7 +27,6 @@ export default class extends Controller {
     this.searchItems = this.element.querySelectorAll(this.searchItemCssValue);
     this.newValueParam = this.newValueParamValue || "value";
     this.newValueMethod = this.newValueMethodValue || "post";
-    this.establishSearchFieldObserver();
   }
 
   search(event) {
@@ -72,8 +71,9 @@ export default class extends Controller {
   }
 
   async addValue(event) {
-    var newValue = this.newValueNameTarget.innerText;
+    if (!this.hasNewValueUrlValue) { return; }
 
+    const newValue = this.newValueNameTarget.innerText;
     const formData = new FormData();
     formData.append(this.newValueParam, newValue);
 

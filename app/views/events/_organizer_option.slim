@@ -1,8 +1,10 @@
-li
-  = label_tag "event_event_organizer_member_#{member.id}", class: "search-item flex flex-row items-center px-2 py-2 hover:bg-stone-100 rounded", for: "member_#{member.id}" do
-    i.fa-light.fa-tag.fa-fw.text-stone-500.mr-1
-    = member.display_name
+- checked ||= false
 
-    = check_box_tag "event[event_organizer_unit_membership_ids][]", member.id, checked, class: "ml-auto",
-                    id: "event_event_organizer_unit_membership_id_#{member.id}",
-                    data: { action: "change->checkable-list#change", value: member.id }
+li
+  = label_tag "event_event_organizer_member_#{unit_membership.id}", class: "search-item flex flex-row items-center px-2 py-2 hover:bg-stone-100 rounded", for: "member_#{unit_membership.id}" do
+    i.fa-light.fa-tag.fa-fw.text-stone-500.mr-1
+    = unit_membership.display_name
+
+    = check_box_tag "event[event_organizer_unit_membership_ids][]", unit_membership.id, checked, class: "ml-auto",
+                    id: "event_event_organizer_unit_membership_id_#{unit_membership.id}",
+                    data: { action: "change->checkable-list#change", value: unit_membership.id }

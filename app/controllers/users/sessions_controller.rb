@@ -6,12 +6,10 @@ module Users
       if @user.present?
         stored_location_for(resource) || root_path
       else
-        ap "nope"
         new_user_session_path
       end
     end
 
-    # rubocop:disable Metrics/MethodLength
     def create
       setup
 
@@ -25,7 +23,6 @@ module Users
         super
       end
     end
-    # rubocop:enable Metrics/MethodLength
 
     def setup
       @email = params.dig(:user, :email)

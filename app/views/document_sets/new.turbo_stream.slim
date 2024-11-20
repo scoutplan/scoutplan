@@ -1,0 +1,31 @@
+= turbo_stream.update :sidebar
+  - if @document_set.documents.count.positive?
+    aside.w-80.px-4.pt-12.border-l.h-full.flex.flex-col.gap-6
+      .flex.flex-col.divide-y
+        section
+          header.mb-4
+            h4.font-medium.text-lg.py-1 = "#{@document_set.documents.count} document".pluralize(@document_set.documents.count) + " selected"
+
+          // thumbnails
+          .relative(style="height: 300px;")
+            - max_stack_size = 6
+            - count = [@document_set.documents.count, max_stack_size].min
+            - thumbnail_rendered = false
+
+            - @document_set.documents.each_with_index do |document, index|
+              - break if index > max_stack_size
+
+              - if document.file.representable?
+                - thumbnail_rendered = true
+                = image_tag document.file.representation(resize_to_limit: [250, 250]), class: "absolute w-fit drop-shadow-lg", style: "left:50%; max-width: 100%; max-height: 100%; margin: auto; transform: translateX(-50%) rotate(#{(index - count + 1) * 5}deg);"
+
+        = render partial: "attributes", locals: { document_set: @document_set }
+
+      section.mt-auto.mb-4
+        = button_to unit_document_sets_path(current_unit), method: :delete,
+                    params: { document_ids: @document_set.documents.map(&:id).join(",") },
+                    class: "py-2 text-stone-500 hover:text-stone-600 text-sm",
+                    data: { turbo_confirm: "Are you sure you want to delete?" } do
+          i.fa-solid.fa-trash-alt
+          | &nbsp;
+          = t(".delete_selected")

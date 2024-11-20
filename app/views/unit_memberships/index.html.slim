@@ -38,7 +38,7 @@
             = "Add a Member"
 
         .right
-          .relative.text-sm
+          .relative.text-sm.search-support
             i.fa-regular.fa-magnifying-glass.absolute.left-3.text-stone-400(style="top:50%;transform:translateY(-50%);")
 
             = search_field_tag(:search, 
@@ -86,7 +86,7 @@
       z-index: 0;
     }
 
-    .search-match {
+    .search-match,.search-support {
       z-index: 1000;
     }
 

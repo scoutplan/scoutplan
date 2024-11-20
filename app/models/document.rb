@@ -10,9 +10,19 @@ class Document < ApplicationRecord
 
   before_commit :set_document_date, on: :create
 
+  def document_tag=(tag_attrs)
+    tag_name = tag_attrs[:name]
+    if tag_attrs[:_destroy] == "true"
+      document_tag_list.remove(tag_name)
+    else
+      document_tag_list.add(tag_name)
+    end
+    save!
+  end
+
   private
 
   def set_document_date
-    self.document_date = created_at
+    self.document_date = created_at unless document_date.present?
   end
 end

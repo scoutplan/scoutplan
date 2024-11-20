@@ -13,8 +13,7 @@ css:
                     data: { action: "input->searchable-list#search", searchable_list_target: "searchField" }
 
     ul.max-h-72.overflow-y-auto#organizer_list
-      - event.unit.members.each do |member|
-        = render partial: "organizer_option", locals: { member: member, checked: false }
+      = render partial: "organizer_option", collection: event.unit.unit_memberships.joins(:user), as: :unit_membership
 
     div.hidden(data-event-edit-target="newOrganizerPrompt")
       p.p-2.text-stone-500.hidden(data-event-edit-target="organizerNotFoundPrompt")

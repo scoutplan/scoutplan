@@ -207,12 +207,7 @@ describe "unit_memberships", type: :feature do
       skip "This test always passes, but it shouldn't"
 
       user = FactoryBot.create(:user, email: nil)
-      # ap user
-      # member = FactoryBot.create(:member, unit: @unit, user: user)
-      # member.update(user_id: user.id)
-      # ap member
       member = @unit.unit_memberships.create!(user: user, role: "member", member_type: "youth", status: "active")
-      # ap member.user
       visit edit_unit_member_path(@unit, member)
       click_link_or_button I18n.t("members.form.captions.accept_update")
       member.reload

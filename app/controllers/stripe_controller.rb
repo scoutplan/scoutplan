@@ -27,7 +27,6 @@ class StripeController < ApplicationController
       return
     end
 
-    ap @stripe_event
     fulfill_order if @stripe_event["type"] == "checkout.session.completed"
 
     render status: 200, json: { message: "success" }

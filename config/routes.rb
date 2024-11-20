@@ -80,6 +80,13 @@ Rails.application.routes.draw do
     #
     resources :searches
 
+    resources :document_sets, only: [:new] do
+      collection do
+        patch "update", as: "update"
+        delete "destroy"
+      end
+    end
+
     scope module: :units do
       resources :documents, path: "library" do
         collection do

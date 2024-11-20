@@ -1,33 +1,24 @@
 - checked ||= false
 
-tr.hover:bg-stone-100.multi-selector-wrapper.tagged-item.group(id="#{dom_id(document)}" data-tags="#{document.document_tags.map(&:name).join(",")}")
+li.flex.flex-row.items-center.gap-3.multi-selector-wrapper.tagged-item.group(id="#{dom_id(document)}" data-tags="#{document.document_tags.map(&:name).join(",")}")
   - file = document.file
   - color_key = "file_color_#{file.filename.extension}"
   - color = t(color_key, default: "#b91c1c")
 
-  td.border-t.px-2.py-2
-    .w-4.shrink-0
-      - if UnitDocumentPolicy.new(current_member, document).edit?
-        = check_box_tag "document_ids[]", value: document.id, checked: checked, class: "selection-item document-item", data: { action: "click->list-selection#selectItem" }
+  .hidden.md:block.w-5
+    = label_tag nil, class: "multi-selector-label hidden group-hover:block" do
+      = check_box_tag "document_ids[]", document.id, checked, class: "hidden multi-selector-checkbox peer", data: { action: "change->documents#multiSelect" }
+      i.fa-thin.fa-square.text-stone-900.hover:text-brand-500.hover:fa-regular.fa-lg.cursor-pointer.peer-checked:hidden
+      i.fa-solid.fa-check-square.text-brand-500.hover:text-brand-500.fa-lg.cursor-pointer.hidden.peer-checked:inline-block
 
-  td.border-t.px-2.py-2
-    .overflow-hidden.w-full.text-ellipsis.line-clamp-1
-      = link_to rails_blob_path(document.file, disposition: "attachment") do
-          i(class="fa-fw fa-regular fa-file-#{file.filename.extension}" style="color: #{color}")
-          | &nbsp;
-          = file.filename.base
+  .item-details.inline-block.overflow-hidden.w-full.text-ellipsis.border-t
+    = link_to unit_document_path(current_unit, document),
+              class: "flex flex-col md:flex-row gap-1 md:gap-2 md:items-center md:justify-between block px-2 py-2 group-hover:bg-stone-100 focus:bg-brand-100",
+              data: { turbo_frame: "sidebar" } do
+      .left.text-sm.md:text-base.whitespace-nowrap
+        i(class="fa-fw fa-regular fa-file-#{file.filename.extension}" style="color: #{color}")
+        | &nbsp;
+        = file.filename.base
 
-  td.border-t.px-2.py-2.hidden.xl:table-cell
-    = render partial: "document_tags", locals: { document: document }
-  
-  td.border-t.px-2.py-2.w-12
-    .hidden.group-hover:block
-      - if can_delete
-        = button_to [current_unit, document],
-                    method: :delete,
-                    type: "button",
-                    class: "px-2 text-sm hover:text-red-500",
-                    form_class: "inline-block",
-                    title: "Delete document",
-                    data: { turbo_stream: "true", confirm: t(".confirm") } do
-          i.fa-solid.fa-trash-alt
+      .hidden.md:block.right.text-sm.max-w-1/3.text-right
+        = render partial: "units/documents/document_tags", locals: { document: document }

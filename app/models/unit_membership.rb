@@ -29,8 +29,6 @@ class UnitMembership < ApplicationRecord
 
   has_many :parents, through: :parent_relationships, source: :parent_unit_membership
   has_many :children, through: :child_relationships, source: :child_unit_membership
-
-  has_many :rsvp_tokens, dependent: :destroy
   has_many :event_rsvps, dependent: :destroy
   has_many :magic_links, dependent: :destroy
   has_many :messages, foreign_key: :author_id
