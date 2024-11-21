@@ -1,6 +1,4 @@
-- can_delete = UnitDocumentPolicy.new(current_member, Document).destroy?
-
-ol#documents_list.w-full
+ol#documents_list.w-full.min-w-0
   = render partial: "document_list_item", collection: @documents, as: :document
 
 css:
