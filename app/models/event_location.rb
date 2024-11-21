@@ -3,11 +3,10 @@
 class EventLocation < ApplicationRecord
   belongs_to :event
   belongs_to :location, optional: true
-  validates_uniqueness_of :location_type, scope: [:event, :location]
 
   after_save :enqueue_static_map_job
 
-  # delegate :name, :address, :city, :state, :zip, :country, to: :location
+  validates_uniqueness_of :location_type, scope: :event
 
   def location_name
     url.present? ? url : location&.name

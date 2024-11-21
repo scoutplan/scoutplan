@@ -61,7 +61,7 @@ section.py-4#date_fields
                           data: { body_class: "event-repeats" } }
 
         .inline-block#repeat_fields
-          = f.label :repeats_until, "until", class: ""
+          = f.label :event_repeats_until, "until", class: ""
           | &nbsp;&nbsp;
           = f.select :repeats_until, [], {}, class: "bg-white w-48 rounded text-sm py-1 px-1 inline-block border-stone-400", data: { event_edit_target: "repeatsUntilSelect" }
 

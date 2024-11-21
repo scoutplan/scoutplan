@@ -21,6 +21,17 @@ RSpec.describe Event, type: :model do
   end
 
   describe "callbacks" do
+    describe "create series" do
+      it "creates a series of events" do
+        event = FactoryBot.build(:event)
+        event.repeats = "yes"
+        event.repeats_until = event.starts_at + 12.weeks
+        expect { event.save! }.to change { Event.count }.by(13)
+
+        # expect(Event.last.starts_at).not_to eq(event.starts_at)
+      end
+    end
+
     describe "after_commit" do
       before do
         @unit = FactoryBot.create(:unit)

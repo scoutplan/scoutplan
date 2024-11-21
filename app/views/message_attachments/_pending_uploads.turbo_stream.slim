@@ -1,4 +1,2 @@
-- puts @uploads.count
-
 = turbo_stream.append "attachments_list" do
   = render partial: "pending_upload", collection: @uploads, as: :upload
