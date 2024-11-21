@@ -10,6 +10,8 @@ class Document < ApplicationRecord
 
   before_commit :set_document_date, on: :create
 
+  # called from DocumentSet to add and remove single tags, kind of
+  # in the vein of nested attributes
   def document_tag=(tag_attrs)
     tag_name = tag_attrs[:name]
     if tag_attrs[:_destroy] == "true"
@@ -18,11 +20,5 @@ class Document < ApplicationRecord
       document_tag_list.add(tag_name)
     end
     save!
-  end
-
-  private
-
-  def set_document_date
-    self.document_date = created_at unless document_date.present?
   end
 end

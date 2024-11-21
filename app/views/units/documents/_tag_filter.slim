@@ -1,24 +1,25 @@
-- tag_ids = ActsAsTaggableOn::Tagging.where(context: "document_tags", tenant: current_unit.id).map(&:tag_id).uniq
-- if tag_ids.any?
-  section.px-6.pt-16.w-60.2xl:w-72.text-sm.hidden.lg:block.border-r.h-full
-    .flex.flex-col.gap-1
-      h3.font-semibold.mb-2.mt-2 Filter by tag
+- tag_names = ActsAsTaggableOn::Tagging.joins(:tag).where(context: "document_tags", tenant: current_unit.id).map{ |tagging| tagging.tag.name }.uniq
+- return unless tag_names.any?
 
-      - ActsAsTaggableOn::Tag.where(id: tag_ids).each do |tag|
-        - colors = colors_from_string(tag.name)
+section.px-6.pt-16.w-60.2xl:w-72.text-sm.hidden.lg:block.border-r.h-full
+  .flex.flex-col.gap-1
+    h3.font-semibold.mb-2.mt-2 Filter by tag
 
-        - if tag.name == params[:tag]
-          = link_to files_unit_documents_path(current_unit),
-                    class: "block p-1 pr-2 rounded w-full bg-brand-500 text-white flex flex-row justify-between items-center",
-                    data: { turbo_frame: "main", turbo_action: "advance" } do
-            span
-              | ##{tag.name}
+    - tag_names.each do |tag_name|
+      - colors = colors_from_string(tag_name)
 
-            i.fa-regular.fa-minus-square.text-white(title="Clear filter")
+      - if tag_name == params[:tag]
+        = link_to files_unit_documents_path(current_unit),
+                  class: "block p-1 pr-2 rounded w-full bg-brand-500 text-white flex flex-row justify-between items-center",
+                  data: { turbo_frame: "main", turbo_action: "advance" } do
+          span
+            | ##{tag_name}
 
-        - else
+          i.fa-regular.fa-minus-square.text-white(title="Clear filter")
 
-          = link_to "##{tag.name}", files_unit_documents_path(current_unit, tag: tag.name),
-                    class: "block p-1 rounded w-full",
-                    data: { turbo_frame: "main", turbo_action: "advance" },
-                    style: "background-color: #{colors[100]}; color: #{colors[800]}"
+      - else
+
+        = link_to "##{tag_name}", files_unit_documents_path(current_unit, tag: tag_name),
+                  class: "block p-1 rounded w-full",
+                  data: { turbo_frame: "main", turbo_action: "advance" },
+                  style: "background-color: #{colors[100]}; color: #{colors[800]}"
