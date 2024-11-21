@@ -6,11 +6,14 @@
 - variant = params[:variant] || request.cookies[:variant] || "list"
 
 = turbo_frame_tag :main
-  .w-full.flex.flex-row.h-full(data-controller="document-index list-selection documents" data-documents-unit-id-value="#{current_unit.id}")
-    #tag_filters.shrink-0
+  .w-full.flex.flex-row.h-full.overflow-hidden(data-controller="document-index list-selection documents" data-documents-unit-id-value="#{current_unit.id}")
+
+    // tag filters
+    #tag_filters.shrink-0.overflow-scroll
       = render partial: "tag_filter"
 
-    section#documents.mx-auto.px-2.2xl:pl-8.md:pr-8.pt-12.shrink.grow.min-w-0
+    // document list
+    section#documents.mx-auto.px-2.2xl:pl-8.md:pr-8.pt-12.shrink.grow.min-w-0.overflow-y-scroll
       header.bg-white.top-12.flex.flex-row.justify-between.items-center.gap-4
         .w-5.h-16.pt-5.multi-selector-wrapper.hidden.md:block
           = button_tag type: "button", id: "deselect_all_button",
@@ -40,8 +43,11 @@
 
       = render partial: "units/documents/#{variant}"
 
+    
+    
+    // side panel
     = turbo_frame_tag :sidebar, class: "h-full hidden md:block w-80 shrink-0"
-      section.w-80.2xl:w-80.h-full.border-l.px-6.py-16.text-stone-500.shrink-0
+      section.w-80.2xl:w-80.h-full.border-l.px-6.py-16.text-stone-500.shrink-0.overflow-y-scroll
         i.fa-regular.fa-check.mr-2
         = "Select one or more files to perform an action, or click a file to download it."
 
