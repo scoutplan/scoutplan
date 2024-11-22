@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_31_124151) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_21_220627) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "unaccent"
@@ -300,6 +300,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_31_124151) do
     t.string "token"
     t.datetime "rsvp_opens_at"
     t.string "shift_name", default: "Time slots"
+    t.integer "min_headcount_adult"
+    t.integer "min_headcount_youth"
     t.index ["token"], name: "index_events_on_token", unique: true
     t.index ["unit_id"], name: "index_events_on_unit_id"
   end

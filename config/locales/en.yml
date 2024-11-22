@@ -252,7 +252,7 @@ en:
           organize: "Event Dashboard"
 
         rsvp_closes_at:
-          rsvp_closes_at: "RSVPs close in %{when}"
+          rsvp_closes_at: "RSVPs close %{when}"
           headcount_remaining:
             zero: "no spots remaining"
             one: "one spot remaining"

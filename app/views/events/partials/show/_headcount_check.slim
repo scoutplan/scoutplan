@@ -1,0 +1,11 @@
+- return if event.headcount_met?
+
+- conditions = []
+- conditions << "#{event.min_headcount_adult} adult" unless event.min_headcount_adult.zero?
+- conditions << "#{event.min_headcount_youth} youth" unless event.min_headcount_youth.zero?
+
+div.p-4.font-medium.bg-amber-100.text-amber-800.mt-8.rounded.border.border-amber-200
+  i.fa-solid.fa-exclamation-triangle.mr-2
+  | This event hasn't yet reached the 
+  = conditions.join(" and ")
+  |  RSVPs to proceed. RSVP today and make it happen!

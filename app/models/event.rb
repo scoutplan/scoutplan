@@ -374,5 +374,21 @@ class Event < ApplicationRecord
   def notification_recipients
     with_guardians(requires_rsvp ? rsvps.accepted.collect(&:member) : unit.members.status_active)
   end
+
+  def adult_headcount_met?
+    return true unless min_headcount_adult
+
+    event_rsvps.accepted.adult.count >= min_headcount_adult
+  end
+
+  def youth_headcount_met?
+    return true unless min_headcount_youth
+
+    event_rsvps.accepted.youth.count >= min_headcount_youth
+  end
+
+  def headcount_met?
+    adult_headcount_met? && youth_headcount_met?
+  end
 end
 # rubocop:enable Metrics/ClassLength

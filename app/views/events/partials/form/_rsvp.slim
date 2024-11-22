@@ -18,6 +18,17 @@ section.py-4#rsvp_fields
     - if Flipper.enabled?(:headcount_limit, current_unit)
       = render partial: "events/partials/form/headcount_limit", locals: { f: f, event: @event } 
 
+    div.py-2.flex.flex-row.items-center.gap-3.text-sm
+        = f.label :min_headcount_adult, "Min. headcount adult", class: "whitespace-nowrap"
+        = f.text_field :min_headcount_adult,
+                          class: "border rounded p-1 shrink text-sm",
+                          min: 0
+
+        = f.label :min_headcount_youth, "youth"
+        = f.text_field :min_headcount_youth,
+                          class: "border rounded p-1 shrink text-sm",
+                          min: 0
+
     #rsvp_open_dates.py-2.text-sm
       = label_tag :open_rsvp, "Open RSVP from", class: "block mb-2"
 
