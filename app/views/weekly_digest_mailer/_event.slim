@@ -5,6 +5,10 @@
     h2 = event.title
     - if event.short_description.present?
       p(style="font-size: 16px;") = event.short_description
+
+    - unless event.headcount_met?
+      p.text-yellow-700.font-bold.mb-2
+        = "This event hasn't met its headcount yet. RSVP to help make it happen!"
   
   section
     time
