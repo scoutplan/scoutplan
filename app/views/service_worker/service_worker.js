@@ -8,6 +8,10 @@ function onActivate(event) {
  
 function onFetch(event) {
   console.log('[Serviceworker]', "Fetching!", event);
+  // if (navigator.setAppBadge) {
+    // Display the number of unread messages.
+    navigator.setAppBadge(10);
+  // }
 }
 
 self.addEventListener('install', onInstall);
