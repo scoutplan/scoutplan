@@ -128,7 +128,7 @@ export default class extends Controller {
     const startsAt = this.startsAtDateTarget.value;
     const unitId = this.unitIdValue;
     // const query = new URLSearchParams({ "a": "b", "starts_at": startsAt });
-    await get(`/u/${unitId}/schedule/repeat_options/${startsAt}`, { responseKind: "turbo-stream" });
+    // await get(`/u/${unitId}/schedule/repeat_options/${startsAt}`, { responseKind: "turbo-stream" });
   }
 
   hideDocumentLibrary(event) {
