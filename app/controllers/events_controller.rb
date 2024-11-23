@@ -370,8 +370,7 @@ class EventsController < UnitContextController
   end
 
   def find_event
-    @event = current_unit.events.includes(:event_rsvps, organizer_members: { unit_membership: :user},
-                                                        event_organizers: { unit_membership: :user },
+    @event = current_unit.events.includes(:event_rsvps, event_organizers: { unit_membership: :user },
                                                         unit:             { unit_memberships: :user }).find(event_id)
     @presenter = EventPresenter.new(@event, current_member)
   end
