@@ -28,3 +28,4 @@ pin "date-fns", to: "https://ga.jspm.io/npm:date-fns@2.29.3/esm/index.js"
 pin "@rails/actioncable", to: "actioncable.esm.js"
 pin_all_from "app/javascript/channels", under: "channels"
 pin "@fortawesome/fontawesome", to: "@fortawesome--fontawesome.js" # @1.1.8
+pin_all_from "app/javascript/custom", under: "custom"

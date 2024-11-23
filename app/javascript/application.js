@@ -5,6 +5,7 @@ import "trix"
 import "@rails/actiontext"
 import "@fortawesome/fontawesome"
 import * as ActiveStorage from "@rails/activestorage"
+import "custom/companion"
 ActiveStorage.start()
 
 import * as ActionCable from "@rails/actioncable"
