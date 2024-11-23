@@ -97,7 +97,7 @@
                 i.fa-light.fa-plus.fa-fw
 
             .flex.flex-wrap.gap-1.text-xs#organizers_tag_field(data-controller="tag-field" data-tag-field-checkable-list-outlet="#organizers_popup")
-              - event.unit.members.active.each do |member|
+              - event.unit.unit_memberships.active.includes(:user).each do |member|
                 = render partial: "organizer_tag", locals: { member: member, visible: event.organizer_members.include?(member) }
 
           // TAGS
