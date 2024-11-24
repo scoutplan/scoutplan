@@ -56,7 +56,7 @@ Rails.application.routes.draw do
 
   resources :event_activities, as: "activities"
   resources :event_shifts, only: [:create]
-  resources :users, only: [:show, :become, :update]
+  resources :users, only: [:show, :update]
 
   # get "units/:unit_id/settings", as: "edit_unit_settings", to: "unit_settings#edit"
   # patch "units/:unit_id/settings", as: "update_unit_settings", to: "unit_settings#update"
