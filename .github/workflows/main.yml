@@ -20,8 +20,7 @@ jobs:
       - name: Set up Ruby & dependencies
         uses: ruby/setup-ruby@v1
         with:
-          bundler-cache: true
-          ruby-version: 3.3.6
+          bundler-cache: false
 
       - name: Update SHA
         run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/github_sha
