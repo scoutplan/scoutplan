@@ -20,6 +20,7 @@ module Scoutplan
     config.active_storage.variant_processor = :vips
     config.active_storage.queues.analysis = :active_storage_analysis
     config.action_mailer.delivery_job = "ScoutplanMailDeliveryJob"
+    config.active_support.to_time_preserves_timezone = :zone    
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
