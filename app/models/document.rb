@@ -21,4 +21,8 @@ class Document < ApplicationRecord
     end
     save!
   end
+
+  def set_document_date
+    self.document_date = Time.zone.now if document_date.nil?
+  end
 end
