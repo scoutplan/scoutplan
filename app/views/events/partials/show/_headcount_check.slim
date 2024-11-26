@@ -1,8 +1,8 @@
 - return if event.headcount_met?
 
 - conditions = []
-- conditions << "#{event.min_headcount_adult} adult" unless event.min_headcount_adult.zero?
-- conditions << "#{event.min_headcount_youth} youth" unless event.min_headcount_youth.zero?
+- conditions << "#{event.min_headcount_adult} adult" if event.min_headcount_adult&.positive?
+- conditions << "#{event.min_headcount_youth} youth" if event.min_headcount_youth&.positive?
 
 div.p-4.font-medium.bg-amber-100.text-amber-800.mt-8.rounded.border.border-amber-200
   i.fa-solid.fa-exclamation-triangle.mr-2
