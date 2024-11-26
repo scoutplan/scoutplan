@@ -6,18 +6,18 @@
                                           only_path: false,
                                           protocol: "webcal")
 
-aside.block.w-80.mt-1.p-2.absolute.bg-white.text-stone-700.right-2.rounded-lg.dropdown-menu.animate-pop-open.drop-shadow-overhead.border.text-sm(data-controller="mouse-capture" class="group-open:bg-stone-100")
+aside.z-30.block.w-80.mt-1.p-2.absolute.bg-white.text-stone-700.right-2.rounded-lg.dropdown-menu.animate-pop-open.drop-shadow-overhead.border.text-sm(data-controller="mouse-capture" class="group-open:bg-stone-100")
   nav
-    .grid.grid-cols-2.gap-1.rounded-lg.bg-stone-200.text-center.mb-2.p-2
+    .grid.grid-cols-3.gap-1.rounded-lg.bg-stone-200.text-center.mb-2.p-2
       = link_to list_unit_events_path(current_unit),
-                class: "px-4 py-2 rounded-lg hover:bg-stone-300 text-center text-center text-sm #{action_name == "list" ? "bg-white hover:bg-white cursor-default" : ""}",
+                class: "px-4 py-2 rounded-lg hover:bg-stone-300 text-center text-center text-xs #{action_name == "list" ? "bg-white hover:bg-white cursor-default" : ""}",
                 data: { turbo_action: "advance" } do
 
         i.fa-light.fa-list.block.mb-2.mx-auto.text-lg
         = "List"
 
       = link_to calendar_unit_events_path(current_unit, year: Date.today.year, month: Date.today.month),
-                class: "block px-4 py-2 rounded-lg hover:bg-stone-300 text-center text-sm #{action_name == "calendar" ? "bg-white hover:bg-white cursor-default" : ""}",
+                class: "block px-4 py-2 rounded-lg hover:bg-stone-300 text-center text-xs #{action_name == "calendar" ? "bg-white hover:bg-white cursor-default" : ""}",
                 data: { turbo_action: "advance" } do
 
         i.fa-light.fa-calendar.block.mb-2.mx-auto.text-lg
@@ -25,11 +25,20 @@ aside.block.w-80.mt-1.p-2.absolute.bg-white.text-stone-700.right-2.rounded-lg.dr
 
       - if false
         = link_to threeup_unit_events_path(current_unit),
-                  class: "px-4 py-2 rounded-lg hover:bg-stone-300 text-center text-center text-sm #{action_name == "threeup" ? "bg-white hover:bg-white cursor-default" : ""}",
+                  class: "px-4 py-2 rounded-lg hover:bg-stone-300 text-center text-center text-xs #{action_name == "threeup" ? "bg-white hover:bg-white cursor-default" : ""}",
                   data: { turbo_action: "advance" } do
 
           i.fa-light.fa-columns-3.block.mb-2.mx-auto.text-lg
           = "Three Up"
+
+      - if true
+        = link_to spreadsheet_unit_events_path(current_unit),
+                  class: "px-4 py-2 rounded-lg hover:bg-stone-300 text-center text-center text-xs #{action_name == "spreadsheet" ? "bg-white hover:bg-white cursor-default" : ""}",
+                  data: { turbo_action: "advance" } do
+
+          i.fa-light.fa-table.block.mb-2.mx-auto.text-lg
+          = "Spreadsheet"
+
 
     / past events
     - if action_name == "list"
