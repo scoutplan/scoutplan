@@ -1,0 +1,13 @@
+- cursor_class = address_book_entry.contactable_status == "contactable" ? "cursor-pointer" : "cursor-not-allowed"
+
+= content_tag :li,
+  id: address_book_entry.key,
+  role: "option",
+  tabindex: 0,
+  class: "hover:bg-stone-100 border-t border-stone-200 search-result block px-3 py-2 #{cursor_class} #{address_book_entry.contactable_status}",
+  data: { action: "mouseover->selectable-list#select click->message-form#commit", key: address_book_entry.key } do
+    .name.font-medium
+      = address_book_entry.name
+
+    .contact-methods.text-sm.flex.flex-row.gap-4.whitespace-nowrap
+      = raw(address_book_entry.description)

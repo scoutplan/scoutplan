@@ -1,7 +1,7 @@
 - tag_names = ActsAsTaggableOn::Tagging.joins(:tag).where(context: "document_tags", tenant: current_unit.id).map{ |tagging| tagging.tag.name }.uniq
 - return unless tag_names.any?
 
-section.px-6.pt-16.w-60.2xl:w-72.text-sm.hidden.lg:block.border-r.h-full
+section.px-6.pt-16.w-60.text-sm.hidden.lg:block.border-r.h-full
   .flex.flex-col.gap-1
     h3.font-semibold.mb-2.mt-2 Filter by tag
 
