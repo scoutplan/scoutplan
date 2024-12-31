@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.3.6"
+ruby "3.4.1"
 
 gem "scout_apm"
 
@@ -33,7 +33,7 @@ gem "icalendar"
 gem "ice_cube", github: "ice-cube-ruby/ice_cube", ref: "6b97e77c106cd6662cb7292a5f59b01e4ccaedc6"
 gem "image_processing"
 gem "importmap-rails"
-gem "ledermann-rails-settings"
+gem "ledermann-rails-settings", github: "scoutplan/rails-settings"
 gem "lograge"
 gem "loofah", ">= 2.19.1"
 gem "nokogiri", ">= 1.14.3"

@@ -195,8 +195,13 @@ export default class extends Controller {
   async commit(event) {
     this.queryInputTarget.placeholder = "";
     const current = this.addressBookTarget.querySelector(".selected");
+    if (!current.classList.contains("contactable")) { return; }
+
+    // gather IDs of members already in the recipient list
     const recipientTags = this.recipientListTarget.querySelectorAll(".recipient");
     const memberIds = Array.from(recipientTags).map((tag) => { return tag.dataset.recipientId; });
+
+    // call to the /commit endpoint
     const body = { "key": current.dataset.key, "member_ids": memberIds };
     if (event.metaKey || event.ctrlKey || event.shiftKey) { body["member_type"] = "adult"; }
     await post(`/u/${this.unitIdValue}/messages/commit`, { body: body, responseKind: "turbo-stream" });    

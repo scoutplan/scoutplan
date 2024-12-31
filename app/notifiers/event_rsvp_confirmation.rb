@@ -17,7 +17,7 @@ class EventRsvpConfirmation < ScoutplanNotifier
   deliver_by :email do |config|
     config.mailer = "EventRsvpConfirmationMailer"
     config.method = :event_rsvp_confirmation
-    config.if = -> { :email? }
+    config.if = :email?
   end
 
   deliver_by :twilio_messaging do |config|
