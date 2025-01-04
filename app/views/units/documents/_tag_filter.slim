@@ -23,3 +23,15 @@ section.px-6.pt-16.w-60.text-sm.hidden.lg:block.border-r.h-full
                   class: "block p-1 rounded w-full",
                   data: { turbo_frame: "main", turbo_action: "advance" },
                   style: "background-color: #{colors[100]}; color: #{colors[800]}"
+
+    - if params[:tag] == "none"
+      = link_to files_unit_documents_path(current_unit),
+                class: "block p-1 pr-2 rounded w-full box-border border border-stone-500 hover:bg-stone-100 flex flex-row justify-between items-center",
+                data: { turbo_frame: "main", turbo_action: "advance" } do
+        span Untagged
+        i.fa-regular.fa-minus-square(title="Clear filter")        
+
+    - else
+      = link_to "Untagged", files_unit_documents_path(current_unit, tag: "none"),
+                class: "block p-1 pr-2 rounded w-full box-border border border-stone-500 hover:bg-stone-100 flex flex-row justify-between items-center",
+                data: { turbo_frame: "main", turbo_action: "advance" }

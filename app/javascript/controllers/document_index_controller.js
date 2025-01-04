@@ -95,10 +95,12 @@ export default class extends Controller {
   }
 
   performFilter(tagName) {
+    console.log(tagName);
     const items = Array.from(this.element.querySelectorAll(".tagged-item"));
     items.forEach(item => {
       const tags = item.dataset.tags.split(",");
-      item.classList.toggle("hidden", tagName != "_all" && tags.indexOf(tagName) === -1);
+      const shouldShow = (tagName == "_all") || (tagName == "none" && item.dataset.tags == "") || (tags.indexOf(tagName) !== -1);
+      item.classList.toggle("hidden", !shouldShow);
     });    
   }  
 

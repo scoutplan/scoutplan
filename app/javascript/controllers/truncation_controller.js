@@ -19,13 +19,11 @@ export default class extends Controller {
       const width = el.offsetWidth - 70;
       const truncatable = el.querySelector('.truncatable');
       const originalText = truncatable.dataset.originalText;
-      console.log(originalText);
       var candidateText = originalText;
       var textWidth = this.getTextWidth(candidateText);
       var leftPortion = '';
       var rightPortion = '';
       var index = 0;
-      console.log(textWidth, width);
       while (textWidth > width) {
         if (leftPortion == '') {
           const breakIndex = Math.floor(originalText.length / 2);
