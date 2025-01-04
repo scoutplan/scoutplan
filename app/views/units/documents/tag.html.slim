@@ -8,11 +8,11 @@
 = turbo_frame_tag :main
   .w-full.flex.flex-row.h-full.overflow-hidden(data-controller="document-index list-selection documents" data-documents-unit-id-value="#{current_unit.id}")
 
-    // tag filters
+    // tag filters (left pane)
     #tag_filters.shrink-0.overflow-scroll
       = render partial: "tag_filter"
 
-    // document list
+    // documents (middle pane)
     section#documents.mx-auto.px-2.2xl:pl-8.md:pr-8.pt-12.shrink.grow.min-w-0.overflow-y-scroll
       header.bg-white.top-12.flex.flex-row.justify-between.items-center.gap-4
         .w-5.h-16.pt-5.multi-selector-wrapper.hidden.md:block
@@ -31,7 +31,10 @@
 
           - if params[:tag].present?
             span.text-sm.text-stone-600.ml-2
-              = "tagged with ##{params[:tag]}"
+              - if params[:tag] == "none"
+                = "not tagged"
+              - else
+                = "tagged with ##{params[:tag]}"
 
               = link_to "Clear filter", files_unit_documents_path(current_unit),
                         class: "text-brand-500 ml-2 border border-brand-500 px-2 py-1 rounded hover:bg-brand-100 hover:text-brand-700 hover:border-brand-700",
@@ -42,8 +45,6 @@
             = render partial: "upload_form"            
 
       = render partial: "units/documents/#{variant}"
-
-    
     
     // side panel
     = turbo_frame_tag :sidebar, class: "h-full hidden md:block w-80 shrink-0"

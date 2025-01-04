@@ -1,4 +1,4 @@
-ol#documents_list.w-full.min-w-0
+ol#documents_list.w-full.min-w-0(data-controller="truncation")
   = render partial: "document_list_item", collection: @documents, as: :document
 
 css:
