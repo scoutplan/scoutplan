@@ -41,9 +41,8 @@
           - if UnitDocumentPolicy.new(current_member, Document).create?
             = render partial: "upload_form"            
 
-      = render partial: "units/documents/#{variant}"
-
-    
+      div(data-controller="truncation")
+        = render partial: "units/documents/#{variant}"
     
     // side panel
     = turbo_frame_tag :sidebar, class: "h-full hidden md:block w-80 shrink-0"
