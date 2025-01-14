@@ -43,6 +43,12 @@ class Units::DocumentsController < UnitContextController
     @can_delete = UnitDocumentPolicy.new(current_member, Document).destroy?
   end
 
+  def list
+    scope = current_unit.documents.includes(file_attachment: :blob).order("active_storage_blobs.filename ASC")
+    scope = scope.tagged_with(params[:tag]) if params[:tag].present?
+    @documents = scope.all
+  end
+
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
   def batch_update

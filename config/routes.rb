@@ -91,6 +91,7 @@ Rails.application.routes.draw do
       resources :documents, path: "library" do
         collection do
           get "files", to: "documents#tag", as: "files"
+          get "list", as: "list"
           post "batch_update"
           post "batch_delete"
           post "batch_tag"

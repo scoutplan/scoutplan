@@ -9,9 +9,9 @@ section.px-6.pt-16.w-60.text-sm.hidden.lg:block.border-r.h-full
       - colors = colors_from_string(tag_name)
 
       - if tag_name == params[:tag]
-        = link_to files_unit_documents_path(current_unit),
+        = link_to list_unit_documents_path(current_unit),
                   class: "block p-1 pr-2 rounded w-full bg-brand-500 text-white flex flex-row justify-between items-center",
-                  data: { turbo_frame: "main", turbo_action: "advance" } do
+                  data: { turbo_frame: "document_list" } do
           span
             | ##{tag_name}
 
@@ -19,19 +19,19 @@ section.px-6.pt-16.w-60.text-sm.hidden.lg:block.border-r.h-full
 
       - else
 
-        = link_to "##{tag_name}", files_unit_documents_path(current_unit, tag: tag_name),
+        = link_to "##{tag_name}", list_unit_documents_path(current_unit, tag: tag_name),
                   class: "block p-1 rounded w-full",
-                  data: { turbo_frame: "main", turbo_action: "advance" },
+                  data: { turbo_frame: "document_list" },
                   style: "background-color: #{colors[100]}; color: #{colors[800]}"
 
     - if params[:tag] == "none"
       = link_to files_unit_documents_path(current_unit),
                 class: "block p-1 pr-2 rounded w-full box-border border border-stone-500 hover:bg-stone-100 flex flex-row justify-between items-center",
-                data: { turbo_frame: "main", turbo_action: "advance" } do
+                data: { turbo_frame: "main" } do
         span Untagged
         i.fa-regular.fa-minus-square(title="Clear filter")        
 
     - else
-      = link_to "Untagged", files_unit_documents_path(current_unit, tag: "none"),
+      = link_to "Untagged", list_unit_documents_path(current_unit, tag: "none"),
                 class: "block p-1 pr-2 rounded w-full box-border border border-stone-500 hover:bg-stone-100 flex flex-row justify-between items-center",
-                data: { turbo_frame: "main", turbo_action: "advance" }
+                data: { turbo_frame: "main" }
