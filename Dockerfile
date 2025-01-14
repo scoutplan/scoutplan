@@ -12,6 +12,7 @@ RUN apk add --no-cache --update \
     xvfb \
     libxrender-dev \
     fontconfig \
+    yaml-dev \
     freetype \
     poppler \
     poppler-utils \
