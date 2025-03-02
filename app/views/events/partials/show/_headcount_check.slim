@@ -5,7 +5,7 @@
 - conditions << "#{event.min_headcount_youth} youth" if event.min_headcount_youth&.positive?
 
 div.p-4.font-medium.bg-amber-100.text-amber-800.mt-8.rounded.border.border-amber-200
-  i.fa-solid.fa-exclamation-triangle.mr-2.text-sm
+  i.fa-solid.fa-exclamation-triangle.mr-2
   | This event hasn't yet reached the 
   = conditions.join(" and ")
   |  RSVPs to proceed. RSVP today and make it happen!

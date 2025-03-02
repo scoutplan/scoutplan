@@ -1,4 +1,4 @@
-header.flex.flex-row.justify-between.items-center.pb-4.mb-2
+header.flex.flex-row.justify-between.items-center.pb-4.mb-2.border-b.dark:border-stone-700
   .left.dropdown.relative
     = link_to "#",
               class: "block dropdown-button",
@@ -23,11 +23,11 @@ header.flex.flex-row.justify-between.items-center.pb-4.mb-2
   .right
     - if policy(:message).new? || true
       = link_to new_unit_message_path(current_unit),
-                class: "text-sm",
+                class: "block px-4 py-2 rounded font-bold text-white bg-messages-700 hover:bg-messages-800 dark:hover:bg-messages-600",
                 data: { turbo_frame: "modal", turbo_action: "advance" },
                 title: t("messages.tooltips.new_message") do
                 
-        i.fa-plus.fas.mr-2.text-brand-500
+        i.fa-plus.fas.mr-2
         = "Write"
         
         .hidden.md:inline-block

@@ -103,7 +103,6 @@ class Event < ApplicationRecord
   scope :next_season, -> { where("starts_at BETWEEN ? AND ?", next_season_starts_at, next_season_ends_at) }
   scope :intending_to_go, -> { where("response IN ['accepted', 'accepted_pending']") }
   scope :rsvp_expiring_soon, -> { where("rsvp_closes_at BETWEEN ? AND ?", Time.current, Date.tomorrow.at_end_of_day) }
-  scope :with_accepted_rsvps, -> { joins(:event_rsvps).where(event_rsvps: { response: "accepted" }) }
 
   acts_as_taggable_on :tags
   acts_as_taggable_tenant :unit_id
