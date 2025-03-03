@@ -1,8 +1,6 @@
-= turbo_frame_tag "main"
-  = render partial: "layouts/flash"
-  
-  .max-w-3xl.mx-auto
-    = render partial: "header", locals: { title: "Sent messages" }
+= turbo_frame_tag :main
+  .max-w-3xl.mx-auto.pt-12
+    = render partial: "header", locals: { title: "Drafts" }
 
     section(data-controller="pagination")
       = render partial: "message", collection: @page.records
