@@ -1,5 +1,5 @@
 = turbo_frame_tag("main")
-  header.px-2.pt-2.top-0.left-0.right-0.sticky.bg-white.dark:bg-stone-900
+  header.px-2.pt-2.top-0.left-0.right-0.sticky.bg-white.dark:bg-stone-900.z-10
     .flex.flex-row.justify-between
       .left
 
@@ -20,7 +20,6 @@
 
   .max-w-7xl.mx-auto.px-2.pb-4(data-controller="local-search")
     #local_search_overlay.fixed.inset-0
-    
     = render partial: "layouts/flash"
     
     header.mb-4.md:mt-0.top-0.pt-12.md:pt-4.bg-white.pb-4

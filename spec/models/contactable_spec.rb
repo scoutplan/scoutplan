@@ -20,6 +20,7 @@ RSpec.describe Contactable, type: :model do
     member.settings(:communication).update!(via_sms: false)
     member.reload
     expect(member.contactable?(via: :sms)).to be_falsey
+    expect(member.contactable?(via: :email)).to be_falsey
     expect(member.contactable?).to be_falsey
   end
 
