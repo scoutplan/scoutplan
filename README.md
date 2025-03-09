@@ -6,7 +6,7 @@
 
 * You have a FontAwesome kit defined
 
-* Docker & docker-compose installed
+* ~~Docker & docker-compose installed~~
 
 * Google Places API credentials
 
