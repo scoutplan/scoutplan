@@ -22,7 +22,7 @@ section.py-4#location_fields
       = "Add a location"
 
     .fixed.inset-0.backdrop-blur-md.bg-black/50.z-10.py-16
-      .max-w-md.mx-auto.bg-white.rounded-lg.drop-shadow-overhead.h-full.flex.flex-col
+      .max-w-md.mx-auto.bg-white.rounded-lg.drop-shadow-overhead.h-full.flex.flex-col.justify-between
         header
           .flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
             .left
@@ -93,7 +93,7 @@ section.py-4#location_fields
                     .block.max-w-36.truncate(data-searchable-list-target="newValueName")
                     | " to address book
 
-        footer.border-t.px-6.py-3.flex.flex-col.md:flex-row.gap-2.md:justify-end.sticky.bottom-0
+        footer.border-t.px-6.py-3.flex.flex-col.md:flex-row.gap-2.justify-end.mt-auto
           = button_tag "Close", type: "button",
                        class: "block w-full md:w-fit md:inline-block px-6 py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded",
                        data: { action: "click->modal#close" }
