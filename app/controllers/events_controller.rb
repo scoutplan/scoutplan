@@ -394,6 +394,7 @@ class EventsController < UnitContextController
                                       event_locations_attributes: [:id, :location_type, :location_id, :event_id, :url, :_destroy],
                                       event_organizers_attributes: [:unit_membership_id],
                                       event_shifts_attributes: [:id, :name, :_destroy])
+
     p[:tag_list] ||= []
     p[:packing_list_ids] = p[:packing_list_ids].reject(&:blank?) if p[:packing_list_ids].present?
     p[:starts_at] = Date.parse(p[:starts_at_date]).in_time_zone(current_unit.time_zone) if p[:all_day] == "true"

@@ -36,9 +36,10 @@
 
   .table-cell.pl-6
     .hidden.group-hover:block
-      = button_tag type: "button",
-                   class: "inline-block text-sm text-stone-500 hover:text-stone-700 hover:bg-stone-100 rounded p-1",
-                   title: "Remove event location",
-                   onclick: "this.closest('.table-row').remove();",
-                   data: { action: "click->edit-event#deleteLocation" } do
+      = check_box_tag "event[event_locations_attributes[#{event_location_counter}][_destroy]]", "1", false, class: "hidden", data: { action: "click->event-edit#deleteLocation" }
+
+      = label_tag "event[event_locations_attributes[#{event_location_counter}][_destroy]]",
+        class: "inline-block text-sm text-stone-500 hover:text-stone-700 hover:bg-stone-100 rounded p-1"
+
         i.fa-regular.fa-trash-alt.fa-fw.text-stone-400
+
