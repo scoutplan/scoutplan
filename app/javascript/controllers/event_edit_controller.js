@@ -237,7 +237,7 @@ export default class extends Controller {
   }
 
   deleteLocation(event) {
-    const locationElem = event.target.closest("event-location");
-    locationElem.remove();
+    const locationElem = event.target.closest(".event-location");
+    locationElem.classList.add("hidden");
   }
 }
