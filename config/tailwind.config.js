@@ -3,6 +3,7 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors')
 
 module.exports = {
+  darkMode: 'false',
   content: [
     './app/helpers/**/*.rb',
     './app/javascript/**/*.js',

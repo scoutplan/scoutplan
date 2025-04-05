@@ -49,7 +49,7 @@ li.event(class="#{row_classes(event)}" id="#{dom_id(event)}")
         = render partial: "events/partials/event_row/online", locals: { event: event }
 
       - if current_user
-        .ml-auto.third.flex.flex-col
+        .ml-auto.third.flex.flex-col.w-full.md:w-fit
           - if event.organizable? && EventPolicy.new(current_member, event).rsvps? && params[:list_view] != "member"
             = render partial: "events/partials/event_row/organize", locals: { event: event }
           - elsif event.requires_rsvp
