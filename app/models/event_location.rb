@@ -6,7 +6,7 @@ class EventLocation < ApplicationRecord
 
   after_save :enqueue_static_map_job
 
-  validates_uniqueness_of :location_type, scope: :event
+  # validates_uniqueness_of :location_type, scope: :event
 
   def location_name
     url.present? ? url : location&.name
