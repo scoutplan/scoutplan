@@ -1,7 +1,7 @@
 header.flex.flex-row.justify-between.items-center.pb-4.mb-2.border-b.dark:border-stone-700
   .left.dropdown.relative
     = link_to "#",
-              class: "block dropdown-button",
+              class: "block dropdown-button cursor-pointer",
               data: { turbo_frame: "main" } do
       .flex.flex-row.items-center
         h1.font-semibold.text-xl.md:text-2xl = title.titleize
@@ -21,14 +21,11 @@ header.flex.flex-row.justify-between.items-center.pb-4.mb-2.border-b.dark:border
         = "Sent"
 
   .right
-    - if policy(:message).new? || true
+    - if policy(:message).new?
       = link_to new_unit_message_path(current_unit),
-                class: "block px-4 py-2 rounded font-bold text-white bg-messages-700 hover:bg-messages-800 dark:hover:bg-messages-600",
+                class: "block px-4 py-2 cursor-pointer hover:bg-stone-100",
                 data: { turbo_frame: "modal", turbo_action: "advance" },
                 title: t("messages.tooltips.new_message") do
                 
-        i.fa-plus.fas.mr-2
-        = "Write"
-        
-        .hidden.md:inline-block
-          = raw("&nbsp;a message")
+        i.fa-regular.fa-plus.text-brand-500.mr-2
+        = "New message"
