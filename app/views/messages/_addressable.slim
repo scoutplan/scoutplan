@@ -1,11 +1,12 @@
-= content_tag :li,
-  id: addressable.key,
-  role: "option",
-  tabindex: 0,
-  class: "hover:bg-stone-100 border-t border-stone-200 search-result block px-3 py-2 cursor-pointer #{addressable.contactable_status}",
-  data: { action: "mouseover->selectable-list#select click->message-form#commit", key: addressable.key } do
-    .name.font-medium
-      = addressable.name
+- cache(addressable) do
+  = content_tag :li,
+    id: addressable.key,
+    role: "option",
+    tabindex: 0,
+    class: "hover:bg-stone-100 border-t border-stone-200 search-result block px-3 py-2 cursor-pointer #{addressable.contactable_status}",
+    data: { action: "mouseover->selectable-list#select click->message-form#commit", key: addressable.key } do
+      .name.font-medium
+        = addressable.name
 
-    .contact-methods.text-sm.flex.flex-row.gap-4.whitespace-nowrap
-      = raw(addressable.description)
+      .contact-methods.text-sm.flex.flex-row.gap-4.whitespace-nowrap
+        = raw(addressable.description)

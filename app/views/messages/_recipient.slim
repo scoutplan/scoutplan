@@ -1,13 +1,10 @@
 / https://guides.rubyonrails.org/form_helpers.html#basic-structures
 
-.recipient.inline-block.relative.flex.items-center.rounded.bg-lime-100.dark:bg-lime-900.whitespace-nowrap data-recipient-id="#{recipient.id}"
+.recipient.inline-block.relative.flex.items-center.rounded.bg-stone-200.whitespace-nowrap data-recipient-id="#{recipient.id}"
   = hidden_field_tag "message_recipients[id][]", recipient.id, id: "message_recipient_#{recipient.id}"
 
   .recipient-name.py-2.pl-2
     = recipient.full_display_name
 
-  .recipient-action.recipient-action-delete.text-sm.p-2.cursor-pointer.text-messages-400.hover:text-messages-500(data-action="click->message-form#deleteItem" title="#{recipient&.description}")
+  .recipient-action.recipient-action-delete.text-sm.p-2.cursor-pointer.text-stone-400.hover:text-stone-500(data-action="click->message-form#deleteItem" title="#{recipient&.description}")
     i.fa-solid.fa-times-circle
-
-  / .coach-marks.absolute.bottom-full
-  /   = "Frank Poncharello"
