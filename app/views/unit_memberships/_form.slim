@@ -207,12 +207,8 @@
 
 
           // TAGS
-          .py-2.relative.border-t
-            details(data-controller="modal")
-              summary.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.hover:bg-brand-100.rounded.cursor-pointer(class="active:-mx-[0.4rem]")
-                .font-semibold = "Tags"
-                i.fa-light.fa-plus.fa-fw
-
+          = render partial: "tags/tag_section", locals: { taggable: @target_membership }
+          
       section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.text-sm.text-stone-600.rounded-r-lg.h-full
         = f.fields_for :user do |u|
 

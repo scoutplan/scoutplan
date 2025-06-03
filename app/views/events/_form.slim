@@ -6,7 +6,6 @@
             event_edit_season_end_date_value: current_unit.this_season_ends_at.to_datetime.iso8601,
             event_edit_unit_id_value: current_unit.id } do |f|
 
-  = render partial: "tags_popup", locals: { event: event }
   = render partial: "organizers_popup", locals: { event: event }
 
 
@@ -102,15 +101,7 @@
                 = render partial: "organizer_tag", locals: { member: member, visible: event.organizer_members.include?(member) }
 
           // TAGS
-          .py-2.relative
-            details#tags(data-event-edit-target="tagListWrapper")
-              summary.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.hover:bg-brand-100.rounded.cursor-pointer(class="active:-mx-[0.4rem]")
-                .font-semibold = "Tags"
-                i.fa-light.fa-plus.fa-fw
-
-            .flex.flex-wrap.gap-1.text-xs#tag_tag_field(data-controller="tag-field" data-tag-field-checkable-list-outlet="#tags_popup")
-              - ActsAsTaggableOn::Tag.for_tenant(event.unit.id).each do |tag|
-                = render partial: "tag_label", locals: { tag_name: tag.name, visible: event.tags.include?(tag) }
+          = render partial: "tags/tag_section", locals: { taggable: event }
 
       section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.text-sm.text-stone-600.rounded-r-lg.overflow-y-auto.h-full
         - %w[basics dates rsvp locations description attachments].each do |section|

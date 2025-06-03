@@ -116,10 +116,11 @@ class UnitMembershipsController < UnitContextController
 
   def member_params
     params.require(:unit_membership).permit(
-      :status, :role, :member_type, :tag_list, :ical_suppress_declined, :roster_display_phone, :roster_display_email,
+      :status, :role, :member_type, :ical_suppress_declined, :roster_display_phone, :roster_display_email,
       child_relationships_attributes:  [:id, :child_unit_membership_id, :_destroy],
       parent_relationships_attributes: [:id, :parent_unit_membership_id, :_destroy],
-      user_attributes:                 [:id, :first_name, :last_name, :phone, :email, :nickname]
+      user_attributes:                 [:id, :first_name, :last_name, :phone, :email, :nickname],
+      tag_list:                        []
     )
   end
 

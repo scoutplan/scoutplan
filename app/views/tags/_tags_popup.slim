@@ -12,8 +12,8 @@ css:
                   data: { action: "input->searchable-list#search", searchable_list_target: "searchField" }
 
   ul.max-h-72.overflow-y-auto#tag_list
-    - ActsAsTaggableOn::Tag.for_tenant(event.unit.id).each do |tag|
-      = render partial: "tag_option", locals: { tag_name: tag.name, checked: event.tag_list.include?(tag.name) }
+    - ActsAsTaggableOn::Tag.for_tenant(current_unit.id).each do |tag|
+      = render partial: "tags/tag_option", locals: { taggable: taggable, tag_name: tag.name, checked: taggable.tag_list.include?(tag.name) }
 
   p.p-2.text-stone-500.hidden(data-searchable-list-target="valueNotFoundPrompt")
     | Tag not found
