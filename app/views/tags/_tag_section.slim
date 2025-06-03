@@ -1,0 +1,11 @@
+= render partial: "tags/tags_popup", locals: { taggable: taggable }
+
+.py-2.relative
+  details.relative#tags(data-event-edit-target="tagListWrapper")
+    summary.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.hover:bg-brand-100.rounded.cursor-pointer(class="active:-mx-[0.4rem]")
+      .font-semibold = "Tags"
+      i.fa-light.fa-plus.fa-fw
+
+  .flex.flex-wrap.gap-1.text-xs#tag_tag_field(data-controller="tag-field" data-tag-field-checkable-list-outlet="#tags_popup")
+    - ActsAsTaggableOn::Tag.for_tenant(current_unit.id).each do |tag|
+      = render partial: "tags/tag_label", locals: { tag_name: tag.name, visible: taggable.tags.include?(tag) }

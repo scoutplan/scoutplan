@@ -1,11 +1,18 @@
 import { Controller } from "@hotwired/stimulus"
 import { post } from "@rails/request.js"
+import { computePosition } from "https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10/+esm"
 
 export default class extends Controller {
   static targets = [ "firstName", "lastName", "childRelationships", "parentRelationships" ];
 
   connect() {
+    const tagsButton = document.querySelector("details#tags");
+    const tagsPopup = document.querySelector("#tags_popup");
 
+    computePosition(tagsButton, tagsPopup, { placement: "bottom-start" }).then(({x, y}) => {
+      tagsPopup.style.left = `${x}px`;
+      tagsPopup.style.top = `${y}px`;
+    });
   }
 
   changeRelationship(event) {
