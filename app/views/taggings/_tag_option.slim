@@ -1,0 +1,11 @@
+li
+  = label_tag "tag_#{tag.id}", class: "search-item flex flex-row items-center px-2 py-2 hover:bg-stone-100 rounded", for: "tag_#{tag.name}" do
+    i.fa-light.fa-tag.fa-fw.text-stone-500.mr-1
+    = tag.name
+
+    = check_box_tag "#{taggable.class.name.underscore}[tag_list][]", 
+                    tag.name,
+                    checked,
+                    id: "#{taggable.class.name.underscore}_tag_#{tag.name.parameterize.underscore}",
+                    class: "ml-auto",
+                    data: { action: "change->checkable-list#change", tag_id: tag.name.parameterize.underscore, value: tag.name.parameterize.underscore }

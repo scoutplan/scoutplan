@@ -46,6 +46,7 @@ html.scroll-smooth
       /!  CI #{ENV["GITHUB_RUN_NUMBER"]}
 
     = turbo_frame_tag :modal
+    = turbo_frame_tag :modal_2
 
   - content_for :title do
     = (@page_title || []).reverse.join(" · ")

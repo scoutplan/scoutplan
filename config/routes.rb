@@ -9,7 +9,6 @@ Rails.application.routes.draw do
   get "relationship_candidates/create"
   get "event_cancellations/new"
   get "event_cancellations/create"
-  get "tags/create"
   get "integrations/index"
   get "welcome/index"
   get "", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
@@ -57,6 +56,10 @@ Rails.application.routes.draw do
   resources :event_activities, as: "activities"
   resources :event_shifts, only: [:create]
   resources :users, only: [:show, :update]
+
+  concern :taggable do
+    resources :taggings, only: [:new, :create]
+  end
 
   # get "units/:unit_id/settings", as: "edit_unit_settings", to: "unit_settings#edit"
   # patch "units/:unit_id/settings", as: "update_unit_settings", to: "unit_settings#update"
@@ -158,7 +161,10 @@ Rails.application.routes.draw do
 
     resources :tags, only: [:create]
 
+    post ":taggable_type/:taggable_id/tags", to: "tags#create"
+
     resources :events, path: "schedule" do
+      concerns :taggable
       resources :chat_messages, as: "discussion", path: "discussion"
       resources :family_rsvps, only: [:new, :create]
       resources :event_rsvps, as: "rsvps", path: "rsvps" do

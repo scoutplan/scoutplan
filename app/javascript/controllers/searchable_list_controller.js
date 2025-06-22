@@ -20,6 +20,8 @@ export default class extends Controller {
     newValueUrl: String,
     newValueParam: String,
     newValueMethod: String,
+    taggableId: String,
+    taggableType: String
   };
 
   connect() {

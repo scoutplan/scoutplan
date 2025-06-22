@@ -17,10 +17,10 @@ export default class extends Controller {
     const tagsButton = document.querySelector("details#tags");
     const tagsPopup = document.querySelector("#tags_popup");
 
-    computePosition(tagsButton, tagsPopup, { placement: "bottom-start" }).then(({x, y}) => {
-      tagsPopup.style.left = `${x}px`;
-      tagsPopup.style.top = `${y}px`;
-    });
+    // computePosition(tagsButton, tagsPopup, { placement: "bottom-start" }).then(({x, y}) => {
+    //   tagsPopup.style.left = `${x}px`;
+    //   tagsPopup.style.top = `${y}px`;
+    // });
 
     const organizersButton = document.querySelector("details#organizers");
     const organizersPopup = document.querySelector("#organizers_popup");

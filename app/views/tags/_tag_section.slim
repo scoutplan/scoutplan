@@ -1,8 +1,9 @@
-= render partial: "tags/tags_popup", locals: { taggable: taggable }
-
 .py-2.relative
-  details.relative#tags(data-event-edit-target="tagListWrapper")
-    summary.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.hover:bg-brand-100.rounded.cursor-pointer(class="active:-mx-[0.4rem]")
+  = link_to new_polymorphic_path([current_unit, taggable, :tagging]),
+            class: "block py-1 px-2 -mx-2 hover:bg-brand-100",
+            data: { turbo_frame: "modal_overlay", turbo_stream: true } do
+
+    .flex.flex-row.justify-between.items-center
       .font-semibold = "Tags"
       i.fa-light.fa-plus.fa-fw
 

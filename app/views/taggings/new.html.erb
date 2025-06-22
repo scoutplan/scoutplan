@@ -1,0 +1,10 @@
+<%= turbo_frame_tag :modal_overlay do %>
+  <div class="w-72 bg-white rounded px-4 py-2 border border-stone-200 shadow-md">
+    <ul>
+      <%#= render partial: "taggings/tag_option", collection: @tags, locals: { taggable: @taggable, checked: false } %>
+      <% @tags.each do |tag| %>
+        <%= render partial: "taggings/tag_option", locals: { tag: tag, taggable: @taggable, checked: false } %>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
