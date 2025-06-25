@@ -20,6 +20,7 @@ export default class extends Controller {
     newValueUrl: String,
     newValueParam: String,
     newValueMethod: String,
+    taggableGid: String,
   };
 
   connect() {
@@ -76,6 +77,7 @@ export default class extends Controller {
     const newValue = this.newValueNameTarget.innerText;
     const formData = new FormData();
     formData.append(this.newValueParam, newValue);
+    formData.append("taggable_gid", this.taggableGidValue);
 
     let params = { responseKind: "turbo-stream" };
 
@@ -91,6 +93,7 @@ export default class extends Controller {
       const body = await response.text
       this.searchFieldTarget.value = "";
       this.newValuePromptTarget.classList.toggle("hidden", true);
+      this.reset();
     }
   }
 
