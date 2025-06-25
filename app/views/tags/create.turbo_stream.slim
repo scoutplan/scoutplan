@@ -1,2 +1,2 @@
-= turbo_stream.append "tag_list", partial: "tags/tag_option", locals: { tag_name: @tag_name, checked: true, taggable: @taggable }
+= turbo_stream.append "tag_list", partial: "tags/tag_option", locals: { tag_name: @tag_name, checked: true, taggable_type: @taggable_type }
 = turbo_stream.append "tag_tag_field", partial: "tags/tag_label", locals: { tag_name: @tag_name, visible: true }

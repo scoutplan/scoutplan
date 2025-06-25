@@ -21,6 +21,7 @@ export default class extends Controller {
     newValueParam: String,
     newValueMethod: String,
     taggableGid: String,
+    taggableType: String,
   };
 
   connect() {
@@ -77,7 +78,7 @@ export default class extends Controller {
     const newValue = this.newValueNameTarget.innerText;
     const formData = new FormData();
     formData.append(this.newValueParam, newValue);
-    formData.append("taggable_gid", this.taggableGidValue);
+    formData.append("taggable_type", this.taggableTypeValue);
 
     let params = { responseKind: "turbo-stream" };
 

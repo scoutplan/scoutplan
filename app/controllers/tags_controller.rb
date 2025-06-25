@@ -1,6 +1,6 @@
 class TagsController < ApplicationController
   def create
-    @taggable = GlobalID::Locator.locate params[:taggable_gid]
+    @taggable_type = params[:taggable_type]
     @tag_name = params[:value]
   end
 end
