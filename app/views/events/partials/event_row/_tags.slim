@@ -1,9 +1,9 @@
 - return if event.tags.empty?
 
-.event-tag-wrapper.flex.flex-row.gap-1.mt-2.text-xs
+.event-tag-wrapper.flex.flex-row.gap-1.mt-8.text-xs
   - event.tags.each do |tag|
     - colors = colors_from_string(tag.name)
-    .font-medium.inline-block.whitespace-nowrap.rounded.pr-3.pt-1.hidden.md:inline-block(style="color:#{colors[600]};")
+    .font-medium.inline-block.whitespace-nowrap.rounded.px-2.py-1.hidden.md:inline-block(style="background-color:#{colors[200]}; color:#{colors[800]};")
       i.fa-regular.fa-tag
       |&nbsp;
       = tag
