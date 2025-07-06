@@ -1,5 +1,4 @@
 # methods for dealing with cohorts and recipient lists
-# implementing classes need to define audience
 module Notifiable
   extend ActiveSupport::Concern
 
@@ -14,6 +13,9 @@ module Notifiable
     results.uniq
   end
 
+  # Resolve the recipients based on the audience and member type.
+  #
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def recipients
     scope = unit.unit_memberships.joins(:user).order(:last_name)
     if object.responds_to? :member_type
@@ -36,6 +38,7 @@ module Notifiable
 
     results.select { |r| r.contactable?(via: :email) }
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def event_cohort?
     audience =~ EVENT_REGEXP

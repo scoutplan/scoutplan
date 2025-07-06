@@ -143,6 +143,8 @@ class MessagesController < UnitContextController
     @addressables = MessagingSearchResult.to_a(lists + events + members)
   end
 
+  # Multiple commit actions are possible: save draft, send preview, submit for approval,
+  # send later (schedule), or send now. This method handles the action based on the commit button pressed.
   def handle_commit
     case params[:commit]
 
