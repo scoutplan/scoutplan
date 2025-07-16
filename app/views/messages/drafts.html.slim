@@ -2,7 +2,7 @@
   .max-w-3xl.mx-auto.pt-12
     = render partial: "header", locals: { title: "Drafts" }
 
-    section(data-controller="pagination")
+    section#item_list(data-controller="pagination")
       = render partial: "message", collection: @page.records
       = render partial: "empty", locals: { message_type: "draft" }
 

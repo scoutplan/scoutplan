@@ -11,19 +11,7 @@ footer.border-t.py-4.px-6.sticky.bottom-0
     // LEFT SIDE
     div.flex.flex-col.md:flex-row.items-center
       .flex.flex-row
-        - if @message.deleteable?
-          = link_to unit_message_path(current_unit, @message),
-                    id: "delete_draft_link",
-                    data: { turbo_method: :delete, turbo_action: "advance", turbo_confirm: "Are you sure you want to delete this draft?", skip_leave_confirmation: "true" },
-                    class: "w-full md:w-fit text-messages-600 hover:text-messages-700 dark:hover:text-messages-400 cursor-pointer" do
-              i.fa-solid.fa-trash-can
-        - else
-          = link_to drafts_unit_messages_path(current_unit),
-                    id: "delete_draft_link",
-                    class: "cursor-pointer text-stone-500 hover:text-stone-700 text-sm",
-                    data: { action: "message-form#skipLeaveConfirmation" } do
-            i.fa-light.fa-trash-can.mr-2
-            = "Delete Draft"
+
 
         / = render partial: "messages/form/send_later_button", locals: { f: f }
 
@@ -34,14 +22,14 @@ footer.border-t.py-4.px-6.sticky.bottom-0
         /           value: t("messages.captions.send_preview"),
         /           name: "commit",
         /           id: "send_preview_button",
-        /           class: "text-xl w-full md:w-fit px-3 py-2 text-messages-600 hover:text-messages-700 dark:hover:text-messages-400 disabled:text-messages-300 cursor-pointer dark:disabled:text-messages-900 dark:disabled:hover:text-messages-900 disabled:cursor-not-allowed",
+        /           class: "text-xl w-full md:w-fit px-3 py-2 disabled:text-messages-300 cursor-pointer dark:disabled:text-messages-900 dark:disabled:hover:text-messages-900 disabled:cursor-not-allowed",
         /           data: { message_form_target: "sendPreviewButton", action: "message-form#skipLeaveConfirmation" } do
         /     i.fa-solid.fa-glasses-round
 
         / // save draft
         / = f.button t("messages.captions.save_draft"),
         /           type: "submit",
-        /           class: "text-xl py-2 px-3 rounded uppercase text-messages-600 hover:text-messages-700 dark:hover:text-messages-400 cursor-pointer",
+        /           class: "text-xl py-2 px-3 rounded uppercase cursor-pointer",
         /           value: t("messages.captions.save_draft"),
         /           name: "commit",
         /           title: "Save as a draft",
@@ -54,13 +42,13 @@ footer.border-t.py-4.px-6.sticky.bottom-0
         /           title: "Attach files",
         /           value: "attach",
         /           name: "attach",
-        /           class: "text-xl w-full md:w-fit px-3 py-2 text-messages-600 hover:text-messages-700 dark:hover:text-messages-400 cursor-pointer",
+        /           class: "text-xl w-full md:w-fit px-3 py-2 cursor-pointer",
         /           data: { action: "message-form#uploadFiles" } do
         /     i.fa-solid.fa-paperclip
 
         / // toggle formatting
         / = link_to "#",
-        /           class: "text-xl w-full md:w-fit px-3 py-2 text-messages-600 hover:text-messages-700 dark:hover:text-messages-400 cursor-pointer",
+        /           class: "text-xl w-full md:w-fit px-3 py-2 cursor-pointer",
         /           data: { action: "message-form#toggleFormattingToolbar" } do
 
         /   i.fa-solid.fa-text-size
@@ -71,14 +59,52 @@ footer.border-t.py-4.px-6.sticky.bottom-0
                  class: "block block px-6 py-2 font-medium bg-stone-200 hover:bg-stone-300 rounded font-medium",
                  data: { action: "click->modal#close" }
 
-      = f.button submit_caption,
-                 type: "submit",
-                 name: "commit",
-                 disabled: true,
-                 value: t("messages.captions.send_message"),
-                 class: "block px-6 py-2 font-medium disabled:bg-brand-300 disabled:text-brand-50 bg-brand-500 text-white rounded disabled:cursor-not-allowed",
-                 id: "send_message_button",
-                 data: { message_form_target: "sendMessageButton", action: "message-form#skipLeaveConfirmation" }
+      .relative
+        = f.button submit_caption,
+                  type: "submit",
+                  name: "commit",
+                  disabled: true,
+                  value: t("messages.captions.send_message"),
+                  class: "block px-6 py-2 pr-12 font-medium disabled:bg-brand-300 disabled:text-brand-50 bg-brand-500 text-white rounded disabled:cursor-not-allowed",
+                  id: "send_message_button",
+                  data: { message_form_target: "sendMessageButton", action: "message-form#skipLeaveConfirmation" }
+
+        .dropdown
+          = label_tag nil, for: "action_menu", class: "absolute right-0 top-0 bottom-0 w-12 text-center text-sm" do
+            = check_box_tag "action_menu", false, class: "hidden peer dropdown-toggle"
+            i.fa-solid.fa-chevron-down.absolute.top-1/2.-translate-y-1/2.text-white
+
+          .dropdown-menu.absolute.right-0.w-60.rounded.border.border-stone-300.shadow-md.bg-white.mb-1.bottom-full
+            - if @message.deleteable?
+              = button_to unit_message_path(current_unit, @message),
+                          method: :delete,
+                          id: "delete_draft_link",
+                          class: "block w-full px-3 py-2 text-left cursor-pointer disabled:cursor-not-allowed hover:bg-slate-100",
+                          data: { turbo_action: "advance", turbo_confirm: "Are you sure you want to delete this draft?", skip_leave_confirmation: "true" } do
+                  i.fa.fa-regular.fa-fw.mr-2.fa-trash-can.text-slate-500
+                  = "Delete Draft"
+          
+            = f.button t("messages.captions.send_preview"),
+                      type: "submit",
+                      title: "Send a preview to yourself",
+                      value: t("messages.captions.send_preview"),
+                      name: "commit",
+                      id: "send_preview_button",
+                      class: "block w-full px-3 py-2 text-left cursor-pointer disabled:cursor-not-allowed hover:bg-slate-100",
+                      data: { message_form_target: "sendPreviewButton", action: "message-form#skipLeaveConfirmation" } do
+                i.fa.fa-regular.fa-fw.mr-2.fa-glasses-round.text-slate-500
+                = "Send Preview"
+
+            // save draft
+            = f.button t("messages.captions.save_draft"),
+                      type: "submit",
+                      value: t("messages.captions.save_draft"),
+                      name: "commit",
+                      title: "Save as a draft",
+                      class: "block w-full px-3 py-2 text-left cursor-pointer hover:bg-slate-100",
+                      data: { action: "message-form#skipLeaveConfirmation" } do
+                i.fa.fa-regular.fa-fw.mr-2.fa-floppy-disk.text-slate-500
+                = "Save Draft"
                 
 
   - if @message.queued?

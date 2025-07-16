@@ -7,7 +7,7 @@ export default class extends Controller {
   static targets = [ "attachmentsList", "attachmentsWrapper", "attachmentForm", "audienceList", "audienceName",
                      "ffCheckWrapper", "fileInput", "form", "testMode",
                      "addressBook", "memberTypeCheckBox", "memberStatusCheckBox", "subjectTextBox", "bodyTextArea",
-                     "authorSelect",
+                     "authorSelect", "cohortName",
                      "sendMessageButton", "sendLaterButton", "sendPreviewButton", "tempFileInput",
                      "queryInput", "addressBook", "recipientList" ];
   static values = { unitId: Number };
@@ -195,6 +195,9 @@ export default class extends Controller {
   async commit(event) {
     this.queryInputTarget.placeholder = "";
     const current = this.addressBookTarget.querySelector(".selected");
+    const cohortName = current?.dataset?.cohortName;
+    console.log("Cohort Name: ", cohortName);
+    this.cohortNameTarget.value = cohortName;
     const recipientTags = this.recipientListTarget.querySelectorAll(".recipient");
     const memberIds = Array.from(recipientTags).map((tag) => { return tag.dataset.recipientId; });
     const body = { "key": current.dataset.key, "member_ids": memberIds };

@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_21_220627) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_14_094224) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
   enable_extension "unaccent"
 
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
@@ -387,6 +387,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_21_220627) do
     t.datetime "updated_at", null: false
     t.string "token"
     t.integer "sender_id"
+    t.string "cohort_name"
     t.index ["token"], name: "index_messages_on_token", unique: true
   end
 
@@ -676,6 +677,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_21_220627) do
     t.boolean "ical_suppress_declined", default: false, null: false
     t.boolean "roster_display_phone", default: false
     t.boolean "roster_display_email", default: false
+    t.boolean "contactable_via_email", default: false, null: false
+    t.boolean "contactable_via_sms", default: false, null: false
+    t.boolean "contactable", default: false, null: false
   end
 
   create_table "units", force: :cascade do |t|

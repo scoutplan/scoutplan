@@ -10,7 +10,7 @@
 # 10. For each recipient, MessageNotifer enqueues an asynchronous job that sends the message to each recipient via email and/or SMS, depending on their contact preferences
 
 class Message < ApplicationRecord
-  include Notifiable, Replyable, Sendable
+  include Notifiable, Replyable, Sendable, NestedKeys
 
   belongs_to :author, class_name: "UnitMembership"
   belongs_to :sender, class_name: "UnitMembership"
@@ -27,7 +27,7 @@ class Message < ApplicationRecord
 
   enum :status, { draft: 0, queued: 1, sent: 2, pending: 3, outbox: 4 }
 
-  accepts_nested_attributes_for :message_recipients, allow_destroy: true
+  accepts_nested_keys_for :message_recipients, :unit_membership_id
 
   scope :draft_and_queued, -> { where(status: %i[draft queued]) }
 
@@ -71,18 +71,8 @@ class Message < ApplicationRecord
   end
 
   def recipients
-    message_recipients.map(&:unit_membership)
+    message_recipients.uniq { |r| r.unit_membership_id }.map(&:unit_membership)
   end
 
   MAX_RECIPIENT_PREVIEW = 3
-
-  def recipients_preview
-    recipients = message_recipients.limit(MAX_RECIPIENT_PREVIEW).map(&:unit_membership).map(&:full_display_name).join(", ")
-
-    if message_recipients.count > MAX_RECIPIENT_PREVIEW
-      recipients += ", and #{message_recipients.count - MAX_RECIPIENT_PREVIEW} more"
-    end
-
-    recipients
-  end
 end

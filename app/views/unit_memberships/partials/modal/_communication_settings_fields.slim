@@ -7,7 +7,8 @@ div.py-4
   .py-1
     = switch( "settings[communication]", "via_email",
           { label: "Via email",
-            checked: member.contactable?(via: :email) && member.settings(:communication).via_email == "true",
+            checked: member.settings(:communication).via_email == "true",
+            disabled: !member.eligible_for_contact?(via: :email),
             data: { controller: "input-validation", 
                     input_validation_source_value: "#unit_membership_user_attributes_email", 
                     input_validation_action_value: "enable check",
@@ -19,7 +20,8 @@ div.py-4
   .py-1
     = switch( "settings[communication]", "via_sms",
           { label: "Via SMS",
-            checked: member.contactable?(via: :sms) && member.settings(:communication).via_sms == "true",
+            checked: member.settings(:communication).via_sms == "true",
+            disabled: !member.eligible_for_contact?(via: :sms),
             data: { controller: "input-validation", 
                     input_validation_source_value: "#unit_membership_user_attributes_phone",
                     input_validation_action_value: "enable check",

@@ -59,6 +59,26 @@ class Unit < ApplicationRecord
                              .where(record_type: "Event", record_id: events.collect(&:id))
   end
 
+  def self.current
+    @@current_unit
+  end
+
+  def self.current=(unit)
+    @@current_unit = unit
+  end
+
+  def self.find_by_slug(slug)
+    find_by(slug: slug)
+  end
+
+  def self.find_by_slug!(slug)
+    find_by!(slug: slug)
+  end
+
+  def self.find_by_id_or_slug(id_or_slug)
+    find_by(id: id_or_slug) || find_by(slug: id_or_slug)
+  end
+
   def from_address
     "#{slug}@#{ENV.fetch('EMAIL_DOMAIN')}"
   end

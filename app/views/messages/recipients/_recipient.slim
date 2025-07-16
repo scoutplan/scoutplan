@@ -1,0 +1,8 @@
+.recipient.inline-block.relative.flex.items-center.rounded.bg-stone-200.whitespace-nowrap data-recipient-id="#{recipient.id}"
+  = hidden_field_tag "message[message_recipients_keys][]", recipient.id
+
+  .recipient-name.py-2.pl-2
+    = recipient.full_display_name
+
+  .recipient-action.recipient-action-delete.text-sm.p-2.cursor-pointer.text-stone-400.hover:text-stone-500(data-action="click->message-form#deleteItem")
+    i.fa-solid.fa-times-circle

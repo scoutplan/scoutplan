@@ -69,6 +69,13 @@ namespace :sp do
     end
   end
 
+  namespace :members do
+    desc "Compute contactability for all unit memberships"
+    task compute_contactability: :environment do
+      UnitMembership.find_each(&:compute_contactability!)
+    end
+  end
+
   # desc "Advance events by one month"
   # task advance_events: :environment do
   #   unit_id = ENV["SP_ADVANCE_UNIT_ID"]

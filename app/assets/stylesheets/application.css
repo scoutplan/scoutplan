@@ -346,6 +346,10 @@ summary::-webkit-details-marker /* Safari */ {
   display: block;
 }
 
+.dropdown:has(:checked) .dropdown-menu {
+  display: block;
+}
+
 .multi-select-enabled {
   .multi-selector {
     display: block;
