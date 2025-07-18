@@ -22,8 +22,4 @@ class OrganizerPrepNotifier < ScoutplanNotifier
       "Body" => sms_body(recipient: recipient, event: params[:event], unit: params[:event].unit)
     }
   end
-
-  def feature_enabled?
-    true
-  end
 end

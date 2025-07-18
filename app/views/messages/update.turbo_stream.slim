@@ -1,3 +1,5 @@
+- return unless @dismiss_modal
+
 = turbo_stream.update :modal, ""
 = turbo_stream.update dom_id(@message) do
   = render partial: "messages/message", locals: { message: @message }

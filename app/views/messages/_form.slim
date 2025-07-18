@@ -6,11 +6,11 @@
                             action: actions.join(" ") },
                     class: "") do
 
+  = render partial: "messages/form/attachments_form"
+
   = form_with model: [current_unit, @message], data: { turbo_action: "advance", message_form_target: "form" } do |f|
     = f.hidden_field :cohort_name, data: { message_form_target: "cohortName" }
-    .hidden
-      = hidden_field_tag :test_mode, "false", id: "test_mode", data: { message_form_target: "testMode" }
-      = render partial: "messages/form/attachments_form"
+    = hidden_field_tag :test_mode, "false", id: "test_mode", data: { message_form_target: "testMode" }
     
     section.flex.flex-col.divide-y.text-sm.md:text-base.p-6
       = render partial: "messages/form/from", locals: { f: f }

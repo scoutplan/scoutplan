@@ -27,8 +27,8 @@ module NestedKeys
         after_save do
           keys = self.#{model_name}_keys                                              # keys = self.message_recipients_keys
           self.#{model_name}.where.not(#{key_name}: keys).destroy_all                 # self.message_recipients.where.not(unit_membership_id: keys).destroy_all
-          keys.each do |key|                                                          # keys.each do |key|
-            self.#{model_name}.find_or_create_by!(#{key_name}: key)                   # MessageRecipients.find_or_create_by!(unit_membership_id: key)
+          keys&.each do |key|                                                         # keys.each do |key|
+            self.#{model_name}.find_or_create_by!(#{key_name}: key)                   #   MessageRecipients.find_or_create_by!(unit_membership_id: key)
           end                                                                         # end
         end
 

@@ -3,7 +3,6 @@
 # rubocop:disable Metrics/ClassLength
 # rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/MethodLength
-# rubocop:disable Metrics/PerceivedComplexity
 # rubocop:disable Metrics/CyclomaticComplexity
 class MessagesController < UnitContextController
   before_action :find_message,      except: [:index, :drafts, :outbox, :scheduled, :sent, :new, :create]
@@ -97,6 +96,8 @@ class MessagesController < UnitContextController
   # Multiple commit actions are possible: save draft, send preview, submit for approval,
   # send later (schedule), or send now. This method handles the action based on the commit button pressed.
   def handle_commit
+    @dismiss_modal = true
+
     case params[:commit]
 
     # save draft
@@ -106,8 +107,8 @@ class MessagesController < UnitContextController
 
     # send preview
     when t("messages.captions.send_preview")
-      send_preview
-      @message.update(status: :draft) if @message.status.nil?
+      @dismiss_modal = false
+      MessageNotifier.with(message: @message, preview: true).deliver_later(current_member)
       @notice = t("messages.notices.preview_sent")
 
     # submit for approval
@@ -137,12 +138,7 @@ class MessagesController < UnitContextController
     end
   end
 
-  def send_preview
-    MemberNotifier.new(current_member).send_message(@message, preview: true)
-  end
-
   def message_params
-    ap params
     result = params.require(:message).permit(:id, :title, :body, :audience, :member_type,
                                              :member_status, :send_at, :author_id, :cohort_name,
                                              message_recipients_keys: [])
@@ -165,7 +161,6 @@ class MessagesController < UnitContextController
 end
 
 # rubocop:enable Metrics/CyclomaticComplexity
-# rubocop:enable Metrics/PerceivedComplexity
 # rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/ClassLength

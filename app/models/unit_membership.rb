@@ -133,7 +133,6 @@ class UnitMembership < ApplicationRecord
     self.contactable_via_sms = contactable_via?(:sms)
     self.contactable = contactable_via?(:any)
   end
-  # cache contactability flags for performance
 
   def compute_contactability!
     compute_contactability

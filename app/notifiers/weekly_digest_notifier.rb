@@ -20,10 +20,6 @@ class WeeklyDigestNotifier < ScoutplanNotifier
 
   required_param :unit
 
-  def feature_enabled?
-    true
-  end
-
   def format_for_twilio(notification)
     recipient = notification.recipient
     params = notification.params

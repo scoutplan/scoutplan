@@ -7,8 +7,8 @@ export default class extends Controller {
   static targets = [ "attachmentsList", "attachmentsWrapper", "attachmentForm", "audienceList", "audienceName",
                      "ffCheckWrapper", "fileInput", "form", "testMode",
                      "addressBook", "memberTypeCheckBox", "memberStatusCheckBox", "subjectTextBox", "bodyTextArea",
-                     "authorSelect", "cohortName",
-                     "sendMessageButton", "sendLaterButton", "sendPreviewButton", "tempFileInput",
+                     "authorSelect", "cohortName", "attachmentSubmitButton",
+                     "sendMessageButton", "sendLaterButton", "tempFileInput",
                      "queryInput", "addressBook", "recipientList" ];
   static values = { unitId: Number };
 
@@ -91,12 +91,6 @@ export default class extends Controller {
     this.shouldSkipLeaveConfirmation = true;
   }
 
-  addAttachments(event) {
-    this.shouldSkipLeaveConfirmation = true;
-    this.attachmentFormTarget.requestSubmit();
-    this.shouldSkipLeaveConfirmation = false;
-  }
-
   confirmLeave(event) {
     if (this.shouldSkipLeaveConfirmation) { return; }
 
@@ -119,9 +113,33 @@ export default class extends Controller {
   establishRecipientObserver() {
     this.recipientObserver = new MutationObserver((mutations) => {
       this.validate();
-      this.syncAddressBookToRecipients();
+      this.dedupeRecipients();
+      this.closeAddressBook();
+      this.clearQueryInput();
+      this.focusQueryInput();
     });
     this.recipientObserver.observe(this.recipientListTarget, { childList: true });
+  }
+
+  clearQueryInput() {
+    this.queryInputTarget.value = "";
+  }
+
+  focusQueryInput() {
+    this.queryInputTarget.focus();
+  }
+
+  dedupeRecipients() {
+    const recipientTags = this.recipientListTarget.querySelectorAll(".recipient");
+    const seen = new Set();
+    recipientTags.forEach((tag) => {
+      const recipientId = tag.dataset.recipientId;
+      if (seen.has(recipientId)) {
+        tag.remove();
+      } else {
+        seen.add(recipientId);
+      }
+    });
   }
 
   establishAttachmentsObserver() {
@@ -218,16 +236,6 @@ export default class extends Controller {
     this.queryInputTarget.focus();
   }
 
-  syncAddressBookToRecipients() {
-    this.unfilterAddressBook();
-    const memberIds = this.selectedMemberIds();
-
-    memberIds.forEach((memberId) => {
-      const li = this.addressBookTarget.querySelector(`li[id='membership_${memberId}']`);
-      li?.classList?.toggle("committed", true);
-    });
-  }
-
   markAsDirty() {
     this.dirty = true;
   }
@@ -283,6 +291,20 @@ export default class extends Controller {
 
     event.preventDefault();
   }
+
+  // attachment stuff
+
+  browseFiles(event) {
+    console.log("Browse files clicked");
+    this.fileInputTarget.click();
+    event.preventDefault();
+  }
+
+  addAttachments(event) {
+    this.shouldSkipLeaveConfirmation = true;
+    this.attachmentFormTarget.requestSubmit();
+    this.shouldSkipLeaveConfirmation = false;
+  }  
 
   removeAttachmentCandidate(event) {
     var elem = event.target.closest(".attachment-candidate");

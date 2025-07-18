@@ -393,7 +393,8 @@ class Event < ApplicationRecord
 
   def recipients
     # @recipients ||= rsvps.accepted.joins(:unit_membership).where(unit_memberships: { contactable: true }).collect(&:member)
-    @recipient ||= unit.unit_memberships.contactable?.where("unit_memberships.id IN (?)", rsvps.accepted.collect(&:unit_membership_id))
+    @recipients ||= unit.unit_memberships.contactable?.where("unit_memberships.id IN (?)",
+                                                             rsvps.accepted.collect(&:unit_membership_id))
   end
 
   def resolve_recipients
@@ -401,7 +402,7 @@ class Event < ApplicationRecord
   end
 
   def contactable?
-    requires_rsvp? && recipients.contactable?.any?
+    requires_rsvp? && recipients.any?
   end
 end
 # rubocop:enable Metrics/ClassLength
