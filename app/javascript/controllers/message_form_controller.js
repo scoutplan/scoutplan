@@ -310,6 +310,11 @@ export default class extends Controller {
     var elem = event.target.closest(".attachment-candidate");
     elem.remove();
   }
+
+  selectCohort(event) {
+    const cohortName = event.currentTarget.dataset.cohortName;
+    this.cohortNameTarget.value = cohortName;
+  }
 }
 
 

@@ -390,3 +390,11 @@ summary::-webkit-details-marker /* Safari */ {
 .selections-present #normal_toolbar {
   display: none;
 }
+
+.blank-slate {
+  display: block;
+}
+
+.snork:has(*) + .blank-slate {
+  display: none;
+}

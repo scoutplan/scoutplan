@@ -1,0 +1,57 @@
+= content_for :title, "Messages"
+
+= turbo_frame_tag :main
+  .max-w-5xl.mx-auto
+    header.flex.flex-row.justify-between.items-center.py-4.mx-6.border-b
+      .left.flex.flex-row.gap-4.items-center
+        h1.font-semibold = "Messages"
+
+        .flex.flex-row.gap-4.text-sm.font-medium
+          = link_to unit_messages_path(current_unit),
+                    class: "block hover:text-brand-500 border rounded bg-stone-200 px-2 py-1",
+                    data: { turbo_action: "advance" } do
+            i.fa-regular.fa-pencil.fa-fw.mr-2
+            = "Drafts"
+
+          = link_to unit_messages_path(current_unit),
+                    class: "block hover:bg-stone-100 border rounded text-stone-500 px-2 py-1",
+                    data: { turbo_action: "advance" } do
+            i.fa-regular.fa-paper-plane.fa-fw.mr-2
+            = "Sent"
+
+      .right
+        - if policy(:message).new?
+          = link_to new_unit_message_path(current_unit),
+                    class: "block px-4 py-2 cursor-pointer hover:bg-stone-100",
+                    data: { turbo_frame: "modal", turbo_action: "advance" },
+                    title: t("messages.tooltips.new_message") do
+                    
+            i.fa-regular.fa-plus.text-brand-500.mr-2
+            = "New message"
+
+    section#item_list.snork.(data-controller="pagination")
+      = render partial: "message", collection: @page.records
+
+    p.blank-slate.mt-8.px-6.text-center
+      = "There aren't any draft messages yet."
+      = " "
+      = link_to new_unit_message_path(current_unit),
+                class: "text-blue-600 dark:text-blue-400 dark:hover:text-blue-300",
+                data: { turbo_frame: "modal", turbo_action: "advance" } do
+
+                = t("announcements.index.write_one_now")
+                i.fa-solid.fa-chevron-right.ml-2
+
+      - unless @page.last?
+        = link_to "Next page",
+                  sent_unit_messages_path(current_unit, page: @page.next_param),
+                  class: "block mt-4 text-center text-transparent",
+                  data: { pagination_target: "nextPageLink" }
+
+  css:
+    .message {
+      display: none;
+    }
+    .message-draft {
+      display: grid;
+    }

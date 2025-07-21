@@ -11,11 +11,6 @@ class MessagesController < UnitContextController
 
   def index
     authorize Message
-    redirect_to drafts_unit_messages_path(current_unit)
-  end
-
-  def drafts
-    authorize Message
     scope = current_unit.messages.includes(message_recipients: [unit_membership: :user]).draft_and_queued.with_attached_attachments.order(updated_at: :desc)
     set_page_and_extract_portion_from(scope.all, per_page: [20])
   end
@@ -44,7 +39,6 @@ class MessagesController < UnitContextController
     associate_attachments
     handle_commit
     flash.now[:notice] = @notice
-    redirect_to unit_messages_path(current_unit), notice: @notice
   end
 
   def edit
@@ -60,8 +54,9 @@ class MessagesController < UnitContextController
   end
 
   def destroy
+    authorize @message
     @message.destroy
-    redirect_to unit_messages_path(current_unit), notice: t("messages.notices.delete_success")
+    # redirect_to unit_messages_path(current_unit, format: :html), notice: t("messages.notices.delete_success")
   end
 
   def duplicate
@@ -104,6 +99,9 @@ class MessagesController < UnitContextController
     when t("messages.captions.save_draft")
       @message.update(status: :draft)
       @notice = t("messages.notices.draft_saved")
+
+    when "Delete Draft"
+      @message.destroy
 
     # send preview
     when t("messages.captions.send_preview")

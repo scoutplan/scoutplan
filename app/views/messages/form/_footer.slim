@@ -28,7 +28,7 @@ footer.py-4.px-6.sticky.bottom-0
                   name: "commit",
                   disabled: true,
                   value: t("messages.captions.send_message"),
-                  class: "block px-6 py-2 pr-12 font-medium disabled:bg-brand-300 disabled:text-brand-50 bg-brand-500 text-white rounded disabled:cursor-not-allowed",
+                  class: "block px-6 py-2 pr-12 font-medium disabled:bg-brand-300 group bg-brand-500 text-white rounded disabled:cursor-not-allowed disabled:text-brand-50",
                   id: "send_message_button",
                   data: { message_form_target: "sendMessageButton", action: "message-form#skipLeaveConfirmation" }
 
@@ -39,19 +39,19 @@ footer.py-4.px-6.sticky.bottom-0
 
           .dropdown-menu.absolute.right-0.w-72.rounded.border.border-stone-300.shadow-md.bg-white.mb-1.bottom-full.transition-opacity(data-check-dropdown-target="menu")
             - if @message.deleteable?
-              = button_to unit_message_path(current_unit, @message),
-                          method: :delete,
+              = link_to unit_message_path(current_unit, @message),
                           id: "delete_draft_link",
                           class: "block w-full px-3 py-2 text-left cursor-pointer disabled:cursor-not-allowed hover:bg-stone-100",
-                          data: { turbo_action: "advance", turbo_confirm: "Are you sure you want to delete this draft?", skip_leave_confirmation: "true" } do
+                          data: { turbo_method: "delete", turbo_action: "advance", turbo_confirm: "Are you sure you want to delete this draft?", skip_leave_confirmation: "true" } do
                   i.fa-regular.fa-fw.mr-2.fa-trash-can.text-stone-400
                   = "Delete Draft"
+                  
             - elsif @message.new_record?
               = link_to unit_messages_path(current_unit),
                         class: "block w-full px-3 py-2 text-left cursor-pointer disabled:cursor-not-allowed hover:bg-stone-100",
                         data: { turbo_action: "advance", turbo_confirm: "Are you sure you want to delete this draft?", skip_leave_confirmation: "true" } do
                   i.fa-regular.fa-fw.mr-2.fa-trash-can.text-stone-400
-                  = "Delete Draft"            
+                  = "Delete Draft"      
           
             = f.button t("messages.captions.send_preview"),
                       type: "submit",

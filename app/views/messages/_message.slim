@@ -2,41 +2,40 @@
 
 = link_to path,
   id: dom_id(message),
-  class: "block w-full -mx-2 px-2 py-2 flex flex-row justify-between items-center gap-10 dark:border-stone-700 py-3 hover:bg-stone-100",
+  class: "grid grid-cols-12 gap-4 hover:bg-stone-100 px-6 py-3 message message-#{message.status.downcase}",
   data: { turbo_action: "advance", turbo_frame: "modal" } do
 
-  .left.flex-initial
-    h3.title.font-semibold.text-ellipsis
+
+  .col-span-8
+    .font-semibold
       = message.display_title
       - if message.attachments.any?
-        i.fa-regular.fa-paperclip.ml-2.text-stone-500.text-base
+        i.fa-regular.fa-paperclip.fa-fw.mr-1.text-stone-500
+      
+    = message.author == current_member ? "You" : message.author.full_display_name
 
-    .line-clamp-1.text-stone-500.dark:text-stone-400
-        = message.author == current_member ? "You" : message.author.full_display_name
-        
-        i.fa-regular.fa-arrow-right.mx-2.text-stone-400
+    i.fa-regular.fa-arrow-right.mx-2.text-stone-500
 
-        - if message.cohort_name.present?
-          = "#{message.cohort_name}"
-          |&nbsp;
-          span.rounded-full.text-sm.bg-stone-200.px-2.py-1.font-semibold.text-stone-900
-            = message.message_recipients.count
+    - if message.cohort_name.present?
+      = "#{message.cohort_name}"
+      |&nbsp;
+      span.rounded-full.text-sm.bg-stone-200.px-2.py-1.font-semibold.text-stone-900
+        = message.message_recipients.count
 
-        - elsif message.message_recipients.any?
-          - count = message.message_recipients.count
-          = "#{count} recipient".pluralize(count)
-          
-        - else
-          = "No recipients"
+    - elsif message.message_recipients.any?
+      - count = message.message_recipients.count
+      = "#{count} member".pluralize(count)
+      
+    - else
+      = "No recipients"
 
-    .line-clamp-1
+    .line-clamp-3.text-sm.text-stone-500.mt-2
       = message.body.to_plain_text
 
-  .right
-    .text-sm.md:text-base.whitespace-nowrap
-      - if message.queued?
-        span(title="Scheduled to send later")
-          i.fa-solid.fa-clock.mr-2.text-messages-600
-          = message.send_at.strftime("%b %-d")
-      - else
-        = message.updated_at.strftime("%b %-d")
+  .col-span-4.text-right
+    - if message.queued?
+      span(title="Scheduled to send later")
+        i.fa-solid.fa-clock.mr-2.text-messages-600
+        = message.send_at.strftime("%b %-d")
+    - else
+      = message.updated_at.strftime("%b %-d")

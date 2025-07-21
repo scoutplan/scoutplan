@@ -4,7 +4,8 @@
     li
       - list = Message::EveryoneDistributionList.new(current_unit)
       = button_to resolve_unit_recipients_path(current_unit, gid: list.to_gid_param),
-                  class: "block w-full text-left px-4 py-2 cursor-pointer hover:bg-stone-100" do
+                  class: "block w-full text-left px-4 py-2 cursor-pointer hover:bg-stone-100",
+                  data: { cohort_name: "Everyone in #{current_unit.name}", action: "message-form#selectCohort" } do
           .flex.flex-row.gap-4.items-center
             i.fa-regular.fa-users.text-rose-500.fa-fw
             div
@@ -14,7 +15,8 @@
     li
       - list = Message::AllActiveDistributionList.new(current_unit)
       = button_to resolve_unit_recipients_path(current_unit, gid: list.to_gid_param),
-                  class: "block w-full text-left px-4 py-2 cursor-pointer hover:bg-stone-100" do
+                  class: "block w-full text-left px-4 py-2 cursor-pointer hover:bg-stone-100",
+                  data: { cohort_name: "All Active Members", action: "message-form#selectCohort" } do
           .flex.flex-row.gap-4.items-center
             i.fa-regular.fa-users.text-rose-500.fa-fw
             div
@@ -24,7 +26,8 @@
     li
       - list = Message::ActiveAdultsDistributionList.new(current_unit)
       = button_to resolve_unit_recipients_path(current_unit, gid: list.to_gid_param),
-                  class: "block w-full text-left px-4 py-2 cursor-pointer hover:bg-stone-100" do
+                  class: "block w-full text-left px-4 py-2 cursor-pointer hover:bg-stone-100",
+                  data: { cohort_name: "Active Adults", action: "message-form#selectCohort" } do
           .flex.flex-row.gap-4.items-center
             i.fa-regular.fa-users.text-rose-500.fa-fw
             div
@@ -35,7 +38,8 @@
       li
         = button_to resolve_unit_recipients_path(current_unit, gid: event.to_gid_param),
                     disabled: !event.contactable?,
-                    class: "block w-full text-left px-4 py-2 #{event.contactable? ? 'cursor-pointer hover:bg-stone-100' : 'text-stone-400 cursor-not-allowed'}" do
+                    class: "block w-full text-left px-4 py-2 #{event.contactable? ? 'cursor-pointer hover:bg-stone-100' : 'text-stone-400 cursor-not-allowed'}",
+                    data: { cohort_name: "#{event.title} attendees", action: "message-form#selectCohort" } do
           .flex.flex-row.gap-4.items-center
             i.fa-regular.fa-calendar.text-lime-500.fa-fw
             div
