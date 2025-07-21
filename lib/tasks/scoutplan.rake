@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
 namespace :sp do
   # desc "Convert Locations to EventLocations"
   # task normalize_locations: :environment do
@@ -72,7 +73,11 @@ namespace :sp do
   namespace :members do
     desc "Compute contactability for all unit memberships"
     task compute_contactability: :environment do
-      UnitMembership.find_each(&:compute_contactability!)
+      UnitMembership.find_each do |membership|
+        membership.compute_contactability!
+      rescue StandardError => e
+        puts "Error computing contactability for membership #{membership.id}: #{e.message}"
+      end
     end
   end
 
@@ -106,3 +111,4 @@ namespace :sp do
   #   end
   # end
 end
+# rubocop:enable Metrics/BlockLength
