@@ -8,6 +8,7 @@ module Contactable
   end
 
   def contactable?(via: :any)
+    return false if youth? && parents.none?(&:contactable?)
     return contactable_object.emailable? if via == :email
     return contactable_object.smsable? if via == :sms
     return contactable_object.emailable? || contactable_object.smsable? if via == :any
@@ -23,14 +24,14 @@ module Contactable
   end
 
   def emailable?
-    contactable_object.email.present? &&
-      !contactable_object.anonymous_email? &&
-      contact_preference?(via: :email)
+    @emailable ||= contactable_object.email.present? &&
+                   !contactable_object.anonymous_email? &&
+                   contact_preference?(via: :email)
   end
 
   def smsable?
-    contactable_object.phone.present? &&
-      contact_preference?(via: :sms)
+    @smsable ||= contactable_object.phone.present? &&
+                 contact_preference?(via: :sms)
   end
 
   private

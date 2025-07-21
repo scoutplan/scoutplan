@@ -22,6 +22,10 @@ class MessagePolicy < UnitContextPolicy
     admin?
   end
 
+  def destroy?
+    admin?
+  end
+
   def create_pending?
     draft?
   end

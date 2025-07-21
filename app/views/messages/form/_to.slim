@@ -1,15 +1,16 @@
 div#recipient_wrapper.py-2(data-action="keydown->dropdown#handleKeydown")
-  .flex.flex-row.gap-4.justify-between.items-start
+  .flex.flex-row.gap-4.justify-between.items-start.relative
     // LABEL
     = label nil, :recipient_search_query_field, "To", class: "inline-block py-2"
 
     // RECIPIENTS, SEARCH FIELD & SEARCH RESULTS
     .auto-complete-field.w-full.flex.gap-1.flex-wrap(data-controller="selectable-list" data-message-form-target="recipientList" data-action="change->message-form#validate")
-      = render partial: "recipient", collection: @recipients
+      = render partial: "messages/recipients/recipient", collection: @message.message_recipients.uniq { |r| r.unit_membership_id }.collect(&:unit_membership)
 
       #recipient_search_query.relative.w-full.flex.grow.shrink.basis-0
         = render partial: "messages/form/search_field", locals: { f: f }
-        = render partial: "messages/form/search_results", locals: { f: f }
+
+    = render partial: "messages/form/search_results", locals: { f: f }
 
     // ADDRESS BOOK BUTTON
     .right

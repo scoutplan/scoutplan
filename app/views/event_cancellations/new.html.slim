@@ -83,7 +83,7 @@
                 .hidden.peer-checked:inline-block
                   i.fa-solid.fa-circle-dot.text-brand-500.fa-lg
                   
-                span.ml-2= "Yes, to all #{current_unit.members.contactable.status_active.count} active, contactable members"
+                span.ml-2= "Yes, to all #{current_unit.members.contactable?.status_active.count} active, contactable members"
               
 
             // ALL MEMBERS RADIO
@@ -96,7 +96,7 @@
                   .hidden.peer-checked:inline-block
                     i.fa-solid.fa-circle-dot.text-brand-500.fa-lg
                     
-                  span.ml-2= "Yes, to all #{current_unit.members.contactable.count} registered, contactable members"         
+                  span.ml-2= "Yes, to all #{current_unit.members.contactable?.count} registered, contactable members"         
 
             = text_area "event_cancellation", "message",
               class: "border rounded w-full h-24 p-2 placholder-stone-400 border-stone-500 mt-2 text-sm",

@@ -38,17 +38,17 @@ class ScoutplanNotifier < Noticed::Event
 
   def email?(notification = nil)
     recipient = notification&.recipient
-    recipient.contactable?(via: :email) && recipient.contact_preference?(via: :email) && feature_enabled?
+    recipient.contactable_via?(:email) && feature_enabled?
   end
 
   def sms?(notification = nil)
     recipient = notification&.recipient
-    recipient.contactable?(via: :sms) && recipient.contact_preference?(via: :sms) && feature_enabled?
+    recipient.contactable_via?(:sms) && feature_enabled?
   end
 
-  # override in subclasses
+  # override in subclasses as needed
   def feature_enabled?
-    raise NotImplementedError
+    true
   end
 
   def renderer

@@ -1,0 +1,5 @@
+The address book view renders a list of buttons that 
+
+All recipients GET to /units/:unit_id/messages/address_book/distribution_lists/active
+Event attendees GET to /units/:unit_id/messages/address_book/events/:event_id
+Event attendees GET to /units/:unit_id/messages/address_book/tags/:tag_id

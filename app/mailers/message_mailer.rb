@@ -35,6 +35,8 @@ class MessageMailer < ApplicationMailer
   end
 
   def subject
+    return "PREVIEW — [#{unit.name}] #{@message.title}" if params[:preview]
+
     "[#{unit.name}] #{@message.title}"
   end
 

@@ -12,6 +12,7 @@ class UnitContextController < ApplicationController
 
   def current_unit
     @current_unit ||= Unit.find(unit_id_param)
+    Current.unit = @current_unit
   end
 
   def current_member

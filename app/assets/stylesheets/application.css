@@ -318,10 +318,17 @@ form.is-dirty .dirty-warning {
 
 .dropdown .dropdown-menu {
   display: none;
+  opacity: 0;
 }
 
 .dropdown.dropdown-active .dropdown-menu {
   display: block;
+  opacity: 1;
+}
+
+.dropdown:has(:checked) .dropdown-menu {
+  display: block;
+  opacity: 1;
 }
 
 details > summary {
@@ -381,5 +388,13 @@ summary::-webkit-details-marker /* Safari */ {
 }
 
 .selections-present #normal_toolbar {
+  display: none;
+}
+
+.blank-slate {
+  display: block;
+}
+
+.snork:has(*) + .blank-slate {
   display: none;
 }

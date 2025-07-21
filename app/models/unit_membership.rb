@@ -5,9 +5,10 @@ class UnitMembership < ApplicationRecord
   ROLES = %w[member admin event_organizer].freeze
 
   after_initialize :set_defaults, unless: :persisted?
+  before_save :compute_contactability
+  after_save :enqueue_compute_child_contactability_job!, if: :saved_change_to_contactable?
 
   include Flipper::Identifier
-  include Contactable
 
   belongs_to :unit
   belongs_to :user, touch: true
@@ -49,9 +50,9 @@ class UnitMembership < ApplicationRecord
   scope :registered, -> { where(status: %i[registered]) }
   scope :excluding_inactive, -> { where(status: %i[active registered]) } # everyone except inactives
   scope :status_active_and_registered, -> { where(status: %i[active registered]) } # everyone except inactives
-  scope :contactable, -> { joins(:user).where("email NOT LIKE 'anonymous-member-%@scoutplan.org'") }
-  scope :emailable, -> { joins(:user).where("email NOT LIKE 'anonymous-member-%@scoutplan.org'") }
   scope :message_approver, -> { where(role: %i[admin]) }
+
+  scope :contactable?, -> { where(contactable: true) }
 
   delegate :time_zone, to: :unit
   delegate :name, to: :unit, prefix: :unit
@@ -103,8 +104,49 @@ class UnitMembership < ApplicationRecord
     family.map(&:last_name).uniq.join(" / ")
   end
 
-  def contactable_object
-    self
+  def eligible_for_contact?(via: :any)
+    return false if youth? && !contactable_guardian?
+    return email.present? && !anonymous_email? if via == :email
+    return phone.present? if via == :sms
+
+    false
+  end
+
+  # contactability methods
+  def prefers_contact?(via: :email)
+    return settings(:communication).via_email == "true" || settings(:communication).via_email == true if via == :email
+    return settings(:communication).via_sms == "true" || settings(:communication).via_sms == true if via == :sms
+
+    prefers_contact?(via: :email) || prefers_contact?(via: :sms) # any method
+  end
+
+  def contactable_via?(method = :any)
+    return eligible_for_contact?(via: :email) && prefers_contact?(via: :email) if method == :email
+    return eligible_for_contact?(via: :sms) && prefers_contact?(via: :sms) if method == :sms
+    return contactable_via?(:email) || contactable_via?(:sms) if method == :any
+
+    false
+  end
+
+  def compute_contactability
+    self.contactable_via_email = contactable_via?(:email)
+    self.contactable_via_sms = contactable_via?(:sms)
+    self.contactable = contactable_via?(:any)
+  end
+
+  def compute_contactability!
+    compute_contactability
+    save!
+  end
+
+  def enqueue_compute_child_contactability_job!
+    ComputeChildContactabilityJob.perform_later(self)
+  end
+
+  def contactable_guardian?
+    return true unless youth?
+
+    parents.any?(&:contactable?)
   end
 
   def receives_event_rsvps?
@@ -115,10 +157,6 @@ class UnitMembership < ApplicationRecord
     self.role ||= "member"
     self.status ||= "active"
     self.member_type = "youth" if member_type == "unknown"
-  end
-
-  def smsable?
-    user.smsable? && settings(:communication).via_sms
   end
 
   def disable_delivery!(method: nil)
@@ -135,6 +173,12 @@ class UnitMembership < ApplicationRecord
 
   def sender_name_and_address
     "#{user.display_name} at #{unit.name} <#{unit.from_address}>"
+  end
+
+  def recipients
+    [self] if adult?
+
+    [self, *parents.contactable?]
   end
 end
 # rubocop:enable Metrics/ClassLength

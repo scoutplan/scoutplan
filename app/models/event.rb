@@ -390,5 +390,19 @@ class Event < ApplicationRecord
   def headcount_met?
     adult_headcount_met? && youth_headcount_met?
   end
+
+  def recipients
+    # @recipients ||= rsvps.accepted.joins(:unit_membership).where(unit_memberships: { contactable: true }).collect(&:member)
+    @recipients ||= unit.unit_memberships.contactable?.where("unit_memberships.id IN (?)",
+                                                             rsvps.accepted.collect(&:unit_membership_id))
+  end
+
+  def resolve_recipients
+    recipients
+  end
+
+  def contactable?
+    requires_rsvp? && recipients.any?
+  end
 end
 # rubocop:enable Metrics/ClassLength

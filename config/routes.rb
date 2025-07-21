@@ -108,11 +108,19 @@ Rails.application.routes.draw do
         get  "drafts"
         get  "sent"
         get  "outbox"
-        post "recipients", as: "recipients"
+        # post "recipients", as: "recipients"
         get  "addressables", as: "addressables"
         get  "select",     as: "select"
         post "commit",     as: "commit"
+
+        resources :recipients, only: [:index], module: :messages do
+          collection do
+            post "resolve/:gid", to: "recipients#resolve", as: "resolve"
+          end
+        end
       end
+
+      # get "address_book/:type/:id", to: "messaging_address_book#show", as: "address_book"
     end
 
     resources :message_attachments

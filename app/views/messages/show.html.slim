@@ -25,7 +25,7 @@
                   = t("messages.show.buttons.duplicate")
 
 
-            = @message.send_at.strftime("%b %-d")
+            = @message.send_at&.strftime("%b %-d")
 
         p.recipients.text-sm
           = @message.author.display_name

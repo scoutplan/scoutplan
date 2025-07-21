@@ -1,0 +1,80 @@
+= turbo_frame_tag :address_book do
+  ul.w-full.divide-y
+
+    li
+      - list = Message::EveryoneDistributionList.new(current_unit)
+      = button_to resolve_unit_recipients_path(current_unit, gid: list.to_gid_param),
+                  class: "block w-full text-left px-4 py-2 cursor-pointer hover:bg-stone-100",
+                  data: { cohort_name: "Everyone in #{current_unit.name}", action: "message-form#selectCohort" } do
+          .flex.flex-row.gap-4.items-center
+            i.fa-regular.fa-users.text-rose-500.fa-fw
+            div
+              .font-semibold = "Everyone in #{current_unit.name}"
+              .text-sm = list.description
+
+    li
+      - list = Message::AllActiveDistributionList.new(current_unit)
+      = button_to resolve_unit_recipients_path(current_unit, gid: list.to_gid_param),
+                  class: "block w-full text-left px-4 py-2 cursor-pointer hover:bg-stone-100",
+                  data: { cohort_name: "All Active Members", action: "message-form#selectCohort" } do
+          .flex.flex-row.gap-4.items-center
+            i.fa-regular.fa-users.text-rose-500.fa-fw
+            div
+              .font-semibold = "All Active Members"
+              .text-sm = list.description
+
+    li
+      - list = Message::ActiveAdultsDistributionList.new(current_unit)
+      = button_to resolve_unit_recipients_path(current_unit, gid: list.to_gid_param),
+                  class: "block w-full text-left px-4 py-2 cursor-pointer hover:bg-stone-100",
+                  data: { cohort_name: "Active Adults", action: "message-form#selectCohort" } do
+          .flex.flex-row.gap-4.items-center
+            i.fa-regular.fa-users.text-rose-500.fa-fw
+            div
+              .font-semibold = "Active Adults"
+              .text-sm = list.description
+
+    - current_unit.events.includes(event_rsvps: [unit_membership: :user]).published.rsvp_required.recent_and_future.each do |event|
+      li
+        = button_to resolve_unit_recipients_path(current_unit, gid: event.to_gid_param),
+                    disabled: !event.contactable?,
+                    class: "block w-full text-left px-4 py-2 #{event.contactable? ? 'cursor-pointer hover:bg-stone-100' : 'text-stone-400 cursor-not-allowed'}",
+                    data: { cohort_name: "#{event.title} attendees", action: "message-form#selectCohort" } do
+          .flex.flex-row.gap-4.items-center
+            i.fa-regular.fa-calendar.text-lime-500.fa-fw
+            div
+              .font-semibold = event.title
+              .text-sm
+                = event.recipients.empty? ? "No contactable recipients" : "#{event.recipients.count} contactable recipient".pluralize(event.recipients.count)
+                = event.starts_at.future? ? ", starts in #{distance_of_time_in_words_to_now(event.starts_at.in_time_zone(current_unit.time_zone))}" : ", started #{distance_of_time_in_words_to_now(event.starts_at.in_time_zone(current_unit.time_zone))} ago"
+
+
+    - current_unit.unit_memberships.includes(:user, :setting_objects).order("users.last_name, users.first_name").each do |unit_membership|
+      li
+        = button_to resolve_unit_recipients_path(current_unit, gid: unit_membership.to_gid_param),
+                    disabled: !unit_membership.contactable?,
+                    class: "block w-full text-left px-4 py-2 #{unit_membership.contactable? ? 'cursor-pointer hover:bg-stone-100' : 'text-stone-400 cursor-not-allowed'}" do
+          .flex.flex-row.gap-4.items-center
+            - if unit_membership.youth?
+              i.fa-solid.fa-user.text-amber-500.fa-fw(title="Youth Member")
+            - else
+              i.fa-regular.fa-user.text-amber-500.fa-fw(title="Adult Member")
+            div
+              .font-semibold = unit_membership.display_name
+              div.flex.flex-row.gap-4.text-sm
+                - unless unit_membership.contactable?
+                  span
+                    i.fa-regular.fa-ban.text-gray-500.fa-fw.mr-1
+                    = "No contact methods available"
+
+                - else
+
+                  - if unit_membership.contactable_via_email?
+                    span
+                      i.fa-regular.fa-envelope.text-gray-500.fa-fw.mr-1
+                      = "Email"
+                    
+                  - if unit_membership.contactable_via_sms?
+                    span
+                      i.fa-regular.fa-comment-sms.text-gray-500.fa-fw.mr-1
+                      = "SMS"
