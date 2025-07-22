@@ -1,14 +1,5 @@
 # frozen_string_literal: true
 
-# Message lifecycle:
-# 4. Sender composes a message, adds recipients, and sets a subject, body, and attachments.
-# 5. Sender clicks Send. Controller updates status to "outbox"
-# 6. The Sendable after_commit hook enqueues a SendMessageJob
-# 7. SendMessageJob fires which, in turn, calls Sendable#send! (found in the Sendable concern)
-# 8. send! calls Notifiable#recipients to resolve the list of recipients
-# 9. send! invokes a MessageNotifier (see the Noticed gem) object and calls .deliver_later, passing in the recipient list
-# 10. For each recipient, MessageNotifer enqueues an asynchronous job that sends the message to each recipient via email and/or SMS, depending on their contact preferences
-
 class Message < ApplicationRecord
   include Notifiable, Replyable, Sendable, NestedKeys
 
