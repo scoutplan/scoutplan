@@ -1,58 +1,59 @@
-#new_location_overlay.fixed.inset-0.backdrop-blur-sm.bg-black/30.z-50(data-controller="modal" data-modal-element-id-value="new_location_overlay")
-  article.max-w-sm.mx-auto.mt-16.bg-white.rounded-lg
-    = form_with model: [current_unit, @location], data: { turbo_action: "advance" } do |f|
-      header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
-            .left
-              h1 = "Add a Location"
+= turbo_frame_tag :modal do
+  #new_location_overlay.fixed.inset-0.backdrop-blur-sm.bg-black/30.z-50(data-controller="modal" data-modal-element-id-value="new_location_overlay")
+    article.max-w-sm.mx-auto.mt-16.bg-white.rounded-lg
+      = form_with model: [current_unit, @location], data: { turbo_action: "advance" } do |f|
+        header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
+              .left
+                h1 = "Add a Location"
 
-            .right.flex.flex-row.gap-2.text-stone-500.text-lg
-              = button_tag type: "button", class: "x-close-button flex flex-row items-center block w-6 h-6 -mr-2 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
-                i.fa-regular.fa-times.fa-fw
+              .right.flex.flex-row.gap-2.text-stone-500.text-lg
+                = button_tag type: "button", class: "x-close-button flex flex-row items-center block w-6 h-6 -mr-2 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
+                  i.fa-regular.fa-times.fa-fw
 
-      section.px-6.py-4.text-sm
-        .py-2.md:py-2
-          = f.label :name, t("locations.labels.name"), class: "block mb-1 text-stone-500"
-          = f.text_field :name,
+        section.px-6.py-4.text-sm
+          .py-2.md:py-2
+            = f.label :name, t("locations.labels.name"), class: "block mb-1 text-stone-500"
+            = f.text_field :name,
+                            class: "bg-white text-sm border border-stone-400 rounded p-2 w-full placeholder-stone-400",
+                            autocomplete: "off",
+                            autofocus: true,
+                            placeholder: t("locations.placeholders.name")
+
+          .py-2.md:py-2
+            = f.label :name, t("locations.labels.map_name") + " (optional)", class: "block mb-1 text-stone-500"
+            = f.text_field :map_name,
+                            class: "bg-white text-sm border border-stone-400 rounded p-2 w-full placeholder-stone-400",
+                            autocomplete: "off",
+                            placeholder: t("locations.placeholders.map_name")
+
+          .py-2.md:py-2
+            = f.label :address, class: "block mb-1 text-stone-500"
+            = f.text_field :address,
+                            class: "bg-white text-sm border border-stone-400 rounded p-2 w-full placeholder-stone-400",
+                            autocomplete: "off",
+                            placeholder: t("locations.placeholders.address")
+
+          .py-2.md:py-2
+            = f.label :phone, class: "block mb-1 text-stone-500"
+            = f.phone_field :phone,
+                            class: "bg-white text-sm border border-stone-400 rounded p-2 w-full placeholder-stone-400",
+                            autocomplete: "off",
+                            placeholder: t("locations.placeholders.phone")
+
+          .py-2.md:py-2
+            = f.label :website, class: "block mb-1 text-stone-500"
+            = f.url_field :website,
                           class: "bg-white text-sm border border-stone-400 rounded p-2 w-full placeholder-stone-400",
                           autocomplete: "off",
-                          autofocus: true,
-                          placeholder: t("locations.placeholders.name")
+                          placeholder: t("locations.placeholders.website")
 
-        .py-2.md:py-2
-          = f.label :name, t("locations.labels.map_name") + " (optional)", class: "block mb-1 text-stone-500"
-          = f.text_field :map_name,
-                          class: "bg-white text-sm border border-stone-400 rounded p-2 w-full placeholder-stone-400",
-                          autocomplete: "off",
-                          placeholder: t("locations.placeholders.map_name")
+        footer.px-6.py-3.border-t
+          .flex.flex-row.gap-2.justify-end.text-sm
+            = button_tag "Cancel",
+                        type: "button",
+                        class: "block w-full md:w-fit px-4 py-3 md:py-2 bg-stone-200 hover:bg-stone-300 rounded cursor-pointer font-medium",
+                        data: { action: "click->modal#close" }
 
-        .py-2.md:py-2
-          = f.label :address, class: "block mb-1 text-stone-500"
-          = f.text_field :address,
-                          class: "bg-white text-sm border border-stone-400 rounded p-2 w-full placeholder-stone-400",
-                          autocomplete: "off",
-                          placeholder: t("locations.placeholders.address")
-
-        .py-2.md:py-2
-          = f.label :phone, class: "block mb-1 text-stone-500"
-          = f.phone_field :phone,
-                          class: "bg-white text-sm border border-stone-400 rounded p-2 w-full placeholder-stone-400",
-                          autocomplete: "off",
-                          placeholder: t("locations.placeholders.phone")
-
-        .py-2.md:py-2
-          = f.label :website, class: "block mb-1 text-stone-500"
-          = f.url_field :website,
-                        class: "bg-white text-sm border border-stone-400 rounded p-2 w-full placeholder-stone-400",
-                        autocomplete: "off",
-                        placeholder: t("locations.placeholders.website")
-
-      footer.px-6.py-3.border-t
-        .flex.flex-row.gap-2.justify-end.text-sm
-          = button_tag "Cancel",
-                      type: "button",
-                      class: "block w-full md:w-fit px-4 py-3 md:py-2 bg-stone-200 hover:bg-stone-300 rounded cursor-pointer font-medium",
-                      data: { action: "click->modal#close" }
-
-          = f.submit location.new_record? ? "Add to Address Book" : t("global.save_changes"),
-            class: "text-white font-medium inline-block w-full md:w-fit px-4 py-3 md:py-2 bg-brand-500 hover:bg-brand-600 rounded cursor-pointer",
-            id: "add_location_button"
+            = f.submit @location.new_record? ? "Add to Address Book" : t("global.save_changes"),
+              class: "text-white font-medium inline-block w-full md:w-fit px-4 py-3 md:py-2 bg-brand-500 hover:bg-brand-600 rounded cursor-pointer",
+              id: "add_location_button"
