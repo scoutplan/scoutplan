@@ -1,5 +1,12 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe ComputeChildContactabilityJob, type: :job do
-  pending "add some examples to (or delete) #{__FILE__}"
+  include ActiveJob::TestHelper
+
+  it "traps missing UnitMembership" do
+    member = FactoryBot.create(:member)
+    ComputeChildContactabilityJob.perform_later(member)
+    member.destroy!
+    perform_enqueued_jobs
+  end
 end
