@@ -19,11 +19,11 @@ module Message::Notifiable
     scope = scope.where(member_type: member_type == "youth_and_adults" ? %w[adult youth] : %w[adult]) # adult / youth
 
     if event_cohort?
-      event = Event.find($1)
+      event = Event.find(::Regexp.last_match(1))
       scope = scope.where(id: event.rsvps.pluck(:unit_membership_id))
 
     elsif audience =~ TAG_REGEXP
-      tag = ActsAsTaggableOn::Tag.find($1)
+      tag = ActsAsTaggableOn::Tag.find(::Regexp.last_match(1))
       scope = scope.tagged_with(tag.name)
     else
       scope = scope.where(status: member_status == "active_and_registered" ? %w[active registered] : %w[active])
@@ -31,7 +31,7 @@ module Message::Notifiable
 
     results = with_guardians(scope.all)
 
-    results.select { |r| r.contactable?(via: :email) }
+    results.select { |r| r.contactable_via?(:email) }
   end
 
   def event_cohort?

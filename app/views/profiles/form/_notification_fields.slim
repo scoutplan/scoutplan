@@ -5,7 +5,7 @@ section.hidden
               { label: "Receive event reminders the day of or day before event",
                 checked: member.settings(:communication).receives_event_invitations,
                 data: { profile_form_target: "fourteenDayReminderField", action: "change->profile-form#changeSettings" },
-                disabled: !member.contactable?(via: :email) },
+                disabled: !member.contactable_via?(:email) },
               "true", "false" )
     i.fa-regular.fa-info-circle
 
@@ -14,5 +14,5 @@ section.hidden
               { label: "Receive event invitations via email two weeks before event",
                 checked: member.settings(:communication).receives_event_invitations,
                 data: { profile_form_target: "sameDayReminderField", action: "change->profile-form#changeSettings" },
-                disabled: !member.contactable?(via: :email) },
+                disabled: !member.contactable_via?(:email) },
               "true", "false" )

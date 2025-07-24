@@ -30,10 +30,10 @@ class MessageService < ApplicationService
 
     # filter by audience
     if audience =~ EVENT_REGEXP
-      event = unit.events.find($1)
+      event = unit.events.find(::Regexp.last_match(1))
       scope = scope.where(id: event.rsvps.accepted.pluck(:unit_membership_id))
     elsif audience =~ TAG_REGEXP
-      tag = ActsAsTaggableOn::Tag.find($1)
+      tag = ActsAsTaggableOn::Tag.find(::Regexp.last_match(1))
       scope = scope.tagged_with(tag.name)
     else
       scope = scope.where(status: member_status) # active / friends & family
@@ -50,7 +50,7 @@ class MessageService < ApplicationService
     @recipients.uniq!
 
     # filter out non-emailable members
-    @recipients = @recipients.select { |r| r.contactable?(via: :email) }
+    @recipients = @recipients.select { |r| r.contactable_via?(:email) }
   end
 
   private

@@ -25,8 +25,8 @@ RSpec.describe EventReminderJob, type: :job do
   end
 
   it "enqueues a job" do
-    expect(@member.contactable?(via: :email)).to be_truthy
-    expect(@member.contactable?(via: :sms)).to be_truthy
+    expect(@member.contactable_via?(:email)).to be_truthy
+    expect(@member.contactable_via?(:sms)).to be_truthy
 
     expect { EventReminderJob.perform_now(@event_with_rsvps.id, @event_with_rsvps.updated_at) }.to have_enqueued_job
   end

@@ -38,18 +38,27 @@ class Message < ApplicationRecord
     !new_record? && editable?
   end
 
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def dup
     super.tap do |new_message|
       new_message.regenerate_token
       new_message.body = body.dup
       new_message.status = :draft
       new_message.title.prepend("Copy of ")
+      new_message.save!
+
       message_recipients.each do |message_recipient|
-        new_message.message_recipients << message_recipient.dup
+        message_recipient.dup.tap do |new_recipient|
+          new_recipient.message = new_message
+          new_recipient.unit_membership = message_recipient.unit_membership
+          new_recipient.save!
+        end
       end
-      new_message.save
     end
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 
   def plain_text_body
     return body.to_plain_text if body.respond_to?(:to_plain_text)
