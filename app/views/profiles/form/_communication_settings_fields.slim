@@ -4,15 +4,15 @@ section
   .py-1
     = switch( "settings[communication]", "via_email",
               { label:    "Via email",
-                checked:  member.contactable?(via: :email) && member.settings(:communication).via_email == "true",
+                checked:  member.contactable_via?(:email) && member.settings(:communication).via_email == "true",
                 data:     { profile_form_target: "viaEmailField", action: "change->profile-form#changeSettings" },
-                disabled: !member.contactable?(via: :email) },
+                disabled: !member.contactable_via?(:email) },
               "true", "false" )
 
   .py-1
     = switch( "settings[communication]", "via_sms",
               { label: "Via SMS",
-                checked: member.contactable?(via: :sms) && member.settings(:communication).via_sms == "true",
-                disabled: !member.contactable?(via: :sms),
+                checked: member.contactable_via?(:sms) && member.settings(:communication).via_sms == "true",
+                disabled: !member.contactable_via?(:sms),
                 data: { profile_form_target: "viaSmsField", action: "change->profile-form#changeSettings" } },
               "true", "false" )
