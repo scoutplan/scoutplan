@@ -3,12 +3,18 @@
     .flex.flex-col.justify-between.h-full
       .top
         header.mb-3.relative.flex.flex-row.justify-between
-          .dropdown.inline-block
-            = link_to "#",
-                      class: "block -mx-2 px-4 py-2 dropdown-button dropdown-button-chevron font-semibold text-sm",
-                      data: { user_id: current_user.id, member_id: current_member.id } do
-                = current_member.short_display_name
-                i.fa-light.fa-chevron-down.ml-2
+          / .dropdown.inline-block
+          /   = link_to "#",
+          /             class: "block -mx-2 px-4 py-2 dropdown-button dropdown-button-chevron font-semibold text-sm",
+          /             data: { user_id: current_user.id, member_id: current_member.id } do
+          /       = current_member.short_display_name
+          /       i.fa-light.fa-chevron-down.ml-2
+
+          .dropdown(data-controller="check-dropdown")
+            = label_tag nil, for: "action_menu", class: "text-sm px-2 py-1" do
+              = check_box_tag "action_menu", false, class: "hidden peer dropdown-toggle", data: { check_dropdown_target: "toggle" }
+              = current_member.short_display_name
+              i.fa-solid.fa-chevron-down.ml-2.peer-checked:rotate-180.transition-transform
 
             .dropdown-menu.rounded.bg-white.block.absolute.left-0.ml-2.w-64.border
               = render partial: "layouts/partials/user_menu_items"
