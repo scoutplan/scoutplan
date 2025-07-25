@@ -11,10 +11,10 @@ section.pt-3
       dt.font-medium.mt-3
         = organizer.full_display_name
 
-      - if organizer.contactable?(via: :phone)
+      - if organizer.contactable_via?(:phone)
         dd
           = organizer.phone.phony_formatted(country_code: "US")
 
-      - if organizer.contactable?(via: :email)
+      - if organizer.contactable_via?(:email)
         dd
           = mail_to organizer.email, organizer.email, class: "text-blue-600 hover:underline"

@@ -1,6 +1,6 @@
 section.flex.flex-col.gap-2
   section
-    - if @target_membership.contactable?(via: :email)
+    - if @target_membership.contactable_via?(:email)
       = link_to "mailto:#{@target_membership.email}", class: "text-blue-500" do
         i.fas.fa-envelope.mr-2
         = @target_membership.email
