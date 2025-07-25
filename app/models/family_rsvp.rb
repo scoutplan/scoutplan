@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class FamilyRsvp
   attr_reader :unit_membership, :event
 
@@ -145,3 +146,4 @@ class FamilyRsvp
     status == :none
   end
 end
+# rubocop:enable Metrics/ClassLength

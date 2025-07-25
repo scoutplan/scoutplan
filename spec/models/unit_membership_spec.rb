@@ -67,6 +67,19 @@ RSpec.describe UnitMembership, type: :model do
     it "omits self" do
       expect(@member.family(include_self: false).count).to eq(2)
     end
+
+    it "returns family for child member" do
+      expect(@child1.family.count).to eq(3)
+      expect(@child1.family).to include(@member)
+    end
+
+    it "returns family for parent member" do
+      expect(@member.family(include_self: :prepend)).to include(@child1, @child2)
+    end
+
+    it "returns family for parent member with self prepended" do
+      expect(@member.family(include_self: :prepend).first).to eq(@member)
+    end
   end
 
   describe "create" do
