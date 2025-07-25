@@ -8,16 +8,22 @@ nav.calendar-nav.text-sm.z-0
       i.fa-solid.fa-chevron-left
 
   // month picker
-  .month-picker.inline-block.dropdown.relative
-    = link_to "#",
-              class: "dropdown-button inline-block w-40 py-1 px-2 border border-x-0 bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600" do
+  / .month-picker.inline-block.dropdown.relative
+  /   = link_to "#",
+  /             class: "dropdown-button inline-block w-40 py-1 px-2 border border-x-0 bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600" do
       
-      .flex.flex-row.justify-between.items-center.text-xs.md:text-sm
-        .hidden.md:inline = context[:first_day_of_month].strftime("%B %Y")
-        .inline.md:hidden = context[:first_day_of_month].strftime("%b %Y") 
-        i.fa-chevron-down.fas.ml-2
+  /     .flex.flex-row.justify-between.items-center.text-xs.md:text-sm
+  /       .hidden.md:inline = context[:first_day_of_month].strftime("%B %Y")
+  /       .inline.md:hidden = context[:first_day_of_month].strftime("%b %Y") 
+  /       i.fa-chevron-down.fas.ml-2
+
+  .dropdown.relative.inline-block.bg-stone-100.w-40.py-1.px-2.border.border-x-0(data-controller="check-dropdown")
+    = label_tag nil, for: "month_picker", class: "block text-sm flex flex-row justify-between items-center" do
+      = check_box_tag "month_picker", false, class: "hidden peer dropdown-toggle", data: { check_dropdown_target: "toggle" }
+      = context[:first_day_of_month].strftime("%b %Y")       
+      i.fa-solid.fa-chevron-down.peer-checked:rotate-180.transition-transform.ml-2
     
-    .dropdown-menu.absolute.bg-white.drop-shadow-overhead.p-2.right-0.rounded.border
+    .dropdown-menu.absolute.bg-white.drop-shadow-overhead.p-2.right-0.top-full.mt-2.rounded.border
       = render partial: "events/partials/index/month_picker", locals: { display_date: context[:first_day_of_month] }
 
   // next button

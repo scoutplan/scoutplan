@@ -14,7 +14,7 @@
                       class: "block hover:text-brand-500 px-1 pt-1",
                       data: { turbo_action: "advance" } do
               - if year == display_date.year && month == display_date.month
-                .text-brand-500
+                .text-brand-500.font-bold.cursor-default
                   = Date::MONTHNAMES[month]
               - else
                 = Date::MONTHNAMES[month]
