@@ -9,22 +9,13 @@
       .absolute.right-0.top-0
         = link_to new_unit_event_category_path(current_unit),
           class: "inline-block px-4 py-2 rounded font-bold bg-lime-600 hover:bg-lime-700 text-white",
-          data: { turbo_action: "advance" } do
+          data: { turbo_action: "advance", turbo_frame: "modal" } do
           i.fa-solid.fa-plus.mr-2
           = t("global.add")
 
-    ul.divide-y.dark:divide-stone-600
-      - current_unit.event_categories.order(:name).each do |category|
-        li.flex.flex-row.justify-between.items-center
-          = link_to edit_unit_event_category_path(current_unit, category),
-            class: "inline-block px-2 py-2 hover:bg-stone-100 dark:hover:bg-black",
-            data: { turbo_action: "advance" } do
+    ul.divide-y.dark:divide-stone-600#item_list
+      = render partial: "event_category", collection: current_unit.event_categories.order(:name)
 
-            i.fas(class="fa-#{ category.glyph } fa-fw mr-2" style="color: #{ category.color }")
-            = category.name
-
-          - unless category.send_reminders?
-            i.fa-solid.fa-bell-slash.mr-2.text-stone-500(title="Reminders are disabled for this category")
 
   javascript:
     document.title = "Event Categories · #{current_unit.name}"            
