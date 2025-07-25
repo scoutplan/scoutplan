@@ -1,0 +1,10 @@
+li.flex.flex-row.justify-between.items-center
+  = link_to edit_unit_event_category_path(current_unit, event_category),
+    class: "inline-block px-2 py-2 hover:bg-stone-100 dark:hover:bg-black",
+    data: { turbo_action: "advance" } do
+
+    i.fas(class="fa-#{ event_category.glyph } fa-fw mr-2" style="color: #{ event_category.color }")
+    = event_category.name
+
+  - unless event_category.send_reminders?
+    i.fa-solid.fa-bell-slash.mr-2.text-stone-500(title="Reminders are disabled for this event_category")

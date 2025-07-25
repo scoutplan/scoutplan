@@ -3,13 +3,8 @@
 # controller for manipulating EventCategories
 class EventCategoriesController < UnitContextController
   def create
-    @category = current_unit.event_categories.new(event_category_params)
-    return unless @category.save!
-
-    respond_to do |format|
-      format.html { redirect_to unit_event_categories_path(current_unit), notice: "event_categories.notices.create_success" }
-      format.turbo_stream
-    end
+    @event_category = current_unit.event_categories.new(event_category_params)
+    render action: "new" unless @event_category.save
   end
 
   def destroy

@@ -1,5 +1,4 @@
-= turbo_stream.prepend "event_event_category_id" do
-  option(value="#{@category.id}" selected="selected") = @category.name
+= turbo_stream.append "item_list" do
+  = render "event_categories/event_category", event_category: @event_category
 
-= turbo_stream.update "modal_overlay" do
-  = ""
+= turbo_stream.update "modal", ""
