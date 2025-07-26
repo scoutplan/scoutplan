@@ -104,13 +104,16 @@ class UnitMembership < ApplicationRecord
     family.map(&:last_name).uniq.join(" / ")
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity
   def eligible_for_contact?(via: :any)
     return false if youth? && !contactable_guardian?
     return email.present? && !anonymous_email? if via == :email
     return phone.present? if via == :sms
+    return eligible_for_contact?(via: :email) || eligible_for_contact?(via: :sms) if via == :any
 
     false
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 
   # contactability methods
   def prefers_contact?(via: :email)

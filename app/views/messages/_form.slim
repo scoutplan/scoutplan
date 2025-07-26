@@ -8,7 +8,7 @@
       = f.hidden_field :cohort_name, data: { message_form_target: "cohortName" }
       = hidden_field_tag :test_mode, "false", id: "test_mode", data: { message_form_target: "testMode" }
 
-      article.mx-auto.max-w-4xl.bg-white.rounded-lg.flex.flex-col.overflow-y-hidden.h-full.relative(data-action="#{actions.join(" ")}")
+      article.mx-auto.max-w-4xl.bg-white.rounded-lg.flex.flex-col.overflow-y-hidden.max-h-full.relative(data-action="#{actions.join(" ")}")
         header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
           .left
             h1 = "Write a Message"
