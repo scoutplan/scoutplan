@@ -61,4 +61,28 @@ RSpec.describe Unit, type: :model do
       expect(@unit.short_name).to eq("T123")
     end
   end
+
+  describe "unit_memberships#with_guardians" do
+    before do
+      @unit = FactoryBot.create(:unit)
+      @event = FactoryBot.create(:event, unit: @unit)
+      @youth = FactoryBot.create(:unit_membership, :youth, unit: @unit)
+      @parent = FactoryBot.create(:unit_membership, :adult, unit: @unit)
+      @youth.parent_relationships.create!(parent_unit_membership: @parent)
+      @event.event_rsvps.create!(unit_membership: @youth, respondent: @parent, response: "accepted")
+      # MemberRelationship.create!(parent_unit_membership: @parent, child_unit_membership: @youth)
+    end
+
+    it "returns parents of youth members" do
+      # expect(@event.recipients).to include(@parent)
+      expect(@youth.contactable?).to be_falsey
+      expect(@parent.contactable?).to be_truthy
+      expect(@event.unit_memberships).to include(@youth)
+      expect(@event.recipients).not_to include(@youth)
+      expect(@event.recipients).to include(@parent)
+
+      # expect(@unit.unit_memberships.with_guardians).to include(@parent)
+      # expect(@unit.unit_memberships.with_guardians).not_to include(@youth)
+    end
+  end
 end

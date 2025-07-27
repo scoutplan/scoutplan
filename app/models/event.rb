@@ -58,6 +58,7 @@ class Event < ApplicationRecord
   alias_method :activities, :event_activities
   alias_method :organizers, :event_organizers
   alias_method :shifts, :event_shifts
+  alias_method :attendees, :unit_memberships
 
   validates_presence_of :title, :starts_at, :ends_at
   validate :dates_are_subsequent
@@ -392,9 +393,10 @@ class Event < ApplicationRecord
   end
 
   def recipients
-    # @recipients ||= rsvps.accepted.joins(:unit_membership).where(unit_memberships: { contactable: true }).collect(&:member)
-    @recipients ||= unit.unit_memberships.contactable?.where("unit_memberships.id IN (?)",
-                                                             rsvps.accepted.collect(&:unit_membership_id))
+    youth_ids = attendees.youth.pluck(:id)
+    parent_ids = MemberRelationship.where(child_unit_membership_id: youth_ids).pluck(:parent_unit_membership_id)
+    parents = UnitMembership.where(id: parent_ids).contactable?
+    (attendees.contactable? + parents.contactable?).uniq
   end
 
   def resolve_recipients
