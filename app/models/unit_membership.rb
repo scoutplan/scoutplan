@@ -146,7 +146,7 @@ class UnitMembership < ApplicationRecord
   def contactable_guardian?
     return true unless youth?
 
-    parents.any?(&:contactable?)
+    parents.contactable?.any?
   end
 
   def receives_event_rsvps?
