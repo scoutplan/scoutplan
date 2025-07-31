@@ -10,7 +10,7 @@ div#recipient_wrapper.py-2(data-action="keydown->dropdown#handleKeydown")
       #recipient_search_query.relative.w-full.flex.grow.shrink.basis-0
         = render partial: "messages/form/search_field", locals: { f: f }
 
-    = render partial: "messages/form/search_results", locals: { f: f }
+      = render partial: "messages/form/search_results", locals: { f: f }
 
     // ADDRESS BOOK BUTTON
     .right

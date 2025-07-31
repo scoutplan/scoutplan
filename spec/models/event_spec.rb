@@ -149,5 +149,5 @@ rsvp_closes_at: 4.days.ago)
 
       expect(@event.organizers.count).to eq(2)
     end
-  end
+  end  
 end

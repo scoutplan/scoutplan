@@ -58,7 +58,7 @@ class Event < ApplicationRecord
   alias_method :activities, :event_activities
   alias_method :organizers, :event_organizers
   alias_method :shifts, :event_shifts
-  alias_method :attendees, :unit_memberships
+  # alias_method :attendees, :unit_memberships
 
   validates_presence_of :title, :starts_at, :ends_at
   validate :dates_are_subsequent
@@ -392,17 +392,16 @@ class Event < ApplicationRecord
     adult_headcount_met? && youth_headcount_met?
   end
 
+  def attendees
+    UnitMembership.where(id: event_rsvps.accepted.pluck(:unit_membership_id))
+  end
+
   def recipients
-    youth_ids = attendees.youth.pluck(:id)
-    parent_ids = MemberRelationship.where(child_unit_membership_id: youth_ids).pluck(:parent_unit_membership_id)
-    parents = UnitMembership.where(id: parent_ids).contactable?
-    (attendees.contactable? + parents.contactable?).uniq
+    # event_rsvps.accepted.includes(:unit_membership).map(&:unit_membership).uniq
+    MessageRecipient.with_guardians(attendees)
   end
 
-  def resolve_recipients
-    recipients
-  end
-
+  # is this event "contactable," meaning it has an audience that can be notified?
   def contactable?
     requires_rsvp? && recipients.any?
   end

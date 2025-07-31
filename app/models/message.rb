@@ -71,7 +71,7 @@ class Message < ApplicationRecord
   end
 
   def recipients
-    message_recipients.uniq { |r| r.unit_membership_id }.map(&:unit_membership)
+    message_recipients.uniq(&:unit_membership_id).map(&:unit_membership)
   end
 
   MAX_RECIPIENT_PREVIEW = 3
