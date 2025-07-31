@@ -33,8 +33,8 @@ footer.py-4.px-6.sticky.bottom-0
                   data: { message_form_target: "sendMessageButton", action: "message-form#skipLeaveConfirmation" }
 
         .dropdown(data-controller="check-dropdown")
-          = label_tag nil, for: "action_menu", class: "absolute right-0 top-0 bottom-0 w-12 text-center text-sm" do
-            = check_box_tag "action_menu", false, class: "hidden peer dropdown-toggle", data: { check_dropdown_target: "toggle" }
+          = label_tag nil, for: "message_menu", class: "absolute right-0 top-0 bottom-0 w-12 text-center text-sm" do
+            = check_box_tag "message_menu", false, class: "hidden peer dropdown-toggle", data: { check_dropdown_target: "toggle" }
             i.fa-solid.fa-chevron-down.absolute.top-1/2.-translate-y-1/2.text-white.peer-checked:rotate-180.transition-transform
 
           .dropdown-menu.absolute.right-0.w-72.rounded.border.border-stone-300.shadow-md.bg-white.mb-1.bottom-full.transition-opacity(data-check-dropdown-target="menu")

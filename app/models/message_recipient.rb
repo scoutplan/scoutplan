@@ -20,4 +20,12 @@ class MessageRecipient < ApplicationRecord
   def description
     full_display_name
   end
+
+  def self.with_guardians(recipients)
+    youth_ids = recipients.select(&:youth?).pluck(:id)
+    parent_ids = MemberRelationship.where(child_unit_membership_id: youth_ids).pluck(:parent_unit_membership_id)
+    parents = UnitMembership.where(id: parent_ids).contactable?
+    # (recipients.select(&:contactable?) + parents.contactable?).uniq
+    (recipients + parents).uniq.select(&:contactable?)
+  end
 end

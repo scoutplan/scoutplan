@@ -7,6 +7,6 @@ class Messages::RecipientsController < UnitContextController
     return unless (gid = params[:gid]).present?
 
     resolveable = GlobalID::Locator.locate(gid)
-    @recipients = resolveable.recipients
+    @recipients = MessageRecipient.with_guardians(resolveable.recipients)
   end
 end

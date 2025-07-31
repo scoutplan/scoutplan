@@ -2,6 +2,7 @@ import { DirectUpload } from "@rails/activestorage"
 import { Controller } from "@hotwired/stimulus"
 import { post } from "@rails/request.js"
 import {} from "../traversal.js"
+import { computePosition, size } from "https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10/+esm"
 
 export default class extends Controller {
   static targets = [ "attachmentsList", "attachmentsWrapper", "attachmentForm", "audienceList", "audienceName",
@@ -23,6 +24,18 @@ export default class extends Controller {
     this.validate();
     this.formData = new FormData(this.formTarget);
     this.displaySenderLongName();
+    this.positionAddressBook();
+  }
+
+  positionAddressBook() {
+    computePosition(this.queryInputTarget, this.addressBookTarget,
+      { placement: "bottom-start"
+      }).then(({ x, y }) => {
+      Object.assign(this.addressBookTarget.style, {
+        left: `${x}px`,
+        top: `${y}px`,
+      });
+    });
   }
 
   blur(event) {
@@ -37,6 +50,7 @@ export default class extends Controller {
 
   toggleAddressBook(event) {
     this.unfilterAddressBook();
+    this.positionAddressBook();
     this.addressBookTarget.classList.toggle("hidden");
     this.queryInputTarget.focus();
   }
