@@ -8,7 +8,7 @@ class EventOrganizer < ApplicationRecord
 
   enum :role, { organizer: "organizer", money: "money" }
 
-  delegate_missing_to :user
+  delegate_missing_to :unit_membership
 
   accepts_nested_attributes_for :unit_membership
 
