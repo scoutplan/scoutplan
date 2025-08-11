@@ -411,7 +411,7 @@ GEM
       date
       stringio
     public_suffix (6.0.1)
-    puma (5.6.9)
+    puma (6.6.1)
       nio4r (~> 2.0)
     pundit (2.4.0)
       activesupport (>= 3.0.0)
@@ -746,7 +746,7 @@ DEPENDENCIES
   postmark-rails
   prawn
   pry-rails
-  puma (~> 5.0)
+  puma (~> 6.0)
   pundit
   rack (~> 2.2)
   rack-attack
