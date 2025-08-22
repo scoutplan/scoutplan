@@ -526,13 +526,19 @@ class EventsController < UnitContextController
   end
 
   def find_list_events
-    # GearedPagination::Ratios.send(:remove_const, :DEFAULTS) if defined?(GearedPagination::Ratios::DEFAULT)
-    # GearedPagination::Ratios.const_set("DEFAULTS", [15, 30, 50, 100])
+    # base query
     scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+
+    # hide drafts unless member has permission
     scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
+
+    # only future events unless past was requested
     scope = params[:before].present? ? scope.where("id < ?", params[:before]) : scope.future
+
+    # sort by date
     scope.order(starts_at: :asc)
-    set_page_and_extract_portion_from scope
+
+    @events = scope.all
   end
 
   def find_threeup_events
