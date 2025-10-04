@@ -28,6 +28,8 @@ module Users
       @email = params.dig(:user, :email)
       @password = params.dig(:user, :password)
       @user = User.find_by(email: @email)
+      ap @email
+      ap @user
       unit_id = cookies[:current_unit_id]
       @unit = unit_id.present? ? Unit.find(unit_id) : @user&.units&.first
     end

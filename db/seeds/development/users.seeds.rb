@@ -1,5 +1,3 @@
-User.destroy_all
-
 User.create!(
   email:                 "admin@scoutplan.org",
   password:              "password",

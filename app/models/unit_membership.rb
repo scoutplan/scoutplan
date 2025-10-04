@@ -143,7 +143,9 @@ class UnitMembership < ApplicationRecord
   end
 
   def enqueue_compute_child_contactability_job!
+    try
     ComputeChildContactabilityJob.perform_later(self)
+  rescue StandardError
   end
 
   def contactable_guardian?

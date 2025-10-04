@@ -1,8 +1,6 @@
 after "development:units" do
   unit = Unit.first
 
-  Event.destroy_all
-
   # troop meetings
   next_thursday = unit.this_season_starts_at.next_occurring(:thursday).in_time_zone
   33.times do |i|
