@@ -9,7 +9,7 @@
   = render partial: "organizers_popup", locals: { event: event }
 
 
-  article.mx-auto.max-w-4xl.bg-white.rounded-lg.max-h-full.flex.flex-col.overflow-y-hidden
+  article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden
     header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
       .left
         h1 = (event.new_record? ? "Add" : "Edit") + " a Calendar Event"
@@ -103,7 +103,7 @@
           // TAGS
           = render partial: "tags/tag_section", locals: { taggable: event }
 
-      section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.text-sm.text-stone-600.rounded-r-lg.overflow-y-auto.h-full
+      section.w-full.md:w-3/4.p-6.flex.flex-col.divide-y.divide-stone-200.text-sm.text-stone-600.rounded-r-lg.overflow-y-scroll.h-full
         - %w[basics dates rsvp locations description attachments].each do |section|
           = render partial: "events/partials/form/#{section}", locals: { f: f, event: event, section: section }
 
