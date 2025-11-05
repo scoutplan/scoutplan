@@ -2,8 +2,10 @@ css:
   #tags_popup { display: none; }
   body:has(details#tags[open]) #tags_popup { display: block; }
 
+- taggable_type = taggable.class.name.underscore
+
 // TAGS POPUP
-#tags_popup.absolute.bg-white.text-sm.w-72.-ml-16.border.rounded-lg.drop-shadow-overhead.pt-2.mt-1.z-10(data-popper-placement="bottom-start" data-controller="searchable-list checkable-list" data-checkable-list-tag-field-outlet="#tag_tag_field" data-searchable-list-new-value-url-value="#{unit_tags_path(current_unit)}" data-searchable-list-taggable-type-value="#{taggable.class.name.underscore}")
+#tags_popup.absolute.bg-white.text-sm.w-72.-ml-16.border.rounded-lg.drop-shadow-overhead.pt-2.mt-1.z-10(data-popper-placement="bottom-start" data-controller="searchable-list checkable-list" data-checkable-list-tag-field-outlet="#tag_tag_field" data-searchable-list-new-value-url-value="#{unit_tags_path(current_unit)}" data-searchable-list-taggable-type-value="#{taggable_type}")
   .px-2
     = search_field :tag_search,
         nil,
@@ -15,7 +17,7 @@ css:
 
   ul.max-h-72.overflow-y-auto#tag_list
     - ActsAsTaggableOn::Tag.for_tenant(current_unit.id).each do |tag|
-      = render partial: "tags/tag_option", locals: { taggable_type: taggable.class.name.downcase, tag_name: tag.name, checked: taggable.tag_list.include?(tag.name) }
+      = render partial: "tags/tag_option", locals: { taggable_type: taggable_type, tag_name: tag.name, checked: taggable.tag_list.include?(tag.name) }
 
   p.p-2.text-stone-500.hidden(data-searchable-list-target="valueNotFoundPrompt")
     | Tag not found
