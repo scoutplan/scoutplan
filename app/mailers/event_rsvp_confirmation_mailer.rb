@@ -8,6 +8,8 @@ class EventRsvpConfirmationMailer < ApplicationMailer
   before_action :setup
 
   def event_rsvp_confirmation
+    return if @recipient.anonymous_email?
+
     attach_files if @rsvp.accepted?
     @presenter = RsvpMailPresenter::Factory.build(@rsvp, @recipient)
     mail(to:       @presenter.to_address,
