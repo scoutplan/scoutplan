@@ -13,6 +13,7 @@ class Messages::RecipientsController < UnitContextController
   def resolve_tag
     return unless (tag_name = params[:tag_name]).present?
 
-    @recipients = current_unit.unit_memberships.tagged_with(tag_name).select(&:contactable?)
+    recipients = current_unit.unit_memberships.tagged_with(tag_name).select(&:contactable?)
+    @recipients = MessageRecipient.with_guardians(recipients)
   end
 end
