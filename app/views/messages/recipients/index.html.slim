@@ -47,19 +47,19 @@
                 = event.recipients.empty? ? "No contactable recipients" : "#{event.recipients.count} contactable recipient".pluralize(event.recipients.count)
                 = event.starts_at.future? ? ", starts in #{distance_of_time_in_words_to_now(event.starts_at.in_time_zone(current_unit.time_zone))}" : ", started #{distance_of_time_in_words_to_now(event.starts_at.in_time_zone(current_unit.time_zone))} ago"
 
-    - current_unit.unit_memberships.tag_counts_on(:tags).each do |tag_name|
-      - memberships = current_unit.unit_memberships.tagged_with(tag_name).select(&:contactable?)
+    - current_unit.unit_memberships.tag_counts_on(:tags).each do |tag|
+      - memberships = current_unit.unit_memberships.tagged_with(tag).select(&:contactable?)
       - count = memberships.count
       - next if count.zero?
 
       li
-        = button_to resolve_unit_recipients_path(current_unit, gid: "tag://#{tag_name}"),
+        = button_to resolve_tag_unit_recipients_path(current_unit, tag_name: tag.name),
                     class: "block w-full text-left px-4 py-2 cursor-pointer hover:bg-stone-100",
-                    data: { cohort_name: "Members tagged '#{tag_name}'", action: "message-form#selectCohort" } do
+                    data: { cohort_name: "Members tagged '#{tag.name}'", action: "message-form#selectCohort" } do
           .flex.flex-row.gap-4.items-center
             i.fa-regular.fa-tag.text-indigo-500.fa-fw
             div
-              .font-semibold = "Members tagged '#{tag_name}'"
+              .font-semibold = "Members tagged '#{tag.name}'"
               .text-sm = count.to_s + " contactable member".pluralize(count)
 
     - current_unit.unit_memberships.includes(:user, :setting_objects).order("users.last_name, users.first_name").each do |unit_membership|

@@ -116,6 +116,7 @@ Rails.application.routes.draw do
         resources :recipients, only: [:index], module: :messages do
           collection do
             post "resolve/:gid", to: "recipients#resolve", as: "resolve"
+            post "resolve_tag/:tag_name", to: "recipients#resolve_tag", as: "resolve_tag"
           end
         end
       end
