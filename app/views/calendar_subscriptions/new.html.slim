@@ -1,0 +1,57 @@
+- ics_url = calendar_feed_unit_events_url(token: current_member.token,
+                                          unit_id: current_unit.to_param,
+                                          format: :ics,
+                                          only_path: false,
+                                          protocol: "webcal")
+- https_url = calendar_feed_unit_events_url(token: current_member.token,
+                                            unit_id: current_unit.to_param,
+                                            format: :ics,
+                                            only_path: false,
+                                            protocol: "https")
+- google_subscribe_url = "https://calendar.google.com/calendar/r?cid=#{ERB::Util.url_encode(ics_url)}"
+- outlook_subscribe_url = "https://outlook.live.com/calendar/0/addfromweb?url=#{ERB::Util.url_encode(https_url)}"
+
+= turbo_frame_tag :main, src: unit_events_path(current_unit), loading: :lazy
+
+= turbo_frame_tag :modal do
+  = content_tag :section, role: "dialog", class: "p-4 fixed backdrop-blur-md inset-0 pt-4 md:pt-16 md:pb-16 bg-black/50 z-30", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
+    article.mx-auto.max-w-3xl.bg-white.rounded-lg.flex.flex-col.overflow-y-hidden
+      header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-600
+        .left
+          h2.font-semibold Subscribe to Calendar
+
+        .right.flex.flex-row.gap-2.text-stone-500.text-lg.-mr-2
+          = button_tag type: "button", class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900", data: { action: "modal#close" }, title: "Close this screen" do
+            i.fa-light.fa-times.fa-fw
+
+
+      .p-6.flex-grow.overflow-y-auto
+
+        p.mb-6.text-stone-600
+          | Subscribe to #{current_unit.name}'s calendar to see events in your favorite calendar app. Events will update automatically.
+
+        .space-y-2.mb-6
+          = link_to google_subscribe_url, class: "block flex items-center gap-3 p-3 border rounded-lg hover:bg-stone-50", target: "_blank", rel: "noopener" do
+            i.fa-brands.fa-google.text-xl.w-6.text-center
+            span.font-medium Add to Google Calendar
+
+          = link_to outlook_subscribe_url, class: "block flex items-center gap-3 p-3 border rounded-lg hover:bg-stone-50", target: "_blank", rel: "noopener" do
+            i.fa-brands.fa-microsoft.text-xl.w-6.text-center
+            span.font-medium Add to Outlook
+
+          = link_to ics_url, class: "block flex items-center gap-3 p-3 border rounded-lg hover:bg-stone-50" do
+            i.fa-regular.fa-calendar.text-xl.w-6.text-center
+            span.font-medium Add to Apple Calendar / Other
+
+        details.text-sm
+          summary.cursor-pointer.text-stone-500.hover:text-stone-700 Manual setup instructions
+          .mt-3.p-3.bg-stone-50.rounded-lg
+            p.mb-2.text-stone-600 Copy this URL and add it to your calendar app:
+            .flex.items-center.gap-2
+              code.flex-1.p-2.bg-white.border.rounded.text-xs.break-all = https_url
+              = button_tag type: "button", class: "px-3 py-2 text-sm bg-stone-200 hover:bg-stone-300 rounded", data: { controller: "clipboard", clipboard_text_value: https_url, action: "clipboard#copy" } do
+                i.fa-regular.fa-copy
+
+        p.text-sm.text-stone-500.mt-4
+          | Note: Calendar apps typically sync every 12-24 hours, so new events may take some time to appear.
+          | The link above is personalized for you; do not share it with others.
