@@ -373,7 +373,10 @@ class Event < ApplicationRecord
   end
 
   def notification_recipients
-    with_guardians(requires_rsvp ? rsvps.accepted.collect(&:member) : unit.members.status_active)
+    recipients = requires_rsvp ? rsvps.accepted.collect(&:member) : unit.members.status_active
+    recipients = recipients.tagged_with(tags.pluck(:name)) if tags.any?
+
+    with_guardians(recipients)
   end
 
   def adult_headcount_met?
