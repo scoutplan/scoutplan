@@ -5,6 +5,7 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
+  get "calendar_subscriptions/new"
   get "event_shifts/create"
   get "relationship_candidates/create"
   get "event_cancellations/new"
@@ -194,6 +195,7 @@ Rails.application.routes.draw do
         get "organizer_package"
       end
       collection do
+        resource :calendar_subscription, only: [:new], path: "calendar_subscription"
         get "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
         get "public",      to: "events#public", as: "public"
         get "signups",     to: "events#signups", as: "signups"

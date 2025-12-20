@@ -1,10 +1,10 @@
 - return unless user_signed_in?
 
-- ics_url = calendar_feed_unit_events_url(token: current_member.token,
-                                          unit_id: current_unit.to_param,
-                                          format: :ics,
-                                          only_path: false,
-                                          protocol: "webcal")
+/ - ics_url = calendar_feed_unit_events_url(token: current_member.token,
+/                                           unit_id: current_unit.to_param,
+/                                           format: :ics,
+/                                           only_path: false,
+/                                           protocol: "webcal")
 
 aside.z-30.block.w-80.mt-1.p-2.absolute.bg-white.text-stone-700.right-2.rounded-lg.dropdown-menu.animate-pop-open.drop-shadow-overhead.border.text-sm(data-controller="mouse-capture" class="group-open:bg-stone-100")
   nav
@@ -64,12 +64,20 @@ aside.z-30.block.w-80.mt-1.p-2.absolute.bg-white.text-stone-700.right-2.rounded-
           i.fa-fw.fa-regular.fa-calendar-arrow-down.mr-2
           = t("events.index.buttons.next_season")
 
-    = link_to ics_url,
+    = link_to new_unit_calendar_subscription_path(current_unit),
               class: "block px-4 py-2 rounded hover:bg-stone-100 rounded",
-              data: { turbo_action: "advance" } do
+              data: { turbo: true, turbo_frame: "modal" } do
 
       i.fa-fw.fa-regular.fa-mobile.mr-2
       = t("events.index.buttons.subscribe")
+
+
+    / = link_to ics_url,
+    /           class: "block px-4 py-2 rounded hover:bg-stone-100 rounded",
+    /           data: { turbo_action: "advance" } do
+
+    /   i.fa-fw.fa-regular.fa-mobile.mr-2
+    /   = t("events.index.buttons.subscribe")
 
 css:
   #toggle_cancelled_events_link .showing-cancelled-events {

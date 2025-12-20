@@ -13,8 +13,8 @@ li.event(class="#{row_classes(event)}" id="#{dom_id(event)}")
                 class: "py-2 block shrink-0",
                 name:  event.id,
                 data:  { month: event.starts_at.month,
-                        year: event.starts_at.year,
-                        turbo_frame: "modal", turbo_action: "advance" } do
+                         year: event.starts_at.year,
+                         turbo_frame: "modal", turbo_action: "advance" } do
           
         .first.time.shrink-0.md:w-32.flex.flex-row.md:flex-col.gap-1.md:gap-0.items-baseline.md:items-start.shrink-0.grow-0
           .date.font-medium.text-2xl.md:text-3xl.leading-0.dark:text-stone-100
