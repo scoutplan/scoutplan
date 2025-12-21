@@ -5,6 +5,8 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
+  get "diagnostics/index"
+  get "diagnostics", to: "diagnostics#index"
   get "calendar_subscriptions/new"
   get "event_shifts/create"
   get "relationship_candidates/create"
