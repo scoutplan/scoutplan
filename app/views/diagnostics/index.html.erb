@@ -1,0 +1,42 @@
+<%= button_to destroy_user_session_path,
+      method: :delete,
+      form: { data: { turbo: false } },
+      class: "w-full px-4 py-3 md:py-2 block hover:bg-stone-100 text-left" do %>
+      Sign out
+<% end %>
+
+<table cellpadding="4" cellspacing="2" border="1" class="w-full table-auto mb-6">
+  <tbody>
+    <tr>
+      <td>User ID</td>
+      <td><%= current_user.id %></td>
+    </tr>
+    <tr>
+      <td>First Name</td>
+      <td><%= current_user.first_name %></td>
+    </tr>
+    <tr>
+      <td>Last Name</td>
+      <td><%= current_user.last_name %></td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td><%= current_user.email %></td>
+    </tr>
+    <tr>
+      <td>Unit Memberships Count</td>
+      <td><%= current_user.unit_memberships.count %></td>
+    </tr>
+    <tr>
+      <td>Units</td>
+      <td>
+        <ul>
+          <% current_user.unit_memberships.each do |membership| %>
+            <li><%= membership.unit.inspect %></li>
+          <% end %>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
