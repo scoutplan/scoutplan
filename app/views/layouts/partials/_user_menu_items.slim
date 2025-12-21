@@ -5,9 +5,8 @@ ul
       i.fa-fw.fa-light.fa-user-gear.mr-2
       = t("profile.settings")
 
-  = button_to destroy_user_session_path,
-    method: :delete,
-    form: { data: { turbo: false } },
-    class: "w-full px-4 py-3 md:py-2 block hover:bg-stone-100 text-left" do
-      i.fa-fw.fa-light.fa-sign-out.mr-2
-      = t("global.sign_out")
+  li
+    = form_with url: destroy_user_session_path, method: :delete, data: { turbo: false }, class: "inline" do
+      button.w-full.px-4.py-3.md:py-2.block.hover:bg-stone-100.text-left type="submit"
+        i.fa-fw.fa-light.fa-sign-out.mr-2
+        = t("global.sign_out")

@@ -267,12 +267,18 @@ class Event < ApplicationRecord
     document_types.present?
   end
 
+  def scoped_members
+    scope = unit.unit_memberships
+    scope = scope.tagged_with(tags.pluck(:name)) if tags.any?
+    scope
+  end
+
   def non_respondents
-    unit.unit_memberships.includes([:user]).order("users.last_name, users.first_name").status_active - unit_memberships
+    scoped_members.includes([:user]).order("users.last_name, users.first_name").status_active - scoped_members
   end
 
   def non_invitees
-    unit.unit_memberships.joins(:user).status_registered.order("users.last_name, users.first_name") - unit_memberships
+    scoped_members.joins(:user).status_registered.order("users.last_name, users.first_name") - scoped_members
   end
 
   def primary_location

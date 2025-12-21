@@ -8,11 +8,13 @@ class EventDashboard
   end
 
   def acceptances
-    @acceptances ||= @event.event_rsvps.includes(unit_membership: [:user, :parents, :children]).accepted_intent.order(ORDER_CLAUSE)
+    @acceptances ||= @event.event_rsvps.includes(unit_membership: [:user, :parents,
+                                                                   :children]).accepted_intent.order(ORDER_CLAUSE)
   end
 
   def declines
-    @declines ||= @event.event_rsvps.includes(unit_membership: [:user, :parents, :children]).declined_intent.order(ORDER_CLAUSE)
+    @declines ||= @event.event_rsvps.includes(unit_membership: [:user, :parents,
+                                                                :children]).declined_intent.order(ORDER_CLAUSE)
   end
 
   def accepted_adult_count
@@ -48,15 +50,15 @@ class EventDashboard
   end
 
   def non_response_rate
-    @non_response_rate ||= 1 - response_rate
+    @non_response_rate ||= active_count.zero? ? 0 : 1 - response_rate
   end
 
   def decline_rate
-    @decline_rate ||= declines_count / active_count.to_f
+    @decline_rate ||= active_count.zero? ? 0 : declines_count / active_count.to_f
   end
 
   def accept_rate
-    @accept_rate ||= acceptance_count / active_count.to_f
+    @accept_rate ||= active_count.zero? ? 0 : acceptance_count / active_count.to_f
   end
 
   def non_invitee_count
