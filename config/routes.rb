@@ -5,16 +5,7 @@ require "sidekiq/web"
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
 Rails.application.routes.draw do
-  get "diagnostics/index"
   get "diagnostics", to: "diagnostics#index"
-  get "calendar_subscriptions/new"
-  get "event_shifts/create"
-  get "relationship_candidates/create"
-  get "event_cancellations/new"
-  get "event_cancellations/create"
-  get "tags/create"
-  get "integrations/index"
-  get "welcome/index"
   get "", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
   get "*path", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
   get "/service-worker.js", to: "service_worker#service_worker"
@@ -109,8 +100,8 @@ Rails.application.routes.draw do
       post "unpin", as: "unpin"
       collection do
         get  "drafts"
-        get  "sent"
-        get  "outbox"
+        get  "sent", to: "messages/sent#index"
+        get  "outbox", to: "messages/outbox#index"
         # post "recipients", as: "recipients"
         get  "addressables", as: "addressables"
         get  "select",     as: "select"
@@ -203,18 +194,14 @@ Rails.application.routes.draw do
         get "signups",     to: "events#signups", as: "signups"
         get "list"
         get "paged_list"
-        get "threeup"
-        get "threeup/:year/:month", to: "events#threeup"
-        # get "calendar", to: redirect { |path_params, _|
-        #   "/units/#{path_params[:unit_id]}/schedule/calendar/#{Date.today.year}/#{Date.today.month}"
-        # }, as: "calendar_redirect"
-        # get "calendar"
-        get "calendar", to: "events#calendar", as: "calendar_redirect"
-        get "calendar/:year/:month", to: "events#calendar", as: "calendar"
+        get "threeup", to: "events/calendar#threeup"
+        get "threeup/:year/:month", to: "events/calendar#threeup"
+        get "calendar", to: "events/calendar#show", as: "calendar_redirect"
+        get "calendar/:year/:month", to: "events/calendar#show", as: "calendar"
         get "spreadsheet", to: "events#spreadsheet"
         post "spreadsheet/rows", to: "spreadsheet_rows#create"
         post "batch_updates", to: "events/batch_updates#create"
-        post "bulk_publish", module: "events"
+        post "bulk_publish", to: "events/bulk_publications#create"
       end
       # get   "rsvp", as: "edit_rsvps", to: "events#edit_rsvps"
       get   "history"
@@ -245,8 +232,6 @@ Rails.application.routes.draw do
     # redirect the old /events path. We can probably get rid of this
     # https://stackoverflow.com/questions/38509769/rails-routes-redirect-a-wild-card-route
     get "/events/*after", to: redirect("/u/%{unit_id}/schedule/%{after}")
-
-    resources :unit_memberships
 
     resources :unit_memberships, path: "members", as: "members" do
       post "invite", to: "unit_memberships#invite", as: "invite"

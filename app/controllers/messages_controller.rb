@@ -5,26 +5,15 @@
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/CyclomaticComplexity
 class MessagesController < UnitContextController
-  before_action :find_message,      except: [:index, :drafts, :outbox, :scheduled, :sent, :new, :create]
+  include MessageListing
+
+  before_action :find_message,      except: [:index, :drafts, :new, :create]
   before_action :set_message_token, only: [:new, :edit]
   before_action :set_senders,       only: [:new, :edit]
 
   def index
     authorize Message
-    scope = current_unit.messages.includes(message_recipients: [unit_membership: :user]).draft_and_queued.with_attached_attachments.order(updated_at: :desc)
-    set_page_and_extract_portion_from(scope.all, per_page: [20])
-  end
-
-  def sent
-    authorize Message
-    scope = current_unit.messages.includes(message_recipients: [unit_membership: :user]).sent.with_attached_attachments.order(updated_at: :desc)
-    set_page_and_extract_portion_from(scope.all, per_page: [20])
-  end
-
-  def outbox
-    authorize Message
-    scope = current_unit.messages.includes(message_recipients: [unit_membership: :user]).outbox.with_attached_attachments.order(updated_at: :desc)
-    set_page_and_extract_portion_from(scope.all, per_page: [20])
+    paginate_messages(base_message_scope.draft_and_queued)
   end
 
   def show; end
