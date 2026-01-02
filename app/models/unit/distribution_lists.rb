@@ -28,9 +28,6 @@ module Unit::DistributionLists
     # unique UnitMembership tags
     tags = unit.unit_memberships.tag_counts_on(:tags)
 
-    ap "@#{$@}#{$@}#{$@}#$#@$@#{$$}#@"
-    ap tags
-
     tags.each do |tag|
       result << DistributionList.new(
         key:         "tag:#{tag.id}",

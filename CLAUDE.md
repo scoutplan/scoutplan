@@ -8,7 +8,7 @@ This document provides comprehensive guidance for AI assistants and developers w
 
 ### Technology Stack
 
-- **Backend**: Rails 8.0.2 with Ruby 3.4.2
+- **Backend**: Rails 8.0.2 with Ruby 3.4.7
 - **Database**: PostgreSQL 13+, Redis (caching/jobs)
 - **Frontend**: Server-rendered Slim templates with Stimulus JS and Tailwind CSS
 - **Background Jobs**: Sidekiq with sidekiq-scheduler

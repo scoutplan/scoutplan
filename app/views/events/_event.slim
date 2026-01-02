@@ -23,7 +23,6 @@ li.event(class="#{row_classes(event)}" id="#{dom_id(event)}")
           .day.font-medium.text-sm.uppercase.tracking-wider.text-stone-500.leading-0
             = raw(presenter.days_to_s)
           
-          / = render partial: "events/partials/event_row/today", locals: { event: event }
           = render partial: "events/partials/event_row/tags", locals: { event: event }
 
 
