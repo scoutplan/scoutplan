@@ -1,10 +1,9 @@
 default: &default
-  adapter:  postgresql
+  adapter: postgresql
   encoding: unicode
-  host:     <%= ENV['DATABASE_HOST'] %>
-  database: <%= ENV['DATABASE_NAME'] %>
-  username: <%= ENV['DATABASE_USER'] %>
-  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
+  username: <%= ENV.fetch('DATABASE_USER', ENV['USER']) %>
+  password: <%= ENV.fetch('DATABASE_PASSWORD', '') %>
   port: 5432
   pool: 5
 

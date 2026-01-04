@@ -1,9 +1,9 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.4.2"
+gem "scout_apm" # Scout APM must be the first gem listed
 
-gem "scout_apm"
+gem "rails", github: "rails/rails", branch: "main"
 
 gem "active_storage_validations"
 gem "acts_as_list"
@@ -11,7 +11,6 @@ gem "acts-as-taggable-on"
 gem "ahoy_email"
 gem "ahoy_matey"
 gem "auto_strip_attributes"
-gem "awesome_print"
 gem "aws-sdk-s3", require: false
 gem "blazer"
 gem "bootsnap", require: false
@@ -51,7 +50,6 @@ gem "puma", "~> 6.0"
 gem "pundit"
 gem "rack-attack"
 gem "rack-cors"
-gem "rails", "~> 8.0.0"
 gem "rails-html-sanitizer", ">= 1.4.4"
 gem "redis", "~> 5.0"
 gem "remote_syslog_logger"
@@ -83,7 +81,7 @@ gem "stackprof"
 gem "memory_profiler"
 
 group :development, :test do
-  gem "byebug", "~> 11.1", platforms: %i[mri mingw x64_mingw]
+  gem "byebug", "~> 11.1", platforms: %i[mri]
   gem "dotenv-rails", "~> 2.7", groups: %i[development test]
   gem "rspec-rails", "~> 6.0"
   gem "standard", ">= 1.0"
@@ -92,6 +90,7 @@ end
 group :development do
   gem "better_mailer_previews"
   gem "factory_bot_rails", "~> 6.2"
+  gem "letter_opener"
   gem "listen", "~> 3.7"
   gem "pry-rails"
   gem "ruby-lsp", "~> 0.3.7"
