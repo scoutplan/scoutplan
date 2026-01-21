@@ -4,4 +4,5 @@ p.py-6.text-stone-500
   = "You don't have any packing lists. "
   = link_to "Start one now",
             new_unit_packing_list_path(current_unit),
-            class: "text-brand-500"
+            class: "text-brand-500",
+            data: { turbo_frame: "main" }

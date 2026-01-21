@@ -5,7 +5,8 @@
         = t("packing_lists.titles.index")
 
       = link_to new_unit_packing_list_path(current_unit),
-                class: "font-bold text-brand-500 hover:text-brand-600 border rounded border-brand-500 hover:border-brand-600 px-4 py-2" do
+                class: "font-bold text-brand-500 hover:text-brand-600 border rounded border-brand-500 hover:border-brand-600 px-4 py-2",
+                data: { turbo_frame: :main } do
         
         i.fa-solid.fa-plus.mr-2
         = t("packing_lists.captions.new")
