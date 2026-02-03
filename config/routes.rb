@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "sidekiq/web"
+require "mission_control/jobs"
 
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Style/FormatStringToken
@@ -317,6 +318,7 @@ Rails.application.routes.draw do
 
   constraints CanAccessFlipperUI do
     mount Sidekiq::Web => "/sidekiq"
+    mount MissionControl::Jobs::Engine, at: "/jobs"  # Solid Queue dashboard
     mount Flipper::UI.app(Flipper) => "/flipper"
     mount Blazer::Engine, at: "blazer"
     get "a", to: "admin#index"

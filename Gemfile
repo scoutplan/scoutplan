@@ -65,6 +65,11 @@ gem "seedbank"
 gem "sentry-ruby"
 gem "sidekiq"
 gem "sidekiq-scheduler"
+
+# Solid Queue/Cache for database-backed jobs and caching (Kamal migration)
+gem "solid_queue"
+gem "solid_cache"
+gem "mission_control-jobs"
 gem "slim"
 gem "smarter_csv"
 gem "sprockets-rails"

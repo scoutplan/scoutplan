@@ -8,4 +8,5 @@
   :schedule:
     purge_orphaned_files:
       cron: "0 0 * * *"
-      class: PurgeOrphanedUploadsWorker
+      # Use ActiveJob class (compatible with both Sidekiq and Solid Queue)
+      class: PurgeOrphanedUploadsJob

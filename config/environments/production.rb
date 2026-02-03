@@ -40,9 +40,16 @@ Rails.application.configure do
 
   config.log_tags = [:request_id]
 
+  # Phase 1: Keep Redis cache and Sidekiq while preparing for Solid Queue/Cache migration
+  # TODO: Change to :solid_cache_store in Phase 4
   config.cache_store = :redis_cache_store, { url: ENV["REDIS_URL"] }
 
+  # TODO: Change to :solid_queue in Phase 3
   config.active_job.queue_adapter = :sidekiq
+
+  # Solid Queue configuration (uncomment in Phase 3)
+  # config.active_job.queue_adapter = :solid_queue
+  # config.solid_queue.connects_to = { database: { writing: :primary } }
 
   config.action_mailbox.ingress = :mailgun
 

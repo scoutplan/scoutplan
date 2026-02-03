@@ -63,3 +63,6 @@ act.sh
 
 jmeter.log
 /config/credentials/development.key
+
+# Kamal secrets (contains production credentials)
+.kamal/secrets
