@@ -8,107 +8,83 @@ image: scoutplan/app
 servers:
   web:
     hosts:
-      - <%= ENV["KAMAL_WEB_HOST"] %>  # Set in .kamal/secrets
-    labels:
-      traefik.http.routers.scoutplan.rule: Host(`go.scoutplan.org`) || Host(`staging.scoutplan.org`)
-      traefik.http.routers.scoutplan.tls: true
-      traefik.http.routers.scoutplan.tls.certresolver: letsencrypt
-    options:
-      network: private
+      - 134.209.45.159
 
   worker:
     hosts:
-      - <%= ENV["KAMAL_WORKER_HOST"] %>  # Set in .kamal/secrets
+      - 134.209.45.159
     cmd: bin/jobs
-    options:
-      network: private
 
 proxy:
   ssl: true
   host: go.scoutplan.org
-  # Staging alias for smoke testing before production cutover
-  aliases:
-    - staging.scoutplan.org
   app_port: 3000
   healthcheck:
     path: /up
     interval: 10
     timeout: 5
 
+# Docker Hub registry
 registry:
-  server: registry.digitalocean.com
-  username:
-    - KAMAL_REGISTRY_USERNAME
+  username: scoutplanapp
   password:
     - KAMAL_REGISTRY_PASSWORD
 
+# Build directly on the server
 builder:
+  remote: true
   arch: amd64
-  cache:
-    type: registry
 
-# Environment variables
+# Environment variables - secrets are read from .kamal/secrets
 env:
-  clear:
-    RAILS_ENV: production
-    RAILS_LOG_TO_STDOUT: "1"
-    RAILS_SERVE_STATIC_FILES: "true"
-    # Database connection (non-secret parts)
-    DATABASE_HOST: <%= ENV["DATABASE_HOST"] %>
-    DATABASE_NAME: <%= ENV["DATABASE_NAME"] %>
-    DATABASE_USER: <%= ENV["DATABASE_USER"] %>
-    DATABASE_PORT: "5432"
-    # Application settings
-    SCOUTPLAN_HOST: go.scoutplan.org
-    SCOUTPLAN_PROTOCOL: https
-    EMAIL_DOMAIN: mail.scoutplan.org
-    # Storage settings
-    DO_STORAGE_REGION: nyc3
-    DO_BUCKET: scoutplan-production
-    DO_STORAGE_ENDPOINT: https://nyc3.digitaloceanspaces.com
-    # Logging
-    LOGGER_HOST: logs6.papertrailapp.com
-    LOGGER_PORT: "46920"
-    # OAuth
-    GOOGLE_OAUTH_CLIENT_ID: <%= ENV["GOOGLE_OAUTH_CLIENT_ID"] %>
-    # Feature flags
-    SKYLIGHT_ENABLED: "true"
-    # Phase 1: Keep Redis for Sidekiq (remove in Phase 3)
-    REDIS_URL: <%= ENV["REDIS_URL"] %>
-
   secret:
-    # Core Rails secrets
     - RAILS_MASTER_KEY
     - SECRET_KEY_BASE
-    - DATABASE_PASSWORD
-    # API tokens
+    - DATABASE_URL
+    - REDIS_URL
     - POSTMARK_API_TOKEN
     - STRIPE_SECRET_KEY
-    - MAPBOX_TOKEN
+    - STRIPE_PUBLIC_KEY
     - OPENWEATHER_API_KEY
-    - OPENAI_ACCESS_TOKEN
-    # Storage
+    - SCOUT_KEY
     - DO_STORAGE_KEY_ID
     - DO_STORAGE_SECRET
-    # OAuth
+    - DO_BUCKET
+    - DO_STORAGE_ENDPOINT
+    - DO_STORAGE_REGION
+    - GOOGLE_OAUTH_CLIENT_ID
     - GOOGLE_OAUTH_CLIENT_SECRET
-    # SMS/Twilio
+    - GOOGLE_API_KEY
     - TWILIO_SID
     - TWILIO_TOKEN
     - TWILIO_NUMBER
     - SMS_BASIC_USERNAME
     - SMS_BASIC_PASSWORD
-    # Email
-    - MAILGUN_INGRESS_SIGNING_KEY
     - SMTP_PASSWORD
-    # Monitoring
-    - SKYLIGHT_AUTHENTICATION
-    - SCOUT_KEY
+    - SMTP_USERNAME
+    - SMTP_ADDRESS
+    - SMTP_PORT
+    - SMTP_DOMAIN
     - LOGTAIL_TOKEN
-    # Analytics
-    - MIXPANEL_TOKEN
-    # Database
     - BLAZER_DATABASE_URL
+    - SENTRY_DSN
+    - SCOUTPLAN_ADMINS
+    - CONVERTAPI_KEY
+    - CONVERTAPI_SECRET
+  clear:
+    RAILS_ENV: production
+    RAILS_LOG_TO_STDOUT: "1"
+    RAILS_SERVE_STATIC_FILES: "true"
+    RAILS_LOG_LEVEL: info
+    SCOUTPLAN_HOST: go.scoutplan.org
+    SCOUTPLAN_PROTOCOL: https
+    EMAIL_DOMAIN: mail.scoutplan.org
+    LOGGER_HOST: logs6.papertrailapp.com
+    LOGGER_PORT: "46920"
+    SKYLIGHT_ENABLED: "true"
+    FONT_AWESOME_KIT_ID: 51f1cc9fb4
+    ADOBE_FONT_KIT_ID: yrz7cru
+    APP_HOST: go.scoutplan.org
 
 # Volumes for persistent storage
 volumes:
@@ -117,18 +93,6 @@ volumes:
 # Asset bridging for zero-downtime deployments
 asset_path: /rails/public/assets
 
-# Hooks
-hooks:
-  pre-deploy:
-    # Run database migrations
-    remote: bin/rails db:migrate
-
-# Accessories (Phase 1: Redis for Sidekiq - remove in Phase 3)
-# Note: In Phase 1, continue using hosted Redis instance
-# accessories:
-#   redis:
-#     image: redis:7-alpine
-#     host: <%= ENV["KAMAL_WORKER_HOST"] %>
-#     port: 6379
-#     volumes:
-#       - redis_data:/data
+# SSH user (default is root)
+ssh:
+  user: root
