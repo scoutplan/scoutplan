@@ -26,7 +26,10 @@ WORKDIR /app
 COPY Gemfile Gemfile.lock /app/
 RUN bundle install
 COPY . /app
-RUN rake assets:precompile
+
+# Precompile assets for production
+# SECRET_KEY_BASE is a dummy value only used for asset compilation, not the real secret
+RUN RAILS_ENV=production SECRET_KEY_BASE=dummy_key_for_assets bundle exec rake assets:precompile
 
 EXPOSE 3000
 

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Run database migrations after deployment
+# This handles first deployment and any migrations that need to run post-deploy
+
+echo "Running database migrations..."
+kamal app exec -p "bin/rails db:migrate"

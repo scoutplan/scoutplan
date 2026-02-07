@@ -3,7 +3,7 @@
 
 service: scoutplan
 
-image: scoutplan/app
+image: scoutplanapp/scoutplan
 
 servers:
   web:
@@ -30,9 +30,9 @@ registry:
   password:
     - KAMAL_REGISTRY_PASSWORD
 
-# Build directly on the server
+# Build directly on the server using remote Docker
 builder:
-  remote: true
+  remote: ssh://root@134.209.45.159
   arch: amd64
 
 # Environment variables - secrets are read from .kamal/secrets
@@ -91,7 +91,7 @@ volumes:
   - "scoutplan_storage:/rails/storage"
 
 # Asset bridging for zero-downtime deployments
-asset_path: /rails/public/assets
+asset_path: /app/public/assets
 
 # SSH user (default is root)
 ssh:

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# Run database migrations before deploying new code
-# This runs on the remote server via kamal app exec
+# Migrations run in post-deploy hook instead
+# This avoids issues with first deployment when no container exists yet
 
-echo "Running database migrations..."
-kamal app exec --reuse -p "bin/rails db:migrate"
+echo "Skipping pre-deploy (migrations will run post-deploy)"
+exit 0
