@@ -21,8 +21,12 @@ proxy:
   app_port: 3000
   healthcheck:
     path: /up
-    interval: 5
+    interval: 1
     timeout: 30
+
+# Deployment timing
+deploy_timeout: 120
+drain_timeout: 30
 
 # Docker Hub registry
 registry:
