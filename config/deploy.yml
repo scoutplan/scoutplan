@@ -34,8 +34,8 @@ registry:
 builder:
   remote: ssh://root@134.209.45.159
   arch: amd64
-  args:
-    RAILS_MASTER_KEY: <%= ENV['RAILS_MASTER_KEY'] %>
+  secrets:
+    - RAILS_MASTER_KEY
 
 # Environment variables - secrets are read from .kamal/secrets
 env:

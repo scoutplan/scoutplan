@@ -27,11 +27,12 @@ COPY Gemfile Gemfile.lock /app/
 RUN bundle install
 COPY . /app
 
-# Precompile assets for production
-# These are build-time arguments, not runtime secrets
-ARG RAILS_MASTER_KEY
-ARG SECRET_KEY_BASE=dummy_key_for_assets
-RUN RAILS_ENV=production RAILS_MASTER_KEY=$RAILS_MASTER_KEY SECRET_KEY_BASE=$SECRET_KEY_BASE bundle exec rake assets:precompile
+# Precompile assets for production using Docker build secrets
+RUN --mount=type=secret,id=RAILS_MASTER_KEY \
+    RAILS_ENV=production \
+    RAILS_MASTER_KEY="$(cat /run/secrets/RAILS_MASTER_KEY)" \
+    SECRET_KEY_BASE=dummy_key_for_assets \
+    bundle exec rake assets:precompile
 
 EXPOSE 3000
 
