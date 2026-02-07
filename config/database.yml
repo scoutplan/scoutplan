@@ -1,21 +1,20 @@
+# PostgreSQL is required due to use of jsonb, array columns, uuid, and unaccent extension
 default: &default
-  adapter:  postgresql
+  adapter: postgresql
   encoding: unicode
-  host:     <%= ENV['DATABASE_HOST'] %>
-  database: <%= ENV['DATABASE_NAME'] %>
-  username: <%= ENV['DATABASE_USER'] %>
-  password: <%= ENV['DATABASE_PASSWORD'] %>
-  port: 5432
-  pool: 5
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
 
 development:
-  <<: *default
-  database: scoutplan_development
+  primary:
+    <<: *default
+    database: scoutplan_development
 
 test:
-  <<: *default
-  database: scoutplan_test
+  primary:
+    <<: *default
+    database: scoutplan_test
 
 production:
-  <<: *default
-  port: <%= ENV['DATABASE_PORT'] %>
+  primary:
+    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
