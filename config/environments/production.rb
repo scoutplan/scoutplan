@@ -26,6 +26,7 @@ Rails.application.configure do
   config.hosts << /localhost(:\d+)?/
   config.hosts << /127\.0\.0\.1(:\d+)?/
   config.hosts << /\d+\.\d+\.\d+\.\d+(:\d+)?/ # Any IP address (for Docker network)
+  config.hosts << /134\.209\.\d+\.\d+.*/ # DigitalOcean droplet IPs with optional hostname suffix
 
   config.cache_classes = true
 
