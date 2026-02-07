@@ -18,6 +18,8 @@ servers:
 proxy:
   ssl: true
   host: go.scoutplan.org
+  hosts:
+    - new.scoutplan.org
   app_port: 3000
   healthcheck:
     path: /up

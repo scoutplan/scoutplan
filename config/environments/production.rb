@@ -17,6 +17,7 @@ Rails.application.configure do
   end
 
   config.hosts << "go.scoutplan.org"
+  config.hosts << "new.scoutplan.org"
   config.hosts << "kit.fontawesome.com"
   config.hosts << ENV["RAILS_PRODUCTION_HOSTS"]
   config.hosts << /10\.\d+\.\d+\.\d+/ # internal IP addresses...leave this here
