@@ -28,8 +28,10 @@ RUN bundle install
 COPY . /app
 
 # Precompile assets for production
-# SECRET_KEY_BASE is a dummy value only used for asset compilation, not the real secret
-RUN RAILS_ENV=production SECRET_KEY_BASE=dummy_key_for_assets bundle exec rake assets:precompile
+# These are build-time arguments, not runtime secrets
+ARG RAILS_MASTER_KEY
+ARG SECRET_KEY_BASE=dummy_key_for_assets
+RUN RAILS_ENV=production RAILS_MASTER_KEY=$RAILS_MASTER_KEY SECRET_KEY_BASE=$SECRET_KEY_BASE bundle exec rake assets:precompile
 
 EXPOSE 3000
 
