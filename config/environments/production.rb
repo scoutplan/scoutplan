@@ -7,7 +7,14 @@ Rails.application.default_url_options = {
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.configure do
-  config.logger = RemoteSyslogLogger.new(ENV["LOGGER_HOST"], ENV["LOGGER_PORT"])
+  # Use STDOUT logger for Docker/Kamal, with optional remote syslog
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    config.logger = ActiveSupport::Logger.new($stdout)
+      .tap { |logger| logger.formatter = ::Logger::Formatter.new }
+      .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
+  else
+    config.logger = RemoteSyslogLogger.new(ENV["LOGGER_HOST"], ENV["LOGGER_PORT"])
+  end
 
   config.hosts << "go.scoutplan.org"
   config.hosts << "kit.fontawesome.com"
