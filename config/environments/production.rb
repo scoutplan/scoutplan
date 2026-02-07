@@ -14,9 +14,11 @@ Rails.application.configure do
   config.hosts << ENV["RAILS_PRODUCTION_HOSTS"]
   config.hosts << /10\.\d+\.\d+\.\d+/ # internal IP addresses...leave this here
   config.hosts << /.*\.sites\.scoutplan\.org/
-  config.hosts << /[a-f0-9]+:3000/ # Docker container health checks (Kamal)
-  config.hosts << /localhost(:\d+)?/ # Localhost for health checks
-  config.hosts << /127\.0\.0\.1(:\d+)?/ # Loopback for health checks
+  # Allow all internal Docker/Kamal health check requests
+  config.hosts << /[a-f0-9-]+/ # Docker container IDs and hostnames
+  config.hosts << /localhost(:\d+)?/
+  config.hosts << /127\.0\.0\.1(:\d+)?/
+  config.hosts << /\d+\.\d+\.\d+\.\d+(:\d+)?/ # Any IP address (for Docker network)
 
   config.cache_classes = true
 
