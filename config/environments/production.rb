@@ -15,6 +15,8 @@ Rails.application.configure do
   config.hosts << /10\.\d+\.\d+\.\d+/ # internal IP addresses...leave this here
   config.hosts << /.*\.sites\.scoutplan\.org/
   config.hosts << /[a-f0-9]+:3000/ # Docker container health checks (Kamal)
+  config.hosts << /localhost(:\d+)?/ # Localhost for health checks
+  config.hosts << /127\.0\.0\.1(:\d+)?/ # Loopback for health checks
 
   config.cache_classes = true
 
