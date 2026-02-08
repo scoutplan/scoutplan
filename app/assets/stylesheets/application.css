@@ -118,7 +118,6 @@ input.dt-switch.right-value:checked ~ .dt-switch-container .switch-button {
 
 span.dt-switch .switch-container {
   background: #ddd;
-  outline: 1px solid #bbb;
   display: inline-block;
   border-radius: 9999px;
   height: 2.5em;

@@ -94,8 +94,10 @@ class EventRsvp < ApplicationRecord
 
   ### approval methods
   def enforce_approval_policy
+    puts "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
     return unless requires_approval?
 
+    puts "I am here"
     self.response = case response
                     when "accepted" then "accepted_pending"
                     when "declined" then "declined_pending"

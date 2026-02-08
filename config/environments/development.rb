@@ -52,8 +52,8 @@ Rails.application.configure do
     api_token: Rails.application.credentials.postmark_api_token
   }
 
-  config.active_job.queue_adapter = :sidekiq
-  # config.active_job.queue_adapter = :sucker_punch
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.connects_to = { database: { writing: :primary } }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

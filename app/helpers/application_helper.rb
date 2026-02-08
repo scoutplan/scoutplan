@@ -2,7 +2,7 @@
 
 # application-wide helpers
 module ApplicationHelper
-  RESPONSE_GLYPHS = { unknown: "fa-question", accepted: "fa-check", declined: "fa-times" }.freeze
+  RESPONSE_GLYPHS = { unknown: "fa-ghost", accepted: "fa-check", declined: "fa-times" }.freeze
   RESPONSE_COLORS = { unknown: "stone-400", accepted: "green-700", declined: "red-600" }.freeze
 
   def colors_from_string(string)

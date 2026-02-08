@@ -21,6 +21,7 @@ module Event::DatePresentable
 
   def date_to_s_xs(options = {})
     return "#{starts_at.strftime('%b %-d')}#{dash(options)}#{ends_at.strftime('%b %-d, %Y')}".html_safe if spans_months?
+    return starts_at.strftime("%b %-d, %Y") if single_day?
 
     "#{starts_at.strftime('%b %-d')}#{dash(options)}#{ends_at.strftime('%-d, %Y')}"
   end

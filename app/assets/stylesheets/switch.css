@@ -63,7 +63,6 @@ input.dp-switch:disabled + label {
   } */
 
   .dt-switch .switch-container {
-    background: #666;
     display: inline-block;
     border-radius: 9999px;
     width: 3.5em;
