@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-require "sidekiq/testing"
 require "active_job/test_helper"
 
 # rubocop:disable Metrics/BlockLength
@@ -66,7 +65,7 @@ describe "event_cancellation", type: :feature do
         FactoryBot.create(:unit_membership, :registered, unit: @unit)
         @event.rsvps.create(member: @normal_member, respondent: @normal_member, response: :accepted)
         visit unit_event_cancel_path(@unit, @event)
-        Sidekiq::Testing.inline!
+        perform_enqueued_jobs
       end
 
       it "does not notify when none is selected" do

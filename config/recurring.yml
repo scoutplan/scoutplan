@@ -16,7 +16,6 @@ production:
     schedule: every hour at minute 12
 
   # Purge orphaned Active Storage blobs daily at midnight UTC
-  # Replaces sidekiq-scheduler cron job from config/sidekiq.yml
   purge_orphaned_uploads:
     class: PurgeOrphanedUploadsJob
     schedule: at midnight every day

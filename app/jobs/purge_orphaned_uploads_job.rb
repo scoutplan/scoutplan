@@ -2,7 +2,6 @@
 
 # Job to purge orphaned file uploads from Active Storage
 # This runs daily via Solid Queue's recurring jobs (config/recurring.yml)
-# or via sidekiq-scheduler (config/sidekiq.yml) during the migration period
 class PurgeOrphanedUploadsJob < ApplicationJob
   queue_as :default
 

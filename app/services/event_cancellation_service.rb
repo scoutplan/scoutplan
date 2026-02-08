@@ -18,7 +18,7 @@ class EventCancellationService < EventService
   private
 
   # send out email & text notifications based on audience selected in UI
-  # these will be enqueued into Sidekiq and despooled separately
+  # these will be enqueued and despooled separately
   def send_notifications
     note = @params[:note]
     audience.each do |member|

@@ -1,5 +1,4 @@
 require "rails_helper"
-require "sidekiq/testing"
 
 RSpec.describe WeeklyDigestNotifier do
   include ActiveJob::TestHelper
@@ -41,8 +40,6 @@ RSpec.describe WeeklyDigestNotifier do
 
     clear_enqueued_jobs
 
-    # Sidekiq::Testing.inline!
-    Sidekiq::Testing.fake!
     expect { WeeklyDigestNotifier.with(unit: @unit).deliver(@unit.unit_memberships.first) }.to have_enqueued_job(Noticed::EventJob)
 
     perform_enqueued_jobs

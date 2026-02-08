@@ -1,8 +1,9 @@
 require "rails_helper"
-require "sidekiq/testing"
 require "active_job/test_helper"
 
 RSpec.describe EventReminderJob, type: :job do
+  include ActiveJob::TestHelper
+
   before do
     @unit = FactoryBot.create(:unit)
     @unit.settings(:communication).event_reminders = "yes"
@@ -21,7 +22,6 @@ RSpec.describe EventReminderJob, type: :job do
     @member = @unit.members.first
 
     expect(@unit.members.count).to eq(8)
-    Sidekiq::Testing.inline!
   end
 
   it "enqueues a job" do

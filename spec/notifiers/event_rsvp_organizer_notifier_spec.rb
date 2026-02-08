@@ -1,5 +1,4 @@
 require "rails_helper"
-require "sidekiq/testing"
 
 RSpec.describe EventRsvpOrganizerNotifier do
   include ActiveJob::TestHelper
@@ -34,7 +33,6 @@ RSpec.describe EventRsvpOrganizerNotifier do
 
   it "delivers" do
     clear_enqueued_jobs
-    Sidekiq::Testing.fake!
     organizer_recipients = [@parent]
     expect { EventRsvpOrganizerNotifier.with(record: @event).deliver(organizer_recipients) }.to have_enqueued_job(Noticed::EventJob)
     perform_enqueued_jobs

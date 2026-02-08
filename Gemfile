@@ -17,7 +17,6 @@ gem "aws-sdk-s3", require: false
 gem "blazer"
 gem "bootsnap", require: false
 gem "chroma"
-gem "colorize"
 gem "combine_pdf"
 gem "convert_api"
 gem "coveralls_reborn", require: false
@@ -27,7 +26,6 @@ gem "flamegraph"
 gem "flipper"
 gem "flipper-active_record"
 gem "flipper-ui"
-gem "geared_pagination"
 gem "honeybadger", "~> 5.0"
 gem "humanize"
 gem "icalendar"
@@ -56,17 +54,10 @@ gem "rails-html-sanitizer", ">= 1.4.4"
 gem "redis", "~> 5.0"
 gem "remote_syslog_logger"
 gem "rest-client"
-gem "rexml"
-gem "rubocop", require: false
 gem "ruby-openai"
 gem "sanitize", ">= 6.0.2"
-gem "sass-rails", "~> 6.0"
-gem "seedbank"
 gem "sentry-ruby"
-gem "sidekiq"
-gem "sidekiq-scheduler"
-
-# Solid Queue/Cache for database-backed jobs and caching (Kamal migration)
+# Solid Queue/Cache for database-backed jobs and caching
 gem "mission_control-jobs"
 gem "slim"
 gem "smarter_csv"

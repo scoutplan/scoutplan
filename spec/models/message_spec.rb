@@ -1,5 +1,4 @@
 require "rails_helper"
-require "sidekiq/testing"
 require "active_job/test_helper"
 
 RSpec.describe Message, type: :model do

@@ -3,8 +3,6 @@
 require "rails_helper"
 
 RSpec.describe EventCancellationService, type: :model do
-  require "sidekiq/testing"
-
   before do
     @event = FactoryBot.create(:event, :published)
   end

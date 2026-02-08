@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "sidekiq-scheduler"
-
 # Task encapsulates things that occur on a recurring
 # basis, including scheduling, next run time, last run time,
 # etc.
@@ -19,7 +17,6 @@ require "sidekiq-scheduler"
 # Conversely, don't invoke this base class directly.
 #
 class Task < ApplicationRecord
-  include Sidekiq::Worker
   belongs_to :taskable, polymorphic: true
 
   # Require a key
