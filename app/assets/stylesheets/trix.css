@@ -55,22 +55,6 @@ trix-toolbar .trix-button {
   background: transparent;
 }
 
-  /* dark mode styling */
-
-  @media (prefers-color-scheme: dark) {
-
-    .trix-button.trix-button--icon::before {
-      opacity: 1.0;
-      filter: invert(99%) sepia(0%) saturate(310%) hue-rotate(294deg) brightness(103%) contrast(100%);
-
-    }
-
-    .trix-button.trix-active.trix-button--icon::before {
-      opacity: 1.0;
-      filter: none;
-    }
-  }
-
 
   trix-toolbar .trix-button.trix-active {
     background: #cbeefa;

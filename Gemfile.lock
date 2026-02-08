@@ -117,7 +117,6 @@ GEM
     ast (2.4.3)
     auto_strip_attributes (2.6.0)
       activerecord (>= 4.0)
-    awesome_print (1.9.2)
     aws-eventstream (1.4.0)
     aws-partitions (1.1213.0)
     aws-sdk-core (3.242.0)
@@ -762,7 +761,6 @@ DEPENDENCIES
   ahoy_email
   ahoy_matey
   auto_strip_attributes
-  awesome_print
   aws-sdk-s3
   better_mailer_previews
   blazer

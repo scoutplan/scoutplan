@@ -11,7 +11,7 @@
 = turbo_frame_tag :modal do
   = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 md:pb-16 bg-black/50 z-30", data: { open: "true", controller: "modal", modal_return_url_value: unit_events_path(current_unit) }
     article.event-data.mx-auto.bg-white.rounded-lg.max-h-full.flex.flex-col.overflow-y-hidden.dark:text-stone-800.max-w-2xl
-      header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-600
+      header.flex.flex-row.justify-between.border-b.border-stone-300.px-6.py-3.text-stone-600
         .left
           i.fa-light.text-white(style="color: #{@event&.category&.color}" class="fa-#{@event&.category&.glyph}")
           | &nbsp;
@@ -36,7 +36,7 @@
             = link_to "#", class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
               i.fa-light.fa-ellipsis-stroke.fa-fw
 
-            .dropdown-menu.absolute.right-0.bg-white.z-20.rounded-lg.border.top-full.animate-pop-open.w-72.text-sm.mt-1.drop-shadow-overhead.p-2.text-stone-700
+            .dropdown-menu.absolute.right-0.bg-white.z-20.rounded-lg.border.border-stone-300.top-full.animate-pop-open.w-72.text-sm.mt-1.drop-shadow-overhead.p-2.text-stone-700
               ul
                 = render partial: "events/partials/show/sidecar/edit"
                 = render partial: "events/partials/show/sidecar/duplicate"

@@ -60,19 +60,6 @@ a.external-link:after {
   color: rgb(230, 100, 37);
 }
 
-@media (prefers-color-scheme: dark) {
-  .sidecar a {
-    color: #d1d5db;
-  }
-
-  .sidecar:hover a {
-    color: #f3f4f6;
-  }
-
-  .sidecar a:hover {
-    color: rgb(230, 100, 37);
-  }
-}
 
 .dt-switch-container .switch-button {
   transform: translateX(100%);
@@ -233,23 +220,6 @@ span.dt-switch input.center-value:checked ~ .switch-container {
   display: inline-block;
 }
 
-@media (prefers-color-scheme: dark) {
-  input.dt-switch.right-value:disabled:checked ~ .dt-switch-container, .switch-disabled .dt-switch-container {
-    background: #444 !important;
-    cursor: not-allowed;
-  }
-
-  input.dt-switch.right-value:disabled:checked ~ .dt-switch-container .switch-button {
-    background: #222;
-    cursor: not-allowed;
-  }
-
-  input.dt-switch.right-value:disabled ~ label {
-    color: #666;
-    cursor: not-allowed;
-  }
-
-}
 
 input[type="text"].is-invalid {
   border-color: #ef4444;

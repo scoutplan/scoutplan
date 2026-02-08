@@ -10,13 +10,14 @@
 
 
   article.mx-auto.max-w-4xl.bg-white.rounded-lg.h-full.flex.flex-col.overflow-y-hidden
-    header.flex.flex-row.justify-between.border-b.px-6.py-3.text-stone-500
+    header.flex.flex-row.justify-between.border-b.border-stone-300.px-6.py-3.relative
       .left
         h1 = (event.new_record? ? "Add" : "Edit") + " a Calendar Event"
 
-      .right.flex.flex-row.gap-2.text-stone-500.text-lg
-
-        = button_tag type: "button", class: "x-close-button flex flex-row items-center block w-6 h-6 -mr-3 rounded hover:bg-stone-100 hover:text-stone-800", data: { action: "modal#close" }, title: "Cancel" do
+      .right.flex.flex-row.gap-2.text-stone-500
+        = button_tag type: "button",
+            class: "text-stone-500 hover:bg-stone-100 rounded hover:text-stone-950 absolute top-1 right-2 p-2 cursor-pointer",
+            data: { action: "modal#close" }, title: "Cancel" do
           i.fa-regular.fa-times.block.mx-auto
 
     section.flex.flex-col.md:flex-row.w-full.overflow-y-hidden(style="height: calc(100% - 0rem)")

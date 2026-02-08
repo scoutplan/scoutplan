@@ -13,7 +13,6 @@ gem "acts-as-taggable-on"
 gem "ahoy_email"
 gem "ahoy_matey"
 gem "auto_strip_attributes"
-gem "awesome_print"
 gem "aws-sdk-s3", require: false
 gem "blazer"
 gem "bootsnap", require: false

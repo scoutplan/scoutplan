@@ -44,31 +44,3 @@ input.dp-switch:checked + label .switch-button {
 input.dp-switch:disabled + label {
   color: #aaa;
 }
-
-@media (prefers-color-scheme: dark) {
-  input.dp-switch:disabled + label .switch-container, .switch-disabled .switch-container {
-    background: #444;
-  }
-
-  input.dp-switch:disabled + label {
-    color: #666;
-  }
-
-  input.dp-switch:disabled + label .switch-button, .switch-disabled .switch-button {
-    background: #222;
-  }
-
-  /* .dt-switch {
-    background: red;
-  } */
-
-  .dt-switch .switch-container {
-    display: inline-block;
-    border-radius: 9999px;
-    width: 3.5em;
-    height: 2em;
-    position: relative;
-    padding: 0.25em;
-    flex-shrink: 0;
-  }
-}

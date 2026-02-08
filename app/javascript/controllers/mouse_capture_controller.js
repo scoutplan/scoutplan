@@ -9,7 +9,7 @@ export default class extends Controller {
     this.scrim = document.createElement("div");
     this.scrim.classList.add("scrim");
     this.element.parentElement.insertBefore(this.scrim, this.element);
-    this.scrim.classList.add("inset-0", "fixed", "bg-transparent", "bg-opacity-50", "z-0");
+    this.scrim.classList.add("inset-0", "fixed", "bg-transparent", "z-0");
 
     this.keyDownListener = document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") { this.close(event); }

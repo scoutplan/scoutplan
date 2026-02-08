@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/forms";
+
+@source "../../app/helpers";
+@source "../../app/javascript";
+@source "../../app/views";
+
+@theme {
+  --color-brand-50:  #F9F7F6;
+  --color-brand-100: #F6F1E7;
+  --color-brand-200: #F4E1CC;
+  --color-brand-300: #EDAD81;
+  --color-brand-400: #EA7731;
+  --color-brand-500: #E66425;
+  --color-brand-600: #BC521E;
+  --color-brand-700: #913F17;
+  --color-brand-800: #4E210A;
+  --color-brand-900: #300F08;
+
+  --color-messages-50:  #f7fee7;
+  --color-messages-100: #ecfccb;
+  --color-messages-200: #d9f99d;
+  --color-messages-300: #bef264;
+  --color-messages-400: #a3e635;
+  --color-messages-500: #84cc16;
+  --color-messages-600: #65a30d;
+  --color-messages-700: #4d7c0f;
+  --color-messages-800: #3f6212;
+  --color-messages-900: #365314;
+  --color-messages-950: #1a2e05;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --text-2xs: 0.5rem;
+  --text-2xs--line-height: 1;
+  --text-huge: 5rem;
+  --text-huge--line-height: 1;
+
+  --shadow-overhead: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+  --drop-shadow-overhead: 0 0 0.5rem rgba(0, 0, 0, 0.2);
+
+  --list-style-type-square: square;
+
+  --max-w-1\/2: 50%;
+  --max-w-8xl: 96rem;
+  --min-w-96: 24rem;
+
+  --animate-pop-open: pop-open 0.1s;
+  --animate-fade-out-after-load: fade-out-after-load 10s linear;
+  --animate-checkmark-pop: checkmark-pop 0.4s ease-out;
+  --animate-fade-in-up: fade-in-up 0.3s ease-out 0.3s both;
+  --animate-compass-swing: compass-swing 1.2s ease-in-out infinite;
+}
+
+@keyframes pop-open {
+  0%   { transform: scale(0%); }
+  90%  { transform: scale(110%); }
+  100% { transform: scale(100%); }
+}
+
+@keyframes fade-out-after-load {
+  0%   { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes checkmark-pop {
+  0%   { transform: scale(0); opacity: 0; }
+  50%  { transform: scale(1.15); opacity: 1; }
+  70%  { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+@keyframes fade-in-up {
+  0%   { opacity: 0; transform: translateY(0.5rem); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes compass-swing {
+  0%, 100% { transform: rotate(-30deg); }
+  50%      { transform: rotate(30deg); }
+}
