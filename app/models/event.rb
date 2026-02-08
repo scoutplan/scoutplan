@@ -64,7 +64,7 @@ class Event < ApplicationRecord
   validate :dates_are_subsequent
   validates :attachments,
             content_type: [
-              "image/png", "image/jpg", "image/jpeg", "image/gif", "application/pdf", "text/plain",
+              "image/png", "image/jpeg", "image/gif", "application/pdf", "text/plain",
               "application/msword",
               "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
               "application/vnd.ms-excel",

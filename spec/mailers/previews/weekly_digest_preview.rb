@@ -44,14 +44,6 @@ class WeeklyDigestPreview < ActionMailer::Preview
   end
   # rubocop:enable Metrics/AbcSize
 
-  def new_notification
-    around_email do
-      unit = Unit.first
-      recipient = unit.members.first
-      WeeklyDigestMailer.with(recipient: recipient, unit: unit).weekly_digest_notification_new
-    end
-  end
-
   private
 
   # rubocop:disable Lint/SuppressedException

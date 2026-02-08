@@ -1,0 +1,74 @@
+<% return unless @event.category.show_weather? %>
+<% service = WeatherService.new(@event.primary_location) %>
+<% return unless service.weather_available? %>
+<% begin %>
+  <% conditions = service&.current&.weather_conditions %>
+<% rescue OpenSSL::SSL::SSLError %>
+  <% return %>
+<% end %>
+<% return unless conditions %>
+
+<article class="py-4">
+  <header class="mb-3">
+    <h3 class="font-semibold text-stone-950">
+      <i class="fa-light mr-2 <%= service.icon_class(conditions.main) %>"></i>
+      <%= "#{service.city_state} Weather" %>
+    </h3>
+  </header>
+
+  <div class="flex flex-row justify-between items-end">
+    <div id="current-conditions" class="font-bold">
+      <div class="inline text-4xl">
+        <%= conditions.temperature.round %>&deg;
+      </div>
+      <div class="inline">
+        &nbsp;<%= conditions.main %>
+      </div>
+    </div>
+
+    <div id="high-low-today" class="font-bold">
+      <div class="inline font-bold uppercase text-stone-500">Low </div>
+      <%= "#{conditions.temp_min.round}&deg;&nbsp;&ndash;&nbsp;#{conditions.temp_max.round}&deg;".html_safe %>
+      <div class="inline font-bold uppercase text-stone-500"> High</div>
+    </div>
+  </div>
+
+  <div class="table w-full mt-4 font-bold">
+    <% count = 0 %>
+    <% service.daily_forecast.each do |date, conditions| %>
+      <% next if date.today? %>
+      <% count += 1 %>
+
+      <div class="table-row">
+        <div class="table-cell border-t border-stone-400 dark:border-stone-500 py-2 grow-0">
+          <%= date.strftime("%a") %>
+        </div>
+
+        <div class="table-cell border-t border-stone-400 dark:border-stone-500 px-2 text-center">
+          <%= raw(service.fa_icon_tag(conditions.main)) %>
+        </div>
+
+        <div class="table-cell border-t border-stone-400 dark:border-stone-500 px-2">
+          <%= "#{conditions.temp_min.round}&deg;".html_safe %>
+          <% if count == 1 %>
+            <div class="inline uppercase text-stone-500"> Low</div>
+          <% end %>
+        </div>
+
+        <div class="table-cell border-t border-stone-400 dark:border-stone-500 px-2">
+          <%= "#{conditions.temp_max.round}&deg;".html_safe %>
+          <% if count == 1 %>
+            <div class="inline uppercase text-stone-500"> High</div>
+          <% end %>
+        </div>
+
+        <div class="table-cell border-t border-stone-400 dark:border-stone-500 px-2">
+          <%= "#{conditions.humidity.round}%".html_safe %>
+          <% if count == 1 %>
+            <div class="inline uppercase text-stone-500"> Humidity</div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</article>

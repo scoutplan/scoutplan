@@ -76,6 +76,9 @@ module.exports = {
       animation: {
         'pop-open': 'pop-open 0.1s',
         'fade-out-after-load': 'fade-out-after-load 10s linear',
+        'checkmark-pop': 'checkmark-pop 0.4s ease-out',
+        'fade-in-up': 'fade-in-up 0.3s ease-out 0.3s both',
+        'compass-swing': 'compass-swing 1.2s ease-in-out infinite',
       },
       keyframes: {
         'pop-open': {
@@ -98,6 +101,40 @@ module.exports = {
           },
           '100%': {
             opacity: '0'
+          }
+        },
+        'checkmark-pop': {
+          '0%': {
+            transform: 'scale(0)',
+            opacity: '0'
+          },
+          '50%': {
+            transform: 'scale(1.15)',
+            opacity: '1'
+          },
+          '70%': {
+            transform: 'scale(0.95)'
+          },
+          '100%': {
+            transform: 'scale(1)'
+          }
+        },
+        'fade-in-up': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(0.5rem)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)'
+          }
+        },
+        'compass-swing': {
+          '0%, 100%': {
+            transform: 'rotate(-30deg)'
+          },
+          '50%': {
+            transform: 'rotate(30deg)'
           }
         }
       }

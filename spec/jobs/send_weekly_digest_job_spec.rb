@@ -17,17 +17,10 @@ RSpec.describe SendWeeklyDigestJob, type: :job do
     perform_enqueued_jobs
   end
 
-  it "schedules the next job" do
-    expect { SendWeeklyDigestJob.schedule_next_job(@unit) }.to have_enqueued_job
-    perform_enqueued_jobs
-  end
-
   it "performs" do
-    timestamp = DateTime.current
-    @unit.settings(:communication).digest_config_timestamp = timestamp
     @unit.settings(:communication).digest = "true"
     @unit.save!
-    expect { SendWeeklyDigestJob.perform_now(@unit.id, timestamp) }.not_to raise_error
+    expect { SendWeeklyDigestJob.perform_now(@unit.id) }.not_to raise_error
   end
 
   describe "class methods" do

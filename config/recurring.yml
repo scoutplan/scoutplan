@@ -21,6 +21,11 @@ production:
     class: PurgeOrphanedUploadsJob
     schedule: at midnight every day
 
+  # Schedule digest and RSVP nag jobs for the coming day
+  scheduled_job_dispatcher:
+    class: ScheduledJobDispatcherJob
+    schedule: at 1am every day
+
 development:
   # Clear finished jobs in development too
   clear_solid_queue_finished_jobs:

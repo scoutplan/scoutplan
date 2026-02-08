@@ -34,9 +34,9 @@
   = turbo_stream.replace("members_registered_header") do
     = render partial: "event_dashboard/header_registered", locals: { event_dashboard: @event_dashboard }        
 
-// clear modal (applies to Events#list and EventDashboard#index)
+// show success animation (applies to Events#list and EventDashboard#index)
 = turbo_stream.update "rsvp_popup" do
-  = ""
+  = render partial: "family_rsvps/success"
 
 // THIS STREAM TARGETS Events#index VIEW
 = turbo_stream.replace dom_id(@event) do

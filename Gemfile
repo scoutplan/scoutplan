@@ -1,7 +1,9 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.4.2"
+ruby "3.4.8"
+
+gem "rails", "~> 8.1.0"
 
 gem "scout_apm"
 
@@ -40,7 +42,7 @@ gem "nokogiri", ">= 1.14.3"
 gem "noticed"
 gem "omniauth"
 gem "omniauth-google-oauth2"
-gem "omniauth-rails_csrf_protection", "~> 1.0"
+gem "omniauth-rails_csrf_protection"
 gem "openweathermap"
 gem "paper_trail"
 gem "pg"
@@ -51,7 +53,6 @@ gem "puma", "~> 6.0"
 gem "pundit"
 gem "rack-attack"
 gem "rack-cors"
-gem "rails", "~> 8.0.0"
 gem "rails-html-sanitizer", ">= 1.4.4"
 gem "redis", "~> 5.0"
 gem "remote_syslog_logger"
@@ -67,11 +68,11 @@ gem "sidekiq"
 gem "sidekiq-scheduler"
 
 # Solid Queue/Cache for database-backed jobs and caching (Kamal migration)
-gem "solid_queue"
-gem "solid_cache"
 gem "mission_control-jobs"
 gem "slim"
 gem "smarter_csv"
+gem "solid_cache"
+gem "solid_queue"
 gem "sprockets-rails"
 gem "stimulus-rails"
 gem "StreetAddress"
@@ -80,7 +81,6 @@ gem "tailwindcss-rails"
 gem "timecop"
 gem "turbo-rails"
 gem "twilio-ruby"
-gem "view_component", "~> 3.11"
 
 gem "rack-mini-profiler", "~> 2.3"
 gem "stackprof"
@@ -99,7 +99,7 @@ group :development do
   gem "factory_bot_rails", "~> 6.2"
   gem "listen", "~> 3.7"
   gem "pry-rails"
-  gem "ruby-lsp", "~> 0.3.7"
+  gem "ruby-lsp"
   gem "web-console", "~> 4.1"
 end
 

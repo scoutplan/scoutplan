@@ -14,11 +14,6 @@ class WeeklyDigestMailer < ApplicationMailer
     mail(to: to_address, from: from_address, subject: subject)
   end
 
-  def weekly_digest_notification_new
-    Rails.logger.warn("WeeklyDigestMailer#weekly_digest_notification to: #{to_address} from: #{from_address}")
-    mail(to: to_address, from: from_address, subject: subject)
-  end
-
   private
 
   # rubocop:disable Metrics/AbcSize
