@@ -12,11 +12,11 @@ class EventsController < UnitContextController
 
   before_action :authenticate_user!, if: :needs_authentication?
   before_action :find_event,
-                except: %i[index list calendar threeup paged_list spreadsheet create new bulk_publish public my_rsvps signups
+                except: %i[index slow_list list calendar threeup paged_list spreadsheet create new bulk_publish public my_rsvps signups
                            repeat_options]
   before_action :collate_rsvps, only: [:show, :rsvps]
-  before_action :set_calendar_dates, only: [:calendar, :list, :paged_list]
-  before_action :remember_unit_events_path, only: [:list, :calendar]
+  before_action :set_calendar_dates, only: [:calendar, :slow_list, :paged_list]
+  before_action :remember_unit_events_path, only: [:slow_list, :list, :calendar]
 
   def needs_authentication?
     return false if params[:action] == "public"
@@ -33,8 +33,8 @@ class EventsController < UnitContextController
       redirect_to calendar_redirect_unit_events_path(current_unit)
     when "threeup"
       redirect_to threeup_unit_events_path(current_unit)
-    when "fast_list"
-      redirect_to fast_list_unit_events_path(current_unit)
+    when "slow_list"
+      redirect_to slow_list_unit_events_path(current_unit)
     else
       redirect_to list_unit_events_path(current_unit)
     end
@@ -62,21 +62,31 @@ class EventsController < UnitContextController
     @versions = @event.versions
   end
 
-  def list
+  def slow_list
     respond_to do |format|
       format.html do
         @current_month = params[:current_month]&.split("-")&.map(&:to_i)
-        cookies[:event_index_variation] = "list"
-        find_list_events
+        cookies[:event_index_variation] = "slow_list"
+        find_slow_list_events
       end
       format.pdf { send_fridge_calendar }
       format.turbo_stream { prepare_turbo_stream }
     end
   end
 
-  def fast_list
-    cookies[:event_index_variation] = "list"
-    find_fast_list_events
+  def list
+    respond_to do |format|
+      format.html do
+        cookies[:event_index_variation] = "list"
+        if params[:chunk].present?
+          find_events_for_chunk
+          render "list_chunk", layout: false
+        else
+          find_list_events
+        end
+      end
+      format.turbo_stream { prepare_list_turbo_stream }
+    end
   end
 
   # TODO: clean this up
@@ -525,7 +535,7 @@ class EventsController < UnitContextController
     @events = scope.all
   end
 
-  def find_list_events
+  def find_slow_list_events
     # base query
     scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
 
@@ -539,6 +549,41 @@ class EventsController < UnitContextController
     scope.order(starts_at: :asc)
 
     @events = scope.all
+  end
+
+  def list_base_scope
+    scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
+    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
+    scope.order(starts_at: :asc)
+  end
+
+  def find_list_events
+    @season_start = current_unit.this_season_starts_at
+    @season_end   = current_unit.this_season_ends_at
+    @initial_end  = (Date.current + 1.month).end_of_month
+    @events = list_base_scope.where("ends_at > ? AND starts_at <= ?", Date.current, @initial_end)
+  end
+
+  def find_events_for_chunk
+    from = Date.parse(params[:from])
+    to   = Date.parse(params[:to])
+    @events = list_base_scope.where("starts_at > ? AND starts_at <= ?", from, to)
+  end
+
+  def prepare_list_turbo_stream
+    from = Date.parse(params[:from])
+    to   = Date.parse(params[:to])
+    @events = list_base_scope.where("starts_at >= ? AND starts_at < ?", from, to)
+
+    # Calculate the previous season for chaining
+    @prev_season_end   = from
+    @prev_season_start = season_start_for(from - 1.day)
+  end
+
+  def season_start_for(date)
+    d = date.beginning_of_month
+    d = d.advance(months: -1) until d.month == Seasons::DEFAULT_SEASON_MONTH
+    d
   end
 
   def find_threeup_events

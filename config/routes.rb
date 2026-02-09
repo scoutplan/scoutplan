@@ -201,6 +201,7 @@ Rails.application.routes.draw do
         get "feed/:token", to: "calendar#index", as: "calendar_feed" # ICS link
         get "public",      to: "events#public", as: "public"
         get "signups",     to: "events#signups", as: "signups"
+        get "slow_list"
         get "list"
         get "paged_list"
         get "threeup"

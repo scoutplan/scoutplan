@@ -1,3 +1,5 @@
+- current_month = []
+
 = turbo_frame_tag :main
   = render partial: "events/header"
 
@@ -17,21 +19,10 @@
   .max-w-4xl.mx-1.md:mx-auto.p-2.md:pb-12
     = render "blank_slate"
 
-    ol#events_list
-      /! Past events loader
-      - if @season_start < Date.current
-        li#past-events-loader.text-center.py-4
-          = link_to "Show earlier events", list_unit_events_path(current_unit, format: :turbo_stream, from: @season_start, to: Date.current), data: { turbo_stream: "true" }, class: "text-brand-500 hover:text-brand-700 text-sm font-medium"
-
-      /! Initial events (today through end of next month)
+    ol#events_list(data-controller="pagination")
       - @events.each do |event|
+        - current_month = [event.starts_at.year, event.starts_at.month]
         = render partial: "events/event", locals: { event: event }
-
-      /! Lazy-load rest of season
-      - if @initial_end < @season_end
-        = turbo_frame_tag "rest_of_season", src: list_unit_events_path(current_unit, chunk: "rest_of_season", from: @initial_end.iso8601, to: @season_end.iso8601), loading: :lazy
-          li.text-center.py-8
-            i.fa-solid.fa-spinner.fa-spin.text-stone-400.text-xl
 
 = turbo_stream.update "page_title" do
   = t("events.index.page_title", unit_name: current_unit.name)
@@ -48,6 +39,7 @@ css:
   .event + .event {
     border-top: 1px solid #e2e8f0;
   }
+
 
   .event-tag-in-progress .event-tag-next, .event-tag-today .event-tag-next {
     display: none;

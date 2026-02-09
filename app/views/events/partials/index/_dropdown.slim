@@ -41,15 +41,15 @@ aside.z-30.block.w-80.mt-1.p-2.absolute.bg-white.text-stone-700.right-2.rounded-
 
 
     / past events
-    - if action_name == "list"
-      = link_to list_unit_events_path(current_unit, before: @events&.first&.id, current_month: @display_month, display_year: @display_year),
+    - if action_name == "slow_list"
+      = link_to slow_list_unit_events_path(current_unit, before: @events&.first&.id, current_month: @display_month, display_year: @display_year),
                 class: "block px-4 py-2 rounded hover:bg-stone-100 rounded",
                 data: { turbo_stream: "true" } do
 
         i.fa-fw.fa-regular.fa-calendar-arrow-up.mr-2
         = t("events.index.view.past")
 
-    = link_to list_unit_events_path(current_unit, format: :pdf),
+    = link_to slow_list_unit_events_path(current_unit, format: :pdf),
               class: "block px-4 py-2 rounded hover:bg-stone-100 rounded",
               data: { turbo_action: "advance" } do
 
@@ -57,10 +57,10 @@ aside.z-30.block.w-80.mt-1.p-2.absolute.bg-white.text-stone-700.right-2.rounded-
       = t("events.index.buttons.print")
 
     - if current_member.admin?
-        = link_to list_unit_events_path(current_unit, format: :pdf, season: "next"),
+        = link_to slow_list_unit_events_path(current_unit, format: :pdf, season: "next"),
                   class: "block px-4 py-2 rounded hover:bg-stone-100 rounded",
                   data: { turbo_action: "advance" } do
-          
+
           i.fa-fw.fa-regular.fa-calendar-arrow-down.mr-2
           = t("events.index.buttons.next_season")
 

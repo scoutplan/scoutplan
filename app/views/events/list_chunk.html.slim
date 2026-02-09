@@ -1,0 +1,3 @@
+= turbo_frame_tag params[:chunk]
+  - @events.each do |event|
+    = render partial: "events/event", locals: { event: event }

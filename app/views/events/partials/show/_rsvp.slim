@@ -3,7 +3,7 @@
 - family_rsvp = FamilyRsvp.new(current_member, event)
 - details_tag_attributes = {class: "mt-2"}
 
-article#rsvp_section.pb-3
+article#rsvp_section.p-4.bg-stone-100.border.border-stone-200.rounded
   header.flex.flex-row.justify-between.items-center.mb-3
     h3.font-bold
       i.fa-light.fa-clipboard-check.mr-2
@@ -11,29 +11,28 @@ article#rsvp_section.pb-3
 
     .right.block
 
-  .bg-transparent.rounded.p-0
-    table.w-full
-      - family_rsvp.active_family_members.each_with_index do |family_member, index|
-        - response_glyph = ApplicationHelper::RESPONSE_GLYPHS[family_member.response.to_sym]
-        - response_color = ApplicationHelper::RESPONSE_COLORS[family_member.response.to_sym]
-        - rsvp = family_rsvp.event_rsvps.find_by(unit_membership_id: family_member.id)
+  table.w-full
+    - family_rsvp.active_family_members.each_with_index do |family_member, index|
+      - response_glyph = ApplicationHelper::RESPONSE_GLYPHS[family_member.response.to_sym]
+      - response_color = ApplicationHelper::RESPONSE_COLORS[family_member.response.to_sym]
+      - rsvp = family_rsvp.event_rsvps.find_by(unit_membership_id: family_member.id)
 
+      tr
+        td.py-1(class="#{index > 0 ? 'border-t border-stone-300' : ''}")
+          = family_member.first_name
+
+        td.py-1.text-right(class="#{index > 0 ? 'border-t border-stone-300' : ''}")
+          i.fa-solid.fa-fw(class="#{response_glyph} text-#{response_color}")
+          | &nbsp;
+          = t("rsvp_#{family_member.response.to_s}").downcase
+      
+      - if event.shifts? && rsvp.present?
         tr
-          td.py-1(class="#{index > 0 ? 'border-t border-stone-300' : ''}")
-            = family_member.first_name
-
-          td.py-1.text-right(class="#{index > 0 ? 'border-t border-stone-300' : ''}")
-            i.fa-solid.fa-fw(class="#{response_glyph} text-#{response_color}")
-            | &nbsp;
-            = t("rsvp_#{family_member.response.to_s}").downcase
-        
-        - if event.shifts? && rsvp.present?
-          tr
-            td.pb-2(colspan="2")
-              - rsvp.event_shift_ids&.each do |shift_id|
-                - shift = event.shifts.find_by(id: shift_id)
-                .inline-block.px-2.py-1.mr-1.mb-1.bg-sky-200.text-sky-900.rounded.text-xs.font-medium
-                  = shift.name
+          td.pb-2(colspan="2")
+            - rsvp.event_shift_ids&.each do |shift_id|
+              - shift = event.shifts.find_by(id: shift_id)
+              .inline-block.px-2.py-1.mr-1.mb-1.bg-sky-200.text-sky-900.rounded.text-xs.font-medium
+                = shift.name
 
   - if event.rsvp_open? && policy(event).rsvp?
     - details_tag_attributes[:open] = "" if params[:variation] == "rsvp"
