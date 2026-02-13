@@ -1,0 +1,11 @@
+<%= turbo_frame_tag :main do %>
+  <% if params[:view] == "list" || params[:tag].present? %>
+    <%= render "list" %>
+  <% else %>
+    <%= render "tiles" %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.update "page_title" do %>
+  <%= t(".page_title", unit_name: current_unit.name) %>
+<% end %>

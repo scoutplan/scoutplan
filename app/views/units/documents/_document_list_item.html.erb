@@ -1,0 +1,39 @@
+<% checked ||= false %>
+
+<li class="flex flex-row items-center gap-3 multi-selector-wrapper tagged-item group" id="<%= dom_id(document) %>" data-tags="<%= document.document_tags.map(&:name).join(",") %>">
+  <% file = document.file %>
+  <% color_key = "file_color_#{file.filename.extension}" %>
+  <% color = t(color_key, default: "#b91c1c") %>
+
+  <div class="hidden md:block w-5">
+    <%= label_tag nil, class: "multi-selector-label hidden group-hover:block" do %>
+      <%= check_box_tag "document_ids[]",
+            document.id,
+            checked,
+            class: "hidden multi-selector-checkbox peer",
+            data: { action: "change->documents#multiSelect" }
+      %>
+      
+      <i class="fa-thin fa-square text-stone-900 hover:text-brand-500 hover:fa-regular fa-lg cursor-pointer peer-checked:hidden"></i>
+      <i class="fa-solid fa-check-square text-brand-500 hover:text-brand-500 fa-lg cursor-pointer hidden peer-checked:inline-block"></i>
+    <% end %>
+  </div>
+
+  <div class="item-details border-t border-stone-300 min-w-0 w-full">
+    <%= link_to rails_blob_path(file, disposition: "attachment"),
+                class: "flex flex-col md:flex-row gap-1 md:gap-2 md:items-center md:justify-between block px-2 py-2 group-hover:bg-stone-100 focus:bg-brand-100",
+                data: { turbo_frame: "sidebar" } do %>
+      <div class="left text-sm md:text-base text-clip overflow-hidden min-w-0 shrink-0 grow truncation-container" title="<%= file.filename.base %>">
+        <i class="fa-fw fa-regular fa-file-<%= file.filename.extension %>" style="color: <%= color %>"></i>
+        &nbsp;
+        <span class="truncatable" data-original-text="<%= file.filename.base %>">
+          <%= file.filename.base %>
+        </span>
+      </div>
+
+      <div class="hidden md:block right text-sm text-right shrink-0">
+        <%= render partial: "units/documents/document_tags", locals: { document: document } %>
+      </div>
+    <% end %>
+  </div>
+</li>

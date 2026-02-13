@@ -56,6 +56,7 @@ gem "remote_syslog_logger"
 gem "rest-client"
 gem "ruby-openai"
 gem "sanitize", ">= 6.0.2"
+gem "sass-embedded"
 gem "sentry-ruby"
 # Solid Queue/Cache for database-backed jobs and caching
 gem "mission_control-jobs"

@@ -1,6 +1,8 @@
+- @home_layout = YAML.load(current_unit.settings(:documents).home_layout)
+
 = turbo_frame_tag :main
   .px-2
-    = render partial: "header"
+    / = render partial: "header"
 
     .max-w-4xl.mx-auto.p-12
       header.pb-8

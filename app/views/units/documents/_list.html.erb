@@ -1,0 +1,22 @@
+<ol id="documents_list" class="w-full min-w-0" data-controller="truncation">
+  <%= render partial: "document_list_item", collection: @documents, as: :document %>
+</ol>
+
+<style>
+  #deselect_all_button {
+    display: none;
+  }
+
+  body:has(.multi-selector-checkbox:checked) {
+    .multi-selector-label {
+      display: block;
+    }
+    #deselect_all_button {
+      display: inline-block;
+    }
+  }
+
+  #documents_list li:has(.multi-selector-checkbox:checked) {
+    .item-details { background-color: #f7fafc; }
+  }
+</style>
