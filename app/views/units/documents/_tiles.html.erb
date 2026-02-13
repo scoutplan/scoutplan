@@ -1,0 +1,27 @@
+<% @home_layout = YAML.load(current_unit.settings(:documents).home_layout) %>
+
+<%= turbo_frame_tag :main do %>
+  <div class="px-2">
+    <%# render partial: "header" %>
+
+    <div class="max-w-4xl mx-auto p-12">
+      <header class="pb-8">
+        <h1 class="text-2xl font-semibold">
+          <%= t(".title") %>
+        </h1>
+
+        <% if UnitDocumentPolicy.new(current_member, Document).create? %>
+          <%= render partial: "upload_form" %>
+        <% end %>
+      </header>
+
+      <% @home_layout.each do |element| %>
+        <%= render partial: "units/documents/home_layout/#{element['type']}", locals: { element_definition: element } %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<%= turbo_stream.update "page_title" do %>
+  <%= t(".page_title", unit_name: current_unit.name) %>
+<% end %>

@@ -147,6 +147,10 @@ class Unit < ApplicationRecord
     end
   end
 
+  def library_layout?
+    settings(:documents).home_layout.present?
+  end
+
   private
 
   # TODO: move this somewhere else
