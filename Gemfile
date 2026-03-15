@@ -106,3 +106,5 @@ group :test do
 end
 
 gem "rack", "~> 2.2"
+
+gem "sass-embedded", "~> 1.98"
