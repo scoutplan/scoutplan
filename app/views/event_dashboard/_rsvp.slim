@@ -33,7 +33,7 @@ li.member-item.filterable-item.flex.flex-row.justify-between.items-center.group(
                 title: "Payment not yet received in full for this family. Click to record payment",
                 draggable: false,
                 data: { turbo_frame: "modal" } do
-        - if family_rsvp.paid? == :in_full                
+        - if family_rsvp.payment_status == :in_full                
           i.fa-regular.fa-circle-check.text-green-800.dark:text-green-600
         - else
           i.fa-solid.fa-triangle-exclamation.text-green-800.dark:text-green-600

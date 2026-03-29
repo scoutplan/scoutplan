@@ -26,7 +26,7 @@ article.py-3
       .inline = " + transaction fees"
 
   - if Flipper.enabled?(:payments, current_unit) && current_unit.payment_account.present? && family_rsvp.any_accepted?
-    - if family_rsvp.paid? == :in_full
+    - if family_rsvp.payment_status == :in_full
       p.mt-3.text-sm.font-semibold
         i.fa-solid.fa-check.text-lime-600.mr-2
         = t(".paid")

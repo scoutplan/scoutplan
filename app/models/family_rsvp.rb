@@ -22,7 +22,7 @@ class FamilyRsvp
     payments.paid.sum(&:amount_in_dollars)
   end
 
-  def paid?
+  def payment_status
     return :in_full unless balance_due.positive?
     return :partial if amount_paid.positive?
 

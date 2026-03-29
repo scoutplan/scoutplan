@@ -10,7 +10,7 @@ RSpec.describe PaymentsService, type: :model do
     @rsvp = @event.rsvps.create!(unit_membership: @member, response: "accepted", respondent: @member)
   end
 
-  describe "#paid?" do
+  describe "payment_status" do
     before do
       @service = PaymentsService.new(@event, @member)
     end
@@ -20,12 +20,12 @@ RSpec.describe PaymentsService, type: :model do
     end
 
     it "returns false if no payment is made" do
-      expect(@service.paid?).to eq(:none)
+      expect(@service.payment_status).to eq(:none)
     end
 
     it "returns true if a payment is made" do
       FactoryBot.create(:payment, event: @event, unit_membership: @member, amount: 2000)
-      expect(@service.paid?).to eq(:in_full)
+      expect(@service.payment_status).to eq(:in_full)
     end
 
     it "returns partial" do
@@ -33,7 +33,7 @@ RSpec.describe PaymentsService, type: :model do
       family_member = FactoryBot.create(:member, unit: @unit)
       family_member.parent_relationships.create(parent_unit_membership: @member)
       @event.rsvps.create!(unit_membership: family_member, response: "accepted", respondent: @member)
-      expect(@service.paid?).to eq(:partial)
+      expect(@service.payment_status).to eq(:partial)
     end
   end
 end

@@ -47,7 +47,7 @@
             - family_rsvp = FamilyRsvp.new(unit_membership, event)
 
             p(style="color: #15803d; margin-top: 0.5em;")
-              - if family_rsvp.paid? == :in_full
+              - if family_rsvp.payment_status == :in_full
                 = t("events.partials.event_row.fully_paid")
               - else
                 = t("events.partials.event_row.payment_outstanding")        

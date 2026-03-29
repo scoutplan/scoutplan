@@ -85,7 +85,7 @@ class EventRsvp < ApplicationRecord
     balance_due.zero?
   end
 
-  def paid?
+  def payment_status
     return :in_full if balance_due.zero?
     return :partial if amount_paid.positive?
 
@@ -94,7 +94,6 @@ class EventRsvp < ApplicationRecord
 
   ### approval methods
   def enforce_approval_policy
-    puts "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
     return unless requires_approval?
 
     puts "I am here"

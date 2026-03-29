@@ -106,16 +106,16 @@ RSpec.describe EventRsvp, type: :model do
     end
 
     it "calculates the amount paid" do
-      expect(@youth_rsvp.paid?).to eq(:none)
+      expect(@youth_rsvp.payment_status).to eq(:none)
       @event.payments.create(unit_membership: @youth_member, amount: 100, method: "cash", received_by: @parent)
       expect(@youth_rsvp.amount_paid).to eq(1)
       expect(@youth_rsvp.balance_due).to eq(4)
-      expect(@youth_rsvp.paid?).to eq(:partial)
+      expect(@youth_rsvp.payment_status).to eq(:partial)
 
       @event.payments.create(unit_membership: @youth_member, amount: 400, method: "cash", received_by: @parent)
       expect(@youth_rsvp.amount_paid).to eq(5)
       expect(@youth_rsvp.balance_due).to eq(0)
-      expect(@youth_rsvp.paid?).to eq(:in_full)
+      expect(@youth_rsvp.payment_status).to eq(:in_full)
     end
 
     it "ignores declined RSVPs" do

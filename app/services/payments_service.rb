@@ -9,7 +9,7 @@ class PaymentsService
     @member = member
   end
 
-  def paid?
+  def payment_status
     return :in_full if family_amount_due.zero? || family_amount_due.negative?
     return :partial if family_amount_paid.positive?
     return :none if family_amount_paid.zero?
@@ -36,7 +36,7 @@ class PaymentsService
   end
 
   def family_amount_total
-    res = @event.cost_adult * (family_rsvps&.accepted&.adult&.count || 0) + @event.cost_youth * (family_rsvps&.accepted&.youth&.count || 0)
+    (@event.cost_adult * (family_rsvps&.accepted&.adult&.count || 0)) + (@event.cost_youth * (family_rsvps&.accepted&.youth&.count || 0))
   end
 
   def family_amount_due
