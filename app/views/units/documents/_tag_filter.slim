@@ -25,7 +25,7 @@ section.px-6.pt-16.w-60.2xl:w-72.text-sm.hidden.lg:block.border-r.h-full
                   style: "background-color: #{colors[100]}; color: #{colors[800]}"
 
     - if params[:tag] == "none"
-      = link_to files_unit_documents_path(current_unit),
+      = link_to unit_documents_path(current_unit),
                 class: "block p-1 pr-2 rounded w-full box-border border border-stone-500 hover:bg-stone-100 flex flex-row justify-between items-center",
                 data: { turbo_frame: "main" } do
         span Untagged

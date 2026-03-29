@@ -15,5 +15,5 @@ section.py-6
 
       footer
         = link_to "Read the back issues",
-                  files_unit_documents_path(current_unit, tag: tag), class: "inline-block border border-stone-300 text-stone-500 hover:border-stone-600 hover:bg-stone-100 hover:text-stone-900 rounded px-4 py-2",
+                  unit_documents_path(current_unit, tag: tag), class: "inline-block border border-stone-300 text-stone-500 hover:border-stone-600 hover:bg-stone-100 hover:text-stone-900 rounded px-4 py-2",
                   data: { turbo_action: "advance" }

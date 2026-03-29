@@ -36,7 +36,7 @@
               - else
                 = "tagged with ##{params[:tag]}"
 
-              = link_to "Clear filter", files_unit_documents_path(current_unit),
+              = link_to "Clear filter", unit_documents_path(current_unit),
                         class: "text-brand-500 ml-2 border border-brand-500 px-2 py-1 rounded hover:bg-brand-100 hover:text-brand-700 hover:border-brand-700",
                         data: { turbo_frame: "main", turbo_action: "advance" }
 
