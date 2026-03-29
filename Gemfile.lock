@@ -614,7 +614,7 @@ GEM
       lint_roller (~> 1.1)
       rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.47.1, < 2.0)
-    ruby-lsp (0.26.5)
+    ruby-lsp (0.26.9)
       language_server-protocol (~> 3.17.0)
       prism (>= 1.2, < 2.0)
       rbs (>= 3, < 5)
@@ -851,7 +851,7 @@ DEPENDENCIES
   remote_syslog_logger
   rest-client
   rspec-rails (~> 6.0)
-  ruby-lsp
+  ruby-lsp (>= 0.26.9)
   ruby-openai
   sanitize (>= 6.0.2)
   sass-embedded (~> 1.98)

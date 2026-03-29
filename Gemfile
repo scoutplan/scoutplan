@@ -92,7 +92,7 @@ group :development do
   gem "factory_bot_rails", "~> 6.2"
   gem "listen", "~> 3.7"
   gem "pry-rails"
-  gem "ruby-lsp"
+  gem "ruby-lsp", ">= 0.26.9"
   gem "web-console", "~> 4.3"
 end
 
