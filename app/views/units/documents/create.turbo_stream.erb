@@ -1,0 +1,6 @@
+<% @documents.each do |document| %>
+  <%= turbo_stream.append "documents_table_body" do %>
+    <%= render partial: "units/documents/index/document",
+          locals: { document: document, can_edit: @can_edit } %>
+  <% end %>
+<% end %>

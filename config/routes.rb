@@ -93,12 +93,13 @@ Rails.application.routes.draw do
     scope module: :units do
       resources :documents, path: "library" do
         collection do
-          get "files", to: "documents#tag", as: "files"
-          get "list", as: "list"
+          # get "files", to: "documents#tag", as: "files"
+          # get "list", as: "list"
           post "batch_update"
           post "batch_delete"
           post "batch_tag"
           post "batch_untag"
+          post "batch_clear_tags"
         end
       end
     end

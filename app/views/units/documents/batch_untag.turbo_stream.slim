@@ -1,2 +1,4 @@
+- can_edit = UnitDocumentPolicy.new(current_member, Document).edit?
+
 - @documents.each do |document|
-  = turbo_stream.replace "#{dom_id(document)}", partial: "units/documents/document_list_item", locals: { document: document, can_delete: @can_delete, checked: true }
+  = turbo_stream.replace dom_id(document), partial: "units/documents/index/document", locals: { document: document, can_edit: can_edit }

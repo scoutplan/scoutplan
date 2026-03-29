@@ -3,17 +3,19 @@ class Units::DocumentsController < UnitContextController
 
   def index
     authorize Document, policy_class: UnitDocumentPolicy
-    @documents = current_unit.documents
+    @selected_tag = params[:tag]
+    @available_tags = available_document_tags
     @home_layout = YAML.load(current_unit.settings(:documents).home_layout)
-    redirect_to files_unit_documents_path(current_unit) if @home_layout.empty?
+    set_page_and_extract_portion_from filtered_documents(@selected_tag), per_page: [25]
+    return redirect_to files_unit_documents_path(current_unit) if @home_layout.empty?
   end
 
   def create
     authorize Document, policy_class: UnitDocumentPolicy
+    @can_edit = UnitDocumentPolicy.new(current_member, Document).edit?
     @documents = []
     files = params[:documents].reject(&:blank?)
     files.each { |file| @documents << current_unit.documents.create!(file: file) }
-    redirect_to files_unit_documents_path(current_unit)
   end
 
   def update
@@ -85,6 +87,16 @@ class Units::DocumentsController < UnitContextController
     batch_apply_tag(:remove)
   end
 
+  def batch_clear_tags
+    authorize Document, :batch_tag?, policy_class: UnitDocumentPolicy
+    @can_edit = UnitDocumentPolicy.new(current_member, Document).edit?
+    @documents = current_unit.documents.where(id: params[:document_ids].split(","))
+    @documents.each do |document|
+      document.document_tag_list.clear
+      document.save
+    end
+  end
+
   # rubocop:disable Metrics/AbcSize
   def batch_apply_tag(operation)
     @document_ids = params[:document_ids].split(",")
@@ -103,5 +115,25 @@ class Units::DocumentsController < UnitContextController
     return "full_page" if action_name == "tag"
 
     "application"
+  end
+
+  private
+
+  def available_document_tags
+    ActsAsTaggableOn::Tagging.joins(:tag)
+                             .where(context: "document_tags", tenant: current_unit.id)
+                             .pluck(Arel.sql("DISTINCT tags.name"))
+                             .sort
+  end
+
+  def filtered_documents(tag)
+    scope = current_unit.documents.includes(file_attachment: :blob)
+                        .order("active_storage_blobs.filename ASC")
+    if tag == "_untagged"
+      scope = scope.left_joins(:taggings).where(taggings: { id: nil })
+    elsif tag.present? && tag != "_all"
+      scope = scope.tagged_with(tag)
+    end
+    scope.all
   end
 end

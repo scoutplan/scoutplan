@@ -1,0 +1,23 @@
+<div id="<%= dom_id(document) %>"
+     class="tagged-item grid grid-cols-[2.5rem_1fr_auto] items-center hover:bg-stone-100 group [&:has(:checked)]:bg-stone-100"
+     data-tags="<%= document.document_tag_list.join(",") %>">
+  <div class="pl-3 py-2">
+    <% if can_edit %>
+      <%= check_box_tag "document_ids[]", document.id, false,
+            class: "document-item multi-selector-checkbox hidden group-hover:block checked:block size-4 rounded border-stone-500 hover:border-stone-800 text-stone-600 focus:ring-stone-500 focus:ring-0",
+            data: { action: "change->list-selection#selectItem" } %>
+    <% end %>
+  </div>
+
+  <div class="py-2">
+    <%= link_to rails_blob_path(document.file, disposition: "attachment"),
+          class: "block truncatable",
+          data: { original_text: document.file.filename.base } do %>
+      <%= document.file.filename.base %>
+    <% end %>
+  </div>
+
+  <div class="px-3 py-2 text-sm text-stone-500 whitespace-nowrap">
+    <%= document.updated_at.strftime("%B %d, %Y %I:%M %p") %>
+  </div>
+</div>

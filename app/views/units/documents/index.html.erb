@@ -1,0 +1,130 @@
+<% at_home = params[:tag].blank? && @home_layout.present? %>
+
+<%= turbo_frame_tag :main do %>
+  <div class="w-full"
+       data-controller="document-index list-selection"
+       data-document-index-unit-id-value="<%= current_unit.id %>"
+       data-list-selection-unit-id-value="<%= current_unit.id %>"
+  >
+    <header class="px-10 py-2 flex items-center justify-between sticky top-0 bg-white border-b border-stone-300">
+      <div class="flex gap-4">
+        <h1 class="text-xl font-semibold">
+          <% if params[:tag].present? && params[:tag] == "_all" %>
+            All Files
+          <% elsif params[:tag].present? && params[:tag] == "_untagged" %>
+            Untagged Files
+          <% elsif params[:tag].present? %>
+            Files tagged "<%= @selected_tag %>"
+          <% else %>
+            <%= t(".title") %>
+          <% end %>
+        </h1>
+
+        <% if !at_home %>
+          <%= link_to unit_documents_path(current_unit),
+                class: "cursor-pointer text-sm text-stone-500 hover:bg-stone-100 hover:text-stone-900 rounded px-2 py-1",
+                data: { turbo_action: "advance" } do %>
+            <i class="fa-regular fa-arrow-left mr-0.5"></i>
+            Back to Library Home
+          <% end %>        
+        <% end %>
+      </div>
+
+      <div class="flex items-center gap-1">
+        <% if !at_home %>
+          <% if @available_tags.any? %>
+            <select data-action="change->document-index#navigateByTag"
+                    class="text-sm border border-stone-300 rounded px-2 py-1 w-48">
+              <option value="" disabled <%= "selected" unless @selected_tag.present? %>>Select a tag to filter</option>
+              <option value="_all" <%= "selected" if @selected_tag == "_all" %>>All</option>
+              <option value="_untagged" <%= "selected" if @selected_tag == "_untagged" %>>Untagged</option>
+              <% @available_tags.each do |tag| %>
+                <option value="<%= tag %>" <%= "selected" if @selected_tag.downcase == tag.downcase %>><%= tag %></option>
+              <% end %>
+            </select>
+          <% end # if @available_tags.any? %>
+        <% else %>
+          <%= link_to unit_documents_path(current_unit, tag: "_all"),
+                class: "cursor-pointer text-sm text-stone-500 hover:bg-stone-100 hover:text-stone-900 rounded px-2 py-1",
+                data: { turbo_action: "advance" } do %>
+            View all documents
+          <% end # link_to %>
+        <% end %>
+
+        <% if UnitDocumentPolicy.new(current_member, Document).create? %>
+          <%= render partial: "upload_form" %>
+        <% end %>
+      </div>
+    </header>
+
+    <% if @home_layout.present? && params[:tag].blank? %>
+      <div class="max-w-4xl mx-auto">
+        <% @home_layout.each do |element| %>
+          <%= render partial: "units/documents/home_layout/#{element["type"]}", locals: { element_definition: element } %>
+        <% end %>
+      </div>
+    <% else %>
+      <%= render partial: "units/documents/index/list" %>
+    <% end %>
+
+    <%# Floating toolbar — visible when documents are selected %>
+    <div class="bulk-tag-toolbar fixed bottom-6 left-1/2 -translate-x-1/2 bg-white border border-stone-300 rounded-lg shadow-xl px-3 py-3 flex items-center gap-2 z-30">
+      <button type="button"
+              class="text-sm text-stone-600 bg-stone-100 hover:bg-stone-200 rounded-full px-3 py-1.5 flex items-center gap-1.5 cursor-pointer"
+              data-list-selection-target="selectionPrompt"
+              data-action="click->list-selection#deselectAll">
+        <span>0 selected</span>
+        <i class="fa-solid fa-xmark text-stone-400"></i>
+      </button>
+
+      <details class="relative">
+        <summary class="text-sm bg-brand-500 hover:bg-brand-600 text-white rounded px-3 py-1.5 font-medium cursor-pointer list-none">
+          <i class="fa-solid fa-tag mr-1"></i> Tag
+        </summary>
+
+        <div class="absolute bottom-full left-0 mb-2 w-64 bg-white border border-stone-300 rounded-lg shadow-xl">
+          <div class="p-2 border-b border-stone-200">
+            <input type="text"
+                   placeholder="Search or create tag..."
+                   class="w-full text-sm border border-stone-300 rounded px-2 py-1.5"
+                   data-document-index-target="tagSearchField"
+                   data-action="input->document-index#performTagSearch">
+          </div>
+
+          <ul class="max-h-48 overflow-y-auto p-1" data-document-index-target="tagList">
+            <% @available_tags.each do |tag| %>
+              <li class="tag-list-item" data-tag-name="<%= tag %>">
+                <button type="button"
+                        class="w-full text-left text-sm px-3 py-1.5 rounded hover:bg-stone-100"
+                        data-tag-name="<%= tag %>"
+                        data-action="click->document-index#batchTagSelected">
+                  <%= tag %>
+                </button>
+              </li>
+            <% end %>
+          </ul>
+
+          <div class="p-2 border-t border-stone-200 hidden" data-document-index-target="newTagName">
+            <button type="button"
+                    class="w-full text-left text-sm px-3 py-1.5 rounded hover:bg-stone-100 text-brand-600"
+                    data-action="click->document-index#batchNewTagSelected">
+              <i class="fa-solid fa-plus mr-1"></i>
+              Create "<span data-document-index-target="newTagLabel"></span>"
+            </button>
+          </div>
+        </div>
+      </details>
+
+      <button type="button"
+              class="text-sm bg-stone-200 hover:bg-stone-300 text-stone-700 rounded px-3 py-1.5 font-medium cursor-pointer"
+              data-action="click->document-index#batchClearTags">
+        Untag
+      </button>
+
+    </div>
+  </div>
+
+  <%= turbo_stream.update "page_title" do %>
+    <%= t(".page_title", unit_name: current_unit.name) %>
+  <% end %>
+<% end %>

@@ -3,9 +3,12 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.4.8"
 
-gem "rails", "~> 8.1.0"
-
+# needs to go first
 gem "scout_apm"
+
+gem "rails", github: "rails/rails", branch: "main"
+
+gem "geared_pagination"
 
 gem "active_storage_validations"
 gem "acts_as_list"
@@ -90,7 +93,7 @@ group :development do
   gem "listen", "~> 3.7"
   gem "pry-rails"
   gem "ruby-lsp"
-  gem "web-console", "~> 4.1"
+  gem "web-console", "~> 4.3"
 end
 
 group :test do

@@ -19,6 +19,9 @@ class UnitMembershipsController < UnitContextController
 
   def edit
     authorize @target_membership
+    @family_members = load_family_members
+    @child_ids = @target_membership.children.pluck(:id).to_set
+    @parent_ids = @target_membership.parents.pluck(:id).to_set
   end
 
   def new
@@ -31,7 +34,6 @@ class UnitMembershipsController < UnitContextController
     authorize @target_membership
     @user = @target_membership.user
     @page_title = @user.full_name
-    @rsvp_events = current_unit.events.published.future.rsvp_required
     page_title [current_unit.name, @user.full_display_name]
   end
 
@@ -106,9 +108,17 @@ class UnitMembershipsController < UnitContextController
 
   private
 
+  def load_family_members
+    scope = current_unit.unit_memberships.excluding_inactive.joins(:user)
+    same_name = scope.where("users.last_name = ?", @target_membership.last_name).order(:first_name)
+    others = scope.where.not("users.last_name = ?", @target_membership.last_name).order(:last_name, :first_name)
+    same_name + others
+  end
+
   def find_membership
-    @target_membership = UnitMembership.includes(:parent_relationships,
-                                                 :child_relationships).find(params[:member_id] || params[:id])
+    @target_membership = UnitMembership.includes(:user, :tags,
+                                                 parents: :user,
+                                                 children: :user).find(params[:member_id] || params[:id])
     @target_user = @target_membership.user
     @current_unit = @unit = @target_membership.unit
     @current_member = @unit.membership_for(current_user)

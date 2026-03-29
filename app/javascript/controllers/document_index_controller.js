@@ -1,18 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
+import { Turbo } from "@hotwired/turbo-rails"
 import { post } from "@rails/request.js"
 
 export default class extends Controller {
-  static targets = [ "tagSearchField", "tagList", "newTagName", "tagFilterSelect" ];
+  static targets = [ "tagSearchField", "tagList", "newTagName", "newTagLabel", "tagFilterSelect" ];
   static values = { unitId: Number };
 
   connect() {
-    let queryParams = new URLSearchParams(window.location.search);
-    let tagName = queryParams.get("tag");
-    if (tagName) {
-      this.performFilter(tagName);
-    //   this.tagFilterSelectTarget.value = tagName;
-    }
-    window.history.replaceState({}, "", window.location.pathname);
   }
 
   openMultiSelect(event) {
@@ -48,25 +42,30 @@ export default class extends Controller {
     body.append(`tag_name`, tagName);
     const url = `/u/${this.unitIdValue}/library/batch_tag`;
     post(url, { body: body, responseKind: "turbo-stream" });
-    event.currentTarget.classList.toggle("hidden", true);
 
-    this.tagListTarget.classList.toggle("hidden", true);
     this.tagSearchFieldTarget.value = "";
-    this.newTagNameTarget.innerText = "";
+    if (this.hasNewTagNameTarget) this.newTagNameTarget.classList.toggle("hidden", true);
+    if (this.hasNewTagLabelTarget) this.newTagLabelTarget.textContent = "";
   }
 
-  batchNewTagSelected(event) {
-    const tagName = this.newTagNameTarget.innerText;
+  batchClearTags() {
+    const body = new FormData();
+    body.append(`document_ids`, this.selectedItemIds());
+    const url = `/u/${this.unitIdValue}/library/batch_clear_tags`;
+    post(url, { body: body, responseKind: "turbo-stream" });
+  }
+
+  batchNewTagSelected() {
+    const tagName = this.hasNewTagLabelTarget ? this.newTagLabelTarget.textContent : this.newTagNameTarget.innerText;
     const body = new FormData();
     body.append(`document_ids`, this.selectedItemIds());
     body.append(`tag_name`, tagName);
     const url = `/u/${this.unitIdValue}/library/batch_tag`;
     post(url, { body: body, responseKind: "turbo-stream" });
-    event.currentTarget.classList.toggle("hidden", true);
 
-    this.tagListTarget.classList.toggle("hidden", true);
     this.tagSearchFieldTarget.value = "";
-    this.newTagNameTarget.innerText = "";
+    if (this.hasNewTagNameTarget) this.newTagNameTarget.classList.toggle("hidden", true);
+    if (this.hasNewTagLabelTarget) this.newTagLabelTarget.textContent = "";
   }
 
   selectedItems() {
@@ -78,20 +77,38 @@ export default class extends Controller {
   }
 
   performTagSearch() {
-    const search = this.tagSearchFieldTarget.value;
-    const tagList = this.tagListTarget;
-    tagList.classList.toggle("hidden", search.length === 0);
-    const tagListItems = tagList.querySelectorAll(".tag-list-item");
+    const search = this.tagSearchFieldTarget.value.trim();
+    const tagListItems = this.tagListTarget.querySelectorAll(".tag-list-item");
+    let exactMatch = false;
     tagListItems.forEach(item => {
       const tagName = item.dataset.tagName;
-      item.classList.toggle("hidden", !tagName.includes(search));
+      const matches = search.length === 0 || tagName.toLowerCase().includes(search.toLowerCase());
+      item.classList.toggle("hidden", !matches);
+      if (tagName.toLowerCase() === search.toLowerCase()) exactMatch = true;
     });
-    this.newTagNameTarget.innerText = search;
+    if (this.hasNewTagNameTarget) {
+      this.newTagNameTarget.classList.toggle("hidden", search.length === 0 || exactMatch);
+    }
+    if (this.hasNewTagLabelTarget) {
+      this.newTagLabelTarget.textContent = search;
+    }
   }
 
   filterByTag(event) {
     const tagName = event.currentTarget.value;
     this.performFilter(tagName);
+  }
+
+  navigateByTag(event) {
+    const tag = event.currentTarget.value;
+    const url = new URL(window.location);
+    console.log("Navigating to tag", tag);
+    if (tag) {
+      url.searchParams.set("tag", tag);
+    } else {
+      url.searchParams.delete("tag");
+    }
+    Turbo.visit(url.toString(), { action: "advance" });
   }
 
   performFilter(tagName) {

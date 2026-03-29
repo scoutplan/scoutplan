@@ -1,0 +1,27 @@
+<% can_edit = UnitDocumentPolicy.new(current_member, Document).edit? %>
+
+<div class="divide-y divide-stone-200 mb-8">
+  <div class="grid grid-cols-[2.0rem_1fr_auto] px-2 py-2 text-sm font-medium text-stone-500 border-b border-stone-300">
+    <div></div>
+    <div>Name</div>
+    <div class="whitespace-nowrap">Date</div>
+  </div>
+
+  <div id="documents_table_body">
+    <%= render partial: "units/documents/index/page" %>
+  </div>
+</div>
+
+<style>
+  .bulk-tag-toolbar {
+    display: none;
+  }
+
+  body:has(.document-item:checked) .bulk-tag-toolbar {
+    display: flex;
+  }
+
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

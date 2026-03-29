@@ -15,7 +15,7 @@ export default class extends Controller {
     });
     const selectedItems = Array.from(this.element.querySelectorAll(".document-item:checked"));
     this.element.classList.toggle("selections-present", selectedItems.length > 0);
-    this.selectionPromptTarget.textContent = `${selectedItems.length} selected`;
+    this.selectionPromptTarget.querySelector("span").textContent = `${selectedItems.length} selected`;
   }
 
   selectItem(event) {
@@ -36,7 +36,7 @@ export default class extends Controller {
     if (selectedItems.length === 0) return;
 
     // update prompt
-    this.selectionPromptTarget.textContent = `${selectedItems.length} selected`;
+    this.selectionPromptTarget.querySelector("span").textContent = `${selectedItems.length} selected`;
 
     // determine tags common to all selected items
     var tags = [];

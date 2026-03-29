@@ -1,0 +1,16 @@
+<% can_edit = UnitDocumentPolicy.new(current_member, Document).edit? %>
+
+<%= turbo_frame_tag "documents_page_#{@page.number}" do %>
+  <%= render partial: "units/documents/index/document",
+        collection: @page.records,
+        as: :document,
+        locals: { can_edit: can_edit } %>
+
+  <% unless @page.last? %>
+    <%= turbo_frame_tag "documents_page_#{@page.next_param}",
+          src: unit_documents_path(current_unit, tag: @selected_tag, page: @page.next_param),
+          loading: :lazy do %>
+      <div class="text-center text-sm text-stone-500 py-4">Loading more...</div>
+    <% end %>
+  <% end %>
+<% end %>

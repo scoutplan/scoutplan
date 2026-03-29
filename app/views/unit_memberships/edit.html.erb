@@ -1,0 +1,13 @@
+<%= turbo_frame_tag :main, src: unit_members_path(current_unit), loading: :lazy %>
+
+<%= turbo_frame_tag :modal do %>
+  <%= content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 md:pb-16 bg-black/50 z-20", data: { open: "true", controller: "modal", modal_return_url_value: unit_unit_memberships_path(current_unit) } do %>
+    <%= render "form", unit_membership: @unit_membership %>
+  <% end %>
+
+  <%= turbo_frame_tag :modal_overlay %>
+<% end %>
+
+<%= turbo_stream.update "page_title" do %>
+  <%= t(".page_title", name: @target_membership.display_name, unit_name: current_unit.name) %>
+<% end %>

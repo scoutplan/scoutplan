@@ -141,11 +141,7 @@
                       = ":"
 
 
-                  - if @target_membership.persisted?
-                    - members = current_unit.unit_memberships.excluding_inactive.joins(:user).where("users.last_name = ?", @target_membership.last_name).order(:first_name)
-                    - members += current_unit.unit_memberships.excluding_inactive.joins(:user).where.not("users.last_name = ?", @target_membership.last_name).order(:last_name, :first_name)
-                  - else
-                    - members = current_unit.unit_memberships.excluding_inactive.joins(:user).order(:last_name, :first_name)
+                  - members = @family_members || current_unit.unit_memberships.excluding_inactive.joins(:user).order(:last_name, :first_name)
 
                   ul#relationship_options_children.overflow-y-scroll(data-member-edit-target="parentRelationships")
                     - members.each do |member|
@@ -162,7 +158,7 @@
 
                           = check_box_tag "event[event_organizer_unit_membership_ids][]",
                                           member.id,
-                                          checked: @target_membership.children.include?(member),
+                                          checked: @child_ids&.include?(member.id),
                                           class: "peer",
                                           id: "event_event_organizer_unit_membership_id_#{member.id}",
                                           data: { action: "change->member-edit#changeRelationship", value: member.id, relationship_type: "parent", member_id: @target_membership.id }
@@ -182,7 +178,7 @@
 
                           = check_box_tag "event[event_organizer_unit_membership_ids][]",
                                           member.id,
-                                          checked: @target_membership.parents.include?(member),
+                                          checked: @parent_ids&.include?(member.id),
                                           class: "peer",
                                           id: "event_event_organizer_unit_membership_id_#{member.id}",
                                           data: { action: "change->member-edit#changeRelationship", value: member.id, relationship_type: "child", member_id: @target_membership.id }
