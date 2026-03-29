@@ -24,7 +24,7 @@ gem "combine_pdf"
 gem "convert_api"
 gem "coveralls_reborn", require: false
 gem "daypack", git: "https://github.com/scoutplan/daypack.git"
-gem "devise"
+gem "devise", ">= 5.0.3"
 gem "flamegraph"
 gem "flipper"
 gem "flipper-active_record"
