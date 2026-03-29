@@ -2,7 +2,7 @@
   nav.bg-brand-50.text-brand-700.relative.h-full.w-full.text-sm
     .flex.flex-col.justify-between.h-full
       .top
-        header.mb-3.relative.flex.flex-row.justify-between
+        header.mb-3.relative.flex.flex-row.justify-between.items-center
           / .dropdown.inline-block
           /   = link_to "#",
           /             class: "block -mx-2 px-4 py-2 dropdown-button dropdown-button-chevron font-semibold text-sm",
@@ -22,19 +22,18 @@
           - if Flipper.enabled?(:inbox, current_member)
             = link_to unit_notifications_path(current_unit),
                       id: "inbox_button",
-                      class: "absolute right-8 block aspect-square h-8 relative rounded hover:bg-brand-100 group-[.notifications]/controller:text-brand-500 group-[.notifications]/controller:bg-brand-100",
+                      class: "absolute right-8 flex items-center justify-center aspect-square h-8 relative rounded hover:bg-brand-100 group-[.notifications]/controller:text-brand-500 group-[.notifications]/controller:bg-brand-100",
                       data: { sidebar_class: "notifications", action: "sidebar#activate" } do
-                .fa-layers.fa-fw.absolute.left-1/2.top-1/2.-translate-x-1/2.-translate-y-1/2
+                .absolute.left-1/2.top-1/2.-translate-x-1/2.-translate-y-1/2
                   i.fa-light.fa-bell
                   - if (count = current_member.notifications.unread.count).positive?
                     i.fa-solid.fa-circle.text-xs.text-brand-500(data-fa-transform="shrink-6 up-10 right-10")
 
-          = button_tag class: "z-10 aspect-square h-8 rounded hover:bg-brand-100 cursor-pointer absolute -right-12 group-[.sidebar-open]/sidebar:-right-0",
-                        data: { action: "sidebar#toggle" } do
-            .fa-layers.fa-fw.absolute.left-1/2.top-1/2.-translate-x-1/2.-translate-y-1/2
-              i.fa-light.fa-bars.fa-fw
-              - if Flipper.enabled?(:inbox, current_member) && (count = current_member.notifications.unread.count).positive?
-                i.fa-solid.fa-circle.text-xs.text-brand-500(data-fa-transform="shrink-6 up-10 right-10" class="group-[.sidebar-open]/sidebar:hidden")
+          = button_tag class: "z-10 aspect-square h-8 flex items-center justify-center rounded hover:bg-brand-100 cursor-pointer absolute -right-12 group-[.sidebar-open]/sidebar:-right-0",
+              data: { action: "sidebar#toggle" } do
+            i.fa-light.fa-sidebar.fa-fw
+            - if Flipper.enabled?(:inbox, current_member) && (count = current_member.notifications.unread.count).positive?
+              i.fa-solid.fa-circle.text-xs.text-brand-500(data-fa-transform="shrink-6 up-10 right-10" class="group-[.sidebar-open]/sidebar:hidden")
 
         h3.font-semibold.p-2.flex.flex-row.items-center
           - cache current_unit do
