@@ -119,7 +119,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     StreetAddress (1.0.6)
-    action_text-trix (2.1.16)
+    action_text-trix (2.1.18)
       railties
     active_storage_validations (3.0.3)
       activejob (>= 6.1.4)
@@ -167,7 +167,7 @@ GEM
     aws-sigv4 (1.12.1)
       aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.3.0)
-    bcrypt (3.1.21)
+    bcrypt (3.1.22)
     better_mailer_previews (1.0.3)
       rails (>= 5.0.0)
     bigdecimal (3.3.1)
@@ -330,7 +330,7 @@ GEM
     humanize (3.1.0)
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
-    icalendar (2.12.1)
+    icalendar (2.12.2)
       base64
       ice_cube (~> 0.16)
       logger
@@ -785,6 +785,7 @@ PLATFORMS
 
 DEPENDENCIES
   StreetAddress
+  action_text-trix (>= 2.1.18)
   active_storage_validations
   acts-as-taggable-on
   acts_as_list
@@ -815,7 +816,7 @@ DEPENDENCIES
   geared_pagination
   honeybadger (~> 5.0)
   humanize
-  icalendar
+  icalendar (>= 2.12.2)
   ice_cube!
   image_processing
   importmap-rails
