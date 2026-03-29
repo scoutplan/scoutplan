@@ -6,8 +6,8 @@ class Units::DocumentsController < UnitContextController
     @selected_tag = params[:tag]
     @available_tags = available_document_tags
     @home_layout = YAML.load(current_unit.settings(:documents).home_layout)
+    @selected_tag = "_all" if @home_layout.blank? && @selected_tag.blank?
     set_page_and_extract_portion_from filtered_documents(@selected_tag), per_page: [25]
-    return redirect_to files_unit_documents_path(current_unit) if @home_layout.empty?
   end
 
   def create
