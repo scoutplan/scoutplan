@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html class="scroll-smooth">
+  <head>
+    <title id="page_title"><%= yield :title %></title>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="turbo-refresh-method" content="morph">
+
+    <%= csrf_meta_tags %>
+
+    <%= csp_meta_tag %>
+
+    <%= favicon_link_tag "favicon.ico" %>
+
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "https://rsms.me/inter/inter.css" %>
+    <%= stylesheet_link_tag "https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" %>
+
+    <%= javascript_importmap_tags %>
+
+    <%= javascript_include_tag "https://kit.fontawesome.com/#{ENV['FONT_AWESOME_KIT_ID']}.js", crossorigin: "anonymous" %>
+    <%= javascript_include_tag "main" %>
+    <%= javascript_include_tag "https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js" %>
+
+    <link rel="manifest" crossorigin="use-credentials" href="/manifest.json">
+
+    <%= yield :head %>
+
+    <style>
+      .submit-conjunction {
+        display: inline;
+        padding: 0 1rem;
+      }
+
+      nav.navbar {
+        margin-bottom: 30px;
+      }
+
+      .navbar-dark .navbar-nav .nav-link {
+        color: #fff;
+      }
+
+      h1 .subtitle {
+        text-transform: uppercase;
+        font-size: 50%;
+        font-weight: 400;
+        letter-spacing: 2px;
+      }
+
+      nav.unit-id {
+        color: #888;
+        text-transform: uppercase;
+        font-size: 90%;
+        letter-spacing: 1px;
+        font-weight: 600;
+      }
+
+      h1 {
+        font-weight: 400;
+      }
+
+      html:has(section[role="dialog"][data-open="true"]) {
+        overflow: hidden;
+      }
+    </style>
+  </head>
+
+  <body data-controller="label-update" class="has-[section[role='dialog']]:background-green-500 dark:bg-stone-900 dark:text-stone-200 text-stone-900 group/controller <%= controller_name.gsub('_', '-') %> <%= action_name %> <%= yield :body_classes %> h-full group/sidebar sidebar-open">
+    <div class="flex flex-row h-full">
+      <div class="z-10 fixed inset-0 bg-black/50 hidden group-[.sidebar-open]/sidebar:block group-[.sidebar-open]/sidebar:md:hidden"></div>
+
+      <aside class="z-20 fixed md:relative shrink-0 w-80 bg-brand-50 h-lvh transition-all md:fixedz p-3 -ml-80 group-[.sidebar-open]/sidebar:ml-0" data-controller="sidebar">
+        <%= render partial: "layouts/nav" %>
+      </aside>
+
+      <main class="w-full h-lvh grow overflow-y-auto">
+        <%= turbo_frame_tag :flash do %>
+          <%= render partial: "layouts/flash" %>
+        <% end %>
+
+        <%= render partial: "layouts/password_prompt" %>
+        <%= turbo_frame_tag :main do %>
+          <%= yield %>
+        <% end %>
+      </main>
+    </div>
+
+    <footer>
+      <!-- CI <%= ENV["GITHUB_RUN_NUMBER"] %> -->
+    </footer>
+
+    <%= turbo_frame_tag :modal %>
+
+    <% content_for :title do %>
+      <%= (@page_title || []).reverse.join(" \u00b7 ") %>
+    <% end %>
+
+    <!-- Current member id: <%= current_member&.id %> -->
+    <!-- Current unit id: <%= current_unit&.id %> -->
+    <!-- Current user id: <%= current_user.id %> -->
+</body>
+</html>

@@ -1,0 +1,124 @@
+<%= turbo_frame_tag("main") do %>
+  <header class="px-2 pt-2 top-0 left-0 right-0 sticky bg-white dark:bg-stone-900 z-10">
+    <div class="flex flex-row justify-between">
+      <div class="left"></div>
+
+      <div class="right">
+        <% if user_signed_in? %>
+          <details class="group">
+            <summary class="dropdown-button inline-block hover:bg-stone-100 p-2 rounded dark:hover:text-stone-300 text-sm text-stone-500 cursor-pointer group-open:bg-stone-100">
+              <i class="fa-light fa-sliders mr-2 fa-fw"></i>
+              View
+            </summary>
+
+            <aside class="block w-60 mt-1 p-2 absolute bg-white text-stone-700 right-2 rounded dropdown-menu animate-pop-open drop-shadow-overhead border border-stone-300 text-sm" data-controller="mouse-capture">
+              <nav>
+                <%= label_tag :display_inactive_members, class: "block px-2 py-2 rounded hover:bg-stone-100 rounded flex flex-row gap-1 items-center" do %>
+                  <%= check_box_tag :display_inactive_members, "1",
+                        params[:display_inactive_members],
+                        class: "mr-2 peer hidden",
+                        data: { turbo_stream: "true" } %>
+                  <i class="fa-regular fa-fw fa-check text-transparent peer-checked:text-brand-500"></i>
+                  Show inactive members
+                <% end # label_tag %>
+              </nav>
+            </aside>
+          </details>
+        <% end %>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-7xl mx-auto px-2 pb-4" data-controller="local-search">
+    <%= render partial: "layouts/flash" %>
+
+    <header class="mb-4 md:mt-0 top-0 pt-12 md:pt-4 bg-white pb-4">
+      <div class="flex flex-col md:flex-row justify-between md:items-center">
+        <div class="left flex flex-row items-baseline gap-6">
+          <h1 class="text-2xl font-semibold">
+            <%= t("members.index.page_title") %>
+          </h1>
+
+          <%= link_to new_unit_unit_membership_path(@current_unit),
+                      class: "group text-stone-500 text-sm",
+                      data: { turbo_action: "advance", turbo_frame: "modal" } do %>
+            <span class="fa-layers fa-fw mr-1">
+              <i class="fa-solid fa-circle text-white group-hover:text-brand-500" data-fa-transform="grow-3"></i>
+              <i class="fa-regular fa-plus text-brand-500 group-hover:text-white"></i>
+            </span>
+            Add a Member
+          <% end %>
+        </div>
+
+        <div class="right">
+          <div class="relative text-sm search-support">
+            <i class="fa-regular fa-magnifying-glass absolute left-3 text-stone-400" style="top:50%;transform:translateY(-50%);"></i>
+
+            <%= search_field_tag(:search,
+              "",
+              class: "text-sm block w-full rounded px-3 py-2 pl-10 placeholder-stone-400 border border-stone-400",
+              autofocus: true,
+              autocomplete: 'off',
+              spell_check: false,
+              placeholder: "Search members...",
+              data: { local_search_target: "query", action: "input->local-search#perform change->local-search#perform" }) %>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+      <% ("A".."Z").each do |letter| %>
+        <% members = @current_unit_memberships.select { |m| m.last_name.first.downcase == letter.downcase } %>
+        <% next if members.empty? %>
+        <section class="member-index mb-4">
+          <div class="relative block h-12">
+            <div class="absolute border-t border-brand-500 top-1/2 left-0 right-0 z-0"></div>
+
+            <h2 class="block font-medium text-brand-500 text-2xl bg-white pr-2 z-10 absolute top-1/2 -translate-y-1/2 left-0">
+              <%= letter %>
+            </h2>
+          </div>
+
+          <ol class="flex flex-col gap-2">
+            <%= render members %>
+          </ol>
+        </section>
+      <% end %>
+    </div>
+  </div>
+
+  <style>
+    .searching .member {
+      display: none;
+    }
+
+    .searching .search-match {
+      display: block;
+    }
+
+    .member-inactive {
+      display: none;
+    }
+
+    body:has(#display_inactive_members:checked) .member-inactive {
+      display: block;
+    }
+
+    body:has(#display_inactive_members:checked) section.member-index {
+      display: block;
+    }
+
+    section.member-index {
+      display: none;
+    }
+
+    section.member-index:has(.member-not-inactive) {
+      display: block;
+    }
+  </style>
+
+  <%= turbo_stream.update "page_title" do %>
+    <%= "Member Roster - #{current_unit.name}" %>
+  <% end %>
+<% end # turbo_frame %>

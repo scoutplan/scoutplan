@@ -33,6 +33,7 @@ module Event::Remindable
 
   def remind!
     return unless published? && !ended?
+    return if Noticed::Event.where(record: self, type: "EventReminderNotifier").exists?
 
     EventReminderNotifier.with(record: self, event: self).deliver(notification_recipients)
   end

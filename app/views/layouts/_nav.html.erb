@@ -1,0 +1,155 @@
+<% cache current_member do %>
+  <nav class="bg-brand-50 text-brand-700 relative h-full w-full text-sm">
+    <div class="flex flex-col justify-between h-full">
+      <div class="top">
+        <header class="mb-4 relative flex flex-row justify-between items-center">
+          <div class="dropdown" data-controller="check-dropdown">
+            <%= label_tag nil, for: "action_menu", class: "text-sm px-2 py-1" do %>
+              <%= check_box_tag "action_menu", false, class: "hidden peer dropdown-toggle", data: { check_dropdown_target: "toggle" } %>
+              <%= current_member.short_display_name %>
+              <i class="fa-solid fa-chevron-down ml-2 peer-checked:rotate-180 transition-transform"></i>
+            <% end %>
+
+            <div class="dropdown-menu rounded bg-white block absolute left-0 ml-2 w-64 border border-brand-200 shadow">
+              <%= render partial: "layouts/partials/user_menu_items" %>
+            </div>
+          </div>
+
+          <% if Flipper.enabled?(:inbox, current_member) %>
+            <%= link_to unit_notifications_path(current_unit),
+                        id: "inbox_button",
+                        class: "absolute right-8 block aspect-square h-8 relative rounded hover:bg-brand-100 group-[.notifications]/controller:text-brand-500 group-[.notifications]/controller:bg-brand-100",
+                        data: { sidebar_class: "notifications", action: "sidebar#activate" } do %>
+              <span class="fa-layers fa-fw absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <i class="fa-regular fa-bell"></i>
+                <% if (count = current_member.notifications.unread.count).positive? %>
+                  <i class="fa-solid fa-circle text-xs text-brand-500" data-fa-transform="shrink-6 up-10 right-10"></i>
+                <% end %>
+              </span>
+            <% end %>
+          <% end %>
+
+          <%= button_tag class: "z-10 aspect-square h-8 rounded hover:bg-brand-100 cursor-pointer absolute -right-12 group-[.sidebar-open]/sidebar:-right-0",
+                data: { action: "sidebar#toggle" } do %>
+                  <i class="fa-regular fa-bars fa-fw"></i>
+                  <% if Flipper.enabled?(:inbox, current_member) && (count = current_member.notifications.unread.count).positive? %>
+                    <i class="fa-solid fa-circle text-xs text-brand-500 group-[.sidebar-open]/sidebar:hidden" data-fa-transform="shrink-6 up-10 right-10"></i>
+                  <% end %>
+          <% end # button_tag %>
+        </header>
+
+        <h3 class="font-semibold p-2 flex flex-row items-center">
+          <% cache current_unit do %>
+            <% if current_unit.logo.attached? %>
+              <div class="inline-block rounded-full h-5 w-5 mr-2 border" style="background: url(<%= url_for(current_unit.logo) %>) no-repeat center center; background-size: auto 100%;"></div>
+            <% end %>
+            <%= current_unit.name %>
+          <% end %>
+        </h3>
+
+        <% if policy(:event).index? %>
+          <%= link_to unit_events_path(current_unit),
+                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.events]/controller:text-brand-500 group-[.events]/controller:bg-brand-100",
+                      data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "events", action: "sidebar#activate" } do %>
+            <i class="fa-regular fa-calendar-alt fa-fw mr-2"></i>
+            <%= t("main_nav.events") %>
+          <% end %>
+        <% end %>
+
+        <% if policy(:unit_membership).index? %>
+          <%= link_to unit_members_path(current_unit),
+                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.unit-memberships]/controller:text-brand-500 group-[.unit-memberships]/controller:bg-brand-100",
+                      data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "unit-memberships", action: "sidebar#activate" } do %>
+            <i class="fa-regular fa-users fa-fw mr-2"></i>
+            <%= t("main_nav.members") %>
+          <% end %>
+        <% end %>
+
+        <% if policy(:event).plan? && Flipper.enabled?(:planner, current_member) %>
+          <%= link_to unit_plans_path(current_unit),
+                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.plans]/controller:text-brand-500 group-[.plans]/controller:bg-brand-100",
+                      data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "plans", action: "sidebar#activate" } do %>
+            <i class="fa-regular fa-pen-ruler fa-fw mr-2"></i>
+            <%= t("main_nav.planner") %>
+          <% end %>
+        <% end %>
+
+        <% if policy(:message).new? && Flipper.enabled?(:messages, current_member) %>
+          <%= link_to unit_messages_path(current_unit),
+                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.messages]/controller:text-brand-500 group-[.messages]/controller:bg-brand-100",
+                      data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "messages", action: "sidebar#activate" } do %>
+            <span class="hidden group-[.messages]/controller:inline">
+              <i class="fa-solid fa-envelope fa-fw mr-2"></i>
+            </span>
+            <span class="group-[.messages]/controller:hidden">
+              <i class="fa-regular fa-envelope fa-fw mr-2"></i>
+            </span>
+            <%= t("main_nav.communication") %>
+          <% end %>
+        <% end %>
+
+        <% if (policy(:unit_document).index? && current_unit.documents.any?) || policy(:unit_document).create? %>
+          <%= link_to unit_documents_path(current_unit),
+                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.documents]/controller:text-brand-500 group-[.documents]/controller:bg-brand-100",
+                      data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "documents", action: "sidebar#activate" } do %>
+            <i class="fa-regular fa-books fa-fw mr-2"></i>
+            <%= t("main_nav.document_library") %>
+          <% end %>
+        <% end %>
+
+        <% if policy(:unit).edit? %>
+          <%= link_to unit_settings_path(current_unit),
+                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.settings]/controller:text-brand-500 group-[.settings]/controller:bg-brand-100",
+                      onclick: "document.body.classList.toggle('settings', true)",
+                      data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "settings", action: "sidebar#activate" } do %>
+            <i class="fa-regular fa-cog fa-fw mr-2"></i>
+            <%= t("main_nav.settings") %>
+          <% end %>
+        <% end %>
+
+        <%= link_to new_unit_search_path(current_unit),
+                    class: "flex flex-row justify-between items-center hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.search]/controller:text-brand-500 group-[.search]/controller:bg-brand-100",
+                    id: "search_button",
+                    data: { turbo_frame: "modal" } do %>
+          <div class="left">
+            <i class="fa-regular fa-magnifying-glass fa-fw mr-2"></i>
+            Search
+          </div>
+          <div class="right rounded text-2xs border p-1 hidden md:block">
+            CTRL + F
+          </div>
+        <% end %>
+      </div>
+
+      <div class="bottom mb-4">
+        <% if current_member.units.count > 1 %>
+          <%= label_tag :show_unit_browser, class: "block relative w-full p-2 text-sm text-stone-500 hover:bg-brand-100 hover:text-brand-800 rounded" do %>
+            <%= check_box_tag :show_unit_browser, class: "hidden peer" %>
+            <i class="fa-regular fa-chevron-down discloure-glyph peer-checked:rotate-180 transition-all"></i>
+            &nbsp;
+            Switch units
+
+            <nav id="unit_list" class="w-full absolute left-0 right-0 p-2 bottom-full bg-white border border-stone-200 rounded-lg drop-shadow-overhead hidden peer-checked:block">
+              <% current_member.units.each do |unit| %>
+                <%= link_to unit, class: "block p-2 hover:bg-brand-100 hover:text-brand-900" do %>
+                  <% if unit == current_unit %>
+                    <i class="fa-solid fa-circle text-brand-500 mr-2 fa-xs"></i>
+                  <% end %>
+                  <%= unit.name %>
+                <% end %>
+              <% end %>
+            </nav>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </nav>
+<% end %>
+
+<script>
+  document.onkeydown = function(e) {
+    if ((e.metaKey || e.ctrlKey) && (e.key === "f" || e.keyCode === "F")) {
+      document.querySelector("#search_button").click();
+    }
+  }
+</script>

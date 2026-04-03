@@ -1,0 +1,15 @@
+<ul>
+  <li>
+    <%= link_to profile_unit_member_path(current_unit, current_member),
+                class: "block px-4 py-3 md:py-2 hover:bg-stone-100" do %>
+      <i class="fa-fw fa-light fa-user-gear mr-2"></i>
+      <%= t("profile.settings") %>
+    <% end %>
+  </li>
+
+  <%= button_to destroy_user_session_path, method: :delete,
+      class: "w-full px-4 py-3 md:py-2 block hover:bg-stone-100 text-left" do %>
+    <i class="fa-fw fa-light fa-sign-out mr-2"></i>
+    <%= t("global.sign_out") %>
+  <% end %>
+</ul>

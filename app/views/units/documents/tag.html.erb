@@ -1,0 +1,65 @@
+<%= turbo_stream.update "page_title" do %>
+  <%= t(".page_title", unit_name: current_unit.name) %>
+<% end %>
+
+<%= render partial: "layouts/flash" %>
+
+<% variant = params[:variant] || request.cookies[:variant] || "list" %>
+
+<div class="w-full flex flex-row h-full overflow-hidden" data-controller="document-index list-selection documents" data-documents-unit-id-value="<%= current_unit.id %>">
+  <section id="documents" class="mx-auto px-2 2xl:pl-8 md:pr-8 pt-12 shrink grow min-w-0 overflow-y-scroll">
+    <header class="bg-white top-12 flex flex-row justify-between items-center gap-4">
+      <div class="w-5 h-16 pt-5 multi-selector-wrapper hidden md:block">
+
+        <!-- bulk select/deselect buttons -->
+        <%= button_tag type: "button", id: "deselect_all_button",
+                       data: { action: "click->documents#deselectAll" } do %>
+          <i class="fa-solid fa-minus-square fa-lg text-brand-500"></i>
+        <% end %>
+
+        <%= button_tag type: "button", id: "select_all_button",
+                       class: "hidden",
+                       data: { action: "click->documents#selectAll" } do %>
+          <i class="fa-solid fa-plus-square fa-lg text-brand-500"></i>
+        <% end %>
+      </div>
+
+      <%# title %>
+      <h1 class="pl-1">
+        <span class="text-2xl font-semibold">Documents</span>
+
+        <% if params[:tag].present? %>
+          <span class="text-sm text-stone-600 ml-2">
+            <% if params[:tag] == "none" %>
+              not tagged
+            <% else %>
+              tagged with #<%= params[:tag] %>
+            <% end %>
+
+            <%= link_to "Clear filter", files_unit_documents_path(current_unit),
+                        class: "text-brand-500 ml-2 border border-brand-500 px-2 py-1 rounded hover:bg-brand-100 hover:text-brand-700 hover:border-brand-700",
+                        data: { turbo_frame: "main", turbo_action: "advance" } %>
+          </span>
+        <% end %>
+      </h1>
+
+      <div class="ml-auto pr-2">
+        <% if UnitDocumentPolicy.new(current_member, Document).create? %>
+          <%= render partial: "upload_form" %>
+        <% end %>
+      </div>
+    </header>
+
+    <%= turbo_frame_tag :document_list, src: list_unit_documents_path(current_unit), loading: "lazy" %>
+  </section>
+</div>
+
+<style>
+  #documents:has(.multi-selector-wrapper:hover) #select_all_button {
+    display: block;
+  }
+
+  #documents:has(.multi-selector-checkbox:checked) #select_all_button {
+    display: none;
+  }
+</style>

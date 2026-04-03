@@ -1,0 +1,85 @@
+<% return unless user_signed_in? %>
+
+<aside class="z-30 block w-80 mt-1 p-2 absolute bg-white text-stone-700 right-2 rounded-lg dropdown-menu animate-pop-open drop-shadow-overhead border border-stone-300 group-open:bg-stone-100" data-controller="mouse-capture">
+  <nav>
+    <div class="grid grid-cols-1 gap-1 rounded-lg bg-stone-200 mb-2 p-2">
+      <%= link_to list_unit_events_path(current_unit),
+                  class: "block px-4 py-2 rounded hover:bg-stone-300 #{action_name == "list" ? "bg-white hover:bg-white cursor-default" : ""}",
+                  data: { turbo_action: "advance" } do %>
+        <i class="fa-regular fa-list"></i>
+        List
+      <% end %>
+
+      <%= link_to calendar_unit_events_path(current_unit, year: Date.today.year, month: Date.today.month),
+                  class: "block px-4 py-2 rounded-lg hover:bg-stone-300 #{action_name == "calendar" ? "bg-white hover:bg-white cursor-default" : ""}",
+                  data: { turbo_action: "advance" } do %>
+        <i class="fa-regular fa-calendar"></i>
+        Calendar
+      <% end %>
+
+      <% if false %>
+        <%= link_to threeup_unit_events_path(current_unit),
+                    class: "px-4 py-2 rounded-lg hover:bg-stone-300 #{action_name == "threeup" ? "bg-white hover:bg-white cursor-default" : ""}",
+                    data: { turbo_action: "advance" } do %>
+          <i class="fa-regular fa-columns-3"></i>
+          Three Up
+        <% end %>
+      <% end %>
+
+      <% if true %>
+        <%= link_to spreadsheet_unit_events_path(current_unit),
+                    class: "px-4 py-2 rounded-lg hover:bg-stone-300 #{action_name == "spreadsheet" ? "bg-white hover:bg-white cursor-default" : ""}",
+                    data: { turbo_action: "advance" } do %>
+          <i class="fa-regular fa-table"></i>
+          Spreadsheet
+        <% end %>
+      <% end %>
+    </div>
+
+    <% if action_name == "slow_list" %>
+      <%= link_to slow_list_unit_events_path(current_unit, before: @events&.first&.id, current_month: @display_month, display_year: @display_year),
+                  class: "block px-4 py-2 rounded hover:bg-stone-100 rounded",
+                  data: { turbo_stream: "true" } do %>
+        <i class="fa-fw fa-regular fa-calendar-arrow-up mr-2"></i>
+        <%= t("events.index.view.past") %>
+      <% end %>
+    <% end %>
+
+    <%= link_to slow_list_unit_events_path(current_unit, format: :pdf),
+                class: "block px-4 py-2 rounded hover:bg-stone-100 rounded",
+                data: { turbo_action: "advance" } do %>
+      <i class="fa-fw fa-regular fa-print mr-2"></i>
+      <%= t("events.index.buttons.print") %>
+    <% end %>
+
+    <% if current_member.admin? %>
+      <%= link_to slow_list_unit_events_path(current_unit, format: :pdf, season: "next"),
+                  class: "block px-4 py-2 rounded hover:bg-stone-100 rounded",
+                  data: { turbo_action: "advance" } do %>
+        <i class="fa-fw fa-regular fa-calendar-arrow-down mr-2"></i>
+        <%= t("events.index.buttons.next_season") %>
+      <% end %>
+    <% end %>
+
+    <%= link_to new_unit_calendar_subscription_path(current_unit),
+                class: "block px-4 py-2 rounded hover:bg-stone-100 rounded",
+                data: { turbo: true, turbo_frame: "modal" } do %>
+      <i class="fa-fw fa-regular fa-mobile mr-2"></i>
+      <%= t("events.index.buttons.subscribe") %>
+    <% end %>
+  </nav>
+</aside>
+
+<style>
+  #toggle_cancelled_events_link .showing-cancelled-events {
+    display: none;
+  }
+
+  body.showing-cancelled-events #toggle_cancelled_events_link .showing-cancelled-events {
+    display: block;
+  }
+
+  body.showing-cancelled-events #toggle_cancelled_events_link .normal {
+    display: none;
+  }
+</style>
