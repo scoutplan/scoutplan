@@ -18,7 +18,7 @@ class CalendarController < ApplicationController
       next unless policy.show?(event)
       next unless include_in_feed?(event)
 
-      @cal.add_event(event.to_ical_event(@member))
+      @cal.add_event(event.to_ical_event)
     end
 
     render plain: @cal.to_ical, content_type: "text/calendar"

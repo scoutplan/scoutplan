@@ -28,9 +28,9 @@ class EventRsvpConfirmationMailer < ApplicationMailer
   def ics_attachment
     {
       mime_type:           "multipart/mixed",
-      content_type:        "text/calendar; method=REQUEST; charset=UTF-8; component=VEVENT",
+      content_type:        "text/calendar; method=PUBLISH; charset=UTF-8; component=VEVENT",
       content_disposition: "attachment; filename=#{@event.ical_filename}",
-      content:             @event.to_ical(@member)
+      content:             @event.to_ical
     }
   end
 

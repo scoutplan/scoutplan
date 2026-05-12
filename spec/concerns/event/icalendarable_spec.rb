@@ -18,23 +18,16 @@ RSpec.describe Event::Icalendarable, type: :model do
 
     describe "to_ical_event" do
       it "returns an Icalendar::Event" do
-        expect(@event.to_ical_event(@member)).to be_a(Icalendar::Event)
+        expect(@event.to_ical_event).to be_a(Icalendar::Event)
       end
 
-      it "includes ATTENDEE property if RSVP is open" do
-        ical_event = @event.to_ical_event(@member)
-        expect(ical_event.attendee.count).to eq(1)
-      end
-
-      it "doesn't include ATTENDEE property if RSVP is closed" do
-        @event.update!(requires_rsvp: false)
-        ical_event = @event.to_ical_event(@member)
-        expect(ical_event.attendee.count).to eq(0)
+      it "publishes the event without ATTENDEE properties so clients don't render RSVP buttons" do
+        expect(@event.to_ical_event.attendee).to be_empty
       end
 
       it "renders all-day events correctly" do
         @event.update!(all_day: true)
-        ical_event = @event.to_ical_event(@member)
+        ical_event = @event.to_ical_event
 
         expected_start = @event.starts_at.in_time_zone(@unit.time_zone).beginning_of_day.to_date
         expected_end   = @event.ends_at.in_time_zone(@unit.time_zone).advance(days: 1).end_of_day.to_date
