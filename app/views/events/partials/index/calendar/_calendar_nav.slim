@@ -2,7 +2,7 @@ nav.calendar-nav.text-sm.z-0
   // prev button
   = link_to calendar_unit_events_path(current_unit, month: @current_month > 1 ? @current_month - 1 : 12, year: @current_month > 1 ? @current_year : @current_year - 1),
             title: t("events.index.buttons.hints.previous"),
-            class: "inline-block py-1 px-2 md:px-4 rounded-l border bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
+            class: "inline-block py-1 px-2 md:px-4 rounded-l border border-stone-300 bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
             data: { turbo_action: "advance", turbo_frame: "main" } do
 
       i.fa-solid.fa-chevron-left
@@ -17,7 +17,7 @@ nav.calendar-nav.text-sm.z-0
   /       .inline.md:hidden = context[:first_day_of_month].strftime("%b %Y") 
   /       i.fa-chevron-down.fas.ml-2
 
-  .dropdown.relative.inline-block.bg-stone-100.w-40.py-1.px-2.border.border-x-0(data-controller="check-dropdown")
+  .dropdown.relative.inline-block.bg-stone-100.w-40.py-1.px-2.border.border-stone-300.border-x-0(data-controller="check-dropdown")
     = label_tag nil, for: "month_picker", class: "block text-sm flex flex-row justify-between items-center" do
       = check_box_tag "month_picker", false, class: "hidden peer dropdown-toggle", data: { check_dropdown_target: "toggle" }
       = context[:first_day_of_month].strftime("%b %Y")       
@@ -29,7 +29,7 @@ nav.calendar-nav.text-sm.z-0
   // next button
   = link_to calendar_unit_events_path(current_unit, month: @current_month == 12 ? 1 : @current_month + 1, year: @current_month == 12 ? @current_year + 1 : @current_year),
             title: t("events.index.buttons.hints.next"),
-            class: "inline-block py-1 px-2 md:px-4 rounded-r border bg-stone-100 hover:bg-stone-200 border-l-0 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
+            class: "inline-block py-1 px-2 md:px-4 rounded-r border border-stone-300 bg-stone-100 hover:bg-stone-200 border-l-0 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
             data: { turbo_action: "advance", turbo_frame: "main" } do
 
       i.fa-solid.fa-chevron-right
@@ -37,6 +37,6 @@ nav.calendar-nav.text-sm.z-0
   // today button
   = link_to calendar_unit_events_path(current_unit, month: Time.now.month, year: Time.now.year),
             title: t("events.index.buttons.hints.today"),
-            class: "inline-block px-3 py-1 ml-2 border border-l-0 rounded bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
+            class: "inline-block px-3 py-1 ml-2 border border-stone-300 rounded bg-stone-100 hover:bg-stone-200 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-700 dark:hover:border-stone-600",
             data: { turbo_action: "advance", turbo_frame: "main" }
     = t("events.index.buttons.today")

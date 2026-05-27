@@ -29,12 +29,12 @@
               i.fa-solid.fa-plus-circle.fa-fw.text-brand-500
             .inline
               | &nbsp;
-              = "Add an Event"        
+              = "Add an Event"
 
       div
         = render partial: "events/partials/index/calendar/calendar_nav", locals: { context: context }
 
-    .table.px-0.w-full.table-fixed.border-t
+    .table.px-0.w-full.table-fixed.border-t.border-stone-300
       .table-row.font-semibold
         - 7.times do |col|
           - dow = (col + first_day_of_week) % 7
@@ -60,7 +60,7 @@
               - month_number = @current_month
 
             // now render the cell
-            .table-cell.border-t.p-1.h-32.md:h-40.select-none.cal-cell.(class="#{cell_class}" data-cal-date="#{display_date}")
+            .table-cell.border-t.border-stone-300.p-1.h-32.md:h-40.select-none.cal-cell.(class="#{cell_class}" data-cal-date="#{display_date}")
               - if display_date.today?
                 - if day_number == 1
                   .text-brand-500.font-medium
