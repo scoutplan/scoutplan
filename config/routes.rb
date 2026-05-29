@@ -173,7 +173,7 @@ Rails.application.routes.draw do
 
     resources :events, path: "schedule" do
       resources :chat_messages, as: "discussion", path: "discussion"
-      resources :family_rsvps, only: [:new, :create]
+      resources :family_rsvps, only: [:new, :create, :show]
       resources :event_rsvps, as: "rsvps", path: "rsvps" do
         collection do
           get "popup"

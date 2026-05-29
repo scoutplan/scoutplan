@@ -1,10 +1,10 @@
 li.member-item.filterable-item.flex.flex-row.justify-between.items-center.group(draggable="false" id="#{dom_id(rsvp)}" data-sort-text="#{rsvp.unit_membership.last_name.downcase} #{rsvp.unit_membership.first_name.downcase}" data-action="dragstart->dashboard-drop#dragstart")
-  = link_to new_unit_event_family_rsvp_path(@event.unit, @event, unit_membership_id: rsvp.unit_membership_id),
+  = link_to unit_event_family_rsvp_path(@event.unit, @event, unit_membership_id: rsvp.unit_membership_id),
             class: "block p-2 -mx-2",
             id: dom_id(rsvp),
             draggable: true,
             title: t(".tooltip", duration: distance_of_time_in_words_to_now(rsvp.created_at)),
-            data: { turbo_frame: "modal", action: "dragstart->dashboard-drop#dragstart dragend->dashboard-drop#dragend drag->dashboard-drop#drag" } do
+            data: { turbo_frame: "modal_2", action: "dragstart->dashboard-drop#dragstart dragend->dashboard-drop#dragend drag->dashboard-drop#drag" } do
     - cache rsvp.unit_membership do
       span.member-icon.mr-2
         - if rsvp.unit_membership.youth?

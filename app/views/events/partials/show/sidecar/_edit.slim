@@ -2,9 +2,8 @@
 
 li
   = link_to edit_unit_event_path(current_unit, @event),
-            class: "block px-2 py-2 hover:bg-stone-100 rounded",
+            class: "block px-2 py-2 hover:bg-stone-200 hover:text-stone-950 rounded flex items-center gap-2",
             data: { turbo_action: "advance" } do
 
-    i.fa-light.fa-pencil.fa-fw.text-stone-500
-    | &nbsp;&nbsp;
+    i.fa-light.fa-pencil.fa-fw
     = "Change event details"

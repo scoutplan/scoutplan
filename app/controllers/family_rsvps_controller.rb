@@ -20,6 +20,10 @@ class FamilyRsvpsController < EventContextController
     @event_dashboard = EventDashboard.new(@event)
   end
 
+  def show
+    @family_rsvp = FamilyRsvp.new(@member, @event)
+  end
+
   private
 
   def delete_rsvp(unit_membership_id)
@@ -32,7 +36,9 @@ class FamilyRsvpsController < EventContextController
 
     member_params.each do |member_id, responses|
       rsvp = @event.rsvps.find_or_initialize_by(unit_membership_id: member_id)
-      accepted_shift_ids = responses[:shifts].select { |_shift_id, response_h| response_h[:response] == "accepted" }.keys
+      accepted_shift_ids = responses[:shifts].select do |_shift_id, response_h|
+        response_h[:response] == "accepted"
+      end.keys
       response = accepted_shift_ids.empty? ? "declined" : "accepted"
       rsvp.assign_attributes(
         respondent:      current_member,
@@ -67,6 +73,5 @@ class FamilyRsvpsController < EventContextController
       end
   end
 end
-
 
 # "event"=>{"members"=>{"1"=>{"shifts"=>{"4"=>{"response"=>"accepted"}, "5"=>{"response"=>"declined"}, "6"=>{"response"=>"declined"}}}, "7"=>{"shifts"=>{"4"=>{"response"=>"declined"}, "5"=>{"response"=>"declined"}, "6"=>{"response"=>"declined"}}}, "6"=>{"shifts"=>{"4"=>{"response"=>"declined"}, "5"=>{"response"=>"declined"}, "6"=>{"response"=>"declined"}}}}}

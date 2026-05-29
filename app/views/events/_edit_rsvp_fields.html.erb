@@ -59,14 +59,14 @@
 
             <div class="flex">
               <%# Regrets first in DOM so it acts as the peer; uses rsvp-label for forward-sibling styling %>
-              <%= label_tag nil, class: "rsvp-label peer order-last border border-stone-400 text-sm font-medium bg-stone-200 text-stone-500 px-4 py-2 rounded-r-md has-[input:checked]:bg-red-700 has-[input:checked]:text-white has-[input:checked]:border-transparent" do %>
+              <%= label_tag nil, class: "rsvp-label peer order-last border border-stone-400 text-sm font-medium bg-stone-200 text-stone-500 px-4 py-2 rounded-r-md has-[input:checked]:bg-red-700 has-[input:checked]:text-white has-[input:checked]:border-transparent cursor-pointer" do %>
                 <%= radio_button "unit_memberships[#{family_member.id}]", "response", "declined",
                   { class: "hidden", checked: existing_rsvp&.declined? || existing_rsvp&.declined_pending? } %>
                 Regrets
               <% end %>
 
               <%# Going! second in DOM, uses peer-has for backward-sibling styling %>
-              <%= label_tag nil, class: "rsvp-label order-first peer-has-[input:checked]:text-stone-400 peer-has-[input:checked]:border-transparent border border-r-0 border-stone-400 text-sm font-medium bg-stone-200 text-stone-500 px-4 py-2 rounded-l-md has-[input:checked]:bg-lime-700 has-[input:checked]:text-white has-[input:checked]:border-transparent" do %>
+              <%= label_tag nil, class: "rsvp-label order-first peer-has-[input:checked]:text-stone-400 peer-has-[input:checked]:border-transparent border border-r-0 border-stone-400 text-sm font-medium bg-stone-200 text-stone-500 px-4 py-2 rounded-l-md has-[input:checked]:bg-lime-700 has-[input:checked]:text-white has-[input:checked]:border-transparent cursor-pointer" do %>
                 <%= radio_button "unit_memberships[#{family_member.id}]", "response", "accepted",
                   { class: "hidden", checked: existing_rsvp&.accepted? || existing_rsvp&.accepted_pending? } %>
                 Going!

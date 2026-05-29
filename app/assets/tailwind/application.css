@@ -30,7 +30,34 @@
   --color-messages-900: #365314;
   --color-messages-950: #1a2e05;
 
+  --color-khaki-50:  #FAF9F5;
+  --color-khaki-100: #F5F2E5;
+  --color-khaki-200: #EEEAD2;
+  --color-khaki-300: #E0DABD;
+  --color-khaki-400: #CDC3A2;
+  --color-khaki-500: #B1A991;
+  --color-khaki-600: #989281;
+  --color-khaki-700: #756F61;
+  --color-khaki-800: #474238;
+  --color-khaki-900: #2C2721;
+  --color-khaki-950: #1C1812;
+
+  --color-paper-50:  #FCFAF4;
+  --color-paper-100: #F8F2E5;
+  --color-paper-200: #F1E8D2;
+  --color-paper-300: #E5D8BB;
+  --color-paper-400: #D2C09F;
+  --color-paper-500: #B8A88B;
+  --color-paper-600: #9A8F7E;
+  --color-paper-700: #786E5F;
+  --color-paper-800: #4A4036;
+  --color-paper-900: #2E2620;
+  --color-paper-950: #1E1812;
+
+  
+  --font-serif: clarendon-text-pro, ui-serif, Georgia, Cambria, "Times New Roman", Times, serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-wide: proxima-nova-wide, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
   --text-2xs: 0.5rem;
   --text-2xs--line-height: 1;

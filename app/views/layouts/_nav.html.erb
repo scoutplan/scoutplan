@@ -1,5 +1,5 @@
 <% cache current_member do %>
-  <nav class="bg-brand-50 text-brand-700 relative h-full w-full text-sm">
+  <nav class="text-brand-700 relative h-full w-full text-sm">
     <div class="flex flex-col justify-between h-full">
       <div class="top">
         <header class="mb-4 relative flex flex-row justify-between items-center">
@@ -18,7 +18,7 @@
           <% if Flipper.enabled?(:inbox, current_member) %>
             <%= link_to unit_notifications_path(current_unit),
                         id: "inbox_button",
-                        class: "absolute right-8 block aspect-square h-8 relative rounded hover:bg-brand-100 group-[.notifications]/controller:text-brand-500 group-[.notifications]/controller:bg-brand-100",
+                        class: "absolute right-8 block aspect-square h-8 relative rounded hover:bg-brand-100 group-[.notifications]/controller:text-brand-700 group-[.notifications]/controller:bg-brand-200",
                         data: { sidebar_class: "notifications", action: "sidebar#activate" } do %>
               <span class="fa-layers fa-fw absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                 <i class="fa-regular fa-bell"></i>
@@ -49,7 +49,7 @@
 
         <% if policy(:event).index? %>
           <%= link_to unit_events_path(current_unit),
-                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.events]/controller:text-brand-500 group-[.events]/controller:bg-brand-100",
+                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.events]/controller:text-brand-700 group-[.events]/controller:bg-brand-200",
                       data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "events", action: "sidebar#activate" } do %>
             <i class="fa-regular fa-calendar-alt fa-fw mr-2"></i>
             <%= t("main_nav.events") %>
@@ -58,7 +58,7 @@
 
         <% if policy(:unit_membership).index? %>
           <%= link_to unit_members_path(current_unit),
-                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.unit-memberships]/controller:text-brand-500 group-[.unit-memberships]/controller:bg-brand-100",
+                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.unit-memberships]/controller:text-brand-700 group-[.unit-memberships]/controller:bg-brand-200",
                       data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "unit-memberships", action: "sidebar#activate" } do %>
             <i class="fa-regular fa-users fa-fw mr-2"></i>
             <%= t("main_nav.members") %>
@@ -67,7 +67,7 @@
 
         <% if policy(:event).plan? && Flipper.enabled?(:planner, current_member) %>
           <%= link_to unit_plans_path(current_unit),
-                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.plans]/controller:text-brand-500 group-[.plans]/controller:bg-brand-100",
+                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.plans]/controller:text-brand-700 group-[.plans]/controller:bg-brand-200",
                       data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "plans", action: "sidebar#activate" } do %>
             <i class="fa-regular fa-pen-ruler fa-fw mr-2"></i>
             <%= t("main_nav.planner") %>
@@ -76,7 +76,7 @@
 
         <% if policy(:message).new? && Flipper.enabled?(:messages, current_member) %>
           <%= link_to unit_messages_path(current_unit),
-                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.messages]/controller:text-brand-500 group-[.messages]/controller:bg-brand-100",
+                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.messages]/controller:text-brand-700 group-[.messages]/controller:bg-brand-200",
                       data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "messages", action: "sidebar#activate" } do %>
             <span class="hidden group-[.messages]/controller:inline">
               <i class="fa-solid fa-envelope fa-fw mr-2"></i>
@@ -90,7 +90,7 @@
 
         <% if (policy(:unit_document).index? && current_unit.documents.any?) || policy(:unit_document).create? %>
           <%= link_to unit_documents_path(current_unit),
-                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.documents]/controller:text-brand-500 group-[.documents]/controller:bg-brand-100",
+                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.documents]/controller:text-brand-700 group-[.documents]/controller:bg-brand-200",
                       data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "documents", action: "sidebar#activate" } do %>
             <i class="fa-regular fa-books fa-fw mr-2"></i>
             <%= t("main_nav.document_library") %>
@@ -99,7 +99,7 @@
 
         <% if policy(:unit).edit? %>
           <%= link_to unit_settings_path(current_unit),
-                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.settings]/controller:text-brand-500 group-[.settings]/controller:bg-brand-100",
+                      class: "hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.settings]/controller:text-brand-700 group-[.settings]/controller:bg-brand-200",
                       onclick: "document.body.classList.toggle('settings', true)",
                       data: { turbo_frame: "main", turbo_action: "advance", sidebar_class: "settings", action: "sidebar#activate" } do %>
             <i class="fa-regular fa-cog fa-fw mr-2"></i>
@@ -108,7 +108,7 @@
         <% end %>
 
         <%= link_to new_unit_search_path(current_unit),
-                    class: "flex flex-row justify-between items-center hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.search]/controller:text-brand-500 group-[.search]/controller:bg-brand-100",
+                    class: "flex flex-row justify-between items-center hover:text-brand-800 no-underline whitespace-nowrap px-2 block rounded py-3 block hover:bg-brand-100 group-[.search]/controller:text-brand-700 group-[.search]/controller:bg-brand-200",
                     id: "search_button",
                     data: { turbo_frame: "modal" } do %>
           <div class="left">

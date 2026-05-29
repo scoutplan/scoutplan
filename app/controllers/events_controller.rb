@@ -562,6 +562,7 @@ class EventsController < UnitContextController
     @season_end   = current_unit.this_season_ends_at
     @initial_end  = (Date.current + 1.month).end_of_month
     @events = list_base_scope.where("ends_at > ? AND starts_at <= ?", Date.current, @initial_end)
+    @events_by_month = @events.group_by { |e| e.starts_at.in_time_zone(current_unit.time_zone).beginning_of_month }
   end
 
   def find_events_for_chunk

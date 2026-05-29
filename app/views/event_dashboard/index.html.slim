@@ -28,7 +28,7 @@
             = link_to "#", class: "flex flex-row items-center block w-6 h-6 rounded hover:bg-stone-100 hover:text-stone-900", data: { action: "dropdown#toggle", dropdown_target: "toggle" } do
               i.fa-light.fa-ellipsis-stroke.fa-fw
 
-            .dropdown-menu.absolute.right-0.bg-white.z-20.rounded-lg.border.top-full.animate-pop-open.w-72.text-sm.mt-1.drop-shadow-overhead.p-2.text-stone-700
+            .dropdown-menu.absolute.right-0.bg-white.z-20.rounded-lg.border.border-stone-300.top-full.animate-pop-open.w-72.text-sm.mt-1.drop-shadow-overhead.p-2.text-stone-700
               ul
                 = render partial: "events/partials/show/sidecar/edit"
                 = render partial: "events/partials/show/sidecar/duplicate"
@@ -43,6 +43,8 @@
 
       = turbo_stream.update "page_title" do
         = t(".page_title", event_title: @event.title)
+
+      = turbo_frame_tag :modal_2
 
       css:
         .move-grip { display: none; }

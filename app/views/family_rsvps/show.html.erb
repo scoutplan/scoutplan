@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "modal" do %>
+<%= turbo_frame_tag "modal_2" do %>
   <div class="fixed z-50 inset-0 bg-black/10 backdrop-blur">
     <div class="absolute inset-1">
       <div class="max-w-lg md:top-1/4 left-1/2 bg-white dark:bg-stone-700 -translate-x-1/2 \
@@ -18,14 +18,14 @@
             <%= render partial: "events/edit_rsvp_fields", locals: { event: @event, f: f, presenter: @presenter, unit_membership: @member } %>
           </section>
 
-          <footer class="px-6 py-2 flex flex-col md:flex-row gap-2 justify-end text-sm border-t">
+          <footer class="px-6 py-2 flex flex-col md:flex-row gap-2 justify-end text-sm">
             <%= button_tag "Cancel",
                            type: "button",
-                           class: "bg-stone-300 hover:bg-stone-400 font-medium rounded px-5 py-2",
+                           class: "bg-stone-300 hover:bg-stone-400 font-medium rounded px-5 py-2 cursor-pointer",
                            data: { action: "click->modal#close" } %>
 
             <%= f.submit @family_rsvp.new_record? ? "Send Your RSVP" : "Update Your RSVP",
-                         class: "text-white bg-brand-500 hover:bg-brand-600 font-medium rounded px-5 py-2",
+                         class: "text-white bg-brand-500 hover:bg-brand-600 font-medium rounded px-5 py-2 cursor-pointer",
                          id: "accept" %>
           </footer>
         <% end %>

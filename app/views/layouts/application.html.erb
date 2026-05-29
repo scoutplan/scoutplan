@@ -15,13 +15,14 @@
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "https://rsms.me/inter/inter.css" %>
-    <%= stylesheet_link_tag "https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" %>
+    <%= stylesheet_link_tag "https://use.typekit.net/yrz7cru.css" %>
+    <%#= stylesheet_link_tag "https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" %>
 
     <%= javascript_importmap_tags %>
 
     <%= javascript_include_tag "https://kit.fontawesome.com/#{ENV['FONT_AWESOME_KIT_ID']}.js", crossorigin: "anonymous" %>
     <%= javascript_include_tag "main" %>
-    <%= javascript_include_tag "https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js" %>
+    <%#= javascript_include_tag "https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js" %>
 
     <link rel="manifest" crossorigin="use-credentials" href="/manifest.json">
 
@@ -66,15 +67,15 @@
     </style>
   </head>
 
-  <body data-controller="label-update" class="has-[section[role='dialog']]:background-green-500 dark:bg-stone-900 dark:text-stone-200 text-stone-900 group/controller <%= controller_name.gsub('_', '-') %> <%= action_name %> <%= yield :body_classes %> h-full group/sidebar sidebar-open">
+  <body data-controller="label-update" class="has-[section[role='dialog']]:background-green-500 dark:bg-paper-900 dark:text-paper-200 text-paper-900 group/controller <%= controller_name.gsub('_', '-') %> <%= action_name %> <%= yield :body_classes %> h-full group/sidebar sidebar-open">
     <div class="flex flex-row h-full">
       <div class="z-10 fixed inset-0 bg-black/50 hidden group-[.sidebar-open]/sidebar:block group-[.sidebar-open]/sidebar:md:hidden"></div>
 
-      <aside class="z-20 fixed md:relative shrink-0 w-80 bg-brand-50 h-lvh transition-all md:fixedz p-3 -ml-80 group-[.sidebar-open]/sidebar:ml-0" data-controller="sidebar">
+      <aside class="z-20 fixed md:relative shrink-0 w-80 bg-paper-100 h-lvh transition-all md:fixedz p-3 -ml-80 group-[.sidebar-open]/sidebar:ml-0" data-controller="sidebar">
         <%= render partial: "layouts/nav" %>
       </aside>
 
-      <main class="w-full h-lvh grow overflow-y-auto">
+      <main class="w-full h-lvh grow overflow-y-auto bg-paper-50">
         <%= turbo_frame_tag :flash do %>
           <%= render partial: "layouts/flash" %>
         <% end %>
