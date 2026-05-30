@@ -562,7 +562,9 @@ class EventsController < UnitContextController
     @season_end   = current_unit.this_season_ends_at
     @initial_end  = (Date.current + 1.month).end_of_month
     # @events = list_base_scope.where("ends_at > ? AND starts_at <= ?", Date.current, @initial_end)
-    @events = list_base_scope.where("starts_at >= ?", Date.current)
+    # @events = list_base_scope.where("starts_at >= ?", Date.current)
+    @events = list_base_scope.where("starts_at >= ? AND ends_at <= ?", @season_start,
+                                    (Date.current + 1.year).end_of_year)
     @events_by_month = @events.group_by { |e| e.starts_at.in_time_zone(current_unit.time_zone).beginning_of_month }
   end
 

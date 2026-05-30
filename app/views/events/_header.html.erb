@@ -33,6 +33,8 @@
       </nav>
     <% end %>
 
+    <%= render "overflow_menu"%>
+
     <% if policy(Event).create? %>
       <%= link_to new_unit_event_path(@current_unit),
             class: "inline-block bg-brand-500 hover:bg-brand-600 text-white rounded-lg px-4 py-2 text-sm font-medium" do %>

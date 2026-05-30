@@ -67,20 +67,22 @@
 
             <%# now render the cell %>
             <div class="table-cell border-t border-stone-300 p-1 h-32 md:h-40 select-none cal-cell <%= cell_class %>" data-cal-date="<%= display_date %>">
-              <div class="cal-day-number text-sm font-semibold text-paper-700 uppercase flex justify-between items-center mx-1">
-                <% if day_number == 1 %>
-                  <span class="text-brand-500 font-medium ml-1">
-                    <%= display_date.strftime("%b") %>
-                  </span>
-                <% end %>
+              <div class="cal-day-number font-semibold text-paper-700 uppercase flex justify-between items-center mx-1 h-8">
+                <div class="flex items-center text-sm gap-1">
+                  <% if day_number == 1 %>
+                    <span class="text-brand-500 font-medium ml-1">
+                      <%= display_date.strftime("%b") %>
+                    </span>
+                  <% end %>
 
-                <div class="">
-                  <%= display_date.strftime("%-d") %>
+                  <div class="<%= display_date.today? ? 'text-brand-500' : '' %>">
+                    <%= display_date.strftime("%-d") %>
+                  </div>
                 </div>
 
                 <div>
                   <% if display_date.today? %>
-                    <span class="text-xl text-brand-500">&bull;</span>
+                    <span class="text-brand-500 text-lg">&bull;</span>
                   <% end %>
                 </div>
               </div>
@@ -90,14 +92,20 @@
                 <% css_classes = "event-draft" if event.draft? %>
 
                 <% if display_date.beginning_of_day >= event.starts_at.beginning_of_day && display_date.beginning_of_day <= event.ends_at.end_of_day %>
-                  <div class="cal-event text-xs overflow-hidden block p-1 rounded dark:hover:bg-stone-800 hover:bg-stone-100 <%= css_classes %>">
+                  <div class="cal-event text-xs whitespace-nowrap overflow-hidden block p-1 rounded hover:bg-stone-100 <%= css_classes %>"
+                       style="background-color: <%= lighten_color(event.category.color, 0.8) %>; border-left: 2px solid <%= event.category.color %>"
+                       title="<%= event.title %>">
                     <% path = current_user ? unit_event_path(event.unit, event) : "#" %>
                     <%= link_to path,
-                              class: "inline font-medium",
-                              data: { turbo_action: "advance" },
-                              style: "color: #{event.category.color}" do %>
+                              class: "inline font-medium text-paper-950",
+                              data: { turbo_action: "advance" } do %>
+
+                      <% unless event.all_day? %>
+                        <span class="text-paper-500"><%= event.starts_at.strftime("%-I:%M %p") %></span>
+                      <% end %>
 
                       <%= event.title %>
+
                       <% if event.online %>
                         <i class="fa-solid fa-laptop ml-1" title="Online"></i>
                       <% end %>

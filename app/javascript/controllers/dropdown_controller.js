@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "dropdown", "toggle" ];
+  static targets = [ "dropdown", "toggle", "menu" ];
 
   // connect() {
   //   document.addEventListener("click", function(e) {
@@ -21,11 +21,17 @@ export default class extends Controller {
 
   toggle(event) {
     this.element.classList.toggle("dropdown-active");
+    if (this.hasMenuTarget) {
+      this.menuTarget.classList.toggle("hidden");
+    }
     event.preventDefault();
   }
 
   close() {
     this.element.classList.remove("dropdown-active");
+    if (this.hasMenuTarget) {
+      this.menuTarget.classList.add("hidden");
+    }
   }
 
   handleKeydown(event) {

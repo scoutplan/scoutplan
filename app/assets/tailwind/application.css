@@ -59,7 +59,7 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-wide: proxima-nova-wide, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-  --text-2xs: 0.5rem;
+  --text-2xs: 9.5px;
   --text-2xs--line-height: 1;
   --text-huge: 5rem;
   --text-huge--line-height: 1;

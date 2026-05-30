@@ -1,0 +1,55 @@
+<% cache event do %>
+  <% presenter.event = event %>
+
+  <li class="px-6 py-4 event border-l-3 flex justify-between" style="border-left-color: <%= event.category.color %>">
+    <%# left (date) section %>
+    <div class="w-36 event-date-time text-xs font-semibold text-paper-600 uppercase flex flex-col gap-0">
+        <span class="tracking-wider"><%= event.starts_at.strftime("%b") %></span>
+        <span class="text-4xl text-paper-950 font-serif leading-tight"><%= raw(event.dates_to_s) %></span>
+        <span class="tracking-wider"><%= raw(presenter.days_to_s) %></span>
+    </div>
+
+    <%# middle section %>
+    <div class="grow event-details px-4">
+      <p class="text-xs font-medium uppercase tracking-wider text-paper-600 mb-1">
+        <i class="fa-regular fa-fw fa-<%= event.category.glyph %>" style="color: <%= event.category.color %>"></i>
+        <%= event.category.name %>
+      </p>
+
+      <h3 class="font-serif font-bold text-lg mb-1"><%= event.title %></h3>
+      
+      <div class="flex gap-4">
+        <p class="text-xs text-paper-700">
+          <i class="fa-regular fa-clock fa-fw"></i>
+          <%= event.starts_at.strftime("%l:%M %p") %>
+          <% if event.ends_at.present? %>
+            &ndash; <%= event.ends_at.strftime("%l:%M %p") %>
+          <% end %>
+        </p>
+
+        <p><%= event.location %></p>
+      </div>
+    </div>
+
+    <%# right section %>
+    <div class="event-actions flex items-center gap-2">
+      <% if policy(event).edit? %>
+        <%= link_to edit_unit_event_path(@current_unit, event),
+              class: "p-2 text-sm text-paper-500 hover:text-brand-500",
+              data: { turbo_action: "advance", turbo_frame: "modal" } do %>
+          <i class="fa-solid fa-pen-to-square"></i>
+          Edit
+        <% end %>
+      <% end %>
+
+      <% if policy(event).destroy? %>
+        <%= link_to unit_event_path(@current_unit, event),
+              method: :delete,
+              data: { confirm: "Are you sure?", turbo_frame: "main" },
+              class: "p-2 text-sm text-paper-500 hover:text-red-500" do %>
+          <i class="fa-solid fa-trash"></i>
+          Delete
+        <% end %>
+      <% end %>
+  </li>
+<% end # cache event %>

@@ -5,83 +5,33 @@
 
   <%= render "header" %>
 
+  <nav class="flex justify-between items-center px-6 py-2 border-b border-paper-300">
+    <div></div>
+
+    <div>
+      <%= button_tag class: "text-sm text-paper-600 cursor-pointer",
+            id: "show_past_events",
+            onclick: "document.body.classList.add('show-past-events');" do %>
+        <i class="fa-regular fa-chevron-down fa-fw fa-xs"></i>
+        Show past events
+      <% end %>
+
+      <%= button_tag class: "text-sm text-paper-600 cursor-pointer",
+            id: "hide_past_events",
+            onclick: "document.body.classList.remove('show-past-events');" do %>
+        <i class="fa-regular fa-chevron-up fa-fw fa-xs"></i>
+        Hide past events
+      <% end %>      
+    </div>
+  </nav>
+
   <section id="event_months" class="">
     <%= render "blank_slate" %>
 
     <ol id="events_list">
       <% presenter = @presenter || EventPresenter.new %>
       <% @events_by_month.each do |month, events| %>
-        <li class="event-month flex border-b border-paper-300"">
-          <div class="month-header w-48 flex-shrink-0 px-6 pt-5 text-xs text-paper-600">
-            <h2 class="text-xl text-paper-600 font-serif">
-              <div class="text-2xl text-paper-950"><%= month.strftime("%B") %></div>
-              <%= month.strftime("%Y") %>
-            </h2>
-
-            <p><%= events.count %> events</p>
-          </div>
-
-          <ol class="w-full bg-white">
-            <% events.each do |event| %>
-              <% presenter.event = event %>
-
-              <li class="px-6 py-4 event border-l-3 flex justify-between" style="border-left-color: <%= event.category.color %>">
-                <%# left (date) section %>
-                <div class="w-36 event-date-time text-xs font-semibold text-paper-600 uppercase flex flex-col gap-0">
-                    <span class="tracking-wider"><%= event.starts_at.strftime("%b") %></span>
-                    <span class="text-4xl text-paper-950 font-serif leading-tight">
-                      <%= raw(event.dates_to_s) %>
-                    </span>
-                    <span class="tracking-wider">
-                      <%= raw(presenter.days_to_s) %>
-                    </span>
-                </div>
-
-                <%# middle section %>
-                <div class="grow event-details px-4">
-                  <p class="text-xs font-medium uppercase tracking-wider text-paper-600 mb-1">
-                    <i class="fa-regular fa-fw fa-<%= event.category.glyph %>" style="color: <%= event.category.color %>"></i>
-                    <%= event.category.name %>
-                  </p>
-
-                  <h3 class="font-serif font-bold text-lg mb-1"><%= event.title %></h3>
-                  
-                  <div class="flex gap-4">
-                    <p class="text-xs text-paper-700">
-                      <i class="fa-regular fa-clock fa-fw"></i>
-                      <%= event.starts_at.strftime("%l:%M %p") %>
-                      <% if event.ends_at.present? %>
-                        &ndash; <%= event.ends_at.strftime("%l:%M %p") %>
-                      <% end %>
-                    </p>
-
-                    <p><%= event.location %></p>
-                  </div>
-                </div>
-
-                <div class="event-actions flex items-center gap-2">
-                  <% if policy(event).edit? %>
-                    <%= link_to edit_unit_event_path(@current_unit, event),
-                          class: "p-2 text-sm text-paper-500 hover:text-brand-500",
-                          data: { turbo_action: "advance", turbo_frame: "modal" } do %>
-                      <i class="fa-solid fa-pen-to-square"></i>
-                      Edit
-                    <% end %>
-                  <% end %>
-
-                  <% if policy(event).destroy? %>
-                    <%= link_to unit_event_path(@current_unit, event),
-                          method: :delete,
-                          data: { confirm: "Are you sure?", turbo_frame: "main" },
-                          class: "p-2 text-sm text-paper-500 hover:text-red-500" do %>
-                      <i class="fa-solid fa-trash"></i>
-                      Delete
-                    <% end %>
-                  <% end %>
-              </li>
-            <% end %>
-          </ol>
-        </li>
+        <%= render partial: "events/list/event_month", locals: { month: month, events: events, presenter: presenter } %>
       <% end %>
     </ol>
   </section>
@@ -106,5 +56,28 @@
 
   .event-tag-in-progress .event-tag-next, .event-tag-today .event-tag-next {
     display: none;
+  }
+
+  .past-month {
+    display: none;
+    opacity: 0.6;
+  }
+
+  #hide_past_events {
+    display: none;
+  }
+
+  body.show-past-events {
+    .past-month {
+      display: flex;
+    }
+
+    #show_past_events {
+      display: none;
+    }
+
+    #hide_past_events {
+      display: inline-block;
+    }
   }
 </style>
