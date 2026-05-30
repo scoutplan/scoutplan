@@ -1,31 +1,9 @@
 <%= turbo_frame_tag :main do %>
-  <header class="px-6 py-4 flex justify-between items-center border-b border-paper-300">
-    <div>
-      <p class="uppercase tracking-widest text-xs text-paper-700 font-medium mb-1">Schedule</p>
-      <h1 class="md:text-3xl font-semibold font-serif">Upcoming</h1>
-    </div>
+  <%= content_for :header_title do %>
+    <h1 class="md:text-3xl font-semibold font-serif">Upcoming</h1>
+  <% end %>
 
-    <nav class="flex items-center gap-2">
-      <div class="bg-paper-200 border border-paper-300 rounded-lg p-0.5 flex">
-        <%= link_to "Agenda", "#",
-          class: "inline-block px-4 py-[5px] text-sm font-medium bg-white rounded text-paper-800"
-        %>
-
-        <%= link_to "Month", "#",
-          class: "inline-block px-4 py-[5px] text-sm font-medium rounded text-paper-600"
-        %>
-      </div>
-
-      <% if policy(Event).create? %>
-        <%= link_to new_unit_event_path(@current_unit),
-              class: "inline-block bg-brand-500 text-white rounded-lg px-4 py-2 text-sm font-medium" do %>
-          <i class="fa-regular fa-plus"></i>
-          New Event
-        <% end %>
-      <% end %>
-    </nav>
-  </header>
-
+  <%= render "header" %>
 
   <section id="event_months" class="">
     <%= render "blank_slate" %>
@@ -34,9 +12,9 @@
       <% presenter = @presenter || EventPresenter.new %>
       <% @events_by_month.each do |month, events| %>
         <li class="event-month flex border-b border-paper-300"">
-          <div class="month-header w-48 flex-shrink-0 px-6 py-5 text-sm">
-            <h2 class="text-2xl text-paper-600 font-serif">
-              <span class="text-paper-950"><%= month.strftime("%B") %></span>
+          <div class="month-header w-48 flex-shrink-0 px-6 pt-5 text-xs text-paper-600">
+            <h2 class="text-xl text-paper-600 font-serif">
+              <div class="text-2xl text-paper-950"><%= month.strftime("%B") %></div>
               <%= month.strftime("%Y") %>
             </h2>
 
@@ -47,7 +25,7 @@
             <% events.each do |event| %>
               <% presenter.event = event %>
 
-              <li class="px-6 py-5 event border-l-3 flex justify-between" style="border-left-color: <%= event.category.color %>">
+              <li class="px-6 py-4 event border-l-3 flex justify-between" style="border-left-color: <%= event.category.color %>">
                 <%# left (date) section %>
                 <div class="w-36 event-date-time text-xs font-semibold text-paper-600 uppercase flex flex-col gap-0">
                     <span class="tracking-wider"><%= event.starts_at.strftime("%b") %></span>

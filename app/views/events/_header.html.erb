@@ -1,0 +1,44 @@
+<header class="px-6 py-4 flex justify-between items-center border-b border-paper-300 sticky top-0 bg-paper-50">
+  <div>
+    <p class="uppercase tracking-widest text-xs text-paper-700 font-medium mb-1">Schedule</p>
+    <%= yield :header_title %>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <%= yield :header_actions %>
+
+    <% if action_name == "list" %>
+      <nav class="bg-paper-200 border border-paper-300 rounded-lg p-0.5 flex h-[36px]">
+        <%= link_to "Agenda", list_unit_events_path(current_unit.id),
+              class: "inline-block px-4 py-[5px] text-sm font-medium bg-white rounded text-paper-800 hover:text-paper-800",
+              data: { turbo_action: "advance", turbo_frame: "main" }
+        %>
+
+        <%= link_to "Month", calendar_redirect_unit_events_path(current_unit.id),
+              class: "inline-block px-4 py-[5px] text-sm font-medium rounded text-paper-600 hover:text-paper-800",
+              data: { turbo_action: "advance", turbo_frame: "main" }
+        %>
+      </nav>
+    <% elsif action_name == "calendar" %>
+      <nav class="bg-paper-200 border border-paper-300 rounded-lg p-0.5 flex h-[36px]">
+        <%= link_to "Agenda", list_unit_events_path(current_unit.id),
+              class: "inline-block px-4 py-[5px] text-sm font-medium rounded text-paper-600 hover:text-paper-800",
+              data: { turbo_action: "advance", turbo_frame: "main" }
+        %>
+
+        <%= link_to "Month", calendar_redirect_unit_events_path(current_unit.id),
+              class: "inline-block px-4 py-[5px] text-sm font-medium bg-white rounded text-paper-800 hover:text-paper-800",
+              data: { turbo_action: "advance", turbo_frame: "main" }
+        %>
+      </nav>
+    <% end %>
+
+    <% if policy(Event).create? %>
+      <%= link_to new_unit_event_path(@current_unit),
+            class: "inline-block bg-brand-500 hover:bg-brand-600 text-white rounded-lg px-4 py-2 text-sm font-medium" do %>
+        <i class="fa-regular fa-plus"></i>
+        New Event
+      <% end %>
+    <% end %>
+  </div>
+</header>

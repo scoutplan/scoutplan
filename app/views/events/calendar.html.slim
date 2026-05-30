@@ -11,30 +11,19 @@
 /! Current unit id: #{current_unit&.id}
 /! Current user id: #{current_user&.id}
 = turbo_frame_tag :main
-  = render partial: "events/header"
+  = content_for :header_title do
+    h1(class="md:text-3xl font-semibold font-serif")
+      span = first_day_of_month.strftime("%B")
+      | &nbsp;&nbsp;
+      span.text-paper-600 = first_day_of_month.strftime("%Y")
 
-  .px-4
-    header.flex.flex-row.items-center.justify-between.py-2.md:mt-8.relative.mb-2
-      h1
-        .text-2xl.font-semibold.inline
-          = context[:first_day_of_month].strftime("%B %Y")
+  = content_for :header_actions do
+    = render partial: "events/partials/index/calendar/calendar_nav", locals: { context: context }
 
-        - if policy(Event).create?
-          = link_to new_unit_event_path(current_unit),
-                    class: "p-4 inline-block ml-2 text-stone-500 hover:text-brand-500 group text-sm",
-                    data: { turbo_action: "advance", turbo_frame: "modal" } do
-            .group-hover:hidden.inline
-              i.fa-solid.fa-plus.fa-fw.text-brand-500
-            .hidden.group-hover:inline
-              i.fa-solid.fa-plus-circle.fa-fw.text-brand-500
-            .inline
-              | &nbsp;
-              = "Add an Event"
+  = render "header"
 
-      div
-        = render partial: "events/partials/index/calendar/calendar_nav", locals: { context: context }
-
-    .table.px-0.w-full.table-fixed.border-t.border-stone-300
+  .p-4
+    .table.px-0.w-full.table-fixed
       .table-row.font-semibold
         - 7.times do |col|
           - dow = (col + first_day_of_week) % 7
