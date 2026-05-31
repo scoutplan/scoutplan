@@ -5,6 +5,7 @@
       style="border-left-color: <%= event.category.color %>"
       data-controller="clickable-row"
       data-clickable-row-url-value="<%= unit_event_path(current_unit, event) %>"
+      data-action="click->clickable-row#navigate"
       id="<%= dom_id(event) %>">
 
     <%# left (date) section %>
@@ -39,7 +40,12 @@
           <% end %>
         </p>
 
-        <p><%= event.location %></p>
+        <% if event.location %>
+          <p class="text-xs text-paper-700">
+            <i class="fa-regular fa-location-dot fa-fw"></i>
+            <%= event.location %>
+          </p>
+        <% end %>
       </div>
     </div>
 

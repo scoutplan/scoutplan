@@ -3,7 +3,7 @@
 /! Current user id: #{current_user&.id}
 /! #{@event&.email}
 
-= turbo_frame_tag :main, src: unit_events_path(current_unit), loading: :lazy
+
 
 = turbo_stream.update "page_title" do
   = t("events.index.page_title", unit_name: current_unit.name)  
