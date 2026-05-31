@@ -11,7 +11,8 @@
 %>
 
 <div data-controller="dropdown" class="relative">
-  <%= button_tag class: "h-[36px] w-[36px] flex items-center justify-center bg-paper-200 text-paper-600 border border-paper-300 rounded-lg",
+  <%= button_tag class: "h-[36px] w-[36px] flex items-center justify-center bg-paper-200 text-paper-600 \
+                   border border-paper-300 rounded-lg cursor-pointer hover:bg-paper-300 hover:text-paper-800",
         data: { action: "click->dropdown#toggle" } do %>
     <i class="fa-solid fa-ellipsis-vertical fa-fw"></i>
   <% end # button_tag %>

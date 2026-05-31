@@ -205,6 +205,10 @@ class Event < ApplicationRecord
       (rsvp_opens_at.nil? || rsvp_opens_at.past?)
   end
 
+  def requires_rsvp?
+    requires_rsvp
+  end
+
   def rsvp_closed?
     !rsvp_open?
   end
@@ -276,7 +280,7 @@ class Event < ApplicationRecord
   end
 
   def primary_location
-    event_locations.select { |el| el.location_type == "arrival" || el.location_type == "activity" }.first&.location
+    event_locations.select { |el| %w[arrival activity].include?(el.location_type) }.first&.location
   end
 
   def limits_headcount?
