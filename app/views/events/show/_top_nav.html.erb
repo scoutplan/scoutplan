@@ -1,0 +1,39 @@
+<nav class="border-b border-paper-300 flex justify-between items-center px-6 py-3 text-xs">
+  <ol class="flex items-center text-paper-600 gap-1">
+    <li>
+      <%= link_to "Events", unit_events_path(current_unit),
+            class: "text-paper-600 hover:text-paper-900",
+            data: { turbo_action: "advance" } %>
+    </li>
+
+    <li class="text-paper-400">
+      <i class="fa-solid fa-chevron-right fa-fw fa-xs"></i>
+    </li>
+
+    <li><%= event.title %></li>
+
+    <% if (event.organizer?(current_member) || current_member.admin?) && event.draft? %>
+      <li class="ml-1 uppercase bg-sky-100 text-sky-800 px-2 py-1 rounded-full tracking-wider font-medium">
+        <i class="fa-solid fa-circle fa-xs mr-0.5"></i>
+        Draft
+      </li>
+    <% end %>
+  </ol>
+
+  <div class="dropdown relative" data-controller="dropdown">
+    <%= button_tag class: "block w-6 h-6 rounded hover:bg-paper-200 text-center cursor-pointer",
+          data: { action: "dropdown#toggle", dropdown_target: "toggle" } do %>
+      <i class="fa-regular fa-ellipsis"></i>
+    <% end %>
+
+    <div class="dropdown-menu absolute right-0 bg-white z-20 rounded-lg border border-stone-300 top-full animate-pop-open w-72 text-sm mt-1 drop-shadow-overhead p-2 text-stone-700">
+      <ul>
+        <%#= render partial: "events/partials/show/sidecar/edit" %>
+        <%= render partial: "events/partials/show/sidecar/duplicate" %>
+        <%= render partial: "events/partials/show/sidecar/history" %>
+        <%= render partial: "events/partials/show/sidecar/download_brief" %>
+        <%= render partial: "events/partials/show/sidecar/add_to_calendar" %>
+      </ul>
+    </div>
+  </div>    
+</nav>

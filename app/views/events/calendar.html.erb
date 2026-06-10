@@ -3,6 +3,7 @@
 <% days_in_month = first_day_of_month.end_of_month.day %>
 <% days_in_last_month = first_day_of_last_month.end_of_month.day %>
 <% first_day_of_week = current_user&.first_day_of_week || 0 %>
+<% first_day_of_week = 1 %>
 <% display_day = - first_day_of_month.wday + 1 + first_day_of_week %>
 <% done = false %>
 <% context = { first_day_of_month: Date.new(@current_year, @current_month, 1) } %>
@@ -14,8 +15,8 @@
   <%= content_for :header_title do %>
     <h1 class="md:text-3xl font-semibold font-serif">
       <span><%= first_day_of_month.strftime("%B") %></span>
-      &nbsp;&nbsp;
       <span class="text-paper-600"><%= first_day_of_month.strftime("%Y") %></span>
+      <span class="block font-sans text-sm text-paper-700">&nbsp;</span>
     </h1>
   <% end %>
 
@@ -39,19 +40,21 @@
       <% end %>
     </div>
 
-    <div class="table px-0 w-full table-fixed border border-paper-300 rounded-xl bg-paper-50">
+    <% row = 0 %>
+    <div class="table px-0 w-full table-fixed border border-paper-300 rounded-xl bg-paper-200">
       <%# start of loop %>
       <% until display_day > days_in_month do %>
         <div class="table-row">
           <% 7.times do |col| %>
             <% dow = (col + first_day_of_week) % 7 %>
             <% cell_class = "cal-cell-dow-#{dow}" %>
+            <% cell_class += " border-t border-stone-300" if row > 0 %>
             <% display_date = context[:first_day_of_month] + display_day.days - 1 %>
 
             <% if display_date.month != @current_month %>
-              <% cell_class << " text-paper-500 opacity-50" %>
+              <% cell_class << " text-paper-500" %>
             <% elsif Date::WEEKEND_DAYS.include?(dow) %>
-              <% cell_class << " bg-paper-100" %>
+              <% cell_class << " bg-paper-50" %>
             <% else %>
               <% cell_class << " bg-white" %>
             <% end %>
@@ -66,9 +69,9 @@
             <% end %>
 
             <%# now render the cell %>
-            <div class="table-cell border-t border-stone-300 p-1 h-32 md:h-40 select-none cal-cell <%= cell_class %>" data-cal-date="<%= display_date %>">
+            <div class="table-cell p-0 h-32 md:h-40 select-none cal-cell <%= cell_class %>" data-cal-date="<%= display_date %>">
               <div class="cal-day-number font-semibold text-paper-700 uppercase flex justify-between items-center mx-1 h-8">
-                <div class="flex items-center text-sm gap-1">
+                <div class="flex items-center text-sm gap-1 p-1">
                   <% if day_number == 1 %>
                     <span class="text-brand-500 font-medium ml-1">
                       <%= display_date.strftime("%b") %>
@@ -88,20 +91,38 @@
               </div>
 
               <% @events.each do |event| %>
+                <% should_show_event = display_date.beginning_of_day >= event.starts_at.beginning_of_day && display_date.beginning_of_day <= event.ends_at.end_of_day %>
+                <% next unless should_show_event %>
+                <% is_first_day_of_event = event.starts_at.to_date == display_date %>
+                <% is_last_day_of_event = event.ends_at.to_date == display_date %>
+                <% css_classes = "" %>
                 <% css_classes = "event-cancelled" if event.cancelled? %>
                 <% css_classes = "event-draft" if event.draft? %>
+                <% css_classes += " cal-event text-xs whitespace-nowrap overflow-hidden block p-1" %>
+                <% css_classes += " rounded-l ml-2" if is_first_day_of_event %>
+                <% css_classes += " rounded-r mr-2" if is_last_day_of_event %>
 
-                <% if display_date.beginning_of_day >= event.starts_at.beginning_of_day && display_date.beginning_of_day <= event.ends_at.end_of_day %>
-                  <div class="cal-event text-xs whitespace-nowrap overflow-hidden block p-1 rounded hover:bg-stone-100 <%= css_classes %>"
-                       style="background-color: <%= lighten_color(event.category.color, 0.8) %>; border-left: 2px solid <%= event.category.color %>"
-                       title="<%= event.title %>">
-                    <% path = current_user ? unit_event_path(event.unit, event) : "#" %>
-                    <%= link_to path,
-                              class: "inline font-medium text-paper-950",
-                              data: { turbo_action: "advance" } do %>
+                <% border_color = lighten_color(event.category.color, 0.7) %>
+
+                <% styles = "background-color: #{lighten_color(event.category.color, 0.8)};" %>
+                <% styles += " border-top: 1px solid #{border_color}; border-bottom: 1px solid #{border_color};" %>
+                <% styles += " border-left: 3px solid #{event.category.color};" if is_first_day_of_event %>
+                <% styles += " border-right: 1px solid #{border_color};" if is_last_day_of_event %>
+
+                <div class="<%= css_classes %>"
+                      style="<%= styles %>"
+                      title="<%= event.title %>">
+
+                  <% path = current_user ? unit_event_path(event.unit, event) : "#" %>
+                  
+                  <%= link_to path,
+                            class: "inline font-medium text-paper-950",
+                            data: { turbo_action: "advance" } do %>
+
+                    <% if is_first_day_of_event %>
 
                       <% unless event.all_day? %>
-                        <span class="text-paper-500"><%= event.starts_at.strftime("%-I:%M %p") %></span>
+                        <span class="text-paper-600"><%= event.starts_at.strftime("%-I:%M %p") %></span>
                       <% end %>
 
                       <%= event.title %>
@@ -110,23 +131,25 @@
                         <i class="fa-solid fa-laptop ml-1" title="Online"></i>
                       <% end %>
                     <% end %>
+                  <% end %>
 
-                    <% if EventPolicy.new(current_member, event).edit? %>
-                      <%= link_to edit_unit_event_path(current_unit, event),
-                                class: "event-edit-link ml-1 inline-block text-stone-500 hover:text-black",
-                                data: { turbo_action: "advance" } do %>
+                  <% if EventPolicy.new(current_member, event).edit? %>
+                    <%= link_to edit_unit_event_path(current_unit, event),
+                              class: "event-edit-link ml-1 inline-block text-stone-500 hover:text-black",
+                              data: { turbo_action: "advance" } do %>
 
-                        <i class="fa-solid fa-pen-circle mr-1"></i>
-                      <% end %>
+                      <i class="fa-solid fa-pen-circle mr-1"></i>
                     <% end %>
-                  </div>
-                <% end %>
+                  <% end %>
+                </div>
+
               <% end %>
             </div>
 
             <% display_day += 1 %>
           <% end %>
         </div>
+        <% row += 1 %>
       <% end %>
     </div>
   </div>

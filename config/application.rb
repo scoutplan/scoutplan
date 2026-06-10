@@ -13,6 +13,7 @@ module Scoutplan
     end
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
+    config.time_zone = "Eastern Time (US & Canada)"
     config.exceptions_app = routes # tee up custom errors
     config.active_record.yaml_column_permitted_classes = [Symbol, DateTime, Date, Time]
     config.active_storage.variant_processor = :vips

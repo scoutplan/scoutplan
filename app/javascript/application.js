@@ -9,6 +9,6 @@ ActiveStorage.start()
 
 import * as ActionCable from "@rails/actioncable"
 ActionCable.logger.enabled = true
-import "./channels"
+import "channels"
 
 FontAwesome.config.mutateApproach = 'sync'

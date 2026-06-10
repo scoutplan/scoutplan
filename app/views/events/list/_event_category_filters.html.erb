@@ -1,0 +1,50 @@
+<nav class="flex justify-between items-center px-6 py-2 border-b border-paper-300">
+  <div>
+    <ul class="flex gap-2 overflow-x-auto">
+      <li>
+        <%= link_to "#",
+              class: "event-filter-pill block text-sm cursor-pointer rounded-full border \
+                px-2 py-0.5 bg-paper-900 border-transparent text-paper-100",
+              data: { event_filter_target: "pill", action: "event-filter#select", category_id: "" } do %>
+          All
+          <span class="event-filter-badge text-xs inline-block rounded-full px-1.5 py-0.5 bg-paper-700 text-paper-100"
+                data-event-filter-target="allCount">
+            <%= @events.count %>
+          </span>
+        <% end %>
+      </li>
+
+      <% @events_by_category.each do |category, events| %>
+        <li>
+          <%= link_to "#",
+                class: "event-filter-pill block text-sm cursor-pointer rounded-full border \
+                  px-2 py-0.5 bg-paper-100 border-paper-300 text-paper-800 hover:bg-paper-200",
+                data: { event_filter_target: "pill", action: "event-filter#select", category_id: category.id } do %>
+            <%= category.name %>
+
+            <span class="event-filter-badge text-xs inline-block rounded-full px-1.5 py-0.5 bg-paper-200 text-paper-800"
+                  data-event-filter-target="count" data-category-id="<%= category.id %>">
+              <%= events.count %>
+            </span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div>
+    <%= button_tag class: "text-sm text-paper-600 cursor-pointer",
+          id: "show_past_events",
+          onclick: "document.body.classList.add('show-past-events');" do %>
+      <i class="fa-regular fa-chevron-down fa-fw fa-xs"></i>
+      Show past events
+    <% end %>
+
+    <%= button_tag class: "text-sm text-paper-600 cursor-pointer",
+          id: "hide_past_events",
+          onclick: "document.body.classList.remove('show-past-events');" do %>
+      <i class="fa-regular fa-chevron-up fa-fw fa-xs"></i>
+      Hide past events
+    <% end %>      
+  </div>
+</nav>

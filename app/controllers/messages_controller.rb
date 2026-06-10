@@ -31,7 +31,7 @@ class MessagesController < UnitContextController
 
   def new
     authorize current_member.messages.new(author: current_member)
-    @message = current_member.messages.new(send_at: Date.today, status: :draft)
+    @message = current_member.messages.new(send_at: Date.current, status: :draft)
   end
 
   def create

@@ -41,9 +41,6 @@ Rails.application.configure do
 
   config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
-  config.assets.css_compressor = nil
-  config.assets.compile = true
-
   config.active_storage.service = :digitalocean
 
   config.force_ssl = true

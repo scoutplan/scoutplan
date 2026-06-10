@@ -281,6 +281,52 @@ body.showing-only-draft-events a:hover {
   border-color: black transparent transparent transparent; }
 
 body.modal-open main {
-  overflow: hidden; 
+  overflow: hidden;
 }
 /* end */
+
+/* Agenda list (events#list): category filter + show/hide past events.
+   Moved out of an inline <style> in app/views/events/list.html.erb. */
+.event + .event {
+  border-top: 1px solid #e2e8f0;
+}
+
+.event.filtered-hidden {
+  display: none;
+}
+
+/* hide a (visible) month group whose every event is category-filtered out */
+.event-month:not(.past-month):not(:has(.event:not(.filtered-hidden))) {
+  display: none;
+}
+
+body.show-past-events .event-month.past-month:not(:has(.event:not(.filtered-hidden))) {
+  display: none;
+}
+
+.event-tag-in-progress .event-tag-next, .event-tag-today .event-tag-next {
+  display: none;
+}
+
+.past-month {
+  display: none;
+  opacity: 0.6;
+}
+
+#hide_past_events {
+  display: none;
+}
+
+body.show-past-events {
+  .past-month {
+    display: flex;
+  }
+
+  #show_past_events {
+    display: none;
+  }
+
+  #hide_past_events {
+    display: inline-block;
+  }
+}

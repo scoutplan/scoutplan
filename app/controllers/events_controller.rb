@@ -42,8 +42,8 @@ class EventsController < UnitContextController
 
   # rubocop:disable Layout/LineLength
   def calendar
-    month = params[:month] || cookies[:calendar_month] || Date.today.year
-    year = params[:year] || cookies[:calendar_year] || Date.today.month
+    month = params[:month] || cookies[:calendar_month] || Date.current.year
+    year = params[:year] || cookies[:calendar_year] || Date.current.month
 
     redirect_to calendar_unit_events_path(current_unit, year: year, month: month) and return unless params[:year] && params[:month]
 
@@ -131,6 +131,7 @@ class EventsController < UnitContextController
   # rubocop:disable Metrics/PerceivedComplexity
   def show
     authorize @event
+    @event.report_timezone_snapshot(context: "show:#{request.format.symbol}")
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).rsvps?
     @current_family = current_member&.family
@@ -189,6 +190,7 @@ class EventsController < UnitContextController
     authorize @event
 
     if @event.save!
+      @event.report_timezone_snapshot(context: "create")
       if params[:event][:attachments].present?
         params[:event][:attachments].each do |attachment|
           @event.attachments.attach(attachment)
@@ -207,6 +209,7 @@ class EventsController < UnitContextController
     @event.current_member = current_member
     @event.update!(event_params)
     @event.cover_photo.purge if params[:remove_cover_photo] == "1"
+    @event.report_timezone_snapshot(context: "update")
 
     respond_to do |format|
       format.html { redirect_after_update }
@@ -262,7 +265,7 @@ class EventsController < UnitContextController
   def render_printable_signups
     events = @events.select(&:rsvp_open?)
 
-    render(pdf:         "#{current_unit.name} Signups as of #{Date.today.strftime('%-d %B %Y')}",
+    render(pdf:         "#{current_unit.name} Signups as of #{Date.current.strftime('%-d %B %Y')}",
            layout:      "pdf",
            encoding:    "utf8",
            orientation: "landscape",
@@ -339,7 +342,7 @@ class EventsController < UnitContextController
       starts_at:      28.days.from_now.next_occurring(:saturday).change({ hour: 10 }),
       ends_at:        28.days.from_now.next_occurring(:saturday).change({ hour: 16 }),
       rsvp_closes_at: 21.days.from_now.next_occurring(:saturday).change({ hour: 10 }),
-      rsvp_opens_at:  Date.today,
+      rsvp_opens_at:  Date.current,
       event_category: current_unit.event_categories.first
     )
     if (date_s = params[:date]).present?
@@ -560,11 +563,22 @@ class EventsController < UnitContextController
   def find_list_events
     @season_start = current_unit.this_season_starts_at
     @season_end   = current_unit.this_season_ends_at
-    @initial_end  = (Date.current + 1.month).end_of_month
-    # @events = list_base_scope.where("ends_at > ? AND starts_at <= ?", Date.current, @initial_end)
-    # @events = list_base_scope.where("starts_at >= ?", Date.current)
-    @events = list_base_scope.where("starts_at >= ? AND ends_at <= ?", @season_start,
-                                    (Date.current + 1.year).end_of_year)
+
+    @start_date = Date.current.beginning_of_month
+    @end_date = (Date.current + 1.year).end_of_year
+
+    # Load from the season start so past-season months are present in the DOM; they're
+    # hidden by default and revealed via the "Show past events" toggle (CSS-only).
+    # @start_date drives the header label (visible range), not the query lower bound.
+    @events = list_base_scope.where("starts_at >= ? AND ends_at <= ?", @season_start, @end_date)
+    @categories_in_use = @events.map(&:category).uniq
+
+    # @categories_in_use.each do |cat|
+    #   cat.events_in_season = @events.select { |e| e.category_id == cat.id }
+    # end
+
+    @events_by_category = @events.group_by(&:category)
+
     @events_by_month = @events.group_by { |e| e.starts_at.in_time_zone(current_unit.time_zone).beginning_of_month }
   end
 
@@ -613,8 +627,8 @@ class EventsController < UnitContextController
   end
 
   def set_calendar_dates
-    @current_year  = params[:year]&.to_i || Date.today.year
-    @current_month = params[:month]&.to_i || Date.today.month
+    @current_year  = params[:year]&.to_i || Date.current.year
+    @current_month = params[:month]&.to_i || Date.current.month
     @display_month = params[:display_month]&.to_i
     @display_year  = params[:display_year]&.to_i
     @start_date    = Date.new(@current_year, @current_month, 1)

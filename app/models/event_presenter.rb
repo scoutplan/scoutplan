@@ -54,7 +54,7 @@ class EventPresenter
   def month_name
     result = event.starts_at.strftime("%B")
     result.concat "#{ndash}#{event.ends_at.strftime('%B')}" unless single_month?
-    result.concat " #{event.starts_at.strftime('%Y')}" unless event.starts_at.year == Date.today.year
+    result.concat " #{event.starts_at.strftime('%Y')}" unless event.starts_at.year == Date.current.year
     result.html_safe
   end
   # rubocop:enable Metrics/AbcSize

@@ -1,16 +1,12 @@
 # frozen_string_literal: true
 
 # Be sure to restart your server when you modify this file.
-
-# Version of your assets, change this if you want to expire all your assets.
-Rails.application.config.assets.version = "1.0"
-
-# Add additional assets to the asset load path.
-# Rails.application.config.assets.paths << Emoji.images_path
-# Add Yarn node_modules folder to the asset load path.
-Rails.application.config.assets.paths << Rails.root.join("node_modules")
-
-# Precompile additional assets.
-# application.js, application.css, and all non-JS/CSS in the app/assets
-# folder are already added.
-Rails.application.config.assets.precompile += %w[.svg]
+#
+# Propshaft serves every file on the asset load path with a digested filename.
+# The default load path covers app/assets/* (images, stylesheets, builds); importmap-rails
+# adds app/javascript and vendor/javascript. Add extra load paths here if needed, e.g.:
+#
+#   Rails.application.config.assets.paths << Emoji.images_path
+#
+# Note: unlike Sprockets, Propshaft has no precompile allowlist and no asset "version" —
+# do not point a load path at node_modules, as its entire contents would be served.

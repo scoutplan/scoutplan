@@ -1,29 +1,16 @@
-<%= turbo_frame_tag :main do %>
+<%= turbo_frame_tag :main, data: { controller: "event-filter" } do %>
   <%= content_for :header_title do %>
-    <h1 class="md:text-3xl font-semibold font-serif">Upcoming</h1>
+    <h1 class="md:text-3xl font-semibold font-serif">
+      Upcoming
+      <span class="block font-sans text-sm text-paper-700">
+        <%= @start_date.strftime("%B %Y") %> to <%= @end_date.strftime("%B %Y") %>
+      </span>
+    </h1>
   <% end %>
 
   <%= content_for :header_extra do %>
-    <nav class="flex justify-between items-center px-6 py-2 border-b border-paper-300">
-      <div></div>
-
-      <div>
-        <%= button_tag class: "text-sm text-paper-600 cursor-pointer",
-              id: "show_past_events",
-              onclick: "document.body.classList.add('show-past-events');" do %>
-          <i class="fa-regular fa-chevron-down fa-fw fa-xs"></i>
-          Show past events
-        <% end %>
-
-        <%= button_tag class: "text-sm text-paper-600 cursor-pointer",
-              id: "hide_past_events",
-              onclick: "document.body.classList.remove('show-past-events');" do %>
-          <i class="fa-regular fa-chevron-up fa-fw fa-xs"></i>
-          Hide past events
-        <% end %>      
-      </div>
-    </nav>
-  <% end %>
+    <%= render partial: "events/list/event_category_filters" %>
+  <% end # content_for :header_extra %>
 
   <%= render "header" %>
 
@@ -36,50 +23,14 @@
         <%= render partial: "events/list/event_month", locals: { month: month, events: events, presenter: presenter } %>
       <% end %>
     </ol>
+
+    <div data-event-filter-target="empty"
+         class="hidden rounded bg-paper-100 text-paper-700 w-3/4 mx-auto p-6 mt-8 text-center">
+      No events match this filter.
+    </div>
   </section>
 <% end %>
 
 <%= turbo_stream.update "page_title" do %>
   <%= t("events.index.page_title", unit_name: current_unit.name) %>
 <% end %>
-
-<style>
-  #events_list .more-past-events-item {
-    display: none;
-  }
-
-  #events_list .more-past-events-item:first-of-type {
-    display: block;
-  }
-
-  .event + .event {
-    border-top: 1px solid #e2e8f0;
-  }
-
-  .event-tag-in-progress .event-tag-next, .event-tag-today .event-tag-next {
-    display: none;
-  }
-
-  .past-month {
-    display: none;
-    opacity: 0.6;
-  }
-
-  #hide_past_events {
-    display: none;
-  }
-
-  body.show-past-events {
-    .past-month {
-      display: flex;
-    }
-
-    #show_past_events {
-      display: none;
-    }
-
-    #hide_past_events {
-      display: inline-block;
-    }
-  }
-</style>

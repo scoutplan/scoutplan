@@ -1,8 +1,9 @@
 <% cache event do %>
   <% presenter.event = event %>
 
-  <li class="px-6 py-4 event border-l-3 flex flex-col md:flex-row gap-4 md:gap-0 justify-between hover:bg-stone-50 cursor-pointer"
+  <li class="px-6 py-4 event border-l-5 flex flex-col md:flex-row gap-4 md:gap-0 justify-between hover:bg-stone-50 cursor-pointer"
       style="border-left-color: <%= event.category.color %>"
+      data-category-id="<%= event.event_category_id %>"
       data-controller="clickable-row"
       data-clickable-row-url-value="<%= unit_event_path(current_unit, event) %>"
       data-action="click->clickable-row#navigate"
@@ -16,15 +17,15 @@
     </div>
 
     <%# middle section %>
-    <div class="grow event-details">
-      <p class="text-xs font-medium uppercase tracking-wider text-paper-600 mb-1">
+    <div class="grow event-details space-y-1.5">
+      <p class="text-xs font-medium uppercase tracking-wider text-paper-600">
         <i class="fa-regular fa-fw fa-<%= event.category.glyph %>" style="color: <%= event.category.color %>"></i>
         <%= event.category.name %>
 
         <% if event.multiday? %>
-          <span class="ml-2 px-1.5 py-0.5 text-xs font-medium bg-paper-200 text-paper-800 rounded-full">
+          <span class="ml-2 px-1.5 py-0.5 text-xs font-medium bg-paper-100 text-paper-800 rounded border border-paper-300">
             <i class="fa-regular fa-moon fa-fw"></i>
-            <%= event.duration_in_days %> nights
+            <%= pluralize(event.duration_in_days, 'night') %>
           </span>
         <% end %>
       </p>
@@ -34,9 +35,9 @@
       <div class="flex gap-4">
         <p class="text-xs text-paper-700">
           <i class="fa-regular fa-clock fa-fw"></i>
-          <%= event.starts_at.strftime("%l:%M %p") %>
+          <%= event.starts_at.in_time_zone(current_unit.time_zone).strftime("%l:%M %p") %>
           <% if event.ends_at.present? %>
-            &ndash; <%= event.ends_at.strftime("%l:%M %p") %>
+            &ndash; <%= event.ends_at.in_time_zone(current_unit.time_zone).strftime("%l:%M %p") %>
           <% end %>
         </p>
 
@@ -45,7 +46,7 @@
             <i class="fa-regular fa-location-dot fa-fw"></i>
             <%= event.location %>
           </p>
-        <% end %>
+        <% end # if event.location %>
       </div>
     </div>
 

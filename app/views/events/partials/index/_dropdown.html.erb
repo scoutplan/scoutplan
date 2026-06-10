@@ -10,7 +10,7 @@
         List
       <% end %>
 
-      <%= link_to calendar_unit_events_path(current_unit, year: Date.today.year, month: Date.today.month),
+      <%= link_to calendar_unit_events_path(current_unit, year: Date.current.year, month: Date.current.month),
                   class: "block px-4 py-2 rounded-lg hover:bg-stone-300 #{action_name == "calendar" ? "bg-white hover:bg-white cursor-default" : ""}",
                   data: { turbo_action: "advance" } do %>
         <i class="fa-regular fa-calendar"></i>

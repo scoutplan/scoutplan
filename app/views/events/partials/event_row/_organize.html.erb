@@ -1,6 +1,6 @@
 <% dashboard = EventDashboard.new(event) %>
 
-<div class="rounded-lg mb-1 grid grid-cols-3 divide-x divide-stone-300 border border-paper-300 w-full md:w-md">
+<div class="rounded-lg mb-1 grid grid-cols-3 divide-x divide-stone-300 border border-paper-300 w-full md:w-sm">
   <div class="text-center p-2">
     <div class="text-xs font-semibold text-paper-600 tracking-wider"><%= number_to_percentage((dashboard.accept_rate) * 100, precision: 0) %></div>
     <div class="text-2xl text-green-600"><%= dashboard.acceptance_count %></div>

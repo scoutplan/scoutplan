@@ -1,16 +1,18 @@
-  <li class="event-month flex flex-col md:flex-row border-b border-paper-300 <%= month < Date.current.beginning_of_month ? "past-month" : "" %>">
-    <div class="month-header w-48 flex-shrink-0 px-6 py-5 text-xs text-paper-600">
-      <h2 class="text-xl text-paper-600 font-serif">
-        <div class="text-2xl text-paper-950"><%= month.strftime("%B") %></div>
-        <%= month.strftime("%Y") %>
-      </h2>
+<li class="event-month flex flex-col md:flex-row border-b border-paper-300 <%= month < Date.current.beginning_of_month ? "past-month" : "" %>">
+  <div class="month-header w-48 flex-shrink-0 px-6 py-5 text-xs text-paper-600">
+    <h2 class="text-xl text-paper-600 font-serif">
+      <div class="text-2xl text-paper-950"><%= month.strftime("%B") %></div>
+      <%= month.strftime("%Y") %>
+    </h2>
 
-      <p><%= events.count %> events</p>
-    </div>
+    <p><%= events.count %> events</p>
+  </div>
 
-    <ol class="w-full bg-white">
-      <% events.each do |event| %>
+  <ol class="w-full bg-white">
+    <% events.each do |event| %>
+      <% cache event do %>
         <%= render partial: "events/list/event", locals: { event: event, presenter: presenter } %>
-      <% end # each event %>
-    </ol>
-  </li>
+      <% end %>
+    <% end # each event %>
+  </ol>
+</li>

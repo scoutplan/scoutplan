@@ -79,9 +79,9 @@ class Event < ApplicationRecord
   enum :status, { draft: 0, published: 1, cancelled: 2, archived: 3 }
 
   # TODO: clean up this mess
-  scope :past,          -> { where("starts_at < ?", Date.today.in_time_zone) }
-  scope :future,        -> { where("ends_at > ?", Date.today.in_time_zone) }
-  scope :recent,        -> { where("starts_at BETWEEN ? AND ?", 4.weeks.ago, Date.today) }
+  scope :past,          -> { where("starts_at < ?", Date.current.in_time_zone) }
+  scope :future,        -> { where("ends_at > ?", Date.current.in_time_zone) }
+  scope :recent,        -> { where("starts_at BETWEEN ? AND ?", 4.weeks.ago, Date.current) }
   scope :this_week,     lambda {
                           where("starts_at BETWEEN ? AND ?", Time.current, 6.days.from_now.at_end_of_day.in_time_zone)
                         }
@@ -411,6 +411,33 @@ class Event < ApplicationRecord
   # is this event "contactable," meaning it has an audience that can be notified?
   def contactable?
     requires_rsvp? && recipients.any?
+  end
+
+  # Diagnostic payload for tracking down "off by a day" reports.
+  # See EventsController#create/#update/#show for emission points.
+  def timezone_snapshot(context:)
+    unit_tz = unit&.time_zone
+    {
+      context: context,
+      event_id: id,
+      unit_id: unit_id,
+      unit_time_zone: unit_tz,
+      all_day: all_day,
+      starts_at_utc: starts_at&.utc&.iso8601,
+      ends_at_utc: ends_at&.utc&.iso8601,
+      starts_at_in_unit_tz: unit_tz ? starts_at&.in_time_zone(unit_tz)&.iso8601 : nil,
+      ends_at_in_unit_tz: unit_tz ? ends_at&.in_time_zone(unit_tz)&.iso8601 : nil,
+      rails_time_zone: Time.zone&.name,
+      system_today: Date.today.iso8601,
+      rails_today: Date.current.iso8601,
+      now_in_unit_tz: unit_tz ? Time.current.in_time_zone(unit_tz).iso8601 : nil
+    }
+  end
+
+  def report_timezone_snapshot(context:)
+    Honeybadger.event("event_timezone_snapshot", timezone_snapshot(context: context))
+  rescue => e
+    Rails.logger.warn("event_timezone_snapshot report failed: #{e.message}")
   end
 end
 # rubocop:enable Metrics/ClassLength
