@@ -1,0 +1,61 @@
+<% return unless event.event_locations.present? %>
+
+<style>
+  details[open] .disclosure-glyph {
+    transform: rotate(180deg);
+    transition: transform 0.2s ease-in-out;
+  }
+</style>
+
+
+<section id="locations" class="my-3">
+  <h3 class="text-xs font-medium uppercase tracking-wider flex items-center gap-1 text-paper-600">
+    <i class="fa-light fa-location-dot mr-1"></i>
+    Location
+  </h3>
+
+  <div class="border border-paper-300 rounded-lg p-4 mt-2 flex gap-4">
+    <div>
+      <i class="fa-regular fa-house"></i>
+    </div>
+
+    <div>
+      <ol class="text-sm">
+        <li><%= event.locations.first.name %></li>
+        <li><%= event.locations.first.address %></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="hiddenz">
+    <% if params[:map] == "static" %>
+      <%= render partial: "events/partials/show/static_map" %>
+    <% else %>
+      <%= render partial: "events/partials/show/map" %>
+    <% end %>
+
+    <% if event.mappable? %>
+      <p class="text-right">
+        <%= link_to event_map_url(event),
+                  target: "_new",
+                  class: "text-xs text-stone-500 hover:text-stone-700 inline-block py-1",
+                  aria: { role: "link" } do %>
+          <i class="fa-regular fa-map text-stone-400"></i>
+          &nbsp;&nbsp;
+          <%= t("events.show.map") %>
+        <% end %>
+      </p>
+    <% end %>
+
+
+    <ol class="flex flex-col gap-5 relative">
+      <% if event.event_locations.count > 1 %>
+        <%# vertical line %>
+        <div class="absolute w-px top-3 bottom-4 bg-stone-400" style="left: 9.5px;"></div>
+      <% end %>
+
+      <%= render partial: "events/partials/show/event_location",
+              collection: event.event_locations.in_order_of(:location_type, %W[departure arrival activity]) %>
+    </ol>
+  </div>
+</section>

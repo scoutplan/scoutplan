@@ -1,7 +1,7 @@
 import { DirectUpload } from "@rails/activestorage"
 import { Controller } from "@hotwired/stimulus"
 import { post } from "@rails/request.js"
-import {} from "../traversal.js"
+import "traversal"
 import { computePosition, size } from "https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10/+esm"
 
 export default class extends Controller {

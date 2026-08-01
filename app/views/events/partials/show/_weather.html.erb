@@ -9,31 +9,30 @@
 <% return unless conditions %>
 
 <article class="py-4">
-  <header class="mb-3">
-    <h3 class="font-semibold text-stone-950">
-      <i class="fa-light mr-2 <%= service.icon_class(conditions.main) %>"></i>
-      <%= "#{service.city_state} Weather" %>
-    </h3>
-  </header>
+
+  <h3 class="text-xs font-medium uppercase tracking-wider flex items-center gap-1 text-paper-600 mb-4">
+    <i class="fa-light mr-2 <%= service.icon_class(conditions.main) %>"></i>
+    <%= "#{service.city_state} Weather" %>
+  </h3>
 
   <div class="flex flex-row justify-between items-end">
-    <div id="current-conditions" class="font-bold">
-      <div class="inline text-4xl">
+    <div id="current-conditions">
+      <div class="inline text-4xl ">
         <%= conditions.temperature.round %>&deg;
       </div>
-      <div class="inline">
+      <div class="inline text-sm">
         &nbsp;<%= conditions.main %>
       </div>
     </div>
 
-    <div id="high-low-today" class="font-bold">
-      <div class="inline font-bold uppercase text-stone-500">Low </div>
+    <div id="high-low-today" class="z">
+      <div class="inline  uppercase text-stone-500">Low </div>
       <%= "#{conditions.temp_min.round}&deg;&nbsp;&ndash;&nbsp;#{conditions.temp_max.round}&deg;".html_safe %>
-      <div class="inline font-bold uppercase text-stone-500"> High</div>
+      <div class="inline  uppercase text-stone-500"> High</div>
     </div>
   </div>
 
-  <div class="table w-full mt-4 font-bold">
+  <div class="table w-full mt-4 ">
     <% count = 0 %>
     <% service.daily_forecast.each do |date, conditions| %>
       <% next if date.today? %>

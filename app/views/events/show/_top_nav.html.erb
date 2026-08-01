@@ -1,4 +1,4 @@
-<nav class="border-b border-paper-300 flex justify-between items-center px-6 py-3 text-xs">
+<nav class="border-b border-paper-300 flex justify-between items-center px-8 py-3 text-xs">
   <ol class="flex items-center text-paper-600 gap-1">
     <li>
       <%= link_to "Events", unit_events_path(current_unit),
@@ -16,6 +16,13 @@
       <li class="ml-1 uppercase bg-sky-100 text-sky-800 px-2 py-1 rounded-full tracking-wider font-medium">
         <i class="fa-solid fa-circle fa-xs mr-0.5"></i>
         Draft
+      </li>
+    <% end %>
+
+    <% if (event.organizer?(current_member) || current_member.admin?) && event.published? %>
+      <li class="ml-1 uppercase bg-lime-200 text-lime-800 px-2 py-1 rounded-full tracking-wider font-medium">
+        <i class="fa-solid fa-circle fa-xs mr-0.5"></i>
+        Published
       </li>
     <% end %>
   </ol>

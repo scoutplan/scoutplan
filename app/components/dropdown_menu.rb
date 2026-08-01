@@ -1,4 +1,4 @@
-class DropdownMenu < Phlex::HTML
+class Components::DropdownMenu < Components::Base
   def initialize(items:)
     super
     @items = items

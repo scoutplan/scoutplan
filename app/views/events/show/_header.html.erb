@@ -1,0 +1,21 @@
+<header class="py-3">
+  <%= render Components::EventCategoryBadge.new(event: @event) %>
+
+  <h1 class="font-serif text-3xl font-medium mt-3"><%= @event.title %></h1>
+
+  <% if event.short_description.present? %>
+    <p><%= event.short_description %></p>
+  <% end %>
+
+  <ol class="flex divide-x divide-paper-300 text-sm text-paper-700 mt-2 gap-2 mt-4">
+    <li class="uppercase text-sm tracking-wider pr-4">
+      <span class="block"><%= event.starts_at.strftime("%b %Y") %></span>
+      <span class="text-3xl text-paper-900 font-semibold"><%= event.dates_to_s %></span>
+      <span class=""><%= event.days_to_s %></span>
+    </li>
+
+    <li class="uppercase text-sm tracking-wider">
+
+    </li>     
+  </ol>
+</header>

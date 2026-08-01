@@ -10,4 +10,6 @@ class Components::Base < Phlex::HTML
       super
     end
   end
+
+  def view_template; end
 end
