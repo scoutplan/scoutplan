@@ -8,6 +8,7 @@
                                             format: :ics,
                                             only_path: false,
                                             protocol: "https")
+   google_subscribe_url = "https://calendar.google.com/calendar/r?cid=#{ERB::Util.url_encode(ics_url)}"
 %>
 
 <div data-controller="dropdown" class="relative">
@@ -36,9 +37,9 @@
       </dd>
 
       <dd>
-        <%= link_to ics_url,
+        <%= link_to google_subscribe_url,
                     class: "block -mx-4 px-4 py-2 rounded hover:bg-paper-100 rounded flex items-center gap-3",
-                    data: { turbo: true, turbo_frame: "modal" } do %>
+                    target: "_blank", rel: "noopener" do %>
           <i class="fa-regular fa-calendar text-paper-500 fa-lg"></i>
           <div class="text-xs text-paper-700">
               <div class="font-semibold text-paper-900 text-sm">Add to Google Calendar</div>
@@ -48,13 +49,16 @@
       </dd>
 
       <dd>
-        <%= link_to ics_url,
-                    class: "block -mx-4 px-4 py-2 rounded hover:bg-paper-100 rounded flex items-center gap-3",
-                    data: { turbo: true, turbo_frame: "modal" } do %>
+        <%= button_tag type: "button",
+                    class: "w-full text-left cursor-pointer block -mx-4 px-4 py-2 rounded hover:bg-paper-100 rounded flex items-center gap-3",
+                    data: { controller: "clipboard",
+                            clipboard_text_value: ics_url,
+                            clipboard_feedback_text_value: "Copied to clipboard",
+                            action: "clipboard#copy" } do %>
           <i class="fa-regular fa-link text-paper-500 fa-lg"></i>
           <div class="text-xs text-paper-700">
               <div class="font-semibold text-paper-900 text-sm">Copy Webcal URL</div>
-              For other calendar apps
+              <span data-clipboard-target="feedback">For other calendar apps</span>
           </div>
         <% end %>
       </dd>      
