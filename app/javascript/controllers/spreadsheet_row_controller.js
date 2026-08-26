@@ -7,6 +7,7 @@ export default class extends Controller {
   static targets = ["insertionCursor"];
   static values = { unitId: Number, newRow: Boolean };
   movedOut = false;
+  inserting = false;
 
   showInsertionCursor(event) {
     if (this.newRowValue && !this.movedOut) { return; }
@@ -21,8 +22,18 @@ export default class extends Controller {
   }
 
   async insertRow(event) {
+    // Guard against a second insert firing before the first turbo-stream lands. The new row is
+    // inserted *before* the target, so the DOM shifts under the pointer and a fast double-click
+    // would otherwise create several events in a row.
+    if (this.inserting) { return; }
+    this.inserting = true;
     this.hideInsertionCursor();
-    await post(`/u/${event.params.unit}/schedule/spreadsheet/rows?before=${event.params.before}`, { responseKind: "turbo-stream" });
+
+    try {
+      await post(`/u/${event.params.unit}/schedule/spreadsheet/rows?before=${event.params.before}`, { responseKind: "turbo-stream" });
+    } finally {
+      this.inserting = false;
+    }
   }
 
   navigateToEvent(event) {

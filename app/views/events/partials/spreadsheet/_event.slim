@@ -54,9 +54,12 @@
                 data: { action: "change->spreadsheet-row#changeEventStatus" } },
               "true", "false")
       
-  .absolute.-left-5.right-0.h-3.-top-1.block.insertion-cursor-wrapper.cursor-pointer (data-action="#{cursor_actions}" data-spreadsheet-row-before-param="#{event.id}" data-spreadsheet-row-unit-param="#{event.unit.id}")
+  / The wrapper spans the full row width so the insertion cursor can be drawn across it, but it must
+  / not swallow clicks on row content -- it straddles the top border and used to sit above the
+  / Published toggle, turning a publish click into a row insert. Only the gutter hit target is live.
+  .absolute.-left-5.right-0.h-3.-top-1.block.insertion-cursor-wrapper.pointer-events-none
 
-    .z-20.absolute.inset-0(data-action="mouseenter->spreadsheet-row#showInsertionCursor mouseout->spreadsheet-row#hideInsertionCursor")
+    .z-20.absolute.left-0.top-0.h-full.w-5.pointer-events-auto.cursor-pointer(data-action="#{cursor_actions} mouseenter->spreadsheet-row#showInsertionCursor mouseout->spreadsheet-row#hideInsertionCursor" data-spreadsheet-row-before-param="#{event.id}" data-spreadsheet-row-unit-param="#{event.unit.id}")
 
     .z-0.w-full.h-1.absolute.insertion-cursor.hidden(data-spreadsheet-row-target="insertionCursor")
       .absolute.left-3.right-0.height-1.border-t.border-black.border-2.top-1/2.-translate-y-1/2

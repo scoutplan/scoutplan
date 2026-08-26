@@ -28,15 +28,16 @@ css:
     display: none;
   }
 
-  .dragover .insertion-cursor {
+  /* .dragover now lands on the gutter hit target, which is a sibling of .insertion-cursor */
+  .dragover ~ .insertion-cursor {
     display: block;
   }
 
-  .dragover .insertion-glyph {
+  .dragover ~ .insertion-cursor .insertion-glyph {
     display: none;
   }
 
-  .dragover .move-glyph {
+  .dragover ~ .insertion-cursor .move-glyph {
     display: block;
   }
 
