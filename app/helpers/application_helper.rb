@@ -124,6 +124,11 @@ module ApplicationHelper
 
   # Amount should be a decimal between 0 and 1. Higher means lighter
   def lighten_color(hex_color, amount = 0.7)
+    # event_categories.color is nullable with no default, so this has to tolerate nil. The
+    # respond_to? guard was below the starts_with? call, which meant a category with no colour
+    # raised NoMethodError instead of degrading to no styling.
+    return "" unless hex_color.respond_to?(:starts_with?)
+
     hex_color = HtmlColor.to_hex(hex_color) unless hex_color.starts_with?("#")
     return "" unless hex_color.respond_to?(:gsub)
 

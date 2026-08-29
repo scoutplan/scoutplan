@@ -10,9 +10,7 @@
 
   <ol class="w-full bg-white">
     <% events.each do |event| %>
-      <% cache event do %>
-        <%= render partial: "events/list/event", locals: { event: event, presenter: presenter } %>
-      <% end %>
+      <%= render partial: "events/list/event", locals: { event: event, presenter: presenter } %>
     <% end # each event %>
   </ol>
 </li>

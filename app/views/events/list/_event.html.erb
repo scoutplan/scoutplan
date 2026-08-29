@@ -1,79 +1,87 @@
-<% cache event do %>
-  <% presenter.event = event %>
+<%# Mirrors the guard that app/views/events/_event.slim carries: EventPolicy#show? covers both
+    draft visibility and tag targeting. find_list_events filters the collection too, so the month
+    counts line up -- this is the backstop for any other caller of this partial. %>
+<% return unless EventPolicy.new(current_member, event).show? %>
 
-  <li class="px-6 py-4 event border-l-5 flex flex-col md:flex-row gap-4 md:gap-0 justify-between hover:bg-stone-50 cursor-pointer"
-      style="border-left-color: <%= event.category.color %>"
-      data-category-id="<%= event.event_category_id %>"
-      data-controller="clickable-row"
-      data-clickable-row-url-value="<%= unit_event_path(current_unit, event) %>"
-      data-action="click->clickable-row#navigate"
-      id="<%= dom_id(event) %>">
+<%# Deliberately not fragment-cached. The right-hand column varies by viewer (EventPolicy#rsvps?,
+    the member's own family RSVPs) and by RSVP activity, none of which is in the event's cache key,
+    so `cache event` served one member's row to everyone. If this needs caching later, the shape is
+    `render partial:, collection:, cached: true` over a viewer-invariant partial with the right-hand
+    column rendered outside it. %>
+<% presenter.event = event %>
 
-    <%# left (date) section %>
-    <div class="w-36 shrink-0 event-date-time text-xs font-semibold text-paper-600 uppercase flex flex-col gap-0">
-        <span class="tracking-wider"><%= event.starts_at.strftime("%b") %></span>
-        <span class="text-3xl text-paper-950 font-serifz leading-tight"><%= raw(event.dates_to_s) %></span>
-        <span class="tracking-wider"><%= raw(presenter.days_to_s) %></span>
-    </div>
+<li class="px-6 py-4 event border-l-5 flex flex-col md:flex-row gap-4 md:gap-0 justify-between hover:bg-stone-50 cursor-pointer"
+    style="border-left-color: <%= event.category.color %>"
+    data-category-id="<%= event.event_category_id %>"
+    data-controller="clickable-row"
+    data-clickable-row-url-value="<%= unit_event_path(current_unit, event) %>"
+    data-action="click->clickable-row#navigate"
+    id="<%= dom_id(event) %>">
 
-    <%# middle section %>
-    <div class="grow event-details space-y-1.5">
-      <p class="text-xs font-medium uppercase tracking-wider text-paper-600">
-        <i class="fa-regular fa-fw fa-<%= event.category.glyph %>" style="color: <%= event.category.color %>"></i>
-        <%= event.category.name %>
+  <%# left (date) section %>
+  <div class="w-36 shrink-0 event-date-time text-xs font-semibold text-paper-600 uppercase flex flex-col gap-0">
+      <span class="tracking-wider"><%= event.starts_at.strftime("%b") %></span>
+      <span class="text-3xl text-paper-950 font-serifz leading-tight"><%= raw(event.dates_to_s) %></span>
+      <span class="tracking-wider"><%= raw(presenter.days_to_s) %></span>
+  </div>
 
-        <% if event.multiday? %>
-          <span class="ml-2 px-1.5 py-0.5 text-xs font-medium bg-paper-100 text-paper-800 rounded border border-paper-300">
-            <i class="fa-regular fa-moon fa-fw"></i>
-            <%= pluralize(event.duration_in_days, 'night') %>
-          </span>
+  <%# middle section %>
+  <div class="grow event-details space-y-1.5">
+    <p class="text-xs font-medium uppercase tracking-wider text-paper-600">
+      <i class="fa-regular fa-fw fa-<%= event.category.glyph %>" style="color: <%= event.category.color %>"></i>
+      <%= event.category.name %>
+
+      <% if event.multiday? %>
+        <span class="ml-2 px-1.5 py-0.5 text-xs font-medium bg-paper-100 text-paper-800 rounded border border-paper-300">
+          <i class="fa-regular fa-moon fa-fw"></i>
+          <%= pluralize(event.duration_in_days, 'night') %>
+        </span>
+      <% end %>
+    </p>
+
+    <h3 class="font-serif font-bold text-lg mb-1"><%= event.title %></h3>
+    
+    <div class="flex gap-4">
+      <p class="text-xs text-paper-700">
+        <i class="fa-regular fa-clock fa-fw"></i>
+        <%= event.starts_at.in_time_zone(current_unit.time_zone).strftime("%l:%M %p") %>
+        <% if event.ends_at.present? %>
+          &ndash; <%= event.ends_at.in_time_zone(current_unit.time_zone).strftime("%l:%M %p") %>
         <% end %>
       </p>
 
-      <h3 class="font-serif font-bold text-lg mb-1"><%= event.title %></h3>
-      
-      <div class="flex gap-4">
+      <% if event.location %>
         <p class="text-xs text-paper-700">
-          <i class="fa-regular fa-clock fa-fw"></i>
-          <%= event.starts_at.in_time_zone(current_unit.time_zone).strftime("%l:%M %p") %>
-          <% if event.ends_at.present? %>
-            &ndash; <%= event.ends_at.in_time_zone(current_unit.time_zone).strftime("%l:%M %p") %>
-          <% end %>
+          <i class="fa-regular fa-location-dot fa-fw"></i>
+          <%= event.location %>
         </p>
-
-        <% if event.location %>
-          <p class="text-xs text-paper-700">
-            <i class="fa-regular fa-location-dot fa-fw"></i>
-            <%= event.location %>
-          </p>
-        <% end # if event.location %>
-      </div>
+      <% end # if event.location %>
     </div>
+  </div>
 
-    <%# right section %>
-    <% should_show_right_column = event.organizable? || event.requires_rsvp %>
+  <%# right section %>
+  <% should_show_right_column = event.organizable? || event.requires_rsvp %>
 
-    <% if should_show_right_column %>
-      <% mode = event.organizable? &&
-                  EventPolicy.new(current_member, event).rsvps? &&
-                  params[:list_view] != "member" ? "admin" : "member" %>
-      <%# mode = "member" %>
-      <div>
-        <% if mode == "admin" %>
-          <%= render partial: "events/partials/event_row/organize", locals: { event: event } %>
-        <% elsif event.requires_rsvp? && event.rsvp_closed? && !event.past? %>
-          <div class="border border-dashed border-paper-500 rounded-lg p-4 flex gap-3 max-w-sm">
-            <i class="fa-regular fa-clock fa-fw text-paper-500 mt-1"></i>
-            <div class="text-sm">
-              <h4 class="text-[15px]">RSVPs are closed</h4>
-              <p class="text-paper-700">Your family didn't respond before <%= event.rsvp_closes_at.strftime("%b %d, %Y") %>.
-                Contact the organizer if you'd still like to attend.</p>
-            </div>
+  <% if should_show_right_column %>
+    <% mode = event.organizable? &&
+                EventPolicy.new(current_member, event).rsvps? &&
+                params[:list_view] != "member" ? "admin" : "member" %>
+    <%# mode = "member" %>
+    <div>
+      <% if mode == "admin" %>
+        <%= render partial: "events/partials/event_row/organize", locals: { event: event } %>
+      <% elsif event.requires_rsvp? && event.rsvp_closed? && !event.past? %>
+        <div class="border border-dashed border-paper-500 rounded-lg p-4 flex gap-3 max-w-sm">
+          <i class="fa-regular fa-clock fa-fw text-paper-500 mt-1"></i>
+          <div class="text-sm">
+            <h4 class="text-[15px]">RSVPs are closed</h4>
+            <p class="text-paper-700">Your family didn't respond before <%= event.rsvp_closes_at.strftime("%b %d, %Y") %>.
+              Contact the organizer if you'd still like to attend.</p>
           </div>
-        <% elsif event.requires_rsvp? %>
-          <%= render partial: "events/partials/event_row/family_rsvp_link", locals: { event: event } %>
-        <% end %>
-      </div>
-    <% end %>
-  </li>
-<% end # cache event %>
+        </div>
+      <% elsif event.requires_rsvp? %>
+        <%= render partial: "events/partials/event_row/family_rsvp_link", locals: { event: event } %>
+      <% end %>
+    </div>
+  <% end %>
+</li>

@@ -10,6 +10,12 @@ require "humanize"
 class EventsController < UnitContextController
   layout :current_layout
 
+  # How far back the agenda list loads so the "Show past events" toggle has something to reveal.
+  # this_season_starts_at rolls back to the most recent August, so for most of the year the season
+  # start is safely in the past -- but through August it *is* the current month, which left the
+  # toggle inert. Falling back to a fixed window makes the control behave the same year-round.
+  PAST_EVENT_LOOKBACK = 3.months
+
   before_action :authenticate_user!, if: :needs_authentication?
   before_action :find_event,
                 except: %i[index slow_list list calendar threeup paged_list spreadsheet create new bulk_publish public my_rsvps signups
@@ -42,8 +48,8 @@ class EventsController < UnitContextController
 
   # rubocop:disable Layout/LineLength
   def calendar
-    month = params[:month] || cookies[:calendar_month] || Date.current.year
-    year = params[:year] || cookies[:calendar_year] || Date.current.month
+    month = params[:month] || cookies[:calendar_month] || Date.current.month
+    year = params[:year] || cookies[:calendar_year] || Date.current.year
 
     redirect_to calendar_unit_events_path(current_unit, year: year, month: month) and return unless params[:year] && params[:month]
 
@@ -131,7 +137,9 @@ class EventsController < UnitContextController
   # rubocop:disable Metrics/PerceivedComplexity
   def show
     authorize @event
-    @event.report_timezone_snapshot(context: "show:#{request.format.symbol}")
+    if Flipper.enabled?(:timezone_diagnostics, current_unit)
+      @event.report_timezone_snapshot(context: "show:#{request.format.symbol}")
+    end
     @can_edit = policy(@event).edit?
     @can_organize = policy(@event).rsvps?
     @current_family = current_member&.family
@@ -287,10 +295,10 @@ class EventsController < UnitContextController
 
   # POST /units/:id/events/bulk_publish
   def bulk_publish
-    event_ids = params[:event_ids]
-    events    = Event.find(event_ids)
+    events = current_unit.events.where(id: params[:event_ids])
 
     events.each do |event|
+      authorize event, :publish?
       event.update!(status: :published)
     end
 
@@ -561,25 +569,22 @@ class EventsController < UnitContextController
   end
 
   def find_list_events
-    @season_start = current_unit.this_season_starts_at
-    @season_end   = current_unit.this_season_ends_at
-
     @start_date = Date.current.beginning_of_month
-    @end_date = (Date.current + 1.year).end_of_year
+    @end_date   = (Date.current + 1.year).end_of_year
 
-    # Load from the season start so past-season months are present in the DOM; they're
-    # hidden by default and revealed via the "Show past events" toggle (CSS-only).
-    # @start_date drives the header label (visible range), not the query lower bound.
-    @events = list_base_scope.where("starts_at >= ? AND ends_at <= ?", @season_start, @end_date)
-    @categories_in_use = @events.map(&:category).uniq
+    # Reach below @start_date so already-past months are in the DOM: _event_month tags them
+    # .past-month, CSS hides them, and the toggle reveals them. @start_date drives the header
+    # label (the visible range), not the query lower bound.
+    past_start = [current_unit.this_season_starts_at, @start_date - PAST_EVENT_LOOKBACK].min
 
-    # @categories_in_use.each do |cat|
-    #   cat.events_in_season = @events.select { |e| e.category_id == cat.id }
-    # end
+    # Tag-targeted events are filtered out here rather than in the row partial so that the month
+    # headers and the category filter badges agree with what actually renders. Loads the relation
+    # once; everything below groups the same array.
+    @events = list_base_scope.where("starts_at >= ? AND ends_at <= ?", past_start, @end_date)
+                             .select { |event| EventPolicy.new(current_member, event).show? }
 
     @events_by_category = @events.group_by(&:category)
-
-    @events_by_month = @events.group_by { |e| e.starts_at.in_time_zone(current_unit.time_zone).beginning_of_month }
+    @events_by_month    = @events.group_by { |e| e.starts_at.in_time_zone(current_unit.time_zone).beginning_of_month }
   end
 
   def find_events_for_chunk
