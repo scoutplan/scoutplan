@@ -227,10 +227,22 @@ Key controllers:
 
 ### Active Features
 
-- `:receive_event_publish_notice` - Event publish notifications
-- `:receive_bulk_publish_notice` - Bulk publish notifications
-- `:receive_rsvp_confirmation` - RSVP confirmations
-- `:receive_digest` - Weekly digest emails
+Gated on the actor in parentheses. Unregistered features return `false`, so a flag is off until
+it is switched on in `/flipper`.
+
+- `:ai_event_parsing` - AI parsing of inbound event email (global)
+- `:chat` - Event discussion threads (member)
+- `:deliver_email` - Master switch for outbound mail (global)
+- `:digest` - Weekly digest emails (member)
+- `:headcount_limit` - Event headcount caps (unit)
+- `:inbox` - In-app notification inbox (member)
+- `:integrations` - External integrations settings (unit)
+- `:messages` - Unit messaging (member)
+- `:payments` - Stripe event payments (unit and member)
+- `:planner` - Season planner (member)
+- `:timezone_diagnostics` - Emits a Honeybadger event per event page view recording the unit
+  time zone alongside the stored timestamps. Off by default; enable per unit only while chasing
+  an "off by a day" report, then switch it back off. See `Event#report_timezone_snapshot`.
 
 ### Checking Flags
 
