@@ -236,8 +236,13 @@ export default class extends Controller {
     await post(url, { body: formData });
   }
 
+  // The trash can is a <label> for a hidden _destroy checkbox, so the row is
+  // removed for real on save. Here we just take it out of the list visually.
+  // Note: the row is a .table-row, and Tailwind emits .table-row after .hidden
+  // at equal specificity, so adding the class wouldn't take effect -- hence the
+  // inline style.
   deleteLocation(event) {
     const locationElem = event.target.closest(".event-location");
-    locationElem.classList.add("hidden");
+    locationElem.style.display = "none";
   }
 }
