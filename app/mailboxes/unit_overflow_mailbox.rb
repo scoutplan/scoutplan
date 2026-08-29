@@ -8,7 +8,7 @@ class UnitOverflowMailbox < ApplicationMailbox
   def process
     unit = inbound_email.evaluator.unit
     admins = unit.members.admin
-    notification = OverflowMailNotification.with(inbound_email: inbound_email, unit: inbound_email.evaluator.unit)
+    notification = OverflowMailNotifier.with(inbound_email: inbound_email, unit: inbound_email.evaluator.unit)
     notification.deliver_later(admins)
   end
 end
