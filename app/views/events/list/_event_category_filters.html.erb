@@ -1,9 +1,12 @@
-<nav class="flex justify-between items-center px-6 py-2 border-b border-paper-300">
-  <div>
-    <ul class="flex gap-2 overflow-x-auto">
-      <li>
+<nav class="flex items-center gap-4 px-6 py-2 border-b border-paper-300">
+  <%# min-w-0 lets this flex child shrink below its content width, which is what actually lets the
+      list below it scroll -- a flex item's default min-width is auto, so without this the strip
+      grows to fit every pill and the pills compress and wrap instead. %>
+  <div class="min-w-0 flex-1">
+    <ul class="event-filter-scroller flex gap-2 overflow-x-auto">
+      <li class="shrink-0">
         <%= link_to "#",
-              class: "event-filter-pill block text-sm cursor-pointer rounded-full border \
+              class: "event-filter-pill block text-sm cursor-pointer rounded-full border whitespace-nowrap \
                 px-2 py-0.5 bg-paper-900 border-transparent text-paper-100",
               data: { event_filter_target: "pill", action: "event-filter#select", category_id: "" } do %>
           All
@@ -15,9 +18,9 @@
       </li>
 
       <% @events_by_category.each do |category, events| %>
-        <li>
+        <li class="shrink-0">
           <%= link_to "#",
-                class: "event-filter-pill block text-sm cursor-pointer rounded-full border \
+                class: "event-filter-pill block text-sm cursor-pointer rounded-full border whitespace-nowrap \
                   px-2 py-0.5 bg-paper-100 border-paper-300 text-paper-800 hover:bg-paper-200",
                 data: { event_filter_target: "pill", action: "event-filter#select", category_id: category.id } do %>
             <%= category.name %>
@@ -32,19 +35,20 @@
     </ul>
   </div>
 
-  <div>
-    <%= button_tag class: "text-sm text-paper-600 cursor-pointer",
+  <%# Pinned outside the scroller so the past-events toggle stays reachable at any category count. %>
+  <div class="shrink-0">
+    <%= button_tag class: "text-sm text-paper-600 cursor-pointer whitespace-nowrap",
           id: "show_past_events",
           onclick: "document.body.classList.add('show-past-events');" do %>
       <i class="fa-regular fa-chevron-down fa-fw fa-xs"></i>
       Show past events
     <% end %>
 
-    <%= button_tag class: "text-sm text-paper-600 cursor-pointer",
+    <%= button_tag class: "text-sm text-paper-600 cursor-pointer whitespace-nowrap",
           id: "hide_past_events",
           onclick: "document.body.classList.remove('show-past-events');" do %>
       <i class="fa-regular fa-chevron-up fa-fw fa-xs"></i>
       Hide past events
-    <% end %>      
+    <% end %>
   </div>
 </nav>

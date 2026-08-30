@@ -330,3 +330,23 @@ body.show-past-events {
     display: inline-block;
   }
 }
+/* Category filter strip. A unit with many categories overflows the header, so the strip scrolls
+   horizontally (see events/list/_event_category_filters). Keep the scrollbar slim so it doesn't
+   dominate a 40px-tall row on platforms that always show one. */
+.event-filter-scroller {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-paper-300) transparent;
+}
+
+.event-filter-scroller::-webkit-scrollbar {
+  height: 6px;
+}
+
+.event-filter-scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.event-filter-scroller::-webkit-scrollbar-thumb {
+  background-color: var(--color-paper-300);
+  border-radius: 9999px;
+}
