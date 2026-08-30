@@ -10,7 +10,7 @@
 
   <ol class="w-full bg-white">
     <% events.each do |event| %>
-      <%= render partial: "events/list/event", locals: { event: event, presenter: presenter } %>
+      <%= render partial: "events/list/event", locals: { event: event, presenter: presenter, rsvp_tally: rsvp_tally } %>
     <% end # each event %>
   </ol>
 </li>

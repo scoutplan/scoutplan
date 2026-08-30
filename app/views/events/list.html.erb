@@ -20,7 +20,7 @@
     <ol id="events_list">
       <% presenter = @presenter || EventPresenter.new %>
       <% @events_by_month.each do |month, events| %>
-        <%= render partial: "events/list/event_month", locals: { month: month, events: events, presenter: presenter } %>
+        <%= render partial: "events/list/event_month", locals: { month: month, events: events, presenter: presenter, rsvp_tally: @rsvp_tally } %>
       <% end %>
     </ol>
 

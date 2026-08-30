@@ -583,6 +583,9 @@ class EventsController < UnitContextController
     @events = list_base_scope.where("starts_at >= ? AND ends_at <= ?", past_start, @end_date)
                              .select { |event| EventPolicy.new(current_member, event).show? }
 
+    # One batch of RSVP numbers for the whole page: EventDashboard would cost six queries a row.
+    @rsvp_tally = EventRsvpTally.new(current_unit, @events)
+
     @events_by_category = @events.group_by(&:category)
     @events_by_month    = @events.group_by { |e| e.starts_at.in_time_zone(current_unit.time_zone).beginning_of_month }
   end

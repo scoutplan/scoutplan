@@ -69,7 +69,7 @@
     <%# mode = "member" %>
     <div>
       <% if mode == "admin" %>
-        <%= render partial: "events/partials/event_row/organize", locals: { event: event } %>
+        <%= render partial: "events/partials/event_row/organize", locals: { event: event, dashboard: rsvp_tally.for(event) } %>
       <% elsif event.requires_rsvp? && event.rsvp_closed? && !event.past? %>
         <div class="border border-dashed border-paper-500 rounded-lg p-4 flex gap-3 max-w-sm">
           <i class="fa-regular fa-clock fa-fw text-paper-500 mt-1"></i>

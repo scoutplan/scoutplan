@@ -15,6 +15,7 @@ export default class extends Controller {
 
   connect() {
     this.rows = Array.from(this.element.querySelectorAll(".event"))
+    this.selected = ""
     this.recomputeCounts()
     this.updateEmptyState()
 
@@ -31,15 +32,18 @@ export default class extends Controller {
 
   select(event) {
     event.preventDefault()
-    const pill = event.currentTarget
-    const selected = pill.dataset.categoryId // "" means All
+    this.applySelection(event.currentTarget.dataset.categoryId) // "" means All
+  }
+
+  applySelection(selected) {
+    this.selected = selected
 
     this.rows.forEach((row) => {
       const show = selected === "" || row.dataset.categoryId === selected
       row.classList.toggle("filtered-hidden", !show)
     })
 
-    this.pillTargets.forEach((p) => this.setActive(p, p === pill))
+    this.pillTargets.forEach((p) => this.setActive(p, p.dataset.categoryId === selected))
     this.updateEmptyState()
   }
 
@@ -57,8 +61,21 @@ export default class extends Controller {
 
     if (this.hasAllCountTarget) this.allCountTarget.textContent = total
     this.countTargets.forEach((badge) => {
-      badge.textContent = counts[badge.dataset.categoryId] || 0
+      const count = counts[badge.dataset.categoryId] || 0
+      badge.textContent = count
+      // Drop the pill entirely when the category has nothing in the current time range. A
+      // category whose events are all in the past reappears when "Show past events" is on,
+      // which the MutationObserver in connect() already re-triggers. "All" is a separate
+      // target and is never hidden.
+      badge.closest("li")?.classList.toggle("hidden", count === 0)
     })
+
+    // If the active category just vanished -- its only events were past ones and the toggle was
+    // switched back off -- fall back to All, so the list isn't left empty with no visible pill
+    // explaining why.
+    if (this.selected !== "" && (counts[this.selected] || 0) === 0) {
+      this.applySelection("")
+    }
   }
 
   updateEmptyState() {

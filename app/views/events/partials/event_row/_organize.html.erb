@@ -1,4 +1,6 @@
-<% dashboard = EventDashboard.new(event) %>
+<%# Callers rendering a single row leave this out and pay for EventDashboard; the agenda
+    list passes a precomputed EventRsvpTally::Summary so it is not six queries a row. %>
+<% dashboard = local_assigns.fetch(:dashboard) { EventDashboard.new(event) } %>
 
 <div class="rounded-lg mb-1 grid grid-cols-3 divide-x divide-stone-300 border border-paper-300 w-full md:w-sm">
   <div class="text-center p-2">
