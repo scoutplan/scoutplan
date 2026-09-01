@@ -3,12 +3,17 @@ class EventRsvp < ApplicationRecord
 
   include Notifiable
 
-  belongs_to :event, touch: true
+  # Deliberately not `touch: true`. That moved events.updated_at, which EventReminderJob,
+  # RsvpLastCallJob and OrganizerPrepJob all read as a staleness guard -- so every RSVP scheduled a
+  # duplicate reminder that later bailed, and every RSVP took a write on the shared event row.
+  # #record_rsvp_activity below carries the same signal for cache keys instead.
+  belongs_to :event
   belongs_to :unit_membership
   belongs_to :member, class_name: "UnitMembership", foreign_key: "unit_membership_id"
   belongs_to :respondent, class_name: "UnitMembership"
 
   before_save :enforce_approval_policy
+  after_commit :record_rsvp_activity
 
   has_many :documents, as: :documentable, dependent: :destroy
   has_one :unit, through: :unit_membership
@@ -30,6 +35,16 @@ class EventRsvp < ApplicationRecord
   scope :accepted_intent, -> { where(response: %w[accepted accepted_pending]) }
   scope :declined_intent, -> { where(response: %w[declined declined_pending]) }
   scope :recent, -> { where("event_rsvps.updated_at > ?", 24.hours.ago) }
+
+  # Stamps the event so anything caching RSVP-derived output (the agenda dashboard tiles) can key
+  # on it. update_column skips callbacks and does not move updated_at, so this does not re-enqueue
+  # the reminder jobs the way `touch: true` did.
+  def record_rsvp_activity
+    return if destroyed_by_association # the event itself is going away
+    return unless event&.persisted?
+
+    event.update_column(:rsvps_updated_at, Time.current)
+  end
 
   ### validations
   def common_unit?

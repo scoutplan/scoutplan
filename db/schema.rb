@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_02_204508) do
+ActiveRecord::Schema[8.2].define(version: 2026_08_31_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "unaccent"
@@ -39,7 +39,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_204508) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", precision: nil, null: false
+    t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -52,7 +52,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_204508) do
     t.string "service_name", null: false
     t.bigint "byte_size", null: false
     t.string "checksum"
-    t.datetime "created_at", precision: nil, null: false
+    t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -273,8 +273,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_204508) do
     t.integer "unit_id"
     t.string "title"
     t.text "description"
-    t.datetime "starts_at", precision: nil
-    t.datetime "ends_at", precision: nil
+    t.datetime "starts_at"
+    t.datetime "ends_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "requires_rsvp", default: false
@@ -302,6 +302,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_204508) do
     t.string "shift_name", default: "Time slots"
     t.integer "min_headcount_adult"
     t.integer "min_headcount_youth"
+    t.datetime "rsvps_updated_at"
     t.index ["token"], name: "index_events_on_token", unique: true
     t.index ["unit_id"], name: "index_events_on_unit_id"
   end
@@ -355,7 +356,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_204508) do
   create_table "magic_links", force: :cascade do |t|
     t.string "token"
     t.integer "unit_membership_id"
-    t.datetime "expires_at", precision: nil
+    t.datetime "expires_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "path", null: false
@@ -417,8 +418,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_204508) do
     t.bigint "event_id", null: false
     t.string "recipient_type", null: false
     t.bigint "recipient_id", null: false
-    t.datetime "read_at", precision: nil
-    t.datetime "seen_at", precision: nil
+    t.datetime "read_at"
+    t.datetime "seen_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_noticed_notifications_on_event_id"
@@ -487,7 +488,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_204508) do
   create_table "rsvp_tokens", force: :cascade do |t|
     t.integer "event_id"
     t.string "value"
-    t.datetime "expires_at", precision: nil
+    t.datetime "expires_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "unit_membership_id", null: false
@@ -498,8 +499,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_204508) do
     t.text "value"
     t.string "target_type", null: false
     t.integer "target_id", null: false
-    t.datetime "created_at", precision: nil
-    t.datetime "updated_at", precision: nil
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["target_type", "target_id", "var"], name: "index_settings_on_target_type_and_target_id_and_var", unique: true
     t.index ["target_type", "target_id"], name: "index_settings_on_target"
   end
@@ -643,7 +644,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_204508) do
     t.string "tagger_type"
     t.bigint "tagger_id"
     t.string "context", limit: 128
-    t.datetime "created_at", precision: nil
+    t.datetime "created_at"
     t.string "tenant", limit: 128
     t.index ["context"], name: "index_taggings_on_context"
     t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
@@ -732,8 +733,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_204508) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at", precision: nil
-    t.datetime "remember_created_at", precision: nil
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "provider"
@@ -743,9 +744,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_02_204508) do
     t.string "phone"
     t.date "date_of_birth"
     t.string "invitation_token"
-    t.datetime "invitation_created_at", precision: nil
-    t.datetime "invitation_sent_at", precision: nil
-    t.datetime "invitation_accepted_at", precision: nil
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
     t.integer "invitation_limit"
     t.integer "invited_by_id"
     t.string "invited_by_type"
