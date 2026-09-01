@@ -7,6 +7,7 @@ class RsvpNagJob < ApplicationJob
   def perform(unit_id)
     @unit = Unit.find(unit_id)
     return unless RsvpNagJob.enabled?(@unit)
+    return if RsvpNagJob.ran_recently?(@unit)
 
     @unit.unit_memberships.each { |member| perform_for_member(member) }
     @unit.settings(:communication).update!(rsvp_nag_last_ran_at: DateTime.current)
@@ -30,6 +31,25 @@ class RsvpNagJob < ApplicationJob
 
   def self.enabled?(unit)
     unit.settings(:communication).rsvp_nag == "true"
+  end
+
+  # ScheduledJobDispatcherJob scans a window and enqueues; overlapping windows, a retry, or a
+  # manual re-run must not nag twice. The nag is weekly by construction (next_run_time resolves a
+  # day-of-week and hour), so refusing to run again inside a much shorter window is safe.
+  MIN_RUN_INTERVAL = 12.hours
+
+  def self.ran_recently?(unit)
+    last = last_ran_at(unit)
+    last.present? && last > MIN_RUN_INTERVAL.ago
+  end
+
+  def self.last_ran_at(unit)
+    raw = unit.settings(:communication).rsvp_nag_last_ran_at
+    return nil if raw.blank?
+
+    raw.is_a?(String) ? Time.zone.parse(raw) : raw.to_time
+  rescue ArgumentError, TypeError, NoMethodError
+    nil
   end
 
   def self.next_run_time(unit)
