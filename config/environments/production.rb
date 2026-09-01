@@ -62,9 +62,37 @@ Rails.application.configure do
 
   config.action_mailbox.ingress = :mailgun
 
-  config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.delivery_method = :postmark
-  config.action_mailer.postmark_settings = { api_token: ENV.fetch("POSTMARK_API_TOKEN", nil) }
+  # STOPGAP (2026-08-31): Postmark has been accepting messages -- returning ErrorCode 0 and a
+  # MessageID -- without recording or delivering them since 2026-08-09, following the compromise
+  # of the old server token. Escalation is open with their support. Deliver over SMTP whenever
+  # SMTP_ADDRESS is set; clear that variable and redeploy to go straight back to Postmark.
+  if ENV["SMTP_ADDRESS"].present?
+    smtp_port = ENV.fetch("SMTP_PORT", 587).to_i
+
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address:              ENV["SMTP_ADDRESS"],
+      port:                 smtp_port,
+      domain:               ENV.fetch("SMTP_DOMAIN", "scoutplan.org"),
+      user_name:            ENV["SMTP_USERNAME"],
+      password:             ENV["SMTP_PASSWORD"],
+      authentication:       (:plain if ENV["SMTP_USERNAME"].present?),
+      # 465 is implicit TLS; 587 negotiates with STARTTLS.
+      ssl:                  (true if smtp_port == 465),
+      enable_starttls_auto: (true unless smtp_port == 465),
+      # Without these a hung SMTP connection ties up a Solid Queue worker thread indefinitely.
+      open_timeout:         10,
+      read_timeout:         20
+    }.compact
+  else
+    config.action_mailer.delivery_method = :postmark
+    config.action_mailer.postmark_settings = { api_token: ENV.fetch("POSTMARK_API_TOKEN", nil) }
+  end
+
+  # Silent delivery failures are why the outage above ran for three weeks behind green job logs.
+  # Mail is sent with deliver_later, so raising means Solid Queue retries and then records the
+  # failure in solid_queue_failed_executions, and Honeybadger sees it.
+  config.action_mailer.raise_delivery_errors = true
 
   config.i18n.fallbacks = true
 
