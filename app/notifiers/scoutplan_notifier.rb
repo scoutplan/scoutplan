@@ -30,7 +30,13 @@ class ScoutplanNotifier < Noticed::Event
     }
   end
 
-  def unit; end
+  # Resolve the unit from whatever the notifier was given. This used to be a bare stub returning
+  # nil, which meant RsvpNagNotifier#feature_enabled? raised NoMethodError on every delivery, and
+  # #time_zone below always fell through to the application default instead of the unit's zone.
+  # Subclasses may still override.
+  def unit
+    @unit ||= record.try(:unit) || params[:event].try(:unit) || params[:unit]
+  end
 
   def base_name
     self.class.name.underscore.split("_")[0..-2].join("_")

@@ -18,7 +18,11 @@ class RsvpNagNotifier < ScoutplanNotifier
     config.if = :sms?
   end
 
+  # Guarded: an event whose unit has been deleted must skip quietly rather than raise inside the
+  # delivery job, where the failure is invisible until someone reads solid_queue_failed_executions.
   def feature_enabled?
+    return false if unit.blank?
+
     unit.settings(:communication).rsvp_nag == "true"
   end
 end

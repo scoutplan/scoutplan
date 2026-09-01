@@ -22,7 +22,10 @@ class EventReminderNotifier < ScoutplanNotifier
 
   required_param :event
 
+  # Uses the shared #unit resolver so a missing unit skips rather than raising, as above.
   def feature_enabled?
-    params[:event].unit.settings(:communication).event_reminders == "true"
+    return false if unit.blank?
+
+    unit.settings(:communication).event_reminders == "true"
   end
 end
