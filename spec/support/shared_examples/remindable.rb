@@ -7,7 +7,7 @@ shared_examples_for "remindable" do
     expect(model.new).to respond_to(:remind!)
   end
 
-  it "has a create_reminder_job! method" do
-    expect(model.new).to respond_to(:enqueue_reminder_job!)
+  it "can say when its reminder is due" do
+    expect(model.new).to respond_to(:reminder_run_time)
   end
 end

@@ -20,10 +20,11 @@ production:
     class: PurgeOrphanedUploadsJob
     schedule: at midnight every day
 
-  # Schedule digest and RSVP nag jobs for the coming day
+  # Enqueue digests, RSVP nags, event reminders and last calls due in the next 30 hours.
+  # Runs more often than its lookahead so a run missed during a deploy is covered by the next.
   scheduled_job_dispatcher:
     class: ScheduledJobDispatcherJob
-    schedule: at 1am every day
+    schedule: every 6 hours
 
 development:
   # Clear finished jobs in development too

@@ -1,14 +1,15 @@
 class RsvpLastCallJob < ApplicationJob
   queue_as :default
 
-  attr_reader :event, :timestamp
+  attr_reader :event
 
-  def perform(event_id, timestamp)
+  # See EventReminderJob: the trailing argument is tolerated for jobs queued under the old
+  # scheme and ignored. Idempotency comes from the Noticed check below, which is state-based
+  # and cannot be broken by an unrelated touch the way comparing updated_at could.
+  def perform(event_id, _legacy_timestamp = nil)
     @event = Event.find(event_id)
     return if @event.notifications.where(type: "RsvpLastCallNotifier::Notification").count.positive?
-
-    @timestamp = timestamp
-    return unless should_run? && latest_version?
+    return unless should_run?
 
     RsvpLastCallNotifier.with(record: event, event: event).deliver_later(recipients)
   end
@@ -23,7 +24,4 @@ class RsvpLastCallJob < ApplicationJob
     event.rsvp_open?
   end
 
-  def latest_version?
-    timestamp == event.updated_at
-  end
 end

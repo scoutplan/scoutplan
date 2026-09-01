@@ -39,15 +39,13 @@ class EventRsvpActivityStampTest < ActiveSupport::TestCase
                  "RSVPs must not schedule duplicate reminders"
   end
 
-  test "editing the event still moves updated_at and re-enqueues" do
+  test "editing the event still moves updated_at" do
     before_updated = @event.updated_at
-    before = enqueued_jobs.count { |j| j["job_class"] == "EventReminderJob" }
 
     @event.update!(title: "Renamed")
 
-    assert @event.reload.updated_at > before_updated
-    assert_operator enqueued_jobs.count { |j| j["job_class"] == "EventReminderJob" }, :>, before,
-                    "a real edit should still supersede the scheduled reminder"
+    assert @event.reload.updated_at > before_updated,
+           "updated_at must still track genuine edits, only not RSVP churn"
   end
 
   test "changing and withdrawing an RSVP both stamp the event" do

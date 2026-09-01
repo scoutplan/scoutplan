@@ -9,8 +9,6 @@ namespace :jobs do
     puts "Started at: #{Time.current}"
     puts
 
-    Rake::Task["jobs:rebuild_event_reminders"].invoke
-    Rake::Task["jobs:rebuild_rsvp_last_calls"].invoke
     Rake::Task["jobs:rebuild_digest_jobs"].invoke
     Rake::Task["jobs:rebuild_rsvp_nag_jobs"].invoke
     Rake::Task["jobs:rebuild_scheduled_messages"].invoke
@@ -20,37 +18,10 @@ namespace :jobs do
     puts "Finished at: #{Time.current}"
   end
 
-  desc "Re-enqueue event reminder jobs for published future events"
-  task rebuild_event_reminders: :environment do
-    puts "Re-enqueuing event reminder jobs..."
-    count = 0
-
-    Event.published.where("starts_at > ?", Time.current).find_each do |event|
-      event.enqueue_reminder_job!
-      count += 1
-      print "." if count % 10 == 0
-    end
-
-    puts
-    puts "  Enqueued #{count} event reminder jobs"
-  end
-
-  desc "Re-enqueue RSVP last call jobs for events with open RSVPs"
-  task rebuild_rsvp_last_calls: :environment do
-    puts "Re-enqueuing RSVP last call jobs..."
-    count = 0
-
-    Event.published.where("starts_at > ?", Time.current).find_each do |event|
-      next unless event.requires_rsvp? && event.rsvp_closes_at&.future?
-
-      event.enqueue_last_call_job!
-      count += 1
-      print "." if count % 10 == 0
-    end
-
-    puts
-    puts "  Enqueued #{count} RSVP last call jobs"
-  end
+  # Event reminders and RSVP last calls used to be rebuilt here, because they were enqueued once
+  # per event at save time and so did not survive a queue adapter change -- which is the clearest
+  # illustration of why that scheme was replaced. ScheduledJobDispatcherJob now derives them from
+  # the database on every run, so there is nothing left to rebuild.
 
   desc "Re-enqueue weekly digest jobs for all units with digest enabled"
   task rebuild_digest_jobs: :environment do

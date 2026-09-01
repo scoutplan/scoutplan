@@ -33,12 +33,17 @@ module Events
       assert_includes version.object_changes.keys, "status"
     end
 
-    test "publishing runs model callbacks and schedules the reminder" do
+    test "publishing runs model callbacks rather than update_all" do
       sign_in @admin.user
+      event = @events.first
+      before = event.updated_at
 
-      assert_enqueued_with(job: EventReminderJob) do
-        batch_update([@events.first], status: "published")
-      end
+      batch_update([event], status: "published")
+
+      # The original implementation used update_all, which skips callbacks, validations and
+      # timestamps. Reminders are no longer enqueued on save -- ScheduledJobDispatcherJob owns
+      # that -- so updated_at is what distinguishes update! from update_all here.
+      assert_operator event.reload.updated_at, :>, before
     end
 
     test "a plain member cannot publish" do

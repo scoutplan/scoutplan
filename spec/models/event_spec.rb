@@ -32,23 +32,31 @@ RSpec.describe Event, type: :model do
       end
     end
 
-    describe "after_commit" do
+    # Saving an event no longer enqueues anything -- ScheduledJobDispatcherJob scans for events
+    # whose reminder_run_time falls in its window. See spec/concerns/event/remindable_spec.rb.
+    describe "reminder scheduling" do
       before do
         @unit = FactoryBot.create(:unit)
         @unit.settings(:communication).event_reminders = "yes"
         @unit.save!
       end
 
-      it "creates an EventReminderJob if event is published" do
-        expect { FactoryBot.create(:event, :published, unit: @unit) }.to have_enqueued_job(EventReminderJob)
+      it "is due for a reminder if published and not yet started" do
+        event = FactoryBot.create(:event, :published, unit: @unit)
+        expect(event.reminder_run_time).to be_present
       end
 
-      it "doesn't create an EventReminderJob if event is published" do
-        expect { FactoryBot.create(:event, unit: @unit) }.not_to have_enqueued_job(EventReminderJob)
+      it "is not due for a reminder if it is a draft" do
+        expect(FactoryBot.create(:event, unit: @unit).reminder_run_time).to be_nil
       end
 
-      it "doesn't create an EventReminderJob if event is ended" do
-        expect { FactoryBot.create(:event, :published, unit: @unit, starts_at: 3.days.ago, ends_at: 2.days.ago) }
+      it "is not due for a reminder if it has already started" do
+        event = FactoryBot.create(:event, :published, unit: @unit, starts_at: 3.days.ago, ends_at: 2.days.ago)
+        expect(event.reminder_run_time).to be_nil
+      end
+
+      it "does not enqueue a job on save" do
+        expect { FactoryBot.create(:event, :published, unit: @unit) }
           .not_to have_enqueued_job(EventReminderJob)
       end
     end

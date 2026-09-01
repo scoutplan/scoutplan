@@ -3,10 +3,11 @@ class EventReminderJob < ApplicationJob
 
   queue_as :default
 
-  def perform(event_id, event_updated_at)
+  # The second argument is accepted only so jobs enqueued under the old scheme don't fail on
+  # deserialization; it is ignored and can be dropped once none remain queued.
+  def perform(event_id, _legacy_timestamp = nil)
     @event = Event.find(event_id)
     return unless @event.present?
-    return unless @event.updated_at == event_updated_at
     return unless @event.event_category.send_reminders?
 
     @event.remind!
