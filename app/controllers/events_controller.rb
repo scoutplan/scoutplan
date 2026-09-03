@@ -225,12 +225,19 @@ class EventsController < UnitContextController
     end
   end
 
-  def redirect_after_update
+  # where the user should land after opening or saving @event: back on the event
+  # itself, unless they came from the calendar view of the schedule
+  def post_event_path
     if cookies[:event_index_variation] == "calendar"
-      redirect_to unit_events_path(current_unit)
+      unit_events_path(current_unit)
     else
-      redirect_to unit_event_path(@event.unit, @event)
+      unit_event_path(@event.unit, @event)
     end
+  end
+  helper_method :post_event_path
+
+  def redirect_after_update
+    redirect_to post_event_path
   end
 
   def destroy
