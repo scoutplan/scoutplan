@@ -17,7 +17,7 @@ article#digest_settings.py-4.switch-toggle-container.border.border-stone-400.rou
     = label_tag :digest_day_of_week, t("settings.labels.digest_day_of_week"), class: "block font-bold mb-1"
 
     .flex.flex-row.gap-2.items-center
-      = weekday_select "settings[communication]", "digest_day_of_week", { selected: current_unit.settings(:communication).digest_day_of_week.capitalize }, class: "text-stone-800 w-full rounded border-stone-400"
+      = weekday_select "settings[communication]", "digest_day_of_week", { selected: current_unit.settings(:communication).digest_day_of_week.capitalize }, class: "text-stone-800 w-full rounded border-paper-400"
       = " at "
       = select_hour(current_unit.settings(:communication).digest_hour_of_day.to_i,
                     { prefix: "settings[communication]",

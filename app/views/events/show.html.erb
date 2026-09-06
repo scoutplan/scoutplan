@@ -1,11 +1,8 @@
 <%= render partial: "events/show/top_nav", locals: { event: @event } %>
 
-<div class="flex flex-col md:flex-row gap-8 w-full mt-4 px-8">
+<div class="mx-auto max-w-6xl flex flex-col md:flex-row gap-8 w-full mt-4 px-8">
   <div class="grow">
     <%= render partial: "events/show/header", locals: { event: @event } %>
-    <%= render partial: "events/show/cover_photo", locals: { event: @event } if @event.cover_photo.attached? %>
-
-    <hr class="border-t border-paper-300 my-2">
 
     <%= render partial: "events/partials/show/description" %>
     <%= render partial: "events/partials/show/locations", locals: { event: @event } %>

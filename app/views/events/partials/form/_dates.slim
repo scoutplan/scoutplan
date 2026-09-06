@@ -14,31 +14,33 @@ section.py-4#date_fields
   .pt-0
     = switch(:event, :all_day, { label: "All day", class: "block mb-2", checked: event.all_day }, "true", "false")
 
-    .flex.flex-col.md:flex-row.gap-x-1.md:items-center
-      .flex.flex-row.flex-grow.gap-x-1
+    / fields size to their content: flex-grow made the two groups split the full
+    / width, stranding the end fields far from the start ones
+    .flex.flex-col.md:flex-row.md:items-center.gap-2
+      .flex.flex-row.items-center.gap-1
         = f.date_field :starts_at_date,
-                      class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2",
+                      class: "text-sm border border-paper-400 dark:border-stone-700 rounded p-2",
                       tabindex: -1,
                       data: { event_edit_target: "startsAtDate", action: "change->event-edit#updateStartsAt" }
-        
-        .not-all-day.peer-checked:hidden.inline-block.flex.flex-grow.items-center.gap-x-4
+
+        .not-all-day.flex.items-center
           = f.time_field :starts_at_time,
-                        class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2",
+                        class: "text-sm border border-paper-400 dark:border-stone-700 rounded p-2",
                         list: "suggested_times",
                         tabindex: -1,
                         value: f.object.starts_at.strftime("#{ @format_time }")
 
-      .text-center.block.md:mx-3.font-medium.py-4 = "to"
+      .font-medium.text-stone-500.px-1 = "to"
 
-      .flex.flex-row.flex-grow.gap-x-1
+      .flex.flex-row.items-center.gap-1
         = f.date_field :ends_at_date,
-                      class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2",
+                      class: "text-sm border border-paper-400 dark:border-stone-700 rounded p-2",
                       tabindex: -1,
                       data: { event_edit_target: "endsAtDate" }
-        
-        .not-all-day.inline-block.flex.flex-grow.items-center.gap-x-4
+
+        .not-all-day.flex.items-center
           = f.time_field :ends_at_time,
-            class: "text-sm flex flex-grow border border-stone-400 dark:border-stone-700 rounded p-2",
+            class: "text-sm border border-paper-400 dark:border-stone-700 rounded p-2",
             step: "900",
             tabindex: -1,
             value: @event.ends_at.strftime("#{ @format_time }")
@@ -63,7 +65,7 @@ section.py-4#date_fields
         .inline-block#repeat_fields
           = f.label :event_repeats_until, "until", class: ""
           | &nbsp;&nbsp;
-          = f.select :repeats_until, [], {}, class: "bg-white w-48 rounded text-sm py-1 px-1 inline-block border-stone-400", data: { event_edit_target: "repeatsUntilSelect" }
+          = f.select :repeats_until, [], {}, class: "bg-white w-48 rounded text-sm py-1 px-1 inline-block border-paper-400", data: { event_edit_target: "repeatsUntilSelect" }
 
   datalist#suggested_times
     option(value="9:00 AM")

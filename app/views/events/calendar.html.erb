@@ -136,7 +136,7 @@
                   <% if EventPolicy.new(current_member, event).edit? %>
                     <%= link_to edit_unit_event_path(current_unit, event),
                               class: "event-edit-link ml-1 inline-block text-stone-500 hover:text-black",
-                              data: { turbo_action: "advance" } do %>
+                              data: { turbo_frame: "_top" } do %>
 
                       <i class="fa-solid fa-pen-circle mr-1"></i>
                     <% end %>

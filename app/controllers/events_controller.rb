@@ -225,14 +225,13 @@ class EventsController < UnitContextController
     end
   end
 
-  # where the user should land after opening or saving @event: back on the event
-  # itself, unless they came from the calendar view of the schedule
+  # where the user should land after leaving or saving @event: back on the event
+  # itself, unless it isn't persisted yet or they came from the calendar view
   def post_event_path
-    if cookies[:event_index_variation] == "calendar"
-      unit_events_path(current_unit)
-    else
-      unit_event_path(@event.unit, @event)
-    end
+    return unit_events_path(current_unit) if @event.nil? || @event.new_record?
+    return unit_events_path(current_unit) if cookies[:event_index_variation] == "calendar"
+
+    unit_event_path(@event.unit, @event)
   end
   helper_method :post_event_path
 

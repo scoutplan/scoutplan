@@ -1,46 +1,63 @@
-<nav class="border-b border-paper-300 flex justify-between items-center px-8 py-3 text-xs">
-  <ol class="flex items-center text-paper-600 gap-1">
-    <li>
-      <%= link_to "Events", unit_events_path(current_unit),
-            class: "text-paper-600 hover:text-paper-900",
-            data: { turbo_action: "advance" } %>
-    </li>
-
-    <li class="text-paper-400">
-      <i class="fa-solid fa-chevron-right fa-fw fa-xs"></i>
-    </li>
-
-    <li><%= event.title %></li>
-
-    <% if (event.organizer?(current_member) || current_member.admin?) && event.draft? %>
-      <li class="ml-1 uppercase bg-sky-100 text-sky-800 px-2 py-1 rounded-full tracking-wider font-medium">
-        <i class="fa-solid fa-circle fa-xs mr-0.5"></i>
-        Draft
+<%# border stays full-bleed; the inner rail matches the content column below %>
+<nav class="border-b border-paper-300 text-xs">
+  <div class="mx-auto max-w-6xl w-full flex justify-between items-center px-8 py-1.5">
+    <ol class="flex items-center text-paper-600 gap-1">
+      <li>
+        <%= link_to "Events", unit_events_path(current_unit),
+              class: "text-paper-600 hover:text-paper-900",
+              data: { turbo_action: "advance" } %>
       </li>
-    <% end %>
 
-    <% if (event.organizer?(current_member) || current_member.admin?) && event.published? %>
-      <li class="ml-1 uppercase bg-lime-200 text-lime-800 px-2 py-1 rounded-full tracking-wider font-medium">
-        <i class="fa-solid fa-circle fa-xs mr-0.5"></i>
-        Published
+      <li class="text-paper-400">
+        <i class="fa-solid fa-chevron-right fa-fw fa-xs"></i>
       </li>
-    <% end %>
-  </ol>
 
-  <div class="dropdown relative" data-controller="dropdown">
-    <%= button_tag class: "block w-6 h-6 rounded hover:bg-paper-200 text-center cursor-pointer",
-          data: { action: "dropdown#toggle", dropdown_target: "toggle" } do %>
-      <i class="fa-regular fa-ellipsis"></i>
-    <% end %>
+      <li><%= event.title %></li>
 
-    <div class="dropdown-menu absolute right-0 bg-white z-20 rounded-lg border border-stone-300 top-full animate-pop-open w-72 text-sm mt-1 drop-shadow-overhead p-2 text-stone-700">
-      <ul>
-        <%= render partial: "events/partials/show/sidecar/edit" %>
-        <%= render partial: "events/partials/show/sidecar/duplicate" %>
-        <%= render partial: "events/partials/show/sidecar/history" %>
-        <%= render partial: "events/partials/show/sidecar/download_brief" %>
-        <%= render partial: "events/partials/show/sidecar/add_to_calendar" %>
-      </ul>
+      <% if (event.organizer?(current_member) || current_member.admin?) && event.draft? %>
+        <li class="ml-1 uppercase bg-sky-100 text-sky-800 px-2 py-1 rounded-full tracking-wider font-medium">
+          <i class="fa-solid fa-circle fa-xs mr-0.5"></i>
+          Draft
+        </li>
+      <% end %>
+
+      <% if (event.organizer?(current_member) || current_member.admin?) && event.published? %>
+        <li class="ml-1 uppercase bg-lime-200 text-lime-800 px-2 py-1 rounded-full tracking-wider font-medium">
+          <i class="fa-solid fa-circle fa-xs mr-0.5"></i>
+          Published
+        </li>
+      <% end %>
+    </ol>
+
+    <div class="flex items-center gap-2">
+      <% if EventPolicy.new(current_member, event).edit? %>
+        <%= link_to edit_unit_event_path(current_unit, event),
+              class: "inline-flex items-center gap-2 h-[36px] px-4 text-sm font-medium \
+                      bg-paper-200 text-paper-700 border border-paper-300 rounded-lg \
+                      hover:bg-paper-300 hover:text-paper-900",
+              data: { turbo_frame: "_top" } do %>
+          <i class="fa-regular fa-pencil"></i>
+          Edit
+        <% end %>
+      <% end %>
+
+      <div class="dropdown relative" data-controller="dropdown">
+        <%= button_tag class: "h-[36px] w-[36px] flex items-center justify-center bg-paper-200 text-paper-600 \
+                        border border-paper-300 rounded-lg cursor-pointer hover:bg-paper-300 hover:text-paper-800",
+              data: { action: "dropdown#toggle", dropdown_target: "toggle" } do %>
+          <i class="fa-solid fa-ellipsis-vertical fa-fw"></i>
+        <% end %>
+
+        <div class="dropdown-menu absolute right-0 bg-white z-20 rounded-lg border border-stone-300 top-full animate-pop-open w-72 text-sm mt-1 drop-shadow-overhead p-2 text-stone-700">
+          <ul>
+            <%= render partial: "events/partials/show/sidecar/edit" %>
+            <%= render partial: "events/partials/show/sidecar/duplicate" %>
+            <%= render partial: "events/partials/show/sidecar/history" %>
+            <%= render partial: "events/partials/show/sidecar/download_brief" %>
+            <%= render partial: "events/partials/show/sidecar/add_to_calendar" %>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </nav>

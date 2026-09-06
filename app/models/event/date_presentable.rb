@@ -54,6 +54,23 @@ module Event::DatePresentable
     "#{starts_at.strftime('%a')}#{dash(options)}#{ends_at.strftime('%a')}".html_safe
   end
 
+  # nil for all-day events, otherwise "7 PM" or "6:30 – 8 PM".
+  # rendered in the unit's zone, which UnitContextController establishes.
+  def times_to_s(**options)
+    return if all_day?
+
+    start_label = time_to_s(starts_at)
+    end_label = time_to_s(ends_at)
+    return start_label if start_label == end_label
+
+    "#{start_label}#{dash(options)}#{end_label}".html_safe
+  end
+
+  # drops ":00" so on-the-hour times read "7 PM" rather than "7:00 PM"
+  def time_to_s(time)
+    time.strftime(time.min.zero? ? "%-l %p" : "%-l:%M %p")
+  end
+
   def dash(options)
     options[:plain_text] ? "—" : "&hairsp;&ndash;&hairsp;"
   end

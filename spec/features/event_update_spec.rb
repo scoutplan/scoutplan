@@ -29,4 +29,25 @@ describe "events", type: :feature do
       expect(page).to have_content(@event.title)
     end
   end
+
+  describe "edit page" do
+    before { visit edit_unit_event_path(@unit, @event) }
+
+    it "renders as a full page rather than a modal" do
+      expect(page).to have_field("event_title")
+      expect(page).not_to have_css("[role='dialog']", visible: :all)
+    end
+
+    it "offers a way back to the event without saving" do
+      expect(page).to have_link(@event.title, href: unit_event_path(@unit, @event))
+    end
+
+    it "puts the save control in the top nav" do
+      expect(page).to have_css("nav #accept")
+    end
+
+    it "keeps the overlay frame that the cancel-event flow targets" do
+      expect(page).to have_css("turbo-frame#modal_overlay", visible: :all)
+    end
+  end
 end

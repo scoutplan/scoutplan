@@ -1,10 +1,7 @@
-= turbo_frame_tag :main, src: post_event_path, loading: :lazy
+= render "form", event: @event
 
-= turbo_frame_tag :modal do
-  = content_tag :section, role: "dialog", class: "fixed backdrop-blur-md inset-0 pt-16 md:pb-16 bg-black/50 z-20", data: { open: "true", controller: "modal", modal_return_url_value: post_event_path }
-    = render "form", event: @event
+/ the "Cancel this event" link in the form footer loads its confirmation here
+= turbo_frame_tag :modal_overlay
 
-  = turbo_frame_tag :modal_overlay
-
-  = turbo_stream.update "page_title" do
-    = @event.title
+= turbo_stream.update "page_title" do
+  = @event.title

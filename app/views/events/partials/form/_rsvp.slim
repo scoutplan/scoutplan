@@ -34,13 +34,13 @@ section.py-4#rsvp_fields
 
       .flex.flex-row.items-center
         = f.date_field :rsvp_opens_at,
-          class: "text-sm bg-white dark:bg-black border border-stone-400 dark:border-stone-700 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300" 
+          class: "text-sm bg-white dark:bg-black border border-paper-400 dark:border-stone-700 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300" 
 
         .inline-block.mx-4
           = "to"
 
         = f.date_field :rsvp_closes_at,
-          class: "text-sm bg-white dark:bg-black border border-stone-400 dark:border-stone-700 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300",
+          class: "text-sm bg-white dark:bg-black border border-paper-400 dark:border-stone-700 rounded p-2 w-full hover:ring-brand-500 placeholder-stone-300",
           data: { target: "event-edit.rsvpClosesAt", action: "change->event-edit#updateRsvpClosesAt" }
 
       p.error-message.text-red-500.my-2.text-sm.font-bold
@@ -53,7 +53,7 @@ section.py-4#rsvp_fields
           = f.label :cost_youth, t("events.captions.cost_youth"), class: "font-bold mr-2"
         .table-cell.py-1
           = f.number_field :cost_youth,
-                            class: "w-24 border border-stone-400 dark:border-stone-700 rounded bg-white dark:bg-black p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
+                            class: "w-24 border border-paper-400 dark:border-stone-700 rounded bg-white dark:bg-black p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
                             min: 0
 
       .table-row
@@ -61,7 +61,7 @@ section.py-4#rsvp_fields
           = f.label :cost_adult, t("events.captions.cost_adult"), class: "font-bold mr-2"
         .table-cell.py-1
           = f.number_field :cost_adult,
-                            class: "w-24 border border-stone-400 dark:border-stone-700 rounded bg-white dark:bg-black p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
+                            class: "w-24 border border-paper-400 dark:border-stone-700 rounded bg-white dark:bg-black p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
                             min: 0
 
     = render partial: "events/partials/form/event_shifts", locals: { member: current_member, f: f }

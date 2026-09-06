@@ -8,7 +8,7 @@
   .flex.flex-col.gap-2
     = link_to new_unit_event_path(current_unit),
               class: "block rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 px-8 py-2 font-bold text-center hover:bg-stone-200",
-              data: { turbo_action: "advance" } do
+              data: { turbo_frame: "_top" } do
       i.fa-solid.fa-calendar-plus.mr-2.text-emerald-500
       = "Add your first event"
 

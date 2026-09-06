@@ -2,18 +2,22 @@
 - bgcolor = t("events.show.colors.#{event_location.location_type}")
 - icon = t("events.show.icons.#{event_location.location_type}")
 
-li.flex.flex-row(class="location-card location-#{event_location.location_type}")  
-  .block.w-10
+li.flex.flex-row(class="location-card location-#{event_location.location_type}")
+  / the connector is drawn per item and hidden on the last one, so the run of
+  / glyphs terminates at the final glyph instead of trailing past it
+  .block.w-10.relative.shrink-0
     .fa-layers.fa-fw
       i.fa-solid.fa-circle(class="#{bgcolor}" data-fa-transform="grow-12")
       i.fa-solid.fa-sm.fa-inverse(class="#{icon}")
+
+    .location-connector.absolute.w-px.bg-paper-400(style="left: 9.5px; top: 1.75rem; bottom: -1.25rem;")
 
   div.text-sm
     - if (location = event_location.location)
       address.not-italic
         = content_tag_if :div, content_tag(:h4, location.name, class: "font-semibold")
         = content_tag_if :div, content_tag(:p, location.address, class: "")
-        = content_tag_if :div, content_tag(:p, location.phone, class: "")
+        = content_tag_if :div, location.phone, phone_link(location.phone, class: "text-blue-600")
         = content_tag_if :div, location.website,
           link_to(short_link ? t("locations.labels.link") : location.website, location.website, class: "external-link text-blue-600 ")
     - elsif (url = event_location.url)

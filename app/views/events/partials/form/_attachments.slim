@@ -1,13 +1,31 @@
-= render partial: "events/partials/form/attachment_section",
-         locals: { f:           f,
-                   title:       "Public attachments",
-                   field_name:  "attachments",
-                   description: "Give your members all the details they need to know about this event.",
-                   collection:  @event.attachments.with_all_variant_records }
+/ one list for both visibility sets; each row decides which of the two
+/ has_many_attached collections carries its signed_id on submit
+section.py-4.border-t
+  header.mb-4
+    h3.font-semibold = "Attachments"
 
-= render partial: "events/partials/form/attachment_section",
-         locals: { f:           f,
-                   title:       "Private attachments",
-                   field_name:  "private_attachments",
-                   description: "Store receipts and registration forms here. Only organizers can see these.",
-                   collection:  @event.private_attachments.with_all_variant_records }
+  ul.existing_attachments.divide-y.divide-paper-200(data-event-attachments-target="attachmentList")
+    - event.attachments.with_all_variant_records.each do |attachment|
+      = render partial: "events/partials/form/attachment_row",
+               locals: { f: f, event: event, attachment: attachment, public: true }
+
+    - event.private_attachments.with_all_variant_records.each do |attachment|
+      = render partial: "events/partials/form/attachment_row",
+               locals: { f: f, event: event, attachment: attachment, public: false }
+
+  p.text-xs.text-paper-600.py-2(data-event-attachments-target="emptyNotice" class="#{"hidden" if event.attachments.attached? || event.private_attachments.attached?}")
+    = "No attachments yet. Add some with “Upload files” in the menu above."
+
+  / picker is unnamed so it never submits; files are distributed into the two
+  / real inputs below by the event-attachments controller
+  .hidden
+    = file_field_tag nil, multiple: true,
+                     id: "attachment_picker",
+                     data: { event_attachments_target: "picker",
+                             action: "change->event-attachments#filesPicked" }
+
+    = f.file_field :attachments, multiple: true,
+                   data: { event_attachments_target: "publicInput" }
+
+    = f.file_field :private_attachments, multiple: true,
+                   data: { event_attachments_target: "privateInput" }

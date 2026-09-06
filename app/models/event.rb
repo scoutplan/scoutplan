@@ -62,19 +62,27 @@ class Event < ApplicationRecord
 
   validates_presence_of :title, :starts_at, :ends_at
   validate :dates_are_subsequent
+  ATTACHMENT_CONTENT_TYPES = [
+    "image/png", "image/jpeg", "image/gif", "application/pdf", "text/plain",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/vnd.ms-excel",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/vnd.ms-powerpoint",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+  ].freeze
+
+  ATTACHMENT_MAX_SIZE = {less_than: 10.megabytes, message: "must be less than 10 MB"}.freeze
+
+  # both sets are uploaded through the same control and differ only in who can
+  # see them, so they get the same content type and size rules
   validates :attachments,
-            content_type: [
-              "image/png", "image/jpeg", "image/gif", "application/pdf", "text/plain",
-              "application/msword",
-              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-              "application/vnd.ms-excel",
-              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-              "application/vnd.ms-powerpoint",
-              "application/vnd.openxmlformats-officedocument.presentationml.presentation"
-            ],
-            size:         {
-              less_than: 10.megabytes, message: "must be less than 10 MB"
-            }
+    content_type: ATTACHMENT_CONTENT_TYPES,
+    size: ATTACHMENT_MAX_SIZE
+
+  validates :private_attachments,
+    content_type: ATTACHMENT_CONTENT_TYPES,
+    size: ATTACHMENT_MAX_SIZE
 
   enum :status, { draft: 0, published: 1, cancelled: 2, archived: 3 }
 

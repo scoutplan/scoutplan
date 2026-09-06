@@ -12,7 +12,7 @@
                           action: "input->name-filter#filterNames" }
     = link_to edit_unit_event_path(current_unit, @event),
               class: "whitespace-nowrap block px-4 py-2 rounded hover:bg-stone-600",
-              data: { turbo_action: "advance" } do
+              data: { turbo_frame: "_top" } do
       i.fa-regular.fa-pencil.fa-fw.mr-2              
       = t(".edit")
       

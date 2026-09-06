@@ -22,6 +22,23 @@ module ApplicationHelper
     content_tag(tag, content || conditional, options)
   end
 
+  # "9148647317" => "(914) 864-7317". Anything that isn't a recognisable
+  # North American number is passed through untouched rather than mangled.
+  def format_phone(number)
+    digits = number.to_s.gsub(/\D/, "")
+    digits = digits[1..] if digits.length == 11 && digits.start_with?("1")
+    return number if digits.length != 10
+
+    number_to_phone(digits, area_code: true)
+  end
+
+  # formatted, and tappable on a phone
+  def phone_link(number, **options)
+    return if number.blank?
+
+    link_to format_phone(number), "tel:#{number.to_s.gsub(/\D/, '')}", **options
+  end
+
   def string_for_time_internal_from_day(val)
     return "today" if val.today?
     return "tomorrow" if val.tomorrow?

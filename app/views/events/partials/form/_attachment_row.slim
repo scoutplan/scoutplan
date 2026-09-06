@@ -1,0 +1,30 @@
+/ Visibility is expressed by which hidden field is enabled: a disabled input is
+/ not submitted, so flipping the toggle moves the signed_id between
+/ event[attachments][] and event[private_attachments][].
+li.py-2.flex.flex-row.justify-between.items-center.gap-4(id="attachment_#{attachment.id}")
+  .left.flex.items-center.gap-2.min-w-0
+    span.shrink-0 = fontawesome_file_icon(attachment.filename.extension_without_delimiter)
+    span.truncate = attachment.filename
+
+    = hidden_field_tag "event[attachments][]", attachment.signed_id,
+                       id: nil, disabled: !public, data: { visibility: "public" }
+
+    = hidden_field_tag "event[private_attachments][]", attachment.signed_id,
+                       id: nil, disabled: public, data: { visibility: "private" }
+
+  .right.flex.items-center.gap-3.shrink-0
+    = select_tag "attachment_visibility_#{attachment.id}",
+                 options_for_select([["Everyone", "public"], ["Organizers only", "private"]],
+                                    public ? "public" : "private"),
+                 class: "border border-paper-300 rounded text-xs py-1 pl-2 pr-7 bg-white text-paper-700 focus:ring-0",
+                 name: nil,
+                 data: { action: "change->event-attachments#changeVisibility" }
+
+    = button_tag class: "text-red-500 cursor-pointer",
+                  type: "button",
+                  title: "Delete this attachment",
+                  data: { confirm: "Are you sure you want to delete this attachment?",
+                          action: "event-edit#deleteAttachment",
+                          delete_url: unit_event_attachment_path(current_unit, event, attachment,
+                                                                 type: public ? "attachments" : "private_attachments") } do
+      i.fa-solid.fa-trash-alt

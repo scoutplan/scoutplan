@@ -1,0 +1,124 @@
+<%= form_with model: event, scope: "event",
+      url: event.new_record? ? unit_events_path(current_unit) : unit_event_path(current_unit, event),
+      method: event.new_record? ? "post" : "patch",
+      data: { turbo: false, controller: "event-edit event-attachments",
+              event_edit_season_end_date_value: current_unit.this_season_ends_at.to_datetime.iso8601,
+              event_edit_unit_id_value: current_unit.id } do |f| %>
+
+  <%= render partial: "organizers_popup", locals: { event: event } %>
+
+  <%= render partial: "events/partials/form/top_nav", locals: { f: f, event: event } %>
+
+  <div class="mx-auto max-w-6xl flex flex-col md:flex-row gap-8 w-full mt-4 px-8">
+    <div class="grow">
+      <section class="flex flex-col divide-y divide-stone-200 text-sm text-stone-600">
+        <% %w[basics dates rsvp locations description attachments].each do |section| %>
+          <%= render partial: "events/partials/form/#{section}", locals: { f: f, event: event, section: section } %>
+        <% end %>
+      </section>
+    </div>
+
+    <aside class="w-1/4 text-sm text-stone-600">
+      <div class="flex flex-col divide-y divide-paper-300">
+        <%# CATEGORY %>
+        <div class="py-2">
+          <header class="mb-1">
+            <h3 class="font-semibold">Category</h3>
+          </header>
+
+          <% category_options = options_from_collection_for_select(event.unit.event_categories.order(:name), :id, :name, event.event_category_id) %>
+          <% category_options += "<hr>".html_safe %>
+          <% category_options += options_for_select([["Add an event category...", "_new"]]) %>
+
+          <%= f.select :event_category_id,
+                category_options,
+                { prompt: t("events.placeholders.category"), selected: event.event_category_id },
+                { class: "border-0 px-0 px-2 -mx-2 py-1 bg-transparent hover:bg-brand-100 text-sm focus:ring-0",
+                  style: "width: calc(100% + 1.2rem)",
+                  data: { event_edit_target: "categorySelect", action: "change->event-edit#updateCategory" },
+                  required: "A category is required" } %>
+        </div>
+
+        <%# PUBLISHED %>
+        <div class="py-2">
+          <header class="mb-2">
+            <h3 class="font-semibold">Visibility</h3>
+          </header>
+
+          <%= render partial: "components/switch",
+                locals: { checked: event.published?,
+                          label: t("events.edit.published"),
+                          object_name: "event",
+                          method: "status",
+                          checked_value: "published",
+                          class: "text-xs",
+                          unchecked_value: "draft" } %>
+        </div>
+
+        <%# COVER PHOTO %>
+        <div class="py-2">
+          <%= button_tag type: "button",
+                class: "block py-1 px-2 -mx-2 hover:bg-brand-100",
+                style: "width: calc(100% + 1rem)",
+                onclick: "document.querySelector('#cover_photo_file_field').click();" do %>
+
+            <div class="flex flex-row justify-between items-center">
+              <div class="font-semibold">
+                Cover photo
+              </div>
+
+              <i class="fa-light fa-plus fa-fw"></i>
+            </div>
+          <% end %>
+
+          <div class="relative" data-event-edit-target="coverPhotoThumbnail">
+            <% if event.cover_photo.attached? %>
+              <%= image_tag event.cover_photo.representation(resize_to_fit: [200, 100]),
+                    class: "mt-2 w-full h-24 object-cover object-center",
+                    alt: event.title,
+                    data: { event_edit_target: "coverPhotoThumbnailImage" } %>
+
+              <div class="absolute right-0 bottom-0">
+                <%= button_tag type: "button",
+                      class: "block p-1 m-2 text-white border rounded text-xs hover:bg-white/30",
+                      title: "Remove cover photo",
+                      data: { action: "event-edit#removeCoverPhoto" } do %>
+                  <i class="fa-light fa-trash-can fa-fw"></i>
+                <% end %>
+              </div>
+            <% end %>
+
+            <%= f.file_field :cover_photo, class: "hidden block w-full px-2 py-1 bg-stone-100 hover:bg-stone-200 text-sm focus:ring-0",
+                  accept: "image/png, image/jpeg, image/jpg",
+                  required: false,
+                  id: "cover_photo_file_field",
+                  data: { event_edit_target: "coverPhotoFile", action: "change->event-edit#coverPhotoSelected" } %>
+
+            <%= hidden_field_tag :remove_cover_photo, "0", id: "remove_cover_photo_field", data: { event_edit_target: "removeCoverPhotoField" } %>
+          </div>
+        </div>
+
+        <%# ORGANIZERS %>
+        <div class="py-2 relative">
+          <details id="organizers" data-event-edit-target="organizerListWrapper">
+            <summary class="flex flex-row justify-between items-center -mx-2 px-2 py-1 hover:bg-brand-100 rounded cursor-pointer active:-mx-[0.4rem]">
+              <div class="font-semibold">Organizers</div>
+              <i class="fa-light fa-plus fa-fw"></i>
+            </summary>
+          </details>
+
+          <div id="organizers_tag_field" class="flex flex-wrap gap-1 text-xs"
+               data-controller="tag-field"
+               data-tag-field-checkable-list-outlet="#organizers_popup">
+            <% event.unit.unit_memberships.active.includes(:user).each do |member| %>
+              <%= render partial: "organizer_tag", locals: { member: member, visible: event.organizer_members.include?(member) } %>
+            <% end %>
+          </div>
+        </div>
+
+        <%# TAGS %>
+        <%= render partial: "tags/tag_section", locals: { taggable: event } %>
+      </div>
+    </aside>
+  </div>
+<% end %>

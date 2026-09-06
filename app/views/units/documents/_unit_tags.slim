@@ -20,7 +20,7 @@
     .left-0.top-1/2.-translate-y-1/2.absolute.py-1.px-1.text-stone-400 = "#"
 
     // dropdown
-    nav.hidden.absolute.top-full.left-0.right-0.bg-white.border-stone-400.drop-shadow.z-10.rounded.mt-1(data-document-index-target="tagList")
+    nav.hidden.absolute.top-full.left-0.right-0.bg-white.border-paper-400.drop-shadow.z-10.rounded.mt-1(data-document-index-target="tagList")
       - ActsAsTaggableOn::Tag.for_tenant(unit).each do |tag|
         = button_tag "#", class: "tag-list-item block w-full p-2 hover:bg-brand-100 text-left hidden", data: { action: "document-index#batchTagSelected", tag_name: tag.name } do
           = "#" + tag.name

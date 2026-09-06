@@ -1,6 +1,10 @@
 section.flex.flex-col.gap-2.pb-4.-mt-2
+  / quiet until touched: transparent at rest so they read as page content on
+  / paper-50, tinted on hover to signal editability, solid on focus. Same idiom
+  / as the category select in the sidebar rail.
   = f.text_field :title,
-    class: "text-xl w-full placeholder-stone-300 border-0 rounded p-1 -mx-1 font-medium",
+    class: "text-xl w-full font-medium bg-transparent border-0 rounded p-1 -mx-1 placeholder-paper-400 \
+            hover:bg-paper-100 focus:bg-white focus:ring-2 focus:ring-brand-500",
     autocomplete: "off",
     required: true,
     autofocus: true,
@@ -9,7 +13,8 @@ section.flex.flex-col.gap-2.pb-4.-mt-2
 
   .relative
     = f.text_field :short_description,
-      class: "w-full placeholder-stone-400 border-0 rounded focus:ring-brand-500 p-1 -mx-1 text-sm peer",
+      class: "w-full text-sm bg-transparent border-0 rounded p-1 -mx-1 placeholder-paper-400 peer \
+              hover:bg-paper-100 focus:bg-white focus:ring-2 focus:ring-brand-500",
       autocomplete: "off",
       maxlength: 50,
       placeholder: t("events.edit.short_description_placeholder"),
