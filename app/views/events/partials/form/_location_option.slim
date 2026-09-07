@@ -1,0 +1,15 @@
+li.search-item
+  = button_tag type: "button",
+               class: "w-full text-left flex flex-row items-center gap-2 px-2 py-2 rounded hover:bg-paper-100 cursor-pointer",
+               data: { action: "location-rail#select",
+                       location_id: location.id,
+                       location_name: location.display_name,
+                       location_incomplete: location.address.blank?.to_s } do
+
+    i.fa-regular.fa-fw.text-paper-500(class="#{selected ? "fa-circle-check text-brand-500" : "fa-location-dot"}")
+
+    span.truncate = location.display_name
+
+    - if location.address.blank?
+      span.ml-auto.text-amber-600(title="No address yet")
+        i.fa-solid.fa-circle-exclamation.fa-sm

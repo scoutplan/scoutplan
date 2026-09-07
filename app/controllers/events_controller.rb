@@ -414,7 +414,7 @@ class EventsController < UnitContextController
                                       :repeats_until, :departs_from, :status, :venue_phone, :message_audience,
                                       :max_total_attendees, :min_headcount_adult, :min_headcount_youth,
                                       :rsvp_closes_at, :rsvp_opens_at, :shift_name,
-                                      :note, :cost_youth, :cost_adult, :online, :website,
+                                      :note, :cost_youth, :cost_adult, :online, :website, :online_url,
                                       :notify_members, :notify_recipients, :notify_message, :document_library_ids,
                                       :cover_photo, packing_list_ids: [], attachments: [], private_attachments: [], tag_list: [],
                                       event_organizer_unit_membership_ids: [],

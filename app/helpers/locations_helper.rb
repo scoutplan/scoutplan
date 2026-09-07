@@ -4,27 +4,37 @@
 module LocationsHelper
   BASE_MAP_URL = "https://www.google.com/maps/embed/v1/place"
   ZOOM_LEVEL = 10
+  COORDINATE_PAIR = /\A(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)\z/
 
-  # rubocop:disable Metrics/AbcSize
   def location_map_src(location)
-    return "" unless location.map_address.present?
+    return "" if location.map_address.blank?
 
-    map_params = if coordinates?(location)
-                   "q=#{escape_location_name(@location.address)}&center=#{@location.map_name}"
-                 else
-                   "q=#{escape_location_name(@location.map_address)}"
-                 end
-    BASE_MAP_URL + "?key=#{ENV.fetch('GOOGLE_API_KEY')}" + "&zoom=#{ZOOM_LEVEL}" + "&#{map_params}"
+    center = map_center(location)
+    map_params = if center
+      "q=#{escape_location_name(location.address)}&center=#{center}"
+    else
+      "q=#{escape_location_name(location.map_address)}"
+    end
+
+    "#{BASE_MAP_URL}?key=#{ENV.fetch("GOOGLE_API_KEY", nil)}&zoom=#{ZOOM_LEVEL}&#{map_params}"
   end
-  # rubocop:enable Metrics/AbcSize
+
+  # real columns first; map_name is only consulted for records that predate them
+  def map_center(location)
+    return "#{location.latitude},#{location.longitude}" if location.geocoded?
+    return location.map_name if coordinates?(location)
+
+    nil
+  end
 
   def coordinates?(location)
-    location.map_name =~ /^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/
+    location.map_name.to_s.match?(COORDINATE_PAIR)
   end
 
+  # gsub! mutated the string it was handed, which for location.address meant
+  # stripping commas out of the record in memory
   def escape_location_name(str)
-    str.gsub!(",", "")
-    CGI.escape(str)
+    CGI.escape(str.to_s.delete(","))
   end
 end
 

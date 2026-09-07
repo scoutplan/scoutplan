@@ -1,4 +1,5 @@
-- return unless event.online?
+/ online but no link yet is a valid state, and there is nothing to link to
+- return unless event.online_link?
 
 = link_to event.online_url, class: "text-sm text-blue-500 underline" do
   i.fa-solid.fa-video.mr-2

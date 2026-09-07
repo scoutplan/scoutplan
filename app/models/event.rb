@@ -1,13 +1,20 @@
 # rubocop:disable Metrics/ClassLength
 class Event < ApplicationRecord
-  include Notifiable, Remindable, Onlineable, Icalendarable, Replyable, DatePresentable, StaticMappable, Insertable,
-          ThroughAssociations
+  include ThroughAssociations
+  include Insertable
+  include StaticMappable
+  include DatePresentable
+  include Replyable
+  include Icalendarable
+  include Onlineable
+  include Remindable
+  include Notifiable
   extend DateTimeAttributes
 
   date_time_attrs_for :starts_at, :ends_at
 
   attr_accessor :repeats, :repeats_until, :notify_members, :notify_recipients, :notify_message, :document_library_ids,
-                :current_member, :event_organizer_unit_membership_ids
+    :current_member, :event_organizer_unit_membership_ids
 
   default_scope { where(parent_event_id: nil).order(starts_at: :asc) }
 
@@ -43,11 +50,14 @@ class Event < ApplicationRecord
   has_many_attached :attachments
   has_many_attached :private_attachments
 
-  has_paper_trail versions: { scope: -> { order("id desc") } }
+  has_paper_trail versions: {scope: -> { order("id desc") }}
 
   has_secure_token
 
-  accepts_nested_attributes_for :event_locations, allow_destroy: true
+  # the form submits a row per location_type at a stable index, so unfilled
+  # roles arrive as blanks; without this they would create empty rows
+  accepts_nested_attributes_for :event_locations, allow_destroy: true,
+    reject_if: ->(attrs) { attrs[:location_id].blank? && attrs[:id].blank? }
   accepts_nested_attributes_for :event_shifts, allow_destroy: true
   # accepts_nested_attributes_for :event_organizers, allow_destroy: true
 
@@ -84,26 +94,26 @@ class Event < ApplicationRecord
     content_type: ATTACHMENT_CONTENT_TYPES,
     size: ATTACHMENT_MAX_SIZE
 
-  enum :status, { draft: 0, published: 1, cancelled: 2, archived: 3 }
+  enum :status, {draft: 0, published: 1, cancelled: 2, archived: 3}
 
   # TODO: clean up this mess
-  scope :past,          -> { where("starts_at < ?", Date.current.in_time_zone) }
-  scope :future,        -> { where("ends_at > ?", Date.current.in_time_zone) }
-  scope :recent,        -> { where("starts_at BETWEEN ? AND ?", 4.weeks.ago, Date.current) }
-  scope :this_week,     lambda {
-                          where("starts_at BETWEEN ? AND ?", Time.current, 6.days.from_now.at_end_of_day.in_time_zone)
-                        }
-  scope :upcoming,      -> { where("starts_at BETWEEN ? AND ?", Time.current, 35.days.from_now) }
-  scope :coming_up,     -> { where("starts_at BETWEEN ? AND ?", 7.days.from_now, 35.days.from_now) }
-  scope :further_out,   -> { where("starts_at > ?", 35.days.from_now) }
+  scope :past, -> { where("starts_at < ?", Date.current.in_time_zone) }
+  scope :future, -> { where("ends_at > ?", Date.current.in_time_zone) }
+  scope :recent, -> { where("starts_at BETWEEN ? AND ?", 4.weeks.ago, Date.current) }
+  scope :this_week, lambda {
+    where("starts_at BETWEEN ? AND ?", Time.current, 6.days.from_now.at_end_of_day.in_time_zone)
+  }
+  scope :upcoming, -> { where("starts_at BETWEEN ? AND ?", Time.current, 35.days.from_now) }
+  scope :coming_up, -> { where("starts_at BETWEEN ? AND ?", 7.days.from_now, 35.days.from_now) }
+  scope :further_out, -> { where("starts_at > ?", 35.days.from_now) }
   scope :rsvp_required, -> { where(requires_rsvp: true) }
-  scope :today,         lambda {
-                          where("starts_at BETWEEN ? AND ?", Time.zone.now.beginning_of_day, Time.zone.now.at_end_of_day)
-                        }
+  scope :today, lambda {
+    where("starts_at BETWEEN ? AND ?", Time.zone.now.beginning_of_day, Time.zone.now.at_end_of_day)
+  }
   scope :imminent, lambda {
     where("starts_at BETWEEN ? AND ?",
-          Time.zone.now.hour < 12 ? Time.zone.now.middle_of_day : Time.zone.now.end_of_day,
-          Time.zone.now.hour < 12 ? Time.zone.now.end_of_day : Time.zone.now.end_of_day + 12.hours)
+      (Time.zone.now.hour < 12) ? Time.zone.now.middle_of_day : Time.zone.now.end_of_day,
+      (Time.zone.now.hour < 12) ? Time.zone.now.end_of_day : Time.zone.now.end_of_day + 12.hours)
   }
 
   scope :recent_and_future, -> { where("starts_at > ?", 4.weeks.ago) }
@@ -268,7 +278,7 @@ class Event < ApplicationRecord
   end
 
   def title_and_date
-    "#{title} on #{starts_at.strftime('%b %d')}"
+    "#{title} on #{starts_at.strftime("%b %d")}"
   end
 
   def destination
@@ -362,7 +372,7 @@ class Event < ApplicationRecord
   end
 
   def chat_topic
-    "#{title} (scheduled for #{starts_at.strftime('%b %d')})"
+    "#{title} (scheduled for #{starts_at.strftime("%b %d")})"
   end
 
   def organizer?(member)

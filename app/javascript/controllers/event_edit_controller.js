@@ -7,9 +7,9 @@ export default class extends Controller {
   static targets = [ "deleteform", "fileinput", "privatefileinput", "documentLibraryIds", "startsAtDate", "endsAtDate", "rsvpClosesAt", "repeatsUntilSelect",
       "submit", "categorySelect", "title", "newTagPrompt", "newTagName", "tagNotFoundPrompt", "tagListWrapper", "removeCoverPhotoField", "coverPhotoThumbnail",
       "coverPhotoFile", "coverPhotoThumbnailImage",
-      "addressBook", "locationType", "eventLocationDetails"
+      "addressBook", "locationType", "eventLocationDetails", "categoryGlyph"
    ];
-  static values = { seasonEndDate: String, unitId: String };
+  static values = { seasonEndDate: String, unitId: String, eventId: String };
 
   connect() {
     this.populateRepeatUntilSelectOptions();
@@ -210,6 +210,8 @@ export default class extends Controller {
   }
 
   async updateCategory(event) {
+    this.recolourCategoryGlyph(event.target);
+
     let category = event.target.value;
     if (category != "_new") { return; }
 
@@ -220,6 +222,22 @@ export default class extends Controller {
     nameField.focus();
   }
 
+  // the rail shows the category as a coloured dot instead of a label: solid and
+  // tinted when one is chosen, dashed and grey when it isn't
+  recolourCategoryGlyph(select) {
+    if (!this.hasCategoryGlyphTarget) { return; }
+
+    const colour = select.selectedOptions[0]?.dataset?.color;
+    const glyph = this.categoryGlyphTarget;
+
+    glyph.classList.toggle("fa-solid", Boolean(colour));
+    glyph.classList.toggle("fa-circle", Boolean(colour));
+    glyph.classList.toggle("fa-regular", !colour);
+    glyph.classList.toggle("fa-circle-dashed", !colour);
+    glyph.classList.toggle("text-paper-500", !colour);
+    glyph.style.color = colour || "";
+  }
+
   async setLocation(event) {
     const locationType = this.element.querySelector("input[name='location[location_type]']:checked").value;
     const locationId = this.element.querySelector("input[name='location[id]']:checked")?.value;
@@ -228,9 +246,19 @@ export default class extends Controller {
     this.eventLocationDetailsTarget.removeAttribute("open");
 
     const formData = new FormData();
-    formData.append("event_location[location_id]", locationId);
+
+    // omit rather than send the string "undefined" (an online location has no
+    // address-book entry): the server scopes this id to the unit, so a bogus
+    // value would 404
+    if (locationId) { formData.append("event_location[location_id]", locationId); }
+
     formData.append("event_location[location_type]", locationType);
     formData.append("event_location[url]", locationUrl);
+
+    // lets the server authorize against this specific event; absent on a new
+    // event, which is admin-only anyway
+    if (this.eventIdValue) { formData.append("event_location[event_id]", this.eventIdValue); }
+
     const url = `/u/${this.unitIdValue}/event_locations`;
 
     await post(url, { body: formData });

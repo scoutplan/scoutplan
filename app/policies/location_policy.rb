@@ -27,4 +27,9 @@ class LocationPolicy < UnitContextPolicy
   def update?
     edit?
   end
+
+  # ApplicationPolicy#destroy? is false, so this has to be stated explicitly
+  def destroy?
+    edit?
+  end
 end

@@ -10,7 +10,7 @@ RSpec.describe Event::Onlineable, type: :concern do
   describe "methods" do
     describe "hostname" do
       it "returns the correct hostname" do
-        @event.website = "https://us02web.zoom.us/j/1234567890?pwd=snuh"
+        @event.online_url = "https://us02web.zoom.us/j/1234567890?pwd=snuh"
         expect(@event.hostname).to eq("us02web.zoom.us")
       end
     end
@@ -34,20 +34,57 @@ RSpec.describe Event::Onlineable, type: :concern do
     end
   end
 
+  # online? reads the flag, not the URL, so an organiser can commit to an online
+  # event before they have the link
+  describe "online?" do
+    it "is false by default" do
+      expect(@event.online?).to be(false)
+    end
+
+    it "is true once flagged, even with no URL yet" do
+      @event.online = true
+
+      expect(@event.online?).to be(true)
+      expect(@event.online_link?).to be(false)
+    end
+
+    it "is not driven by a URL on its own" do
+      @event.online_url = "https://zoom.us/j/1234"
+
+      expect(@event.online?).to be(false)
+    end
+
+    # the website column used to stand in for online_url; that fallback is gone
+    it "is not driven by the website column" do
+      @event.website = "https://example.com/info"
+
+      expect(@event.online?).to be(false)
+    end
+  end
+
+  describe "online_link?" do
+    it "requires both the flag and a URL" do
+      @event.online = true
+      @event.online_url = "https://zoom.us/j/1234"
+
+      expect(@event.online_link?).to be(true)
+    end
+  end
+
   describe "validations" do
-    describe "website" do
+    describe "online_url" do
       it "is valid when blank" do
-        @event.website = ""
+        @event.online_url = ""
         expect(@event).to be_valid
       end
 
       it "is valid when a valid URL" do
-        @event.website = "https://go.scoutplan.org/1234"
+        @event.online_url = "https://go.scoutplan.org/1234"
         expect(@event).to be_valid
       end
 
       it "is invalid when an invalid URL" do
-        @event.website = "Wampeters, Foma and Granfalloons"
+        @event.online_url = "Wampeters, Foma and Granfalloons"
         expect(@event).not_to be_valid
       end
     end

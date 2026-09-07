@@ -37,8 +37,10 @@
 
 
     <ol class="flex flex-col gap-5">
+      <%# in_display_order derives from the enum, so a type can't be dropped by
+          being left out of a hardcoded list %>
       <%= render partial: "events/partials/show/event_location",
-              collection: event.event_locations.in_order_of(:location_type, %W[departure arrival activity]) %>
+              collection: event.event_locations.in_display_order %>
     </ol>
   </div>
 </section>

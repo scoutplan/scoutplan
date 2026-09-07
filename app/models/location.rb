@@ -10,6 +10,23 @@ class Location < ApplicationRecord
   has_rich_text :organizer_notes
   validates_presence_of :name
 
+  validates :latitude, numericality: {greater_than_or_equal_to: -90, less_than_or_equal_to: 90},
+    allow_nil: true
+  validates :longitude, numericality: {greater_than_or_equal_to: -180, less_than_or_equal_to: 180},
+    allow_nil: true
+
+  # true once we know where this place actually is, rather than only what it is
+  # called. A map can be drawn from coordinates without geocoding at render time.
+  def geocoded?
+    latitude.present? && longitude.present?
+  end
+
+  def coordinates
+    return unless geocoded?
+
+    [latitude, longitude]
+  end
+
   def full_address
     return map_name.strip.gsub(/,$/, "").gsub(" , ", " ") if map_name.present?
 

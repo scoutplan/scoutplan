@@ -9,19 +9,21 @@ class LocationsController < UnitContextController
 
   def create
     @location = current_unit.locations.new(location_params)
-    authorize @location
+    authorize_creation
     @location.save!
 
     respond_to do |format|
       format.html { redirect_to unit_locations_path(current_unit), notice: I18n.t("locations.notices.created") }
       format.turbo_stream
+      format.json { render json: location_json(@location), status: :created }
     end
   end
 
   def destroy
+    authorize @location
     @location.destroy
     redirect_to unit_locations_path(current_unit),
-                notice: I18n.t("locations.notices.destroyed", location_name: @location.display_name)
+      notice: I18n.t("locations.notices.destroyed", location_name: @location.display_name)
   end
 
   def edit
@@ -46,8 +48,31 @@ class LocationsController < UnitContextController
 
   private
 
+  # Creating a location from unit settings is an admin job. Creating one while
+  # editing an event is part of editing that event, so anyone who may edit the
+  # event may add to the address book - otherwise a non-admin organizer hits a
+  # dead end mid-form.
+  def authorize_creation
+    event_id = params[:event_id]
+    return authorize @location if event_id.blank?
+
+    authorize current_unit.events.find(event_id), :edit?
+  end
+
+  def location_json(location)
+    {
+      id: location.id,
+      name: location.display_name,
+      address: location.address,
+      geocoded: location.geocoded?,
+      needs_detail: location.address.blank?
+    }
+  end
+
+  # scoped to the unit: an unscoped find let any signed-in member reach another
+  # unit's location by id
   def find_location
-    @location = Location.find(params[:id])
+    @location = current_unit.locations.find(params[:id])
   end
 
   def location_params

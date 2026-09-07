@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.2].define(version: 2026_08_31_120000) do
+ActiveRecord::Schema[8.2].define(version: 2026_09_07_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "unaccent"
@@ -303,6 +303,7 @@ ActiveRecord::Schema[8.2].define(version: 2026_08_31_120000) do
     t.integer "min_headcount_adult"
     t.integer "min_headcount_youth"
     t.datetime "rsvps_updated_at"
+    t.string "online_url"
     t.index ["token"], name: "index_events_on_token", unique: true
     t.index ["unit_id"], name: "index_events_on_unit_id"
   end
@@ -343,6 +344,8 @@ ActiveRecord::Schema[8.2].define(version: 2026_08_31_120000) do
     t.string "map_name"
     t.integer "unit_id"
     t.text "organizer_notes"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
   end
 
   create_table "login_codes", force: :cascade do |t|

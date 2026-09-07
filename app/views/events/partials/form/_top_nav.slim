@@ -33,32 +33,3 @@ nav.border-b.border-paper-300.text-xs
                          disabled:bg-brand-300 disabled:text-brand-50 text-white rounded-lg cursor-pointer",
                  data: { event_edit_target: "submit" },
                  disabled: event.new_record?
-
-      .relative(data-controller="dropdown")
-        = button_tag type: "button",
-              class: "h-[36px] w-[36px] flex items-center justify-center bg-paper-200 text-paper-600 \
-                      border border-paper-300 rounded-lg cursor-pointer hover:bg-paper-300 hover:text-paper-800",
-              data: { action: "click->dropdown#toggle" } do
-          i.fa-solid.fa-ellipsis-vertical.fa-fw
-
-        nav.hidden.z-30.block.w-80.mt-1.px-6.py-4.text-sm.absolute.right-0.rounded-lg.dropdown-menu.animate-pop-open.drop-shadow-overhead.border.border-stone-300.text-paper-700.bg-paper-50(data-dropdown-target="menu")
-          dl.space-y-2
-            dd
-              = button_tag type: "button",
-                    class: "w-full text-left cursor-pointer block -mx-4 px-4 py-2 rounded hover:bg-paper-100 flex items-center gap-3",
-                    data: { action: "click->event-attachments#uploadFiles" } do
-                i.fa-regular.fa-arrow-up-from-bracket.text-paper-500.fa-lg
-                div.text-xs.text-paper-700
-                  div.font-semibold.text-paper-900.text-sm = "Upload files"
-                  = "Add attachments to this event"
-
-            - unless event.new_record?
-              dd
-                = link_to unit_event_cancel_path(current_unit, event),
-                      id: "cancel_event_button",
-                      class: "block -mx-4 px-4 py-2 rounded hover:bg-paper-100 flex items-center gap-3",
-                      data: { turbo_frame: "modal_overlay", turbo_stream: true } do
-                  i.fa-regular.fa-trash-can.text-paper-500.fa-lg
-                  div.text-xs.text-paper-700
-                    div.font-semibold.text-paper-900.text-sm = "Cancel this event"
-                    = "Notify members, unpublish, or delete"

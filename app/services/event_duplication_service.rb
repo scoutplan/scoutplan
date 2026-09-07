@@ -13,7 +13,7 @@ class EventDuplicationService
     @new_event.starts_at = date_add_day_of_week(@source_event.starts_at, 1.year)
     @new_event.ends_at = date_add_day_of_week(@source_event.ends_at, 1.year)
     @new_event.status = :draft
-    %w[departure arrival activity].each do |location_type|
+    EventLocation.location_types.keys.each do |location_type|
       source_location = @source_event.event_locations.find_by(location_type: location_type)&.location
       if source_location.present?
         @new_event.event_locations.find_or_initialize_by(location_type: location_type, location_id: source_location.id)

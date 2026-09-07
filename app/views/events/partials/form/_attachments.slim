@@ -1,8 +1,15 @@
 / one list for both visibility sets; each row decides which of the two
 / has_many_attached collections carries its signed_id on submit
 section.py-4.border-t
-  header.mb-4
+  header.mb-4.flex.flex-row.justify-between.items-center
     h3.font-semibold = "Attachments"
+
+    = button_tag type: "button",
+          class: "text-sm px-3 py-1 rounded border border-paper-400 bg-paper-200 text-paper-700 \
+                  hover:bg-paper-300 hover:text-paper-900 cursor-pointer",
+          data: { action: "click->event-attachments#uploadFiles" } do
+      i.fa-regular.fa-arrow-up-from-bracket.mr-2
+      = "Upload files"
 
   ul.existing_attachments.divide-y.divide-paper-200(data-event-attachments-target="attachmentList")
     - event.attachments.with_all_variant_records.each do |attachment|
@@ -14,7 +21,7 @@ section.py-4.border-t
                locals: { f: f, event: event, attachment: attachment, public: false }
 
   p.text-xs.text-paper-600.py-2(data-event-attachments-target="emptyNotice" class="#{"hidden" if event.attachments.attached? || event.private_attachments.attached?}")
-    = "No attachments yet. Add some with “Upload files” in the menu above."
+    = "No attachments yet."
 
   / picker is unnamed so it never submits; files are distributed into the two
   / real inputs below by the event-attachments controller

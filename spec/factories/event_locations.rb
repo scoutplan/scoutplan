@@ -4,6 +4,6 @@ FactoryBot.define do
   factory :event_location do
     event
     location
-    location_type { "test" }
+    location_type { "arrival" }
   end
 end

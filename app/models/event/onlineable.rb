@@ -9,20 +9,15 @@ module Event::Onlineable
     validate :valid_online_url?
   end
 
-  def online?
-    online_url.present?
+  # online? reads the events.online boolean rather than the presence of a URL:
+  # an organiser can commit to an online event before they have the link.
+  # online_url is therefore optional, and mutually exclusive with locations.
+  def online_link?
+    online? && online_url.present?
   end
 
   def joinable?
     starts_at < JOIN_LEAD_TIME.from_now && ends_at.future?
-  end
-
-  def online_url
-    online_location&.url || website
-  end
-
-  def online_location
-    @online_location || event_locations.find_by(location_type: "online")
   end
 
   def hostname
@@ -30,10 +25,9 @@ module Event::Onlineable
   end
 
   def valid_online_url?
-    return false if online_url.blank?
+    return if online_url.blank?
 
-    uri = URI.parse(online_url)
-    uri.host.present?
+    errors.add(:online_url, "Invalid URL") if URI.parse(online_url).host.blank?
   rescue URI::InvalidURIError
     errors.add(:online_url, "Invalid URL")
   end

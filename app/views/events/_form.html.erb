@@ -3,7 +3,8 @@
       method: event.new_record? ? "post" : "patch",
       data: { turbo: false, controller: "event-edit event-attachments",
               event_edit_season_end_date_value: current_unit.this_season_ends_at.to_datetime.iso8601,
-              event_edit_unit_id_value: current_unit.id } do |f| %>
+              event_edit_unit_id_value: current_unit.id,
+              event_edit_event_id_value: event.id } do |f| %>
 
   <%= render partial: "organizers_popup", locals: { event: event } %>
 
@@ -12,63 +13,58 @@
   <div class="mx-auto max-w-6xl flex flex-col md:flex-row gap-8 w-full mt-4 px-8">
     <div class="grow">
       <section class="flex flex-col divide-y divide-stone-200 text-sm text-stone-600">
-        <% %w[basics dates rsvp locations description attachments].each do |section| %>
+        <%# locations moved to the rail: see the Location group in the aside %>
+        <% %w[basics dates rsvp description attachments].each do |section| %>
           <%= render partial: "events/partials/form/#{section}", locals: { f: f, event: event, section: section } %>
         <% end %>
       </section>
     </div>
 
     <aside class="w-1/4 text-sm text-stone-600">
-      <div class="flex flex-col divide-y divide-paper-300">
-        <%# CATEGORY %>
-        <div class="py-2">
-          <header class="mb-1">
-            <h3 class="font-semibold">Category</h3>
-          </header>
+      <div class="flex flex-col gap-1">
+        <%# CATEGORY: the value carries its own meaning, so no label %>
+        <div class="flex flex-row items-center gap-2 -mx-2 px-2 py-1 rounded hover:bg-brand-100">
+          <%# a category without a colour still reads as "set": solid, but grey %>
+          <i class="fa-fw shrink-0 <%= event.event_category ? "fa-solid fa-circle" : "fa-regular fa-circle-dashed" %> <%= "text-paper-500" if event.category&.color.blank? %>"
+             style="<%= "color: #{event.category.color}" if event.category&.color.present? %>"
+             data-event-edit-target="categoryGlyph"></i>
 
-          <% category_options = options_from_collection_for_select(event.unit.event_categories.order(:name), :id, :name, event.event_category_id) %>
-          <% category_options += "<hr>".html_safe %>
-          <% category_options += options_for_select([["Add an event category...", "_new"]]) %>
+          <% category_options = event.unit.event_categories.order(:name).map { |c| [c.name, c.id, {"data-color" => c.color.to_s}] } %>
 
+          <%# prompt, not include_blank: event_category is a required belongs_to,
+              so the placeholder must disappear once one is chosen %>
           <%= f.select :event_category_id,
-                category_options,
-                { prompt: t("events.placeholders.category"), selected: event.event_category_id },
-                { class: "border-0 px-0 px-2 -mx-2 py-1 bg-transparent hover:bg-brand-100 text-sm focus:ring-0",
-                  style: "width: calc(100% + 1.2rem)",
+                options_for_select(category_options, event.event_category_id) +
+                  options_for_select([["Add a category…", "_new"]]),
+                { prompt: "No category" },
+                { class: "grow border-0 p-0 bg-transparent text-sm focus:ring-0 cursor-pointer",
                   data: { event_edit_target: "categorySelect", action: "change->event-edit#updateCategory" },
                   required: "A category is required" } %>
         </div>
 
-        <%# PUBLISHED %>
-        <div class="py-2">
-          <header class="mb-2">
-            <h3 class="font-semibold">Visibility</h3>
-          </header>
+        <%# VISIBILITY %>
+        <div class="flex flex-row items-center gap-2 -mx-2 px-2 py-1 rounded hover:bg-brand-100">
+          <i class="fa-fw shrink-0 <%= event.published? ? "fa-solid fa-circle-check text-lime-600" : "fa-regular fa-pen-ruler text-paper-500" %>"></i>
 
-          <%= render partial: "components/switch",
-                locals: { checked: event.published?,
-                          label: t("events.edit.published"),
-                          object_name: "event",
-                          method: "status",
-                          checked_value: "published",
-                          class: "text-xs",
-                          unchecked_value: "draft" } %>
+          <% if event.cancelled? || event.archived? %>
+            <span class="grow"><%= event.status.humanize %></span>
+          <% else %>
+            <%= f.select :status,
+                  options_for_select([["Draft", "draft"], ["Published", "published"]], event.status),
+                  {},
+                  { class: "grow border-0 p-0 bg-transparent text-sm focus:ring-0 cursor-pointer" } %>
+          <% end %>
         </div>
 
         <%# COVER PHOTO %>
-        <div class="py-2">
+        <div>
           <%= button_tag type: "button",
-                class: "block py-1 px-2 -mx-2 hover:bg-brand-100",
-                style: "width: calc(100% + 1rem)",
+                class: "w-full flex flex-row items-center gap-2 -mx-2 px-2 py-1 rounded hover:bg-brand-100 cursor-pointer",
                 onclick: "document.querySelector('#cover_photo_file_field').click();" do %>
-
-            <div class="flex flex-row justify-between items-center">
-              <div class="font-semibold">
-                Cover photo
-              </div>
-
-              <i class="fa-light fa-plus fa-fw"></i>
-            </div>
+            <i class="fa-regular fa-image fa-fw shrink-0 text-paper-500"></i>
+            <span class="grow text-left">
+              <%= event.cover_photo.attached? ? "Change cover photo" : "Add a cover photo" %>
+            </span>
           <% end %>
 
           <div class="relative" data-event-edit-target="coverPhotoThumbnail">
@@ -98,11 +94,17 @@
           </div>
         </div>
 
-        <%# ORGANIZERS %>
-        <div class="py-2 relative">
-          <details id="organizers" data-event-edit-target="organizerListWrapper">
+        <%# LOCATION %>
+        <%= render partial: "events/partials/form/location_rail",
+              locals: { f: f, event: event } %>
+
+        <%# ORGANIZERS: keeps a label, since a bare list of names says little %>
+        <div class="relative">
+          <details id="organizers" data-event-edit-target="organizerListWrapper"
+                   data-controller="dismissable"
+                   data-dismissable-popup-id-value="organizers_popup">
             <summary class="flex flex-row justify-between items-center -mx-2 px-2 py-1 hover:bg-brand-100 rounded cursor-pointer active:-mx-[0.4rem]">
-              <div class="font-semibold">Organizers</div>
+              <div class="text-paper-600">Organizers</div>
               <i class="fa-light fa-plus fa-fw"></i>
             </summary>
           </details>
@@ -118,6 +120,20 @@
 
         <%# TAGS %>
         <%= render partial: "tags/tag_section", locals: { taggable: event } %>
+
+        <%# CANCEL: destructive, so it sits apart at the foot of the rail %>
+        <% unless event.new_record? %>
+          <div class="mt-6 pt-3 border-t border-paper-300">
+            <%= link_to unit_event_cancel_path(current_unit, event),
+                  id: "cancel_event_button",
+                  class: "flex flex-row items-center gap-2 -mx-2 px-2 py-1 rounded \
+                          text-brand-500 hover:text-brand-600 hover:bg-brand-100",
+                  data: { turbo_frame: "modal_overlay", turbo_stream: true } do %>
+              <i class="fa-regular fa-trash-can fa-fw shrink-0"></i>
+              <span>Cancel this event</span>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     </aside>
   </div>

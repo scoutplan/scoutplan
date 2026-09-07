@@ -1,0 +1,155 @@
+/ One Location control with three states:
+/   empty   - just the header and a +, chooser offers all roles plus Online
+/   places  - chips for the roles that are set; chooser hides Online
+/   online  - the URL field; the + is withdrawn
+/ The states are mutually exclusive, so clearing the last chip (or the URL)
+/ returns to empty.
+
+- types = EventLocation.location_types.keys
+- assigned = event.event_locations.index_by(&:location_type)
+
+.py-2.relative(data-controller="location-rail"
+               data-location-rail-create-url-value="#{unit_locations_path(current_unit)}"
+               data-location-rail-event-id-value="#{event.id}"
+               data-location-rail-online-value="#{event.online?}")
+
+  header.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.rounded
+    .font-semibold = "Location"
+
+    details.relative(data-controller="dismissable" data-location-rail-target="adder" class="#{"hidden" if event.online?}")
+      summary.cursor-pointer.hover:text-brand-500.list-none
+        i.fa-light.fa-plus.fa-fw
+
+      / STEP ONE: what kind of location is this?
+      nav.absolute.right-0.z-30.mt-1.w-56.bg-white.border.border-paper-400.rounded-lg.drop-shadow-overhead.text-sm.py-1(data-location-rail-target="chooser")
+        - types.each do |location_type|
+          - taken = assigned[location_type]
+          = button_tag type: "button",
+                       class: "w-full text-left flex flex-row items-center gap-2 px-3 py-2 hover:bg-paper-100 disabled:opacity-50 disabled:hover:bg-transparent cursor-pointer disabled:cursor-default",
+                       disabled: taken.present?,
+                       data: { action: "location-rail#chooseType", location_type: location_type,
+                               location_rail_target: "typeChoice", type_for: location_type } do
+            i.fa-regular.fa-fw.text-paper-500(class="#{taken ? "fa-circle-check text-brand-500" : "fa-location-dot"}")
+            span = t("events.form.#{location_type}")
+            - if taken
+              span.ml-auto.text-xs.text-paper-600.truncate.max-w-24 = taken.location&.name
+
+        / offered only while no place is set: online is exclusive
+        .border-t.border-paper-300.mt-1.pt-1(data-location-rail-target="onlineChoice" class="#{"hidden" if assigned.any?}")
+          = button_tag type: "button",
+                       class: "w-full text-left flex flex-row items-center gap-2 px-3 py-2 hover:bg-paper-100 cursor-pointer",
+                       data: { action: "location-rail#chooseOnline" } do
+            i.fa-regular.fa-video.fa-fw.text-paper-500
+            span = "Online meeting"
+
+  / STEP TWO: which place? one browser, retargeted at the chosen role
+  section.hidden.absolute.left-0.right-0.z-20.mt-1.bg-white.border.border-paper-400.rounded-lg.drop-shadow-overhead.text-sm(data-location-rail-target="browser" data-controller="searchable-list")
+    .px-3.py-2.border-b.border-paper-300.text-xs.text-paper-600(data-location-rail-target="browserTitle")
+
+    .p-2
+      = search_field_tag "location_search", nil,
+                         class: "block w-full rounded px-2 py-2 text-sm border border-paper-400 placeholder-paper-500",
+                         placeholder: "Search locations",
+                         autocomplete: "off",
+                         data: { action: "input->searchable-list#search", searchable_list_target: "searchField" }
+
+    ul.max-h-64.overflow-y-auto.px-2.pb-2(data-location-rail-target="list")
+      - current_unit.locations.order(:name).each do |location|
+        = render partial: "events/partials/form/location_option",
+                 locals: { location: location, selected: false }
+
+    p.px-4.py-2.text-paper-600.hidden(data-searchable-list-target="valueNotFoundPrompt")
+      = "No matching location"
+
+    .hidden.border-t.border-paper-300(data-searchable-list-target="newValuePrompt")
+      = button_tag type: "button",
+                   class: "w-full text-left px-4 py-2 font-semibold hover:bg-paper-100 cursor-pointer",
+                   data: { action: "location-rail#startCreate" } do
+        i.fa-light.fa-plus.fa-fw.text-paper-500.mr-2
+        | Create "
+        span(data-searchable-list-target="newValueName")
+        | "
+
+    / create, with optional detail
+    div.hidden.p-3.border-t.border-paper-300(data-location-rail-target="createForm")
+      .font-semibold.mb-2(data-location-rail-target="createName")
+
+      label.block.text-xs.text-paper-600.mb-1 Address
+      = text_field_tag "new_location_address", nil,
+                       class: "w-full rounded px-2 py-2 text-sm border border-paper-400 placeholder-paper-500",
+                       placeholder: "Street, city, state",
+                       autocomplete: "off",
+                       data: { location_rail_target: "addressField" }
+
+      details.mt-2
+        summary.text-xs.text-paper-600.cursor-pointer.hover:text-paper-900 More details
+        .mt-2.flex.flex-col.gap-2
+          = text_field_tag "new_location_phone", nil,
+                           class: "w-full rounded px-2 py-2 text-sm border border-paper-400 placeholder-paper-500",
+                           placeholder: "Phone",
+                           data: { location_rail_target: "phoneField" }
+          = text_field_tag "new_location_website", nil,
+                           class: "w-full rounded px-2 py-2 text-sm border border-paper-400 placeholder-paper-500",
+                           placeholder: "Website",
+                           data: { location_rail_target: "websiteField" }
+
+      .flex.flex-row.justify-end.gap-2.mt-3
+        = button_tag "Skip", type: "button",
+                     class: "px-3 py-1.5 text-sm rounded bg-paper-200 hover:bg-paper-300 cursor-pointer",
+                     data: { action: "location-rail#skipDetail" }
+        = button_tag "Add", type: "button",
+                     class: "px-3 py-1.5 text-sm rounded bg-brand-500 hover:bg-brand-600 text-white cursor-pointer",
+                     data: { action: "location-rail#createWithDetail" }
+
+  / WHAT IS SET: one row per assigned role
+  ul.mt-1.flex.flex-col.gap-1(data-location-rail-target="chips")
+    - types.each_with_index do |location_type, index|
+      - event_location = assigned[location_type]
+      - selected = event_location&.location
+      - field_prefix = "event[event_locations_attributes][#{index}]"
+
+      li.text-xs(data-location-rail-target="chip" data-location-type="#{location_type}" class="#{"hidden" unless selected}")
+        = hidden_field_tag "#{field_prefix}[id]", event_location&.id, id: nil
+        = hidden_field_tag "#{field_prefix}[location_type]", location_type, id: nil
+        = hidden_field_tag "#{field_prefix}[location_id]", selected&.id, id: nil,
+                           data: { location_rail_target: "locationId", for_type: location_type }
+        = hidden_field_tag "#{field_prefix}[_destroy]", "0", id: nil,
+                           data: { location_rail_target: "destroyFlag", for_type: location_type }
+
+        .flex.flex-row.items-center.gap-1.py-1
+          i.fa-regular.fa-fw.text-paper-500(class="#{t("events.show.icons.#{location_type}")}")
+
+          span.text-paper-600 = t("events.form.#{location_type}")
+
+          span.truncate.font-medium(data-location-rail-target="chipName" data-for-type="#{location_type}")
+            = selected&.display_name
+
+          span.text-amber-600(title="No address yet - this location won't appear on the map"
+                              data-location-rail-target="chipFlag" data-for-type="#{location_type}"
+                              class="#{"hidden" unless selected && selected.address.blank?}")
+            i.fa-solid.fa-circle-exclamation
+
+          = button_tag type: "button",
+                       class: "ml-auto text-paper-500 hover:text-paper-900 cursor-pointer",
+                       title: "Remove",
+                       data: { action: "location-rail#removePlace", location_type: location_type } do
+            i.fa-light.fa-times.fa-fw
+
+  / ONLINE: a URL may arrive later, so the field stands on its own
+  = hidden_field_tag "event[online]", event.online? ? "1" : "0", id: nil,
+                     data: { location_rail_target: "onlineFlag" }
+
+  .mt-1(data-location-rail-target="onlineRow" class="#{"hidden" unless event.online?}")
+    .flex.flex-row.items-center.gap-1.text-xs.py-1
+      i.fa-regular.fa-video.fa-fw.text-paper-500
+      span.text-paper-600 = "Online"
+      = button_tag type: "button",
+                   class: "ml-auto text-paper-500 hover:text-paper-900 cursor-pointer",
+                   title: "Not an online event",
+                   data: { action: "location-rail#clearOnline" } do
+        i.fa-light.fa-times.fa-fw
+
+    = f.text_field :online_url,
+                   class: "w-full mt-1 text-sm bg-transparent border-0 rounded p-1 -mx-1 placeholder-paper-400 hover:bg-paper-100 focus:bg-white focus:ring-2 focus:ring-brand-500",
+                   placeholder: "Meeting URL (can be added later)",
+                   data: { location_rail_target: "onlineUrl" }
