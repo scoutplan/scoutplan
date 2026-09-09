@@ -62,10 +62,11 @@ Rails.application.configure do
 
   config.action_mailbox.ingress = :mailgun
 
-  # STOPGAP (2026-08-31): Postmark has been accepting messages -- returning ErrorCode 0 and a
-  # MessageID -- without recording or delivering them since 2026-08-09, following the compromise
-  # of the old server token. Escalation is open with their support. Deliver over SMTP whenever
-  # SMTP_ADDRESS is set; clear that variable and redeploy to go straight back to Postmark.
+  # Postmark is the normal delivery path. The SMTP branch is a standing escape hatch, kept
+  # because both providers used so far have been taken out mid-flight: Postmark's server token
+  # was compromised in 2026-08 (silently swallowing mail for three weeks), and the Mailgun
+  # account that replaced it was compromised the same way in 2026-09. To fail over, set
+  # SMTP_ADDRESS (plus SMTP_USERNAME / SMTP_PASSWORD) and redeploy; clear it to return here.
   if ENV["SMTP_ADDRESS"].present?
     smtp_port = ENV.fetch("SMTP_PORT", 587).to_i
 

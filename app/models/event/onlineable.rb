@@ -20,8 +20,12 @@ module Event::Onlineable
     starts_at < JOIN_LEAD_TIME.from_now && ends_at.future?
   end
 
+  # nil rather than raising: the promote-online migration carried over values
+  # from events.website, which were never validated as meeting URLs
   def hostname
     URI.parse(online_url).host
+  rescue URI::InvalidURIError
+    nil
   end
 
   def valid_online_url?

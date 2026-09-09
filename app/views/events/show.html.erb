@@ -1,7 +1,24 @@
 <%= render partial: "events/show/top_nav", locals: { event: @event } %>
 
+<%# Every rail partial returns early when its data is absent, so a simple event
+    can leave the aside completely empty - and an empty column beside the
+    content reads as a bug rather than as brevity. Render the rail first and
+    ask whether it produced anything, rather than duplicating each partial's
+    own guard here, which would drift the moment one is added. %>
+<% rail = capture do %>
+  <%= render partial: "events/partials/show/rsvp", locals: { event: @event } %>
+  <%= render partial: "events/partials/show/costs" %>
+  <%= render partial: "events/partials/show/organize", locals: { event: @event } %>
+  <%= render partial: "events/partials/show/contact" %>
+  <%= render partial: "events/partials/show/tags", locals: { event: @event } %>
+<% end %>
+
+<% rail_present = rail.strip.present? %>
+
 <div class="mx-auto max-w-6xl flex flex-col md:flex-row gap-8 w-full mt-4 px-8">
-  <div class="grow">
+  <%# without a rail the column keeps the breadcrumb's left edge but stops at a
+      readable measure instead of running the full width %>
+  <div class="grow <%= "max-w-3xl" unless rail_present %>">
     <%= render partial: "events/show/header", locals: { event: @event } %>
 
     <%= render partial: "events/partials/show/description" %>
@@ -10,22 +27,18 @@
     <%= render partial: "events/partials/show/attachments", locals: { event: @event } %>
   </div>
 
-  <aside class="md:w-108 flex flex-col gap-4">
-    <%= render partial: "events/partials/show/rsvp", locals: { event: @event } %>
-    <%= render partial: "events/partials/show/costs" %>
-    <%= render partial: "events/partials/show/organize", locals: { event: @event } %>
-    <%= render partial: "events/partials/show/contact" %>
-    <%= render partial: "events/partials/show/tags", locals: { event: @event } %>
-  </aside>
+  <% if rail_present %>
+    <%# id, not just a class: the layout's nav is also an <aside> %>
+    <aside id="event_rail" class="md:w-96 shrink-0 flex flex-col gap-4"><%= rail %></aside>
+  <% end %>
 </div><%# overall row %>
 
-  <style>
-    .event-data:has(.event-metadata *) {
-      max-width: 56rem;
-    }
-  </style>
+<style>
+  .event-data:has(.event-metadata *) {
+    max-width: 56rem;
+  }
+</style>
 
-
-  <%= turbo_stream.update "page_title" do %>
-    <%= t("events.index.page_title", unit_name: current_unit.name) %>
-  <% end %>
+<%= turbo_stream.update "page_title" do %>
+  <%= t("events.index.page_title", unit_name: current_unit.name) %>
+<% end %>

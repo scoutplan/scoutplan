@@ -1,4 +1,5 @@
-<% return unless event.event_locations.present? %>
+<%# online is exclusive with places, so this section shows one or the other %>
+<% return unless event.event_locations.present? || event.online? %>
 
 <style>
   details[open] .disclosure-glyph {
@@ -13,6 +14,9 @@
 
 
 <section id="locations" class="my-3">
+  <% if event.online? %>
+    <%= render partial: "events/partials/show/online_meeting" %>
+  <% else %>
   <%# no heading: the map and pins are self-evident. a card that duplicated the
       first pin in the list below used to sit here too. %>
   <div class="hiddenz">
@@ -43,4 +47,5 @@
               collection: event.event_locations.in_display_order %>
     </ol>
   </div>
+  <% end %>
 </section>

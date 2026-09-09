@@ -1,0 +1,30 @@
+<%# An online event has no place, so there is no map and no run of pins for a
+    pin glyph to belong to. Joining is the action here, so this reads as one
+    affordance rather than as a lone map marker. %>
+
+<% if @event.online_link? %>
+  <%= link_to @event.online_url,
+        target: "_blank",
+        rel: "noopener",
+        class: "group inline-flex items-center gap-3 max-w-sm rounded-lg border border-paper-300 \
+                bg-white px-4 py-3 transition-colors hover:bg-paper-100 hover:border-paper-400" do %>
+    <i class="fa-regular fa-video fa-lg shrink-0 text-paper-500 group-hover:text-brand-500"></i>
+
+    <span class="min-w-0">
+      <span class="block font-medium text-paper-900">Join online meeting</span>
+      <span class="block truncate text-xs text-paper-600"><%= @event.hostname || @event.online_url %></span>
+    </span>
+
+    <i class="fa-regular fa-arrow-up-right-from-square fa-sm ml-auto shrink-0 text-paper-400 group-hover:text-paper-600"></i>
+  <% end %>
+<% else %>
+  <%# dashed, like the rail's "No category" glyph: a slot waiting to be filled %>
+  <div class="inline-flex items-center gap-3 max-w-sm rounded-lg border border-dashed border-paper-300 px-4 py-3">
+    <i class="fa-regular fa-video fa-lg shrink-0 text-paper-400"></i>
+
+    <span>
+      <span class="block font-medium text-paper-700">Online meeting</span>
+      <span class="block text-xs text-paper-600">Meeting link to come</span>
+    </span>
+  </div>
+<% end %>

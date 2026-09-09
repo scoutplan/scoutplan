@@ -1,6 +1,17 @@
-- return unless @event.description.present?
+/ An organiser looking at their own half-finished event gets a way to fill the
+/ most conspicuous gap on the page. Everyone else sees nothing at all rather
+/ than an empty heading.
+- editable = EventPolicy.new(current_member, @event).edit?
+- return unless @event.description.present? || editable
 
 section#narrative.py-4
   h3.text-sm.font-semibold.text-stone-500.mb-3 Description
 
-  == @event.description
+  - if @event.description.present?
+    == @event.description
+  - else
+    = link_to edit_unit_event_path(current_unit, @event),
+              class: "inline-flex items-center gap-2 text-sm text-paper-600 hover:text-paper-900",
+              data: { turbo_frame: "_top" } do
+      i.fa-light.fa-plus.fa-fw
+      = "Add a description"
