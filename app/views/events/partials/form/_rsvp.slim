@@ -18,17 +18,6 @@ section.py-4#rsvp_fields
     - if Flipper.enabled?(:headcount_limit, current_unit)
       = render partial: "events/partials/form/headcount_limit", locals: { f: f, event: @event } 
 
-    div.py-2.flex.flex-row.items-center.gap-3.text-sm
-        = f.label :min_headcount_adult, "Min. headcount adult", class: "whitespace-nowrap"
-        = f.text_field :min_headcount_adult,
-                          class: "border rounded p-1 shrink text-sm",
-                          min: 0
-
-        = f.label :min_headcount_youth, "youth"
-        = f.text_field :min_headcount_youth,
-                          class: "border rounded p-1 shrink text-sm",
-                          min: 0
-
     #rsvp_open_dates.py-2.text-sm
       = label_tag :open_rsvp, "Open RSVP from", class: "block mb-2"
 
@@ -45,24 +34,71 @@ section.py-4#rsvp_fields
 
       p.error-message.text-red-500.my-2.text-sm.font-bold
         i.fa-solid.fa-exclamation-circle.fas.mr-2
-        = "RSVP must close before the event starts"        
+        = "RSVP must close before the event starts"
 
-    .table
-      .table-row
-        .table-cell
-          = f.label :cost_youth, t("events.captions.cost_youth"), class: "font-bold mr-2"
-        .table-cell.py-1
-          = f.number_field :cost_youth,
-                            class: "w-24 border border-paper-400 dark:border-stone-700 rounded bg-white dark:bg-black p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
-                            min: 0
+    / each minimum is opt-in: the switch reveals the field, and clearing it
+    / removes the minimum rather than leaving one enforced out of sight
+    .h-10.text-sm.flex.flex-row.items-center.gap-3(data-controller="enable")
+      = switch("", :show_min_headcount_adult,
+               { checked: event.requires_adult_headcount?,
+                 label: "Minimum adult headcount",
+                 size: "sm",
+                 data: { action: "change->enable#toggle" } }, "true", "false")
 
-      .table-row
-        .table-cell
-          = f.label :cost_adult, t("events.captions.cost_adult"), class: "font-bold mr-2"
-        .table-cell.py-1
+      div(data-enable-target="field" class="#{"hidden" unless event.requires_adult_headcount?}")
+        = f.text_field :min_headcount_adult,
+                       class: "text-sm w-24 border border-paper-400 rounded bg-white p-1 placeholder-stone-300",
+                       inputmode: :numeric,
+                       min: 0,
+                       autocomplete: false,
+                       data: { enable_target: "input" }
+
+    .h-10.text-sm.flex.flex-row.items-center.gap-3(data-controller="enable")
+      = switch("", :show_min_headcount_youth,
+               { checked: event.requires_youth_headcount?,
+                 label: "Minimum youth headcount",
+                 size: "sm",
+                 data: { action: "change->enable#toggle" } }, "true", "false")
+
+      div(data-enable-target="field" class="#{"hidden" unless event.requires_youth_headcount?}")
+        = f.text_field :min_headcount_youth,
+                       class: "text-sm w-24 border border-paper-400 rounded bg-white p-1 placeholder-stone-300",
+                       inputmode: :numeric,
+                       min: 0,
+                       autocomplete: false,
+                       data: { enable_target: "input" }
+
+    / COST: opt-in, one price by default. cost_adult == cost_youth is what the
+    / rest of the app reads as "per person", so the toggles derive from that
+    / rather than from a stored flag.
+    .pt-3.text-sm(data-controller="event-cost")
+      = switch("", :event_has_cost,
+               { checked: event.requires_payment?,
+                 label: "There is a cost to attend",
+                 size: "sm",
+                 data: { action: "change->event-cost#togglePaid" } }, "true", "false")
+
+      .mt-3.ml-3.flex.flex-col.gap-3(data-event-cost-target="costs" class="#{"hidden" unless event.requires_payment?}")
+        .flex.flex-row.items-center.gap-3
+          = f.label :cost_adult, event.costs_differ? ? "Adult cost" : "Cost per person",
+                    data: { event_cost_target: "primaryLabel" }
           = f.number_field :cost_adult,
-                            class: "w-24 border border-paper-400 dark:border-stone-700 rounded bg-white dark:bg-black p-2 placeholder-stone-300 disabled:text-stone-300 disabled:placeholder-stone-200",
-                            min: 0
+                           class: "text-sm w-24 border border-paper-400 rounded bg-white p-1 placeholder-stone-300",
+                           min: 0,
+                           data: { event_cost_target: "adult", action: "input->event-cost#mirror" }
+
+        = switch("", :costs_differ,
+                 { checked: event.costs_differ?,
+                   label: "Youth and adult costs differ",
+                   size: "sm",
+                   data: { action: "change->event-cost#toggleDiffers" } }, "true", "false")
+
+        .flex.flex-row.items-center.gap-3(data-event-cost-target="youthRow" class="#{"hidden" unless event.costs_differ?}")
+          = f.label :cost_youth, "Youth cost"
+          = f.number_field :cost_youth,
+                           class: "text-sm w-24 border border-paper-400 rounded bg-white p-1 placeholder-stone-300",
+                           min: 0,
+                           data: { event_cost_target: "youth" }
 
     = render partial: "events/partials/form/event_shifts", locals: { member: current_member, f: f }
 

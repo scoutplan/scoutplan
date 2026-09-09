@@ -84,13 +84,13 @@ RSpec.describe Event, type: :model do
 
       it "RSVP is open if rsvp_closes_at hasn't occurred yet" do
         event = FactoryBot.build(:event, :requires_rsvp, :published, starts_at:      5.days.from_now,
-                                                                     rsvp_closes_at: 4.days.from_now)
+          rsvp_closes_at: 4.days.from_now)
         expect(event.rsvp_open?).to be_truthy
       end
 
       it "RSVP is closed if rsvp_closes_at has passed but starts_at hasn't" do
         event = FactoryBot.build(:event, :requires_rsvp, starts_at: 5.days.from_now, ends_at: 6.days.from_now,
-rsvp_closes_at: 4.days.ago)
+          rsvp_closes_at: 4.days.ago)
         expect(event.rsvp_open?).to be_falsey
       end
 
@@ -118,6 +118,24 @@ rsvp_closes_at: 4.days.ago)
         event = FactoryBot.build(:event, :requires_rsvp, rsvp_opens_at: 1.day.from_now)
         expect(event.rsvp_open?).to be_falsey
       end
+
+      # publication state is not part of the question: EventPolicy#show? decides
+      # who can see a draft, and the nag/last-call jobs scope to published on
+      # their own, so a draft's RSVPs are open to whoever can reach it
+      it "is true for a draft whose RSVP window is open" do
+        event = FactoryBot.build(:event, :requires_rsvp, :draft, starts_at: 5.days.from_now,
+          rsvp_closes_at: nil)
+
+        expect(event).to be_draft
+        expect(event.rsvp_open?).to be_truthy
+      end
+
+      it "is still false for a draft whose window has closed" do
+        event = FactoryBot.build(:event, :requires_rsvp, :draft, starts_at: 5.days.from_now,
+          ends_at: 6.days.from_now, rsvp_closes_at: 4.days.ago)
+
+        expect(event.rsvp_open?).to be_falsey
+      end
     end
   end
   # rubocop:enable Metrics/BlockLength
@@ -135,8 +153,8 @@ rsvp_closes_at: 4.days.ago)
   describe "scopes" do
     describe "imminent" do
       it "exludes same-day events in the PM" do
-        Timecop.freeze(DateTime.now.change({ hour: 19, minute: 0 }))
-        event = FactoryBot.create(:event, starts_at: DateTime.now.change({ hour: 16, minute: 0 }))
+        Timecop.freeze(DateTime.now.change({hour: 19, minute: 0}))
+        event = FactoryBot.create(:event, starts_at: DateTime.now.change({hour: 16, minute: 0}))
         expect(Event.imminent).not_to include(event)
       end
     end
@@ -157,5 +175,5 @@ rsvp_closes_at: 4.days.ago)
 
       expect(@event.organizers.count).to eq(2)
     end
-  end  
+  end
 end

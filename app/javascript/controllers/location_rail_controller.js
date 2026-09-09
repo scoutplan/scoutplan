@@ -156,8 +156,11 @@ export default class extends Controller {
     const online = this.onlineFlagTarget.value === "1";
     const placeCount = this.chipTargets.filter((chip) => !chip.classList.contains("hidden")).length;
 
-    // online withdraws the + entirely; a place withdraws the online option
-    this.adderTarget.classList.toggle("hidden", online);
+    // online withdraws the + entirely, and so does having filled every role;
+    // a place withdraws the online option
+    const allRolesFilled = placeCount === this.typeChoiceTargets.length;
+
+    this.adderTarget.classList.toggle("hidden", online || allRolesFilled);
     this.onlineRowTarget.classList.toggle("hidden", !online);
     this.onlineChoiceTarget.classList.toggle("hidden", placeCount > 0);
 

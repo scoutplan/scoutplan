@@ -54,6 +54,31 @@ describe "the location rail", type: :feature do
     it "shows a chip naming the assigned place" do
       expect(page).to have_css("[data-location-type='arrival']", text: "Parish Hall", visible: :all)
     end
+
+    # the chooser lists roles only; the place name belongs to the chip
+    it "does not repeat the place name in the chooser" do
+      choice = find("[data-type-for='arrival']", visible: :all)
+
+      expect(choice.text).not_to include("Parish Hall")
+    end
+
+    it "still offers the adder while roles remain" do
+      expect(page).to have_no_css("[data-location-rail-target='adder'].hidden", visible: :all)
+    end
+  end
+
+  describe "when every role is assigned" do
+    before do
+      EventLocation.location_types.keys.each do |type|
+        place = FactoryBot.create(:location, unit: @unit, name: "#{type} place")
+        FactoryBot.create(:event_location, event: @event, location: place, location_type: type)
+      end
+      visit edit_unit_event_path(@unit, @event)
+    end
+
+    it "withdraws the adder, since there is nothing left to add" do
+      expect(page).to have_css("[data-location-rail-target='adder'].hidden", visible: :all)
+    end
   end
 
   describe "when the event is online" do

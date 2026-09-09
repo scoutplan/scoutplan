@@ -471,7 +471,7 @@ en:
       icons:
         departure:    "fa-car"
         arrival:      "fa-location-dot"
-        activity:     "fa-location-exclamation"
+        activity:     "fa-flag"
         online:       "fa-laptop"
 
       titles:

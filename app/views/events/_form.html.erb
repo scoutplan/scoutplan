@@ -21,23 +21,27 @@
     </div>
 
     <aside class="w-1/4 text-sm text-stone-600">
-      <div class="flex flex-col gap-1">
+      <%# grouped like Linear's rail: properties tight together, then a clear
+          gap before each named group %>
+      <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-0.5">
         <%# CATEGORY: the value carries its own meaning, so no label %>
         <div class="flex flex-row items-center gap-2 -mx-2 px-2 py-1 rounded hover:bg-brand-100">
           <%# a category without a colour still reads as "set": solid, but grey %>
-          <i class="fa-fw shrink-0 <%= event.event_category ? "fa-solid fa-circle" : "fa-regular fa-circle-dashed" %> <%= "text-paper-500" if event.category&.color.blank? %>"
+          <%# fa-xs to match the badge on the show page %>
+          <i class="fa-fw fa-xs shrink-0 <%= event.event_category ? "fa-solid fa-circle" : "fa-regular fa-circle-dashed" %> <%= "text-paper-500" if event.category&.color.blank? %>"
              style="<%= "color: #{event.category.color}" if event.category&.color.present? %>"
              data-event-edit-target="categoryGlyph"></i>
 
           <% category_options = event.unit.event_categories.order(:name).map { |c| [c.name, c.id, {"data-color" => c.color.to_s}] } %>
 
           <%# prompt, not include_blank: event_category is a required belongs_to,
-              so the placeholder must disappear once one is chosen %>
+              so the placeholder must disappear once one is chosen. New categories
+              are made in unit settings, not inline. %>
           <%= f.select :event_category_id,
-                options_for_select(category_options, event.event_category_id) +
-                  options_for_select([["Add a category…", "_new"]]),
+                options_for_select(category_options, event.event_category_id),
                 { prompt: "No category" },
-                { class: "grow border-0 p-0 bg-transparent text-sm focus:ring-0 cursor-pointer",
+                { class: "grow border-0 p-0 bg-transparent bg-none appearance-none text-sm focus:ring-0 cursor-pointer",
                   data: { event_edit_target: "categorySelect", action: "change->event-edit#updateCategory" },
                   required: "A category is required" } %>
         </div>
@@ -52,7 +56,7 @@
             <%= f.select :status,
                   options_for_select([["Draft", "draft"], ["Published", "published"]], event.status),
                   {},
-                  { class: "grow border-0 p-0 bg-transparent text-sm focus:ring-0 cursor-pointer" } %>
+                  { class: "grow border-0 p-0 bg-transparent bg-none appearance-none text-sm focus:ring-0 cursor-pointer" } %>
           <% end %>
         </div>
 
@@ -93,41 +97,52 @@
             <%= hidden_field_tag :remove_cover_photo, "0", id: "remove_cover_photo_field", data: { event_edit_target: "removeCoverPhotoField" } %>
           </div>
         </div>
+        </div><%# /properties %>
 
         <%# LOCATION %>
         <%= render partial: "events/partials/form/location_rail",
               locals: { f: f, event: event } %>
 
-        <%# ORGANIZERS: keeps a label, since a bare list of names says little %>
-        <div class="relative">
-          <details id="organizers" data-event-edit-target="organizerListWrapper"
-                   data-controller="dismissable"
-                   data-dismissable-popup-id-value="organizers_popup">
-            <summary class="flex flex-row justify-between items-center -mx-2 px-2 py-1 hover:bg-brand-100 rounded cursor-pointer active:-mx-[0.4rem]">
-              <div class="text-paper-600">Organizers</div>
-              <i class="fa-light fa-plus fa-fw"></i>
-            </summary>
-          </details>
+        <%# ORGANIZERS %>
+        <div class="rail-group relative">
+          <h3 class="text-xs text-paper-600 mb-2">Organizers</h3>
 
-          <div id="organizers_tag_field" class="flex flex-wrap gap-1 text-xs"
+          <div id="organizers_tag_field" class="flex flex-row flex-wrap items-center gap-1 text-xs"
                data-controller="tag-field"
                data-tag-field-checkable-list-outlet="#organizers_popup">
             <% event.unit.unit_memberships.active.includes(:user).each do |member| %>
               <%= render partial: "organizer_tag", locals: { member: member, visible: event.organizer_members.include?(member) } %>
             <% end %>
+
+            <details id="organizers" class="relative"
+                     data-event-edit-target="organizerListWrapper"
+                     data-controller="dismissable"
+                     data-dismissable-popup-id-value="organizers_popup">
+              <summary class="cursor-pointer list-none text-paper-600 hover:text-paper-900 rounded px-1 py-1">
+                <span class="rail-empty">
+                  <i class="fa-light fa-plus fa-fw mr-1"></i>Add an organizer
+                </span>
+                <span class="rail-add">
+                  <i class="fa-light fa-plus fa-fw mr-1"></i>Add another organizer
+                </span>
+              </summary>
+            </details>
           </div>
         </div>
 
         <%# TAGS %>
         <%= render partial: "tags/tag_section", locals: { taggable: event } %>
 
-        <%# CANCEL: destructive, so it sits apart at the foot of the rail %>
+        <%# DANGER ZONE: recessed well, so a destructive action never reads as
+            one more property in the list %>
         <% unless event.new_record? %>
-          <div class="mt-6 pt-3 border-t border-paper-300">
+          <div class="mt-4 rounded-lg border border-red-200 bg-red-50 p-3">
+            <h3 class="text-xs text-red-900/70 mb-2">Danger zone</h3>
+
             <%= link_to unit_event_cancel_path(current_unit, event),
                   id: "cancel_event_button",
-                  class: "flex flex-row items-center gap-2 -mx-2 px-2 py-1 rounded \
-                          text-brand-500 hover:text-brand-600 hover:bg-brand-100",
+                  class: "flex flex-row items-center gap-2 -mx-1 px-1 py-1 rounded \
+                          text-red-700 hover:text-red-900 hover:bg-red-100",
                   data: { turbo_frame: "modal_overlay", turbo_stream: true } do %>
               <i class="fa-regular fa-trash-can fa-fw shrink-0"></i>
               <span>Cancel this event</span>

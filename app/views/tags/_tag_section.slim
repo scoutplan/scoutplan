@@ -1,11 +1,17 @@
 = render partial: "tags/tags_popup", locals: { taggable: taggable }
 
-.py-2.relative
-  details.relative#tags(data-event-edit-target="tagListWrapper" data-controller="dismissable" data-dismissable-popup-id-value="tags_popup")
-    summary.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.hover:bg-brand-100.rounded.cursor-pointer(class="active:-mx-[0.4rem]")
-      .text-paper-600 = "Tags"
-      i.fa-light.fa-plus.fa-fw
+.rail-group.relative
+  h3.text-xs.text-paper-600.mb-2 = "Tags"
 
-  .flex.flex-wrap.gap-1.text-xs#tag_tag_field(data-controller="tag-field" data-tag-field-checkable-list-outlet="#tags_popup")
+  .flex.flex-row.flex-wrap.items-center.gap-1.text-xs#tag_tag_field(data-controller="tag-field" data-tag-field-checkable-list-outlet="#tags_popup")
     - ActsAsTaggableOn::Tag.for_tenant(current_unit.id).each do |tag|
       = render partial: "tags/tag_label", locals: { tag_name: tag.name, visible: taggable.tags.include?(tag) }
+
+    details.relative#tags(data-event-edit-target="tagListWrapper" data-controller="dismissable" data-dismissable-popup-id-value="tags_popup")
+      summary.cursor-pointer.list-none.text-paper-600.hover:text-paper-900.rounded.px-1.py-1
+        span.rail-empty
+          i.fa-light.fa-plus.fa-fw.mr-1
+          = "Add a tag"
+        span.rail-add
+          i.fa-light.fa-plus.fa-fw.mr-1
+          = "Add another tag"

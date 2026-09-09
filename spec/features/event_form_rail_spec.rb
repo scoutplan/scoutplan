@@ -25,6 +25,17 @@ describe "the event form's side rail", type: :feature do
       expect(page).to have_css("select[name='event[event_category_id]'][required]", visible: :all)
     end
 
+    it "does not offer inline category creation" do
+      values = page.all("select[name='event[event_category_id]'] option", visible: :all).map(&:value)
+
+      expect(values).not_to include("_new")
+    end
+
+    it "drops the native chevron" do
+      expect(page).to have_css("select[name='event[event_category_id]'].appearance-none", visible: :all)
+      expect(page).to have_css("select[name='event[status]'].appearance-none", visible: :all)
+    end
+
     it "carries each category's colour so the glyph can be tinted" do
       # the select lists the unit's own categories, and the event factory's
       # category belongs to a unit of its own, so assign one from this unit
@@ -74,8 +85,22 @@ describe "the event form's side rail", type: :feature do
       expect(page).to have_no_css("aside .divide-y", visible: :all)
     end
 
-    it "puts the cancel affordance in the rail" do
+    it "puts the cancel affordance in a danger-zone well in the rail" do
       expect(page).to have_css("aside #cancel_event_button", visible: :all)
+      expect(page).to have_content("Danger zone")
+    end
+
+    # empty vs populated is CSS-driven off .rail-chip, so both affordances are
+    # always in the markup
+    it "gives each named group a prompt and a plus" do
+      %w[Location Organizers Tags].each { |group| expect(page).to have_content(group) }
+
+      expect(page).to have_css(".rail-group .rail-empty", count: 3, visible: :all)
+      expect(page).to have_css(".rail-group .rail-add", count: 3, visible: :all)
+    end
+
+    it "sizes the group labels down to match the values" do
+      expect(page).to have_css("aside h3.text-xs", minimum: 3, visible: :all)
     end
 
     it "has no overflow menu in the form's top nav" do

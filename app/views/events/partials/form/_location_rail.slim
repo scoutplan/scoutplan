@@ -8,39 +8,13 @@
 - types = EventLocation.location_types.keys
 - assigned = event.event_locations.index_by(&:location_type)
 
-.py-2.relative(data-controller="location-rail"
+.rail-group.relative(data-controller="location-rail"
                data-location-rail-create-url-value="#{unit_locations_path(current_unit)}"
                data-location-rail-event-id-value="#{event.id}"
                data-location-rail-online-value="#{event.online?}")
 
-  header.flex.flex-row.justify-between.items-center.-mx-2.px-2.py-1.rounded
-    .font-semibold = "Location"
+  h3.text-xs.text-paper-600.mb-2 = "Location"
 
-    details.relative(data-controller="dismissable" data-location-rail-target="adder" class="#{"hidden" if event.online?}")
-      summary.cursor-pointer.hover:text-brand-500.list-none
-        i.fa-light.fa-plus.fa-fw
-
-      / STEP ONE: what kind of location is this?
-      nav.absolute.right-0.z-30.mt-1.w-56.bg-white.border.border-paper-400.rounded-lg.drop-shadow-overhead.text-sm.py-1(data-location-rail-target="chooser")
-        - types.each do |location_type|
-          - taken = assigned[location_type]
-          = button_tag type: "button",
-                       class: "w-full text-left flex flex-row items-center gap-2 px-3 py-2 hover:bg-paper-100 disabled:opacity-50 disabled:hover:bg-transparent cursor-pointer disabled:cursor-default",
-                       disabled: taken.present?,
-                       data: { action: "location-rail#chooseType", location_type: location_type,
-                               location_rail_target: "typeChoice", type_for: location_type } do
-            i.fa-regular.fa-fw.text-paper-500(class="#{taken ? "fa-circle-check text-brand-500" : "fa-location-dot"}")
-            span = t("events.form.#{location_type}")
-            - if taken
-              span.ml-auto.text-xs.text-paper-600.truncate.max-w-24 = taken.location&.name
-
-        / offered only while no place is set: online is exclusive
-        .border-t.border-paper-300.mt-1.pt-1(data-location-rail-target="onlineChoice" class="#{"hidden" if assigned.any?}")
-          = button_tag type: "button",
-                       class: "w-full text-left flex flex-row items-center gap-2 px-3 py-2 hover:bg-paper-100 cursor-pointer",
-                       data: { action: "location-rail#chooseOnline" } do
-            i.fa-regular.fa-video.fa-fw.text-paper-500
-            span = "Online meeting"
 
   / STEP TWO: which place? one browser, retargeted at the chosen role
   section.hidden.absolute.left-0.right-0.z-20.mt-1.bg-white.border.border-paper-400.rounded-lg.drop-shadow-overhead.text-sm(data-location-rail-target="browser" data-controller="searchable-list")
@@ -108,7 +82,7 @@
       - selected = event_location&.location
       - field_prefix = "event[event_locations_attributes][#{index}]"
 
-      li.text-xs(data-location-rail-target="chip" data-location-type="#{location_type}" class="#{"hidden" unless selected}")
+      li.rail-chip.text-xs(data-location-rail-target="chip" data-location-type="#{location_type}" class="#{"hidden" unless selected}")
         = hidden_field_tag "#{field_prefix}[id]", event_location&.id, id: nil
         = hidden_field_tag "#{field_prefix}[location_type]", location_type, id: nil
         = hidden_field_tag "#{field_prefix}[location_id]", selected&.id, id: nil,
@@ -139,7 +113,7 @@
   = hidden_field_tag "event[online]", event.online? ? "1" : "0", id: nil,
                      data: { location_rail_target: "onlineFlag" }
 
-  .mt-1(data-location-rail-target="onlineRow" class="#{"hidden" unless event.online?}")
+  .rail-chip.mt-1(data-location-rail-target="onlineRow" class="#{"hidden" unless event.online?}")
     .flex.flex-row.items-center.gap-1.text-xs.py-1
       i.fa-regular.fa-video.fa-fw.text-paper-500
       span.text-paper-600 = "Online"
@@ -153,3 +127,36 @@
                    class: "w-full mt-1 text-sm bg-transparent border-0 rounded p-1 -mx-1 placeholder-paper-400 hover:bg-paper-100 focus:bg-white focus:ring-2 focus:ring-brand-500",
                    placeholder: "Meeting URL (can be added later)",
                    data: { location_rail_target: "onlineUrl" }
+
+  .flex.flex-row.flex-wrap.items-center.gap-1
+    / nothing left to add once every role is filled, or once we are online
+    - adder_hidden = event.online? || assigned.keys.size == types.size
+    details.relative(data-controller="dismissable" data-location-rail-target="adder" class="#{"hidden" if adder_hidden}")
+      summary.cursor-pointer.list-none.text-paper-600.hover:text-paper-900.rounded.px-1.py-1
+        span.rail-empty.text-xs
+          i.fa-light.fa-plus.fa-fw.mr-1
+          = "Add a location"
+        span.rail-add.text-xs
+          i.fa-light.fa-plus.fa-fw.mr-1
+          = "Add another location"
+
+      / STEP ONE: what kind of location is this?
+      nav.absolute.right-0.z-30.mt-1.w-56.bg-white.border.border-paper-400.rounded-lg.drop-shadow-overhead.text-sm.py-1(data-location-rail-target="chooser")
+        / same glyph as the chip below, so the chooser and the value agree
+        - types.each do |location_type|
+          - taken = assigned[location_type]
+          = button_tag type: "button",
+                       class: "w-full text-left flex flex-row items-center gap-2 px-3 py-2 hover:bg-paper-100 disabled:opacity-50 disabled:hover:bg-transparent cursor-pointer disabled:cursor-default",
+                       disabled: taken.present?,
+                       data: { action: "location-rail#chooseType", location_type: location_type,
+                               location_rail_target: "typeChoice", type_for: location_type } do
+            i.fa-regular.fa-fw.text-paper-500(class="#{t("events.show.icons.#{location_type}")}")
+            span = t("events.form.#{location_type}")
+
+        / offered only while no place is set: online is exclusive
+        .border-t.border-paper-300.mt-1.pt-1(data-location-rail-target="onlineChoice" class="#{"hidden" if assigned.any?}")
+          = button_tag type: "button",
+                       class: "w-full text-left flex flex-row items-center gap-2 px-3 py-2 hover:bg-paper-100 cursor-pointer",
+                       data: { action: "location-rail#chooseOnline" } do
+            i.fa-regular.fa-video.fa-fw.text-paper-500
+            span = "Online meeting"

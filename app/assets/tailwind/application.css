@@ -80,6 +80,23 @@
   --animate-compass-swing: compass-swing 1.2s ease-in-out infinite;
 }
 
+/* Tailwind v4 defaults an uncoloured `border` to currentColor, so every bare
+   `border` in this codebase - written against v3 - was rendering in dark body
+   text. Restore a sane default. */
+@layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: var(--color-paper-300);
+  }
+}
+
+/* Side-rail groups: a written prompt while the group is empty, a bare + once
+   something is in it. Chips mark themselves unselected with .hidden, so the
+   state is derivable in CSS and needs no controller. */
+.rail-group:has(.rail-chip:not(.hidden)) .rail-empty { display: none; }
+.rail-group:not(:has(.rail-chip:not(.hidden))) .rail-add { display: none; }
+
 @keyframes pop-open {
   0%   { transform: scale(0%); }
   90%  { transform: scale(110%); }

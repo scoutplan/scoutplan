@@ -189,8 +189,15 @@ class Event < ApplicationRecord
     ended?
   end
 
+  # cost_adult is nullable, so coerce rather than risk a TypeError on nil
   def requires_payment?
-    (cost_adult + cost_youth).positive?
+    (cost_adult.to_i + cost_youth.to_i).positive?
+  end
+
+  # The app renders a single "per person" price wherever these match, so the
+  # difference is derived rather than stored.
+  def costs_differ?
+    cost_adult.to_i != cost_youth.to_i
   end
 
   def requirements?
@@ -215,9 +222,11 @@ class Event < ApplicationRecord
     read_attribute(:rsvp_closes_at)&.at_end_of_day || starts_at
   end
 
+  # draft is deliberately not a factor: whether RSVPs are open is a question
+  # about the RSVP window and capacity, not about publication state. Who can
+  # *see* a draft event is a separate question, answered by EventPolicy#show?.
   def rsvp_open?
-    published? &&
-      requires_rsvp? &&
+    requires_rsvp? &&
       rsvp_closes_at.future? &&
       !headcount_limit_reached? &&
       (rsvp_opens_at.nil? || rsvp_opens_at.past?)
@@ -303,6 +312,15 @@ class Event < ApplicationRecord
 
   def limits_headcount?
     max_total_attendees&.positive?
+  end
+
+  # the value's presence is the toggle state, as with limits_headcount?
+  def requires_adult_headcount?
+    min_headcount_adult&.positive?
+  end
+
+  def requires_youth_headcount?
+    min_headcount_youth&.positive?
   end
 
   def location
