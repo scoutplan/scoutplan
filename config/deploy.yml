@@ -20,6 +20,9 @@ proxy:
   hosts:
     - go.scoutplan.org
     - new.scoutplan.org
+    # Unit websites (WebController). kamal-proxy can't auto-issue wildcard
+    # certs, so each site is listed explicitly.
+    - troop2scarsdale.sites.scoutplan.org
   app_port: 3000
   healthcheck:
     path: /up
