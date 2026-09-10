@@ -15,8 +15,8 @@ Rails.application.routes.draw do
   get "tags/create"
   get "integrations/index"
   get "welcome/index"
-  get "", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
-  get "*path", to: "web#index", constraints: ->(request) { request.subdomain =~ /\.sites/ }
+  get "", to: "web#index", constraints: ->(request) { WebController.site_slug(request).present? }
+  get "*path", to: "web#index", constraints: ->(request) { WebController.site_slug(request).present? }
   get "/service-worker.js", to: "service_worker#service_worker"
   get "/manifest.json", to: "service_worker#manifest"
   mount BetterMailerPreviews::Engine, at: "/better_mailer_previews" if Rails.env.development?

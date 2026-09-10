@@ -22,6 +22,7 @@ Rails.application.configure do
   config.hosts << ENV["RAILS_PRODUCTION_HOSTS"]
   config.hosts << /10\.\d+\.\d+\.\d+/ # internal IP addresses...leave this here
   config.hosts << /.*\.sites\.scoutplan\.org/
+  config.hosts << "new.troop2scarsdale.org" # unit site custom domain; see WebController::CUSTOM_DOMAINS
   # Allow all internal Docker/Kamal health check requests
   config.hosts << /[a-f0-9-]+/ # Docker container IDs and hostnames
   config.hosts << /localhost(:\d+)?/

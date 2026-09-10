@@ -23,6 +23,7 @@ proxy:
     # Unit websites (WebController). kamal-proxy can't auto-issue wildcard
     # certs, so each site is listed explicitly.
     - troop2scarsdale.sites.scoutplan.org
+    - new.troop2scarsdale.org
   app_port: 3000
   healthcheck:
     path: /up
