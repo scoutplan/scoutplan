@@ -72,11 +72,11 @@ env:
     - TWILIO_NUMBER
     - SMS_BASIC_USERNAME
     - SMS_BASIC_PASSWORD
-    - SMTP_PASSWORD
-    - SMTP_USERNAME
-    - SMTP_ADDRESS
-    - SMTP_PORT
-    - SMTP_DOMAIN
+    # Mail goes out via Postmark. The SMTP_* values are still in .kamal/secrets as a parked
+    # failover, but are deliberately NOT listed here: production.rb only takes the SMTP path
+    # when SMTP_ADDRESS is present in the environment, so leaving them out is what selects
+    # Postmark. To fail over, add SMTP_ADDRESS/USERNAME/PASSWORD/PORT/DOMAIN back to this
+    # list and redeploy. This file is the provider switch.
     - LOGTAIL_TOKEN
     - BLAZER_DATABASE_URL
     - SENTRY_DSN
