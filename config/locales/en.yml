@@ -527,6 +527,8 @@ en:
       add_to_calendar: "Add this to your calendar"
         
   members:
+    errors:
+      already_a_member:  "%{email} already belongs to a member of this unit. Each member needs their own email address."
     name:             "Name"
     type:             "Type"
     parent_guardian:  "Parents, Guardians, and Delegates"

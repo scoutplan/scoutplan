@@ -20,8 +20,21 @@ export default class extends Controller {
     this.actions = this.actionValue.split(" ");
     this.setUpAction("enable", this.enableAction);
     this.setUpAction("check", this.checkAction);
-    // this.setUpDisableAction();
-    // this.setUpCheckAction();
+
+    // email_availability_controller flips a form-level flag that outranks these
+    // conditions; it fires this so every control keyed to the form recomputes,
+    // including ones whose own source fields did not change.
+    this.recompute = this.recompute.bind(this);
+    this.element.closest("form")?.addEventListener("duplicate-email:changed", this.recompute);
+  }
+
+  disconnect() {
+    this.element.closest("form")?.removeEventListener("duplicate-email:changed", this.recompute);
+  }
+
+  recompute() {
+    if (this.actions.includes("enable")) { this.enableAction(); }
+    if (this.actions.includes("check")) { this.checkAction(); }
   }
 
   setUpAction(action, f) {
@@ -112,11 +125,55 @@ export default class extends Controller {
       case "not_empty":
         this.checkActionNotEmpty();
         break;
+      case "valid":
+        this.checkActionValid();
+        break;
     }
-  }  
+  }
+
+  // "not empty" is too weak for a contact preference: it ticks "via email" the
+  // moment someone types a single character, committing them to a channel that
+  // cannot reach them. These require the field to actually be usable.
+  isValid(element) {
+    if (element.value.trim() === "") { return false; }
+    if (typeof element.checkValidity === "function" && !element.checkValidity()) { return false; }
+
+    // The browser accepts "calvin@n" for type=email — a bare hostname is legal
+    // per the HTML spec — but that address cannot receive mail, so it must not
+    // be enough to tick "via email". Require a dotted domain.
+    // Mirrored in email_availability_controller; keep the two in step.
+    if (element.type === "email") {
+      return /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(element.value.trim());
+    }
+
+    // type=tel gets no format checking at all, so require enough digits to dial
+    if (element.type === "tel") { return element.value.replace(/\D/g, "").length >= 10; }
+
+    return true;
+  }
+
+  allSourcesValid() {
+    return this.sourceTargets.every((element) => this.isValid(element));
+  }
+
+  // email_availability_controller marks the form when the address is already on
+  // the roster; nothing keyed to that form may enable itself until it clears.
+  blocked() {
+    return this.element.closest("form")?.classList.contains("has-duplicate-email") === true;
+  }
+
+  enableActionValid() {
+    this.element.disabled = this.blocked() || !this.allSourcesValid();
+  }
+
+  checkActionValid() {
+    this.element.checked = !this.blocked() && this.allSourcesValid();
+  }
 
   enableActionNotEmpty() {
-    this.element.disabled = false;
+    this.element.disabled = this.blocked();
+    if (this.element.disabled) { return; }
+
     this.sourceTargets.forEach((element) => {
       if (element.value == "") {
         this.element.disabled = true;

@@ -3,14 +3,14 @@
 # rubocop:disable Metrics/ClassLength
 class UnitMembershipsController < UnitContextController
   # before_action :find_unit, only: %i[index new create bulk_update invite]
-  before_action :find_membership, except: %i[index new create bulk_update]
+  before_action :find_membership, except: %i[index new create bulk_update email_availability]
 
   def index
     authorize UnitMembership
     @current_unit_memberships = current_unit.memberships.includes(
       :user, :tags,
-      { parent_relationships: { parent_unit_membership: :user } },
-      { child_relationships: { child_unit_membership: :user } }
+      {parent_relationships: {parent_unit_membership: :user}},
+      {child_relationships: {child_unit_membership: :user}}
     ).order("users.last_name, users.first_name ASC")
     @page_title = current_unit.name, t("members.titles.index", unit_name: "")
     @membership = current_unit.memberships.build
@@ -37,39 +37,50 @@ class UnitMembershipsController < UnitContextController
     page_title [current_unit.name, @user.full_display_name]
   end
 
-  # rubocop:disable Metrics/AbcSize
   def create
-    find_or_create_user
+    authorize UnitMembership
 
-    @member = current_unit.memberships.new(member_params)
-    @member.user_id = @user.id
-    return unless @member.save!
+    @target_membership = build_membership
 
-    flash[:notice] =
-      t("members.confirmations.create", member_name: @member.full_display_name, unit_name: current_unit.name)
-    redirect_to unit_members_path(current_unit)
+    if already_a_member?
+      @target_membership.errors.add(:base, t("members.errors.already_a_member", email: submitted_email))
+      return render :new, status: :unprocessable_entity
+    end
+
+    if @target_membership.save
+      flash[:notice] = t("members.confirmations.create",
+        member_name: @target_membership.full_display_name,
+        unit_name: current_unit.name)
+      redirect_to unit_members_path(current_unit)
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
-  # rubocop:enable Metrics/AbcSize
 
-  def find_or_create_user
-    @user = User.create_with(
-      first_name: user_params[:first_name],
-      last_name:  user_params[:last_name],
-      nickname:   user_params[:nickname],
-      phone:      user_params[:phone]
-    ).find_or_create_by!(email: user_params[:email])
+  # GET .json — is this address free to add to this unit?
+  def email_availability
+    authorize UnitMembership, :create?
+
+    email = params[:email].to_s.strip
+    taken = email.present? && current_unit.memberships.joins(:user).exists?(users: {email: email})
+
+    render json: {
+      available: !taken,
+      message: (taken ? t("members.errors.already_a_member", email: email) : nil)
+    }
   end
 
   def update
     authorize(@target_membership)
     @target_membership.assign_attributes(member_params)
     update_settings_params
-    return unless @target_membership.save!
 
-    # MemberRelationshipService.new(@target_membership).update(params[:member_relationships])
-
-    flash[:notice] = "Member information updated"
-    redirect_to unit_members_path(@current_unit)
+    if @target_membership.save
+      flash[:notice] = "Member information updated"
+      redirect_to unit_members_path(@current_unit)
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def invite
@@ -117,20 +128,49 @@ class UnitMembershipsController < UnitContextController
 
   def find_membership
     @target_membership = UnitMembership.includes(:user, :tags,
-                                                 parents: :user,
-                                                 children: :user).find(params[:member_id] || params[:id])
+      parents: :user,
+      children: :user).find(params[:member_id] || params[:id])
     @target_user = @target_membership.user
     @current_unit = @unit = @target_membership.unit
     @current_member = @unit.membership_for(current_user)
   end
 
+  def submitted_email
+    user_params&.dig(:email).to_s.strip
+  end
+
+  # An address already in the system belongs to an existing User, so reuse it
+  # rather than trying to create a second account on a unique column. Two
+  # parents sharing an address is the common case here.
+  def find_or_build_user
+    attrs = user_params || {}
+    existing = User.find_by(email: submitted_email) if submitted_email.present?
+    return existing if existing
+
+    User.new(attrs.slice(:first_name, :last_name, :nickname, :phone, :email))
+  end
+
+  def build_membership
+    membership = current_unit.memberships.new(member_params.except(:user_attributes))
+    membership.user = find_or_build_user
+    membership
+  end
+
+  # UnitMembership validates uniqueness of user scoped to unit, but the default
+  # message ("User has already been taken") does not tell an organiser that the
+  # address they typed belongs to someone already on the roster.
+  def already_a_member?
+    user = @target_membership.user
+    user&.persisted? && current_unit.memberships.exists?(user_id: user.id)
+  end
+
   def member_params
     params.require(:unit_membership).permit(
       :status, :role, :member_type, :ical_suppress_declined, :roster_display_phone, :roster_display_email,
-      child_relationships_attributes:  [:id, :child_unit_membership_id, :_destroy],
+      child_relationships_attributes: [:id, :child_unit_membership_id, :_destroy],
       parent_relationships_attributes: [:id, :parent_unit_membership_id, :_destroy],
-      user_attributes:                 [:id, :first_name, :last_name, :phone, :email, :nickname],
-      tag_list:                        []
+      user_attributes: [:id, :first_name, :last_name, :phone, :email, :nickname],
+      tag_list: []
     )
   end
 

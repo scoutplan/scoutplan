@@ -12,7 +12,7 @@ div.py-4
             data: { controller: "input-validation", 
                     input_validation_source_value: "#unit_membership_user_attributes_email", 
                     input_validation_action_value: "enable check",
-                    input_validation_condition_value: "not_empty",
+                    input_validation_condition_value: "valid",
                     action: "click->input-validation#markAsDirty" },
           },
           "true", "false" )                        
@@ -25,7 +25,7 @@ div.py-4
             data: { controller: "input-validation", 
                     input_validation_source_value: "#unit_membership_user_attributes_phone",
                     input_validation_action_value: "enable check",
-                    input_validation_condition_value: "not_empty",
+                    input_validation_condition_value: "valid",
                     action: "click->input-validation#markAsDirty" },
           },
           "true", "false" )

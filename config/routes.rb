@@ -253,6 +253,10 @@ Rails.application.routes.draw do
     resources :unit_memberships, path: "members", as: "members" do
       post "invite", to: "unit_memberships#invite", as: "invite"
 
+      collection do
+        get "email_availability", to: "unit_memberships#email_availability"
+      end
+
       member do
         get "profile", to: "profiles#index"
         get "profile/info", to: "profiles#edit", as: "info"
