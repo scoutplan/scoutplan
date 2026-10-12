@@ -4,11 +4,11 @@ class HomeController < ApplicationController
   def index
     return unless current_user.present?
 
-    unit_id = current_user.unit_memberships.first.unit.id
-    unit = Unit.find_by(id: unit_id)
-    redirect_to unit_events_path(unit_id) and return if unit
+    # skip inactive memberships, otherwise UnitContextController bounces us right back here
+    unit = current_user.unit_memberships.excluding_inactive.first&.unit
+    redirect_to unit_events_path(unit) and return if unit
 
-    # sign_out current_user
-    # redirect_to new_user_session_path
+    sign_out current_user
+    redirect_to new_user_session_path, alert: "You don't have an active membership."
   end
 end

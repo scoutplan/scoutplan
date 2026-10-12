@@ -3,6 +3,7 @@
 class UnitContextController < ApplicationController
   prepend_before_action :set_unit_cookie
   prepend_before_action :capture_target_unit
+  before_action :require_active_membership
   before_action :build_event_presenter
   before_action :set_paper_trail_whodunnit
   around_action :time_zone
@@ -24,6 +25,12 @@ class UnitContextController < ApplicationController
   end
 
   private
+
+  # inactive members can still sign in (they may be active in another unit),
+  # but they're locked out of this unit
+  def require_active_membership
+    raise Pundit::NotAuthorizedError if current_member&.status_inactive?
+  end
 
   def set_unit_cookie
     cookies[:current_unit_id] = { value: current_unit&.id }
