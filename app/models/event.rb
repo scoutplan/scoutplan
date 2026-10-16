@@ -96,6 +96,10 @@ class Event < ApplicationRecord
 
   enum :status, {draft: 0, published: 1, cancelled: 2, archived: 3}
 
+  # what members who can't see drafts get on the calendar: cancelled events stay listed (with a
+  # cancelled badge) so people learn the event is off rather than seeing it silently vanish
+  scope :listed, -> { where(status: %i[published cancelled]) }
+
   # TODO: clean up this mess
   scope :past, -> { where("starts_at < ?", Date.current.in_time_zone) }
   scope :future, -> { where("ends_at > ?", Date.current.in_time_zone) }
@@ -226,7 +230,8 @@ class Event < ApplicationRecord
   # about the RSVP window and capacity, not about publication state. Who can
   # *see* a draft event is a separate question, answered by EventPolicy#show?.
   def rsvp_open?
-    requires_rsvp? &&
+    !cancelled? &&
+      requires_rsvp? &&
       rsvp_closes_at.future? &&
       !headcount_limit_reached? &&
       (rsvp_opens_at.nil? || rsvp_opens_at.past?)

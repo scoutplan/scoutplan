@@ -11,7 +11,7 @@ class EventMailerPreview < ActionMailer::Preview
     member = unit.members.first
     event = FactoryBot.build(:event, :published, unit: unit)
     note = "Schade. Dass tut mir leid!"
-    EventMailer.with(event: event, member: member, note: note).cancellation_email
+    EventMailer.with(recipient: member, title: event.title, starts_at: event.starts_at, note: note).cancellation_email
   end
 
   def cancellation_email_no_note
@@ -19,7 +19,7 @@ class EventMailerPreview < ActionMailer::Preview
     member = unit.members.first
     event = FactoryBot.build(:event, :published, unit: unit)
     note = ""
-    EventMailer.with(event: event, member: member, note: note).cancellation_email
+    EventMailer.with(recipient: member, title: event.title, starts_at: event.starts_at, note: note).cancellation_email
   end
 
   def token_invitation_email

@@ -42,7 +42,7 @@ class CalendarController < ApplicationController
 
   def events
     scope = @unit.events.includes(:tags).future.order(starts_at: :asc)
-    scope = scope.published unless EventPolicy.new(@member, @unit).view_drafts?
+    scope = scope.listed unless EventPolicy.new(@member, @unit).view_drafts?
     scope.all
   end
 

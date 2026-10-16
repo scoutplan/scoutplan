@@ -17,7 +17,7 @@ class EventPolicy < UnitContextPolicy
     return true if admin?
     return true if @event.organizer?(@membership)
 
-    @event.published? && tags_match?
+    (@event.published? || @event.cancelled?) && tags_match?
   end
 
   def index?

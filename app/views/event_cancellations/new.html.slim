@@ -96,7 +96,7 @@
                   .hidden.peer-checked:inline-block
                     i.fa-solid.fa-circle-dot.text-brand-500.fa-lg
                     
-                  span.ml-2= "Yes, to all #{current_unit.members.contactable?.count} registered, contactable members"         
+                  span.ml-2= "Yes, to all #{current_unit.members.contactable?.status_active_and_registered.count} active and registered, contactable members"         
 
             = text_area "event_cancellation", "message",
               class: "border rounded w-full h-24 p-2 placholder-stone-400 border-paper-400 mt-2 text-sm",
@@ -111,7 +111,7 @@
 
               div.py-1
                 = label_tag :event_cancellation_cancel_series_false do
-                  = radio_button :event_cancellation, :cancel_series, :false, class: "peer hidden"
+                  = radio_button :event_cancellation, :cancel_series, :false, checked: true, class: "peer hidden"
                   .inline-block.peer-checked:hidden
                     i.fa-regular.fa-circle.text-brand-500.fa-lg
                   .hidden.peer-checked:inline-block
@@ -159,7 +159,7 @@
 
             div.py-1
               = label_tag :event_cancellation_disposition_cancel do
-                = radio_button :event_cancellation, :disposition, :cancel, class: "peer hidden"
+                = radio_button :event_cancellation, :disposition, :cancel, checked: true, class: "peer hidden"
                 .inline-block.peer-checked:hidden
                   i.fa-regular.fa-circle.text-brand-500.fa-lg
                 .hidden.peer-checked:inline-block
