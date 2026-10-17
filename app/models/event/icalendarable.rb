@@ -22,6 +22,7 @@ module Event::Icalendarable
     ical_event.location    = online ? website : full_address
     ical_event.description = description&.to_plain_text || short_description
     ical_event.url         = Rails.application.routes.url_helpers.unit_event_url(unit, id, host: ENV.fetch("APP_HOST"))
+    ical_event.status      = "CANCELLED" if cancelled?
 
     ical_event.append_custom_property("ORGANIZER", "CN=#{unit.name}")
 

@@ -39,7 +39,10 @@
       <% end %>
     </p>
 
-    <h3 class="font-serif font-bold text-lg mb-1"><%= event.title %></h3>
+    <h3 class="font-serif font-bold text-lg mb-1">
+      <span class="<%= "line-through text-paper-500" if event.cancelled? %>"><%= event.title %></span>
+      <%= render partial: "components/cancelled_badge" if event.cancelled? %>
+    </h3>
     
     <div class="flex gap-4">
       <p class="text-xs text-paper-700">
@@ -60,7 +63,7 @@
   </div>
 
   <%# right section %>
-  <% should_show_right_column = event.organizable? || event.requires_rsvp %>
+  <% should_show_right_column = !event.cancelled? && (event.organizable? || event.requires_rsvp) %>
 
   <% if should_show_right_column %>
     <% mode = event.organizable? &&

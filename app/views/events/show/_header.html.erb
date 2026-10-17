@@ -1,4 +1,11 @@
 <header class="py-3">
+  <% if event.cancelled? %>
+    <div class="rounded p-3 mb-3 bg-sky-50 border border-sky-600 text-sky-700 font-semibold">
+      <i class="fa-solid fa-ban fa-fw mr-1"></i>
+      <%= t("events.show.cancelled_banner") %>
+    </div>
+  <% end %>
+
   <%= render Components::EventCategoryBadge.new(event: event) %>
 
   <%# with a cover photo the title is rendered inside it, above the date %>
