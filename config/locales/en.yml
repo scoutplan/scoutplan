@@ -405,6 +405,7 @@ en:
       title: "My RSVPs"
 
     show:
+      cancelled_banner:         "This event has been cancelled."
       upcoming_events_title:    "Other upcoming events"
       description_empty:        "There's no description for this event yet."
       description_cta:          "Write one now."

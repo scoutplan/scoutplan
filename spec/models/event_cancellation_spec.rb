@@ -20,6 +20,7 @@ RSpec.describe EventCancellation do
     it "leaves the event on the calendar as cancelled when no disposition is chosen" do
       expect(cancellation(message_audience: "none").cancel!).to be(true)
       expect(event.reload).to be_cancelled
+      expect(event.to_ical_event.status).to eq("CANCELLED")
     end
 
     it "unpublishes" do

@@ -96,7 +96,7 @@
                 <% is_first_day_of_event = event.starts_at.to_date == display_date %>
                 <% is_last_day_of_event = event.ends_at.to_date == display_date %>
                 <% css_classes = "" %>
-                <% css_classes = "event-cancelled" if event.cancelled? %>
+                <% css_classes = "event-cancelled line-through opacity-60" if event.cancelled? %>
                 <% css_classes = "event-draft" if event.draft? %>
                 <% css_classes += " cal-event text-xs whitespace-nowrap overflow-hidden block p-1" %>
                 <% css_classes += " rounded-l ml-2" if is_first_day_of_event %>
@@ -111,7 +111,7 @@
 
                 <div class="<%= css_classes %>"
                       style="<%= styles %>"
-                      title="<%= event.title %>">
+                      title="<%= event.cancelled? ? "#{event.title} (#{t("events.index.cancelled")})" : event.title %>">
 
                   <% path = current_user ? unit_event_path(event.unit, event) : "#" %>
                   

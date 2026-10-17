@@ -67,6 +67,25 @@ describe "event_cancellation", type: :feature do
       expect(page).to have_content("Graymoor")
     end
 
+    it "marks the event as cancelled on the list, the calendar and the event page" do
+      event = FactoryBot.create(:event, :published, unit: @unit, title: "Graymoor")
+      visit unit_event_cancel_path(@unit, event)
+      click_link_or_button I18n.t("events.cancel.proceed")
+
+      login_as(@normal_member.user)
+      visit list_unit_events_path(@unit)
+      within("##{ActionView::RecordIdentifier.dom_id(event)}") do
+        expect(page).to have_css(".line-through", text: "Graymoor")
+        expect(page).to have_content(I18n.t("events.index.cancelled"))
+      end
+
+      visit calendar_unit_events_path(@unit, year: event.starts_at.year, month: event.starts_at.month)
+      expect(page).to have_css(".event-cancelled.line-through", text: "Graymoor")
+
+      visit unit_event_path(@unit, event)
+      expect(page).to have_content(I18n.t("events.show.cancelled_banner"))
+    end
+
     it "does not let a non-admin cancel an event" do
       login_as(@normal_member.user)
       page.driver.submit :post, unit_event_cancellations_path(@unit, @event), {}
