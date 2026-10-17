@@ -1,6 +1,6 @@
 // Invoked from Events#show to render the yellow RSVP button
 
-- return unless event.requires_rsvp && user_signed_in?
+- return unless event.requires_rsvp && !event.cancelled? && user_signed_in?
 
 - family_has_rsvps = false
 - family_fully_responded = true

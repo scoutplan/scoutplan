@@ -1,3 +1,5 @@
-Heads up: <%= @event.title %> on <%= @event.starts_at.strftime("%B %-d") %> has been cancelled.
+Heads up: <%= @title %> on <%= @starts_at.strftime("%B %-d") %> has been cancelled.
+<% if @note.present? %>
 
-<% if @note.present? %><%= @note %><% end %>
+<%= @note %>
+<% end %>

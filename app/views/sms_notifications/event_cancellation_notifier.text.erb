@@ -1,0 +1,1 @@
+Heads up, <%= @recipient.display_first_name %>: <%= @title %> on <%= @starts_at.in_time_zone.strftime("%B %-d") %> has been cancelled.<% if @note.present? %> <%= @note %><% end %>

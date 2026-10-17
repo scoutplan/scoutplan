@@ -3,14 +3,18 @@
 # The Mailer class for sending email relating to specific events
 #
 class EventMailer < ScoutplanMailer
+  # Delivered by EventCancellationNotifier. The event may already be deleted, so it works from the
+  # title and start time captured at cancellation instead of the record.
   def cancellation_email
-    @member = params[:member]
-    @event = params[:event]
+    @member = params[:recipient]
+    @unit = @member.unit
+    @title = params[:title]
+    @starts_at = params[:starts_at].in_time_zone(@unit.time_zone)
     @note = params[:note]
     mail(
       to: @member.email,
       from: unit_from_address_with_name,
-      subject: "#{@unit.name} #{@event.title} Cancelled"
+      subject: "#{@unit.name} #{@title} Cancelled"
     )
   end
 

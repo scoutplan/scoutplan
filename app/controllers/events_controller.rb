@@ -499,7 +499,7 @@ class EventsController < UnitContextController
     scope = scope.where(unit_id: current_unit.id)
     scope = scope.where("starts_at >= ? AND starts_at < ?", query_starts_at, query_ends_at)
     scope = scope.order(starts_at: :asc)
-    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
+    scope = scope.listed unless EventPolicy.new(current_member, current_unit).view_drafts?
 
     @events = scope.all
   end
@@ -510,7 +510,7 @@ class EventsController < UnitContextController
 
   def scope_for_calendar
     scope = current_unit.events
-    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
+    scope = scope.listed unless EventPolicy.new(current_member, current_unit).view_drafts?
     scope.where("starts_at BETWEEN ? AND ?", @start_date - 1.week, @end_date + 1.week)
   end
 
@@ -522,7 +522,7 @@ class EventsController < UnitContextController
             else
               scope.where("starts_at BETWEEN ? AND ?", @start_date.in_time_zone, @end_date.in_time_zone)
             end
-    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
+    scope = scope.listed unless EventPolicy.new(current_member, current_unit).view_drafts?
     scope.order(starts_at: :asc)
   end
 
@@ -534,19 +534,19 @@ class EventsController < UnitContextController
             else
               scope.where("starts_at BETWEEN ? AND ?", Date.current.beginning_of_month, current_unit.season_ends_at)
             end
-    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
+    scope = scope.listed unless EventPolicy.new(current_member, current_unit).view_drafts?
     scope.order(starts_at: :asc)
   end
 
   def scope_for_paged_list
     scope = current_unit.events.future.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
-    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
+    scope = scope.listed unless EventPolicy.new(current_member, current_unit).view_drafts?
     scope.order(starts_at: :asc)
   end
 
   def find_spreadsheet_events
     scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
-    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
+    scope = scope.listed unless EventPolicy.new(current_member, current_unit).view_drafts?
     scope = params[:before].present? ? scope.where("id < ?", params[:before]) : scope.future
     scope.order(starts_at: :asc)
     @events = scope.all
@@ -557,7 +557,7 @@ class EventsController < UnitContextController
     scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
 
     # hide drafts unless member has permission
-    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
+    scope = scope.listed unless EventPolicy.new(current_member, current_unit).view_drafts?
 
     # only future events unless past was requested
     scope = params[:before].present? ? scope.where("id < ?", params[:before]) : scope.future
@@ -570,7 +570,7 @@ class EventsController < UnitContextController
 
   def list_base_scope
     scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
-    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
+    scope = scope.listed unless EventPolicy.new(current_member, current_unit).view_drafts?
     scope.order(starts_at: :asc)
   end
 
@@ -620,7 +620,7 @@ class EventsController < UnitContextController
 
   def find_threeup_events
     scope = current_unit.events.includes([event_locations: :location], :tags, :event_category, :event_rsvps)
-    scope = scope.published unless EventPolicy.new(current_member, current_unit).view_drafts?
+    scope = scope.listed unless EventPolicy.new(current_member, current_unit).view_drafts?
     scope = scope.where("ends_at > ? AND starts_at < ?", @start_date.beginning_of_month, @end_date)
     scope.order(starts_at: :asc)
     @events = scope.all

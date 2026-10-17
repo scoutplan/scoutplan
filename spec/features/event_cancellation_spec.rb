@@ -49,6 +49,28 @@ describe "event_cancellation", type: :feature do
       choose :event_cancellation_message_audience_none
       expect { click_link_or_button I18n.t("events.cancel.proceed") }.not_to raise_exception
       expect(page).to have_current_path(list_unit_events_path(@unit))
+      expect(event.reload).to be_cancelled
+    end
+
+    it "notifies active members and keeps the event listed for them" do
+      event = FactoryBot.create(:event, :published, unit: @unit, title: "Graymoor")
+      visit unit_event_cancel_path(@unit, event)
+      choose :event_cancellation_message_audience_active_members
+      fill_in "event_cancellation_message", with: "Rained out"
+      expect { click_link_or_button I18n.t("events.cancel.proceed") }
+        .to change { EventCancellationNotifier.count }.by(1)
+      expect(event.reload).to be_cancelled
+      expect(EventCancellationNotifier.last.params[:note]).to eq("Rained out")
+
+      login_as(@normal_member.user)
+      visit list_unit_events_path(@unit)
+      expect(page).to have_content("Graymoor")
+    end
+
+    it "does not let a non-admin cancel an event" do
+      login_as(@normal_member.user)
+      page.driver.submit :post, unit_event_cancellations_path(@unit, @event), {}
+      expect(@event.reload).to be_published
     end
 
     describe "default selections" do
