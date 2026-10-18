@@ -19,5 +19,9 @@ module Scoutplan
     config.active_storage.variant_processor = :vips
     config.active_storage.queues.analysis = :active_storage_analysis
     config.action_mailer.delivery_job = "ScoutplanMailDeliveryJob"
+    # ahoy_email < 4 forced the app's key generator to SHA1 regardless of load_defaults, so
+    # existing sessions, signed cookies and signed ids were all derived with SHA1. Keep it until
+    # we deliberately rotate to SHA256 (with a cookie rotator), or everyone gets signed out.
+    config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA1
   end
 end
