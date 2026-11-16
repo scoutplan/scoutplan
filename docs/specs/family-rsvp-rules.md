@@ -1,6 +1,6 @@
 # Family & RSVP Rules
 
-**Status:** Draft. D1, D2, D8 and D9 decided; D3, D4 and D6 decided with one open question each; the rest open (see §3).
+**Status:** Draft. D1, D2, D4, D8 and D9 decided; D3 and D6 decided with one open question each; the rest open (see §3).
 **Scope:** Who belongs to a family, who may answer for whom, youth self-RSVP and approval, and who gets nagged, reminded and confirmed.
 **Out of scope:** Payments (being removed), event shifts, guests, the headcount feature beyond how pending answers count.
 
@@ -178,13 +178,11 @@ A household, as in §2.1: one per member, managed by admins, with one or two poi
 
 Usage is believed to be low. The feature is **kept on purpose**, because it encourages youth to take ownership of their participation.
 
-### D4. What does a youth's answer mean? — **Decided, with one open question**
+### D4. What does a youth's answer mean? — **Decided**
 
-- A youth's self-RSVP is an **expression of interest**. It is pending until an adult in their household approves it.
-- **Open:** can a youth say "no"?
-  - (a) **Proposed:** yes, as information only. It takes effect without approval, and points of contact are told.
-  - (b) No: a youth can only say "I want to go".
-  - (c) Yes, but it needs approval, as today.
+- A youth's **"yes"** is an **expression of interest**. It is pending until an adult in their household approves it (D6).
+- A youth's **"no"** takes effect **immediately, without approval**, and the household's points of contact are notified (D9).
+- So the pending state only ever applies to a youth's "yes". The current `declined_pending` state goes away. Existing `declined_pending` rows become plain `declined` in the backfill (§4.2).
 
 ### D5. How does a pending answer count? — **Open**
 
@@ -230,7 +228,8 @@ The rule: **points of contact get a message for every household answer.**
 |---|---|---|---|
 | A point of contact | A **confirmation** | (same person) | The other point of contact, if any, gets a notice |
 | Another adult in the household | A **notice**: "Dad RSVP'd Dad and Sam: Going to the Fall Campout" | A confirmation | An adult answered for by someone else gets a notice that it's about them |
-| A youth, for themselves | The **approval request** (D6) | A "request sent" confirmation | — |
+| A youth says "yes" | The **approval request** (D6) | A "request sent" confirmation | — |
+| A youth says "no" | A **notice**: "Sam said they can't make the Fall Campout" | A confirmation | — |
 | An admin or organizer | A notice | — | — |
 | Anyone, by SMS reply | The same as on the web | The same as on the web | — |
 
@@ -292,7 +291,7 @@ Youth contactability (`contactable_guardian?`) becomes "the household has a cont
    - An adult in a household of one is that household's point of contact.
 3. **RSVPs:**
    - `accepted_pending` (3) becomes `accepted` with `approval = pending`.
-   - `declined_pending` (2) becomes `declined` with `approval = pending`.
+   - `declined_pending` (2) becomes `declined` with `approval = not_required` (D4: a youth's "no" needs no approval).
    - Every other row gets `not_required`.
 4. **Admin review report** listing households that have:
    - no clear point of contact
