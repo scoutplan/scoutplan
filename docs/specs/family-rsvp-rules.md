@@ -1,6 +1,6 @@
 # Family & RSVP Rules
 
-**Status:** Draft. Decisions pending (see §3).
+**Status:** Draft. D1, D2, D8 and D9 decided; D4 and D6 decided with one open question each; the rest open (see §3).
 **Scope:** Who belongs to a family, who may answer for whom, youth self-RSVP and approval, and who gets nagged, reminded and confirmed.
 **Out of scope:** Payments (being removed), event shifts, guests, the headcount feature beyond how pending answers count.
 
@@ -98,18 +98,25 @@ Enforcement is unusual:
 
 ### 2.1 Concepts
 
-- **Guardianship:** a directed edge from a guardian to a youth, stored in `member_relationships` as today. Edges only make sense from an adult to a youth.
-- **Household:** the set of members connected through guardianship edges (the connected component of the guardianship graph). Co-parents are in the same household because they share a child. Computed once per request as a value object, not stored. *(See D1.)*
-- **Dependents(m):** the youth members that `m` is a guardian of.
+- **Household:** a named group of members in a unit.
+  - Every member belongs to **exactly one** household. An adult with no family in the unit is a household of one.
+  - Admins create and maintain households, as they maintain relationships today. It's a one-time setup per family.
+  - Split households are rare and one side usually runs the calendar, so there is no multi-household membership. If it's ever needed, an explicit cross-household grant can be added later (§6).
+- **Point of contact:** a flag on an adult member, meaning "keeper of this household's calendar".
+  - A household normally has one; it may have two.
+  - The flag decides who is *expected to pay attention*: nags, approval requests and answer notices go to points of contact.
+  - It does **not** decide who is *allowed* to answer.
 - **Answerable(actor):** the members `actor` may answer for:
-  - themselves, if adult, or if youth with self-RSVP enabled
-  - their Dependents
-  - anyone, if admin or organizer
-- **RSVP:** one row per (event, member), with four fields:
+  - An **adult:** everyone in their household, including other adults.
+  - A **youth:** themselves only, and only when self-RSVP is enabled for them (D3).
+  - An **admin or organizer:** anyone in the unit.
+- **RSVP:** one row per (event, member):
   - `answer`: `yes` or `no`
   - `respondent`: who submitted it
   - `approval`: `not_required`, `pending` or `approved`
   - `approved_by` and `approved_at`: set when approved
+
+Today's one-way links encoded "who is expected to pay attention" as if it were "who may answer". This model separates the two. The links' intent survives as the point-of-contact flag (see §4.2 for how it's derived).
 
 ### 2.2 One decision point
 
@@ -128,8 +135,8 @@ RsvpRecorder.record(actor:, event:, answers: { member => :yes | :no | :clear }, 
 The recorder:
 - calls `decide` for each member
 - writes all answers in one transaction
-- returns a result that lists what was saved and what was refused, with reasons, so nothing fails silently
-- sends **one** confirmation per submission
+- returns what was saved and what was refused, with reasons, so nothing fails silently
+- triggers **one** set of messages per submission (D9)
 
 ### 2.4 One read model
 
@@ -137,163 +144,164 @@ The recorder:
 HouseholdRsvp.new(household, event)
 ```
 
-It answers, for each member:
-- their answer
-- their approval state
-- who may answer for them
+For each member it gives:
+- the answer and approval state
+- **who answered and when**, shown on the event page as "Going · answered by Dad, Tue"
 - whether they still need an answer
 
-It also produces the summary sentence. It replaces the five objects listed in §1.7.
+It also produces the household's summary sentence. It replaces the five objects listed in §1.7.
 
 ---
 
 ## 3. Decisions
 
-Each decision gives the question, the options, a recommendation and today's behavior. **Bold** marks the recommendation. Change anything you disagree with.
+Each item records a decision, or a recommendation awaiting one. Status is either **Decided** or **Open**.
 
-### D1. What is a family?
+### D1. What is a family? — **Decided**
 
-- **(a) Household = connected component through guardianship.** Co-parents are included; an adult with no dependents is a household of one; no new table.
-- (b) An explicit `households` table that admins manage. Handles split households precisely (e.g. a child who lives in two homes), but costs data entry and admin UI.
-- (c) Keep today's per-person view.
+A household, as in §2.1: one per member, managed by admins, with one or two points of contact.
 
-*Edge case for (a):* with divorced parents who each have new partners in the unit, the component can join two homes through the shared child. That's correct for the shared child. It's only odd if the households also contain unrelated children of the new partners, which is probably rare in one unit.
+### D2. Who may answer for whom? — **Decided**
 
-Today: (c), asymmetric, co-parents excluded.
+- Any adult in a household may answer for anyone in that household. This includes other adults: dad can answer for mom, and mom for dad.
+- A youth answers only for themselves, and only with self-RSVP enabled.
+- Admins and organizers may answer for anyone. Their answers don't need approval, e.g. attendance recorded at the trailhead.
+- A dad's answer counts immediately. Points of contact are **informed, not asked to approve** (D9).
 
-**Decision:** ______
+### D3. How is youth self-RSVP enabled? — **Open**
 
-### D2. Who may answer for whom?
+- **Proposed:** two switches:
+  1. the unit enables the feature
+  2. an adult in the youth's household enables it for that youth
+- **Proposed:** drop the per-event `events.allow_youth_rsvps` flag, unless organizers actually use it. *To check: query how many events have it turned off.*
+- **Proposed:** the youth must be reachable by email or SMS. Today the toggle requires email.
 
-- Adults answer for themselves and their dependents. **Guardians answer only for youth dependents, not adult children.**
-- **A co-parent may not answer for the other adult**, but sees that adult's answer.
-- Admins and organizers may answer for anyone, and **their answers never need approval.**
+Usage is believed to be low. The feature is **kept on purpose**, because it encourages youth to take ownership of their participation.
 
-Today: the same, except a "parent" can answer for an adult child, and co-parents can't see each other's answers.
+### D4. What does a youth's answer mean? — **Decided, with one open question**
 
-**Decision:** ______
+- A youth's self-RSVP is an **expression of interest**. It is pending until an adult in their household approves it.
+- **Open:** can a youth say "no"?
+  - (a) **Proposed:** yes, as information only. It takes effect without approval, and points of contact are told.
+  - (b) No: a youth can only say "I want to go".
+  - (c) Yes, but it needs approval, as today.
 
-### D3. How is youth self-RSVP enabled?
+### D5. How does a pending answer count? — **Open**
 
-Options:
-- **(a) Unit setting plus a guardian's per-youth toggle.** Drop the per-event flag.
-- (b) Keep all three flags.
-- (c) Unit setting plus guardian toggle, plus an organizer opt-*out* per event (default allowed).
-
-Sub-question: should the guardian toggle require the youth to have an email address? Today it's disabled without one. **Recommend: require the youth to be reachable by email or SMS.**
-
-Today: three flags, defaulting to unit off, event on, member off.
-
-**Decision:** ______
-
-### D4. What needs approval?
-
-Options:
-- **(a) Every youth self-answer, yes or no, needs one guardian's approval.**
-- (b) Only "yes" answers need approval; "no" is final.
-- (c) Guardians choose per youth: "needs approval" or "trusted".
-
-Today: (a).
-
-**Decision:** ______
-
-### D5. How does a pending answer count?
-
-| Question | Recommendation |
+| Question | Proposed |
 |---|---|
-| Responded, for nags and "family complete" | **Yes.** Don't nag a youth who answered. |
+| Responded, for nags and "household complete" | **Yes.** Don't nag about a youth who answered; the approval request is the prompt. |
 | Shown on the organizer roster | **Yes, marked "tentative".** |
 | Counts toward the headcount cap | **Yes (holds a seat),** so approval can't overfill the event. |
 | Counts toward minimum headcount | **No,** until approved. |
-| Summary sentence | **"Sam is going (awaiting approval)".** Never treat it as declined. |
+| Summary sentence | **"Sam wants to go (awaiting approval)".** Never treat it as declined. |
 
-Today: see the table in §1.4. Pending is inconsistent and sometimes counts as declined.
+### D6. How does approval work? — **Decided, with one open question**
 
-**Decision:** ______
+- **Only adults in the youth's household may approve.** That's a change: today admins and organizers can approve too.
+- Approval is an explicit Approve/Decline action, available from:
+  - the event page
+  - one-tap links in the approval email
+  - an SMS reply
+- **Re-submitting the household form no longer approves anything implicitly.**
+- The approval request is often the parent's first sight of the event, so it **reads like an invitation**: "Sam wants to go to the Fall Campout (Nov 21–23). Approve or decline?" It includes the event details: dates, location, cost and organizer.
+- If an adult changes the youth's answer, that's their own answer and needs no approval.
+- **Open:** what happens when an adult declines a youth's request?
+  - (a) **Proposed:** the youth's RSVP becomes "no", and the youth is told.
+  - (b) The youth is left unanswered.
 
-### D6. How does approval work?
+### D7. What happens when an answer changes after approval? — **Open**
 
-- **An explicit Approve/Reject action**, available from the event page, a link in the approval-request email, and an SMS reply.
-- **Any one guardian may approve.** Admins and organizers may too.
-- If a guardian changes the youth's answer, that counts as the guardian's own answer and needs no approval.
-- **Re-submitting the family form no longer approves anything implicitly.**
-- If a pending answer is rejected:
-  - (a) **the youth is left unanswered and the guardian is prompted to answer**, or
-  - (b) the answer is flipped.
+- **Proposed:** a youth changing an approved answer makes it pending again.
+- **Proposed:** a youth can't change an answer an adult made; they see it read-only.
 
-Today: approval is implicit through resubmitting, and the explicit UI is dead code.
+### D8. Who gets nagged and reminded? — **Decided**
 
-**Decision:** ______
+- **Weekly nag and last call go to points of contact only**, as **one message per household** that lists every member still unanswered.
+- Other adults get no nags.
+- A youth with self-RSVP enabled is **not** nagged separately. The household nag covers them, and a youth who answers stops the nag for themselves.
+- Inactive members are excluded everywhere, as today.
 
-### D7. What happens when an answer changes after approval?
+### D9. Who hears about an answer? — **Decided**
 
-- **A youth changing an approved answer makes it pending again.**
-- **A guardian's answer is final** unless a guardian, admin or organizer changes it.
-- Can a youth change an answer a guardian made? **Recommend: no.** The youth sees it read-only.
+The rule: **points of contact get a message for every household answer.**
 
-Today: undefined in practice. A youth's change goes pending, and the guardian-versus-youth precedence isn't handled.
+| Who answered | Points of contact get | The respondent gets | Others |
+|---|---|---|---|
+| A point of contact | A **confirmation** | (same person) | The other point of contact, if any, gets a notice |
+| Another adult in the household | A **notice**: "Dad RSVP'd Dad and Sam: Going to the Fall Campout" | A confirmation | An adult answered for by someone else gets a notice that it's about them |
+| A youth, for themselves | The **approval request** (D6) | A "request sent" confirmation | — |
+| An admin or organizer | A notice | — | — |
+| Anyone, by SMS reply | The same as on the web | The same as on the web | — |
 
-**Decision:** ______
+- **Changes are called out.** When an answer replaces one someone else made, the message says so: "Dad changed Sam's RSVP from Going to Regrets."
+- **One message per recipient per submission**, never one per person answered for.
+- Siblings are never copied.
 
-### D8. Who gets nagged and reminded?
+### D10. What does an SMS "yes" or "no" apply to? — **Open**
 
-- **Weekly nag:** **one message per adult.** It covers the members that adult can answer for who still need an answer: the adult and their dependents. A youth with self-RSVP who hasn't answered gets their own nag. Co-parents each get a nag about shared dependents. **Alternative:** nag only one guardian per household, but there's no good rule for choosing which.
-- **Last call:** the same grouping, with the same rules.
-- **Inactive members:** excluded everywhere, as today.
+- **Proposed:** the SMS prompt lists the names it covers, and the reply applies to exactly those names. That's the texter's unanswered Answerable members.
+- Prompts normally go only to points of contact (D8). If another adult texts "upcoming", their prompt lists the household too.
+- The reply-to-the-reply confirms the names it applied to.
 
-Today: per member, with possible duplicates; last call goes to individuals.
+### D11. Notes — **Open**
 
-**Decision:** ______
+- **Proposed:** keep one note per submission, stored on each row, as now.
 
-### D9. Who gets confirmations?
+### D12. Messages to youth members — **Open** *(new: messaging also uses the relationship links)*
 
-- **One confirmation per submission, not per row.** It goes to the respondent and lists everyone they answered for.
-- **Guardians of any youth in the submission are copied**, whoever answered. When approval is needed, the guardians get the approval-request version instead.
-- **Siblings are never copied.**
+Today a message to a youth is also delivered to their contactable "parents" (`Message::Notifiable`, `MessageService`, `MessageRecipient`). If mom is linked to the kid and dad is linked only through mom, today only mom gets copied.
 
-Today: per row, and to the whole family including siblings when approval is involved.
+Options:
+- (a) **Proposed:** copy the household's points of contact. This matches today's mom-only behavior in the common case.
+- (b) Copy every adult in the household.
 
-**Decision:** ______
-
-### D10. What does an SMS "yes" or "no" apply to?
-
-- **(a) Everyone in Answerable(texter) who hasn't answered yet**, and the reply SMS lists the names.
-- (b) Everyone in Answerable(texter), overwriting existing answers.
-- (c) Only the texter.
-
-A youth texter's own answer follows D4.
-
-Today: every active family member of the texter, including a youth's parents (which fails).
-
-**Decision:** ______
-
-### D11. Notes
-
-The family form has one note field, which is copied onto every RSVP in the submission. Options:
-- **(a) Keep one note per submission, stored on each row**, as now.
-- (b) One note per member.
-
-**Decision:** ______
+Youth contactability (`contactable_guardian?`) becomes "the household has a contactable point of contact".
 
 ---
 
 ## 4. Data changes
 
-1. On `event_rsvps`:
+### 4.1 Schema
+
+1. A new table `households`:
+   - `id`, `unit_id`, `name` (defaults to the members' last names, e.g. "Smith / Jones")
+   - timestamps
+   - `has_paper_trail`
+2. On `unit_memberships`:
+   - add `household_id`, not null after the backfill
+   - add `point_of_contact` (boolean, default false)
+   - Validation: a household's members are in its unit, and each household has at least one adult point of contact. Violations show as admin warnings rather than hard errors during the transition.
+3. On `event_rsvps`:
    - Add `approval` (integer enum: `not_required` 0, `pending` 1, `approved` 2), plus `approved_by_id` and `approved_at`.
-   - Narrow `response` to `accepted`/`declined`, keeping integers 1 and 0 so existing rows stay valid.
-2. Backfill:
+   - Narrow `response` to `accepted`/`declined`, keeping integers 1 and 0.
+   - Drop `approved`.
+4. On `event_rsvps`, add indexes:
+   - a **unique** index on `(event_id, unit_membership_id)`, after checking for and merging duplicates
+   - indexes on `unit_membership_id` and `respondent_id`
+5. Drop `events.allow_youth_rsvps` if D3 drops it.
+6. Drop `user_relationships` and `UserRelationshipsPolicy`.
+7. Keep `member_relationships` until the cutover, then drop it.
+
+### 4.2 Backfill
+
+1. **Households:** for each unit, follow the `member_relationships` links all the way through to find each connected group. Each group becomes one household, and every unlinked member becomes a household of one. Split households are rare, so this grouping is right for nearly all real data.
+2. **Points of contact:** within each household, an adult is a point of contact if they have outgoing links (they answer for someone) and no other adult answers for them.
+   - Mom → dad, mom → kid: mom is the point of contact.
+   - Both parents → kid, with no link between them: both are.
+   - An adult in a household of one is that household's point of contact.
+3. **RSVPs:**
    - `accepted_pending` (3) becomes `accepted` with `approval = pending`.
    - `declined_pending` (2) becomes `declined` with `approval = pending`.
    - Every other row gets `not_required`.
-3. Drop `event_rsvps.approved`.
-4. Add indexes:
-   - a **unique** index on `(event_id, unit_membership_id)`, after checking for and merging duplicates
-   - an index on `unit_membership_id`
-   - an index on `respondent_id`
-5. Depending on D3, drop `events.allow_youth_rsvps`.
-6. Drop the `user_relationships` table and `UserRelationshipsPolicy`.
-7. Optionally add a check that `member_relationships` edges go from an adult to a youth, depending on D2.
+4. **Admin review report** listing households that have:
+   - no clear point of contact
+   - more than two points of contact
+   - more than two adults
+   - adults who don't share all the children
+   - links in both directions between two adults
+
+**Before migrating:** run a read-only version of steps 1–2 against production and review the report. That shows how much the automatic backfill gets right.
 
 ---
 
@@ -301,20 +309,32 @@ The family form has one note field, which is copied onto every RSVP in the submi
 
 | New | Replaces |
 |---|---|
-| `Household` (value object) | `UnitMembership#family`, `#siblings`, `FamilyPresenter` |
-| `RsvpRules.decide` | `EventRsvpPolicy#create?` internals, `EventRsvp#requires_approval?`, `enforce_approval_policy`, `response_allowed?` |
+| `Household` model, plus admin UI to manage households and points of contact | `MemberRelationship`, `MemberRelationshipsController`, `RelationshipCandidatesController`, `MemberRelationshipService`, `UnitMembership#family`/`#parents`/`#children`/`#siblings`, `FamilyPresenter` |
+| `RsvpRules.decide` | `EventRsvpPolicy#create?`/`#approve?` internals, `EventRsvp#requires_approval?`, `enforce_approval_policy`, `response_allowed?` |
 | `RsvpRecorder` | Write logic in `FamilyRsvpsController`, `EventRsvpsController#create/update`, `SmsResponseService#process_rsvp`, `RsvpService#record_*`, `EventResponseService` |
 | `HouseholdRsvp` (read model) | `FamilyRsvp`, `RsvpService` (RSVP parts), `FamilyMemberRsvp`, `FamilyEventRsvps` |
-| A single confirmation notifier per submission | Per-row `EventRsvp::Notifiable#enqueue_confirmation` |
+| An RSVP-submission notifier implementing D9 | Per-row `EventRsvp::Notifiable#enqueue_confirmation`, the presenters in `EventRsvpConfirmationMailer` |
+| An approval request notifier and an approve/decline endpoint (D6) | The dead `_edit_rsvp_section` / `create_batch_member` path |
+| Household-based nag (D8) | Per-member loop in `RsvpNagJob`; individual `RsvpLastCallJob` recipients |
+| Household-based youth contactability and message copying (D12) | `contactable_guardian?`, `ComputeChildContactabilityJob`, the `parents` uses in messaging |
 
-Order of work:
-1. Remove the dead code (§1.7).
-2. Add the indexes.
-3. Write `RsvpRules`, with its decision-table spec.
-4. Run the data migration.
-5. Write `RsvpRecorder` and move the write paths onto it one at a time.
+### Order of work
+
+1. Remove the dead code (§1.7) and add the indexes. This is safe whatever is decided.
+2. Run the read-only household backfill report against production, and review it.
+3. Add `Household` and the point-of-contact flag, backfill them, and build the admin UI. Run it alongside the old links.
+4. Write `RsvpRules`, with a decision-table spec, and the RSVP data migration.
+5. Write `RsvpRecorder` and move the write paths onto it one at a time: web form, organizer, SMS.
 6. Write `HouseholdRsvp` and move the read paths onto it.
-7. Change nags and confirmations.
-8. Delete the old objects.
+7. Switch the messages: D9 confirmations and notices, D6 approval, D8 nags.
+8. Move messaging and contactability onto households (D12).
+9. Delete the old objects and drop `member_relationships`.
 
 The specs in `spec/` describe today's behavior. Update the ones that conflict with these decisions on purpose, rather than treating them as regressions.
+
+---
+
+## 6. Deferred
+
+- **Cross-household grants:** letting an adult outside a household answer for a member of it, such as a grandparent or the parent in the second home. This can be added if a real case appears.
+- **Parent-managed households:** households stay admin-managed. Parents' self-service can come later.
