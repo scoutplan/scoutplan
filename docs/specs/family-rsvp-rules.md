@@ -1,6 +1,6 @@
 # Family & RSVP Rules
 
-**Status:** Draft. D1, D2, D4, D8 and D9 decided; D3 and D6 decided with one open question each; the rest open (see §3).
+**Status:** Draft. D1–D5, D8, D9, D11 and D12 decided; D6 and D7 decided with one open question each; D10 open (see §3).
 **Scope:** Who belongs to a family, who may answer for whom, youth self-RSVP and approval, and who gets nagged, reminded and confirmed.
 **Out of scope:** Payments (being removed), event shifts, guests, the headcount feature beyond how pending answers count.
 
@@ -168,13 +168,13 @@ A household, as in §2.1: one per member, managed by admins, with one or two poi
 - Admins and organizers may answer for anyone. Their answers don't need approval, e.g. attendance recorded at the trailhead.
 - A dad's answer counts immediately. Points of contact are **informed, not asked to approve** (D9).
 
-### D3. How is youth self-RSVP enabled? — **Decided, with one open question**
+### D3. How is youth self-RSVP enabled? — **Decided**
 
 - Two switches:
   1. the unit enables the feature
   2. an adult in the youth's household enables it for that youth
+- **The youth must have at least one contact method** (email or phone) before self-RSVP can be enabled. Today the toggle requires email specifically.
 - **The per-event `events.allow_youth_rsvps` flag is dropped.** No UI or controller has ever set it: `EventsController` doesn't permit it and no event form renders it. So every event has carried the default `true`, and dropping it changes no behavior. *Before dropping the column, check for rows set to `false` by hand.*
-- **Open:** must the youth be reachable by email or SMS? Proposed: yes, either one. Today the toggle requires email.
 
 Usage is believed to be low. The feature is **kept on purpose**, because it encourages youth to take ownership of their participation.
 
@@ -184,40 +184,51 @@ Usage is believed to be low. The feature is **kept on purpose**, because it enco
 - A youth's **"no"** takes effect **immediately, without approval**, and the household's points of contact are notified (D9).
 - So the pending state only ever applies to a youth's "yes". The current `declined_pending` state goes away. Existing `declined_pending` rows become plain `declined` in the backfill (§4.2).
 
-### D5. How does a pending answer count? — **Open**
+### D5. How does a pending "yes" count? — **Decided**
 
-| Question | Proposed |
+| Question | Decision |
 |---|---|
-| Responded, for nags and "household complete" | **Yes.** Don't nag about a youth who answered; the approval request is the prompt. |
-| Shown on the organizer roster | **Yes, marked "tentative".** |
-| Counts toward the headcount cap | **Yes (holds a seat),** so approval can't overfill the event. |
-| Counts toward minimum headcount | **No,** until approved. |
-| Summary sentence | **"Sam wants to go (awaiting approval)".** Never treat it as declined. |
+| Counts toward the headcount cap | **No** |
+| Counts toward minimum headcount | **No** |
+| Stops the nag | **No.** The household nag keeps listing the youth, as "Sam wants to go: awaiting your approval", until an adult approves or declines. The nag doubles as an approval reminder. |
+| Event dashboard | **A separate "awaiting approval" count** next to the going/declined tallies |
+| Organizer roster | Listed apart from confirmed attendees, marked "awaiting approval" |
+| Summary sentence | "Sam wants to go (awaiting approval)". Never treat it as declined. |
+
+Because a pending "yes" holds no seat, an event can fill up while a request waits. D6 covers what happens then.
 
 ### D6. How does approval work? — **Decided, with one open question**
 
-- **Only adults in the youth's household may approve.** That's a change: today admins and organizers can approve too.
+- **Only adults in the youth's household may approve or decline.** That's a change: today admins and organizers can approve too.
 - Approval is an explicit Approve/Decline action, available from:
   - the event page
   - one-tap links in the approval email
   - an SMS reply
 - **Re-submitting the household form no longer approves anything implicitly.**
 - The approval request is often the parent's first sight of the event, so it **reads like an invitation**: "Sam wants to go to the Fall Campout (Nov 21–23). Approve or decline?" It includes the event details: dates, location, cost and organizer.
-- If an adult changes the youth's answer, that's their own answer and needs no approval.
-- **Open:** what happens when an adult declines a youth's request?
-  - (a) **Proposed:** the youth's RSVP becomes "no", and the youth is told.
-  - (b) The youth is left unanswered.
+- **Approve:** allowed **only while RSVPs are open**, which by `Event#rsvp_open?` means not closed, not cancelled and not full.
+  - The RSVP becomes "yes" from that point on.
+  - The youth is notified.
+  - If RSVPs have closed or the event is full, the Approve action is unavailable and the adult is told why. They can still decline.
+- **Decline:** the RSVP becomes "no" from that point on, and the youth is notified that the request was declined.
+- If an adult changes the youth's answer outright, rather than approving or declining, that's their own answer and needs no approval.
+- **Open:** what happens to a request still pending when RSVPs close?
+  - (a) **Proposed:** it lapses to "no", and the youth and points of contact are told.
+  - (b) It stays pending, and organizers decide.
+  - (c) It stays pending forever, with no further action.
 
-### D7. What happens when an answer changes after approval? — **Open**
+### D7. Changes after the fact — **Decided, with one open question**
 
-- **Proposed:** a youth changing an approved answer makes it pending again.
-- **Proposed:** a youth can't change an answer an adult made; they see it read-only.
+- A youth changing their own answer follows D4: a "yes" goes pending again, and a "no" takes effect immediately with a notice.
+- **Open:** can a youth change an answer an adult made, including a declined request?
+  - (a) **Proposed:** no. The youth sees the adult's answer read-only, which fits "a no from that point forward".
+  - (b) Yes, following D4: a new "yes" re-requests approval.
 
 ### D8. Who gets nagged and reminded? — **Decided**
 
-- **Weekly nag and last call go to points of contact only**, as **one message per household** that lists every member still unanswered.
+- **Weekly nag and last call go to points of contact only**, as **one message per household**. It lists every member still unanswered, plus every youth request awaiting approval (D5).
 - Other adults get no nags.
-- A youth with self-RSVP enabled is **not** nagged separately. The household nag covers them, and a youth who answers stops the nag for themselves.
+- A youth with self-RSVP enabled is **not** nagged separately; the household nag covers them.
 - Inactive members are excluded everywhere, as today.
 
 ### D9. Who hears about an answer? — **Decided**
@@ -230,6 +241,7 @@ The rule: **points of contact get a message for every household answer.**
 | Another adult in the household | A **notice**: "Dad RSVP'd Dad and Sam: Going to the Fall Campout" | A confirmation | An adult answered for by someone else gets a notice that it's about them |
 | A youth says "yes" | The **approval request** (D6) | A "request sent" confirmation | — |
 | A youth says "no" | A **notice**: "Sam said they can't make the Fall Campout" | A confirmation | — |
+| An adult approves or declines | The other point of contact, if any, gets a notice | A confirmation | The youth is notified (D6) |
 | An admin or organizer | A notice | — | — |
 | Anyone, by SMS reply | The same as on the web | The same as on the web | — |
 
@@ -239,23 +251,28 @@ The rule: **points of contact get a message for every household answer.**
 
 ### D10. What does an SMS "yes" or "no" apply to? — **Open**
 
-- **Proposed:** the SMS prompt lists the names it covers, and the reply applies to exactly those names. That's the texter's unanswered Answerable members.
-- Prompts normally go only to points of contact (D8). If another adult texts "upcoming", their prompt lists the household too.
-- The reply-to-the-reply confirms the names it applied to.
-
-### D11. Notes — **Open**
-
-- **Proposed:** keep one note per submission, stored on each row, as now.
-
-### D12. Messages to youth members — **Open** *(new: messaging also uses the relationship links)*
-
-Today a message to a youth is also delivered to their contactable "parents" (`Message::Notifiable`, `MessageService`, `MessageRecipient`). If mom is linked to the kid and dad is linked only through mom, today only mom gets copied.
+How it works today: when a member texts "next", Scoutplan replies with the next event needing an answer and remembers the list of family members it asked about. A later "yes" or "no" applies to **every active member of the texter's family**, and the reply doesn't say who that covered. For a youth texter, that list includes their parents, and those answers fail silently.
 
 Options:
-- (a) **Proposed:** copy the household's points of contact. This matches today's mom-only behavior in the common case.
-- (b) Copy every adult in the household.
+- (a) **Proposed: the prompt names who it covers, and the reply applies to exactly those people.** "Fall Campout, Nov 21–23. Reply YES or NO for Mom, Dad and Sam." The confirmation repeats the names. People who already answered aren't listed, so a "yes" never silently overwrites an earlier answer. A youth's prompt only ever names themselves.
+- (b) The same as (a), but the reply covers the **whole household**, overwriting earlier answers.
+- (c) SMS answers apply to **the texter only**. Anyone else must be answered for on the web.
+- (d) Per-person replies, e.g. "YES Sam, NO Dad". That's flexible, but error-prone on a phone and harder to parse.
 
-Youth contactability (`contactable_guardian?`) becomes "the household has a contactable point of contact".
+(a) keeps SMS a one-word reply while making it impossible to answer for someone without seeing their name.
+
+### D11. Notes — **Decided**
+
+- **The note is global to the household:** one note per household per event.
+- Any adult answering for the household can see and edit it.
+- Organizers see it once per household rather than repeated on every member's row.
+- Storage moves from `event_rsvps.note` to one record per (household, event) (§4.1).
+
+### D12. Messages to youth members — **Decided**
+
+- A message to a youth is copied to the **household's points of contact**.
+- Today it goes to the youth's contactable "parents" (`Message::Notifiable`, `MessageService`, `MessageRecipient`). In the common mom → dad, mom → kid setup, that's only mom, so the new rule matches today's behavior.
+- Youth contactability (`contactable_guardian?`) becomes "the household has a contactable point of contact".
 
 ---
 
@@ -279,8 +296,9 @@ Youth contactability (`contactable_guardian?`) becomes "the household has a cont
    - a **unique** index on `(event_id, unit_membership_id)`, after checking for and merging duplicates
    - indexes on `unit_membership_id` and `respondent_id`
 5. Drop `events.allow_youth_rsvps` (D3), and remove its use in `EventRsvpPolicy#create?` and the specs and factories that set it.
-6. Drop `user_relationships` and `UserRelationshipsPolicy`.
-7. Keep `member_relationships` until the cutover, then drop it.
+6. A new table `household_event_notes` (`household_id`, `event_id`, `body`, unique on the pair) replaces `event_rsvps.note` (D11). Backfill: join the distinct non-blank notes per household and event.
+7. Drop `user_relationships` and `UserRelationshipsPolicy`.
+8. Keep `member_relationships` until the cutover, then drop it.
 
 ### 4.2 Backfill
 
