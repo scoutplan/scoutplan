@@ -1,6 +1,6 @@
 # Family & RSVP Rules
 
-**Status:** Draft. D1, D2, D8 and D9 decided; D4 and D6 decided with one open question each; the rest open (see §3).
+**Status:** Draft. D1, D2, D8 and D9 decided; D3, D4 and D6 decided with one open question each; the rest open (see §3).
 **Scope:** Who belongs to a family, who may answer for whom, youth self-RSVP and approval, and who gets nagged, reminded and confirmed.
 **Out of scope:** Payments (being removed), event shifts, guests, the headcount feature beyond how pending answers count.
 
@@ -168,13 +168,13 @@ A household, as in §2.1: one per member, managed by admins, with one or two poi
 - Admins and organizers may answer for anyone. Their answers don't need approval, e.g. attendance recorded at the trailhead.
 - A dad's answer counts immediately. Points of contact are **informed, not asked to approve** (D9).
 
-### D3. How is youth self-RSVP enabled? — **Open**
+### D3. How is youth self-RSVP enabled? — **Decided, with one open question**
 
-- **Proposed:** two switches:
+- Two switches:
   1. the unit enables the feature
   2. an adult in the youth's household enables it for that youth
-- **Proposed:** drop the per-event `events.allow_youth_rsvps` flag, unless organizers actually use it. *To check: query how many events have it turned off.*
-- **Proposed:** the youth must be reachable by email or SMS. Today the toggle requires email.
+- **The per-event `events.allow_youth_rsvps` flag is dropped.** No UI or controller has ever set it: `EventsController` doesn't permit it and no event form renders it. So every event has carried the default `true`, and dropping it changes no behavior. *Before dropping the column, check for rows set to `false` by hand.*
+- **Open:** must the youth be reachable by email or SMS? Proposed: yes, either one. Today the toggle requires email.
 
 Usage is believed to be low. The feature is **kept on purpose**, because it encourages youth to take ownership of their participation.
 
@@ -279,7 +279,7 @@ Youth contactability (`contactable_guardian?`) becomes "the household has a cont
 4. On `event_rsvps`, add indexes:
    - a **unique** index on `(event_id, unit_membership_id)`, after checking for and merging duplicates
    - indexes on `unit_membership_id` and `respondent_id`
-5. Drop `events.allow_youth_rsvps` if D3 drops it.
+5. Drop `events.allow_youth_rsvps` (D3), and remove its use in `EventRsvpPolicy#create?` and the specs and factories that set it.
 6. Drop `user_relationships` and `UserRelationshipsPolicy`.
 7. Keep `member_relationships` until the cutover, then drop it.
 
