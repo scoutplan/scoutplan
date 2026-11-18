@@ -797,12 +797,15 @@ en:
         stripe_dashboard: "Visit Stripe Dashboard"
         pending:          "Pending"  
     buttons:
+      digest_preview:   "Preview newsletter"
+      digest_test_send: "Send me a test"
       save:           "Save Settings"
       
     captions:
       back:           "Back to unit setup"
 
     descriptions:
+      digest_note:    "Optional. Appears at the top of the next newsletter, then clears after it sends. Save your changes before previewing or sending a test."
       event_reminders: "Send an email and text message about 12 hours before an event starts"
       event_reminders_details: "Reminders are sent between 9 am and 6 pm on the day of or the day before an event starts, depending on start time."
       digest:         "Send a weekly message with the coming week's schedule, news, and RSVPs."
@@ -825,6 +828,8 @@ en:
       event_organizer_digest: "text-cyan-500"
 
     labels:
+      digest_note:      "Note for the next newsletter"
+      digest_note_keep: "Keep this note in future newsletters"
       event_reminders: "Send event reminders"
       digest:         "Send weekly newsletters"
       rsvp_nag:       "Send RSVP prompts"
@@ -853,6 +858,7 @@ en:
       event_organizer_digest: "Event organizer roundups"
 
     notices:
+      digest_test_sent: "Test newsletter sent to %{email}"
       update_success: "Your unit profile has been updated"
 
     unit_profile:

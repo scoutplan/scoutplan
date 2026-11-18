@@ -242,6 +242,7 @@ Rails.application.routes.draw do
     get "settings/documents"
     # get "settings/payments", to: "settings#payments"
     get "settings/test_communications", to: "settings#test_communications", as: "test_communications"
+    get "settings/digest_preview", to: "settings#digest_preview", as: "digest_preview"
     get "settings/:category", to: "settings#edit", as: "setting"
 
     # redirect the old /events path. We can probably get rid of this
