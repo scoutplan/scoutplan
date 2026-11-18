@@ -1,6 +1,9 @@
 
 <% rsvp_service = RsvpService.new(@recipient) %>This week at <%= @unit.name %>:
+<% if @digest_note_html.present? %>
+<%= raw ActionText::Content.new(@digest_note_html).to_plain_text %>
 
+<% end %>
 <% @this_week_events.each do |event| rsvp_service.event = event %>
 * <%= event.title %> on <%= event.starts_at.strftime("%A") %><% if event.requires_rsvp? && !rsvp_service.family_fully_responded? %>(Your RSVP is needed)<% end %>
 <% end %>

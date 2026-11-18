@@ -26,7 +26,8 @@ class WeeklyDigestNotifier < ScoutplanNotifier
     {
       "From" => ENV.fetch("TWILIO_NUMBER"),
       "To"   => recipient.phone,
-      "Body" => sms_body(recipient: recipient, unit: params[:unit])
+      "Body" => sms_body(recipient: recipient, unit: params[:unit],
+                        has_note: params[:digest_note_html].present?)
     }
   end
 end

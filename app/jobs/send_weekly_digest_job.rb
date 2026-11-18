@@ -10,8 +10,11 @@ class SendWeeklyDigestJob < ApplicationJob
     return if SendWeeklyDigestJob.ran_recently?(unit)
 
     Rails.logger.info("SendWeeklyDigestJob: sending digest for #{unit.name}")
-    WeeklyDigestNotifier.with(unit: unit).deliver(unit.members)
+    note_html = unit.digest_note_html
+    note_version = unit.rich_text_digest_note&.updated_at
+    WeeklyDigestNotifier.with(unit: unit, digest_note_html: note_html).deliver(unit.members)
     unit.settings(:communication).update!(digest_last_ran_at: DateTime.current)
+    unit.clear_digest_note!(sent_version: note_version) if note_html.present? && !unit.keep_digest_note?
   end
 
   # See RsvpNagJob: the dispatcher may enqueue the same weekly run more than once, and a digest

@@ -23,6 +23,10 @@ class Unit < ApplicationRecord
 
   has_one_attached :logo
 
+  # Optional admin-written note shown at the top of the next Weekly Digest. Cleared after the
+  # digest sends unless settings(:communication).digest_note_keep is "true".
+  has_rich_text :digest_note
+
   validates_presence_of :name
   validates_presence_of :location
   validates_presence_of :slug
@@ -43,6 +47,7 @@ class Unit < ApplicationRecord
   has_settings class_name: "UnitSettings" do |s|
     s.key :appearance, defaults: { main_color: "#003F87" }
     s.key :communication, defaults: { config_timestamp: nil, digest: true, rsvp_nag: "true", event_reminders: true,
+                                      digest_note_keep: "false",
                                       digest_day_of_week: SendWeeklyDigestJob::DEFAULT_DAY_OF_WEEK,
                                       digest_hour_of_day: SendWeeklyDigestJob::DEFAULT_HOUR_OF_DAY,
                                       rsvp_nag_day_of_week: RsvpNagJob::DEFAULT_DAY_OF_WEEK,
@@ -51,6 +56,26 @@ class Unit < ApplicationRecord
                                meeting_location: nil, meeting_address: nil }
     s.key :utilities, defaults: { fire_scheduled_tasks: false }
     s.key :documents, defaults: { home_layout: "[]" }
+  end
+
+  # Rendered HTML of the digest note, or nil when there isn't one. The digest job snapshots this
+  # into the notifier params so every queued email renders the same note, even after it's cleared.
+  def digest_note_html
+    digest_note.present? ? digest_note.to_s : nil
+  end
+
+  def keep_digest_note?
+    settings(:communication).digest_note_keep.to_s == "true"
+  end
+
+  # Clears the note only if it hasn't been edited since +sent_version+ (its updated_at at send
+  # time), so an admin's edit made while the digest was going out isn't thrown away.
+  def clear_digest_note!(sent_version:)
+    note = reload_rich_text_digest_note
+    return if note.nil? || note.updated_at != sent_version
+
+    note.destroy!
+    reload_rich_text_digest_note
   end
 
   def attachments

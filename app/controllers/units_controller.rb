@@ -19,7 +19,8 @@ class UnitsController < UnitContextController
   def unit_params
     return unless params[:unit].present?
 
-    params.require(:unit).permit(:name, :location, :logo, :email, :slug, :allow_youth_rsvps, :public_calendar)
+    params.require(:unit).permit(:name, :location, :logo, :email, :slug, :allow_youth_rsvps, :public_calendar,
+                                 :digest_note)
   end
 
   def settings_params

@@ -41,4 +41,19 @@ RSpec.describe WeeklyDigestMailer, type: :mailer do
       expect(mail.body.encoded).to have_content(I18n.t("events.partials.event_row.fully_paid"))
     end
   end
+
+  describe "digest note" do
+    it "shows the note in the HTML and text parts when one is given" do
+      mail = WeeklyDigestMailer.with(recipient: @member, unit: @unit,
+                                     digest_note_html: "<div>Popcorn orders due <strong>Friday</strong></div>")
+                               .weekly_digest_notification
+      expect(mail.html_part.body.decoded).to include("Popcorn orders due <strong>Friday</strong>")
+      expect(mail.text_part.body.decoded).to include("Popcorn orders due Friday")
+    end
+
+    it "renders as before when there's no note" do
+      mail = WeeklyDigestMailer.with(recipient: @member, unit: @unit).weekly_digest_notification
+      expect(mail.html_part.body.decoded).not_to include("border-left: 4px solid")
+    end
+  end
 end

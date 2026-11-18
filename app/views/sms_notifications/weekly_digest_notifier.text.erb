@@ -9,3 +9,6 @@ Hi, <%= @recipient.first_name %>. This week at <%= @unit.name %>:
 <% end %>
 Visit <%= magic_url_for(@recipient, unit_events_url(@unit)) %> for the full schedule.
 <% end %>
+<% if @has_note %>
+This week's newsletter also has an announcement. Check your email to read it.
+<% end %>

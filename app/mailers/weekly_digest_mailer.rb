@@ -23,6 +23,7 @@ class WeeklyDigestMailer < ApplicationMailer
     @this_week_events   = unit.events.published.this_week
     @coming_up_events   = unit.events.published.coming_up
     @further_out_events = unit.events.published.further_out.rsvp_required
+    @digest_note_html   = params[:digest_note_html]
   end
   # rubocop:enable Metrics/AbcSize
 
